@@ -1,6 +1,6 @@
-# Agent Standard v0.1
+# Agent Standard v0.2
 
-How Claude (and any other model) is used to make things in this repo. Load this before any multi-agent task. It replaces "use whatever agent happens to be selected."
+Roles are by type and level of work, not aircraft domain. The role files are `.claude/agents/*.md`; this file is the policy, those are the definitions.
 
 ## Core rule
 
@@ -8,36 +8,38 @@ How Claude (and any other model) is used to make things in this repo. Load this 
 
 ## Roles
 
-| Role | Model | Does | Never does |
-|---|---|---|---|
-| **Conductor** | Opus | Owns the goal. Breaks it into steps, declares which roles run each step, writes the plan to the task list. | Grinds through bulk work itself. |
-| **Tactician** | Sonnet | Turns one fuzzy plan step into exact, checkable builder/scout instructions. Launches builders and scouts. Collects their results. | Makes design decisions that belong to the conductor. |
-| **Builder** | Haiku | Executes one narrowly specified task: write this file to this schema, run this command, fix this named failure. | Interprets vague goals. If instructions are ambiguous, it stops and reports instead of guessing. |
-| **Scout** | Haiku | Gathers information into a fixed template (see `knowledge/TEMPLATE-*.md`). | Writes free-form prose or opinions outside the template. |
-| **Reviewer** | Opus — **one per task, reused** | Runs the validators, then judges only what validators can't check, against the named criteria in `standards/`. Returns a scorecard. | Says "looks good." Every judgment cites a criterion. |
+| Role | Model | Does |
+|---|---|---|
+| `conductor` | Opus (main session) | Owns the plan, launches agents, merges decisions, the only one who declares a unit done. Never writes code or bulk text itself. |
+| `advisor` | Opus | "This works / doesn't, but does it match intent? What should it do and how do we get there?" Called on any unit that failed twice. Edits nothing. |
+| `tactician` | Sonnet (hard → Opus via `advisor`) | Turns one unit into builder-ready briefs; checks a finished unit against its spec. |
+| `builder` | Haiku | One brief: exact files, exact test, exact command. Stops and reports on ambiguity. |
+| `builder-plus` | Sonnet | Same as `builder`, for units marked hard. |
+| `scout` | Haiku | Facts into `knowledge/TEMPLATE-*.md` and ledger extracts from transcripts. No opinions outside the template. |
+| `recon` | Sonnet | "How have others solved this?" Benchmarks 3–5 approaches and returns a ranked recommendation. Does not build. |
+| `design-engineer` | Sonnet | Iterates a design using only `plane …` commands; considers subtract / modify / adjust before add. Edits no `core/`, `schema/` or `standards/`. |
+| `reviewer` | Opus, fresh per wave, reused within the wave | Runs validators and tests, scores every PR of the wave against spec and scorecard. No "looks good" without a criterion. |
+| `auditor` | Haiku | Hourly get-it-together audit: open prompts, rule breaks, stuck agents, plan drift. Fixes nothing. |
 
-### Who can launch whom
+## Work class
 
-- Conductor → tactician, builder, scout, reviewer.
-  - Conductor launches builders/scouts **directly** only when its instructions already meet the builder-ready bar below. Otherwise it goes through a tactician.
-- Tactician → builder, scout.
-- Builder, scout, reviewer → nobody.
+- **Easy** → `builder` (Haiku). Tactician easy → Sonnet.
+- **Hard** (unit marked `[hard]` in the plan) → `builder-plus` (Sonnet). Tactician hard → escalate via `advisor` (Opus).
+- A unit that fails review twice goes to `advisor`, not a third fix.
 
-**Where nesting isn't available** (e.g. Claude Code subagents can't launch their own subagents — found 2026-11-11 when the A-series tactician ran with no launch tool): the tactician runs in *briefing mode*. It writes the builder briefs to `plans/<task>/briefs/*.md` and returns; the conductor launches one Haiku builder per brief, then hands the results back to the same tactician (SendMessage) to check. A tactician that does the builder work itself must report it as a process miss.
+## Agent tables
 
-## Declaring agents up front
-
-Before any agent is launched, the conductor writes a plan with an **agent table**:
+Before any agent is launched, the conductor writes an **agent table** in the current plan:
 
 ```
 | Step | Role | Model | Input | Output | Pass criterion |
 ```
 
-No agent is launched that isn't in the table. Adding one mid-task means updating the table first.
+The `agent_gate` hook allows only roles that appear (in backticks) in such a table in the newest `plans/*.md`. No agent is launched that isn't in the table. Adding one mid-task means updating the table first.
 
 ## Builder-ready bar
 
-Instructions can go to Haiku only if they include all of:
+Instructions can go to Haiku only if they include all of the following (or are a brief file under `plans/<plan>/briefs/`):
 
 1. **Exact output** — file path(s) and format (schema version, template name).
 2. **Exact inputs** — the files/URLs to use; nothing to "find."
@@ -46,10 +48,21 @@ Instructions can go to Haiku only if they include all of:
 
 ## Reviews
 
-- One reviewer instance per task, kept alive (`SendMessage`) for every review in that task. Don't spawn a new reviewer per item.
+- One **fresh** reviewer per wave, reused (`SendMessage`) for that wave's re-reviews. Don't spawn a new reviewer per item.
 - Reviewer always runs the automated validators first (`plane validate --tier all`) and pastes the scorecard.
 - Human-judgment items are scored against named criteria from `standards/` (e.g. `design-standards.yaml#static_margin`), each as PASS / FAIL / N/A with a one-line reason.
-- Output format: see `standards/review-scorecard.md`.
+- Scorecard format: `standards/review-scorecard.md`. Scorecards go in `reviews/`.
+
+## Enforcement
+
+Hooks live in `harness/hooks/`:
+
+- `log_prompt` — on each prompt, logs it to the ledger and reports its id.
+- `agent_gate` — before a Task/Agent launch, checks the role against the roster, the newest plan's agent table, and the builder-ready bar.
+- `reinject` — at session start, re-injects hangar context and the unfinished units.
+- `stop_gate` — blocks stopping while the session has open prompts; after 3 blocks in a row the stop is forced and logged. Override with `HANGAR_ALLOW_STOP=1`.
+
+For other repos: `python harness/install.py --target <project>`.
 
 ## Cost check
 
