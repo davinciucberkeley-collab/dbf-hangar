@@ -3,20 +3,26 @@ name: validate
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, 'std/**']
 
 jobs:
   validate:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
         with:
+          lfs: true
           fetch-depth: 0   # the base branch (or the previous push) must be present for --base-ref
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -e ".[dev]"
+      - run: pip install -e ".[mcp,dev]"
       - name: Unit tests
+        shell: bash
         run: pytest -q
       - name: Check designs against their baselines
         shell: bash
