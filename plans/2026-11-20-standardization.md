@@ -192,13 +192,14 @@ Gates are registered in `standards/gates.yaml` (`id, tier, blocking, needs: [ada
 ### 2.6 Harness (R18–R24, R35)
 
 - `.claude/agents/` the 10-role roster (§5), each file names model, tools, inputs, outputs, stop rules.
-- `.claude/settings.json` hooks → `harness/hooks/*.py`:
-  - `UserPromptSubmit` → `log_prompt.py`: append prompt to `ledger/prompts.jsonl` with status `open`.
-  - `PreToolUse` (matcher `Task|Agent`) → `agent_gate.py`: block (exit 2) unless `subagent_type` is in the roster and the current plan's agent table lists it; message names the three closest allowed roles.
-  - `SessionStart` (source `compact`|`resume`) → `reinject.py`: print open prompts + the active plan's unchecked units.
-  - `Stop` → `stop_gate.py`: block if any prompt in this session is still `open`; the agent answers by `plane ledger set P-n addressed --evidence …`, or the user sets `ALLOW_STOP=1`.
-- `.claude/output-styles/quiet.md`: answers questions fully, otherwise ≤ 20 words of narration.
-- `harness/install.py --target ~/.claude|<repo>`: copies agents, hooks, output style; idempotent. (R24; D4 decides whether this moves to its own repo.)
+- `.claude/settings.json` hooks → `sh harness/hooks/run.sh <hook>` (the launcher picks the first Python 3 on PATH: `python3`, `python` or `py`):
+  - `UserPromptSubmit` → `log_prompt.py`: append prompt to `ledger/prompts.jsonl` with status `open`; tells Claude its id.
+  - `PreToolUse` (matcher `Task|Agent`) → `agent_gate.py`: block (exit 2) unless `subagent_type` is in the roster **and** in an agent table (a table with a `Pass criterion` column) of the newest plan; builders also need a builder-ready brief. The message lists the roster.
+  - `SessionStart` (every source) → `reinject.py`: always one pointer line; after `compact`/`resume`, open prompts + the plan's unfinished units.
+  - `Stop` → `stop_gate.py`: block if any prompt in this session is still `open`. Claude closes each with `ledger.py addressed P-n --evidence …`, or `defer P-n --reason …` when it is waiting on the user. `HANGAR_ALLOW_STOP=1` overrides; after 3 blocks in a row the stop goes through and a `stop-forced` event is logged for the auditor.
+  - All hooks read and write UTF-8 (Windows consoles default to cp1252) and never raise: a hook bug cannot block the user.
+- `.claude/output-styles/quiet.md`: answers questions fully; otherwise only results, decisions needed and blockers, at most five lines at the end of a task.
+- `harness/install.py --target <project folder>`: copies agents, hooks, output style, merges settings, adds the ledger files to `.gitignore`; idempotent; refuses the home folder (a user-level install would call scripts that other projects don't have). (R24, D4.)
 
 ### 2.7 One surface (R6, R11, R26, R28)
 
