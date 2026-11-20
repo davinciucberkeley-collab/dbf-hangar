@@ -389,6 +389,12 @@ def test_claude_md_is_a_pointer_file(repo_root):
 
 ### Unit U0.2: Hooks, output style, installer (delivered early as H1 + H2, §6c; this unit then only ports the hooks onto `plane ledger` once U0.3 lands)
 
+Delivered 2026-11-20: H1 + H2 merged after 3 review rounds (`reviews/2026-11-20-w0-harness.md`). Follow-ups this unit picks up (non-blocking from that review):
+- [ ] printed `ledger.py` instructions use `sys.executable`, not `python`
+- [ ] `reinject` also lists `deferred` prompts after compaction
+- [ ] installer removes older `python …/x.py` hook entries when upgrading to `run.sh`
+- [ ] installer writes `run.sh` with LF endings and a test fails if any `*.sh` contains `\r`
+
 **Files:**
 - Create: `harness/hooks/{log_prompt,agent_gate,reinject,stop_gate}.py`, `.claude/settings.json`, `.claude/output-styles/quiet.md`, `harness/install.py`
 - Test: `tests/test_hooks.py`
