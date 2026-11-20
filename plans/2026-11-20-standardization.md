@@ -382,7 +382,7 @@ def test_provenance_lists_every_imported_top_level_path(repo_root):
 **Interfaces:**
 - Produces: `harness.roster.load_roster(root: Path) -> dict[str, AgentSpec]`, `AgentSpec(name: str, model: Literal["opus","sonnet","haiku"], tools: list[str], description: str)` in `core/hangar/harness/roster.py`
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 ```python
 def test_roster_has_exactly_the_ten_roles(repo_root):
@@ -402,18 +402,18 @@ def test_claude_md_is_a_pointer_file(repo_root):
     assert len((repo_root/"CLAUDE.md").read_text().splitlines()) <= 25
 ```
 
-- [ ] **Step 2: Run** `pytest tests/test_harness.py -v` → FAIL (`load_roster` missing)
-- [ ] **Step 3: Implement `load_roster`** (parse YAML frontmatter between the first two `---` lines; `tools` is the comma list). Update `standards/agents.md` and `CLAUDE.md`.
-- [ ] **Step 4: Run** `pytest tests/test_harness.py -v` → PASS
-- [ ] **Step 5: Commit** `git commit -m "harness: 10-role agent roster, agents.md v0.2, CLAUDE.md as pointer file"`
+- [x] **Step 2: Run** `pytest tests/test_harness.py -v` → FAIL (`load_roster` missing)
+- [x] **Step 3: Implement `load_roster`** (parse YAML frontmatter between the first two `---` lines; `tools` is the comma list). Update `standards/agents.md` and `CLAUDE.md`.
+- [x] **Step 4: Run** `pytest tests/test_harness.py -v` → PASS
+- [x] **Step 5: Commit** `git commit -m "harness: 10-role agent roster, agents.md v0.2, CLAUDE.md as pointer file"`
 
 ### Unit U0.2: Hooks, output style, installer (delivered early as H1 + H2, §6c; this unit then only ports the hooks onto `plane ledger` once U0.3 lands)
 
 Delivered 2026-11-20: H1 + H2 merged after 3 review rounds (`reviews/2026-11-20-w0-harness.md`). Follow-ups this unit picks up (non-blocking from that review):
-- [ ] printed `ledger.py` instructions use `sys.executable`, not `python`
-- [ ] `reinject` also lists `deferred` prompts after compaction
-- [ ] installer removes older `python …/x.py` hook entries when upgrading to `run.sh`
-- [ ] installer writes `run.sh` with LF endings and a test fails if any `*.sh` contains `\r`
+- [x] printed `ledger.py` instructions use `sys.executable`, not `python`
+- [x] `reinject` also lists `deferred` prompts after compaction
+- [x] installer removes older `python …/x.py` hook entries when upgrading to `run.sh`
+- [x] installer writes `run.sh` with LF endings and a test fails if any `*.sh` contains `\r`
 
 **Files:**
 - Create: `harness/hooks/{log_prompt,agent_gate,reinject,stop_gate}.py`, `.claude/settings.json`, `.claude/output-styles/quiet.md`, `harness/install.py`
