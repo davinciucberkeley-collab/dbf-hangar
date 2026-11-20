@@ -10,3 +10,4 @@ This file only points. Read what applies before acting.
 - Imports from other repos are adapted, not copied, and recorded in `PROVENANCE.md`.
 - Research goes into `knowledge/` through its templates. Cite only sources you opened.
 - Be quiet: report results, decisions and questions; don't narrate.
+- Every commit message ends with the trailer `Co-authored-by: Tristan Hottier <185231225+TristanHottier@users.noreply.github.com>` (repo owner), alongside any agent attribution lines.
