@@ -27,6 +27,25 @@ def roster_names(root):
     return sorted(names)
 
 
+def agent_table_roles(plan_text: str) -> set:
+    roles = set()
+    in_table = False
+    for line in plan_text.splitlines():
+        stripped = line.strip()
+        if not stripped.startswith("|"):
+            in_table = False
+            continue
+        if not in_table:
+            cells = [c.strip() for c in stripped.strip("|").split("|")]
+            if "Pass criterion" in cells:
+                in_table = True
+            continue
+        if set(stripped) <= set("|-: "):
+            continue
+        roles.update(re.findall(r"`([^`]+)`", stripped))
+    return roles
+
+
 def active_plan(root):
     plans = sorted((root / "plans").glob("*.md"), key=lambda p: p.name)
     return plans[-1] if plans else None
@@ -53,7 +72,7 @@ def run(event, root):
     plan = active_plan(root)
     if plan is not None:
         text = plan.read_text(encoding="utf-8")
-        if f"`{role}`" not in text:
+        if role not in agent_table_roles(text):
             rel = plan.relative_to(root).as_posix()
             return block(
                 f'Agent "{role}" is not in the active plan\'s agent table ({rel}). Add it to the table first.'
@@ -73,7 +92,8 @@ def run(event, root):
 
 def main():
     try:
-        raw = sys.stdin.read()
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+        raw = sys.stdin.buffer.read().decode("utf-8")
         event = json.loads(raw)
         env_root = os.environ.get("CLAUDE_PROJECT_DIR")
         if env_root:

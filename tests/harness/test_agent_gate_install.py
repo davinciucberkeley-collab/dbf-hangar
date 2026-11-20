@@ -14,7 +14,7 @@ def root(tmp_path):
     for r in ROLES:
         (tmp_path / ".claude" / "agents" / f"{r}.md").write_text(f"---\nname: {r}\nmodel: haiku\n---\n# {r}\n", encoding="utf-8")
     (tmp_path / "plans").mkdir()
-    (tmp_path / "plans" / "2026-11-20-x.md").write_text("| H1 | `builder` |\n| HR | `reviewer` |\n", encoding="utf-8")
+    (tmp_path / "plans" / "2026-11-20-x.md").write_text("| Step | Role | Model | Pass criterion |\n|---|---|---|---|\n| H1 | `builder` | Haiku | t |\n| HR | `reviewer` | Opus | t |\n", encoding="utf-8")
     return tmp_path
 
 def gate(event, root):
@@ -62,6 +62,35 @@ def test_install_is_idempotent_and_merges_settings(tmp_path):
     s = json.loads((tmp_path / ".claude/settings.json").read_text())
     assert s["outputStyle"] == "mine"
     stop_cmds = [h["command"] for e in s["hooks"]["Stop"] for h in e["hooks"]]
-    assert stop_cmds.count("echo hi") == 1 and sum("stop_gate.py" in c for c in stop_cmds) == 1
+    assert stop_cmds.count("echo hi") == 1 and sum('run.sh" stop_gate' in c for c in stop_cmds) == 1
     assert len(list((tmp_path / ".claude/agents").glob("*.md"))) == 10
     assert (tmp_path / "harness/hooks/agent_gate.py").exists()
+
+def test_role_must_be_in_an_agent_table_not_just_mentioned(root):
+    (root / "plans" / "2026-11-21-y.md").write_text(
+        "We might use `recon` later.\n\n| Step | Role | Model | Pass criterion |\n|---|---|---|---|\n| H1 | `builder` | Haiku | tests |\n", encoding="utf-8")
+    assert gate(task("recon"), root).returncode == 2
+    assert gate(task("builder", "Pass check: x. Stop rule: y."), root).returncode == 0
+
+def test_non_ascii_prompt_cannot_slip_past_gate(root):
+    r = subprocess.run([sys.executable, str(REPO / "harness/hooks/agent_gate.py")],
+                       input=json.dumps(task("general-purpose", "Ángulo → σ"), ensure_ascii=False).encode("utf-8"),
+                       capture_output=True, env=dict(os.environ, CLAUDE_PROJECT_DIR=str(root), PYTHONIOENCODING="cp1252"))
+    assert r.returncode == 2
+
+def test_settings_use_launcher():
+    s = json.loads((REPO / ".claude/settings.json").read_text())
+    cmds = [h["command"] for ev in s["hooks"].values() for e in ev for h in e["hooks"]]
+    assert all(c.startswith('sh "$CLAUDE_PROJECT_DIR/harness/hooks/run.sh" ') for c in cmds)
+
+def test_launcher_runs_a_hook(root):
+    r = subprocess.run(["sh", str(REPO / "harness/hooks/run.sh"), "agent_gate"], input=json.dumps(task("general-purpose")),
+                       capture_output=True, text=True, env=dict(os.environ, CLAUDE_PROJECT_DIR=str(root)))
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+
+def test_install_refuses_home_and_writes_gitignore(tmp_path, monkeypatch):
+    monkeypatch.setenv("HOME", str(tmp_path)); monkeypatch.setenv("USERPROFILE", str(tmp_path))
+    with pytest.raises(ValueError): installer.install(tmp_path)
+    proj = tmp_path / "proj"; proj.mkdir()
+    installer.install(proj); installer.install(proj)
+    assert (proj / ".gitignore").read_text().count("ledger/prompts.jsonl") == 1

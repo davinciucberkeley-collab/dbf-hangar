@@ -1,4 +1,6 @@
 """Install the hangar harness (agents, quiet output style, hooks, harness code) into a target project."""
+from __future__ import annotations
+
 import argparse
 import json
 import shutil
@@ -6,6 +8,7 @@ import sys
 from pathlib import Path
 
 HANGAR = Path(__file__).resolve().parents[1]
+GITIGNORE_LINES = ["ledger/prompts.jsonl", "ledger/events.jsonl", "ledger/.stop_blocks.json"]
 
 
 def _merge_settings(target_settings: Path, source_settings: Path, written: list):
@@ -37,9 +40,25 @@ def _copy(src: Path, dst: Path, written: list):
     written.append(dst.resolve())
 
 
+def _ensure_gitignore(target: Path, written: list):
+    path = target / ".gitignore"
+    text = path.read_text(encoding="utf-8") if path.exists() else ""
+    present = {line.strip() for line in text.splitlines()}
+    missing = [line for line in GITIGNORE_LINES if line not in present]
+    if not missing:
+        return
+    if text and not text.endswith("\n"):
+        text += "\n"
+    text += "".join(line + "\n" for line in missing)
+    path.write_text(text, encoding="utf-8")
+    written.append(path.resolve())
+
+
 def install(target: Path, source: Path | None = None) -> list[Path]:
     source = Path(source) if source is not None else HANGAR
     target = Path(target)
+    if target.resolve() == Path.home().resolve():
+        raise ValueError("install into a project folder, not your home folder")
     written: list[Path] = []
 
     for agent in sorted((source / ".claude" / "agents").glob("*.md")):
@@ -55,6 +74,7 @@ def install(target: Path, source: Path | None = None) -> list[Path]:
         _copy(f, target / "harness" / f.relative_to(harness_src), written)
 
     _merge_settings(target / ".claude" / "settings.json", source / ".claude" / "settings.json", written)
+    _ensure_gitignore(target, written)
     return written
 
 
@@ -62,7 +82,11 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description="Install the hangar harness into a project.")
     parser.add_argument("--target", required=True, type=Path)
     args = parser.parse_args(argv)
-    files = install(args.target)
+    try:
+        files = install(args.target)
+    except ValueError as exc:
+        print(str(exc), file=sys.stderr)
+        return 2
     print(f"Installed hangar harness into {args.target} ({len(files)} files)")
     return 0
 
