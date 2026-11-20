@@ -465,6 +465,81 @@ def baseline_check_cmd(paths, all_designs, fmt, base_ref):
         sys.exit(1)
 
 
+from .ledger import KINDS, STATUSES, Ledger  # noqa: E402  (ledger group below)
+
+
+def _repo_root() -> Path:
+    cwd = Path.cwd()
+    for folder in [cwd, *cwd.parents]:
+        if (folder / "pyproject.toml").exists():
+            return folder
+    return cwd
+
+
+@cli.group("ledger")
+def ledger_cmd():
+    """Rulings, tasks, ideas and decisions with evidence (ledger/items.yaml)."""
+
+
+@ledger_cmd.command("seed")
+@click.option("--plan", "plan", required=True, type=click.Path(exists=True, dir_okay=False))
+def ledger_seed(plan):
+    """Load rulings (plan section 1) and decisions (plan section 3) into the ledger."""
+    try:
+        n = Ledger(_repo_root() / "ledger" / "items.yaml").seed_from_plan(Path(plan))
+    except ValueError as e:
+        _fail(str(e))
+    click.echo(f"seeded {n}")
+
+
+@ledger_cmd.command("add")
+@click.argument("kind", type=click.Choice(KINDS))
+@click.argument("text")
+@click.option("--source", required=True)
+@click.option("--owner", default="")
+@click.option("--due", default="", help="YYYY-MM-DD")
+def ledger_add(kind, text, source, owner, due):
+    """Add an item and print its id."""
+    try:
+        item_id = Ledger(_repo_root() / "ledger" / "items.yaml").add(kind, text, source=source, owner=owner, due=due)
+    except ValueError as e:
+        _fail(str(e))
+    click.echo(item_id)
+
+
+@ledger_cmd.command("set")
+@click.argument("item_id")
+@click.argument("status", type=click.Choice(STATUSES))
+@click.option("--evidence", default="")
+@click.option("--decided-in", "decided_in", default="")
+def ledger_set(item_id, status, evidence, decided_in):
+    """Set an item's status. done and decided need --evidence; dropped and superseded need --decided-in."""
+    try:
+        Ledger(_repo_root() / "ledger" / "items.yaml").set(item_id, status, evidence=evidence, decided_in=decided_in)
+    except KeyError:
+        _fail(f"unknown id {item_id}")
+    except ValueError as e:
+        _fail(str(e))
+    click.echo(f"{item_id} {status}")
+
+
+@ledger_cmd.command("check")
+def ledger_check():
+    """Print evidence and decision problems; exit 1 if there are any."""
+    issues = Ledger(_repo_root() / "ledger" / "items.yaml").check(_repo_root())
+    for i in issues:
+        click.echo(f"{i.item_id} {i.kind}: {i.message}")
+    sys.exit(1 if issues else 0)
+
+
+@ledger_cmd.command("report")
+@click.option("--today", default=None, help="Date for the overdue check (YYYY-MM-DD). Default: today.")
+def ledger_report(today):
+    """Markdown summary: counts per kind and status, overdue items, open prompts."""
+    root = _repo_root()
+    click.echo(Ledger(root / "ledger" / "items.yaml").report(today=today, prompts=root / "ledger" / "prompts.jsonl"))
+
+
 def main():
     cli()
 
