@@ -107,3 +107,22 @@ def test_install_writes_gitattributes_once(tmp_path):
     proj = tmp_path / "p"; proj.mkdir()
     installer.install(proj); installer.install(proj)
     assert (proj / ".gitattributes").read_text().count("*.sh text eol=lf") == 1
+
+def test_upgrade_removes_old_python_hook_entries(tmp_path):
+    proj = tmp_path / "p"; (proj / ".claude").mkdir(parents=True)
+    old = {"hooks": {"Stop": [{"hooks": [{"type": "command", "command": 'python "$CLAUDE_PROJECT_DIR/harness/hooks/stop_gate.py"'}]},
+                              {"hooks": [{"type": "command", "command": "echo other"}]}]}}
+    (proj / ".claude/settings.json").write_text(json.dumps(old))
+    installer.install(proj)
+    cmds = [h["command"] for e in json.loads((proj / ".claude/settings.json").read_text())["hooks"]["Stop"] for h in e["hooks"]]
+    assert not any(c.endswith('stop_gate.py"') for c in cmds) and "echo other" in cmds and any("run.sh" in c for c in cmds)
+
+def test_installed_shell_scripts_have_no_cr(tmp_path):
+    proj = tmp_path / "p"; proj.mkdir()
+    installer.install(proj)
+    for sh in (proj / "harness").rglob("*.sh"):
+        assert b"\r" not in sh.read_bytes()
+
+def test_repo_shell_scripts_have_no_cr():
+    for sh in (REPO / "harness").rglob("*.sh"):
+        assert b"\r" not in sh.read_bytes()

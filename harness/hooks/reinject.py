@@ -34,6 +34,13 @@ def main():
                 out.append(ledger.format_line(p))
         else:
             out.append("Open prompts: none")
+        deferred = [p for p in ledger.prompts(root) if p.get("status") == "deferred"]
+        if deferred:
+            out.append("Deferred prompts:")
+            for p in deferred:
+                out.append(ledger.format_line(p))
+        else:
+            out.append("Deferred prompts: none")
         out.append("Unfinished units:")
         if plans:
             out += _unfinished_units(plans[-1])

@@ -56,8 +56,8 @@ def main():
     lines = ["Open prompts in this session: " + ", ".join(p["id"] for p in open_items)]
     for p in open_items:
         lines.append(f"- {p['id']}: {(p.get('text') or '')[:100].replace(chr(10), ' ')}")
-    lines.append(f'Address each (python "{ledger_py}" addressed <ID> --evidence "...") '
-                 f'or, if you are waiting on the user, defer it (python "{ledger_py}" defer <ID> --reason "..."). '
+    lines.append(f'Address each ("{sys.executable}" "{ledger_py}" addressed <ID> --evidence "...") '
+                 f'or, if you are waiting on the user, defer it ("{sys.executable}" "{ledger_py}" defer <ID> --reason "..."). '
                  "Override: HANGAR_ALLOW_STOP=1.")
     print("\n".join(lines), file=sys.stderr)
     return 2
