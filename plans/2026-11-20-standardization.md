@@ -353,7 +353,7 @@ Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPAT
 - Create: `PROVENANCE.md` (source repo, commit, path → hangar path, edits made), `.gitattributes` (LFS patterns per D8), `README.md` (≤ 40 lines, pointers)
 - Test: existing suite + `tests/test_seed.py`
 
-- [ ] **Step 1: Failing test**
+- [x] **Step 1: Failing test**
 
 ```python
 def test_package_is_hangar_and_cli_still_plane():
@@ -366,10 +366,10 @@ def test_provenance_lists_every_imported_top_level_path(repo_root):
         assert p in prov
 ```
 
-- [ ] **Step 2: Run** → FAIL (repo empty apart from plan and agents)
-- [ ] **Step 3: Import + rename** (`git -C ../aircraft-platform archive f462468 | tar -x`, then `sed` the imports; CI badge and Pages URL point at dbf-hangar)
-- [ ] **Step 4: Run** `pip install -e ".[mcp,dev]" && pytest -q` → same pass count as aircraft-platform at `f462468`; `plane baseline check --all` → no new failures
-- [ ] **Step 5: Commit** `git commit -m "seed: aircraft-platform f462468 as package hangar; provenance; LFS"`
+- [x] **Step 2: Run** → FAIL (repo empty apart from plan and agents)
+- [x] **Step 3: Import + rename** (`git -C ../aircraft-platform archive f462468 | tar -x`, then `sed` the imports; CI badge and Pages URL point at dbf-hangar)
+- [x] **Step 4: Run** `pip install -e ".[mcp,dev]" && pytest -q` → same pass count as aircraft-platform at `f462468`; `plane baseline check --all` → no new failures
+- [x] **Step 5: Commit** `git commit -m "seed: aircraft-platform f462468 as package hangar; provenance; LFS"`
 
 ### Unit U0.1: Agent roster and pointer files
 
