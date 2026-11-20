@@ -467,7 +467,7 @@ def test_install_is_idempotent(tmp_path):
 **Interfaces:**
 - Produces: `Ledger(path: Path)` over `ledger/items.yaml`, `.add(kind: Literal["ruling","task","idea","decision"], text: str, source: str, owner: str = "", item_id: str | None = None, due: str = "") -> str` (returns `R12`/`T3`/`D4`/`I2`), `.set(item_id: str, status: Literal["open","done","dropped","superseded","decided"], evidence: str = "", decided_in: str = "") -> None`, `.get(item_id) -> Item`, `.check(repo: Path) -> list[Issue]`, `.report_overdue(today: str) -> list[str]`, `.report() -> str`, `.seed_from_plan(plan: Path) -> int`. Prompts stay in `harness/ledger.py` (stdlib, used by hooks); `report()` reads `ledger/prompts.jsonl` (same format) only to count open prompts. Brief: `briefs/U0.3-ledger.md` (its tests supersede the sketch below).
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 ```python
 def test_dropped_needs_decision_and_is_not_overdue(tmp_ledger):
@@ -487,10 +487,10 @@ def test_seeded_with_requirements_R1_to_R40(repo_root):
     assert {f"R{n}" for n in range(1, 41)} <= ids
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement**; seed `ledger/items.yaml` from §1 (scout transcribes the table; each R-id keeps its transcript timestamp as `source`). Add `ledger ingest` input format: a scout produces `ledger/inbox/<date>.yaml` from a transcript; `ingest` validates against `schema/ledger.schema.json` and appends.
-- [ ] **Step 4: Run** → PASS
-- [ ] **Step 5: Commit** `git commit -m "ledger: tracked rulings/tasks/decisions with evidence; seeded R1-R40"`
+- [x] **Step 2: Run** → FAIL
+- [ ] **Step 3: Implement**; seed `ledger/items.yaml` from §1 (scout transcribes the table; each R-id keeps its transcript timestamp as `source`). Add `ledger ingest` input format: a scout produces `ledger/inbox/<date>.yaml` from a transcript; `ingest` validates against `schema/ledger.schema.json` and appends. — *Status 2026-11-21: seed done (R1–R40, D1–D10); `ledger ingest` was not in the U0.3 brief and is still open.*
+- [x] **Step 4: Run** → PASS
+- [x] **Step 5: Commit** `git commit -m "ledger: tracked rulings/tasks/decisions with evidence; seeded R1-R40"`
 
 ### Unit U1.1: Operations registry and the OpResult contract [hard]
 

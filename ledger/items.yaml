@@ -223,11 +223,11 @@ items:
     text: Agent roles by **type and level** of work, not domain; Haiku builds, Sonnet for hard; tactician Sonnet (hard → Opus); advisor Opus; one conductor decides; batch of ~10 units → fresh Opus reviewer
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.1
-    evidence: ''
+    evidence: reviews/2026-11-21-w0.md
     decided_in: ''
     updated: '2026-11-20'
   - id: R19
@@ -235,12 +235,12 @@ items:
     text: 'Embed rules in the system: hook on agent launch asking "did you follow the rules", role must be picked; roles + output styles in Claude Code; hooks and looping prompts'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.1
       - U0.2
-    evidence: ''
+    evidence: reviews/2026-11-21-w0.md
     decided_in: ''
     updated: '2026-11-20'
   - id: R20
@@ -248,12 +248,12 @@ items:
     text: Every prompt logged; agent may not stop until each prompt is marked addressed; compaction re-loads the task file; tasks in files, not memory
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.2
       - U0.3
-    evidence: ''
+    evidence: reviews/2026-11-21-w0.md
     decided_in: ''
     updated: '2026-11-20'
   - id: R21
@@ -299,11 +299,11 @@ items:
     text: Team harness repo + install script so every teammate's Claude gets the same roles
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.2
-    evidence: ''
+    evidence: reviews/2026-11-21-w0.md
     decided_in: ''
     updated: '2026-11-20'
   - id: R25
@@ -432,12 +432,12 @@ items:
     text: Standardize `standards/agents.md` for everyone, with hooks to enforce it
     source: plan §1; T 11-18 (James)
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.1
       - U0.2
-    evidence: ''
+    evidence: reviews/2026-11-21-w0.md
     decided_in: ''
     updated: '2026-11-20'
   - id: R36
