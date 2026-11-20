@@ -322,6 +322,24 @@ The harness does not depend on the seed, so it goes first: rules must be enforce
 | H2 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/H2-agent-gate-and-install.md` | branch `std/h2-agent-gate` | same |
 | HR | `reviewer` | Opus (fresh) | both branches | `reviews/2026-11-20-w0-harness.md` | ACCEPT per branch |
 
+### 6d. Agent table for W0 (prepared 2026-11-20; run from a fresh conductor session)
+
+Order: W0-1 first; when it is merged, W0-2, W0-3 and W0-4 run in parallel, each in its own worktree; one fresh reviewer for the wave. `auditor` runs hourly while the wave runs; `advisor` only for a unit that fails review twice.
+
+| Step | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| W0-1 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.4-seed.md` | branch `std/u0.4-seed` | `python -m pytest -q` → 168 + 31 passed, 3 skipped; `plane baseline check --all` exit 0 |
+| W0-2 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.1-roster.md` | branch `std/u0.1-roster` | `python -m pytest tests/test_roster.py -q` green, full suite green |
+| W0-3 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.3-ledger.md` | branch `std/u0.3-ledger` | `python -m pytest tests/test_ledger.py -q` green, full suite green |
+| W0-4 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.2-followups.md` | branch `std/u0.2-followups` | `python -m pytest tests/harness -q` green |
+| W0-R | `reviewer` | Opus (fresh) | the four branches | `reviews/2026-11-21-w0.md` | ACCEPT per branch |
+| W0-A | `auditor` | Haiku | session state, ledger, this table | report to conductor | ≤ 15 lines, evidence per finding |
+| W0-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
+
+**Permissions for W0 (approve once at the start of the conductor session):** `git worktree add|remove` under `../wt/`; `git commit` on `std/*` branches; `git push` of `std/*` branches and of `main` after a reviewed merge (no force push); `git lfs track|install|push`; `pip install -e ".[mcp,dev]"` and `pip install pytest` into a virtual environment; `python -m pytest`; `plane …`; reading `../aircraft-platform` (at `f462468`). Nothing outside the repo, its worktrees and the read-only source checkout is written.
+
+**LFS fallback (D8):** if `git push` of LFS objects is refused by the git host or proxy, the conductor removes the LFS patterns for meshes (they total about 5 MB) and commits them as plain git, and records "D8 amended: plain git" in §3. No builder handles this.
+
 ## 7. Units
 
 Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPATH=$PWD/core` in worktrees; finish with
@@ -447,7 +465,7 @@ def test_install_is_idempotent(tmp_path):
 - Test: `tests/test_ledger.py`
 
 **Interfaces:**
-- Produces: `Ledger(path: Path)`, `.add(kind: Literal["ruling","task","idea","decision","prompt"], text: str, source: str, owner: str = "", ids: str | None = None) -> str` (returns `R12`/`T3`/`D4`/`P17`), `.set(item_id: str, status: Literal["open","done","dropped","superseded","addressed"], evidence: str = "", decided_in: str = "") -> None`, `.check(repo: Path) -> list[Issue]`, `.report() -> str`, `.add_prompt(session: str, text: str)`, `.prompts(session: str) -> list[Item]`.
+- Produces: `Ledger(path: Path)` over `ledger/items.yaml`, `.add(kind: Literal["ruling","task","idea","decision"], text: str, source: str, owner: str = "", item_id: str | None = None, due: str = "") -> str` (returns `R12`/`T3`/`D4`/`I2`), `.set(item_id: str, status: Literal["open","done","dropped","superseded","decided"], evidence: str = "", decided_in: str = "") -> None`, `.get(item_id) -> Item`, `.check(repo: Path) -> list[Issue]`, `.report_overdue(today: str) -> list[str]`, `.report() -> str`, `.seed_from_plan(plan: Path) -> int`. Prompts stay in `harness/ledger.py` (stdlib, used by hooks); `report()` reads `ledger/prompts.jsonl` (same format) only to count open prompts. Brief: `briefs/U0.3-ledger.md` (its tests supersede the sketch below).
 
 - [ ] **Step 1: Write the failing tests**
 
