@@ -333,6 +333,10 @@ Order: W0-1 first; when it is merged, W0-2, W0-3 and W0-4 run in parallel, each 
 | W0-3 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.3-ledger.md` | branch `std/u0.3-ledger` | `python -m pytest tests/test_ledger.py -q` green, full suite green |
 | W0-4 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.2-followups.md` | branch `std/u0.2-followups` | `python -m pytest tests/harness -q` green |
 | W0-5 | `builder` | Haiku | the W0-5 prompt (CI: LFS checkout in both workflows, Windows job, CI on `std/**` pushes; added 2026-11-21 after the Pages build failed) | branch `std/w0.5-ci` | GitHub Actions `validate` green on Linux and Windows for the pushed branch |
+| W0-6T | `tactician` | Sonnet | W0 lessons (reviews/2026-11-21-w0.md, conductor notes in briefs U0.4/U0.2) | `briefs/W0.6a-harness-fixes.md`, `briefs/W0.6b-brief-standard.md` | each brief meets the builder-ready bar in `standards/agents.md` |
+| W0-6a | `builder` | Haiku | `briefs/W0.6a-harness-fixes.md` | branch `std/w0.6a-harness` | brief's pass check; CI `validate` green on Linux and Windows |
+| W0-6b | `builder` | Haiku | `briefs/W0.6b-brief-standard.md` | branch `std/w0.6b-briefs` | brief's pass check; CI green |
+| W0-6R | `reviewer` | Opus (fresh) | the two W0.6 branches | `reviews/2026-11-21-w0.6.md` | ACCEPT per branch |
 | W0-R | `reviewer` | Opus (fresh) | the four branches | `reviews/2026-11-21-w0.md` | ACCEPT per branch |
 | W0-A | `auditor` | Haiku | session state, ledger, this table | report to conductor | ≤ 15 lines, evidence per finding |
 | W0-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
@@ -489,7 +493,7 @@ def test_seeded_with_requirements_R1_to_R40(repo_root):
 ```
 
 - [x] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement**; seed `ledger/items.yaml` from §1 (scout transcribes the table; each R-id keeps its transcript timestamp as `source`). Add `ledger ingest` input format: a scout produces `ledger/inbox/<date>.yaml` from a transcript; `ingest` validates against `schema/ledger.schema.json` and appends. — *Status 2026-11-21: seed done (R1–R40, D1–D10); `ledger ingest` was not in the U0.3 brief; moved to U2.4 (Tristan, 2026-11-21).*
+- [x] **Step 3: Implement**; seed `ledger/items.yaml` from §1 (scout transcribes the table; each R-id keeps its transcript timestamp as `source`). Add `ledger ingest` input format: a scout produces `ledger/inbox/<date>.yaml` from a transcript; `ingest` validates against `schema/ledger.schema.json` and appends. — *Status 2026-11-21: seed done (R1–R40, D1–D10); `ledger ingest` was not in the U0.3 brief; moved to U2.4 (Tristan, 2026-11-21).*
 - [x] **Step 4: Run** → PASS
 - [x] **Step 5: Commit** `git commit -m "ledger: tracked rulings/tasks/decisions with evidence; seeded R1-R40"`
 
