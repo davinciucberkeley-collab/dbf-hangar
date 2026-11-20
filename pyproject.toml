@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dbf-hangar"
+version = "1.0.0.dev0"
+description = "Shared schema, validators, CLI and MCP server for our aircraft designs"
+requires-python = ">=3.10"
+dependencies = ["pyyaml", "jsonschema", "numpy", "scipy", "trimesh", "manifold3d", "rtree", "networkx", "ruamel.yaml>=0.18", "click", "mujoco>=3"]
+
+[project.optional-dependencies]
+sim = []  # kept for compatibility: mujoco is now a core dependency
+mcp = ["mcp>=1.2"]
+dev = ["pytest"]
+
+[project.scripts]
+plane = "hangar.cli:main"
+plane-mcp = "hangar.mcp_server:main"
+
+[tool.setuptools]
+package-dir = {"" = "core"}
+packages = ["hangar"]

@@ -3,3 +3,9 @@ ledger/events.jsonl
 ledger/.stop_blocks.json
 __pycache__/
 .pytest_cache/
+.venv/
+*.egg-info/
+build/
+.studio/
+viewer/data/
+opencae.local.json

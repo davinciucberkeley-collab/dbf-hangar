@@ -1,0 +1,154 @@
+# Thresholds used by the automated validators. Every rule needs a source.
+# `source: pending` means a scout/reviewer still has to confirm it — treat as provisional.
+# Criterion links look like: design-standards.yaml#<key>
+
+version: "0.1"
+
+geometry:
+  strip_gap_tolerance_mm:
+    value: 3.0
+    rule: "Gaps up to this size between pieces of a wing section (hinge gaps) are bridged when measuring chord"
+    source: internal convention
+  attach_tolerance_mm:
+    value: 2.0
+    rule: Attached parts must touch or overlap; joint point within this distance of both parts.
+    source: internal convention
+  interference_max_mm3:
+    value: 1.0
+    rule: Parts that are not attached to each other may not overlap more than this volume (catches clipping and prop strikes).
+    source: internal convention
+  glued_overlap_max_fraction:
+    value: 0.02
+    rule: Attached parts without embed_ok may overlap at most this fraction of the smaller part's volume.
+    source: internal convention
+  embed_max_fraction_of_child:
+    value: 0.35
+    rule: An embed_ok joint may overlap at most this fraction of the CHILD's volume, unless the child is fully contained in the parent (see containment_min_fraction). Component `type` is never consulted. Propellers may never use embed_ok. Every component with a propulsion block must have an attached component of type propeller (T1.motor_has_prop).
+    source: internal convention
+  containment_min_fraction:
+    value: 0.99
+    rule: An embed_ok joint may exceed embed_max_fraction_of_child only if at least this fraction of the child's volume lies inside the parent (a bay). A part poking through its parent is never a bay.
+    source: internal convention
+  articulation_sweep_step_deg:
+    value: 15.0
+    rule: Each articulated joint is also checked at every step of this size across its range (others held at 0 deg), so clipping between named poses is caught.
+    source: internal convention
+  distributed_mass_max_fraction_each:
+    value: 0.03
+    rule: "One distributed (lumped) point mass may carry at most this fraction of the aircraft's mass."
+    source: internal convention
+  distributed_mass_max_fraction_total:
+    value: 0.05
+    rule: "All distributed point masses together at most this fraction."
+    source: internal convention
+
+structure:
+  landing_load_factor:
+    value: 3.0
+    rule: Every attachment must carry (mass outboard of the joint) x g x this factor (x ultimate_factor).
+    source: pending
+    note: No source found for a 3 g landing factor (knowledge/sources/std-SUMMARY.md). STANAG 4703 uses 3.8 g limit manoeuvre load. Need STANAG Annex B or ASTM F3298 load tables.
+  ultimate_factor:
+    value: 1.5
+    rule: Ultimate load = limit load x 1.5; joint ratings are ultimate ratings.
+    source: ASTM F3298-19 and STANAG 4703 (knowledge/sources/std-astm-f3298-lightweight-uas.md, std-stanag-4703-aep-83.md)
+  fea_allowable_printed_petg_mpa:
+    value: 12.6
+    rule: A printed (3d-print-fdm) part passes the OpenCAE stress check when its peak von Mises stress away from the clamps, at ultimate load (limit x ultimate_factor), is at or below this value.
+    source: "UltiMaker PETG Technical Data Sheet v1.00 (2022-04-29), tensile stress at break of Z (upright) printed specimens 19.0 +/- 6.4 MPa, ASTM D3039 (https://um-support-files.ultimaker.com/materials/2.85mm/tds/PETG/Ultimaker-PETG-TDS-v1.00.pdf, checked 2026-11-16). OpenCAE material record db_petg_um cites the same sheet."
+    note: "Value is the mean minus one standard deviation of the weakest (interlayer) direction, because print orientation is not recorded per part and the Z scatter is large. Assumes solid walls (concept A's printed parts are thin-walled); sparse infill lowers strength and is not modelled. Method choice, review when coupons are tested."
+  fea_material_printed_petg:
+    value: {name: "PETG, printed (UltiMaker PETG TDS)", opencae_id: db_petg_um, youngs_modulus_mpa: 1939, poissons_ratio: 0.38, density_kg_m3: 1270}
+    rule: Elastic properties sent to OpenCAE for printed (3d-print-fdm) parts when its own material database does not have opencae_id.
+    source: "UltiMaker PETG Technical Data Sheet v1.00 (2022-04-29): tensile modulus XY 1939 +/- 28 MPa (ASTM D3039), specific gravity 1.27 (ISO 1183) (https://um-support-files.ultimaker.com/materials/2.85mm/tds/PETG/Ultimaker-PETG-TDS-v1.00.pdf, checked 2026-11-16)."
+    note: "Poisson's ratio 0.38 is an estimate: the TDS gives none; it is the value OpenCAE's own PETG record uses. Stresses in these load cases depend on it only weakly."
+  fea_singularity_band_mm:
+    value: 2.0
+    rule: Stresses within this distance of a clamped face are left out of the pass/fail value (a rigid clamp is a stress singularity); the peak including them is reported alongside.
+    source: "method choice, not a standard: Saint-Venant's principle (local idealisation effects decay within about one section size); 2 mm is a few element sizes on concept A's printed parts."
+
+aero:
+  static_margin:
+    min: 0.05
+    max: 0.15
+    rule: Static margin (neutral point minus CG, over main-wing MAC) for fixed-wing cruise.
+    source: MIT 16.01 design rules; uavmodel DIY UAV guide (knowledge/sources/std-mit-unified-desrules.md, std-uavmodel-diy-uav-airframe.md)
+    note: MIT states it per chord c; the MIT page defines c as the average wing chord, so MAC is the right reference (std-mit-unified-desrules.md). Outside [min, max] on either side is a FAIL.
+  hover_thrust_to_weight_min:
+    value: 1.5
+    rule: VTOL designs need total lift-motor thrust at least this multiple of weight.
+    source: pending
+    note: Sources range 1.2-1.5 (forum citing a paper) to 2.0 (heuristic); ArduPilot/PX4 give none. Candidate change to 2.0 once the underlying paper is read.
+  hover_moment_reference_lever_m:
+    value: 0.05
+    rule: Reference lever arm for the hover moment check; imbalance is compared with total lift thrust times this lever.
+    source: internal convention
+  hover_moment_pass_ratio:
+    value: 0.2
+    rule: Equal-thrust hover moment about the CG below this fraction of thrust x reference lever is a PASS.
+    source: internal convention
+  hover_moment_fail_ratio:
+    value: 1.0
+    rule: Hover moment at or above this fraction of thrust x reference lever is a FAIL; between pass and fail ratios is a WARN.
+    source: internal convention
+  planform_match_tolerance_fraction:
+    value: 0.01
+    rule: "A declared planform's area and span must agree with the area and span measured from its real geometry within this fraction; otherwise a WARN. The aero numbers always use the measured geometry."
+    source: internal convention
+  planform_area_mismatch_fail_fraction:
+    value: 0.15
+    rule: "Declared and measured planform areas (and spans) may differ by at most this fraction. Beyond the planform_match_tolerance_fraction band, a WARN; beyond this fraction, a FAIL."
+    source: internal convention
+  control_surface_gap_max_fraction:
+    value: 0.15
+    rule: "A wing's planform runs from its leading edge to its control surface's trailing edge; gaps between a wing and its own hinged control surfaces (hinge gaps, balance pockets) up to this fraction of local chord are part of the chord"
+    source: "standard planform definition (control surfaces included); value internal convention, sized to cover hinge gaps and balance pockets such as concept A's 23.6 mm (9.6 %)"
+  planform_axis_tolerance_deg:
+    value: 5
+    rule: "Declared planform span direction must match the measured one"
+    source: internal convention
+  planform_strip_count:
+    value: 41
+    rule: "Spanwise stations used to measure a mesh wing's chord distribution: the measured span is split into equal strips, each sliced at its centre (midpoint rule)."
+    source: internal convention
+  aft_surface_efficiency:
+    value: 0.9
+    rule: Lift-slope multiplier for lifting surfaces other than the main wing in the neutral point estimate (dynamic pressure and interference loss).
+    source: internal convention
+  lateral_cg_max_fraction_span:
+    value: 0.02
+    rule: "|CG y| no more than this fraction of the main-wing span."
+    source: internal convention
+  cl_max_default:
+    value: 1.1
+    rule: Used for stall speed when the design gives no flight.cl_max. Deliberately conservative.
+    source: Guglielmo & Selig 1997 (plain airfoils at Re 2e5 reach 1.17-2.2), so 1.1 is a conservative floor (knowledge/sources/std-guglielmo-selig-1997-s1223.md)
+    note: Flat-plate wings only reach 0.55-0.7 (Ananda, Sukumar & Selig 2015); set flight.cl_max for those.
+
+regulatory:
+  faa_part107_max_mass_g:
+    value: 24947
+    rule: Small UAS under 14 CFR Part 107 must weigh less than 55 lb.
+    source: 14 CFR 107.3
+  faa_registration_mass_g:
+    value: 250
+    rule: Over 0.55 lb requires FAA registration (informational).
+    source: 14 CFR 48 / 107
+
+sim:
+  drop_height_m:
+    value: 0.3
+    rule: Height above the ground from which the MuJoCo drop test releases the aircraft in its landing orientation (nose-up for tailsitters, wheels/belly down otherwise).
+    source: internal convention
+  duration_s:
+    value: 2.0
+    rule: Simulated time for the drop test.
+    source: internal convention
+  rest_speed_max_mps:
+    value: 0.05
+    rule: At the end of the drop test the centre of mass must move slower than this (comes to rest).
+    source: internal convention
+  tip_angle_max_deg:
+    value: 30.0
+    rule: At rest, the landing "up" axis may be at most this far from vertical; beyond this the aircraft has tipped over.
+    source: internal convention
