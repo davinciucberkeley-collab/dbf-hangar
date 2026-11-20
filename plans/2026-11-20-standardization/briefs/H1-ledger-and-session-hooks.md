@@ -12,7 +12,7 @@ class: easy · role: builder (Haiku) · plan: §6c step H1 · R20, R21
 - `harness/ledger.py`
 - `harness/hooks/__init__.py` (empty)
 - `harness/hooks/log_prompt.py`, `harness/hooks/stop_gate.py`, `harness/hooks/reinject.py`
-- `tests/harness/__init__.py` (empty), `tests/harness/conftest.py`, `tests/harness/test_ledger_hooks.py`
+- `tests/harness/conftest.py`, `tests/harness/test_ledger_hooks.py`. **No `__init__.py` in `tests/` or `tests/harness/`** (fix 2026-11-20: a `tests/harness/__init__.py` shadows the `harness` package).
 - `.gitignore` with these lines: `ledger/prompts.jsonl`, `ledger/events.jsonl`, `ledger/.stop_blocks.json`, `__pycache__/`, `.pytest_cache/`
 
 Do NOT create or edit `.claude/settings.json`, `harness/hooks/agent_gate.py` or `harness/install.py` (brief H2 owns them).
@@ -82,6 +82,9 @@ def run_hook(name, event, root, **env):
 
 Tests (names and assertions exact):
 ```python
+import os, subprocess, sys
+import pytest
+from conftest import REPO, run_hook   # fix 2026-11-20: helpers come from conftest
 from harness import ledger
 
 def test_ids_increment_and_state_merges(root):
@@ -156,9 +159,9 @@ The CLI uses `project_root()` (env `CLAUDE_PROJECT_DIR`); hooks import `ledger` 
 `cd /home/claude/wt/h1 && python -m pytest tests/harness -q` → all pass (11 tests). Paste the last 3 lines.
 
 ## Commit
-`git add -A && git commit -m "harness: prompt ledger; log_prompt, stop_gate, reinject hooks"` with these two trailer lines at the end of the message:
+`git add -A && git commit -m "harness: prompt ledger; log_prompt, stop_gate, reinject hooks"` with the attribution trailer lines your own session instructions specify (they name your model), for example:
 ```
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Co-Authored-By: Claude <model> <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01QqEWVKLu3zpA2K1nz9MZxU
 ```
 Do not push. Do not merge.

@@ -12,7 +12,7 @@ class: easy · role: builder (Haiku) · plan: §6c step H2 · R18, R19, R24
 - `harness/install.py`
 - `.claude/settings.json`
 - `.claude/output-styles/quiet.md`
-- `tests/harness/test_agent_gate_install.py` (and `tests/harness/__init__.py` empty if missing)
+- `tests/harness/test_agent_gate_install.py`. **No `__init__.py` in `tests/` or `tests/harness/`** (it would shadow the `harness` package).
 
 Do NOT create `harness/ledger.py`, `harness/hooks/{log_prompt,stop_gate,reinject}.py`, `harness/__init__.py`, `harness/hooks/__init__.py`, `pytest.ini`, `tests/harness/conftest.py` or `.gitignore` (brief H1 owns them). Your tests must not import them. Your tests run with `python -m pytest tests/harness/test_agent_gate_install.py -q --rootdir=.` and must not need `pytest.ini`.
 
@@ -145,9 +145,9 @@ The idempotency test copies from the real repo (`source` default), which has the
 `cd /home/claude/wt/h2 && python -m pytest tests/harness/test_agent_gate_install.py -q --rootdir=.` → all 8 pass. Paste the last 3 lines.
 
 ## Commit
-`git add -A && git commit -m "harness: agent gate (roster, plan table, builder-ready bar), settings, quiet style, installer"` with these trailer lines at the end of the message:
+`git add -A && git commit -m "harness: agent gate (roster, plan table, builder-ready bar), settings, quiet style, installer"` with the attribution trailer lines your own session instructions specify (they name your model), for example:
 ```
-Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Co-Authored-By: Claude <model> <noreply@anthropic.com>
 Claude-Session: https://claude.ai/code/session_01QqEWVKLu3zpA2K1nz9MZxU
 ```
 Do not push. Do not merge.
