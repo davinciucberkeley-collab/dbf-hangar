@@ -209,18 +209,20 @@ Gates are registered in `standards/gates.yaml` (`id, tier, blocking, needs: [ada
 
 Each has a default the plan uses if nobody answers by the date. Recorded with `plane ledger add --kind decision`.
 
-| D | Question | Default if unanswered | Ask | By |
-|---|---|---|---|---|
-| D1 | Name of the language: PDL? keep `plane.yaml`? | PDL, file stays `plane.yaml` | — | 11-21 |
-| D2 | Dec 1: who is the audience (Douglas only, Kosa, class?), live demo or recorded, length? | Douglas + Kosa, 10-min live demo + Slides deck, recorded backup | Douglas | 11-22 |
-| D3 | DaVinci API: who has access, which account, is a Claude connector set up? | adapter ships as SKIP-with-reason; full DaVinci build moves to after Dec 1 | Douglas / Chris (Slack) | 11-23 |
-| D4 | Harness in hangar (`harness/`) or its own repo? | in hangar; `harness/install.py` installs it on any teammate's machine | — | 11-21 |
-| D5 | Transport box size and wiring clearance | box from DBF-Combined's constraint (K09-L box about 1.25 × 0.55 × 0.45 m) marked `source: team constraint`; clearance `pending` | Dylan | 11-24 |
-| D6 | Hover T/W 1.5 vs 2.0, landing factor 3.0 vs STANAG 3.8 (both `pending`); concept A's claims use T/W ≥ 1.6 | one value per key, chosen from sources found in U2.2, recorded as a decision | Dylan | 11-25 |
-| D7 | Does accepted require T6–T9 for v1.0, or report-only first? | T6 and T9 blocking; T7/T8 report-only (WARN) until 12-08 | — | 11-24 |
-| D8 | Binary files: Git LFS in hangar, or meshes stay in DBF-Combined and hangar stores `{repo, commit, path, sha256}` references? | LFS for the meshes the gates need (concept A, about 130 STL); CAD sources referenced, not copied | — | 11-21 |
-| D9 | Which design states are active? | concept A active; K09-L, C0 rev G, v0.3.1, tiltwing `retired` | Dylan | 11-22 |
-| D10 | Archive DBF-Combined and aircraft-platform (read-only) once hangar v1.0 is out? | yes, after 12-01, with a README pointer to hangar | team | 12-01 |
+| D | Question | Default if unanswered | Ask | By | Status |
+|---|---|---|---|---|---|
+| D1 | Name of the language: PDL? keep `plane.yaml`? | PDL, file stays `plane.yaml` | — | 11-21 | decided: default (Tristan, 2026-11-20) |
+| D2 | Dec 1: who is the audience (Douglas only, Kosa, class?), live demo or recorded, length? | Douglas + Kosa, 10-min live demo + Slides deck, recorded backup | Douglas | 11-22 | decided: default (Tristan, 2026-11-20) |
+| D3 | DaVinci API: who has access, which account, is a Claude connector set up? | adapter ships as SKIP-with-reason; full DaVinci build moves to after Dec 1 | Douglas / Chris (Slack) | 11-23 | decided: default (Tristan, 2026-11-20) |
+| D4 | Harness in hangar (`harness/`) or its own repo? | in hangar; `harness/install.py` installs it on any teammate's machine | — | 11-21 | decided: default (Tristan, 2026-11-20) |
+| D5 | Transport box size and wiring clearance | box from DBF-Combined's constraint (K09-L box about 1.25 × 0.55 × 0.45 m) marked `source: team constraint`; clearance `pending` | Dylan | 11-24 | decided: default (Tristan, 2026-11-20) |
+| D6 | Hover T/W 1.5 vs 2.0, landing factor 3.0 vs STANAG 3.8 (both `pending`); concept A's claims use T/W ≥ 1.6 | one value per key, chosen from sources found in U2.2, recorded as a decision | Dylan | 11-25 | decided: default (Tristan, 2026-11-20) |
+| D7 | Does accepted require T6–T9 for v1.0, or report-only first? | T6 and T9 blocking; T7/T8 report-only (WARN) until 12-08 | — | 11-24 | decided: default (Tristan, 2026-11-20) |
+| D8 | Binary files: Git LFS in hangar, or meshes stay in DBF-Combined and hangar stores `{repo, commit, path, sha256}` references? | LFS for the meshes the gates need (concept A, about 130 STL); CAD sources referenced, not copied | — | 11-21 | decided: default (Tristan, 2026-11-20) |
+| D9 | Which design states are active? | concept A active; K09-L, C0 rev G, v0.3.1, tiltwing `retired` | Dylan | 11-22 | decided: default (Tristan, 2026-11-20) |
+| D10 | Archive DBF-Combined and aircraft-platform (read-only) once hangar v1.0 is out? | yes, after 12-01, with a README pointer to hangar | team | 12-01 | open: decided when v1.0 is done |
+
+Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
 ## 4. How we execute (superpowers + scheme)
 
