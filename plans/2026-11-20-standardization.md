@@ -336,7 +336,8 @@ Order: W0-1 first; when it is merged, W0-2, W0-3 and W0-4 run in parallel, each 
 | W0-6T | `tactician` | Sonnet | W0 lessons (reviews/2026-11-21-w0.md, conductor notes in briefs U0.4/U0.2) | `briefs/W0.6a-harness-fixes.md`, `briefs/W0.6b-brief-standard.md` | each brief meets the builder-ready bar in `standards/agents.md` |
 | W0-6a | `builder` | Haiku | `briefs/W0.6a-harness-fixes.md` | branch `std/w0.6a-harness` | brief's pass check; CI `validate` green on Linux and Windows |
 | W0-6b | `builder` | Haiku | `briefs/W0.6b-brief-standard.md` | branch `std/w0.6b-briefs` | brief's pass check; CI green |
-| W0-6R | `reviewer` | Opus (fresh) | the two W0.6 branches | `reviews/2026-11-21-w0.6.md` | ACCEPT per branch |
+| W0-6c | `builder` | Haiku | `briefs/W0.6c-roadmap-progress.md` (written by the W0-6T tactician) | branch `std/w0.6c-progress`: `ROADMAP.md`, generated `PROGRESS.md` via `plane progress`, CI staleness check | brief's pass check; CI green |
+| W0-6R | `reviewer` | Opus (fresh) | the three W0.6 branches | `reviews/2026-11-21-w0.6.md` | ACCEPT per branch |
 | W0-R | `reviewer` | Opus (fresh) | the four branches | `reviews/2026-11-21-w0.md` | ACCEPT per branch |
 | W0-A | `auditor` | Haiku | session state, ledger, this table | report to conductor | ≤ 15 lines, evidence per finding |
 | W0-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
