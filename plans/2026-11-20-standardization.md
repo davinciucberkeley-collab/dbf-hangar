@@ -332,6 +332,7 @@ Order: W0-1 first; when it is merged, W0-2, W0-3 and W0-4 run in parallel, each 
 | W0-2 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.1-roster.md` | branch `std/u0.1-roster` | `python -m pytest tests/test_roster.py -q` green, full suite green |
 | W0-3 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.3-ledger.md` | branch `std/u0.3-ledger` | `python -m pytest tests/test_ledger.py -q` green, full suite green |
 | W0-4 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/U0.2-followups.md` | branch `std/u0.2-followups` | `python -m pytest tests/harness -q` green |
+| W0-5 | `builder` | Haiku | the W0-5 prompt (CI: LFS checkout in both workflows, Windows job, CI on `std/**` pushes; added 2026-11-21 after the Pages build failed) | branch `std/w0.5-ci` | GitHub Actions `validate` green on Linux and Windows for the pushed branch |
 | W0-R | `reviewer` | Opus (fresh) | the four branches | `reviews/2026-11-21-w0.md` | ACCEPT per branch |
 | W0-A | `auditor` | Haiku | session state, ledger, this table | report to conductor | ≤ 15 lines, evidence per finding |
 | W0-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
