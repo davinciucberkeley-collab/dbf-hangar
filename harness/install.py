@@ -11,6 +11,10 @@ HANGAR = Path(__file__).resolve().parents[1]
 GITIGNORE_LINES = ["ledger/prompts.jsonl", "ledger/events.jsonl", "ledger/.stop_blocks.json"]
 
 
+def _is_old_python_hook(cmd: str) -> bool:
+    return "harness/hooks/" in cmd and cmd.endswith('.py"')
+
+
 def _merge_settings(target_settings: Path, source_settings: Path, written: list):
     if target_settings.exists():
         data = json.loads(target_settings.read_text(encoding="utf-8"))
@@ -20,6 +24,18 @@ def _merge_settings(target_settings: Path, source_settings: Path, written: list)
     if "outputStyle" not in data and "outputStyle" in src:
         data["outputStyle"] = src["outputStyle"]
     hooks = data.setdefault("hooks", {})
+    # Drop old direct `python ".../harness/hooks/x.py"` entries; other tools' hooks are kept.
+    for event, entries in list(hooks.items()):
+        kept = []
+        for e in entries:
+            cmds = e.get("hooks", [])
+            live = [h for h in cmds if not _is_old_python_hook(h.get("command") or "")]
+            if cmds and not live:
+                continue
+            if len(live) != len(cmds):
+                e = dict(e, hooks=live)
+            kept.append(e)
+        hooks[event] = kept
     for event, entries in src.get("hooks", {}).items():
         existing = hooks.setdefault(event, [])
         present = {h.get("command") for e in existing for h in e.get("hooks", [])}
@@ -36,7 +52,12 @@ def _merge_settings(target_settings: Path, source_settings: Path, written: list)
 
 def _copy(src: Path, dst: Path, written: list):
     dst.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(src, dst)
+    if src.suffix == ".sh":
+        # Shell scripts keep LF endings and are executable, whatever the checkout did.
+        dst.write_bytes(src.read_bytes().replace(b"\r\n", b"\n"))
+        dst.chmod(0o755)
+    else:
+        shutil.copyfile(src, dst)
     written.append(dst.resolve())
 
 

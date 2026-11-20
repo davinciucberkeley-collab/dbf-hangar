@@ -17,7 +17,7 @@ def main():
     root = ledger.project_root(event)
     item_id = ledger.add_prompt(root, event.get("session_id") or "", prompt)
     ledger_py = Path(root).resolve() / "harness" / "ledger.py"
-    print(f'Logged as {item_id}. When done: python "{ledger_py}" addressed {item_id} --evidence "<what answered it>"')
+    print(f'Logged as {item_id}. When done: "{sys.executable}" "{ledger_py}" addressed {item_id} --evidence "<what answered it>"')
     return 0
 
 

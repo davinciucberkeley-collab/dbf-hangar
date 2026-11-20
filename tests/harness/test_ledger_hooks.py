@@ -85,3 +85,13 @@ def test_stop_message_has_absolute_ledger_path(root):
     ledger.add_prompt(root, "s1", "x")
     r = run_hook("stop_gate", {"session_id": "s1"}, root)
     assert str(root / "harness" / "ledger.py") in r.stderr or str(root) in r.stderr
+
+def test_instructions_use_running_interpreter(root):
+    r = run_hook("log_prompt", {"session_id": "s1", "prompt": "x"}, root)
+    assert sys.executable in r.stdout
+
+def test_reinject_lists_deferred(root):
+    ledger.add_prompt(root, "s1", "box size?")
+    ledger.set_status(root, "P1", "deferred", evidence="asked user")
+    out = run_hook("reinject", {"source": "compact", "session_id": "s1"}, root).stdout
+    assert "Deferred prompts:" in out and "box size?" in out
