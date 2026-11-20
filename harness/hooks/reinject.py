@@ -15,10 +15,12 @@ def _unfinished_units(plan_path):
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     import ledger
 
-    event = json.load(sys.stdin)
+    event = json.loads(sys.stdin.buffer.read().decode("utf-8"))
     root = ledger.project_root(event)
     plans = sorted((Path(root) / "plans").glob("*.md"), key=lambda p: p.name)
     plan_rel = plans[-1].relative_to(root).as_posix() if plans else "none"
@@ -29,7 +31,7 @@ def main():
         if open_items:
             out.append("Open prompts:")
             for p in open_items:
-                out.append(ledger._line(p))
+                out.append(ledger.format_line(p))
         else:
             out.append("Open prompts: none")
         out.append("Unfinished units:")

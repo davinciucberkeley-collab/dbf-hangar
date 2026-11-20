@@ -1,7 +1,8 @@
 """Stop hook: block stopping while this session has open prompts. Never raises.
 
 Exit 2 blocks the stop (message on stderr). After 3 blocks in a row the stop is
-forced and logged to ledger/events.jsonl. HANGAR_ALLOW_STOP=1 overrides.
+forced and logged to ledger/events.jsonl. HANGAR_ALLOW_STOP=1 overrides (and
+resets this session's counter).
 """
 import json
 import os
@@ -17,17 +18,22 @@ def _save(path, counts):
 
 
 def main():
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
     import ledger
 
-    event = json.load(sys.stdin)
-    if os.environ.get("HANGAR_ALLOW_STOP") == "1":
-        return 0
-
+    event = json.loads(sys.stdin.buffer.read().decode("utf-8"))
     root = ledger.project_root(event)
     session = event.get("session_id") or ""
     counts_path = Path(root) / "ledger" / ".stop_blocks.json"
     counts = json.loads(counts_path.read_text(encoding="utf-8")) if counts_path.exists() else {}
+
+    if os.environ.get("HANGAR_ALLOW_STOP") == "1":
+        if session in counts:
+            counts.pop(session)
+            _save(counts_path, counts)
+        return 0
 
     open_items = ledger.open_prompts(root, session)
     if not open_items:
@@ -46,11 +52,13 @@ def main():
 
     counts[session] = n
     _save(counts_path, counts)
+    ledger_py = Path(root).resolve() / "harness" / "ledger.py"
     lines = ["Open prompts in this session: " + ", ".join(p["id"] for p in open_items)]
     for p in open_items:
         lines.append(f"- {p['id']}: {(p.get('text') or '')[:100].replace(chr(10), ' ')}")
-    lines.append('Address each (python harness/ledger.py addressed <ID> --evidence "...") '
-                 "or say why it is not done. Override: HANGAR_ALLOW_STOP=1.")
+    lines.append(f'Address each (python "{ledger_py}" addressed <ID> --evidence "...") '
+                 f'or, if you are waiting on the user, defer it (python "{ledger_py}" defer <ID> --reason "..."). '
+                 "Override: HANGAR_ALLOW_STOP=1.")
     print("\n".join(lines), file=sys.stderr)
     return 2
 

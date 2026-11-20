@@ -62,3 +62,26 @@ def test_cli_list_and_addressed(root):
     assert subprocess.run(cli + ["addressed", "P1"], env=env, capture_output=True).returncode == 2
     assert subprocess.run(cli + ["addressed", "P1", "--evidence", "done"], env=env).returncode == 0
     assert "[addressed]" in subprocess.run(cli + ["list"], env=env, capture_output=True, text=True).stdout
+
+def test_non_ascii_prompt_survives_cp1252_console(root):
+    r = run_hook("log_prompt", {"session_id": "s1", "prompt": "Ángulo → σ ≤ 2"}, root, PYTHONIOENCODING="cp1252")
+    assert r.returncode == 0 and ledger.open_prompts(root, "s1")[0]["text"] == "Ángulo → σ ≤ 2"
+    out = run_hook("reinject", {"source": "compact", "session_id": "s1"}, root, PYTHONIOENCODING="cp1252")
+    assert out.returncode == 0 and "Ángulo → σ ≤ 2" in out.stdout
+
+def test_deferred_does_not_block_and_needs_reason(root):
+    ledger.add_prompt(root, "s1", "which box size?")
+    with pytest.raises(ValueError): ledger.set_status(root, "P1", "deferred", evidence="")
+    ledger.set_status(root, "P1", "deferred", evidence="asked user for D5")
+    assert run_hook("stop_gate", {"session_id": "s1"}, root).returncode == 0
+
+def test_corrupt_line_is_skipped(root):
+    ledger.add_prompt(root, "s1", "a")
+    with open(root / "ledger" / "prompts.jsonl", "a", encoding="utf-8") as f: f.write("{not json\n")
+    ledger.add_prompt(root, "s1", "b")
+    assert [p["id"] for p in ledger.open_prompts(root, "s1")] == ["P1", "P2"]
+
+def test_stop_message_has_absolute_ledger_path(root):
+    ledger.add_prompt(root, "s1", "x")
+    r = run_hook("stop_gate", {"session_id": "s1"}, root)
+    assert str(root / "harness" / "ledger.py") in r.stderr or str(root) in r.stderr

@@ -12,6 +12,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 PROMPT_TEXT_MAX = 2000
+STATUSES = ("open", "addressed", "deferred")
 _ID_RE = re.compile(r"^P(\d+)$")
 
 
@@ -39,8 +40,12 @@ def _read(root, name):
         return []
     out = []
     for line in path.read_text(encoding="utf-8").splitlines():
-        if line.strip():
+        if not line.strip():
+            continue
+        try:
             out.append(json.loads(line))
+        except ValueError:
+            continue  # corrupt line: skip, keep reading
     return out
 
 
@@ -65,9 +70,9 @@ def add_prompt(root, session, text):
 
 
 def set_status(root, item_id, status, evidence=""):
-    if status not in ("open", "addressed"):
-        raise ValueError(f"status must be 'open' or 'addressed', got {status!r}")
-    if status == "addressed" and not (evidence or "").strip():
+    if status not in STATUSES:
+        raise ValueError(f"status must be one of {', '.join(STATUSES)}, got {status!r}")
+    if status in ("addressed", "deferred") and not (evidence or "").strip():
         raise ValueError("evidence")
     known = {l.get("id") for l in _read(root, "prompts.jsonl")}
     if item_id not in known:
@@ -105,7 +110,7 @@ def log_event(root, event):
     _append(root, "events.jsonl", dict(event, ts=_now()))
 
 
-def _line(p):
+def format_line(p):
     sid = (p.get("session") or "")[:8]
     text = (p.get("text") or "").replace("\n", " ")[:80]
     return f"{p['id']} [{p.get('status')}] s={sid} {text}"
@@ -118,6 +123,10 @@ def _main(argv=None):
     a = sub.add_parser("addressed")
     a.add_argument("id")
     a.add_argument("--evidence", default="")
+
+    d = sub.add_parser("defer")
+    d.add_argument("id")
+    d.add_argument("--reason", default="")
 
     r = sub.add_parser("reopen")
     r.add_argument("id")
@@ -132,13 +141,16 @@ def _main(argv=None):
         if args.cmd == "addressed":
             set_status(root, args.id, "addressed", args.evidence)
             print(f"{args.id} addressed")
+        elif args.cmd == "defer":
+            set_status(root, args.id, "deferred", args.reason)
+            print(f"{args.id} deferred")
         elif args.cmd == "reopen":
             set_status(root, args.id, "open")
             print(f"{args.id} open")
         elif args.cmd == "list":
             items = open_prompts(root, args.session) if args.open else prompts(root, args.session)
             for p in items:
-                print(_line(p))
+                print(format_line(p))
     except (ValueError, KeyError) as e:
         print(f"error: {e}", file=sys.stderr)
         return 2
@@ -146,4 +158,6 @@ def _main(argv=None):
 
 
 if __name__ == "__main__":
+    sys.stdout.reconfigure(encoding="utf-8")
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
     sys.exit(_main())
