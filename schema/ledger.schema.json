@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Team ledger (rulings, tasks, ideas, decisions) - schema ledger/1",
+  "type": "object",
+  "required": ["schema", "items"],
+  "additionalProperties": false,
+  "properties": {
+    "schema": {"const": "ledger/1"},
+    "items": {"type": "array", "items": {"$ref": "#/$defs/item"}}
+  },
+  "$defs": {
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "text", "source", "owner", "status", "due", "units", "evidence", "decided_in", "updated"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^(R|T|I|D)\\d+$"},
+        "kind": {"enum": ["ruling", "task", "idea", "decision"]},
+        "text": {"type": "string"},
+        "source": {"type": "string"},
+        "owner": {"type": "string"},
+        "status": {"enum": ["open", "done", "dropped", "superseded", "decided"]},
+        "due": {"type": "string", "pattern": "^([0-9]{4}-[0-9]{2}-[0-9]{2})?$"},
+        "units": {"type": "array", "items": {"type": "string"}},
+        "evidence": {"type": "string"},
+        "decided_in": {"type": "string"},
+        "updated": {"type": "string", "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}$"}
+      }
+    }
+  }
+}
