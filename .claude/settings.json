@@ -1,0 +1,9 @@
+{
+  "outputStyle": "quiet",
+  "hooks": {
+    "UserPromptSubmit": [{"hooks": [{"type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/harness/hooks/run.sh\" log_prompt"}]}],
+    "PreToolUse": [{"matcher": "Task|Agent", "hooks": [{"type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/harness/hooks/run.sh\" agent_gate"}]}],
+    "SessionStart": [{"matcher": "startup|resume|clear|compact", "hooks": [{"type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/harness/hooks/run.sh\" reinject"}]}],
+    "Stop": [{"hooks": [{"type": "command", "command": "sh \"$CLAUDE_PROJECT_DIR/harness/hooks/run.sh\" stop_gate"}]}]
+  }
+}
