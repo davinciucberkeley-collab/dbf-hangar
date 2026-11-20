@@ -46,6 +46,44 @@ Instructions can go to Haiku only if they include all of the following (or are a
 3. **A mechanical pass check** — a command to run (`plane validate`, `pytest`) or template fields that must all be filled.
 4. **Stop rule** — what to do when stuck: report the blocker, don't improvise.
 
+## Brief template
+
+A brief file (`plans/<plan>/briefs/<unit>-<n>.md`) meets the builder-ready bar and has these headings in this order. Where the brief and plan §7 differ, the brief governs; the tactician records the difference in Plan coverage.
+
+```
+# Brief <unit>-<n>: <title>
+
+class: easy|hard · role: builder|builder-plus · plan: §<n> <unit> · rules: R<n>…
+
+## Environment
+- Windows 11 + Git Bash. Use absolute paths only (e.g. `C:/Users/trist/wt/<unit>/...`); never `../` or `~`: they resolve from the wrong folder inside a worktree.
+- Worktree: `git -C C:/Users/trist/dbf-hangar worktree add C:/Users/trist/wt/<unit> -b <branch> main`; work only there; create nothing outside `C:/Users/trist/wt/<unit>`.
+- Venv per worktree: `python -m venv C:/Users/trist/wt/<unit>/.venv`, then from the worktree `.venv/Scripts/python -m pip install -e ".[mcp,dev]"`; use that python for every command.
+- `.gitattributes` forces LF (`* text=auto eol=lf`); do not change line endings. After your commit, `git ls-files --eol | grep -c "w/crlf"` must print `0`.
+- Edit only the files the brief lists. No repo-wide `sed` or search-and-replace; nothing "while you are there".
+- Iterate with targeted tests; run the full suite once at the end (4 to 24 minutes; do not interrupt it).
+- Push only the branch named in the brief and wait for CI; never push or merge `main`.
+
+## Where
+Branch, worktree, and the exact list of files the builder may change.
+
+## Known failures
+Test ids that already fail on `main` and who owns the fix, or `none`.
+
+## Plan coverage
+| §7 step | Status |
+|---|---|
+| <every step of the unit, one row each> | covered / deferred to <unit> / dropped (<reason>) |
+
+## Exact steps and outputs
+## Exact tests
+## Pass check
+## Commit
+## Stop rule
+```
+
+The Environment block is copied verbatim into every brief; only `<unit>` and `<branch>` change. Plan coverage lists every §7 step of the unit; a step the brief does not do is `deferred` (to a named unit) or `dropped` (with the reason), never silently missing.
+
 ## Reviews
 
 - One **fresh** reviewer per wave, reused (`SendMessage`) for that wave's re-reviews. Don't spawn a new reviewer per item.

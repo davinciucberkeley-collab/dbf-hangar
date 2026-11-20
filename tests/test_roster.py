@@ -40,3 +40,14 @@ def test_agents_md_v02_names_every_role_and_hook():
 
 def test_claude_md_is_a_pointer_file():
     assert len((REPO / "CLAUDE.md").read_text(encoding="utf-8").splitlines()) <= 25
+
+def test_agents_md_has_brief_template():
+    text = (REPO / "standards/agents.md").read_text(encoding="utf-8")
+    for needle in [
+        "## Brief template", "## Environment", "## Known failures", "## Plan coverage",
+        "## Exact steps and outputs", "## Exact tests", "## Pass check", "## Commit", "## Stop rule",
+        'pip install -e ".[mcp,dev]"', "C:/Users/trist/wt/<unit>", "Windows 11 + Git Bash",
+        "Where the brief and plan §7 differ, the brief governs; the tactician records the difference in Plan coverage",
+    ]:
+        assert needle in text, needle
+    assert text.startswith("# Agent Standard v0.2")
