@@ -33,6 +33,9 @@ def test_roster_role_missing_from_plan_blocked(root):
     assert r.returncode == 2 and "agent table" in r.stderr
 
 def test_builder_needs_builder_ready_brief(root):
+    brief = root / "plans" / "2026-11-20-x" / "briefs" / "H1-a.md"
+    brief.parent.mkdir(parents=True)
+    brief.write_text("# brief\n", encoding="utf-8")
     assert gate(task("builder", "make it better"), root).returncode == 2
     assert gate(task("builder", "Follow plans/2026-11-20-x/briefs/H1-a.md"), root).returncode == 0
     assert gate(task("builder", "Pass check: pytest. Stop rule: report."), root).returncode == 0
@@ -126,3 +129,35 @@ def test_installed_shell_scripts_have_no_cr(tmp_path):
 def test_repo_shell_scripts_have_no_cr():
     for sh in (REPO / "harness").rglob("*.sh"):
         assert b"\r" not in sh.read_bytes()
+
+
+def test_brief_reference_accepts_every_path_form(root):
+    brief = root / "plans" / "2026-11-20-x" / "briefs" / "H1-a.md"
+    brief.parent.mkdir(parents=True)
+    brief.write_text("# brief\n", encoding="utf-8")
+    refs = [
+        "plans/2026-11-20-x/briefs/H1-a.md",
+        "plans\\2026-11-20-x\\briefs\\H1-a.md",
+        brief.as_posix(),
+        str(brief).replace("/", "\\"),
+    ]
+    for ref in refs:
+        assert gate(task("builder", f"Follow {ref} now."), root).returncode == 0, ref
+
+
+def test_brief_reference_rejected_when_missing_or_outside_plans(root):
+    other = root / "other" / "plans" / "p" / "briefs" / "b.md"
+    other.parent.mkdir(parents=True)
+    other.write_text("# b\n", encoding="utf-8")
+    notes = root / "plans" / "2026-11-20-x" / "notes" / "a.md"
+    notes.parent.mkdir(parents=True)
+    notes.write_text("# a\n", encoding="utf-8")
+    for ref in ["plans/2026-11-20-x/briefs/missing.md", other.as_posix(), "plans/2026-11-20-x/notes/a.md"]:
+        assert gate(task("builder", f"Follow {ref} now."), root).returncode == 2, ref
+
+
+def test_agent_gate_roster_matches_hangar_roster():
+    sys.path.insert(0, str(REPO / "harness" / "hooks"))
+    import agent_gate
+    from hangar.roster import load_roster
+    assert agent_gate.roster_names(REPO) == sorted(load_roster(REPO))

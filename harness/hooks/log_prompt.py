@@ -4,6 +4,18 @@ import sys
 from pathlib import Path
 
 
+NOT_USER_PREFIXES = (
+    "<agent-message",
+    "<task-notification>",
+    "[SYSTEM NOTIFICATION",
+    "Another Claude session sent a message",
+)
+
+
+def is_system_message(prompt):
+    return prompt.lstrip().startswith(NOT_USER_PREFIXES)
+
+
 def main():
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8", errors="replace")
@@ -13,6 +25,8 @@ def main():
     event = json.loads(sys.stdin.buffer.read().decode("utf-8"))
     prompt = event.get("prompt") or ""
     if not prompt.strip():
+        return 0
+    if is_system_message(prompt):
         return 0
     root = ledger.project_root(event)
     item_id = ledger.add_prompt(root, event.get("session_id") or "", prompt)

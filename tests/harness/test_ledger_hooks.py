@@ -95,3 +95,21 @@ def test_reinject_lists_deferred(root):
     ledger.set_status(root, "P1", "deferred", evidence="asked user")
     out = run_hook("reinject", {"source": "compact", "session_id": "s1"}, root).stdout
     assert "Deferred prompts:" in out and "box size?" in out
+
+
+@pytest.mark.parametrize("text", [
+    '<agent-message from="a1b2">\n[Subagent hand-back] The text below is the final report of a subagent.',
+    "<task-notification>\n<task-id>a1b2</task-id>\n<status>completed</status>",
+    "  \n[SYSTEM NOTIFICATION] something finished",
+    "Another Claude session sent a message: hello",
+])
+def test_system_messages_are_not_logged(root, text):
+    r = run_hook("log_prompt", {"session_id": "s1", "prompt": text}, root)
+    assert r.returncode == 0 and r.stdout == ""
+    assert ledger.prompts(root) == []
+
+
+def test_user_prompt_quoting_a_notification_is_still_logged(root):
+    run_hook("log_prompt", {"session_id": "s1", "prompt": 'why was <agent-message from="a1"> logged as a prompt?'}, root)
+    run_hook("log_prompt", {"session_id": "s1", "prompt": "Please fix: <task-notification> shows up as P5"}, root)
+    assert len(ledger.prompts(root)) == 2
