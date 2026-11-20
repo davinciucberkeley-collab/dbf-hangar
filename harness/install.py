@@ -54,6 +54,18 @@ def _ensure_gitignore(target: Path, written: list):
     written.append(path.resolve())
 
 
+def _ensure_gitattributes(target: Path, written: list):
+    line = "*.sh text eol=lf"
+    path = target / ".gitattributes"
+    text = path.read_text(encoding="utf-8") if path.exists() else ""
+    if line in {l.strip() for l in text.splitlines()}:
+        return
+    if text and not text.endswith("\n"):
+        text += "\n"
+    path.write_text(text + line + "\n", encoding="utf-8")
+    written.append(path.resolve())
+
+
 def install(target: Path, source: Path | None = None) -> list[Path]:
     source = Path(source) if source is not None else HANGAR
     target = Path(target)
@@ -75,6 +87,7 @@ def install(target: Path, source: Path | None = None) -> list[Path]:
 
     _merge_settings(target / ".claude" / "settings.json", source / ".claude" / "settings.json", written)
     _ensure_gitignore(target, written)
+    _ensure_gitattributes(target, written)
     return written
 
 

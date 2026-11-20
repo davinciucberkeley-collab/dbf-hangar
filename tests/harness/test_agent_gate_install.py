@@ -94,3 +94,16 @@ def test_install_refuses_home_and_writes_gitignore(tmp_path, monkeypatch):
     proj = tmp_path / "proj"; proj.mkdir()
     installer.install(proj); installer.install(proj)
     assert (proj / ".gitignore").read_text().count("ledger/prompts.jsonl") == 1
+
+def test_repo_forces_lf_for_shell_scripts():
+    assert "*.sh text eol=lf" in (REPO / ".gitattributes").read_text().splitlines()
+
+def test_launcher_with_missing_hook_does_not_block(root):
+    r = subprocess.run(["sh", str(REPO / "harness/hooks/run.sh"), "no_such_hook"], input="{}",
+                       capture_output=True, text=True, env=dict(os.environ, CLAUDE_PROJECT_DIR=str(root)))
+    assert r.returncode == 0
+
+def test_install_writes_gitattributes_once(tmp_path):
+    proj = tmp_path / "p"; proj.mkdir()
+    installer.install(proj); installer.install(proj)
+    assert (proj / ".gitattributes").read_text().count("*.sh text eol=lf") == 1
