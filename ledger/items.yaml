@@ -614,3 +614,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T1
+    kind: task
+    text: plane ledger ingest (moved from U0.3 to U2.4)
+    source: plan U2.4; Tristan 2026-11-21
+    owner: Tristan
+    status: open
+    due: '2026-11-25'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T2
+    kind: task
+    text: 'James: harness install test (plan 6b)'
+    source: plan 6b
+    owner: James
+    status: open
+    due: '2026-11-21'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'

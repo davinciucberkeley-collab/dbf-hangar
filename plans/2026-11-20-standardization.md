@@ -424,7 +424,7 @@ Delivered 2026-11-20: H1 + H2 merged after 3 review rounds (`reviews/2026-11-20-
 - Consumes: `load_roster` (U0.1); `Ledger` (U0.3) — U0.2 and U0.3 run in parallel; until U0.3 merges, hooks import `ledger` lazily and tests use the U0.3 fixture file format below.
 - Produces: hook scripts read Claude Code hook JSON on stdin; exit 0 = allow, exit 2 = block with stderr message.
 
-- [ ] **Step 1: Write the failing tests** (run each script with `subprocess.run([sys.executable, script], input=json.dumps(event))`)
+- [x] **Step 1: Write the failing tests** (run each script with `subprocess.run([sys.executable, script], input=json.dumps(event))`)
 
 ```python
 def test_agent_gate_blocks_unknown_role():
@@ -454,10 +454,10 @@ def test_install_is_idempotent(tmp_path):
     assert len(list((tmp_path/"agents").glob("*.md"))) == 10
 ```
 
-- [ ] **Step 2: Run** `pytest tests/test_hooks.py -v` → FAIL
-- [ ] **Step 3: Implement the four hooks, `install(target: Path) -> list[Path]`, settings.json wiring** (`PreToolUse` matcher `"Task|Agent"`; `SessionStart` matcher `"compact|resume"`). "Active plan" = newest `plans/*.md` whose agent table lists the role.
-- [ ] **Step 4: Run** `pytest tests/test_hooks.py -v` → PASS; then one live check: start Claude Code in the repo, ask it to launch a `general-purpose` agent, confirm it is blocked with the roster message.
-- [ ] **Step 5: Commit** `git commit -m "harness: prompt ledger, agent gate, stop gate, compaction re-inject, quiet style, installer"`
+- [x] **Step 2: Run** `pytest tests/test_hooks.py -v` → FAIL
+- [x] **Step 3: Implement the four hooks, `install(target: Path) -> list[Path]`, settings.json wiring** (`PreToolUse` matcher `"Task|Agent"`; `SessionStart` matcher `"compact|resume"`). "Active plan" = newest `plans/*.md` whose agent table lists the role.
+- [x] **Step 4: Run** `pytest tests/test_hooks.py -v` → PASS; then one live check: start Claude Code in the repo, ask it to launch a `general-purpose` agent, confirm it is blocked with the roster message. — *Live check passed (Tristan, 2026-11-21): a `general-purpose` launch was refused with the roster message.*
+- [x] **Step 5: Commit** `git commit -m "harness: prompt ledger, agent gate, stop gate, compaction re-inject, quiet style, installer"`
 
 ### Unit U0.3: Ledger (meeting → tasks → evidence) — builds on `harness/ledger.py` from H1: same `ledger/prompts.jsonl` format, `plane ledger` wraps it
 
@@ -489,7 +489,7 @@ def test_seeded_with_requirements_R1_to_R40(repo_root):
 ```
 
 - [x] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement**; seed `ledger/items.yaml` from §1 (scout transcribes the table; each R-id keeps its transcript timestamp as `source`). Add `ledger ingest` input format: a scout produces `ledger/inbox/<date>.yaml` from a transcript; `ingest` validates against `schema/ledger.schema.json` and appends. — *Status 2026-11-21: seed done (R1–R40, D1–D10); `ledger ingest` was not in the U0.3 brief and is still open.*
+- [ ] **Step 3: Implement**; seed `ledger/items.yaml` from §1 (scout transcribes the table; each R-id keeps its transcript timestamp as `source`). Add `ledger ingest` input format: a scout produces `ledger/inbox/<date>.yaml` from a transcript; `ingest` validates against `schema/ledger.schema.json` and appends. — *Status 2026-11-21: seed done (R1–R40, D1–D10); `ledger ingest` was not in the U0.3 brief; moved to U2.4 (Tristan, 2026-11-21).*
 - [x] **Step 4: Run** → PASS
 - [x] **Step 5: Commit** `git commit -m "ledger: tracked rulings/tasks/decisions with evidence; seeded R1-R40"`
 
@@ -763,6 +763,7 @@ def test_fea_results_identical_through_adapter(cantilever_fixture):   # same 1.0
 **Files:**
 - Create: `ops/{idea,research,morph,bom,assembly,ledger_ops,update}.py`, `knowledge/ideas/`, `updates/<YYYY-MM-DD>/` (per-week YAML), `viewer/updates/` (generated)
 - Test: `tests/test_team_tasks.py` (the 12-task acceptance list from §2.1)
+- Also (moved from U0.3 by Tristan, 2026-11-21): `plane ledger ingest <ledger/inbox/<date>.yaml>` — validates a scout's transcript extract against `schema/ledger.schema.json` and appends to `ledger/items.yaml` via `Ledger.add`; test: an invalid inbox file exits 2 and writes nothing (R27).
 
 **Interfaces:**
 - Produces: `idea.add(title, body, by) -> data.path`; `research.new(kind: Literal["source","diy"], slug) -> data.path`; `research.check(path) -> data.missing_fields`; `morph.add_option(dimension, id, name, source)`, `morph.coverage() -> data.cells: list[{dimension, option, designs}]`; `bom.verify(path, item, method, evidence, by)` (records a verification an agent did in Chrome — the CLI never scrapes); `bom.cost(path)`; `assembly.animate(path, out) -> glb with one animation track per sequence step`; `ledger.add/set/check/report/ingest`; `update.new(week)`, `update.add(week, person, link, changed)`, `update.publish(week) -> data.url` (static page + one line per person; posts the URL to the Drive doc through the connector when run by an agent with Drive access, else prints it).
