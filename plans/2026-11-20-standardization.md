@@ -283,6 +283,42 @@ Ordering follows R17: T6 mechanisms lands before T8 sourcing; U3.4 (an agent ite
 
 ---
 
+### 6a. Core path and cut order (scope check, 2026-11-20)
+
+The Dec 1 demo needs only the **core path**: U0.4 → U0.2/U0.3 → U1.1 → U1.3 → U1.4 → U1.5 → U2.5 → U3.4 (+ U4.1/U4.2). Everything else is in the cut order below, so a slip never threatens the demo. The conductor cuts from the top of this list as soon as a wave runs > 12 h late; a cut unit gets ledger status `dropped` with this section as `decided_in`.
+
+| Cut order | Unit | What is lost if cut | Fallback for the demo |
+|---|---|---|---|
+| 1 | U3.3 PlaneBench | model-comparison slide | show `design.sweep` table instead |
+| 2 | U2.1 T7/T8 parts | wiring/transport/BOM gates | T7/T8 stay report-only via claims (U1.5 already has budget and mass claims) |
+| 3 | U2.2 source closing | two `pending` thresholds | listed as open decisions D6 |
+| 4 | U3.1 Build/BOM/Proofs/Morph modes | some Studio modes | Designs, Physics, Stress, Updates modes only |
+| 5 | U2.3 blender/sitl/davinci adapters | optional adapters | `tools doctor` lists them as planned |
+| 6 | U1.6 connection library | connection-type check | attachments keep v0.4 fields |
+| never | core path units | — | — |
+
+### 6b. Tester tasks, spread across the waves (R7, R9, R26)
+
+Prepared by the conductor as a one-message task with exact commands; sent by Tristan.
+
+| When | Tester | Task (≤ 20 min) | Evidence |
+|---|---|---|---|
+| Sat 11-21 | James | `python harness/install.py --target <his repo>`; launch any non-roster agent and confirm it is blocked | screenshot in ledger |
+| Mon 11-23 | Dylan | `plane design set` one concept-A mass on a branch, `plane design validate`, `plane design propose` | PR link |
+| Tue 11-24 | Vibhav | `plane tools doctor` + `plane fea run designs/concept-a --part <one>` on Windows | output pasted in ledger |
+| Wed 11-25 | all | `plane update add` own line; Tristan runs `plane update publish` | the link |
+| Fri 11-27 | Dylan | one iteration in Plane Studio, no terminal (U3.4 step 4) | time taken |
+
+### 6c. Agent table for W0-early (launched 2026-11-20, before U0.4)
+
+The harness does not depend on the seed, so it goes first: rules must be enforced before the build agents run.
+
+| Step | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| H1 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/H1-ledger-and-session-hooks.md` | branch `std/h1-ledger-hooks` | `python -m pytest tests/harness -q` green |
+| H2 | `builder` | Haiku | `plans/2026-11-20-standardization/briefs/H2-agent-gate-and-install.md` | branch `std/h2-agent-gate` | same |
+| HR | `reviewer` | Opus (fresh) | both branches | `reviews/2026-11-20-w0-harness.md` | ACCEPT per branch |
+
 ## 7. Units
 
 Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPATH=$PWD/core` in worktrees; finish with
@@ -350,7 +386,7 @@ def test_claude_md_is_a_pointer_file(repo_root):
 - [ ] **Step 4: Run** `pytest tests/test_harness.py -v` → PASS
 - [ ] **Step 5: Commit** `git commit -m "harness: 10-role agent roster, agents.md v0.2, CLAUDE.md as pointer file"`
 
-### Unit U0.2: Hooks, output style, installer
+### Unit U0.2: Hooks, output style, installer (delivered early as H1 + H2, §6c; this unit then only ports the hooks onto `plane ledger` once U0.3 lands)
 
 **Files:**
 - Create: `harness/hooks/{log_prompt,agent_gate,reinject,stop_gate}.py`, `.claude/settings.json`, `.claude/output-styles/quiet.md`, `harness/install.py`
@@ -395,7 +431,7 @@ def test_install_is_idempotent(tmp_path):
 - [ ] **Step 4: Run** `pytest tests/test_hooks.py -v` → PASS; then one live check: start Claude Code in the repo, ask it to launch a `general-purpose` agent, confirm it is blocked with the roster message.
 - [ ] **Step 5: Commit** `git commit -m "harness: prompt ledger, agent gate, stop gate, compaction re-inject, quiet style, installer"`
 
-### Unit U0.3: Ledger (meeting → tasks → evidence)
+### Unit U0.3: Ledger (meeting → tasks → evidence) — builds on `harness/ledger.py` from H1: same `ledger/prompts.jsonl` format, `plane ledger` wraps it
 
 **Files:**
 - Create: `core/hangar/ledger.py`, `ledger/items.yaml`, `ledger/prompts.jsonl` (gitignored), `schema/ledger.schema.json`
