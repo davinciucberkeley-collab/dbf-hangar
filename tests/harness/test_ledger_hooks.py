@@ -1,6 +1,6 @@
 import os, subprocess, sys
 import pytest
-from conftest import REPO, run_hook   # fix 2026-11-20: helpers come from conftest
+from hookutil import REPO, run_hook
 from harness import ledger
 
 def test_ids_increment_and_state_merges(root):
