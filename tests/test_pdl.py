@@ -14,6 +14,14 @@ FIXTURE = REPO_ROOT / "tests" / "fixtures" / "pdl-v1-full.yaml"
 EXAMPLE = REPO_ROOT / "designs" / "example-tailsitter-wing" / "plane.yaml"
 DESIGNS = list_designs()
 IDS = [p.parent.name for p in DESIGNS]
+# Frozen pre-1.0 copies of the committed designs (from the base commit), so migration tests
+# do not depend on what designs/ holds at any given commit.
+LEGACY_DIR = REPO_ROOT / "tests" / "fixtures" / "pdl-legacy"
+LEGACY_EXAMPLE = LEGACY_DIR / "example-tailsitter-wing.yaml"
+LEGACY_DESIGNS = [LEGACY_DIR / f"{i}.yaml" for i in
+                  ["c0-a1", "c0-a2", "c0-a3", "c0-lift-cruise", "example-tailsitter-wing", "tiltwing-cakir"]]
+LEGACY_DESIGNS.append(REPO_ROOT / "designs" / "concept-a" / "plane.yaml")
+LEGACY_IDS = [p.stem if p.parent == LEGACY_DIR else p.parent.name for p in LEGACY_DESIGNS]
 
 
 def _example_data():
@@ -37,7 +45,7 @@ def test_migrated_tier0_results_match_for_every_design(d):
 
 
 def test_migrate_does_not_mutate_input_and_is_idempotent():
-    data = _example_data()
+    data = copy.deepcopy(load_design(LEGACY_EXAMPLE).data)
     orig = copy.deepcopy(data)
     out, _ = migrate(data)
     assert data == orig and data["schema_version"] == "0.1"
@@ -77,7 +85,7 @@ def test_bump_version_text_rejects_missing_or_duplicate_or_already_1_0():
             bump_version_text(bad)
 
 
-@pytest.mark.parametrize("d", DESIGNS, ids=IDS)
+@pytest.mark.parametrize("d", LEGACY_DESIGNS, ids=LEGACY_IDS)
 def test_bump_changes_only_the_version_line_of_every_committed_design(d):
     old = d.read_bytes().decode("utf-8")
     new = bump_version_text(old)
@@ -168,6 +176,16 @@ def _copy_example(tmp_path, crlf=True):
     return dst
 
 
+def _copy_legacy_example(tmp_path, crlf=True):
+    dst = tmp_path / "d"
+    dst.mkdir()
+    f = dst / "plane.yaml"
+    f.write_bytes(LEGACY_EXAMPLE.read_bytes())
+    if crlf:
+        f.write_bytes(f.read_bytes().replace(b"\n", b"\r\n"))
+    return dst
+
+
 def test_schema_docs_op_writes_same_bytes(tmp_path):
     r = call("schema.docs", out=tmp_path / "ref.md")
     assert r.ok
@@ -183,7 +201,7 @@ def test_migrate_op_dry_run_writes_nothing(tmp_path):
 
 
 def test_migrate_op_write_changes_only_version_line_and_keeps_crlf(tmp_path):
-    d = _copy_example(tmp_path)
+    d = _copy_legacy_example(tmp_path)
     old = (d / "plane.yaml").read_bytes()
     r = call("design.migrate", path=str(d), write=True)
     assert r.ok and r.data["written"] is True
@@ -212,14 +230,15 @@ def test_migrate_op_bad_input(tmp_path):
     r = call("design.migrate", path=str(tmp_path))
     assert r.ok is False and r.data["error"] == "input" and r.exit_code == 2
     assert list(tmp_path.iterdir()) == []
-    d = _copy_example(tmp_path, crlf=False)
+    d = _copy_legacy_example(tmp_path, crlf=False)
     f = d / "plane.yaml"
     f.write_text(f.read_text(encoding="utf-8").replace('schema_version: "0.1"', 'schema_version: "9"'), encoding="utf-8", newline="")
     r = call("design.migrate", path=str(d), write=True)
     assert r.ok is False and r.data["error"] == "input" and r.exit_code == 2
     d2 = tmp_path / "e"
-    shutil.copytree(EXAMPLE.parent, d2)
+    d2.mkdir()
     f2 = d2 / "plane.yaml"
+    f2.write_bytes(LEGACY_EXAMPLE.read_bytes())
     f2.write_bytes(f2.read_bytes().replace(b"status: designed", b"status: nope").replace(b"status: concept", b"status: nope"))
     before = f2.read_bytes()
     assert b"status: nope" in before

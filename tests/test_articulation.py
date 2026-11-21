@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from hangar.checks import validate
-from hangar.design import FAIL, PASS, Design, load_design
+from hangar.design import FAIL, PASS, REPO_ROOT, Design, load_design
 from hangar.geometry import posed_component_parts
 from hangar.mass import mass_properties
 
@@ -91,10 +91,13 @@ def test_articulation_needs_schema_0_2():
     assert fails(sc, "T0.version")
 
 
-def test_v01_example_still_valid(example):
-    data = load_design(example).data
+LEGACY_EXAMPLE = REPO_ROOT / "tests" / "fixtures" / "pdl-legacy" / "example-tailsitter-wing.yaml"
+
+
+def test_v01_example_still_valid():
+    data = load_design(LEGACY_EXAMPLE).data
     assert data["schema_version"] == "0.1"
-    assert validate(load_design(example)).accepted
+    assert validate(load_design(LEGACY_EXAMPLE)).accepted
 
 
 def test_posed_geometry_and_mass_properties_follow_the_joint():
