@@ -375,12 +375,31 @@ W1 runs in two layers, because the units depend on each other (§7 Interfaces):
 | W1-2, W1-4, W1-6 | `builder` | Haiku | their briefs | branches `std/u1.2-surfaces`, `std/u1.4-edit`, `std/u1.6-interfaces` | brief's pass check; CI green |
 | W1-5 | `builder-plus` | Sonnet | `briefs/U1.5-claims.md` | branch `std/u1.5-claims` | same |
 | W1-M | `builder` | Haiku | inline brief after U1.3 merges: `plane design migrate designs/<id> --write` for every design except concept-a (D12); designs-only PR, no `core/` | branch `std/w1-migrate-designs` | `plane baseline check --all` exit 0; CI green |
-| W1-P | `builder` | Haiku | inline brief after W1 merges: `pytest-xdist` (`-n auto`) locally and in CI; `@pytest.mark.slow` on MuJoCo/FEA/per-design tests (local default skips them, CI runs all); CI skips plans/reviews-only commits except a light `plane progress --check` job; `concurrency: cancel-in-progress` per branch; brief template in `standards/agents.md` gets the test-run and per-worktree log rules | branch `std/w1-p-speed` | CI green on both OSes; full CI suite time reported before and after |
+| W1-P | `builder` | Haiku | inline brief after W1 merges: `pytest-xdist` (`-n auto`) locally and in CI; `@pytest.mark.slow` on MuJoCo/FEA/per-design tests (local default skips them, CI runs all); CI skips plans/reviews-only commits except a light `plane progress --check` job; `concurrency: cancel-in-progress` per branch; brief template in `standards/agents.md` gets the test-run and per-worktree log rules and a brief checklist of the advisor's recurring gaps (interface precision, no plan-file edits, no new entry points, hash-coupled files, no fixtures outside the repo); worktree venvs via `uv` | branch `std/w1-p-speed` | CI green on both OSes; full CI suite time reported before and after |
 | W1-R | `reviewer` | Opus (fresh for W1, reused for W1a, W1b and re-reviews) | each branch as it lands | `reviews/2026-11-2x-w1.md` | "### Verdict: ACCEPT" per unit |
 | W1-Au | `auditor` | Haiku | session state, ledger, this table | report to conductor, hourly | ≤ 15 lines, evidence per finding |
 | W1-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
 
 **Permissions for W1 (approve once):** everything in §6d's W0 list, plus: `git push origin std/*` (CI runs on these branches); the GitHub CLI at `C:/Program Files/GitHub CLI/gh.exe` for `run list|view|watch` and `api` (read-only); `git push origin --delete std/*` for merged branches only; a read-only partial clone of `https://github.com/davinciucberkeley-collab/DBF-Combined` into `C:/Users/trist/DBF-Combined`, checked out at `a93f14d` (`git clone --filter=blob:none --sparse`, sparse to `redesign/`), used by U1.5 and U1.6; `pip install -e ".[mcp,dev]"` in worktree venvs, including new dependencies a brief names (e.g. `ruamel.yaml`), added to `pyproject.toml`; background `sleep 3600` timers that wake the conductor for the hourly audit.
+
+### 6f. Agent table for W2 (briefs prepared during W1, 2026-11-21)
+
+Speed rules (Tristan, 2026-11-21): the next wave's briefs are written while the current wave builds; each wave may use **one or two** fresh reviewers, each owning some units, and the second (or the only) reviewer checks the merge order of the whole wave; Tristan still decides open decisions and reads hard briefs before their builders launch (option 3 declined).
+
+Layers (to be confirmed by the briefs' Interfaces): **W2a** U2.1 [hard], U2.3 [hard], U2.4; **W2b** U2.2 (after U2.3 lands D13's FEA-hash change) and U2.5 [hard] (after U1.5 and U2.1).
+
+| Step | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| W2-T1, T3, T5 | `tactician` | Sonnet | §7 U2.1, U2.3, U2.5 + merged W1 code | `briefs/U2.1-gates.md`, `briefs/U2.3-adapters.md`, `briefs/U2.5-import-concept-a.md` | builder-ready bar; Plan coverage complete |
+| W2-T2, T4 | `tactician` | Sonnet | §7 U2.2, U2.4 | `briefs/U2.2-standards.md`, `briefs/U2.4-team-ops.md` | same |
+| W2-A | `advisor` | Opus | the three hard briefs | recommendation per brief | "builder-ready" or numbered gaps |
+| W2-1, W2-3, W2-5 | `builder-plus` | Sonnet | hard briefs | `std/u2.1-gates`, `std/u2.3-adapters`, `std/u2.5-import` | brief's targeted tests; CI green on both OSes |
+| W2-2, W2-4 | `builder` | Haiku | their briefs | `std/u2.2-standards`, `std/u2.4-team-ops` | same |
+| W2-R1, W2-R2 | `reviewer` | Opus (fresh, up to two) | units split between them | `reviews/2026-11-2x-w2.md` | "### Verdict: ACCEPT" per unit; merge order checked |
+| W2-Au | `auditor` | Haiku | session state | hourly report | ≤ 15 lines |
+| W2-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch |
+
+**Permissions for W2:** as W1, plus whatever external tools the U2.3 brief names for `plane tools doctor` (read-only probes; installing OpenCAE/MuJoCo is Tristan's, not an agent's), and `uv` for venv installs once W1-P lands.
 
 ## 7. Units
 
