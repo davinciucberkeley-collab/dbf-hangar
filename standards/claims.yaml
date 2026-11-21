@@ -1,0 +1,5 @@
+# Thresholds for the claims graph (T9). Every rule needs a source; `source: pending` means provisional.
+recompute_rel_tol:
+  value: 1.0e-6
+  rule: A stored claim or calculation value is STALE when the recomputed value differs by more than this relative tolerance (a calculation may set its own tol).
+  source: DBF-Combined redesign/proofs/SCHEMA.md @ a93f14d (calculation tol default 1e-6)

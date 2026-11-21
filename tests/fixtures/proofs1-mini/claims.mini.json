@@ -1,0 +1,9 @@
+{
+  "schema": "proofs/1",
+  "nodes": [
+    {"id": "R-X", "type": "requirement", "title": "Span", "text": "span >= 1 m"},
+    {"id": "CALC-X", "type": "calculation", "title": "Span calc", "script": "redesign/x/analysis.py", "function": "f", "inputs": {"a": "P:wing.span_m"}},
+    {"id": "CL-X-A", "type": "claim", "title": "Span", "calc": "CALC-X", "output": "out", "value": 2.0, "unit": "m", "limit": {"op": ">=", "value": 1.0}, "verifies": ["R-X"], "how": "x"},
+    {"id": "CL-X-B", "type": "claim", "title": "Clearance", "value": -0.5, "unit": "m", "limit": {"op": ">=", "value": 0}, "how": "x"}
+  ]
+}

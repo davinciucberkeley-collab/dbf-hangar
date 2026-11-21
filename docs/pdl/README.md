@@ -56,6 +56,7 @@ All are optional; they need `schema_version: "1.0"`.
 - `transport`: disassembly groups; `requirements.transport_box_mm` is the transport box size.
 - `assembly`: ordered steps naming the components added, with tool and note.
 - `components[].provenance`: where a mass or geometry number came from.
+- `claims.yaml` (optional, beside plane.yaml, schema `schema/claims.schema.json`, gate T9)
 
 `CHANGELOG.yaml` is a separate file written by `design.set` (unit U1.4); it is not part of `plane.yaml`.
 
