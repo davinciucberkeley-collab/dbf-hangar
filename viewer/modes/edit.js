@@ -17,6 +17,13 @@ function toast(text, kind = '') {
   $('toasts').append(t);
   setTimeout(() => t.remove(), kind === 'err' ? 9000 : 4000);
 }
+// A toast that holds a link: it stays until the person dismisses it.
+function toastLink(text, url) {
+  const t = h('div', { class: 'toast', role: 'status' }, text + ' ',
+    /^https?:\/\//.test(url) ? h('a', { href: url, target: '_blank', rel: 'noopener' }, url) : url,
+    h('button', { class: 'icon', 'aria-label': 'Dismiss', onclick: () => t.remove() }, '×'));
+  $('toasts').append(t);
+}
 
 // ---------- dialogs ----------
 function dialog(title, body, actions) {
@@ -268,8 +275,10 @@ function renderResults(box, d) {
   const r = results[d.id] || {};
   const panels = [];
   if (r.validate) panels.push(h('div', { class: 'studio-result', 'data-edit': true, 'data-testid': 'validate-result' }, validatePanel(r.validate)));
-  if (r.pr) panels.push(h('div', { class: 'studio-result', 'data-edit': true, 'data-testid': 'pr-result' }, prPanel(r.pr)));
+  const pr = r.pr ? h('div', { class: 'studio-result', tabindex: -1, 'data-edit': true, 'data-testid': 'pr-result' }, prPanel(r.pr)) : null;
+  if (pr) panels.push(pr);
   box.querySelector('.studio-bar')?.after(...panels);
+  if (r.focus) { delete r.focus; pr?.scrollIntoView({ block: 'center' }); pr?.focus(); }
 }
 async function validate(id, btn) {
   const label = btn.textContent;
@@ -290,8 +299,8 @@ function proposeDialog(id) {
     const title = titleInput.value.trim();
     if (!title) throw new Error('Give the change a title.');
     const pr = await op('design.propose', { path: designPath(id), title });
-    results[id] = { ...results[id], pr };
-    dlg.close(); toast('Pull request opened.');
+    results[id] = { ...results[id], pr, focus: true };
+    dlg.close(); toastLink('Pull request opened:', pr.pr_url);
     V.refresh();
   }, { 'data-testid': 'propose-go', 'data-edit': true }));
 }
