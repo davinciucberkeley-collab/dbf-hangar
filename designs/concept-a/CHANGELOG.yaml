@@ -1,0 +1,242 @@
+- date: '2026-11-21T23:19:16Z'
+  key: attachments[E-MEC-HW-R1]
+  old: '{id: E-MEC-HW-R1, parent: mec-001-r, child: hwc-002-r, method: bolted, location:
+    [140.405, 199.012, 4.423], rated_load_n: 931.5, rating_basis: derived}'
+  new: null
+  why: break closed loop mec-001→hwc-002→mec-002 so the servo arm can articulate (advisor
+    W3-X path b); screw still threads into the spline via E-MEC-HW-R2/L2
+  kind: remove
+- date: '2026-11-21T23:19:16Z'
+  key: attachments[E-MEC-HW-L1]
+  old: '{id: E-MEC-HW-L1, parent: mec-001-l, child: hwc-002-l, method: bolted, location:
+    [140.405, -200.988, 4.423], rated_load_n: 931.5, rating_basis: derived}'
+  new: null
+  why: break closed loop mec-001→hwc-002→mec-002 so the servo arm can articulate (advisor
+    W3-X path b); screw still threads into the spline via E-MEC-HW-R2/L2
+  kind: remove
+- date: '2026-11-21T23:19:25Z'
+  key: attachments[E-MEC-02].articulation
+  old: null
+  new:
+    type: revolute
+    pivot:
+    - 140.5
+    - 200.0
+    - 7.7
+    axis:
+    - 0
+    - 0
+    - 1
+    range_deg:
+    - -36
+    - 36
+  why: 'declare the right elevon mechanism: servo arm E-MEC-02 articulates about the
+    spline/screw axis (hub and screw centred x 140.5, y 200.0 from mesh bounds), range
+    +-36 deg, drives E-WNG-10 at ratio 0.57 (21/36); E-MEC-07 articulation added alongside
+    for the left side'
+  kind: add
+- date: '2026-11-21T23:19:25Z'
+  key: attachments[E-MEC-07].articulation
+  old: null
+  new:
+    type: revolute
+    pivot:
+    - 140.5
+    - -200.0
+    - 7.7
+    axis:
+    - 0
+    - 0
+    - 1
+    range_deg:
+    - -36
+    - 36
+  why: 'declare the right elevon mechanism: servo arm E-MEC-02 articulates about the
+    spline/screw axis (hub and screw centred x 140.5, y 200.0 from mesh bounds), range
+    +-36 deg, drives E-WNG-10 at ratio 0.57 (21/36); E-MEC-07 articulation added alongside
+    for the left side'
+  kind: add
+- date: '2026-11-21T23:19:25Z'
+  key: mechanisms[elevon-r].driver
+  old: null
+  new: E-MEC-02
+  why: 'declare the right elevon mechanism: servo arm E-MEC-02 articulates about the
+    spline/screw axis (hub and screw centred x 140.5, y 200.0 from mesh bounds), range
+    +-36 deg, drives E-WNG-10 at ratio 0.57 (21/36); E-MEC-07 articulation added alongside
+    for the left side'
+  kind: add
+- date: '2026-11-21T23:19:25Z'
+  key: mechanisms[elevon-r].driven
+  old: null
+  new:
+  - E-WNG-10
+  why: 'declare the right elevon mechanism: servo arm E-MEC-02 articulates about the
+    spline/screw axis (hub and screw centred x 140.5, y 200.0 from mesh bounds), range
+    +-36 deg, drives E-WNG-10 at ratio 0.57 (21/36); E-MEC-07 articulation added alongside
+    for the left side'
+  kind: add
+- date: '2026-11-21T23:19:25Z'
+  key: mechanisms[elevon-r].input_range_deg
+  old: null
+  new:
+  - -36
+  - 36
+  why: 'declare the right elevon mechanism: servo arm E-MEC-02 articulates about the
+    spline/screw axis (hub and screw centred x 140.5, y 200.0 from mesh bounds), range
+    +-36 deg, drives E-WNG-10 at ratio 0.57 (21/36); E-MEC-07 articulation added alongside
+    for the left side'
+  kind: add
+- date: '2026-11-21T23:19:25Z'
+  key: mechanisms[elevon-r].expect
+  old: null
+  new:
+  - attachment: E-WNG-10
+    ratio: 0.57
+  why: 'declare the right elevon mechanism: servo arm E-MEC-02 articulates about the
+    spline/screw axis (hub and screw centred x 140.5, y 200.0 from mesh bounds), range
+    +-36 deg, drives E-WNG-10 at ratio 0.57 (21/36); E-MEC-07 articulation added alongside
+    for the left side'
+  kind: add
+- date: '2026-11-21T23:19:48Z'
+  key: mechanisms[elevon-l].driver
+  old: null
+  new: E-MEC-07
+  why: 'declare the left elevon mechanism: servo arm E-MEC-07 drives E-WNG-11; ratio
+    sign provisional (-0.57, mirrored servo with the same +z axis), confirmed by sim'
+  kind: add
+- date: '2026-11-21T23:19:48Z'
+  key: mechanisms[elevon-l].driven
+  old: null
+  new:
+  - E-WNG-11
+  why: 'declare the left elevon mechanism: servo arm E-MEC-07 drives E-WNG-11; ratio
+    sign provisional (-0.57, mirrored servo with the same +z axis), confirmed by sim'
+  kind: add
+- date: '2026-11-21T23:19:48Z'
+  key: mechanisms[elevon-l].input_range_deg
+  old: null
+  new:
+  - -36
+  - 36
+  why: 'declare the left elevon mechanism: servo arm E-MEC-07 drives E-WNG-11; ratio
+    sign provisional (-0.57, mirrored servo with the same +z axis), confirmed by sim'
+  kind: add
+- date: '2026-11-21T23:19:48Z'
+  key: mechanisms[elevon-l].expect
+  old: null
+  new:
+  - attachment: E-WNG-11
+    ratio: -0.57
+  why: 'declare the left elevon mechanism: servo arm E-MEC-07 drives E-WNG-11; ratio
+    sign provisional (-0.57, mirrored servo with the same +z axis), confirmed by sim'
+  kind: add
+- date: '2026-11-21T23:28:36Z'
+  key: attachments[E-MEC-02].articulation.range_deg[0]
+  old: -36
+  new: -35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: attachments[E-MEC-02].articulation.range_deg[1]
+  old: 36
+  new: 35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: attachments[E-MEC-07].articulation.range_deg[0]
+  old: -36
+  new: -35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: attachments[E-MEC-07].articulation.range_deg[1]
+  old: 36
+  new: 35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: mechanisms[elevon-r].input_range_deg[0]
+  old: -36
+  new: -35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: mechanisms[elevon-r].input_range_deg[1]
+  old: 36
+  new: 35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: mechanisms[elevon-l].input_range_deg[0]
+  old: -36
+  new: -35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: mechanisms[elevon-l].input_range_deg[1]
+  old: 36
+  new: 35
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: mechanisms[elevon-r].expect[0].ratio
+  old: 0.57
+  new: -0.57
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify
+- date: '2026-11-21T23:28:36Z'
+  key: mechanisms[elevon-l].expect[0].ratio
+  old: -0.57
+  new: 0.57
+  why: 'T6 rod/horn clipped at +-1..3 deg input with servo range +-36 because the
+    sampled input grid (every 5 deg from -36) lands on -1: servo range tightened to
+    +-35 (grid then lands on 0, +-5, ...); ratio signs set from the rod geometry (+x
+    arm tip motion for +z rotation on the right drives the horn pin -x, i.e. negative
+    E-WNG-10 angle; mirrored on the left): right -0.57, left +0.57. Not a clearance
+    fix: rod and horn still clip within +-3 deg because no rod-horn link is modelled'
+  kind: modify

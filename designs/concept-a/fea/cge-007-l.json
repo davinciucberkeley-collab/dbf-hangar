@@ -27,11 +27,11 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.439,
-      "max_von_mises_mpa": 0.439,
-      "safety_factor_at_ultimate": 28.7,
-      "max_displacement_mm": 0.0071,
-      "nodes": 5806,
+      "max_von_mises_away_mpa": 0.431,
+      "max_von_mises_mpa": 0.431,
+      "safety_factor_at_ultimate": 29.26,
+      "max_displacement_mm": 0.007,
+      "nodes": 5822,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
@@ -48,11 +48,11 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 12.436,
-      "max_von_mises_mpa": 12.436,
+      "max_von_mises_away_mpa": 12.455,
+      "max_von_mises_mpa": 12.455,
       "safety_factor_at_ultimate": 1.01,
-      "max_displacement_mm": 0.2038,
-      "nodes": 5806,
+      "max_displacement_mm": 0.2035,
+      "nodes": 5822,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
@@ -77,14 +77,14 @@
         {
           "name": "E-CGE-16 from cge-005-l",
           "force_n": [
-            -2.497,
+            -2.496,
             6.264,
-            0.102
+            0.099
           ],
           "moment_nmm": [
-            8.32,
-            8.88,
-            1.15
+            8.28,
+            8.98,
+            0.98
           ],
           "at_mm": [
             -7.5,
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "85014f22396d4e71",
-  "generated": "2026-11-17T07:10:09+00:00",
+  "hash": "e516f3812f473d09",
+  "generated": "2026-11-21T23:39:09+00:00",
   "opencae_version": "0.2.0"
 }

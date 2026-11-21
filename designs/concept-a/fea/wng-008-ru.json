@@ -5,7 +5,7 @@
   "allowable_mpa": 12.6,
   "ultimate_factor": 1.5,
   "wall_mm": {
-    "p5": 0.33,
+    "p5": 0.36,
     "median": 0.57
   },
   "part_size_mm": 124.91,
@@ -48,7 +48,7 @@
   "status": "SKIP",
   "worst_case": null,
   "design": "concept-a",
-  "hash": "e1e744301c8cf0fb",
-  "generated": "2026-11-17T07:13:33+00:00",
+  "hash": "cdb30ece8c28573d",
+  "generated": "2026-11-21T23:43:09+00:00",
   "opencae_version": "0.2.0"
 }

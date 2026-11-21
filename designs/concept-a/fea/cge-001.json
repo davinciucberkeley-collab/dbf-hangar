@@ -79,8 +79,8 @@
       "status": "SKIP",
       "message": "not checked: the mesh (2.5 mm elements, direct-mesh) is too coarse for its 1.2 mm walls; needs a finer mesh or exact CAD (STEP)",
       "not_checked": true,
-      "max_von_mises_mpa": 155.936,
-      "max_displacement_mm": 52.2608,
+      "max_von_mises_mpa": 150.22,
+      "max_displacement_mm": 51.0772,
       "project": ".studio/fea/concept-a/cge-001/direct-landing"
     },
     {
@@ -88,8 +88,8 @@
       "status": "SKIP",
       "message": "not checked: the mesh (2.5 mm elements, direct-mesh) is too coarse for its 1.2 mm walls; needs a finer mesh or exact CAD (STEP)",
       "not_checked": true,
-      "max_von_mises_mpa": 216.871,
-      "max_displacement_mm": 184.1148,
+      "max_von_mises_mpa": 207.599,
+      "max_displacement_mm": 182.1904,
       "project": ".studio/fea/concept-a/cge-001/direct-thrust"
     }
   ],
@@ -177,13 +177,13 @@
         {
           "name": "E-CGE-18 from cge-008",
           "force_n": [
-            -28.846,
-            -0.649,
+            -28.847,
+            -0.648,
             -16.52
           ],
           "moment_nmm": [
             12.18,
-            661.66,
+            661.65,
             18.87
           ],
           "at_mm": [
@@ -238,7 +238,7 @@
           "moment_nmm": [
             -6.31,
             6.87,
-            1.26
+            1.27
           ],
           "at_mm": [
             -72.416,
@@ -438,7 +438,7 @@
   "status": "NOT CHECKED",
   "worst_case": null,
   "design": "concept-a",
-  "hash": "4ff59c9e45bfe13f",
-  "generated": "2026-11-17T07:06:19+00:00",
+  "hash": "c917111c1263e02e",
+  "generated": "2026-11-21T23:34:54+00:00",
   "opencae_version": "0.2.0"
 }

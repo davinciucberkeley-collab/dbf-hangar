@@ -58,10 +58,10 @@
       "name": "landing",
       "status": "PASS",
       "max_von_mises_away_mpa": 2.762,
-      "max_von_mises_mpa": 2.777,
+      "max_von_mises_mpa": 2.776,
       "safety_factor_at_ultimate": 4.56,
       "max_displacement_mm": 0.0007,
-      "nodes": 41664,
+      "nodes": 41608,
       "mesh_size_max_mm": 2.35,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.123,
@@ -80,9 +80,9 @@
       "status": "PASS",
       "max_von_mises_away_mpa": 0.268,
       "max_von_mises_mpa": 0.296,
-      "safety_factor_at_ultimate": 47.02,
+      "safety_factor_at_ultimate": 47.04,
       "max_displacement_mm": 0.0001,
-      "nodes": 41664,
+      "nodes": 41608,
       "mesh_size_max_mm": 2.35,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.075,
@@ -241,12 +241,12 @@
           "force_n": [
             0.294,
             0.0,
-            -0.0
+            0.0
           ],
           "moment_nmm": [
             -0.0,
             0.0,
-            0.0
+            -0.0
           ],
           "at_mm": [
             99.423,
@@ -276,12 +276,12 @@
           "name": "E-AVN-04 from avn-003",
           "force_n": [
             0.068,
-            0.0,
+            -0.0,
             0.0
           ],
           "moment_nmm": [
             0.0,
-            0.0,
+            -0.0,
             -0.0
           ],
           "at_mm": [
@@ -294,12 +294,12 @@
           "name": "E-AVN-05 from avn-004",
           "force_n": [
             0.199,
-            -0.0,
-            -0.0
+            0.0,
+            0.0
           ],
           "moment_nmm": [
             -0.0,
-            -0.0,
+            0.0,
             0.0
           ],
           "at_mm": [
@@ -312,12 +312,12 @@
           "name": "E-AVN-06 from avn-005",
           "force_n": [
             0.044,
-            0.0,
-            -0.0
+            -0.0,
+            0.0
           ],
           "moment_nmm": [
-            0.0,
             -0.0,
+            0.0,
             -0.0
           ],
           "at_mm": [
@@ -331,10 +331,10 @@
           "force_n": [
             0.141,
             -0.0,
-            0.0
+            -0.0
           ],
           "moment_nmm": [
-            -0.0,
+            0.0,
             -0.0,
             -0.0
           ],
@@ -368,7 +368,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "55f46ff00f732e5e",
-  "generated": "2026-11-17T07:03:27+00:00",
+  "hash": "0bbd331864e9b873",
+  "generated": "2026-11-21T23:31:02+00:00",
   "opencae_version": "0.2.0"
 }

@@ -6,7 +6,7 @@
   "ultimate_factor": 1.5,
   "wall_mm": {
     "p5": 0.9,
-    "median": 4.9
+    "median": 4.8
   },
   "part_size_mm": 68.56,
   "supports": [
@@ -27,18 +27,18 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.067,
-      "max_von_mises_mpa": 1.067,
-      "safety_factor_at_ultimate": 11.8,
+      "max_von_mises_away_mpa": 1.725,
+      "max_von_mises_mpa": 1.725,
+      "safety_factor_at_ultimate": 7.31,
       "max_displacement_mm": 0.0067,
-      "nodes": 18997,
+      "nodes": 19153,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -83.61,
-        -215.85,
-        152.91
+        -81.32,
+        -236.63,
+        158.97
       ],
       "project": ".studio/fea/concept-a/cge-003-ul/direct-landing",
       "report": null,
@@ -48,18 +48,18 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.321,
-      "max_von_mises_mpa": 1.321,
-      "safety_factor_at_ultimate": 9.54,
-      "max_displacement_mm": 0.0066,
-      "nodes": 18997,
+      "max_von_mises_away_mpa": 1.822,
+      "max_von_mises_mpa": 1.822,
+      "safety_factor_at_ultimate": 6.92,
+      "max_displacement_mm": 0.0068,
+      "nodes": 19153,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.85,
-        -236.04,
-        159.83
+        -81.32,
+        -236.63,
+        158.97
       ],
       "project": ".studio/fea/concept-a/cge-003-ul/direct-thrust",
       "report": null,
@@ -108,7 +108,7 @@
             -3.189
           ],
           "moment_nmm": [
-            0.0,
+            -0.0,
             1.65,
             -1.03
           ],
@@ -124,7 +124,7 @@
   "status": "PASS",
   "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "1a5213847f066915",
-  "generated": "2026-11-17T07:08:57+00:00",
+  "hash": "3053e6d65da6469d",
+  "generated": "2026-11-21T23:37:40+00:00",
   "opencae_version": "0.2.0"
 }

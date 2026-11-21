@@ -27,18 +27,18 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.354,
-      "max_von_mises_mpa": 0.354,
-      "safety_factor_at_ultimate": 35.62,
+      "max_von_mises_away_mpa": 0.381,
+      "max_von_mises_mpa": 0.381,
+      "safety_factor_at_ultimate": 33.03,
       "max_displacement_mm": 0.0033,
-      "nodes": 15079,
+      "nodes": 14912,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.024,
       "location_mm": [
-        72.5,
-        -380.0,
-        -7.0
+        69.05,
+        -370.5,
+        -6.38
       ],
       "project": ".studio/fea/concept-a/fin-005-l/concept-a-fin-005-l-landing.ocae",
       "report": ".studio/fea/concept-a/fin-005-l/concept-a-fin-005-l-landing_report.html",
@@ -48,18 +48,18 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.182,
-      "max_von_mises_mpa": 0.182,
-      "safety_factor_at_ultimate": 69.15,
+      "max_von_mises_away_mpa": 0.208,
+      "max_von_mises_mpa": 0.208,
+      "safety_factor_at_ultimate": 60.49,
       "max_displacement_mm": 0.0034,
-      "nodes": 15079,
+      "nodes": 14912,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.165,
       "location_mm": [
-        69.44,
+        69.05,
         -370.5,
-        -5.81
+        -6.38
       ],
       "project": ".studio/fea/concept-a/fin-005-l/concept-a-fin-005-l-thrust.ocae",
       "report": ".studio/fea/concept-a/fin-005-l/concept-a-fin-005-l-thrust_report.html",
@@ -83,7 +83,7 @@
           ],
           "moment_nmm": [
             -0.01,
-            -9.42,
+            -9.43,
             -0.1
           ],
           "at_mm": [
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "1445d04e419c80dc",
-  "generated": "2026-11-17T07:11:58+00:00",
+  "hash": "3a47cd4fed4449cc",
+  "generated": "2026-11-21T23:41:09+00:00",
   "opencae_version": "0.2.0"
 }

@@ -47,11 +47,11 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.363,
-      "max_von_mises_mpa": 1.363,
-      "safety_factor_at_ultimate": 9.25,
+      "max_von_mises_away_mpa": 1.366,
+      "max_von_mises_mpa": 1.366,
+      "safety_factor_at_ultimate": 9.22,
       "max_displacement_mm": 0.1048,
-      "nodes": 45199,
+      "nodes": 45201,
       "mesh_size_max_mm": 2.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.009,
@@ -68,11 +68,11 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.486,
-      "max_von_mises_mpa": 0.486,
-      "safety_factor_at_ultimate": 25.95,
+      "max_von_mises_away_mpa": 0.485,
+      "max_von_mises_mpa": 0.485,
+      "safety_factor_at_ultimate": 25.97,
       "max_displacement_mm": 0.0198,
-      "nodes": 45199,
+      "nodes": 45201,
       "mesh_size_max_mm": 2.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.008,
@@ -170,7 +170,7 @@
           "name": "E-HRN-31 from hrn-003-l",
           "force_n": [
             -14.784,
-            -14.162,
+            -14.161,
             -11.142
           ],
           "moment_nmm": [
@@ -231,7 +231,7 @@
           "force_n": [
             0.051,
             -0.0,
-            -0.0
+            0.0
           ],
           "moment_nmm": [
             0.0,
@@ -286,7 +286,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "cf04e55c834c3cbf",
-  "generated": "2026-11-17T07:10:54+00:00",
+  "hash": "0dc974d6b4babbf3",
+  "generated": "2026-11-21T23:40:01+00:00",
   "opencae_version": "0.2.0"
 }
