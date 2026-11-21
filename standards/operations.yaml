@@ -1,0 +1,72 @@
+# Operating factors and model inputs read by the T3 and T7 discipline gates (U3.6). Entry shape as gate-thresholds.yaml.
+# Criterion keys are what a row is judged against; model inputs feed the numbers. `source: pending` = provisional.
+version: "0.1"
+hover_ctrl_factor:
+  value: 1.5
+  rule: "T3.control_authority: the control moment at the sagged-pack thrust limit must be at least this multiple of the hover wind moment on every axis."
+  source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (requirements.hover_ctrl_factor)'
+transition_thrust_fraction_max:
+  value: 0.8
+  rule: "T3.transition_margin: hover thrust on the busiest lift motor may be at most this fraction of its sagged-pack maximum, which leaves reserve to transition."
+  source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (ASM-B1-CTRL-RESERVE, B1 extract rows 9-11)'
+mission_hover_min:
+  value: 2
+  rule: "T3.endurance: minutes of hover the energy budget must cover (model input)."
+  source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (A2 extract row 53)'
+mission_cruise_min:
+  value: 5
+  rule: "T3.endurance: minutes of cruise the energy budget must cover (model input)."
+  source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (A2 extract row 53)'
+energy_reserve_fraction:
+  value: 0.2
+  rule: "T3.endurance: the usable battery energy must exceed the mission energy by at least this fraction."
+  source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (A2 extract row 53)'
+electrical_rating_min_ratio:
+  value: 1.0
+  rule: "T7.electrical_rating: a pack, connector or wire rating divided by the peak current must be at least this."
+  source: internal convention
+  note: "definition: capacity >= demand"
+transition_stall_ratio_min:
+  value: 1.2
+  rule: "T3.transition_margin: the declared transition speed divided by the stall speed (T3.stall) must be at least this."
+  source: pending
+  note: "provisional: no extracted value"
+hover_wind_mps:
+  value: 5
+  rule: "T3.control_authority: wind speed in m/s used for the hover wind moment (model input)."
+  source: pending
+  note: 'A2 extract row 8: "wind moment (5 m/s)"'
+wind_drag_coefficient:
+  value: 1.2
+  rule: "T3.control_authority: drag coefficient of the airframe in a hover wind (model input)."
+  source: pending
+  note: "provisional: bluff body"
+wind_moment_min_lever_fraction:
+  value: 0.25
+  rule: "T3.control_authority: the wind-force lever is at least this fraction of the hover-frame height (model input)."
+  source: pending
+  note: "provisional: fraction of the hover-frame height"
+pack_sag_fraction:
+  value: 0.15
+  rule: "T3.control_authority and T3.transition_margin: fractional pack voltage sag under hover load; motor thrust scales with voltage squared (model input)."
+  source: pending
+  note: "provisional: fractional pack voltage sag under hover load; thrust scales with voltage squared"
+propulsive_efficiency:
+  value: 0.5
+  rule: "T3.endurance: battery-to-thrust efficiency for hover and cruise power (model input)."
+  source: pending
+  note: "provisional: battery to thrust, hover and cruise"
+battery_usable_fraction:
+  value: 0.8
+  rule: "T3.endurance: fraction of the nameplate battery energy that may be used (model input)."
+  source: pending
+  note: "provisional"
+lipo_nominal_cell_v:
+  value: 3.7
+  rule: "T3.endurance: nominal volts per LiPo cell, used to turn mAh into Wh (model input)."
+  source: pending
+  note: "provisional"
+wire_pair_derate:
+  value: 0.8
+  rule: "T7.electrical_rating: derate applied to wire_ampacity_a for a bundled harness (model input)."
+  source: Multicable reference table, bundling section (2-5 conductors), via knowledge/sources/std-wire-ampacity.md

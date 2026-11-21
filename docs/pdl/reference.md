@@ -8,7 +8,7 @@ Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, se
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `schema_version` | one of `0.1`, `0.2`, `0.3`, `0.4`, `1.0` | yes | 0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat. |
+| `schema_version` | one of `0.1`, `0.2`, `0.3`, `0.4`, `1.0` | yes | 0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields). |
 | `id` | `slug` | yes |  |
 | `name` | string | yes |  |
 | `authors` | array of string |  |  |
@@ -35,6 +35,10 @@ Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, se
 | `flight.air_density_kgm3` | number |  |  |
 | `flight.hover_pose` | string |  | v0.2. Articulation pose name used for tier-2 hover moment and hover T/W. |
 | `flight.cruise_pose` | string |  | v0.2. Articulation pose name used for tier-3 aero (stall, static margin). |
+| `flight.cruise_ld` | number |  |  |
+| `flight.cruise_ld_source` | string |  |  |
+| `flight.transition_speed_mps` | number |  |  |
+| `flight.transition_speed_source` | string |  |  |
 | `root` | `slug` | yes | Component id that every other component must connect to through attachments. |
 | `materials` | object |  | Material id -> properties. Ids may also refer to standards/materials.yaml. |
 | `components` | array of `component` | yes |  |
@@ -87,6 +91,12 @@ Type: array of number
 | `propulsion.max_thrust_n` | number | yes |  |
 | `propulsion.axis` | `vec3` | yes | Direction of the thrust FORCE on the aircraft (unit vector, body frame). Forward thrust is [-1,0,0] for tractors and pushers alike; hover lift at 0 deg pose is [0,0,1]. |
 | `propulsion.role` | one of `lift`, `cruise`, `both` |  |  |
+| `propulsion.max_current_a` | number |  | peak current at max_thrust_n, from a datasheet or bench test |
+| `propulsion.prop_diameter_mm` | number |  |  |
+| `battery` | object |  | PDL 1.0 (D21). Battery components only. |
+| `battery.capacity_mah` | number | yes |  |
+| `battery.cells_s` | integer | yes |  |
+| `battery.max_discharge_c` | number |  |  |
 
 ### `cavity`
 

@@ -9,10 +9,13 @@ from .. import pdledit
 
 
 def _rows() -> list[dict]:
-    from ..gates import _import_gates, load_gate_table
+    from ..gates import _import_gates, load_discipline_table, load_gate_table
     _import_gates()
-    return [{k: g[k] for k in ("id", "tier", "blocking", "needs", "criterion")} | {"name": g["id"].split(".", 1)[1]}
+    rows = [{k: g[k] for k in ("id", "tier", "blocking", "needs", "criterion")} | {"name": g["id"].split(".", 1)[1]}
             for g in load_gate_table()]
+    rows += [{k: g[k] for k in ("id", "tier", "blocking", "criterion")} | {"needs": [], "name": g["id"].split(".", 1)[1]}
+             for g in load_discipline_table()]
+    return rows
 
 
 def _render_list(r: OpResult) -> str:
@@ -40,7 +43,9 @@ def explain(check_id: str) -> OpResult:
     from ..gates.fidelity import resolve_threshold
     rows = _rows()
     m = re.match(r"^T(\d+)", check_id)
-    row = next((g for g in rows if m and g["tier"] == int(m.group(1))), None)
+    row = next((g for g in rows if g["id"] == check_id), None)
+    if row is None:
+        row = next((g for g in rows if m and g["tier"] == int(m.group(1))), None)
     if row is None:
         raise OpInputError(f"unknown check id {check_id!r}; gate ids: {', '.join(g['id'] for g in rows)}")
     return OpResult(ok=True, data={**row, "threshold": resolve_threshold(row["criterion"])})

@@ -1,4 +1,4 @@
-# Gate registry (§2.5). One entry per tier; core/hangar/gates/__init__.py reads it.
+# Gate registry (§2.5). One entry per tier; core/hangar/gates/__init__.py reads it. discipline_checks: sub-checks of a tier (U3.6), report-only until the same date.
 # blocking: false = report-only (D7): FAIL and SKIP show as WARN until 2026-12-08, then flip to true.
 version: "0.1"
 gates:
@@ -12,3 +12,9 @@ gates:
   - {id: T7.integration,   tier: 7, blocking: false, needs: [], criterion: "gate-thresholds.yaml#wire_clearance_mm"}
   - {id: T8.sourcing,      tier: 8, blocking: false, needs: [], criterion: "gate-thresholds.yaml#bom_verified_max_age_days"}
   - {id: T9.claims,        tier: 9, blocking: true,  needs: [], criterion: "claims.yaml#recompute_rel_tol"}
+discipline_checks:
+  - {id: T2.joint_rf,            tier: 2, blocking: false, criterion: "load-cases.yaml#joint_rf_min"}
+  - {id: T3.control_authority,   tier: 3, blocking: false, criterion: "operations.yaml#hover_ctrl_factor"}
+  - {id: T3.transition_margin,   tier: 3, blocking: false, criterion: "operations.yaml#transition_thrust_fraction_max"}
+  - {id: T3.endurance,           tier: 3, blocking: false, criterion: "operations.yaml#energy_reserve_fraction"}
+  - {id: T7.electrical_rating,   tier: 7, blocking: false, criterion: "connection-types.yaml#wire_ampacity_a"}

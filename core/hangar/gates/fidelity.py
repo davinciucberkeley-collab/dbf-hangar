@@ -35,15 +35,16 @@ def resolve_threshold(criterion: str) -> dict | None:
 
 
 def compute_fidelity(design: Design, tiers: list[TierReport]) -> dict:
-    from . import load_gate_table
+    from . import load_discipline_table, load_gate_table
     blocking_tiers = {g["tier"] for g in load_gate_table() if g["blocking"]}
+    nb = {d["id"] for d in load_discipline_table() if not d["blocking"]}
     blocking = sourced = 0
     cache: dict[str, bool] = {}
     for t in tiers:
         if t.tier not in blocking_tiers:
             continue
         for r in t.results:
-            if r.check_id.endswith((".error", ".blocked")):
+            if r.check_id.endswith((".error", ".blocked")) or r.check_id in nb:
                 continue
             blocking += 1
             if r.criterion not in cache:

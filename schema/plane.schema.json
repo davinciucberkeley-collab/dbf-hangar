@@ -24,7 +24,7 @@
         "0.4",
         "1.0"
       ],
-      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat."
+      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields)."
     },
     "id": {
       "$ref": "#/$defs/slug"
@@ -179,6 +179,22 @@
         "cruise_pose": {
           "type": "string",
           "description": "v0.2. Articulation pose name used for tier-3 aero (stall, static margin)."
+        },
+        "cruise_ld": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "cruise_ld_source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "transition_speed_mps": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "transition_speed_source": {
+          "type": "string",
+          "minLength": 1
         }
       }
     },
@@ -411,6 +427,38 @@
                 "cruise",
                 "both"
               ]
+            },
+            "max_current_a": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "peak current at max_thrust_n, from a datasheet or bench test"
+            },
+            "prop_diameter_mm": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            }
+          }
+        },
+        "battery": {
+          "type": "object",
+          "description": "PDL 1.0 (D21). Battery components only.",
+          "required": [
+            "capacity_mah",
+            "cells_s"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "capacity_mah": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "cells_s": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_discharge_c": {
+              "type": "number",
+              "exclusiveMinimum": 0
             }
           }
         }
