@@ -979,7 +979,7 @@ def test_team_task_needs_no_code_edit(task, git_clean_repo):
 - Modify: `designs/concept-a/` (re-imported), `designs/c0-*`, `designs/tiltwing-cakir` → `status: retired` (D9)
 - Test: `tests/test_import_dbf_v2.py`
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 def test_concept_a_bom_total_matches_source(imported_a):
@@ -993,10 +993,10 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
     a = import_dbf(dbf_root, "A", tmp_path/"a"); b = import_dbf(dbf_root, "A", tmp_path/"b"); assert same_tree(a, b)
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement**; the importer is the only code that knows DBF-Combined's layout.
-- [ ] **Step 4: Run** → PASS; `plane design validate designs/concept-a` scorecard committed as the new baseline; Dillon checks the BOM and claims against the Explorer (acceptance, 15 min)
-- [ ] **Step 5: Commit** (label `migration`) `git commit -m "import: concept A full (params, BOM, requirements, claims, interfaces); program constraints; decision log"`
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement**; the importer is the only code that knows DBF-Combined's layout.
+- [x] **Step 4: Run** → PASS; `plane design validate designs/concept-a` scorecard committed as the new baseline; Dillon checks the BOM and claims against the Explorer (acceptance, 15 min)
+- [x] **Step 5: Commit** (label `migration`) `git commit -m "import: concept A full (params, BOM, requirements, claims, interfaces); program constraints; decision log"`
 
 ### Unit U3.1: One surface — Studio with modes, same app on Pages [hard]
 
