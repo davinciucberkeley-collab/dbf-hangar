@@ -4,7 +4,7 @@ from __future__ import annotations
 import re
 from pathlib import Path
 
-from .ledger import KINDS, STATUSES, Ledger
+from .ledger import Ledger, count_table
 
 UNIT_RE = re.compile(r"^### Unit (U\d+\.\d+): (.*)$")
 UNIT_ID_RE = re.compile(r"U\d+\.\d+")
@@ -125,11 +125,7 @@ def build_progress(root: Path, today: str | None = None) -> str:
         out += ["", "### Unscheduled"] + header
         out += [_unit_row(uid, units[uid], verdicts) for uid in rest]
     ledger = Ledger(root / "ledger" / "items.yaml")
-    out += ["", "## Ledger", "", "| kind | " + " | ".join(STATUSES) + " | total |", "|" + "---|" * (len(STATUSES) + 2)]
-    for kind in KINDS:
-        rows = [i for i in ledger.items if i.kind == kind]
-        counts = [sum(1 for i in rows if i.status == s) for s in STATUSES]
-        out.append(f"| {kind} | " + " | ".join(map(str, counts)) + f" | {len(rows)} |")
+    out += ["", "## Ledger", ""] + count_table(ledger.items, total_row=False)
     if today:
         overdue = sorted(ledger.report_overdue(today))
         out += ["", f"## Overdue as of {today}", ""]

@@ -57,6 +57,20 @@ class Issue:
     message: str
 
 
+def count_table(items, total_row: bool) -> list[str]:
+    """Markdown count table: header, separator, one row per kind; plus an '**all**' row when total_row."""
+    lines = ["| kind | " + " | ".join(STATUSES) + " | total |", "|" + "---|" * (len(STATUSES) + 2)]
+    totals = [0] * len(STATUSES)
+    for kind in KINDS:
+        rows = [i for i in items if i.kind == kind]
+        counts = [sum(1 for i in rows if i.status == s) for s in STATUSES]
+        totals = [a + b for a, b in zip(totals, counts)]
+        lines.append(f"| {kind} | " + " | ".join(map(str, counts)) + f" | {len(rows)} |")
+    if total_row:
+        lines.append("| **all** | " + " | ".join(map(str, totals)) + f" | {len(items)} |")
+    return lines
+
+
 def _item_from(d) -> Item:
     return Item(
         id=str(d["id"]), kind=str(d["kind"]), text=str(d["text"]), source=str(d.get("source", "")),
@@ -193,15 +207,7 @@ class Ledger:
     def report(self, today: str | None = None, prompts: Path | None = None) -> str:
         """Markdown: counts per kind and status, overdue items as of `today`, open prompts in `prompts` (JSONL)."""
         today = today or date.today().isoformat()
-        lines = ["# Ledger", "", "| kind | " + " | ".join(STATUSES) + " | total |",
-                 "|" + "---|" * (len(STATUSES) + 2)]
-        totals = [0] * len(STATUSES)
-        for kind in KINDS:
-            rows = [i for i in self.items if i.kind == kind]
-            counts = [sum(1 for i in rows if i.status == s) for s in STATUSES]
-            totals = [a + b for a, b in zip(totals, counts)]
-            lines.append(f"| {kind} | " + " | ".join(map(str, counts)) + f" | {len(rows)} |")
-        lines.append("| **all** | " + " | ".join(map(str, totals)) + f" | {len(self.items)} |")
+        lines = ["# Ledger", ""] + count_table(self.items, total_row=True)
         overdue = [f"- {i} (due {self.get(i).due}): {self.get(i).text}" for i in self.report_overdue(today)]
         latest = {}
         if prompts is not None and Path(prompts).exists():

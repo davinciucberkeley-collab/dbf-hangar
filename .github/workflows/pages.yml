@@ -27,6 +27,7 @@ jobs:
           cache: pip
       - run: pip install -e .
       - run: plane build-index --out viewer/data
+      - run: for d in updates/*/; do [ -d "$d" ] && plane update publish "$(basename "$d")"; done; true
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

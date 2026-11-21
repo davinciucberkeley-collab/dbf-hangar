@@ -10,3 +10,4 @@ build/
 .sweeps/
 viewer/data/
 opencae.local.json
+viewer/updates/
