@@ -3441,3 +3441,47 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T41
+    kind: task
+    text: 'Process (W3 lesson): before a design-facing unit is briefed, run its plane commands on a tmp copy of the target design (dry run of the handoff); a tactician brief for such a unit must include that output. W3 U3.4 took 5 runs and 4 tool units because gaps surfaced one run at a time'
+    source: Tristan, chat 2026-11-21 (keep what would have helped)
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T42
+    kind: task
+    text: 'Process (W3 lesson): tacticians run every test they write against the base repo (red for the right reason) and grep the repo for every name, count and path the brief asserts; about 8 builder stops in W3 were brief-vs-repo mismatches'
+    source: Tristan, chat 2026-11-21
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T43
+    kind: task
+    text: 'Process (W3 lesson): conductor launches the auditor every hour of a wave (skipped for 8 h in W3) and checks for agents left waiting on a background shell'
+    source: Tristan, chat 2026-11-21
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T44
+    kind: task
+    text: 'Speed (W3 lesson): plane design validate on concept-a takes minutes and a 3-value sweep over 2 min; U4.1 Step 2 performance pass (R33, target < 60 s) is a priority, measured before/after'
+    source: Tristan, chat 2026-11-21
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
