@@ -1,0 +1,23 @@
+{
+  "task": "mass-cut-10",
+  "agent": "design-engineer",
+  "model": "haiku",
+  "passed": false,
+  "score": 0.0,
+  "tokens": 226344,
+  "minutes": 4.48,
+  "cost_usd": 0.012394350000000002,
+  "timed_out": false,
+  "run_id": "mass-cut-10-haiku-20261121-124746",
+  "workspace": "<tmp>/planebench-ffm83bxu/mass-cut-10-haiku-20261121-124746",
+  "date": "2026-11-21",
+  "rows": [
+    {
+      "label": "total mass is at most 90 percent of the start (1261.24 g)",
+      "ok": false,
+      "detail": "1261.2399999999993 le 1135.1"
+    }
+  ],
+  "messages": [],
+  "final_text": "1261.24 g, unchanged: I made no changes because every available cut would be a made-up mass number, and the design's masses come from the team's CAD source, which must be changed upstream."
+}

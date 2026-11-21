@@ -1,0 +1,33 @@
+{
+  "task": "fix-static-margin",
+  "agent": "design-engineer",
+  "model": "haiku",
+  "passed": false,
+  "score": 0.667,
+  "tokens": 652200,
+  "minutes": 14.39,
+  "cost_usd": 0.02079213,
+  "timed_out": false,
+  "run_id": "fix-static-margin-haiku-20261121-125719",
+  "workspace": "<tmp>/planebench-2kcf5iv6/fix-static-margin-haiku-20261121-125719",
+  "date": "2026-11-21",
+  "rows": [
+    {
+      "label": "T3.static_margin passes",
+      "ok": false,
+      "detail": "'FAIL' eq 'PASS'"
+    },
+    {
+      "label": "no tier-1 check fails",
+      "ok": true,
+      "detail": "'SKIP' ne 'FAIL'"
+    },
+    {
+      "label": "T3.mass passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    }
+  ],
+  "messages": [],
+  "final_text": "16.8% MAC, unchanged. T3.static_margin still fails, so the goal is not met.\n\nMoving the battery aft is the only lever I found that shifts CG enough, and it breaks tier-1 checks. The sweep showed that at x=20 mm the margin reaches 14.9%, but T1.interference, T1.attachment_overlap and T1.attachment_location fail. I reverted the battery to x=0 and confirmed the margin is back at 16.8%.\n\nThe remaining options either break tier 1 or are not physically honest. Moving the mass-proxy hardware (hrd-001, hrn-001) aft would work numerically, but it would place real hardware where it can't be. I did not do that. The next step is a `recon` from the conductor on the wing or tail layout, not more data tweaks.\n\nTwo things to know: the design has two extra CHANGELOG entries from the battery set and revert, and I used about 7 validate runs against the 10-run budget. I have not opened a PR."
+}
