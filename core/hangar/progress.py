@@ -10,7 +10,8 @@ UNIT_RE = re.compile(r"^### Unit (U\d+\.\d+): (.*)$")
 UNIT_ID_RE = re.compile(r"U\d+\.\d+")
 WAVE_RE = re.compile(r"^\|\s*(W\d+\b[^|]*)\|[^|]*\|([^|]*)\|")
 CHECK_RE = re.compile(r"^- \[( |x)\]")
-REVIEW_HEAD_RE = re.compile(r"^## (U\d+\.\d+)\b")
+REVIEW_HEAD_RE = re.compile(r"^## (U\d+\.\d+[a-z]?)\b")
+SUB_SUFFIX_RE = re.compile(r"[a-z]$")
 VERDICT_RE = re.compile(r"^###\s+Verdict\b[^:\n]*:\s*(ACCEPT|REJECT)\b")
 
 
@@ -72,8 +73,9 @@ def parse_waves(lines: list[str]) -> list[tuple[str, list[str]]]:
 
 
 def latest_verdicts(root: Path) -> dict[str, str]:
-    """Unit id -> ACCEPT/REJECT. Rule: files in reviews/*.md sorted by name; inside a file, each '## U<n>.<n> ...'
-    section; the LAST line in that section matching '### Verdict...: ACCEPT|REJECT' wins; later files override earlier."""
+    """Heading id -> ACCEPT/REJECT. Rule: files in reviews/*.md sorted by name; inside a file, each '## U<n>.<n>' or
+    '## U<n>.<n><a-z>' section (sub-units are keyed by their own id, e.g. 'U2.4a'); the LAST line in that section
+    matching '### Verdict...: ACCEPT|REJECT' wins; later files override earlier."""
     verdicts: dict[str, str] = {}
     for path in sorted((Path(root) / "reviews").glob("*.md"), key=lambda p: p.name):
         unit = None
@@ -86,6 +88,17 @@ def latest_verdicts(root: Path) -> dict[str, str]:
             if v and unit:
                 verdicts[unit] = v.group(1)
     return verdicts
+
+
+def parent_verdicts(verdicts: dict[str, str]) -> dict[str, str]:
+    """Roll heading ids up to unit ids: 'U2.4a' counts for 'U2.4'. A unit is REJECT if any of its sections
+    (its own heading or any sub-unit heading) is REJECT, else ACCEPT."""
+    out: dict[str, str] = {}
+    for hid, verdict in verdicts.items():
+        parent = SUB_SUFFIX_RE.sub("", hid)
+        if verdict == "REJECT" or parent not in out:
+            out[parent] = verdict
+    return out
 
 
 def _status(done: int, total: int) -> str:
@@ -103,7 +116,7 @@ def build_progress(root: Path, today: str | None = None) -> str:
     plan = active_plan(root)
     lines = plan.read_text(encoding="utf-8").splitlines()
     units = parse_units(lines)
-    verdicts = latest_verdicts(root)
+    verdicts = parent_verdicts(latest_verdicts(root))
     out = [
         "# Progress",
         "",

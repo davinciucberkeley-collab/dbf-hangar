@@ -9,7 +9,7 @@ from click.testing import CliRunner
 
 from hangar.cli import cli
 from hangar.ledger import Ledger
-from hangar.progress import build_progress, latest_verdicts, parse_units
+from hangar.progress import build_progress, latest_verdicts, parent_verdicts, parse_units
 
 REPO = Path(__file__).resolve().parents[1]
 
@@ -91,6 +91,64 @@ def test_waves_status_and_verdict_columns(repo):
 
 def test_verdict_rule_last_in_section_then_later_file_wins(repo):
     assert latest_verdicts(repo) == {"U0.1": "ACCEPT", "U0.2": "ACCEPT"}
+
+
+REVIEW_SUB = """## U1.1a Gamma part a
+### Verdict: ACCEPT
+## U1.1b Gamma part b
+### Verdict: REJECT (round 1). fix
+## U9.9a Orphan part a
+### Verdict: ACCEPT
+## U9.9b Orphan part b
+### Verdict: ACCEPT
+"""
+REVIEW_SUB_FIX = """## U1.1b Gamma part b round 2
+### Verdict: ACCEPT
+"""
+REVIEW_OWN_AND_SUB = """## U0.1a Alpha follow-up
+### Verdict: REJECT (round 1). fix
+"""
+
+
+def test_latest_verdicts_keyed_per_sub_unit_heading(repo):
+    (repo / "reviews" / "2026-11-22-c.md").write_text(REVIEW_SUB, encoding="utf-8")
+    assert latest_verdicts(repo) == {
+        "U0.1": "ACCEPT",
+        "U0.2": "ACCEPT",
+        "U1.1a": "ACCEPT",
+        "U1.1b": "REJECT",
+        "U9.9a": "ACCEPT",
+        "U9.9b": "ACCEPT",
+    }
+
+
+def test_sub_unit_latest_wins_per_heading_then_parent_rolls_up(repo):
+    (repo / "reviews" / "2026-11-22-c.md").write_text(REVIEW_SUB, encoding="utf-8")
+    text = build_progress(repo)
+    assert "| U1.1 | Gamma | 0/1 | not started | REJECT |" in text
+    assert "| U9.9 | Orphan | 1/1 | done | ACCEPT |" in text
+    (repo / "reviews" / "2026-11-23-d.md").write_text(REVIEW_SUB_FIX, encoding="utf-8")
+    assert latest_verdicts(repo)["U1.1b"] == "ACCEPT"
+    assert "| U1.1 | Gamma | 0/1 | not started | ACCEPT |" in build_progress(repo)
+
+
+def test_parent_with_own_and_sub_sections_rejects_if_any_rejects(repo):
+    (repo / "reviews" / "2026-11-22-c.md").write_text(REVIEW_OWN_AND_SUB, encoding="utf-8")
+    assert "| U0.1 | Alpha | 2/2 | done | REJECT |" in build_progress(repo)
+
+
+def test_parent_verdicts_unit():
+    assert parent_verdicts({"U0.1": "ACCEPT", "U2.4a": "ACCEPT", "U2.4b": "ACCEPT"}) == {"U0.1": "ACCEPT", "U2.4": "ACCEPT"}
+    assert parent_verdicts({"U2.4a": "ACCEPT", "U2.4b": "REJECT"}) == {"U2.4": "REJECT"}
+    assert parent_verdicts({"U2.4": "ACCEPT", "U2.4c": "REJECT"}) == {"U2.4": "REJECT"}
+    assert parent_verdicts({}) == {}
+
+
+def test_real_repo_split_units_show_accept():
+    text = build_progress(REPO)
+    for uid in ("U2.3", "U2.4", "U2.5"):
+        row = next(line for line in text.splitlines() if line.startswith(f"| {uid} |"))
+        assert row.endswith("| 5/5 | done | ACCEPT |"), row
 
 
 def test_ledger_counts_and_overdue(repo):
