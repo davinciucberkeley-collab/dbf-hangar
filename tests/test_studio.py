@@ -104,10 +104,10 @@ def test_studio_api_end_to_end(sandbox):
         # bad edits are refused and leave the file alone
         assert _call(base, "/api/yaml", {"id": "example-tailsitter-wing", "text": "id: [unclosed"})[0] == 400
         assert _call(base, "/api/yaml", {"id": "example-tailsitter-wing", "text": "id: other\n"})[0] == 400
-        assert _call(base, "/api/new", {"id": "../escape", "from": "example-tailsitter-wing"})[0] == 400
+        assert _call(base, "/api/op/design.new", {"new_id": "../escape", "template": "example-tailsitter-wing"})[0] == 400
 
         # copy, then download the scorecard report
-        assert _call(base, "/api/new", {"id": "copy-1", "from": "example-tailsitter-wing"})[0] == 200
+        assert _call(base, "/api/op/design.new", {"new_id": "copy-1", "template": "example-tailsitter-wing"})[0] == 200
         assert (sandbox / "copy-1" / "plane.yaml").is_file()
         _wait_idle(base)
         code, report = _call(base, "/api/export?id=copy-1&format=report")
