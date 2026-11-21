@@ -3353,3 +3353,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T33
+    kind: task
+    text: .claude/agents/design-engineer.md line 21 shows plane design set <key> <value> but value is --value; add --also and the --kind add flow-collection form (after U3.6c merges)
+    source: advisor W3-A on U3.6c
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
