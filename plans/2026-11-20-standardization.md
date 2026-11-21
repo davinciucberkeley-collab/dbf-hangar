@@ -386,7 +386,7 @@ W1 runs in two layers, because the units depend on each other (§7 Interfaces):
 
 Speed rules (Tristan, 2026-11-21): the next wave's briefs are written while the current wave builds; each wave may use **one or two** fresh reviewers, each owning some units, and the second (or the only) reviewer checks the merge order of the whole wave; Tristan still decides open decisions and reads hard briefs before their builders launch (option 3 declined).
 
-Layers (to be confirmed by the briefs' Interfaces): **W2a** U2.1 [hard], U2.3 [hard], U2.4; **W2b** U2.2 (after U2.3 lands D13's FEA-hash change) and U2.5 [hard] (after U1.5 and U2.1).
+Layers (from the briefs, 2026-11-21): **W2a** U2.3a (FEA hash, D13; first), U2.1 [hard] (after U1.5), U2.4a, U2.5a (after U1.5); **W2b** U2.3b adapters (after U2.3a), U2.2 (scouts any time; builder after U2.3a), U2.4b (after U2.4a), U2.5b [hard] (after U2.1 + U2.5a); **W2c** U2.4c (after U2.4b), U2.5c designs-only (after U2.5b). Briefs: `U2.1-gates`, `U2.2-standards`, `U2.3a-fea-hash`, `U2.3-adapters` (U2.3b), `U2.4-team-ops` / `-b` / `-c`, `U2.5a-calcs`, `U2.5-import-concept-a` (U2.5b), `U2.5c-designs`. Proposed later: U2.5d (concept-a plane.yaml re-import after an FEA re-run).
 
 | Step | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
