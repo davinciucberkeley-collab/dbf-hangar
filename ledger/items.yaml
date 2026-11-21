@@ -3317,7 +3317,7 @@ items:
     status: done
     due: ''
     units: []
-    evidence: 'attempt 2 2026-11-21 (Tristan, Windows): fea run concept-a --part cge-001 ran end to end (OpenCAE meshed 47636 nodes, CalculiX solved landing + thrust); verdict NOT CHECKED: requested 1.2 mm mesh, achieved 2.5 mm elements on the direct-STL route, > 2x the 1.2 mm walls (fea.py:377). Time not recorded.'
+    evidence: 67eab23
     decided_in: ''
     updated: '2026-11-21'
   - id: T31
