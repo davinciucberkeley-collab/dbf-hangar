@@ -11,6 +11,8 @@ from hangar.checks import validate
 from hangar.design import DESIGNS_DIR, Design, load_design
 from hangar.sim import build_mjcf, export_mjcf
 
+pytestmark = pytest.mark.slow
+
 EXAMPLE = DESIGNS_DIR / "example-tailsitter-wing" / "plane.yaml"
 
 

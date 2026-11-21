@@ -59,11 +59,13 @@ class: easy|hard · role: builder|builder-plus · plan: §<n> <unit> · rules: R
 - Windows 11 + Git Bash. Use absolute paths only (e.g. `C:/Users/trist/wt/<unit>/...`); never `../` or `~`: they resolve from the wrong folder inside a worktree.
 - Worktree: `git -C C:/Users/trist/dbf-hangar worktree add C:/Users/trist/wt/<unit> -b <branch> main`; work only there; create nothing outside `C:/Users/trist/wt/<unit>`.
 - Venv per worktree: `python -m venv C:/Users/trist/wt/<unit>/.venv`, then `cd C:/Users/trist/wt/<unit> && C:/Users/trist/wt/<unit>/.venv/Scripts/python.exe -m pip install -e ".[mcp,dev]"`; use that python for every command.
+- Venv via uv when `uv` is on PATH: `cd C:/Users/trist/wt/<unit> && uv venv`, then `uv pip install -e ".[mcp,dev]"`. Plain pip (above) is the fallback.
 - CI status: use the GitHub CLI by full path, with the repo given explicitly: `"/c/Program Files/GitHub CLI/gh.exe" -R davinciucberkeley-collab/dbf-hangar run list --branch <branch> --limit 1` and `"/c/Program Files/GitHub CLI/gh.exe" -R davinciucberkeley-collab/dbf-hangar run view <id> --json headSha,jobs -q '.headSha, (.jobs[]|.name+" "+.conclusion)'` (`--log-failed` on failure). Never poll api.github.com with unauthenticated curl.
 - Brief paths in launch prompts are repo-relative (`plans/<plan>/briefs/<name>.md`).
 - `.gitattributes` forces LF (`* text=auto eol=lf`); do not change line endings. After your commit, `git ls-files --eol | grep -c "w/crlf"` must print `0`.
 - Edit only the files the brief lists. No repo-wide `sed` or search-and-replace; nothing "while you are there".
-- Iterate with targeted tests; run the full suite once at the end (4 to 24 minutes; do not interrupt it).
+- Tests: run targeted tests locally (the files the change touches). CI is the one full run (`pytest -q -n auto -m ""` in `validate.yml`); reviewers judge CI by `headSha`, not by a local full run.
+- Logs only under `C:/Users/trist/wt/<unit>/.logs/`; no other log location.
 - Push only the branch named in the brief and wait for CI; never push or merge `main`.
 
 ## Where
@@ -85,6 +87,16 @@ Test ids that already fail on `main` and who owns the fix, or `none`.
 ```
 
 The Environment block is copied verbatim into every brief; only `<unit>` and `<branch>` change. Plan coverage lists every §7 step of the unit; a step the brief does not do is `deferred` (to a named unit) or `dropped` (with the reason), never silently missing.
+
+## Brief checklist
+
+Before launching a brief, the conductor checks that it:
+- states interfaces precisely, with names and signatures quoted from merged code;
+- tells builders never to edit the plan file or `PROGRESS.md`;
+- adds no new script entry points (`__main__`);
+- names and protects hash-coupled files (`standards/design-standards.yaml`, `opencae_runner.py`, `designs/*/plane.yaml` for FEA);
+- puts no test fixtures outside the repo (local-only tests use `skipif` and are paired with a CI fixture);
+- keeps `designs/**` and `core/**` out of one commit unless the commit message has a `migration:` line.
 
 ## Reviews
 

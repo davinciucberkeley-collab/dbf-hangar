@@ -12,7 +12,7 @@ dependencies = ["pyyaml", "jsonschema", "numpy", "scipy", "trimesh", "manifold3d
 [project.optional-dependencies]
 sim = []  # kept for compatibility: mujoco is now a core dependency
 mcp = ["mcp>=1.2"]
-dev = ["pytest"]
+dev = ["pytest", "pytest-xdist>=3.5"]
 
 [project.scripts]
 plane = "hangar.cli:main"

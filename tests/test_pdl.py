@@ -14,6 +14,10 @@ FIXTURE = REPO_ROOT / "tests" / "fixtures" / "pdl-v1-full.yaml"
 EXAMPLE = REPO_ROOT / "designs" / "example-tailsitter-wing" / "plane.yaml"
 DESIGNS = list_designs()
 IDS = [p.parent.name for p in DESIGNS]
+# Per-design migrate+validate cases that take more than about 5 s (from --durations) are slow.
+SLOW_DESIGN_IDS = {"concept-a", "c0-a1", "c0-a2", "c0-a3", "c0-lift-cruise", "tiltwing-cakir"}
+VERDICT_PARAMS = [pytest.param(p, id=i, marks=pytest.mark.slow) if i in SLOW_DESIGN_IDS
+                  else pytest.param(p, id=i) for p, i in zip(DESIGNS, IDS)]
 # Frozen pre-1.0 copies of the committed designs (from the base commit), so migration tests
 # do not depend on what designs/ holds at any given commit.
 LEGACY_DIR = REPO_ROOT / "tests" / "fixtures" / "pdl-legacy"
@@ -28,7 +32,7 @@ def _example_data():
     return copy.deepcopy(load_design(EXAMPLE).data)
 
 
-@pytest.mark.parametrize("d", DESIGNS, ids=IDS)
+@pytest.mark.parametrize("d", VERDICT_PARAMS)
 def test_every_committed_design_migrates_to_1_0_with_same_verdict(d):
     before = validate(load_design(d)).accepted
     data, _ = migrate(load_design(d).data)
