@@ -24,6 +24,9 @@ jobs:
       - name: Unit tests
         shell: bash
         run: pytest -q
+      - name: PROGRESS.md is current
+        shell: bash
+        run: plane progress --check
       - name: Check designs against their baselines
         shell: bash
         run: |
