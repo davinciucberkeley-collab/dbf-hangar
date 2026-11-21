@@ -244,6 +244,7 @@ Scheme rules on top (R22, R25):
 - **Waves** are dependency layers; units inside a wave run in parallel.
 - **Unit = one PR.** If a unit's PR is rejected, the same unit is reopened and fixed; no "fix-for-the-fix" unit.
 - **Plan is the source of truth**, not the conductor's memory. Agents get the unit text from this file, not a paraphrase. Status changes are checkbox edits here + `plane ledger set`.
+- **Brief vs §7**: Where the brief and plan §7 differ, the brief governs; the tactician records the difference in Plan coverage.
 - **Design work goes through PRs too**: several agents/people may open `design.propose` PRs on the same design; Tristan merges (Dylan approves concept-a changes, R25).
 - **Hourly audit** while a wave runs: `auditor` (Haiku) runs the `get-it-together` skill and reports to the conductor (R21). Scheduled as a looping prompt / scheduled task during long runs.
 - **Permissions up front**: before a wave, the conductor posts one prompt listing every command and folder the wave needs, so no agent stalls on a permission check mid-run.
@@ -380,38 +381,65 @@ def test_provenance_lists_every_imported_top_level_path(repo_root):
 ### Unit U0.1: Agent roster and pointer files
 
 **Files:**
-- Create: `.claude/agents/{conductor,advisor,tactician,builder,builder-plus,scout,recon,design-engineer,reviewer,auditor}.md` (drafts already in this branch)
+- Create: `.claude/agents/{conductor,advisor,tactician,builder,builder-plus,scout,recon,design-engineer,reviewer,auditor}.md`, `core/hangar/roster.py`
 - Modify: `standards/agents.md` → v0.2 (reviewer fresh per wave; work-class bump table; points to `.claude/agents/`)
 - Modify: `CLAUDE.md` → pointer list only (≤ 25 lines)
-- Test: `tests/test_harness.py`
+- Test: `tests/test_roster.py`
 
 **Interfaces:**
-- Produces: `harness.roster.load_roster(root: Path) -> dict[str, AgentSpec]`, `AgentSpec(name: str, model: Literal["opus","sonnet","haiku"], tools: list[str], description: str)` in `core/hangar/harness/roster.py`
+- Produces: `hangar.roster.load_roster(root: Path) -> dict[str, AgentSpec]`, `AgentSpec(name: str, model: Literal["opus","sonnet","haiku"], tools: tuple[str, ...], description: str)` (frozen dataclass) in `core/hangar/roster.py`
 
 - [x] **Step 1: Write the failing tests**
 
 ```python
-def test_roster_has_exactly_the_ten_roles(repo_root):
-    assert set(load_roster(repo_root)) == {"conductor","advisor","tactician","builder","builder-plus",
-                                          "scout","recon","design-engineer","reviewer","auditor"}
+from pathlib import Path
+import pytest
+from hangar.roster import load_roster
 
-def test_every_agent_has_model_stop_rule_and_never_section(repo_root):
-    for spec in load_roster(repo_root).values():
-        text = (repo_root/".claude/agents"/f"{spec.name}.md").read_text()
-        assert spec.model in {"opus","sonnet","haiku"}
+REPO = Path(__file__).resolve().parents[1]
+ROLES = {"conductor","advisor","tactician","builder","builder-plus","scout","recon","design-engineer","reviewer","auditor"}
+
+def test_roster_has_exactly_the_ten_roles():
+    assert set(load_roster(REPO)) == ROLES
+
+def test_models_by_level():
+    r = load_roster(REPO)
+    assert {n for n, a in r.items() if a.model == "opus"} == {"conductor", "advisor", "reviewer"}
+    assert {n for n, a in r.items() if a.model == "haiku"} == {"builder", "scout", "auditor"}
+
+def test_every_agent_has_stop_rules_and_never():
+    for name in ROLES:
+        text = (REPO / ".claude/agents" / f"{name}.md").read_text(encoding="utf-8")
         assert "## Stop rules" in text and "## Never" in text
 
-def test_design_engineer_cannot_edit_code(repo_root):
-    assert "Edit" not in load_roster(repo_root)["design-engineer"].tools
+def test_design_engineer_cannot_edit_or_write():
+    tools = load_roster(REPO)["design-engineer"].tools
+    assert "Edit" not in tools and "Write" not in tools
 
-def test_claude_md_is_a_pointer_file(repo_root):
-    assert len((repo_root/"CLAUDE.md").read_text().splitlines()) <= 25
+def test_conductor_can_launch_and_reuse_agents():
+    tools = load_roster(REPO)["conductor"].tools
+    assert "Agent" in tools and "SendMessage" in tools
+
+def test_bad_model_rejected(tmp_path):
+    (tmp_path / ".claude/agents").mkdir(parents=True)
+    (tmp_path / ".claude/agents/x.md").write_text("---\nname: x\nmodel: gpt\ntools: Read\ndescription: d\n---\n", encoding="utf-8")
+    with pytest.raises(ValueError):
+        load_roster(tmp_path)
+
+def test_agents_md_v02_names_every_role_and_hook():
+    text = (REPO / "standards/agents.md").read_text(encoding="utf-8")
+    assert text.startswith("# Agent Standard v0.2")
+    assert all(f"`{r}`" in text for r in ROLES)
+    assert all(h in text for h in ["log_prompt", "agent_gate", "reinject", "stop_gate", "Pass criterion"])
+
+def test_claude_md_is_a_pointer_file():
+    assert len((REPO / "CLAUDE.md").read_text(encoding="utf-8").splitlines()) <= 25
 ```
 
-- [x] **Step 2: Run** `pytest tests/test_harness.py -v` → FAIL (`load_roster` missing)
+- [x] **Step 2: Run** `pytest tests/test_roster.py -v` → FAIL (`load_roster` missing)
 - [x] **Step 3: Implement `load_roster`** (parse YAML frontmatter between the first two `---` lines; `tools` is the comma list). Update `standards/agents.md` and `CLAUDE.md`.
-- [x] **Step 4: Run** `pytest tests/test_harness.py -v` → PASS
-- [x] **Step 5: Commit** `git commit -m "harness: 10-role agent roster, agents.md v0.2, CLAUDE.md as pointer file"`
+- [x] **Step 4: Run** `pytest tests/test_roster.py -v` → PASS
+- [x] **Step 5: Commit** `git commit -m "harness: roster loader, agent standard v0.2"`
 
 ### Unit U0.2: Hooks, output style, installer (delivered early as H1 + H2, §6c; this unit then only ports the hooks onto `plane ledger` once U0.3 lands)
 
