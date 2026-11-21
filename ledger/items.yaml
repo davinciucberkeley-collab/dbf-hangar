@@ -3199,3 +3199,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T21
+    kind: task
+    text: 'One exit-code rule for a missing external tool: U2.3b skip_result gives ok/exit 0, sim.drop gives exit 1 (same as FAIL); pick one (SKIP != PASS, != FAIL) across ops; ops/sim.py should use pdledit.resolve_design_path'
+    source: reviews/2026-11-21-w2.md W2-S
+    owner: Tristan
+    status: open
+    due: '2026-11-25'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T22
+    kind: task
+    text: 'Flaky on Windows CI: test_studio.py::test_studio_api_end_to_end WinError 10053 (main 41a7efe); make the server shutdown robust'
+    source: reviews/2026-11-21-w2.md W2-S
+    owner: Tristan
+    status: open
+    due: '2026-11-25'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
