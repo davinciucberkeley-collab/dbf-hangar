@@ -685,10 +685,10 @@ items:
     text: U1.5 design.set flow test (plan 7 U1.5) deferred until U1.4 merges design.set
     source: advisor W1-A2 (U1.5 brief)
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-24'
     units: []
-    evidence: ''
+    evidence: reviews/2026-11-21-w1.md
     decided_in: ''
     updated: '2026-11-20'
   - id: D13
