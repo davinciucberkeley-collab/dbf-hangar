@@ -17,7 +17,7 @@
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U1.1 | Operations registry and the OpResult contract [hard] | 0/5 | not started | - |
+| U1.1 | Operations registry and the OpResult contract [hard] | 0/5 | not started | REJECT |
 | U1.2 | MCP and Studio generated from the registry (subtraction) | 0/5 | not started | - |
 | U1.3 | PDL v1.0 schema, reference doc, migration [hard] | 0/5 | not started | - |
 | U1.4 | Edit, sweep, diff, propose — iterate without code (R4, R5, R8, R15, R25) | 0/5 | not started | - |
@@ -55,7 +55,7 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 35 | 5 | 0 | 0 | 0 | 40 |
-| task | 2 | 0 | 0 | 0 | 0 | 2 |
+| task | 3 | 0 | 0 | 0 | 0 | 3 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
 | decision | 1 | 0 | 0 | 0 | 11 | 12 |
 
