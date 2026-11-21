@@ -358,6 +358,7 @@ W1 runs in two layers, because the units depend on each other (§7 Interfaces):
 - **W1b**, after W1a is merged (U1.2 needs only U1.1 and touches none of U1.3's files, so it starts once U1.1 is merged; conductor, 2026-11-21): U1.2, U1.4, U1.5 [hard] and U1.6 in parallel. U1.5 and U1.6 both edit `schema/plane.schema.json`; the second one to be accepted rebases before merging. U1.4's Windows CI job already exists (W0-5).
 - Briefs follow the template in `standards/agents.md`. Each lists every §7 step in Plan coverage. Hard-unit briefs are drafted by a `tactician` and then checked by the `advisor` before any builder runs (§5: hard → Opus via advisor). Tristan reads the U1.1 and U1.3 briefs before their builders launch.
 - Every commit that ticks a box, adds a verdict or changes the ledger also runs `plane progress --write` (W0.6c).
+- Test runs (Tristan, 2026-11-21): builders run only their brief's targeted tests locally, then push; CI (Linux + Windows) is the one full-suite run. Reviewers judge CI's result and run targeted probes, not the full suite. Each agent writes logs only under its own worktree (e.g. `C:/Users/trist/wt/<unit>/.logs/`), never a shared scratch path.
 - Reviewer notes carried into W1 briefs: the gate rejects worktree or space-containing brief paths unless the brief is inline (give repo-relative brief paths); `progress.py` repeats the ledger count table (U2.4 may unify it).
 
 | Step | Role | Model | Input | Output | Pass criterion |
@@ -374,6 +375,7 @@ W1 runs in two layers, because the units depend on each other (§7 Interfaces):
 | W1-2, W1-4, W1-6 | `builder` | Haiku | their briefs | branches `std/u1.2-surfaces`, `std/u1.4-edit`, `std/u1.6-interfaces` | brief's pass check; CI green |
 | W1-5 | `builder-plus` | Sonnet | `briefs/U1.5-claims.md` | branch `std/u1.5-claims` | same |
 | W1-M | `builder` | Haiku | inline brief after U1.3 merges: `plane design migrate designs/<id> --write` for every design except concept-a (D12); designs-only PR, no `core/` | branch `std/w1-migrate-designs` | `plane baseline check --all` exit 0; CI green |
+| W1-P | `builder` | Haiku | inline brief after W1 merges: `pytest-xdist` (`-n auto`) locally and in CI; `@pytest.mark.slow` on MuJoCo/FEA/per-design tests (local default skips them, CI runs all); CI skips plans/reviews-only commits except a light `plane progress --check` job; `concurrency: cancel-in-progress` per branch; brief template in `standards/agents.md` gets the test-run and per-worktree log rules | branch `std/w1-p-speed` | CI green on both OSes; full CI suite time reported before and after |
 | W1-R | `reviewer` | Opus (fresh for W1, reused for W1a, W1b and re-reviews) | each branch as it lands | `reviews/2026-11-2x-w1.md` | "### Verdict: ACCEPT" per unit |
 | W1-Au | `auditor` | Haiku | session state, ledger, this table | report to conductor, hourly | ≤ 15 lines, evidence per finding |
 | W1-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
