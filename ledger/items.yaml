@@ -713,3 +713,25 @@ items:
     evidence: 'default: no: calcs live only in `core/hangar/calcs/`; claims reference them by registered name; designs stay data'
     decided_in: ''
     updated: '2026-11-20'
+  - id: T6
+    kind: task
+    text: "ops.call/_call_spec: make name/spec positional-only (def call(name, /, **params)) so a JSON key 'name' or 'spec' gives exit 2, not a 500; land before any op takes a 'name' parameter"
+    source: reviews/2026-11-21-w1.md U1.2 note 5
+    owner: Tristan
+    status: open
+    due: '2026-11-23'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T7
+    kind: task
+    text: /api/op lets ops read/write any local path (old routes were confined to designs/); revisit path confinement in U3.1
+    source: reviews/2026-11-21-w1.md U1.2 note 6
+    owner: Tristan
+    status: open
+    due: '2026-11-27'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'

@@ -610,11 +610,11 @@ def test_unknown_component_type_gives_skip_not_crash(tmp_design_with_type_wingle
 - Consumes: `registry()`, `call()` (U1.1)
 - Produces: MCP tool name = op name with `.` → `_` (`design_validate`); Studio `POST /api/op/design.validate {"path": ...}` → `OpResult` JSON.
 
-- [ ] **Step 1: Failing tests**: `test_mcp_tools_equal_registry()` (tool names == `{n.replace('.', '_') for n in registry()}`); `test_studio_op_route_returns_op_result()`; `test_no_handwritten_api_routes_left()` (grep `studio.py` for `/api/` strings other than `/api/op/`, `/api/state`, `/api/ping`, file downloads).
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement**; net line count of `mcp_server.py` + `studio.py` must go down (record in PR).
-- [ ] **Step 4: Run** `pytest -q` → PASS; manual: `plane studio`, edit a mass, scorecard refreshes.
-- [ ] **Step 5: Commit** `git commit -m "mcp, studio: generated from ops registry; remove duplicate handlers"`
+- [x] **Step 1: Failing tests**: `test_mcp_tools_equal_registry()` (tool names == `{n.replace('.', '_') for n in registry()}`); `test_studio_op_route_returns_op_result()`; `test_no_handwritten_api_routes_left()` (grep `studio.py` for `/api/` strings other than `/api/op/`, `/api/state`, `/api/ping`, file downloads).
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement**; net line count of `mcp_server.py` + `studio.py` must go down (record in PR).
+- [x] **Step 4: Run** `pytest -q` → PASS; manual: `plane studio`, edit a mass, scorecard refreshes.
+- [x] **Step 5: Commit** `git commit -m "mcp, studio: generated from ops registry; remove duplicate handlers"`
 
 ### Unit U1.3: PDL v1.0 schema, reference doc, migration [hard]
 
@@ -626,7 +626,7 @@ def test_unknown_component_type_gives_skip_not_crash(tmp_design_with_type_wingle
 **Interfaces:**
 - Produces: `migrate(data: dict) -> tuple[dict, list[str]]` (new data, notes); ops `design.migrate(path, write: bool = False)`, `schema.docs(out: Path)`.
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 @pytest.mark.parametrize("d", list_designs())
@@ -644,10 +644,10 @@ def test_reference_doc_is_current(tmp_path):
     assert (tmp_path/"ref.md").read_text() == (REPO_ROOT/"docs/pdl/reference.md").read_text()
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement** schema additions, `migrate`, generator; migrate all committed designs (`plane design migrate designs/* --write`) in this PR — the only PR allowed to touch both `designs/**` and `core/**` (label `migration`, see U1.4).
-- [ ] **Step 4: Run** `pytest -q` → PASS; `plane baseline check --all` → no new failures
-- [ ] **Step 5: Commit** `git commit -m "pdl: v1.0 schema (files, bom, wiring, mechanisms, transport, assembly, provenance) + migrate + reference"`
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement** schema additions, `migrate`, generator; migrate all committed designs (`plane design migrate designs/* --write`) in this PR — the only PR allowed to touch both `designs/**` and `core/**` (label `migration`, see U1.4).
+- [x] **Step 4: Run** `pytest -q` → PASS; `plane baseline check --all` → no new failures
+- [x] **Step 5: Commit** `git commit -m "pdl: v1.0 schema (files, bom, wiring, mechanisms, transport, assembly, provenance) + migrate + reference"`
 
 ### Unit U1.4: Edit, sweep, diff, propose — iterate without code (R4, R5, R8, R15, R25)
 
