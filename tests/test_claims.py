@@ -397,3 +397,14 @@ def test_design_set_flows_into_claim(tmp_path):
     assert after.margin == pytest.approx(0.1)
     assert after.status == "PASS"
     assert status(d1, "T9.claim.CL-MASS-GATE") == PASS
+
+
+def _bare_tw(thrust_g, mass_g):
+    return thrust_g / mass_g
+
+
+def test_bare_return_satisfies_named_output(tmp_mini):
+    register_calcs({"bare_tw_test": _bare_tw})
+    edit_claims(tmp_mini, lambda n: (n["CALC-TW"].update(function="bare_tw_test"), n["CL-AERO-TW"].update(output="v_ms")))
+    r = results(load_design(tmp_mini))["CL-AERO-TW"]
+    assert r.status == "PASS" and r.value == pytest.approx(946 / 550)

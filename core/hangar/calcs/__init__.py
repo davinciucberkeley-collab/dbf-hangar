@@ -6,3 +6,6 @@ def sum_values(**terms):
 
 
 CALCS = {"sum_values": sum_values}
+from .concept_a import CALCS as _CONCEPT_A  # noqa: E402
+
+CALCS.update(_CONCEPT_A)

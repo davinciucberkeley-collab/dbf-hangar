@@ -1,0 +1,1305 @@
+[
+ {
+  "id": "CALC-A-BOX",
+  "function": "box_fit",
+  "input_values": {
+   "box": [
+    0.9,
+    0.5,
+    0.39
+   ],
+   "lim": [
+    1.2,
+    0.5,
+    0.4
+   ]
+  },
+  "outputs": {
+   "ratio": 1.0
+  }
+ },
+ {
+  "id": "CALC-A-BRIDGE-TAU-F2",
+  "function": "bridge_tau",
+  "input_values": {
+   "od": 16.0,
+   "idd": 14.0,
+   "m": 4.37,
+   "k": 1.725
+  },
+  "outputs": {
+   "tau_mpa": 22.650142768377208
+  }
+ },
+ {
+  "id": "CALC-A-BRIDGE-TAU-S2",
+  "function": "bridge_tau",
+  "input_values": {
+   "od": 16.0,
+   "idd": 14.0,
+   "m": 7.93,
+   "k": 1.0
+  },
+  "outputs": {
+   "tau_mpa": 23.827232070206115
+  }
+ },
+ {
+  "id": "CALC-A-CG-TRIM",
+  "function": "cg_trim",
+  "input_values": {
+   "cg": 21.368686971819926,
+   "pack": 270.0,
+   "trim": 10.0,
+   "trim_fwd": 6.0,
+   "basic": 1.27324
+  },
+  "outputs": {
+   "shift_mm": 2.120574282931733,
+   "fwd_mm": 20.096342402060888,
+   "aft_mm": 23.48926125475166
+  }
+ },
+ {
+  "id": "CALC-A-COST",
+  "function": "bom_cost",
+  "input_values": {
+   "rows": [
+    [
+     "P01",
+     "propulsion",
+     "TMotor",
+     5.0,
+     46.9,
+     false
+    ],
+    [
+     "P02",
+     "propulsion",
+     "RMRC",
+     1.0,
+     9.4,
+     false
+    ],
+    [
+     "P04",
+     "propulsion",
+     "RMRC",
+     1.0,
+     45.66,
+     false
+    ],
+    [
+     "W01",
+     "power",
+     "RMRC",
+     2.0,
+     37.09,
+     false
+    ],
+    [
+     "W02",
+     "power",
+     "RMRC",
+     1.0,
+     63.71,
+     false
+    ],
+    [
+     "W03",
+     "power",
+     "RMRC",
+     2.0,
+     7.61,
+     false
+    ],
+    [
+     "W04",
+     "power",
+     "Local",
+     1.0,
+     13.99,
+     false
+    ],
+    [
+     "W05",
+     "power",
+     "RMRC",
+     1.0,
+     19.94,
+     false
+    ],
+    [
+     "W06",
+     "power",
+     "Local",
+     1.0,
+     6.0,
+     true
+    ],
+    [
+     "W07",
+     "power",
+     "RMRC",
+     1.0,
+     3.96,
+     false
+    ],
+    [
+     "W08",
+     "power",
+     "RMRC",
+     1.0,
+     1.99,
+     false
+    ],
+    [
+     "W09",
+     "power",
+     "Amazon",
+     1.0,
+     2.0,
+     true
+    ],
+    [
+     "V01",
+     "avionics",
+     "RMRC",
+     1.0,
+     76.99,
+     false
+    ],
+    [
+     "V02",
+     "avionics",
+     "RMRC",
+     1.0,
+     23.08,
+     false
+    ],
+    [
+     "V03",
+     "avionics",
+     "RMRC",
+     1.0,
+     95.98,
+     false
+    ],
+    [
+     "V04",
+     "avionics",
+     "RMRC",
+     1.0,
+     19.76,
+     false
+    ],
+    [
+     "V05",
+     "avionics",
+     "RMRC",
+     1.0,
+     59.99,
+     false
+    ],
+    [
+     "M01",
+     "mechanisms",
+     "RMRC",
+     3.0,
+     13.99,
+     false
+    ],
+    [
+     "M02",
+     "mechanisms",
+     "RMRC",
+     1.0,
+     8.99,
+     false
+    ],
+    [
+     "R01",
+     "airframe",
+     "Local",
+     1.0,
+     70.0,
+     true
+    ],
+    [
+     "R02",
+     "airframe",
+     "RMRC",
+     1.0,
+     27.46,
+     false
+    ],
+    [
+     "R08",
+     "airframe",
+     "RMRC",
+     3.0,
+     12.26,
+     false
+    ],
+    [
+     "R09",
+     "airframe",
+     "RMRC",
+     1.0,
+     15.34,
+     true
+    ],
+    [
+     "R14",
+     "airframe",
+     "RMRC",
+     1.0,
+     0.0,
+     true
+    ],
+    [
+     "R10",
+     "airframe",
+     "RMRC",
+     1.0,
+     4.4,
+     false
+    ],
+    [
+     "R03",
+     "airframe",
+     "Prusa",
+     1.0,
+     23.99,
+     false
+    ],
+    [
+     "R05",
+     "airframe",
+     "Amazon",
+     1.0,
+     20.0,
+     true
+    ],
+    [
+     "R07",
+     "airframe",
+     "RMRC",
+     1.0,
+     13.98,
+     false
+    ],
+    [
+     "R06",
+     "airframe",
+     "Amazon",
+     1.0,
+     5.0,
+     true
+    ],
+    [
+     "G01",
+     "ground_test",
+     "RMRC",
+     1.0,
+     35.31,
+     false
+    ],
+    [
+     "G02",
+     "ground_test",
+     "Amazon",
+     1.0,
+     50.95,
+     true
+    ],
+    [
+     "G03",
+     "ground_test",
+     "Local",
+     1.0,
+     25.0,
+     true
+    ],
+    [
+     "G04",
+     "ground_test",
+     "Local",
+     1.0,
+     0.0,
+     true
+    ],
+    [
+     "G05",
+     "ground_test",
+     "Amazon",
+     1.0,
+     25.0,
+     true
+    ],
+    [
+     "B01",
+     "ground_test",
+     "RMRC",
+     1.0,
+     15.99,
+     false
+    ],
+    [
+     "B02",
+     "ground_test",
+     "RMRC",
+     1.0,
+     12.99,
+     false
+    ],
+    [
+     "B03",
+     "ground_test",
+     "Amazon",
+     1.0,
+     17.0,
+     true
+    ],
+    [
+     "B04",
+     "ground_test",
+     "Amazon",
+     1.0,
+     15.0,
+     true
+    ],
+    [
+     "B05",
+     "ground_test",
+     "SparkFun",
+     1.0,
+     0.0,
+     false
+    ],
+    [
+     "R11",
+     "airframe",
+     "Local",
+     1.0,
+     10.0,
+     true
+    ],
+    [
+     "R12",
+     "airframe",
+     "Amazon",
+     1.0,
+     15.0,
+     true
+    ],
+    [
+     "R13",
+     "airframe",
+     "Amazon",
+     1.0,
+     6.0,
+     true
+    ]
+   ],
+   "tax": 0.1025,
+   "faa": 5.0,
+   "ship": [
+    [
+     "RMRC",
+     15.0
+    ],
+    [
+     "TMotor",
+     10.71
+    ],
+    [
+     "Amazon",
+     10.71
+    ],
+    [
+     "Prusa",
+     10.71
+    ],
+    [
+     "SparkFun",
+     8.0
+    ],
+    [
+     "Local",
+     0.0
+    ]
+   ],
+   "bump": 0.3,
+   "tubes": [
+    "R02",
+    "R08",
+    "R09",
+    "R10"
+   ],
+   "budget": 2000.0
+  },
+  "outputs": {
+   "total_usd": 1779.4666375000002,
+   "total_30_usd": 1899.9539012500002,
+   "margin_usd": 220.53336249999984,
+   "margin_30_usd": 100.04609874999983,
+   "reserve_usd": 327.4303875,
+   "shipping_usd": 55.13
+  }
+ },
+ {
+  "id": "CALC-A-CRUISE-NEED",
+  "function": "cruise_need",
+  "input_values": {
+   "v": 17.0,
+   "g": 9.807,
+   "bank": 30.0,
+   "leg": 300.0,
+   "settle": 15.0,
+   "laps": 2.0,
+   "ga": 1.0,
+   "runin": 0.5
+  },
+  "outputs": {
+   "need_s": 204.55636934924914,
+   "radius_m": 51.041366716366426,
+   "lap_s": 54.15896267121404
+  }
+ },
+ {
+  "id": "CALC-A-CUTS",
+  "function": "cuts_required",
+  "input_values": {
+   "cuts": 41.6,
+   "target": 1.47,
+   "m": 1.469758376,
+   "gf": 1.1174
+  },
+  "outputs": {
+   "x_g": 41.38376230535167
+  }
+ },
+ {
+  "id": "CALC-A-ENDURANCE",
+  "function": "endurance",
+  "input_values": {
+   "apc_table": [
+    [
+     5000,
+     2.674,
+     20.063
+    ],
+    [
+     6000,
+     3.859,
+     34.224
+    ],
+    [
+     7000,
+     5.264,
+     53.842
+    ],
+    [
+     8000,
+     6.892,
+     79.836
+    ],
+    [
+     9000,
+     8.746,
+     113.149
+    ],
+    [
+     10000,
+     10.83,
+     154.758
+    ],
+    [
+     11000,
+     13.149,
+     205.68
+    ],
+    [
+     12000,
+     15.706,
+     266.981
+    ]
+   ],
+   "kv": 780.0,
+   "rm_ohm": 0.173,
+   "i0_a": 0.5,
+   "derate": 0.93,
+   "cant_deg": 17.0,
+   "download": 0.97,
+   "esc_eff": 0.98,
+   "ctrl_margin": 1.1,
+   "g": 9.807,
+   "m": 1.469758376,
+   "pack_ah": 2.3,
+   "pack_v": 14.8,
+   "floor_frac": 0.9,
+   "reserve_frac": 0.8,
+   "hover_s": 180.0,
+   "trans_wh_ref": 1.56,
+   "climb_wh_ref": 0.29,
+   "cruise_w_ref": 161.0,
+   "ref_mass_kg": 1.37,
+   "trans_exp": 1.5,
+   "cruise_exp": 0.58
+  },
+  "outputs": {
+   "cruise_s": 252.86675757476178,
+   "usable_wh": 24.5088,
+   "hover_w": 213.69836766196184,
+   "cruise_w": 167.69904696885024
+  }
+ },
+ {
+  "id": "CALC-A-ESC-REQ",
+  "function": "esc_required",
+  "input_values": {
+   "apc_table": [
+    [
+     5000,
+     2.674,
+     20.063
+    ],
+    [
+     6000,
+     3.859,
+     34.224
+    ],
+    [
+     7000,
+     5.264,
+     53.842
+    ],
+    [
+     8000,
+     6.892,
+     79.836
+    ],
+    [
+     9000,
+     8.746,
+     113.149
+    ],
+    [
+     10000,
+     10.83,
+     154.758
+    ],
+    [
+     11000,
+     13.149,
+     205.68
+    ],
+    [
+     12000,
+     15.706,
+     266.981
+    ]
+   ],
+   "kv": 780.0,
+   "rm_ohm": 0.173,
+   "i0_a": 0.5,
+   "rp_ohm": 0.03,
+   "derate": 0.93,
+   "cant_deg": 17.0,
+   "download": 0.97,
+   "spin_cap": 0.9,
+   "v_fresh": 16.8,
+   "g": 9.807,
+   "m": 1.5,
+   "factor": 1.25
+  },
+  "outputs": {
+   "i_a": 17.83305726953393
+  }
+ },
+ {
+  "id": "CALC-A-FENCE",
+  "function": "fence_bound",
+  "input_values": {
+   "leg": 150.0,
+   "r": 51.041366716366426,
+   "runout": 94.0
+  },
+  "outputs": {
+   "bound_m": 220.04136671636644
+  }
+ },
+ {
+  "id": "CALC-A-FLUTTER-ELEVON-COLD",
+  "function": "lowest",
+  "input_values": {
+   "x": [
+    44.0,
+    47.5,
+    53.5
+   ]
+  },
+  "outputs": {
+   "v_ms": 44.0
+  }
+ },
+ {
+  "id": "CALC-A-FLUTTER-ELEVON-HOT",
+  "function": "lowest",
+  "input_values": {
+   "x": [
+    37.5,
+    40.0,
+    44.0
+   ]
+  },
+  "outputs": {
+   "v_ms": 37.5
+  }
+ },
+ {
+  "id": "CALC-A-FLUTTER-ELEVON-NOM",
+  "function": "lowest",
+  "input_values": {
+   "x": [
+    41.0,
+    44.0,
+    49.0
+   ]
+  },
+  "outputs": {
+   "v_ms": 41.0
+  }
+ },
+ {
+  "id": "CALC-A-FLUTTER-LINE",
+  "function": "flutter_line",
+  "input_values": {
+   "k": 1.2,
+   "vd": 24.0
+  },
+  "outputs": {
+   "v_ms": 28.799999999999997
+  }
+ },
+ {
+  "id": "CALC-A-FLUTTER-WING",
+  "function": "wing_flutter_lowest",
+  "input_values": {
+   "base": [
+    46.2,
+    49.5,
+    56.3
+   ],
+   "nofin": [
+    33.7,
+    39.9,
+    46.5
+   ]
+  },
+  "outputs": {
+   "v_ms": 33.7
+  }
+ },
+ {
+  "id": "CALC-A-MASS-ITEM",
+  "function": "mass_itemised",
+  "input_values": {
+   "items": [
+    [
+     221.7,
+     0.2
+    ],
+    [
+     116.6,
+     0.2
+    ],
+    [
+     260,
+     0.05
+    ],
+    [
+     44.2,
+     0.05
+    ],
+    [
+     28.8,
+     0.1
+    ],
+    [
+     20.04,
+     0.2
+    ],
+    [
+     270,
+     0.0
+    ],
+    [
+     3.0,
+     0.2
+    ],
+    [
+     101.18,
+     0.2
+    ],
+    [
+     47.54,
+     0.05
+    ],
+    [
+     119.2,
+     0.2
+    ],
+    [
+     26.08,
+     0.2
+    ]
+   ],
+   "over": 0.032,
+   "gate": 1.47
+  },
+  "outputs": {
+   "m_kg": 1.4474069999999999
+  }
+ },
+ {
+  "id": "CALC-A-MASS-PRED",
+  "function": "mass_pred",
+  "input_values": {
+   "basic": 1.27324,
+   "gf": 1.1174,
+   "over": 0.032,
+   "gate": 1.47
+  },
+  "outputs": {
+   "m_kg": 1.469758376
+  }
+ },
+ {
+  "id": "CALC-A-MOTOR-I",
+  "function": "motor_current_capped",
+  "input_values": {
+   "apc_table": [
+    [
+     5000,
+     2.674,
+     20.063
+    ],
+    [
+     6000,
+     3.859,
+     34.224
+    ],
+    [
+     7000,
+     5.264,
+     53.842
+    ],
+    [
+     8000,
+     6.892,
+     79.836
+    ],
+    [
+     9000,
+     8.746,
+     113.149
+    ],
+    [
+     10000,
+     10.83,
+     154.758
+    ],
+    [
+     11000,
+     13.149,
+     205.68
+    ],
+    [
+     12000,
+     15.706,
+     266.981
+    ]
+   ],
+   "kv": 780.0,
+   "rm_ohm": 0.173,
+   "i0_a": 0.5,
+   "rp_ohm": 0.03,
+   "derate": 0.93,
+   "cant_deg": 17.0,
+   "download": 0.97,
+   "spin_cap": 0.9,
+   "v_fresh": 16.8,
+   "g": 9.807,
+   "m": 1.5,
+   "duty": 0.9
+  },
+  "outputs": {
+   "i_a": 12.077257782615476
+  }
+ },
+ {
+  "id": "CALC-A-PITCH-USE",
+  "function": "pitch_use",
+  "input_values": {
+   "peak": 11.5,
+   "stop": 20.0
+  },
+  "outputs": {
+   "use": 0.575
+  }
+ },
+ {
+  "id": "CALC-A-REVERSAL",
+  "function": "lowest",
+  "input_values": {
+   "x": [
+    37.0,
+    42.0
+   ]
+  },
+  "outputs": {
+   "v_ms": 37.0
+  }
+ },
+ {
+  "id": "CALC-A-SCHED",
+  "function": "schedule",
+  "input_values": {
+   "gates": [
+    2,
+    5,
+    4,
+    3,
+    5,
+    3
+   ],
+   "start": "2027-02-08",
+   "deadline": "2027-04-30",
+   "repair": 11,
+   "redo": 3,
+   "recess": [
+    "2027-03-22",
+    "2027-03-26"
+   ],
+   "booked": 4,
+   "p": 0.72,
+   "p_sens": 0.6,
+   "req_f01": "2027-02-18"
+  },
+  "outputs": {
+   "slack_days": 11,
+   "f01_slack_days": 10,
+   "f01_to_req_days": 10,
+   "slack_sens_days": -5
+  }
+ },
+ {
+  "id": "CALC-A-SERVO",
+  "function": "servo_factors",
+  "input_values": {
+   "stall_72_nm": 0.397,
+   "hinge_vd_nm": 0.151,
+   "preload_nm": 0.0093,
+   "damper_slew_nm": 0.0098,
+   "damper_slew_cold_nm": 0.0196,
+   "load_factor": 1.5,
+   "arm_mm": 12.0,
+   "horn_mm": 12.9
+  },
+  "outputs": {
+   "factor_25c": 1.555947481873408,
+   "factor_0c_equal_arms": 1.4711876968686306,
+   "factor_0c_real_arms": 1.5815267741337782,
+   "ratio_to_hinge": 2.6291390728476824
+  }
+ },
+ {
+  "id": "CALC-A-SM",
+  "function": "static_margin",
+  "input_values": {
+   "np": 40.7,
+   "cg": 21.368686971819926,
+   "c": 245.0
+  },
+  "outputs": {
+   "sm_pct": 7.890331848236766
+  }
+ },
+ {
+  "id": "CALC-A-STALL",
+  "function": "stall",
+  "input_values": {
+   "m": 1.47,
+   "g": 9.807,
+   "rho": 1.2,
+   "s": 0.22,
+   "cl": 0.75,
+   "k": 1.3
+  },
+  "outputs": {
+   "vs_ms": 12.067273549111702,
+   "k_vs_ms": 15.687455613845213
+  }
+ },
+ {
+  "id": "CALC-A-STRUCT",
+  "function": "structure_mass",
+  "input_values": {
+   "g": [
+    221.7,
+    108.2,
+    8.4,
+    26.1,
+    119.2
+   ]
+  },
+  "outputs": {
+   "g": 483.6
+  }
+ },
+ {
+  "id": "CALC-A-TW-GATE",
+  "function": "tw_at",
+  "input_values": {
+   "apc_table": [
+    [
+     5000,
+     2.674,
+     20.063
+    ],
+    [
+     6000,
+     3.859,
+     34.224
+    ],
+    [
+     7000,
+     5.264,
+     53.842
+    ],
+    [
+     8000,
+     6.892,
+     79.836
+    ],
+    [
+     9000,
+     8.746,
+     113.149
+    ],
+    [
+     10000,
+     10.83,
+     154.758
+    ],
+    [
+     11000,
+     13.149,
+     205.68
+    ],
+    [
+     12000,
+     15.706,
+     266.981
+    ]
+   ],
+   "kv": 780.0,
+   "rm_ohm": 0.173,
+   "i0_a": 0.5,
+   "rp_ohm": 0.03,
+   "derate": 0.93,
+   "cant_deg": 17.0,
+   "download": 0.97,
+   "hot_sag": 0.97,
+   "spin_cap": 0.9,
+   "v_fresh": 16.8,
+   "v_sag_rest": 14.92,
+   "g": 9.807,
+   "lo": 1.33,
+   "hi_frac": 0.8,
+   "m": 1.47
+  },
+  "outputs": {
+   "fresh_cap": 2.337818404831478,
+   "sag_cap": 1.8480776731155204,
+   "fresh_unc": 2.753924587388157,
+   "sag_unc": 2.1834913763675154,
+   "window_cap_pct": 5.286243188313403,
+   "window_unc_pct": 13.546348012344856,
+   "sag_cap_gf": 2716.674179479815
+  }
+ },
+ {
+  "id": "CALC-A-TW-PRED",
+  "function": "tw_at",
+  "input_values": {
+   "apc_table": [
+    [
+     5000,
+     2.674,
+     20.063
+    ],
+    [
+     6000,
+     3.859,
+     34.224
+    ],
+    [
+     7000,
+     5.264,
+     53.842
+    ],
+    [
+     8000,
+     6.892,
+     79.836
+    ],
+    [
+     9000,
+     8.746,
+     113.149
+    ],
+    [
+     10000,
+     10.83,
+     154.758
+    ],
+    [
+     11000,
+     13.149,
+     205.68
+    ],
+    [
+     12000,
+     15.706,
+     266.981
+    ]
+   ],
+   "kv": 780.0,
+   "rm_ohm": 0.173,
+   "i0_a": 0.5,
+   "rp_ohm": 0.03,
+   "derate": 0.93,
+   "cant_deg": 17.0,
+   "download": 0.97,
+   "hot_sag": 0.97,
+   "spin_cap": 0.9,
+   "v_fresh": 16.8,
+   "v_sag_rest": 14.92,
+   "g": 9.807,
+   "lo": 1.33,
+   "hi_frac": 0.8,
+   "m": 1.469758376
+  },
+  "outputs": {
+   "fresh_cap": 2.338202735374153,
+   "sag_cap": 1.8483814917070525,
+   "fresh_unc": 2.75437732457637,
+   "sag_unc": 2.1838503359958046,
+   "window_cap_pct": 5.294439363621859,
+   "window_unc_pct": 13.554416276561794,
+   "sag_cap_gf": 2716.674179479815
+  }
+ },
+ {
+  "id": "CALC-A-VIB-FC",
+  "function": "highest",
+  "input_values": {
+   "x": [
+    25.8,
+    27.1,
+    23.9,
+    23.9,
+    23.7,
+    23.7
+   ]
+  },
+  "outputs": {
+   "a_ms2": 27.1
+  }
+ },
+ {
+  "id": "CALC-A-VIB-GM",
+  "function": "lowest",
+  "input_values": {
+   "x": [
+    4.19,
+    4.25,
+    5.88,
+    2.37,
+    2.56,
+    3.32,
+    2.19,
+    2.23,
+    2.23
+   ]
+  },
+  "outputs": {
+   "gm": 2.19
+  }
+ },
+ {
+  "id": "CALC-A-VIB-GM-SHIFT",
+  "function": "gm_shifted",
+  "input_values": {
+   "lo": [
+    2.81,
+    2.68,
+    4.06,
+    2.16,
+    2.16,
+    2.3,
+    2.16,
+    2.16,
+    2.19
+   ],
+   "hi": [
+    6.06,
+    5.7,
+    2.89,
+    3.22,
+    3.88,
+    6.06,
+    2.23,
+    2.26,
+    2.26
+   ]
+  },
+  "outputs": {
+   "gm": 2.16
+  }
+ },
+ {
+  "id": "CALC-A-VIB-HIGH",
+  "function": "lowest",
+  "input_values": {
+   "x": [
+    432.0,
+    462.0,
+    524.0
+   ]
+  },
+  "outputs": {
+   "f_hz": 432.0
+  }
+ },
+ {
+  "id": "CALC-A-VIB-HIGH-LIMIT",
+  "function": "vib_high_limit",
+  "input_values": {
+   "f": 253.0,
+   "sep": 1.2
+  },
+  "outputs": {
+   "f_hz": 303.59999999999997
+  }
+ },
+ {
+  "id": "CALC-A-VIB-LOW",
+  "function": "highest",
+  "input_values": {
+   "x": [
+    63.0,
+    67.0,
+    77.0
+   ]
+  },
+  "outputs": {
+   "f_hz": 77.0
+  }
+ },
+ {
+  "id": "CALC-A-VIB-LOW-LIMIT",
+  "function": "vib_low_limit",
+  "input_values": {
+   "rpm": 6018.0,
+   "sep": 1.2
+  },
+  "outputs": {
+   "f_hz": 83.58333333333333
+  }
+ },
+ {
+  "id": "CALC-A-WINDOW-MASS",
+  "function": "window_mass",
+  "input_values": {
+   "apc_table": [
+    [
+     5000,
+     2.674,
+     20.063
+    ],
+    [
+     6000,
+     3.859,
+     34.224
+    ],
+    [
+     7000,
+     5.264,
+     53.842
+    ],
+    [
+     8000,
+     6.892,
+     79.836
+    ],
+    [
+     9000,
+     8.746,
+     113.149
+    ],
+    [
+     10000,
+     10.83,
+     154.758
+    ],
+    [
+     11000,
+     13.149,
+     205.68
+    ],
+    [
+     12000,
+     15.706,
+     266.981
+    ]
+   ],
+   "kv": 780.0,
+   "rm_ohm": 0.173,
+   "i0_a": 0.5,
+   "rp_ohm": 0.03,
+   "derate": 0.93,
+   "cant_deg": 17.0,
+   "download": 0.97,
+   "hot_sag": 0.97,
+   "spin_cap": 0.9,
+   "v_fresh": 16.8,
+   "v_sag_rest": 14.92,
+   "g": 9.807,
+   "lo": 1.33,
+   "hi_frac": 0.8,
+   "w": 5.0
+  },
+  "outputs": {
+   "m_kg": 1.4784621384924161
+  }
+ },
+ {
+  "id": "CALC-A-YAW",
+  "function": "yaw_authority",
+  "input_values": {
+   "cant_term_ref_nm": 0.201,
+   "arm_factor": 1.2,
+   "cant_deg": 17.0,
+   "cant_ref_deg": 14.0,
+   "q_model_nmm": 59.7,
+   "q_gain": 1.2
+  },
+  "outputs": {
+   "n_m": 0.363139266754344
+  }
+ }
+]
