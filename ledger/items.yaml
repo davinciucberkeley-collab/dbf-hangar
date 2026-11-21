@@ -3342,3 +3342,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: D25
+    kind: decision
+    text: 'U3.4 Step 3 acceptance amended: FAIL not higher and FAIL+WARN lower than baseline.json (T8 report-only excluded), 0 core/standards/schema files, kinds logged, no rating or threshold change; next run declares elevon mechanisms (0 g) then at most 2 sim_rest sweeps'
+    source: advisor W3-X; Tristan approval in chat 2026-11-21
+    owner: Tristan
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
