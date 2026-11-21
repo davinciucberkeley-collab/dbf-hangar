@@ -768,3 +768,47 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: D15
+    kind: decision
+    text: 'T6 mechanisms: MuJoCo simulation or analytic check?'
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-11-21'
+    units: []
+    evidence: 'default: analytic: follower angle = clamp(ratio × input, range_deg), trimesh interference, `needs: []` (same verdicts, no MuJoCo tuning)'
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D16
+    kind: decision
+    text: Should concept-A's claims react to `plane design set`?
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-11-21'
+    units: []
+    evidence: 'default: yes: U2.5b `PDL_MAP` maps params-A refs to PDL paths (unit scaling allowed, e.g. MTOW)'
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D17
+    kind: decision
+    text: DBF-Combined DECISIONS.md items on import
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-11-21'
+    units: []
+    evidence: 'default: DD-1, DD-13, DD-14 `superseded` (decided_in D9); the other 12 `open` for triage'
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D18
+    kind: decision
+    text: FEA staleness when concept-A is edited (U3.4)
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-11-21'
+    units: []
+    evidence: 'default: U2.3a hashes every input the load model reads (all masses, geometry, propulsion, attachments, root, VTOL method, all mesh bytes) instead of the whole plane.yaml; requirements, flight, description edits keep FEA fresh; physical edits correctly make it stale'
+    decided_in: ''
+    updated: '2026-11-20'

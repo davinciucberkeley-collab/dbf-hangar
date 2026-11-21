@@ -225,6 +225,10 @@ Each has a default the plan uses if nobody answers by the date. Recorded with `p
 | D12 | Does U1.3 migrate the committed designs (§7 U1.3 step 3)? | no: a designs-only PR after U1.3 migrates the designs whose results don't hash plane.yaml; concept-a stays at 0.4 until its FEA is re-run (fea.py hashes plane.yaml) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D13 | FEA part hashes include all of `standards/design-standards.yaml`, so any standards edit (e.g. U2.2 closing a pending source) makes every FEA result stale | U2.3 narrows `fea.part_hash` to the standards keys FEA reads; existing results re-hashed once from unchanged inputs | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D14 | May a design carry executable calcs (`designs/<id>/calcs.py`)? | no: calcs live only in `core/hangar/calcs/`; claims reference them by registered name; designs stay data | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
+| D15 | T6 mechanisms: MuJoCo simulation or analytic check? | analytic: follower angle = clamp(ratio × input, range_deg), trimesh interference, `needs: []` (same verdicts, no MuJoCo tuning) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
+| D16 | Should concept-A's claims react to `plane design set`? | yes: U2.5b `PDL_MAP` maps params-A refs to PDL paths (unit scaling allowed, e.g. MTOW) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
+| D17 | DBF-Combined DECISIONS.md items on import | DD-1, DD-13, DD-14 `superseded` (decided_in D9); the other 12 `open` for triage | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
+| D18 | FEA staleness when concept-A is edited (U3.4) | U2.3a hashes every input the load model reads (all masses, geometry, propulsion, attachments, root, VTOL method, all mesh bytes) instead of the whole plane.yaml; requirements, flight, description edits keep FEA fresh; physical edits correctly make it stale | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
