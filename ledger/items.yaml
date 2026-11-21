@@ -3221,3 +3221,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T23
+    kind: task
+    text: 'U2.3b polish: unused subprocess/sys imports and job.json written twice in fea.py; docs/mcp.md lists fea_run as hand-written; human SKIP output should start with SKIP:'
+    source: reviews/2026-11-21-w2.md U2.3b
+    owner: Tristan
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'

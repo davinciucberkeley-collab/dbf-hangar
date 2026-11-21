@@ -923,7 +923,7 @@ def test_scorecard_reports_fidelity(concept_a):
 **Interfaces:**
 - Produces: `class Adapter(Protocol): name: str; def available(self) -> tuple[bool, str]` (reason + fix command); `def run(self, design: Design, **params) -> OpResult`. `get_adapter(name) -> Adapter`. OpenCAE adapter prefers Vaibhav's `opencae` CLI if on PATH (contract agreed with him in this unit: `opencae solve --deck <inp> --json`), else the current in-repo runner.
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 def test_missing_tool_is_skip_with_fix(monkeypatch, concept_a):
@@ -939,10 +939,10 @@ def test_fea_results_identical_through_adapter(cantilever_fixture):   # same 1.0
     assert abs(call("fea.run", **cantilever_fixture).data["tip_disp_mm"] - 1.003) < 0.01
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement.** DaVinci: `available()` returns False with "D3 open: no API access configured" until D3 is answered; then `davinci.push` sends PDL + STEP files, `davinci.pull` brings a DaVinci build back as a `design.propose` PR.
-- [ ] **Step 4: Run** `pytest -q` → PASS; Vaibhav runs `plane fea run designs/concept-a --all` on his machine and pastes the summary in the PR (R9 first half)
-- [ ] **Step 5: Commit** `git commit -m "adapters: one contract for OpenCAE, MuJoCo, AeroSandbox, DaVinci; tools doctor"`
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement.** DaVinci: `available()` returns False with "D3 open: no API access configured" until D3 is answered; then `davinci.push` sends PDL + STEP files, `davinci.pull` brings a DaVinci build back as a `design.propose` PR.
+- [x] **Step 4: Run** `pytest -q` → PASS; Vaibhav runs `plane fea run designs/concept-a --all` on his machine and pastes the summary in the PR (R9 first half)
+- [x] **Step 5: Commit** `git commit -m "adapters: one contract for OpenCAE, MuJoCo, AeroSandbox, DaVinci; tools doctor"`
 
 ### Unit U2.4: Team-ops commands (R7, R14, R26, R27, R31, R38)
 
