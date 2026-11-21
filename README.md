@@ -1,26 +1,85 @@
 # DBF Hangar
 
-One place for the 161 Design-Build-Fly team's aircraft: one design language (PDL), one `plane` CLI for every task, one app to see it all, and one standard every design is checked against.
+DBF Hangar keeps the team's aircraft designs in one format (PDL), one command-line tool (`plane`) and one app (`plane studio`). Every design is checked against the same standards in `standards/`.
 
-Status: v1.0 in progress, due 2026-12-01.
+Status: v1.0 in progress, due 2026-12-01; live status in [PROGRESS.md](PROGRESS.md).
 
 ## Quick start
 
+Use Python 3.12, which is what CI tests. Run these from the repo root.
+
+Git Bash:
+
 ```bash
 python -m venv .venv
-source .venv/bin/activate        # Windows Git Bash: source .venv/Scripts/activate
-pip install -e ".[mcp,dev]"
+source .venv/Scripts/activate
+python -m pip install -e ".[mcp,dev]"
+```
+
+PowerShell:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -e ".[mcp,dev]"
+```
+
+Then check the install:
+
+```bash
 plane --version
 plane list
-plane validate designs/example-tailsitter-wing
-python -m pytest -q
+plane design validate designs/example-tailsitter-wing
+plane tools doctor            # each tool: ok, missing (with the fix) or planned
+python -m pytest -q -m "not slow" -n auto
 ```
+
+If `plane --version` does not show the version from this checkout, an older `plane` is earlier on PATH. Run `.venv/Scripts/plane` (Git Bash) or `.\.venv\Scripts\plane` (PowerShell) instead.
+
+## Common tasks
+
+Replace `<id>` with a design folder name from `plane list`. Most commands take `--json` for machine-readable output.
+
+- **Validate a design:** `plane design validate designs/<id>`
+- **Change a value:** `plane design set designs/<id> requirements.mtow_g --value 950 --why "reason"`. The key is a dotted path into `plane.yaml`; `--kind add|subtract|modify` (default `modify`) is logged in `CHANGELOG.yaml`.
+- **Compare two designs:** `plane design diff designs/<id-a> designs/<id-b>`
+- **Sweep one value:** `plane design sweep designs/<id> requirements.mtow_g --values 900 --values 1000` (each value runs on a scratch copy; the source is not touched)
+- **Propose a change as a PR:** `plane design propose designs/<id> "Short title"` (commits on a new branch, pushes it and opens a PR against main)
+- **Check claims:** `plane claim check designs/<id>` (the design needs a `claims.yaml` beside `plane.yaml`; see [docs/pdl/README.md](docs/pdl/README.md))
+- **Run FEA (stress check):** `plane fea run designs/<id> --all`, or `--part <component-id>` for one part. Needs OpenCAE. Without it the run reports SKIP with the fix command, which `plane tools doctor` also prints.
+- **Drop test:** `plane sim drop designs/<id>` (MuJoCo drop at the standard height: joint loads, rest, stability)
+- **Ledger summary:** `plane ledger report` (counts, overdue items, open prompts)
+- **Weekly update:** `plane update new 2026-11-23` (the week's Monday), then `plane update add 2026-11-23 <person> <link> "<what changed>"`, then `plane update publish 2026-11-23`
+- **Open Studio:** `plane studio` (local app; `--port`, `--no-browser`)
+- **List every operation:** `plane ops list`
+
+## How it fits together
+
+- A design is a folder `designs/<id>/` with a `plane.yaml` written in PDL (Plane Design Language). Designs are data, not code.
+- One operations layer (`core/hangar/ops/`) holds every operation. The `plane` CLI, the MCP server ([docs/mcp.md](docs/mcp.md)) and Plane Studio are all generated from it.
+- Checks run as gates T0 to T9 (`plane gate list`): schema, geometry, physics, aero, manufacturing, standards, mechanisms, integration, sourcing and claims.
+- Every threshold lives in `standards/*.yaml`, with a source or marked `pending`.
+- Claims in `claims.yaml` are recomputed from the design's values on every check. A claim with a negative margin fails T9; a claim with no calculation stays proposed.
+- The agent harness is `.claude/agents/` (roles), `harness/hooks/` wired through `.claude/settings.json`, and the prompt and decision ledger in `ledger/`.
+
+## Rules
+
+- Design changes and code changes go in separate PRs. CI rejects a PR that touches both `designs/` and `core/`, unless it has the `migration` label.
+- Change designs with `plane design set` and the other design commands. Do not edit code to change a design.
+- Thresholds go only in `standards/*.yaml`, each with a source or `pending`. Fix the design, not the threshold.
+- `PROGRESS.md` is generated. After ticking plan boxes, adding review verdicts or changing the ledger, run `plane progress --write` in the same commit. Do not edit it by hand.
+- Use the `plane` CLI or MCP for every operation. Do not reimplement validation, mass, export or analysis.
 
 ## Where things are
 
 - Plan and spec: [plans/2026-11-20-standardization.md](plans/2026-11-20-standardization.md)
-- Agent roles: [.claude/agents/](.claude/agents/)
-- Where each imported file came from: [PROVENANCE.md](PROVENANCE.md)
-- MCP server for agents: [docs/mcp.md](docs/mcp.md)
 - Roadmap for teammates (hand-written): [ROADMAP.md](ROADMAP.md)
 - Live status (generated by `plane progress --write`, do not edit): [PROGRESS.md](PROGRESS.md)
+- PDL language guide and reference: [docs/pdl/README.md](docs/pdl/README.md)
+- Standards with their sources: [standards/](standards/)
+- Research and sources: [knowledge/](knowledge/)
+- Design reviews: [reviews/](reviews/)
+- MCP server for agents: [docs/mcp.md](docs/mcp.md)
+- Agent roles: [.claude/agents/](.claude/agents/)
+- Where each imported file came from: [PROVENANCE.md](PROVENANCE.md)
+- Instructions for Claude in this repo: [CLAUDE.md](CLAUDE.md)
