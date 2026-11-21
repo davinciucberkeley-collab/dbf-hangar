@@ -7,7 +7,24 @@ from pathlib import Path
 
 GATED_TOOLS = ("Task", "Agent")
 BUILDER_ROLES = ("builder", "builder-plus")
-BRIEF_RE = re.compile(r"plans/\S+/briefs/\S+\.md")
+BRIEF_RE = re.compile(r"""[^\s"'`<>()]*plans/[^/\s"'`<>()]+/briefs/[^/\s"'`<>()]+\.md""")
+
+
+def brief_exists(prompt, root):
+    """True if the prompt names an existing file plans/<plan>/briefs/<name>.md under root.
+    Accepts repo-relative or absolute paths, with / or \\ separators."""
+    text = prompt.replace("\\", "/")
+    plans = (Path(root) / "plans").resolve()
+    for match in BRIEF_RE.finditer(text):
+        path = Path(match.group(0))
+        full = (path if path.is_absolute() else Path(root) / path).resolve()
+        try:
+            rel = full.relative_to(plans)
+        except ValueError:
+            continue
+        if len(rel.parts) == 3 and rel.parts[1] == "briefs" and full.is_file():
+            return True
+    return False
 
 
 def roster_names(root):
@@ -81,7 +98,7 @@ def run(event, root):
     if role in BUILDER_ROLES:
         prompt = tool_input.get("prompt", "") or ""
         lowered = prompt.lower()
-        ready = bool(BRIEF_RE.search(prompt)) or ("pass check" in lowered and "stop rule" in lowered)
+        ready = brief_exists(prompt, root) or ("pass check" in lowered and "stop rule" in lowered)
         if not ready:
             return block(
                 f"Brief for {role} is not builder-ready: give a brief file (plans/<plan>/briefs/*.md) "
