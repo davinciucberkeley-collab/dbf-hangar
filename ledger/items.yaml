@@ -812,3 +812,14 @@ items:
     evidence: 'default: U2.3a hashes every input the load model reads (all masses, geometry, propulsion, attachments, root, VTOL method, all mesh bytes) instead of the whole plane.yaml; requirements, flight, description edits keep FEA fresh; physical edits correctly make it stale'
     decided_in: ''
     updated: '2026-11-20'
+  - id: T11
+    kind: task
+    text: 'CI speed follow-ups: mark test_baseline::test_every_fail_or_skip... (62 s) slow; skip validate for PROGRESS.md/ledger-only commits; cancel-in-progress only on std/** not main'
+    source: reviews/2026-11-21-w1.md W1-P
+    owner: Tristan
+    status: open
+    due: '2026-11-24'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
