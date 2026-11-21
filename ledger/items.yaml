@@ -567,7 +567,7 @@ items:
     status: decided
     due: '2026-11-25'
     units: []
-    evidence: 'default: one value per key, chosen from sources found in U2.2, recorded as a decision'
+    evidence: 'keys landing_load_factor and hover_thrust_to_weight_min stay source: pending until the team picks; options and sources are in the note of each key in standards/design-standards.yaml and in knowledge/sources/std-SUMMARY.md (U2.2 scouts)'
     decided_in: ''
     updated: '2026-11-20'
   - id: D7

@@ -15,26 +15,26 @@ connection_types:
   kind: mechanical
   method: fastened
   spec: M3 SHCS into M3 brass heat-set insert
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-fasteners ("Are Our Heat-Set Insert Datasheets Wrong?", sections "Pull-out strength of the as-printed samples" and "Printing and drilling the test samples")'
 - id: CT-M3-SHCS-NYLOC
   kind: mechanical
   method: fastened
   spec: M3 SHCS through clearance hole, nyloc nut
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-fasteners (engineeringtoolbox, table "Metric Bolts - Coarse Threads - Proof Loads")'
 - id: CT-M3-SHCS-MOTOR
   kind: mechanical
   method: fastened
   spec: M3 SHCS into motor base tapped hole (manufacturer pattern)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-fasteners (engineeringtoolbox, table "Metric Bolts - Coarse Threads - Proof Loads")'
 - id: CT-M4-SHCS-NYLOC
   kind: mechanical
   method: fastened
   spec: M4 SHCS through clearance hole, nyloc nut
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-fasteners (engineeringtoolbox, table "Metric Bolts - Coarse Threads - Proof Loads")'
 - id: CT-PROP-ADAPTER
   kind: mechanical
   method: fastened
@@ -75,21 +75,21 @@ connection_types:
   kind: mechanical
   method: strapped
   spec: hook-and-loop strap + anti-slip pad
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-straps-hinges-thermal (13M Loop TDS-00412, Feb 2025, page 1, "Performance characteristics"; average, reference only)'
 - id: CT-HATCH-HL
   kind: mechanical
   method: strapped
   spec: 'hatch: printed tongue under a fixed lip at one end, hook-and-loop tab at the other (tool-free, no magnets)'
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-straps-hinges-thermal (13M Loop TDS-00412, Feb 2025, page 1, "Performance characteristics"; average, reference only)'
 - id: CT-TIE
   kind: mechanical
   method: strapped
   spec: cable tie to a tie point or round a tube
   structural: false
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-straps-hinges-thermal (Panduit PLT2S-M, DigiKey product attributes; distributor listing, loop tensile 50 lb)'
 - id: CT-STRAP-SLOT
   kind: mechanical
   method: slid
@@ -118,14 +118,14 @@ connection_types:
   kind: mechanical
   method: taped
   spec: double-sided foam tape (3M VHB-class) + one cable tie as secondary retention
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-adhesives-tapes (3M VHB Tapes Technical Data, Nov 2005, p. 4 and p. 5, 4910 family rows)'
 - id: CT-TAPE-TIE
   kind: mechanical
   method: taped
   spec: double-sided foam tape + two cable ties around pad and part; heat-sink face left uncovered
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-adhesives-tapes (3M VHB Tapes Technical Data, Nov 2005, p. 4 and p. 5, 4910 family rows)'
 - id: CT-GEL-PAD
   kind: mechanical
   method: taped
@@ -175,14 +175,14 @@ connection_types:
   kind: electrical
   method: connector
   spec: XT60 (battery main)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-electrical (Amass XT60-F spec 2025V0, "Electrical SPEC" table, p. 1)'
 - id: CT-XT90
   kind: electrical
   method: connector
   spec: XT90 (battery main, high current)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-electrical (Amass catalogue, "Specifications" table for XT90H / XT90HW / XT90S, p. 21)'
 - id: CT-AS150U
   kind: electrical
   method: connector
@@ -193,8 +193,8 @@ connection_types:
   kind: electrical
   method: connector
   spec: MR30 3-pin (motor phases at a removable joint)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-electrical (Amass catalogue, "Specifications" table for MR30 / MT30, p. 9)'
 - id: CT-BULLET-3
   kind: electrical
   method: connector
@@ -223,14 +223,14 @@ connection_types:
   kind: electrical
   method: connector
   spec: JST-GH 4-pin (UART or I2C)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-electrical (JST GH series page, specifications: rated current 1 A AC/DC)'
 - id: CT-JST-GH-6
   kind: electrical
   method: connector
   spec: JST-GH 6-pin (telemetry / GPS)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-electrical (JST GH series page, specifications: rated current 1 A AC/DC)'
 - id: CT-ELRS-RF
   kind: electrical
   method: radio

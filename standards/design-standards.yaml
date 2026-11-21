@@ -47,11 +47,11 @@ structure:
     value: 3.0
     rule: Every attachment must carry (mass outboard of the joint) x g x this factor (x ultimate_factor).
     source: pending
-    note: No source found for a 3 g landing factor (knowledge/sources/std-SUMMARY.md). STANAG 4703 uses 3.8 g limit manoeuvre load. Need STANAG Annex B or ASTM F3298 load tables.
+    note: "Options from knowledge/sources: 3.0 (no scout file gives it; current value); 2.67 (std-astm-f3298-load-tables, 14 CFR 23.473(g) comparison for crewed Part 23, not a UAS rule); 3.8 (std-stanag-4703-annex-b-landing, UL5.2 value used only as the threshold in Annex B 1.2, not a landing factor); n = nj + 2/3 with nj = (h + d/3) / (ef x d), the STANAG 4703 Annex B formula (std-stanag-4703-annex-b-landing, Annex B 1.1), computed from W/S and gear travel. Decision D6 (Tristan/Dylan) picks one value; until then this key stays pending."
   ultimate_factor:
     value: 1.5
     rule: Ultimate load = limit load x 1.5; joint ratings are ultimate ratings.
-    source: ASTM F3298-19 and STANAG 4703 (knowledge/sources/std-astm-f3298-lightweight-uas.md, std-stanag-4703-aep-83.md)
+    source: "ASTM F3298-19 and STANAG 4703 (knowledge/sources/std-astm-f3298-lightweight-uas.md, std-stanag-4703-aep-83.md); std-stanag-4703-annex-b-landing (Annex B 1.3, PDF p.68: ultimate 1.5 on the landing condition unless a drop test shows a lower factor); std-nasa-additive-factors (section 4.3 commentary, p. 40: NASA-STD-6030 does not set or change factors of safety)"
   fea_allowable_printed_petg_mpa:
     value: 12.6
     rule: A printed (3d-print-fdm) part passes the OpenCAE stress check when its peak von Mises stress away from the clamps, at ultimate load (limit x ultimate_factor), is at or below this value.
@@ -78,7 +78,7 @@ aero:
     value: 1.5
     rule: VTOL designs need total lift-motor thrust at least this multiple of weight.
     source: pending
-    note: Sources range 1.2-1.5 (forum citing a paper) to 2.0 (heuristic); ArduPilot/PX4 give none. Candidate change to 2.0 once the underlying paper is read.
+    note: "Options from knowledge/sources: 1.5 (std-vtol-thrust-to-weight-paper, top of the 1.2 to 1.5 range cited to Raymer, ref. 16, Introduction p. 166; current value); 1.2 (std-vtol-thrust-to-weight-paper, bottom of the same range); 1.05 floor not found in that paper (std-vtol-thrust-to-weight-paper); 2.0 (no scout file gives it). Decision D6 (Tristan/Dylan) picks one value; until then this key stays pending."
   hover_moment_reference_lever_m:
     value: 0.05
     rule: Reference lever arm for the hover moment check; imbalance is compared with total lift thrust times this lever.
