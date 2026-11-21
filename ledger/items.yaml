@@ -3419,3 +3419,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T39
+    kind: task
+    text: 'Studio follow-ups (U3.1b r2 review): PR panel renders below the 599-row validation list (put PR panel first or collapse validation); add a Validate click before Propose in test_propose_link_survives_real_git_side_effects; style the toast dismiss .icon outside dialogs'
+    source: reviews/2026-11-21-w3.md U3.1b round 2 (W3-R2)
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
