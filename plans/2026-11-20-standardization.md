@@ -298,6 +298,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D20 | Discipline gates: five (thermal and modal as skill items + T9 claims) or seven (those two SKIP-only)? | five, in U3.6, report-only until 12-08 (D7); cut first if W3 slips (§6a 0a) | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
 | D21 | May U3.6 add optional PDL fields the gates need (battery capacity, wire gauge, current ratings, control-surface data)? | yes: optional fields in a schema minor version, merged with a `migration:` commit line; concept-a's values set later with `plane design set` | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
 | D22 | After D7's 12-08 flip, does `T8.program.budget` SKIP ("no BOM") block acceptance of designs without a BOM? | no: the budget row stays report-only until a design has a `bom` block; then it blocks | Tristan | 12-07 | decided: default (standing rule, 2026-11-21) |
+| D23 | No unit owns `plane sim drop` (team task run_physics skips forever) | W2-S: a small `ops/sim.py` with `sim.drop` wrapping the existing drop simulation (no `sim.py` edits), after U2.3b merges; unskips run_physics and fixes its skip text | conductor | 11-22 | decided: default (standing rule, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -461,7 +462,7 @@ W1 runs in two layers, because the units depend on each other (§7 Interfaces):
 
 Speed rules (Tristan, 2026-11-21): the next wave's briefs are written while the current wave builds; each wave may use **one or two** fresh reviewers, each owning some units, and the second (or the only) reviewer checks the merge order of the whole wave; Tristan still decides open decisions and reads hard briefs before their builders launch (option 3 declined).
 
-Layers (from the briefs, 2026-11-21): **W2a** U2.3a (FEA hash, D13; first), U2.1 [hard] (after U1.5), U2.4a, U2.5a (after U1.5); **W2b** U2.3b adapters (after U2.3a), U2.2 (scouts any time; builder after U2.3a), U2.4b (after U2.4a), U2.5b [hard] (after U2.1 + U2.5a); **W2c** U2.4c (after U2.4b), U2.5c designs-only (after U2.5b). Briefs: `U2.1-gates`, `U2.2-standards`, `U2.3a-fea-hash`, `U2.3-adapters` (U2.3b), `U2.4-team-ops` / `-b` / `-c`, `U2.5a-calcs`, `U2.5-import-concept-a` (U2.5b), `U2.5c-designs`. Proposed later: U2.5d (concept-a plane.yaml re-import after an FEA re-run).
+Layers (from the briefs, 2026-11-21): **W2a** U2.3a (FEA hash, D13; first), U2.1 [hard] (after U1.5), U2.4a, U2.5a (after U1.5); **W2b** U2.3b adapters (after U2.3a), U2.2 (scouts any time; builder after U2.3a), U2.4b (after U2.4a), U2.5b [hard] (after U2.1 + U2.5a); **W2c** U2.4c (after U2.4b), U2.5c designs-only (after U2.5b), W2-S `sim.drop` op (after U2.3b, D23). Briefs: `U2.1-gates`, `U2.2-standards`, `U2.3a-fea-hash`, `U2.3-adapters` (U2.3b), `U2.4-team-ops` / `-b` / `-c`, `U2.5a-calcs`, `U2.5-import-concept-a` (U2.5b), `U2.5c-designs`. Proposed later: U2.5d (concept-a plane.yaml re-import after an FEA re-run).
 
 | Step | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
@@ -953,7 +954,7 @@ def test_fea_results_identical_through_adapter(cantilever_fixture):   # same 1.0
 **Interfaces:**
 - Produces: `idea.add(title, body, by) -> data.path`; `research.new(kind: Literal["source","diy"], slug) -> data.path`; `research.check(path) -> data.missing_fields`; `morph.add_option(dimension, id, name, source)`, `morph.coverage() -> data.cells: list[{dimension, option, designs}]`; `bom.verify(path, item, method, evidence, by)` (records a verification an agent did in Chrome — the CLI never scrapes); `bom.cost(path)`; `assembly.animate(path, out) -> glb with one animation track per sequence step`; `ledger.add/set/check/report/ingest`; `update.new(week)`, `update.add(week, person, link, changed)`, `update.publish(week) -> data.url` (static page + one line per person; posts the URL to the Drive doc through the connector when run by an agent with Drive access, else prints it).
 
-- [ ] **Step 1: Failing test** — one test per team task, each calling only ops:
+- [x] **Step 1: Failing test** — one test per team task, each calling only ops:
 
 ```python
 TEAM_TASKS = ["send_design", "change_parameter", "compare_designs", "run_stress", "run_physics",
@@ -965,10 +966,10 @@ def test_team_task_needs_no_code_edit(task, git_clean_repo):
     assert changed_files(git_clean_repo).isdisjoint(set(glob("core/**")))
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement** the ops and the 12 scripts.
-- [ ] **Step 4: Run** → PASS
-- [ ] **Step 5: Commit** `git commit -m "ops: idea, research, morph, bom, assembly, ledger, update — every team task via CLI"`
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement** the ops and the 12 scripts.
+- [x] **Step 4: Run** → PASS
+- [x] **Step 5: Commit** `git commit -m "ops: idea, research, morph, bom, assembly, ledger, update — every team task via CLI"`
 
 ### Unit U2.5: Import concept A, decisions and program constraints from DBF-Combined [hard]
 

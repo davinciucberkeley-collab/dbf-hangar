@@ -933,3 +933,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: D23
+    kind: decision
+    text: No unit owns `plane sim drop` (team task run_physics skips forever)
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-11-22'
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-20'

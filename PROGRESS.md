@@ -31,7 +31,7 @@
 | U2.1 | Gate registry + T6 Mechanisms, T7 Integration, T8 Sourcing [hard] | 5/5 | done | ACCEPT |
 | U2.2 | Standards database — close the pending sources (R10, R13) | 0/6 | not started | - |
 | U2.3 | Tool adapters — OpenCAE, MuJoCo, AeroSandbox, DaVinci [hard] | 0/5 | not started | - |
-| U2.4 | Team-ops commands (R7, R14, R26, R27, R31, R38) | 0/5 | not started | - |
+| U2.4 | Team-ops commands (R7, R14, R26, R27, R31, R38) | 5/5 | done | - |
 | U2.5 | Import concept A, decisions and program constraints from DBF-Combined [hard] | 0/5 | not started | - |
 
 ### W3 One surface, skills, proof
@@ -59,7 +59,7 @@
 | ruling | 35 | 5 | 0 | 0 | 0 | 40 |
 | task | 16 | 1 | 0 | 0 | 0 | 17 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
-| decision | 1 | 0 | 0 | 0 | 21 | 22 |
+| decision | 1 | 0 | 0 | 0 | 22 | 23 |
 
 ## Overdue
 
