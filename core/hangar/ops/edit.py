@@ -35,7 +35,7 @@ def _text(p: Path) -> str:
     return p.read_bytes().decode("utf-8")     # never read_text: it would turn CRLF into LF
 
 
-@op(name="design.set", summary="Change one scalar in plane.yaml (byte-preserving) and log it in CHANGELOG.yaml.",
+@op(name="design.set", summary="Change or add values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --also KEY=VALUE for more pairs in one atomic call) and log them in CHANGELOG.yaml.",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def set_op(path: str, key: str, *, value: str, why: str,
            kind: Literal["add", "subtract", "modify"] = "modify", also: list[str] = None) -> OpResult:
@@ -55,9 +55,11 @@ def set_op(path: str, key: str, *, value: str, why: str,
     working, entries = text, []
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     for k, raw in pairs:
-        new = pdledit.parse_scalar(raw)
+        new = pdledit.parse_value(raw) if kind == "add" else pdledit.parse_scalar(raw)
         data = yaml.safe_load(working)
         if pdledit.exists(data, k):
+            if isinstance(new, (list, dict)):
+                raise OpInputError(f"{k}: already set; a list or mapping cannot replace an existing value")
             old = pdledit.get_value(data, k)
             if len(pairs) == 1 and old == new and type(old) is type(new):
                 return OpResult(True, {"key": k, "old": old, "new": new, "changed": False}, [f"{k}: unchanged"])
