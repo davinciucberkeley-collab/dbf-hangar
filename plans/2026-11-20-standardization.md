@@ -1087,9 +1087,9 @@ Not a code unit; it tests everything above.
 - Create: `knowledge/procedures/<topic>.md` for the 19 §1c knowledge topics via the knowledge template; `PROVENANCE.md` rows (one per source role folder)
 - Test: `tests/test_skills.py` gains `test_discipline_skills_size_and_sections` (each ≤ 120 lines, six sections), `test_discipline_skill_items_cite_extract_rows`, `test_no_numbers_in_skills` already covers thresholds
 
-- [ ] **Step 1: Failing tests** (the three above)
-- [ ] **Step 2–4:** write skills from the `SKILL:` rows of the extracts, the scorecard sections from the `SCORECARD:` rows, knowledge entries from the `KNOW:` rows; run → PASS
-- [ ] **Step 5: Commit** `git commit -m "skills: six discipline review skills, scorecard evidence and sign-off, procedures (from DBF-Combined TEAM roles)"`
+- [x] **Step 1: Failing tests** (the three above)
+- [x] **Step 2–4:** write skills from the `SKILL:` rows of the extracts, the scorecard sections from the `SCORECARD:` rows, knowledge entries from the `KNOW:` rows; run → PASS
+- [x] **Step 5: Commit** `git commit -m "skills: six discipline review skills, scorecard evidence and sign-off, procedures (from DBF-Combined TEAM roles)"`
 
 ### Unit U3.6: Discipline gates [hard] (from §1c; not on the core path)
 
