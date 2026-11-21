@@ -5,7 +5,7 @@
 # (= the paper's), evaluated with model.js size() (node) and cad/params.json (which equals the defaults).
 # Frame: cad/tools/cad_export.py states "X aft from the nose, Y to starboard, Z up. Units mm" = the platform body
 # frame, so no transform is needed. Tilt sign/axis verified against cad/hover_tilt90/*.stl (README.md).
-schema_version: "0.2"
+schema_version: "1.0"
 id: tiltwing-cakir
 name: TiltWing tilt-wing VTOL (Cakir & Kurtulus 2022 study)
 authors: ["davinciucberkeley-collab/TiltWing (source repo, model after Cakir & Kurtulus 2022)", "converted for aircraft-platform by a tactician agent"]

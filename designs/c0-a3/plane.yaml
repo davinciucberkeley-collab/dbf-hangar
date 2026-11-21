@@ -1,7 +1,7 @@
 # A3: C0 (v0.4.0) with a printed nacelle and hub cap on each lift rotor to cut stopped-rotor drag. Derived from designs/c0-lift-cruise.
 # Baseline: variant numbers are from the v0.3.1 baseline (6.182 kg, 20 m/s) per DECISIONS.md; every part the variant did not change keeps C0 v0.4.0. See README.md.
 # Frame: same transform as C0 (body x aft from the pod nose, x = 600 - 1000 X_cad), see designs/c0-lift-cruise/README.md.
-schema_version: "0.3"
+schema_version: "1.0"
 id: c0-a3
 name: A3 aligned, faired stopped lift rotors (derived from C0 v0.4.0)
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "converted for aircraft-platform by a tactician agent"]
