@@ -905,12 +905,12 @@ def test_scorecard_reports_fidelity(concept_a):
 **Interfaces:**
 - Produces: `standards.pending -> data.items: list[{key, value, blocking: bool, candidates: list[source ids]}]`
 
-- [ ] **Step 1: Failing test**: `test_no_blocking_threshold_is_pending_without_a_decision()` — every `pending` key used by a blocking gate has a ledger decision (D5/D6) referencing it.
-- [ ] **Step 2: Run** → FAIL (2 keys)
-- [ ] **Step 3a: Knowledge import:** scouts turn DBF-Combined `redesign/config-study/` (43 concept cards, judging) and `docs/research/` into `knowledge/` entries via the templates, each linked to its morph-chart cell; `PROVENANCE.md` lists each source file.
-- [ ] **Step 3: Scouts** (Haiku, template `knowledge/TEMPLATE-source.md`, only sources actually opened): STANAG 4703 Annex B landing loads, ASTM F3298 load tables, the paper behind the 1.2–1.5 T/W forum claim, NASA-STD-5001 factors for printed parts, DBF rules for box size; `recon` ranks them and proposes values; conductor writes D6 with the options.
-- [ ] **Step 4: Run** → PASS
-- [ ] **Step 5: Commit** `git commit -m "standards: sources for landing factor, hover T/W, transport; pending list op"`
+- [x] **Step 1: Failing test**: `test_no_blocking_threshold_is_pending_without_a_decision()` — every `pending` key used by a blocking gate has a ledger decision (D5/D6) referencing it.
+- [x] **Step 2: Run** → FAIL (2 keys)
+- [x] **Step 3a: Knowledge import:** scouts turn DBF-Combined `redesign/config-study/` (43 concept cards, judging) and `docs/research/` into `knowledge/` entries via the templates, each linked to its morph-chart cell; `PROVENANCE.md` lists each source file.
+- [x] **Step 3: Scouts** (Haiku, template `knowledge/TEMPLATE-source.md`, only sources actually opened): STANAG 4703 Annex B landing loads, ASTM F3298 load tables, the paper behind the 1.2–1.5 T/W forum claim, NASA-STD-5001 factors for printed parts, DBF rules for box size; `recon` ranks them and proposes values; conductor writes D6 with the options.
+- [x] **Step 4: Run** → PASS
+- [x] **Step 5: Commit** `git commit -m "standards: sources for landing factor, hover T/W, transport; pending list op"`
 
 ### Unit U2.3: Tool adapters — OpenCAE, MuJoCo, AeroSandbox, DaVinci [hard]
 

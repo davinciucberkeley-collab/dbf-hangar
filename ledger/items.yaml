@@ -3177,3 +3177,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T19
+    kind: task
+    text: standards.pending ignores gate-thresholds.yaml (misses wire_clearance_mm, blocking 12-08); CT-M3-SHCS-INSERT should cite the PETG test; nyloc ratings use bolt proof load, overstating printed-plastic joints
+    source: reviews/2026-11-21-w2.md U2.2
+    owner: Tristan
+    status: open
+    due: '2026-12-05'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
