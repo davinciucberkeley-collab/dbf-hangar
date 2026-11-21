@@ -7,5 +7,6 @@ __pycache__/
 *.egg-info/
 build/
 .studio/
+.sweeps/
 viewer/data/
 opencae.local.json

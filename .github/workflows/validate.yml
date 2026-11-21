@@ -2,6 +2,7 @@ name: validate
 
 on:
   pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
   push:
     branches: [main, 'std/**']
 
@@ -24,6 +25,17 @@ jobs:
       - name: Unit tests
         shell: bash
         run: pytest -q
+      - name: Designs and code stay apart
+        shell: bash
+        env:
+          LABELS: ${{ join(github.event.pull_request.labels.*.name, ',') }}
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base="origin/${{ github.base_ref }}"
+          else
+            base="${{ github.event.before }}"
+          fi
+          python harness/ci/check_separation.py --base "$base" --labels "$LABELS"
       - name: PROGRESS.md is current
         shell: bash
         run: plane progress --check

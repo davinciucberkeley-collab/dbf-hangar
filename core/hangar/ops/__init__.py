@@ -203,11 +203,11 @@ def _convert(p: ParamSpec, v):
     raise ValueError
 
 
-def call(name: str, **params) -> OpResult:
+def call(name: str, /, **params) -> OpResult:
     return _call_spec(registry()[name], **params)
 
 
-def _call_spec(spec: OpSpec, **params) -> OpResult:
+def _call_spec(spec: OpSpec, /, **params) -> OpResult:
     declared = {p.name for p in spec.params}
     for k in params:
         if k not in declared:
