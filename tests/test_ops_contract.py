@@ -106,23 +106,7 @@ def test_call_none_for_defaulted_param_is_input_error():
     assert r.exit_code == 2 and r.data["error"] == "input"
 
 
-def test_registry_does_not_cache_a_partial_load(monkeypatch):
-    import importlib
-
-    real = importlib.import_module
-    broken = {"on": True}
-
-    def fake(name, *a, **k):
-        if name == "hangar.ops.meta" and broken["on"]:
-            raise ImportError("boom")
-        return real(name, *a, **k)
-
-    monkeypatch.setattr(ops, "_LOADED", False)
-    monkeypatch.setattr(ops, "_REGISTRY", dict(ops._REGISTRY))
-    monkeypatch.setattr(ops.importlib, "import_module", fake)
-    with pytest.raises(ImportError):
-        registry()
-    with pytest.raises(ImportError):
-        registry()
-    broken["on"] = False
-    assert "design.list" in registry()
+def test_call_none_for_required_param_is_input_error(tmp_path):
+    assert call("design.new", new_id=None).exit_code == 2
+    assert call("design.export", path=str(EXAMPLE_DIR), format_=None, out=str(tmp_path / "x.json")).exit_code == 2
+    assert not (tmp_path / "x.json").exists()

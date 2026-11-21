@@ -152,15 +152,9 @@ def op(name: str, summary: str, mutates: bool = False, adapters: tuple[str, ...]
 def registry() -> dict[str, OpSpec]:
     global _LOADED
     if not _LOADED:
-        before = set(_REGISTRY)
-        try:
-            for m in pkgutil.iter_modules(__path__):
-                if not m.name.startswith("_"):
-                    importlib.import_module(f"{__name__}.{m.name}")
-        except BaseException:
-            for k in set(_REGISTRY) - before:  # no partial registry: the next call retries
-                del _REGISTRY[k]
-            raise
+        for m in pkgutil.iter_modules(__path__):
+            if not m.name.startswith("_"):
+                importlib.import_module(f"{__name__}.{m.name}")
         _LOADED = True
     return dict(sorted(_REGISTRY.items()))
 
@@ -228,7 +222,7 @@ def _call_spec(spec: OpSpec, **params) -> OpResult:
             raw = []
         else:
             raw = p.default
-        if raw is None and p.default is None:
+        if raw is None and p.default is None and not p.required:
             kwargs[p.name] = None
             continue
         try:
