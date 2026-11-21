@@ -286,7 +286,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "3e901a361446021a",
+  "hash": "cf04e55c834c3cbf",
   "generated": "2026-11-17T07:10:54+00:00",
   "opencae_version": "0.2.0"
 }

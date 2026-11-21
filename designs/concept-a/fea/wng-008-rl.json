@@ -48,7 +48,7 @@
   "status": "SKIP",
   "worst_case": null,
   "design": "concept-a",
-  "hash": "924cebb68f8a6844",
+  "hash": "8ae637f029a1105e",
   "generated": "2026-11-17T07:13:27+00:00",
   "opencae_version": "0.2.0"
 }

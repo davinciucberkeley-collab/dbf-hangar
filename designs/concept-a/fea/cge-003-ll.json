@@ -124,7 +124,7 @@
   "status": "PASS",
   "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "e2f47a9663643c75",
+  "hash": "0f201165cd48b81f",
   "generated": "2026-11-17T07:07:12+00:00",
   "opencae_version": "0.2.0"
 }
