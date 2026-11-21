@@ -746,3 +746,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T9
+    kind: task
+    text: blender and sitl adapters ship as planned stubs (collide.py port, a_plant.py wrapper deferred; plan 6a cut order 5)
+    source: advisor W2-A (U2.3 brief)
+    owner: Tristan
+    status: open
+    due: '2026-11-29'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T10
+    kind: task
+    text: 'U2.1 follow-up: designs-only edit of example-tailsitter-wing to exercise T6-T8 (test_example_accepted changes then)'
+    source: advisor W2-A (U2.1 brief)
+    owner: Tristan
+    status: open
+    due: '2026-11-27'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
