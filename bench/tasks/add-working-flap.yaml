@@ -1,0 +1,53 @@
+id: add-working-flap
+start_design: bench/fixtures/flap-start
+allowed: ["plane *"]
+prompt: |
+  You are working in a folder that contains one design, designs/flap-start: a twin-motor flying wing with a left trailing-edge flap (component flap_l, joint attachments[flap-l]). The flap hinge is locked at 0 degrees.
+  Goal: make it a working flap. The hinge must be able to move at least 20 degrees up and at least 20 degrees down (a positive angle lifts the trailing edge), the poses `up` and `down` must be set to those angles, and tier 1 must still pass.
+  Read the joint with `plane design get designs/flap-start --key "attachments[flap-l]"`. Check with `plane design validate designs/flap-start --tier 1` (a few seconds).
+  Change data only with `plane design set designs/flap-start <key> --value=<number> --why "<reason>" --kind add|modify`. Keys look like `attachments[flap-l].articulation.range_deg[0]`.
+  Do not edit files any other way and do not touch anything outside designs/flap-start. Stop when the range and the poses are set and tier 1 passes.
+  Reply with one line: the range you set.
+grader:
+  - label: lower range limit is at most -20
+    op: design.get
+    args:
+      path: "{design}"
+      key: "attachments[flap-l].articulation.range_deg[0]"
+    path: "value"
+    expect: {le: -20}
+  - label: upper range limit is at least 20
+    op: design.get
+    args:
+      path: "{design}"
+      key: "attachments[flap-l].articulation.range_deg[1]"
+    path: "value"
+    expect: {ge: 20}
+  - label: pose up is at least 20
+    op: design.get
+    args:
+      path: "{design}"
+      key: "attachments[flap-l].articulation.poses.up"
+    path: "value"
+    expect: {ge: 20}
+  - label: pose down is at most -20
+    op: design.get
+    args:
+      path: "{design}"
+      key: "attachments[flap-l].articulation.poses.down"
+    path: "value"
+    expect: {le: -20}
+  - label: tier 1 passes
+    op: design.validate
+    args:
+      path: "{design}"
+      tier: "1"
+    path: "tiers[tier=1].status"
+    expect: {eq: PASS}
+  - label: T1.articulation passes
+    op: design.validate
+    args:
+      path: "{design}"
+      tier: "1"
+    path: "tiers[tier=1].results[check_id=T1.articulation].status"
+    expect: {eq: PASS}

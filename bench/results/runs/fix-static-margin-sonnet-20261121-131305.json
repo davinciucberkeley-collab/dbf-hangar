@@ -1,0 +1,33 @@
+{
+  "task": "fix-static-margin",
+  "agent": "design-engineer",
+  "model": "sonnet",
+  "passed": true,
+  "score": 1.0,
+  "tokens": 502079,
+  "minutes": 7.73,
+  "cost_usd": 0.2721951,
+  "timed_out": false,
+  "run_id": "fix-static-margin-sonnet-20261121-131305",
+  "workspace": "<tmp>/planebench-a4xuw1k2/fix-static-margin-sonnet-20261121-131305",
+  "date": "2026-11-21",
+  "rows": [
+    {
+      "label": "T3.static_margin passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    },
+    {
+      "label": "no tier-1 check fails",
+      "ok": true,
+      "detail": "'SKIP' ne 'FAIL'"
+    },
+    {
+      "label": "T3.mass passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    }
+  ],
+  "messages": [],
+  "final_text": "The static margin is now 13.1% MAC, inside the 5–15% target. T3.mass passes at 1301 g against the 1470 g MTOW, and no T1 check fails.\n\nI added 20 g of ballast to each fin tube (`fin-001-l` and `fin-001-r`, mass 27.1 → 47.1 g). Moving the battery aft made T1 interference and contact checks fail, so I reverted that move."
+}

@@ -1,0 +1,48 @@
+{
+  "task": "add-working-flap",
+  "agent": "design-engineer",
+  "model": "opus",
+  "passed": true,
+  "score": 1.0,
+  "tokens": 71348,
+  "minutes": 0.93,
+  "cost_usd": 0.12510880000000002,
+  "timed_out": false,
+  "run_id": "add-working-flap-opus-20261121-133141",
+  "workspace": "<tmp>/planebench-jt591363/add-working-flap-opus-20261121-133141",
+  "date": "2026-11-21",
+  "rows": [
+    {
+      "label": "lower range limit is at most -20",
+      "ok": true,
+      "detail": "-20 le -20"
+    },
+    {
+      "label": "upper range limit is at least 20",
+      "ok": true,
+      "detail": "20 ge 20"
+    },
+    {
+      "label": "pose up is at least 20",
+      "ok": true,
+      "detail": "20 ge 20"
+    },
+    {
+      "label": "pose down is at most -20",
+      "ok": true,
+      "detail": "-20 le -20"
+    },
+    {
+      "label": "tier 1 passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    },
+    {
+      "label": "T1.articulation passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    }
+  ],
+  "messages": [],
+  "final_text": "I set `range_deg` to [-20, 20] with poses up = +20 and down = -20, and tier 1 passes; the claim that +20° lifts the trailing edge assumes z points up, which I worked out from the hinge axis and flap position rather than confirming."
+}

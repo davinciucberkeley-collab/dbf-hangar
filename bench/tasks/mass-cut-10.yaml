@@ -1,0 +1,16 @@
+id: mass-cut-10
+start_design: designs/concept-a
+allowed: ["plane *"]
+prompt: |
+  You are working in a folder that contains one design, designs/concept-a. Goal: cut its total mass by at least 10 percent, from about 1261 g to 1135 g or less.
+  Measure with `plane design mass designs/concept-a` (field mass_g is the total; per_component lists every part).
+  Change data only with `plane design set designs/concept-a <key> --value <number> --why "<reason>" --kind subtract|modify`. A key addresses a component by id, for example `components[pwr-001].mass_g`. Give each change a physical reason in --why (smaller pack, thinner tube, fewer fasteners). Consider subtract and modify before add.
+  Do not edit files any other way and do not touch anything outside designs/concept-a. Stop when the total is at or below 1135 g, or after 15 changes.
+  Reply with one line: the new total mass in grams.
+grader:
+  - label: total mass is at most 90 percent of the start (1261.24 g)
+    op: design.mass
+    args:
+      path: "{design}"
+    path: "mass_g"
+    expect: {le: 1135.1}

@@ -1,0 +1,33 @@
+{
+  "task": "fix-static-margin",
+  "agent": "design-engineer",
+  "model": "opus",
+  "passed": true,
+  "score": 1.0,
+  "tokens": 1092563,
+  "minutes": 7.19,
+  "cost_usd": 0.9972293999999999,
+  "timed_out": false,
+  "run_id": "fix-static-margin-opus-20261121-132152",
+  "workspace": "<tmp>/planebench-kksi3cbg/fix-static-margin-opus-20261121-132152",
+  "date": "2026-11-21",
+  "rows": [
+    {
+      "label": "T3.static_margin passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    },
+    {
+      "label": "no tier-1 check fails",
+      "ok": true,
+      "detail": "'SKIP' ne 'FAIL'"
+    },
+    {
+      "label": "T3.mass passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    }
+  ],
+  "messages": [],
+  "final_text": "Static margin is now 12.5% of MAC (NP x=59 mm, CG x=30 mm; was 16.8%). All T1 checks pass, and T3.mass passes at 1308 g against the 1470 g MTOW (was 1261 g). This took two validate runs. The fix makes the two fin/landing-leg tubes `fin-001-l` and `fin-001-r` thicker-walled: 16x14 changed to 16x12 stock CFRP (same outer diameter), so each goes from 27.1 g to 50.6 g. Both changes are logged as `--kind modify`.\n\n- **Battery move failed:** I first slid the battery, strap, pad and tray 30 mm aft. That fixed the margin but broke T1: the tray is bonded to the hub (E-CGE-18) and sits in a slot in the wing foam, so it collided with the wing and avionics. I reverted all four of those changes.\n- **Mass went up:** the only change that worked adds 47 g at the tail. It's labelled modify because it's a real tube swap, but it acts like ballast. Each tube's `description` still says \"16x14\", because `design set` only takes numbers here.\n- **New tier-2 failure:** the drop test now also fails at E-MEC-05 (peak 1.3 N against a 0.7 N rating). It wasn't failing before and is probably caused by the heavier legs. The two drop failures that already existed (E-WNG-20/21) and the tip-over failure are still there.\n\nI didn't run `design propose`, so there's no PR yet.\n\nNew static margin: 12.5% of MAC."
+}

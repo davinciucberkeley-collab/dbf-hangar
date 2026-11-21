@@ -1,0 +1,48 @@
+{
+  "task": "add-working-flap",
+  "agent": "design-engineer",
+  "model": "haiku",
+  "passed": true,
+  "score": 1.0,
+  "tokens": 36867,
+  "minutes": 0.68,
+  "cost_usd": 0.00268317,
+  "timed_out": false,
+  "run_id": "add-working-flap-haiku-20261121-133013",
+  "workspace": "<tmp>/planebench-zuvswsdd/add-working-flap-haiku-20261121-133013",
+  "date": "2026-11-21",
+  "rows": [
+    {
+      "label": "lower range limit is at most -20",
+      "ok": true,
+      "detail": "-20 le -20"
+    },
+    {
+      "label": "upper range limit is at least 20",
+      "ok": true,
+      "detail": "20 ge 20"
+    },
+    {
+      "label": "pose up is at least 20",
+      "ok": true,
+      "detail": "20 ge 20"
+    },
+    {
+      "label": "pose down is at most -20",
+      "ok": true,
+      "detail": "-20 le -20"
+    },
+    {
+      "label": "tier 1 passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    },
+    {
+      "label": "T1.articulation passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    }
+  ],
+  "messages": [],
+  "final_text": "Range set to [-20, 20] degrees (up +20, down -20), and tier 1 passes with no failures."
+}

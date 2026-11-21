@@ -1,0 +1,48 @@
+{
+  "task": "add-working-flap",
+  "agent": "design-engineer",
+  "model": "sonnet",
+  "passed": true,
+  "score": 1.0,
+  "tokens": 68109,
+  "minutes": 0.63,
+  "cost_usd": 0.050937,
+  "timed_out": false,
+  "run_id": "add-working-flap-sonnet-20261121-133058",
+  "workspace": "<tmp>/planebench-ifi8tgdf/add-working-flap-sonnet-20261121-133058",
+  "date": "2026-11-21",
+  "rows": [
+    {
+      "label": "lower range limit is at most -20",
+      "ok": true,
+      "detail": "-25 le -20"
+    },
+    {
+      "label": "upper range limit is at least 20",
+      "ok": true,
+      "detail": "25 ge 20"
+    },
+    {
+      "label": "pose up is at least 20",
+      "ok": true,
+      "detail": "25 ge 20"
+    },
+    {
+      "label": "pose down is at most -20",
+      "ok": true,
+      "detail": "-25 le -20"
+    },
+    {
+      "label": "tier 1 passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    },
+    {
+      "label": "T1.articulation passes",
+      "ok": true,
+      "detail": "'PASS' eq 'PASS'"
+    }
+  ],
+  "messages": [],
+  "final_text": "I set `flap-l` to a range of −25° to +25°, with `up` = 25° and `down` = −25°, and tier 1 passes. I didn't check which way a positive angle actually moves the flap; I took your statement that positive lifts the trailing edge."
+}
