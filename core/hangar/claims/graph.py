@@ -246,7 +246,7 @@ class ClaimGraph:
             if unconfirmed is None:
                 try:
                     out = fn(**kwargs)
-                    out = out if isinstance(out, dict) else {"value": out}
+                    out = out if isinstance(out, dict) else {c["output"]: out}
                     if c["output"] not in out:
                         failed = f"calculation {calc['id']} has no output {c['output']!r}"
                         now = None
