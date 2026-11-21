@@ -3276,3 +3276,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: D24
+    kind: decision
+    text: "U3.4 acceptance: Tristan runs Vaibhav's Windows FEA check and Dillon's no-terminal Studio iteration himself, logged as done by Tristan; R9 stays open until Dillon repeats one Studio iteration; Tristan approves concept-a PRs (R25) until Dillon is available"
+    source: Tristan, conductor session 2026-11-21
+    owner: Tristan
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
