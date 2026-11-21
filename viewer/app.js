@@ -1,40 +1,17 @@
-// Viewer: reads only generated data (data/index.json + per-design files). No per-design code.
+// Viewer: one app (Plane Studio). Reads only generated data (data/index.json + per-design files).
+// Each mode is modes/<id>.js; modes/edit.js is loaded only when index.json has "studio": true.
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { h, $, fmt, getJSON, cache, TIERS } from './lib.js';
 
 const DATA = 'data/';
-const TIERS = [0, 1, 2, 3, 4, 5];
-const KEY_NUMBERS = [
-  ['static_margin', 'Static margin', 3], ['thrust_to_weight', 'Hover thrust/weight', 2],
-  ['stall_mps', 'Stall speed (m/s)', 2], ['wing_loading_g_dm2', 'Wing loading (g/dm²)', 1],
-];
-const STATUS_ORDER = { FAIL: 0, WARN: 1, PASS: 2, SKIP: 3 };
+const MODES = ['designs', 'compare', 'physics', 'stress', 'updates', 'ledger'];
+const LABELS = { designs: 'Designs', compare: 'Compare', physics: 'Physics', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
+const HINTS = { designs: 'Click a part to highlight it. Drag to orbit, scroll to zoom.', compare: 'Click designs in the list to fill slots A and B alternately.' };
 
-const state = { index: null, selected: null, mode: 'inspect', slotA: null, slotB: null, nextSlot: 'a', text: '', vtol: '' };
-const cache = { json: new Map(), glb: new Map() };
-
-// ---------- helpers ----------
-function h(tag, attrs = {}, ...kids) {
-  const el = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (v == null || v === false) continue;
-    if (k === 'class') el.className = v;
-    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
-    else el.setAttribute(k, v === true ? '' : v);
-  }
-  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
-  return el;
-}
-const $ = (id) => document.getElementById(id);
+const state = { index: null, selected: null, mode: 'designs', slotA: null, slotB: null, nextSlot: 'a', text: '', vtol: '' };
 const byId = (id) => state.index?.designs.find((d) => d.id === id);
-const fmt = (v, n = 1) => (v == null || Number.isNaN(v) ? '–' : Number(v).toFixed(n));
-function getJSON(path) {
-  if (!cache.json.has(path)) {
-    cache.json.set(path, fetch(DATA + path).then((r) => { if (!r.ok) throw new Error(`${path}: HTTP ${r.status}`); return r.json(); }));
-  }
-  return cache.json.get(path);
-}
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const mmToScene = ([x, y, z]) => new THREE.Vector3(x / 1000, z / 1000, -y / 1000); // body z-up mm -> glTF y-up m
 
@@ -192,14 +169,15 @@ function loadGLB(file) {
   return cache.glb.get(file);
 }
 
+
 // ---------- views ----------
-let vpMain, vpA, vpB;
+let vpMain, vpA, vpB, vpPhys;
 let highlightIds = new Set();
+const allVps = () => [vpMain, vpA, vpB, vpPhys];
 
 function setHighlight(ids) {
   highlightIds = new Set(ids);
-  const vps = state.mode === 'inspect' ? [vpMain] : [vpA, vpB];
-  vps.forEach((v) => v?.highlight(highlightIds));
+  (state.mode === 'designs' ? [vpMain] : state.mode === 'compare' ? [vpA, vpB] : []).forEach((v) => v?.highlight(highlightIds));
   document.querySelectorAll('.result.has-pair').forEach((r) => {
     const pair = r.dataset.pair.split('|');
     r.classList.toggle('active', pair.length === highlightIds.size && pair.every((p) => highlightIds.has(p)));
@@ -223,7 +201,7 @@ function renderSidebar() {
   $('count').textContent = `${shown.length} of ${all.length}`;
   if (!shown.length) list.append(h('li', { class: 'empty' }, 'No designs match.'));
   for (const d of shown) {
-    const sel = state.mode === 'inspect' ? state.selected === d.id : (state.slotA === d.id || state.slotB === d.id);
+    const sel = state.mode !== 'compare' ? state.selected === d.id : (state.slotA === d.id || state.slotB === d.id);
     const badge = d.pending ? h('span', { class: 'badge pending' }, 'checking…') : d.error ? h('span', { class: 'badge error' }, 'error')
       : h('span', { class: 'badge ' + (d.accepted ? 'accepted' : 'rejected') }, d.accepted ? 'accepted' : 'rejected');
     const tags = Object.entries(d.morphology || {}).map(([k, v]) => h('span', { class: 'tag', title: k }, String(v)));
@@ -237,128 +215,53 @@ function renderSidebar() {
   }
 }
 
+
 function choose(id) {
   if (state.mode === 'compare') { assign(state.nextSlot, id); return; }
-  state.selected = id; syncHash(); renderSidebar(); showInspect();
+  state.selected = id; syncHash(); renderSidebar(); renderMode();
 }
 function assign(slot, id) {
   state['slot' + slot.toUpperCase()] = id; state.nextSlot = slot === 'a' ? 'b' : 'a';
-  syncHash(); renderSidebar(); showCompare();
+  syncHash(); renderSidebar(); renderMode();
 }
 
-async function showInspect() {
-  const d = byId(state.selected);
-  setHighlight([]);
-  await vpMain.show(d);
-  renderScorecard(d);
-}
-
-async function renderScorecard(d) {
-  const box = $('scorecard'); box.replaceChildren();
-  if (!d) { box.append(h('p', { class: 'muted' }, 'Select a design from the list.')); return; }
-  box.append(h('h2', {}, d.name || d.id), h('div', { class: 'sub id' }, `${d.id} · ${d.status}`));
-  window.planeViewer?.onScorecard?.(box, d);
-  if (d.pending) { box.append(h('p', { class: 'muted' }, 'Running the checks on this design. This can take up to a minute for a detailed model.')); return; }
-  if (d.error) { box.append(h('div', { class: 'errbox' }, d.error)); return; }
-  box.append(h('div', { class: 'summary' },
-    h('span', { class: 'badge ' + (d.accepted ? 'accepted' : 'rejected') }, d.accepted ? 'accepted' : 'rejected'),
-    h('span', { class: 'pills' }, TIERS.map((t) => h('span', { class: 'pill ' + (d.tiers?.[t] ?? 'NONE') }, 'T' + t)))),
-    h('div', { class: 'kv' }, h('span', {}, h('b', {}, 'mass '), `${fmt(d.mass_g, 0)} g`),
-      h('span', {}, h('b', {}, 'cg '), (d.cg_mm || []).map((v) => fmt(v, 0)).join(', ') + ' mm')));
-  let sc;
-  try { sc = await getJSON(d.scorecard); } catch (e) { box.append(h('div', { class: 'errbox' }, 'Scorecard unavailable: ' + e.message)); return; }
-  if (state.selected !== d.id) return; // user moved on
-  for (const t of sc.tiers) {
-    const results = [...t.results].sort((a, b) => (STATUS_ORDER[a.status] ?? 9) - (STATUS_ORDER[b.status] ?? 9));
-    const nfail = results.filter((r) => r.status === 'FAIL').length;
-    const det = h('details', { class: 'tier' },
-      h('summary', {}, h('span', { class: 'pill ' + t.status }, 'T' + t.tier), h('span', { class: 'tname' }, t.name),
-        nfail ? h('span', { class: 'muted small' }, `${nfail} failing`) : h('span', { class: 'muted small' }, `${results.length} checks`),
-        h('span', { class: 'badge ' + t.status }, t.status)),
-      h('div', { class: 'results' }, results.map(resultRow)));
-    if (t.status === 'FAIL' || t.status === 'WARN') det.open = true;
-    box.append(det);
+// ---------- modes / hash / init ----------
+async function renderMode() {
+  const id = state.mode, el = $('mode-' + id);
+  delete el.dataset.ready;
+  try {
+    const ctx = { state, el, h, fmt, getJSON, byId, vp: { main: vpMain, a: vpA, b: vpB, phys: vpPhys }, setHighlight, studio: state.index.studio === true };
+    await (await import('./modes/' + id + '.js')).default(ctx);
+  } catch (e) {
+    console.warn(e);
+    el.append(h('div', { class: 'errbox' }, `${id}: ${e.message}`)); el.dataset.ready = 'error';
   }
 }
-function resultRow(r) {
-  const pair = Array.isArray(r.data?.pair) && r.data.pair.length === 2 ? r.data.pair : null;
-  return h('div', { class: `result ${r.status}` + (pair ? ' has-pair' : ''), 'data-pair': pair ? pair.join('|') : null,
-    tabindex: pair ? 0 : null, role: pair ? 'button' : null,
-    onclick: pair ? () => setHighlight(pair) : null, onkeydown: pair ? (e) => { if (e.key === 'Enter') setHighlight(pair); } : null },
-    h('div', { class: 'top' }, h('span', { class: 'badge ' + r.status }, r.status), h('span', { class: 'cid' }, r.check_id),
-      pair ? h('span', { class: 'pairhint' }, `show ${pair.join(' + ')}`) : null),
-    h('div', { class: 'msg' }, r.message), r.criterion ? h('div', { class: 'crit' }, r.criterion) : null);
-}
-
-// ---------- compare ----------
-function findNumber(sc, key) {
-  for (const t of sc?.tiers || []) for (const r of t.results) if (r.data && r.data[key] != null) return r.data[key];
-  return null;
-}
-async function showCompare() {
-  const [a, b] = [byId(state.slotA), byId(state.slotB)];
-  for (const [sel, id] of [[$('sel-a'), state.slotA], [$('sel-b'), state.slotB]]) sel.value = id || '';
-  setHighlight([]);
-  vpA.show(a); vpB.show(b);
-  const sc = async (d) => (d && d.scorecard && !d.error ? getJSON(d.scorecard).catch(() => null) : null);
-  const [sa, sb] = await Promise.all([sc(a), sc(b)]);
-  if (a?.id !== state.slotA || b?.id !== state.slotB) return;
-  const box = $('compare-table'); box.replaceChildren();
-  if (!a || !b) { box.append(h('p', { class: 'muted' }, 'Pick two designs (use A / B buttons in the list, or the menus above).')); return; }
-  const rows = [];
-  const sect = (t) => rows.push(h('tr', { class: 'sect' }, h('td', { colspan: 4 }, t)));
-  const row = (label, va, vb, { num = null, digits = 1, unit = '' } = {}) => {
-    let delta = '';
-    if (num && typeof va === 'number' && typeof vb === 'number') {
-      const dv = vb - va; delta = h('span', { class: 'delta ' + (dv > 0 ? 'pos' : dv < 0 ? 'neg' : '') }, (dv > 0 ? '+' : '') + fmt(dv, digits) + unit);
-    }
-    const cell = (v) => (typeof v === 'number' ? fmt(v, digits) + unit : v ?? '–');
-    rows.push(h('tr', {}, h('th', {}, label), h('td', { class: 'num' }, cell(va)), h('td', { class: 'num' }, cell(vb)), h('td', { class: 'num' }, delta)));
-  };
-  const pill = (s) => h('span', { class: 'pill ' + (s ?? 'NONE') }, s ?? '–');
-  const pillRow = (label, sa_, sb_) => rows.push(h('tr', {}, h('th', {}, label), h('td', {}, pill(sa_)), h('td', {}, pill(sb_)), h('td', {})));
-  sect('Summary');
-  row('Name', a.name, b.name); row('Status', a.status, b.status);
-  pillRow('Verdict', a.error ? 'ERROR' : a.accepted ? 'PASS' : 'FAIL', b.error ? 'ERROR' : b.accepted ? 'PASS' : 'FAIL');
-  row('Mass (g)', a.mass_g, b.mass_g, { num: true, digits: 1 });
-  ['x', 'y', 'z'].forEach((ax, i) => row(`CG ${ax} (mm)`, a.cg_mm?.[i], b.cg_mm?.[i], { num: true, digits: 1 }));
-  sect('Tiers');
-  TIERS.forEach((t) => pillRow(`Tier ${t}`, a.tiers?.[t], b.tiers?.[t]));
-  sect('Key numbers');
-  for (const [k, label, dg] of KEY_NUMBERS) row(label, findNumber(sa, k), findNumber(sb, k), { num: true, digits: dg });
-  box.append(h('table', { class: 'cmp' }, h('thead', {}, h('tr', {}, h('th', {}, ''), h('th', {}, 'A'), h('th', {}, 'B'), h('th', {}, 'Δ (B − A)'))), h('tbody', {}, rows)));
-  if (a.error || b.error) box.append(h('div', { class: 'errbox', style: 'margin-top:10px' }, [a, b].filter((d) => d.error).map((d) => `${d.id}: ${d.error}`).join('\n')));
-}
-
-// ---------- mode / hash / init ----------
-function setMode(mode) {
-  state.mode = mode;
-  document.body.classList.toggle('compare-mode', mode === 'compare');
-  $('mode-inspect').classList.toggle('active', mode === 'inspect');
-  $('mode-compare').classList.toggle('active', mode === 'compare');
-  $('inspect').hidden = mode !== 'inspect'; $('compare').hidden = mode !== 'compare';
-  $('mode-hint').textContent = mode === 'compare' ? 'Click designs in the list to fill slots A and B alternately.' : 'Click a part to highlight it. Drag to orbit, scroll to zoom.';
-  if (mode === 'compare') {
+function setMode(id) {
+  state.mode = id; document.body.dataset.mode = id;
+  for (const m of MODES) $('mode-' + m).hidden = m !== id;
+  document.querySelectorAll('#modes button').forEach((b) => b.classList.toggle('active', b.dataset.mode === id));
+  $('mode-hint').textContent = HINTS[id] || '';
+  if (id === 'compare') {
     if (!state.slotA) state.slotA = state.selected || state.index.designs[0]?.id;
     if (!state.slotB) state.slotB = state.index.designs.find((d) => d.id !== state.slotA)?.id ?? null;
   }
   syncHash(); renderSidebar();
-  requestAnimationFrame(() => { [vpMain, vpA, vpB].forEach((v) => v.resize()); });
-  mode === 'compare' ? showCompare() : showInspect();
+  requestAnimationFrame(() => allVps().forEach((v) => v.resize()));
+  renderMode();
 }
 function syncHash() {
-  const p = new URLSearchParams();
+  const p = new URLSearchParams({ m: state.mode });
   if (state.mode === 'compare') { p.set('a', state.slotA || ''); p.set('b', state.slotB || ''); } else if (state.selected) p.set('d', state.selected);
   try { history.replaceState(null, '', '#' + p.toString()); } catch { /* ignore */ }
 }
 
 async function init() {
   vpMain = new Viewport($('vp-main'), { onPick });
-  vpA = new Viewport($('vp-a'), { onPick }); vpB = new Viewport($('vp-b'), { onPick });
-  (function loop() { requestAnimationFrame(loop); [vpMain, vpA, vpB].forEach((v) => v.tick()); })();
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => setTimeout(() => [vpMain, vpA, vpB].forEach((v) => v.applyTheme()), 0));
-  $('mode-inspect').onclick = () => setMode('inspect');
-  $('mode-compare').onclick = () => setMode('compare');
+  vpA = new Viewport($('vp-a'), { onPick }); vpB = new Viewport($('vp-b'), { onPick }); vpPhys = new Viewport($('vp-phys'));
+  (function loop() { requestAnimationFrame(loop); allVps().forEach((v) => v.tick()); })();
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => setTimeout(() => allVps().forEach((v) => v.applyTheme()), 0));
+  $('modes').append(...MODES.map((m) => h('button', { 'data-mode': m, role: 'tab', onclick: () => setMode(m) }, LABELS[m])));
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };
   $('filter-vtol').onchange = (e) => { state.vtol = e.target.value; renderSidebar(); };
   $('sel-a').onchange = (e) => assign('a', e.target.value); $('sel-b').onchange = (e) => assign('b', e.target.value);
@@ -370,23 +273,22 @@ async function init() {
     if (!Array.isArray(state.index.designs)) throw new Error('index.json has no "designs" array');
   } catch (e) {
     $('design-list').append(h('li', { class: 'empty' }, `Could not load data/index.json (${e.message}). Run: plane build-index --out viewer/data`));
-    $('scorecard').append(h('p', { class: 'muted' }, 'No data.'));
     vpMain.message('No data loaded', true);
     return;
   }
   const methods = [...new Set(state.index.designs.map((d) => d.morphology?.vtol_method).filter(Boolean))].sort();
   $('filter-vtol').append(...methods.map((m) => h('option', { value: m }, m)));
-  $('generated').textContent = state.index.generated ? 'Data generated ' + state.index.generated : '';
+  $('generated').textContent = state.index.generated_at ? 'Data generated ' + state.index.generated_at : '';
   for (const sel of [$('sel-a'), $('sel-b')]) sel.append(h('option', { value: '' }, '— none —'), ...state.index.designs.map((d) => h('option', { value: d.id }, d.name || d.id)));
 
   const p = new URLSearchParams(location.hash.slice(1));
   state.selected = byId(p.get('d')) ? p.get('d') : state.index.designs.find((d) => !d.error)?.id ?? state.index.designs[0]?.id ?? null;
-  if (p.has('a') || p.has('b')) { state.slotA = byId(p.get('a'))?.id ?? null; state.slotB = byId(p.get('b'))?.id ?? null; setMode('compare'); }
-  else setMode('inspect');
-  if (state.index.studio) import('./studio.js').catch((e) => console.warn('studio UI failed to load', e));
+  state.slotA = byId(p.get('a'))?.id ?? null; state.slotB = byId(p.get('b'))?.id ?? null;
+  setMode(MODES.includes(p.get('m')) ? p.get('m') : p.has('a') || p.has('b') ? 'compare' : 'designs');
+  if (state.index.studio) import('./modes/edit.js').then((m) => m.default(window.planeViewer)).catch((e) => console.warn('studio UI failed to load', e));
 }
 
-// Hooks for the local studio app (studio.js). The static viewer never calls these.
+// Hooks for the local studio app (modes/edit.js). The Pages build never calls these.
 async function reload(selectId) {
   const r = await fetch(DATA + 'index.json', { cache: 'no-store' });
   if (!r.ok) return;
@@ -394,13 +296,11 @@ async function reload(selectId) {
   state.index = await r.json();
   cache.json.clear(); cache.glb.clear();
   for (const sel of [$('sel-a'), $('sel-b')]) sel.replaceChildren(h('option', { value: '' }, '— none —'), ...state.index.designs.map((d) => h('option', { value: d.id }, d.name || d.id)));
-  if (selectId && byId(selectId)) { state.selected = selectId; if (state.mode === 'compare') setMode('inspect'); }
+  if (selectId && byId(selectId)) { state.selected = selectId; if (state.mode === 'compare') return setMode('designs'); }
   if (!byId(state.selected)) state.selected = state.index.designs[0]?.id ?? null;
   renderSidebar();
   const was = prev?.designs.find((d) => d.id === state.selected), now = byId(state.selected);
-  const changed = !was || JSON.stringify(was) !== JSON.stringify(now);
-  if (state.mode === 'inspect' && (changed || selectId)) { syncHash(); showInspect(); }
-  if (state.mode === 'compare') showCompare();
+  if (state.mode === 'compare' || !was || JSON.stringify(was) !== JSON.stringify(now) || selectId) { syncHash(); renderMode(); }
 }
-window.planeViewer = { reload, selected: () => state.selected, designs: () => state.index?.designs || [], refresh: () => state.mode === 'inspect' && showInspect() };
+window.planeViewer = { reload, selected: () => state.selected, designs: () => state.index?.designs || [], refresh: () => state.mode === 'designs' && renderMode() };
 init();

@@ -1,0 +1,163 @@
+"""Browser smoke tests for the viewer (one app: Studio with modes; the Pages build is the same app read-only)."""
+from __future__ import annotations
+
+import functools
+import json
+import os
+import shutil
+import threading
+import time
+import urllib.request
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from pathlib import Path
+
+import pytest
+from click.testing import CliRunner
+
+if os.environ.get("CI"):
+    import playwright.sync_api  # noqa: F401  (a missing install must fail loudly)
+else:
+    pytest.importorskip("playwright.sync_api")
+from playwright.sync_api import Error as PWError, sync_playwright  # noqa: E402
+
+from hangar import cli, design as design_mod, studio  # noqa: E402
+
+pytestmark = pytest.mark.slow
+
+REPO = Path(__file__).resolve().parents[1]
+FIXTURES = Path(__file__).parent / "fixtures"
+EXAMPLE = REPO / "designs" / "example-tailsitter-wing"
+CDN = "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+MODES = ["designs", "compare", "physics", "stress", "updates", "ledger"]
+
+
+def _serve(handler):
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    return httpd
+
+
+def _seed(designs: Path):
+    shutil.copytree(EXAMPLE, designs / "example-tailsitter-wing")
+    (designs / "mech-good").mkdir()
+    shutil.copy(FIXTURES / "mech-good.yaml", designs / "mech-good" / "plane.yaml")
+
+
+@pytest.fixture(scope="module")
+def pages_base(tmp_path_factory):
+    root = tmp_path_factory.mktemp("pages")
+    site = root / "site"
+    shutil.copytree(REPO / "viewer", site, ignore=shutil.ignore_patterns("data", "updates", "docs"))
+    _seed(root / "designs")
+    (root / "updates" / "2026-11-16").mkdir(parents=True)
+    (root / "updates" / "2026-11-16" / "updates.yaml").write_text(
+        'entries:\n  - {person: Ana, link: "https://example.com/a", changed: did x}\n')
+    (root / "ledger").mkdir()
+    (root / "ledger" / "items.yaml").write_text(
+        "schema: ledger/1\nitems:\n  - {id: R1, kind: ruling, text: t, source: quote, status: open, evidence: secret}\n")
+    with pytest.MonkeyPatch.context() as mp:
+        mp.setattr(cli, "DESIGNS_DIR", root / "designs", raising=False)
+        mp.setattr(design_mod, "DESIGNS_DIR", root / "designs", raising=False)
+        res = CliRunner().invoke(cli.cli, ["build-index", "--out", str(site / "data")])
+    assert res.exit_code == 0, res.output
+    httpd = _serve(functools.partial(SimpleHTTPRequestHandler, directory=str(site)))
+    yield f"http://127.0.0.1:{httpd.server_port}/"
+    httpd.shutdown()
+    httpd.server_close()
+
+
+@pytest.fixture
+def studio_base(tmp_path, monkeypatch):
+    designs = tmp_path / "designs"
+    _seed(designs)
+    for mod in (cli, design_mod, studio):
+        monkeypatch.setattr(mod, "DESIGNS_DIR", designs, raising=False)
+    monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
+    monkeypatch.setattr(studio, "DATA_DIR", tmp_path / ".studio" / "data")
+    monkeypatch.setattr(studio, "CACHE_FILE", tmp_path / ".studio" / "cache.json")
+    monkeypatch.setattr(studio, "BACKUP_DIR", tmp_path / ".studio" / "backups")
+    httpd = _serve(studio.make_handler(studio.Studio()))
+    base = f"http://127.0.0.1:{httpd.server_port}"
+    t0 = time.time()
+    while time.time() - t0 < 240:
+        with urllib.request.urlopen(base + "/api/state", timeout=60) as r:
+            if not json.loads(r.read())["busy"]:
+                break
+        time.sleep(0.3)
+    else:
+        raise AssertionError("studio jobs did not finish")
+    yield base + "/"
+    httpd.shutdown()
+    httpd.server_close()
+
+
+@pytest.fixture(scope="module")
+def browser():
+    def bail(msg):
+        pytest.fail(msg) if os.environ.get("CI") else pytest.skip(msg)
+    try:
+        urllib.request.urlopen(CDN, timeout=10).close()
+    except Exception:  # noqa: BLE001
+        bail("three.js CDN unreachable")
+    with sync_playwright() as p:
+        try:
+            b = p.chromium.launch(headless=True, args=["--use-angle=swiftshader", "--enable-unsafe-swiftshader", "--ignore-gpu-blocklist"])
+        except PWError as e:
+            if "Executable doesn't exist" not in str(e):
+                raise
+            bail("run: python -m playwright install chromium")
+        yield b
+        b.close()
+
+
+def collect(page):
+    errors = []
+    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.on("pageerror", lambda e: errors.append(str(e)))
+    return errors
+
+
+@pytest.mark.parametrize("mode", MODES)
+def test_every_mode_renders_without_console_errors(browser, pages_base, mode):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(f"{pages_base}#m={mode}&d=mech-good")
+    sel = f"#mode-{mode}"
+    page.wait_for_selector(f"{sel}[data-ready]", state="attached", timeout=60000)
+    assert page.get_attribute(sel, "data-ready") == "1", page.inner_text(sel)
+    assert page.is_visible(sel) and page.inner_text(sel).strip()
+    assert page.evaluate("document.body.dataset.mode") == mode
+    assert errors == []
+    page.close()
+
+
+def test_pages_build_has_no_edit_controls(browser, pages_base, studio_base):
+    page = browser.new_page()
+    page.goto(pages_base)
+    page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
+    assert page.locator("[data-edit]").count() == 0
+    assert page.locator("#modes button").count() == 6
+    assert "studio" not in page.evaluate("fetch('data/index.json').then(r => r.json())")
+    page.goto(studio_base)
+    page.wait_for_selector("[data-edit]", timeout=30000)
+    assert page.locator("[data-edit]").count() > 0
+    assert page.evaluate("document.title") == "Plane Studio"
+    page.close()
+
+
+def test_physics_mode_plays_mechanism_sweep(browser, pages_base):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(f"{pages_base}#m=physics&d=mech-good")
+    page.wait_for_selector('#mode-physics[data-ready="1"]', timeout=60000)
+    assert page.inner_text('[data-follower="flap_hinge"]') == "0.0"
+    assert page.inner_text('[data-testid="phys-input"]') == "0"
+    before = page.locator("#vp-phys canvas").screenshot()
+    page.click('[data-testid="play"]')
+    page.wait_for_function("document.querySelector('[data-testid=phys-input]').textContent === '20'", timeout=15000)
+    assert page.inner_text('[data-follower="flap_hinge"]') == "20.0"
+    assert page.input_value('[data-testid="phys-slider"]') == "20"
+    after = page.locator("#vp-phys canvas").screenshot()
+    assert before != after
+    assert errors == []
+    page.close()

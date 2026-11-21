@@ -1,40 +1,13 @@
-// Plane Studio: buttons and dialogs on top of the viewer. Loaded only when the page is served by
-// `plane studio` (index.json has "studio": true); the GitHub Pages viewer never loads it.
-// Every action calls the local API, which runs the same core library as the CLI and CI.
+// Plane Studio edit controls (new, copy, edit, import, check, stress, download). Loaded only when the page is served
+// by `plane studio` (index.json has "studio": true); the GitHub Pages build never loads it. Every control carries
+// data-edit. Every action calls the local API, which runs the same core library as the CLI and CI.
+import { h, $, api, opCall as op, getJSON } from '../lib.js';
 
-const V = window.planeViewer;
+let V;
 let ping = {};
 let lastRev = -1;
 let lastJobState = '';
 
-function h(tag, attrs = {}, ...kids) {
-  const el = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) {
-    if (v == null || v === false) continue;
-    if (k === 'class') el.className = v;
-    else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
-    else if (k === 'value') el.value = v;
-    else el.setAttribute(k, v === true ? '' : v);
-  }
-  for (const kid of kids.flat()) if (kid != null && kid !== false) el.append(kid.nodeType ? kid : document.createTextNode(String(kid)));
-  return el;
-}
-const $ = (id) => document.getElementById(id);
-
-async function api(path, body) {
-  const r = await fetch('api/' + path, body === undefined ? {} : {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
-  });
-  const data = await r.json().catch(() => ({ error: `HTTP ${r.status}` }));
-  if (!r.ok || data.error) throw new Error(data.error || `HTTP ${r.status}`);
-  return data;
-}
-async function op(name, params = {}) {
-  const r = await fetch('api/op/' + name, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
-  const body = await r.json().catch(() => ({ ok: false, messages: [`HTTP ${r.status}`] }));
-  if (!body.ok) throw new Error((body.messages || []).join('; ') || `HTTP ${r.status}`);
-  return body.data;
-}
 const designPath = (id) => ping.designs_dir + '/' + id;
 
 function toast(text, kind = '') {
@@ -60,8 +33,8 @@ function dialog(title, body, actions) {
 function field(label, input, hint) {
   return h('label', { class: 'field' }, h('span', { class: 'lbl' }, label), input, hint ? h('span', { class: 'hint' }, hint) : null);
 }
-function primary(label, onclick) {
-  return h('button', { type: 'button', class: 'primary', onclick: async (e) => {
+function primary(label, onclick, extra = {}) {
+  return h('button', { type: 'button', class: 'primary', ...extra, onclick: async (e) => {
     const b = e.currentTarget; const dlg = b.closest('dialog');
     b.disabled = true; dlg.showError('');
     try { await onclick(dlg); } catch (err) { dlg.showError(err.message); } finally { b.disabled = false; }
@@ -121,7 +94,7 @@ async function editDialog(id) {
   const d = V.designs().find((x) => x.id === id);
   const [{ data, enums }, { text }, sc] = await Promise.all([
     api('design?id=' + encodeURIComponent(id)), op('design.get', { path: designPath(id) }),
-    d?.scorecard ? fetch('data/' + d.scorecard).then((r) => r.json()).catch(() => null) : null]);
+    d?.scorecard ? getJSON(d.scorecard).catch(() => null) : null]);
   const failMsgs = (sc?.tiers || []).flatMap((t) => t.results).filter((r) => r.status === 'FAIL').map((r) => r.message);
   const failsFor = (jid) => failMsgs.filter((m) => m.includes(jid + ':') || m.includes(jid + ' '));
   const edits = []; // {el, path, kind}
@@ -249,14 +222,14 @@ async function feaDialog(id) {
     h('p', { class: 'muted' }, `Each printed part is meshed and solved in OpenCAE (CalculiX) for two load cases: the joint loads from the landing drop test, and hover at full thrust, both ×${uf}. It passes when the stress away from the clamps stays under ${allow} MPa (printed PETG, interlayer strength). Expect a few seconds to a few minutes per part.`),
     h('div', { class: 'row' }, h('button', { type: 'button', class: 'btn', onclick: () => boxes.forEach((b) => (b.checked = true)) }, 'All'),
       h('button', { type: 'button', class: 'btn', onclick: () => boxes.forEach((b) => (b.checked = false)) }, 'None'),
-      h('button', { type: 'button', class: 'btn', onclick: () => { dlg.close(); feaSetup(st.opencae); } }, 'OpenCAE settings')),
+      h('button', { type: 'button', class: 'btn', 'data-edit': true, onclick: () => { dlg.close(); feaSetup(st.opencae); } }, 'OpenCAE settings')),
     h('div', { class: 'tabpane' }, h('table', { class: 'edit' }, h('thead', {}, h('tr', {}, ['', 'Part', 'Result', 'Worst case', 'Files'].map((t) => h('th', {}, t)))), h('tbody', {}, rows))),
   ], primary('Run selected', async (d) => {
     const parts = boxes.filter((b) => b.checked).map((b) => b.dataset.part);
     if (!parts.length) throw new Error('Tick at least one part.');
     await api('fea', { id, parts });
     d.close(); toast(`Stress check started for ${parts.length} part${parts.length > 1 ? 's' : ''}. Progress shows on the left.`);
-  }));
+  }, { 'data-edit': true }));
   dlg.classList.add('wide');
 }
 
@@ -273,7 +246,7 @@ function actionBar(box, d) {
     h('div', { class: 'menu-list' }, EXPORTS.map(([f, label, hint]) =>
       h('a', { href: `api/export?id=${encodeURIComponent(d.id)}&format=${f}`, download: '', onclick: () => toast('Preparing the download…') },
         h('b', {}, label), hint ? h('span', {}, hint) : null))));
-  const bar = h('div', { class: 'studio-bar' },
+  const bar = h('div', { class: 'studio-bar', 'data-edit': true },
     h('button', { class: 'btn', disabled: d.pending, onclick: async () => { await api('check', { id: d.id }); toast(`Checking ${d.id}…`); } }, d.pending ? 'Checking…' : 'Check again'),
     h('button', { class: 'btn', onclick: () => editDialog(d.id).catch((e) => toast(e.message, 'err')) }, 'Edit design'),
     h('button', { class: 'btn', onclick: () => newDesignDialog(d.id) }, 'Make a copy'),
@@ -318,12 +291,14 @@ async function poll() {
 }
 
 // ---------- boot ----------
-async function boot() {
+export default async function boot(viewer) {
+  V = viewer;
+  V.feaDialog = feaDialog;
   ping = await api('ping').catch(() => ({}));
   document.title = 'Plane Studio';
   document.body.classList.add('studio');
   document.querySelector('.brand h1').textContent = 'Plane Studio';
-  document.querySelector('.filters').before(h('div', { class: 'studio-top' },
+  document.querySelector('.filters').before(h('div', { class: 'studio-top', 'data-edit': true },
     h('button', { class: 'btn primary', onclick: () => newDesignDialog() }, '+ New design'),
     h('button', { class: 'btn', onclick: importDialog }, 'Import'),
     h('button', { class: 'btn', title: 'Re-run every check', onclick: async () => { await api('check-all', {}); toast('Checking every design…'); } }, 'Check all')));
@@ -333,4 +308,3 @@ async function boot() {
   V.refresh();
   poll();
 }
-boot();

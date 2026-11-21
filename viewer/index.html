@@ -3,7 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Aircraft Platform Viewer</title>
+<title>Plane Studio</title>
+<link rel="icon" href="data:,">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">
 { "imports": {
@@ -29,25 +30,31 @@
 
   <main id="stage">
     <div class="toolbar">
-      <div class="seg" role="tablist">
-        <button id="mode-inspect" class="active" role="tab">Inspect</button>
-        <button id="mode-compare" role="tab">Compare</button>
-      </div>
+      <nav id="modes" class="seg" role="tablist"></nav>
       <span id="mode-hint" class="muted small"></span>
     </div>
 
-    <section id="inspect" class="inspect">
+    <section id="mode-designs" class="mode inspect" hidden>
       <div class="vp-wrap"><div id="vp-main" class="viewport"></div></div>
       <aside id="scorecard" class="panel"></aside>
     </section>
 
-    <section id="compare" class="compare" hidden>
+    <section id="mode-compare" class="mode compare" hidden>
       <div class="compare-views">
         <div class="vp-wrap"><div class="vp-head"><span class="slot">A</span><select id="sel-a"></select></div><div id="vp-a" class="viewport"></div></div>
         <div class="vp-wrap"><div class="vp-head"><span class="slot">B</span><select id="sel-b"></select></div><div id="vp-b" class="viewport"></div></div>
       </div>
       <div id="compare-table" class="panel"></div>
     </section>
+
+    <section id="mode-physics" class="mode inspect" hidden>
+      <div class="vp-wrap"><div id="vp-phys" class="viewport"></div></div>
+      <aside id="phys-controls" class="panel"></aside>
+    </section>
+
+    <section id="mode-stress" class="mode" hidden><div class="panel"></div></section>
+    <section id="mode-updates" class="mode" hidden><div class="panel"></div></section>
+    <section id="mode-ledger" class="mode" hidden><div class="panel"></div></section>
   </main>
 </div>
 <script type="module" src="app.js"></script>
