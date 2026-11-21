@@ -221,6 +221,8 @@ Each has a default the plan uses if nobody answers by the date. Recorded with `p
 | D8 | Binary files: Git LFS in hangar, or meshes stay in DBF-Combined and hangar stores `{repo, commit, path, sha256}` references? | LFS for the meshes the gates need (concept A, about 130 STL); CAD sources referenced, not copied | — | 11-21 | decided: default (Tristan, 2026-11-20) |
 | D9 | Which design states are active? | concept A active; K09-L, C0 rev G, v0.3.1, tiltwing `retired` | Dylan | 11-22 | decided: default (Tristan, 2026-11-20) |
 | D10 | Archive DBF-Combined and aircraft-platform (read-only) once hangar v1.0 is out? | yes, after 12-01, with a README pointer to hangar | team | 12-01 | open: decided when v1.0 is done |
+| D11 | Who turns an unknown component type into a SKIP instead of a T0.schema FAIL (Review Focus #1)? | U2.1 (gate registry); schema stays strict until then | Tristan | 11-21 | decided: U2.1 (Tristan, 2026-11-21) |
+| D12 | Does U1.3 migrate the committed designs (§7 U1.3 step 3)? | no: a designs-only PR after U1.3 migrates the designs whose results don't hash plane.yaml; concept-a stays at 0.4 until its FEA is re-run (fea.py hashes plane.yaml) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -369,6 +371,7 @@ W1 runs in two layers, because the units depend on each other (§7 Interfaces):
 | W1-A2 | `advisor` | Opus | the U1.5 brief | recommendation | as W1-A1 |
 | W1-2, W1-4, W1-6 | `builder` | Haiku | their briefs | branches `std/u1.2-surfaces`, `std/u1.4-edit`, `std/u1.6-interfaces` | brief's pass check; CI green |
 | W1-5 | `builder-plus` | Sonnet | `briefs/U1.5-claims.md` | branch `std/u1.5-claims` | same |
+| W1-M | `builder` | Haiku | inline brief after U1.3 merges: `plane design migrate designs/<id> --write` for every design except concept-a (D12); designs-only PR, no `core/` | branch `std/w1-migrate-designs` | `plane baseline check --all` exit 0; CI green |
 | W1-R | `reviewer` | Opus (fresh for W1, reused for W1a, W1b and re-reviews) | each branch as it lands | `reviews/2026-11-2x-w1.md` | "### Verdict: ACCEPT" per unit |
 | W1-Au | `auditor` | Haiku | session state, ledger, this table | report to conductor, hourly | ≤ 15 lines, evidence per finding |
 | W1-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
@@ -744,6 +747,7 @@ def test_concept_a_claims_import_roundtrip(dbf_combined_claims):   # 4 claims.*.
 - Create: `standards/gates.yaml`, `core/hangar/gates/{__init__,mechanisms,integration,sourcing}.py`
 - Modify: `core/hangar/checks.py` (tiers 0–5 registered through `gates/`, behaviour unchanged), `standards/design-standards.yaml` (new keys: `mechanism_ratio_tol` (internal convention), `wire_clearance_mm` (pending, D5), `transport_box_mm` default (pending, D5), `bom_verified_max_age_days: 30` (internal convention)), `designs/example-tailsitter-wing/plane.yaml` gets a mechanism and wiring so the gates have a positive example
 - Test: `tests/test_gates.py`, fixtures `tests/fixtures/mech-{good,jammed,unlinked}.yaml`
+- Also (D11, Tristan 2026-11-21): a component whose `type` the gates don't know gets a SKIP naming the type and what is missing, not a T0.schema FAIL; extends `tests/test_ops_contract.py::test_unknown_component_type_gives_skip_not_crash` to assert SKIP (Review Focus #1).
 
 **Interfaces:**
 - Produces: `@gate(id: str, tier: int)` registration; `run_gates(design, max_tier: int = 8) -> Scorecard` (Scorecard gains `fidelity: dict`); ops `gate.list`, `gate.explain(check_id)`, `sim.mechanism(path, mechanism_id)` (returns per-step follower angles for the Physics mode).
