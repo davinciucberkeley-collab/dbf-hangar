@@ -88,6 +88,46 @@ def parse_scalar(raw: str):
     return v
 
 
+def _no_empty(v, raw: str) -> None:
+    if isinstance(v, (list, dict)):
+        if not v:
+            raise OpInputError(f"value {raw!r}: empty list or mapping not allowed")
+        for x in (v.values() if isinstance(v, dict) else v):
+            _no_empty(x, raw)
+
+
+def parse_value(raw: str):
+    """Scalar as parse_scalar does; or, when raw.strip() starts with '[' and ends with ']' (or '{' ... '}'), the parsed list or mapping."""
+    s = raw.strip()
+    if (s.startswith("[") and s.endswith("]")) or (s.startswith("{") and s.endswith("}")):
+        try:
+            v = yaml.safe_load(s)
+        except yaml.YAMLError as e:
+            raise OpInputError(f"cannot read value {raw!r}: {e}") from e
+        if not isinstance(v, (list, dict)):
+            raise OpInputError(f"cannot read value {raw!r}: not a list or mapping")
+        _no_empty(v, raw)
+        return v
+    return parse_scalar(raw)
+
+
+_KEY = re.compile(r"[A-Za-z_][A-Za-z0-9_-]*")
+
+
+def render_flow(v) -> str:
+    """One-line YAML flow text for a scalar, list or mapping; scalars via render_scalar."""
+    if isinstance(v, list):
+        return "[" + ", ".join(render_flow(x) for x in v) + "]"
+    if isinstance(v, dict):
+        parts = []
+        for k, x in v.items():
+            if not isinstance(k, str) or not _KEY.fullmatch(k):
+                raise OpInputError(f"unsupported mapping key {k!r}")
+            parts.append(f"{k}: {render_flow(x)}")
+        return "{" + ", ".join(parts) + "}"
+    return render_scalar(v)
+
+
 def render_scalar(v) -> str:
     if v is None:
         return "null"
@@ -200,13 +240,19 @@ def _emit(rest, indent: int, new, key: str) -> list[str]:
     if kind != "key":
         raise OpInputError(f"{key}: cannot add this value without rewriting other text; edit the file by hand")
     if len(rest) == 1:
-        return [f"{sp}{v}: {render_scalar(new)}"]
+        return [f"{sp}{v}: {render_flow(new)}"]
     if rest[1][0] == "key":
         return [f"{sp}{v}:"] + _emit(rest[1:], indent + 2, new, key)
     if rest[1][0] == "id" and len(rest) > 2 and rest[2][0] == "key":
         out = _emit(rest[2:], indent + 4, new, key)
         return [f"{sp}{v}:", f"{sp}  - id: {render_scalar(rest[1][1])}"] + out
     raise OpInputError(f"{key}: cannot add this value without rewriting other text; edit the file by hand")
+
+
+def _nest(rest, new):
+    if any(kind != "key" for kind, _ in rest):
+        raise OpInputError("cannot add this value without rewriting other text; edit the file by hand")
+    return new if not rest else {rest[0][1]: _nest(rest[1:], new)}
 
 
 def _block_end(lines: list[str], start: int, ind: int, same_indent_dash: bool) -> int:
@@ -262,11 +308,12 @@ def add_value(text: str, key: str, new) -> str:
     if isinstance(node, dict) and node.fa.flow_style():
         line_no, col = node.lc.line, node.lc.col
         end = _close_brace(lines[line_no], col) if lines[line_no][col:col + 1] == "{" else -1
-        if len(rest) != 1 or end < 0:
+        if end < 0 or any(kind != "key" for kind, _ in rest):
             raise OpInputError(hand)
+        value_text = render_flow(_nest(rest[1:], new))
         head = lines[line_no][:end].rstrip()
         sep = "" if head.endswith("{") else ","
-        lines[line_no] = f"{head}{sep} {rest[0][1]}: {render_scalar(new)}{lines[line_no][end:]}"
+        lines[line_no] = f"{head}{sep} {rest[0][1]}: {value_text}{lines[line_no][end:]}"
         flow_line = line_no
     elif isinstance(node, dict):
         first = next(iter(node), None)

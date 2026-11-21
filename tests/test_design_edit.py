@@ -285,3 +285,177 @@ def test_add_out_of_range_index_names_the_range_and_writes_nothing(tmp_concept_a
     msg = " ".join(r.messages)
     assert "out of range" in msg and "5" in msg and "already set" not in msg
     assert _bytes(tmp_concept_a) == before
+
+
+# ---- design.set --kind add with list and mapping values (U3.6c) ----
+def _opcodes(old, new):
+    return [o for o in difflib.SequenceMatcher(None, old.splitlines(), new.splitlines(), autojunk=False).get_opcodes()
+            if o[0] != "equal"]
+
+
+def _plane_text(d):
+    return (d / "plane.yaml").read_bytes().decode("utf-8")
+
+
+ARTIC = {"type": "revolute", "pivot": [140.563, 195.69, 6.7], "axis": [0, 0, -1], "range_deg": [-36, 36]}
+ARTIC_TEXT = "{type: revolute, pivot: [140.563, 195.69, 6.7], axis: [0, 0, -1], range_deg: [-36, 36]}"
+
+
+def _one_inserted_line(old, new):
+    ops = _opcodes(old, new)
+    assert len(ops) == 1 and ops[0][0] == "insert" and ops[0][4] - ops[0][3] == 1
+    return new.splitlines()[ops[0][3]]
+
+
+def test_add_list_value_is_one_inserted_line(tmp_example):
+    text = _plane_text(tmp_example)
+    out = pdledit.add_value(text, "flight.test_list", ["E-MEC-03", "E-MEC-05", 2])
+    assert _one_inserted_line(text, out).strip() == "test_list: [E-MEC-03, E-MEC-05, 2]"
+    assert yaml.safe_load(out)["flight"]["test_list"] == ["E-MEC-03", "E-MEC-05", 2]
+
+
+def test_add_mapping_value_is_one_inserted_line(tmp_example):
+    text = _plane_text(tmp_example)
+    val = {"a": 1, "b": [1, 2], "c": {"d": "x y"}}
+    out = pdledit.add_value(text, "flight.test_map", val)
+    assert _one_inserted_line(text, out).strip() == 'test_map: {a: 1, b: [1, 2], c: {d: "x y"}}'
+    assert yaml.safe_load(out)["flight"]["test_map"] == val
+
+
+@pytest.mark.parametrize("a", ["E-MEC-02", "E-MEC-03", "E-MEC-05"])
+def test_add_into_one_line_flow_attachment(tmp_concept_a, a):
+    text = _plane_text(tmp_concept_a)
+    out = pdledit.add_value(text, f"attachments[{a}].articulation", ARTIC)
+    ops = _opcodes(text, out)
+    assert len(ops) == 1 and ops[0][0] == "replace" and ops[0][2] - ops[0][1] == 1 and ops[0][4] - ops[0][3] == 1
+    old_line, new_line = text.splitlines()[ops[0][1]], out.splitlines()[ops[0][3]]
+    assert f"id: {a}" in old_line
+    assert new_line == old_line[:-1] + f", articulation: {ARTIC_TEXT}" + "}"
+
+
+def test_add_nested_chain_in_flow_attachment_is_one_flow_value(tmp_concept_a):
+    text = _plane_text(tmp_concept_a)
+    out = pdledit.add_value(text, "attachments[E-MEC-02].extra.k", 1)
+    ops = _opcodes(text, out)
+    assert len(ops) == 1 and ops[0][0] == "replace" and ops[0][2] - ops[0][1] == 1 and ops[0][4] - ops[0][3] == 1
+    assert out.splitlines()[ops[0][3]].endswith(", extra: {k: 1}}")
+    att = next(x for x in yaml.safe_load(out)["attachments"] if x["id"] == "E-MEC-02")
+    assert att["extra"] == {"k": 1}
+
+
+def test_add_collection_op_logs_and_checks_schema_once(tmp_concept_a, tmp_path):
+    fresh = tmp_path / "fresh"
+    shutil.copytree(tmp_concept_a, fresh)
+    r = call("design.set", path=str(tmp_concept_a), kind="add", why="t", key="attachments[E-MEC-02].articulation",
+             value="{type: revolute, pivot: [1, 2, 3], axis: [0, 0, 1], range_deg: [0, 1]}")
+    assert r.ok, r.messages
+    log = yaml.safe_load((tmp_concept_a / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+    assert log[-1]["old"] is None and log[-1]["kind"] == "add"
+    assert log[-1]["new"] == {"type": "revolute", "pivot": [1, 2, 3], "axis": [0, 0, 1], "range_deg": [0, 1]}
+    before = _bytes(fresh)
+    r = call("design.set", path=str(fresh), kind="add", why="t", key="attachments[E-MEC-02].articulation",
+             value="{type: revolute, pivot: [1, 2], axis: [0, 0, 1], range_deg: [0, 1]}")
+    assert r.ok is False and "pivot" in " ".join(r.messages)
+    assert _bytes(fresh) == before
+
+
+def test_add_collection_preserves_crlf(tmp_concept_a, tmp_example):
+    lf = _plane_text(tmp_concept_a)
+    crlf = lf.replace("\n", "\r\n")
+    key = "attachments[E-MEC-02].articulation"
+    out = pdledit.add_value(crlf, key, ARTIC)
+    assert "\n" not in out.replace("\r\n", "")
+    assert out.replace("\r\n", "\n") == pdledit.add_value(lf, key, ARTIC)
+    lf2 = _plane_text(tmp_example)
+    out2 = pdledit.add_value(lf2.replace("\n", "\r\n"), "flight.test_list", ["E-MEC-03", "E-MEC-05", 2])
+    assert "\n" not in out2.replace("\r\n", "")
+    assert out2.replace("\r\n", "\n") == pdledit.add_value(lf2, "flight.test_list", ["E-MEC-03", "E-MEC-05", 2])
+
+
+def test_collection_refusals_stay_refusals(tmp_concept_a):
+    text = _plane_text(tmp_concept_a)
+
+    def refuses(match, fn, *a):
+        with pytest.raises(OpInputError, match=match):
+            fn(*a)
+
+    refuses("cannot add a list element by index", pdledit.add_value, text, "mechanisms[elevon-r].driven[0]", "x")
+    refuses("without rewriting other text", pdledit.add_value, text, "attachments[E-WNG-10].extra", {"a": 1})
+    refuses("without rewriting other text", pdledit.add_value, text, "attachments[E-MEC-02].x[foo].y", 1)
+    refuses("already set", pdledit.add_value, text, "attachments[E-MEC-02].location", [1, 2, 3])
+    refuses("give one scalar", pdledit.parse_value, "a: b")
+    refuses("give one scalar", pdledit.parse_value, "- x")
+    refuses("empty list or mapping", pdledit.parse_value, "[]")
+    refuses("empty list or mapping", pdledit.parse_value, "{a: []}")
+    refuses("cannot read value", pdledit.parse_value, "[1, 2")
+    refuses("unsupported mapping key", pdledit.render_flow, {"a b": 1})
+
+    before = _bytes(tmp_concept_a)
+
+    def op_fails(match, **kw):
+        r = call("design.set", path=str(tmp_concept_a), why="t", **kw)
+        assert r.ok is False and match in " ".join(r.messages)
+        assert _bytes(tmp_concept_a) == before
+
+    op_fails("is not of type 'array'", kind="add", key="mechanisms[elevon-r].driven", value="E-MEC-03")
+    op_fails("already set", kind="add", key="attachments[E-MEC-02].location", value="[1, 2, 3]")
+    for kind in ("modify", "subtract"):
+        op_fails("give one scalar", kind=kind, key="components[wng-004-l].mass_g", value="[1, 2]")
+
+
+def test_parse_value_scalars_unchanged():
+    assert pdledit.parse_value("41.5") == 41.5
+    assert pdledit.parse_value("up") == "up"
+    assert pdledit.parse_value("[a, b]") == ["a", "b"]
+    assert pdledit.parse_value("{k: v}") == {"k": "v"}
+    assert pdledit.parse_value("[-36, 36]") == [-36, 36]
+
+
+@pytest.mark.slow
+def test_concept_a_right_elevon_mechanism_in_one_call(tmp_concept_a):
+    import hangar.design
+    import hangar.gates
+    original = _plane_text(tmp_concept_a)
+    r = call("design.migrate", path=str(tmp_concept_a), write=True)
+    assert r.ok, r.messages
+    base = _plane_text(tmp_concept_a)
+    assert 'schema_version: "1.0"' in base
+    ops = _opcodes(original, base)
+    assert len(ops) == 1 and ops[0][2] - ops[0][1] == 1 and ops[0][4] - ops[0][3] == 1
+    log_file = tmp_concept_a / "CHANGELOG.yaml"
+    n_log = len(yaml.safe_load(log_file.read_text(encoding="utf-8")) or []) if log_file.exists() else 0
+    r = call("design.set", path=str(tmp_concept_a), kind="add", why="declare right elevon mechanism",
+             key="attachments[E-MEC-02].articulation", value=ARTIC_TEXT, also=[
+                 "attachments[E-MEC-03].articulation={type: revolute, pivot: [141.723, 187.987, 8.701], axis: [0, 0, -1], range_deg: [-36, 36]}",
+                 "attachments[E-MEC-05].articulation={type: revolute, pivot: [183.75, 195, 0.295], axis: [0, -1, 0], range_deg: [-21, 21]}",
+                 "mechanisms[elevon-r].driver=E-MEC-02",
+                 "mechanisms[elevon-r].driven=[E-MEC-03, E-MEC-05, E-WNG-10]",
+                 "mechanisms[elevon-r].input_range_deg=[-36, 36]",
+                 "mechanisms[elevon-r].expect=[{attachment: E-WNG-10, ratio: 0.57}]"])
+    assert r.ok, r.messages
+    log = yaml.safe_load((tmp_concept_a / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+    assert len(log) - n_log == 7
+    new_text = _plane_text(tmp_concept_a)
+    ops = _opcodes(base, new_text)
+    replaces = [o for o in ops if o[0] == "replace"]
+    assert all(o[0] in ("insert", "replace") for o in ops) and len(replaces) == 3
+    assert all(o[2] - o[1] == 1 and o[4] - o[3] == 1 for o in replaces)
+    design = hangar.design.load_design(tmp_concept_a)
+    card = hangar.gates.run_gates(design, only_tiers={6})
+    t0 = next(t for t in card.tiers if t.tier == 0)
+    assert all(x.status == "PASS" for x in t0.results), [(x.check_id, x.status) for x in t0.results]
+    t6 = next(t for t in card.tiers if t.tier == 6)
+    rows = {x.check_id: x for x in t6.results}
+    row = rows["T6.mechanism.elevon-r"]
+    assert "E-WNG-10" in row.data["joint"]
+    assert row.data.get("raw_status", row.status) != "SKIP" and row.status != "SKIP"
+    assert "T6.undriven.E-WNG-10" not in rows
+
+
+def test_collection_pairs_are_atomic(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    r = call("design.set", path=str(tmp_concept_a), kind="add", why="t", key="mechanisms[elevon-r].driver",
+             value="E-MEC-02", also=["mechanisms[elevon-r].driven=[E-MEC-03]",
+                                     "attachments[E-MEC-02].articulation={type: bogus}"])
+    assert r.ok is False
+    assert _bytes(tmp_concept_a) == before
