@@ -669,3 +669,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T4
+    kind: task
+    text: 'T9 lost the proofs/1 CHECKED/VERIFIED evidence signal: a claim resting on an unverified assumption or unsourced parameter still PASSes; restore in U3.1 Proofs mode and the 2.5 fidelity line'
+    source: advisor W1-A2 (U1.5 brief)
+    owner: Tristan
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T5
+    kind: task
+    text: U1.5 design.set flow test (plan 7 U1.5) deferred until U1.4 merges design.set
+    source: advisor W1-A2 (U1.5 brief)
+    owner: Tristan
+    status: open
+    due: '2026-11-24'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
