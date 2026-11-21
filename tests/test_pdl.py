@@ -1,10 +1,13 @@
 from __future__ import annotations
-import copy, json, re
+import copy, json, os, re, shutil
 import pytest
 import yaml
+from click.testing import CliRunner
 from hangar.checks import tier0_schema, validate
+from hangar.cli import cli
 from hangar.design import Design, REPO_ROOT, SCHEMA_PATH, list_designs, load_design
 from hangar.migrate import LATEST, KNOWN_VERSIONS, bump_version_text, migrate
+from hangar.ops import call
 from hangar.pdlref import build_reference
 
 FIXTURE = REPO_ROOT / "tests" / "fixtures" / "pdl-v1-full.yaml"
@@ -154,3 +157,97 @@ def test_readme_excerpts_are_verbatim():
     for name, body in blocks:
         src = (REPO_ROOT / name).read_text(encoding="utf-8").replace("\r\n", "\n")
         assert body in src
+
+
+def _copy_example(tmp_path, crlf=True):
+    dst = tmp_path / "d"
+    shutil.copytree(EXAMPLE.parent, dst)
+    f = dst / "plane.yaml"
+    if crlf:
+        f.write_bytes(f.read_bytes().replace(b"\n", b"\r\n"))
+    return dst
+
+
+def test_schema_docs_op_writes_same_bytes(tmp_path):
+    r = call("schema.docs", out=tmp_path / "ref.md")
+    assert r.ok
+    assert (tmp_path / "ref.md").read_bytes() == (REPO_ROOT / "docs/pdl/reference.md").read_bytes()
+
+
+def test_migrate_op_dry_run_writes_nothing(tmp_path):
+    d = _copy_example(tmp_path)
+    before = (d / "plane.yaml").read_bytes()
+    r = call("design.migrate", path=str(d))
+    assert r.ok and r.data["to_version"] == "1.0" and r.data["written"] is False
+    assert (d / "plane.yaml").read_bytes() == before
+
+
+def test_migrate_op_write_changes_only_version_line_and_keeps_crlf(tmp_path):
+    d = _copy_example(tmp_path)
+    old = (d / "plane.yaml").read_bytes()
+    r = call("design.migrate", path=str(d), write=True)
+    assert r.ok and r.data["written"] is True
+    new = (d / "plane.yaml").read_bytes()
+    a, b = old.decode().splitlines(keepends=True), new.decode().splitlines(keepends=True)
+    diff = [i for i, (x, y) in enumerate(zip(a, b)) if x != y]
+    assert len(a) == len(b) and len(diff) == 1 and b[diff[0]].startswith('schema_version: "1.0"')
+    assert new.count(b"\r\n") == old.count(b"\r\n")
+    assert tier0_schema(load_design(d)).status == "PASS"
+    r2 = call("design.migrate", path=str(d), write=True)
+    assert r2.ok and r2.data["written"] is False and r2.data["notes"] == ["already 1.0"]
+
+
+@pytest.mark.parametrize("src", DESIGNS, ids=IDS)
+def test_migrate_op_write_on_copy_of_every_committed_design(tmp_path, src):
+    dst = tmp_path / src.parent.name
+    dst.mkdir()
+    shutil.copy2(src, dst / "plane.yaml")
+    r = call("design.migrate", path=str(dst), write=True)
+    assert r.ok
+    assert tier0_schema(load_design(dst / "plane.yaml")).status == tier0_schema(load_design(src)).status
+    assert load_design(dst / "plane.yaml").data["schema_version"] == "1.0"
+
+
+def test_migrate_op_bad_input(tmp_path):
+    r = call("design.migrate", path=str(tmp_path))
+    assert r.ok is False and r.data["error"] == "input" and r.exit_code == 2
+    assert list(tmp_path.iterdir()) == []
+    d = _copy_example(tmp_path, crlf=False)
+    f = d / "plane.yaml"
+    f.write_text(f.read_text(encoding="utf-8").replace('schema_version: "0.1"', 'schema_version: "9"'), encoding="utf-8", newline="")
+    r = call("design.migrate", path=str(d), write=True)
+    assert r.ok is False and r.data["error"] == "input" and r.exit_code == 2
+    d2 = tmp_path / "e"
+    shutil.copytree(EXAMPLE.parent, d2)
+    f2 = d2 / "plane.yaml"
+    f2.write_bytes(f2.read_bytes().replace(b"status: designed", b"status: nope").replace(b"status: concept", b"status: nope"))
+    before = f2.read_bytes()
+    assert b"status: nope" in before
+    r = call("design.migrate", path=str(d2), write=True)
+    assert r.ok is False and "error" not in r.data and r.exit_code == 1
+    assert f2.read_bytes() == before
+
+
+def test_plane_schema_default_still_prints_path():
+    res = CliRunner().invoke(cli, ["schema"])
+    assert res.exit_code == 0 and res.output.strip() == str(SCHEMA_PATH)
+
+
+def test_cli_schema_docs_json(tmp_path):
+    res = CliRunner().invoke(cli, ["schema", "docs", "--out", str(tmp_path / "r.md"), "--json"])
+    assert res.exit_code == 0
+    assert (tmp_path / "r.md").read_bytes() == (REPO_ROOT / "docs/pdl/reference.md").read_bytes()
+
+
+def test_cli_design_migrate_json(tmp_path):
+    d = _copy_example(tmp_path)
+    res = CliRunner().invoke(cli, ["design", "migrate", str(d), "--json"])
+    assert res.exit_code == 0
+    assert json.loads(res.output)["data"]["to_version"] == "1.0"
+
+
+@pytest.mark.skipif(os.name != "nt", reason="backslash paths are a Windows form")
+def test_migrate_op_accepts_backslash_path(tmp_path):
+    d = _copy_example(tmp_path)
+    r = call("design.migrate", path=str(d).replace("/", "\\"))
+    assert r.ok and r.data["to_version"] == "1.0"
