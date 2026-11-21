@@ -371,3 +371,29 @@ def test_calc_over_stored_only_claim_is_proposed(tmp_mini):
 
 def _twice(x):
     return {"y": 2 * x}
+
+
+def test_design_set_flows_into_claim(tmp_path):
+    import difflib
+    dst = tmp_path / "claims-mini"
+    shutil.copytree(MINI, dst)
+    register_calcs(_mod.CALCS)
+    d0 = load_design(dst)
+    before = results(d0)["CL-MASS-GATE"]
+    assert before.status == "FAIL" and before.margin == pytest.approx(-0.1)
+    assert status(d0, "T9.claim.CL-MASS-GATE") == FAIL
+    plane = dst / "plane.yaml"
+    original = plane.read_bytes().decode("utf-8")
+    r = call("design.set", path=str(dst), key="components[battery].mass_g", value="150", why="T5 design.set flows into claim")
+    assert r.exit_code == 0
+    edited = plane.read_bytes().decode("utf-8")
+    a, b = original.splitlines(keepends=True), edited.splitlines(keepends=True)
+    assert len(a) == len(b)
+    assert sum(x != y for x, y in zip(a, b)) == 1
+    assert "".join(difflib.unified_diff(a, b, n=0))
+    d1 = load_design(dst)
+    after = results(d1)["CL-MASS-GATE"]
+    assert after.margin != before.margin
+    assert after.margin == pytest.approx(0.1)
+    assert after.status == "PASS"
+    assert status(d1, "T9.claim.CL-MASS-GATE") == PASS
