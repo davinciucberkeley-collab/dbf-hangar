@@ -502,6 +502,25 @@ Fold DBF-Combined `redesign/TEAM.md` (45 roles listed, A1–J6; 39 role folders)
 |---|---|---|---|---|---|
 | LA-R | `reviewer` | Opus (fresh) | every R-id in §1 whose units are all merged (22, excluding R29: deferred under D3), the merge commits, the requirement text and its transcript source | `reviews/2026-11-21-ledger-audit.md` | one verdict per R-id: DONE with the merge commit(s) as evidence, or OPEN with a one-line note on what is missing |
 
+### 6i. Agent table for W3 (Tristan, 2026-11-21: "do the small fix and launch W3"; started early, W2 done)
+
+Layers: **W3a** briefs for every unit in parallel, plus W3.0 (PROGRESS.md review column misses sub-unit reviews such as `## U2.4a`, so U2.3–U2.5 show "-"); **W3b** builders: W3.0, U3.1 [hard], U3.2, U3.3, U3.6 [hard] in parallel (hard builders only after the advisor check and Tristan has read the brief); U3.5 after U3.2 merges (it extends `tests/test_skills.py`); **W3c** U3.4 `design-engineer` after U3.2 merges (it uses `design-iterate`). Briefs: `W3.0-progress-subunits`, `U3.1-studio`, `U3.2-skills`, `U3.3-bench`, `U3.5-discipline-skills`, `U3.6-discipline-gates`.
+
+| Step | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| W3-T0 | `tactician` | Sonnet | `core/hangar/progress.py` (`REVIEW_HEAD_RE`), `reviews/2026-11-21-w2.md`, `tests/` for progress | `briefs/W3.0-progress-subunits.md` | builder-ready bar |
+| W3-T1, T6 | `tactician` | Sonnet | §7 U3.1, U3.6 (+ §1c, §2.7) + merged W2 code | `briefs/U3.1-studio.md`, `briefs/U3.6-discipline-gates.md` | builder-ready bar; Plan coverage complete |
+| W3-T2, T3, T5 | `tactician` | Sonnet | §7 U3.2, U3.3, U3.5 (+ §1c, extracts) | `briefs/U3.2-skills.md`, `briefs/U3.3-bench.md`, `briefs/U3.5-discipline-skills.md` | same |
+| W3-A | `advisor` | Opus | the two hard briefs | recommendation per brief | "builder-ready" or numbered gaps |
+| W3-0, W3-2, W3-3, W3-5 | `builder` | Haiku | their briefs | `std/w3.0-progress`, `std/u3.2-skills`, `std/u3.3-bench`, `std/u3.5-discipline-skills` | brief's checks; CI green on both OSes |
+| W3-1, W3-6 | `builder-plus` | Sonnet | hard briefs | `std/u3.1-studio`, `std/u3.6-discipline-gates` | same |
+| W3-4 | `design-engineer` | Sonnet | §7 U3.4 step 1 goal, concept-a | `design/concept-a/*` PRs | `git diff --name-only main...<branch> \| grep -c '^core/'` → 0; scorecard failures < `baseline.json` |
+| W3-R1, W3-R2 | `reviewer` | Opus (fresh, up to two) | units split between them | `reviews/2026-11-2x-w3.md` | "### Verdict: ACCEPT" per unit; merge order checked |
+| W3-Au | `auditor` | Haiku | session state | hourly report | ≤ 15 lines |
+| W3-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch |
+
+**Permissions for W3:** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`, `bench/`, `skills/`, `viewer/`, `knowledge/procedures/`, `standards/` (U3.6 new keys as `pending` only); commands `git worktree|branch|commit|push` on `std/*` and `design/*`, `python -m pytest`, `plane *`, `npx playwright` (U3.1 smoke), `claude -p` headless (U3.3, 9 bench runs), `gh pr create|view`, `gh run view`. No merges to `main` without a reviewer ACCEPT.
+
 ## 7. Units
 
 Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPATH=$PWD/core` in worktrees; finish with
