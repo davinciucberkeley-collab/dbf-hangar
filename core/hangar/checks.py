@@ -25,6 +25,7 @@ from .geometry import (component_parts, lifting_surface_properties, articulated_
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
 from .mass import mass_properties
+from .migrate import KNOWN_VERSIONS
 
 G = 9.80665
 RHO_DEFAULT = 1.225  # ISA sea level, kg/m^3 (physical constant, matches the schema default)
@@ -32,6 +33,12 @@ STD = "design-standards.yaml#"
 
 
 # ---------------------------------------------------------------- tier 0
+def _below(design: Design, version: str) -> bool:
+    """True when the file declares a known schema_version older than `version` (unknown values are the schema check's job)."""
+    cur = design.data.get("schema_version", "0.1")   # a missing version counts as 0.1, as the old 0.3 gate did
+    return cur in KNOWN_VERSIONS and KNOWN_VERSIONS.index(cur) < KNOWN_VERSIONS.index(version)
+
+
 def tier0_schema(design: Design) -> TierReport:
     schema = json.loads(SCHEMA_PATH.read_text())
     errors = sorted(Draft202012Validator(schema).iter_errors(design.data), key=lambda e: list(e.path))
@@ -42,32 +49,42 @@ def tier0_schema(design: Design) -> TierReport:
         res = [CheckResult("T0.schema", PASS, f"matches schema v{design.data.get('schema_version', '0.1')}", "schema/plane.schema.json")]
     uses_v02 = any(a.get("articulation") for a in design.data.get("attachments", [])) or \
         any(k in design.data.get("flight", {}) for k in ("hover_pose", "cruise_pose"))
-    if uses_v02 and design.data.get("schema_version") == "0.1":
+    if uses_v02 and _below(design, "0.2"):
         res.append(CheckResult("T0.version", FAIL,
                                "articulation / flight.hover_pose / flight.cruise_pose need schema_version \"0.2\"",
                                "schema/plane.schema.json"))
     uses_v03 = any(c.get("cavities") for c in design.data.get("components", []))
-    if uses_v03 and design.data.get("schema_version") not in ("0.3", "0.4"):
+    if uses_v03 and _below(design, "0.3"):
         res.append(CheckResult("T0.version", FAIL,
                                "cavities need schema_version \"0.3\" or later",
                                "schema/plane.schema.json"))
     uses_v04 = any("point_mass" in c.get("geometry", {}) for c in design.data.get("components", []))
-    if uses_v04 and design.data.get("schema_version") != "0.4":
+    if uses_v04 and _below(design, "0.4"):
         res.append(CheckResult("T0.version", FAIL,
                                "point_mass geometry needs schema_version \"0.4\"",
                                "schema/plane.schema.json"))
-    if any(a.get("kinematic_link") for a in design.data.get("attachments", [])) and design.data.get("schema_version") != "0.4":
+    if any(a.get("kinematic_link") for a in design.data.get("attachments", [])) and _below(design, "0.4"):
         res.append(CheckResult("T0.version", FAIL,
                                "attachment kinematic_link needs schema_version \"0.4\"",
                                "schema/plane.schema.json"))
     uses_planform = [c["id"] for c in design.data.get("components", []) if "planform" in c]
-    if uses_planform and design.data.get("schema_version") != "0.4":
+    if uses_planform and _below(design, "0.4"):
         res.append(CheckResult("T0.version", FAIL,
                                "component planform needs schema_version \"0.4\"",
                                "schema/plane.schema.json"))
-    if any("rating_basis" in a for a in design.data.get("attachments", [])) and design.data.get("schema_version") != "0.4":
+    if any("rating_basis" in a for a in design.data.get("attachments", [])) and _below(design, "0.4"):
         res.append(CheckResult("T0.version", FAIL,
                                "attachment rating_basis needs schema_version \"0.4\"",
+                               "schema/plane.schema.json"))
+    d = design.data
+    v1 = [n for n, used in (("files", "files" in d), ("bom", "bom" in d), ("wiring", "wiring" in d),
+                            ("mechanisms", "mechanisms" in d), ("transport", "transport" in d),
+                            ("assembly", "assembly" in d),
+                            ("components[].provenance", any("provenance" in c for c in d.get("components", []))),
+                            ("requirements.transport_box_mm", "transport_box_mm" in d.get("requirements", {})))
+          if used]
+    if v1 and _below(design, "1.0"):
+        res.append(CheckResult("T0.version", FAIL, ", ".join(v1) + " need schema_version \"1.0\"",
                                "schema/plane.schema.json"))
     both = [c["id"] for c in design.data.get("components", [])
             if "planform" in c and "lifting_surface" in c.get("geometry", {})]

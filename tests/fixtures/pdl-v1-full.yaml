@@ -1,0 +1,64 @@
+# Fixture: uses every PDL v1.0 block. Shape only; the ids need not make engineering sense.
+schema_version: "1.0"
+id: pdl-v1-full
+name: PDL v1.0 fixture using every new block
+status: concept
+morphology: {lift: flying-wing, vtol_method: none}
+requirements:
+  mtow_g: 900
+  transport_box_mm: [1250, 550, 450]
+root: center_body
+files:
+  cad:
+    - {path: cad/center_body.step, format: step, role: source}
+    - {path: cad/center_body.stl, format: stl, role: derived}
+  drawings:
+    - {path: drawings/layout.pdf, note: "General arrangement"}
+  photos:
+    - {path: photos/bench.jpg}
+components:
+  - id: center_body
+    type: fuselage
+    geometry: {box: {size: [300, 80, 80]}}
+    position: [150, 0, 0]
+    mass_g: 120
+    provenance: {mass_source: cad, geometry_source: "cad/center_body.step"}
+  - id: wing
+    type: wing
+    geometry:
+      lifting_surface: {span: 1000, root_chord: 250, tip_chord: 150}
+    position: [60, 0, 0]
+    mass_g: 180
+    provenance: {mass_source: estimate}
+  - id: battery
+    type: battery
+    geometry: {box: {size: [100, 35, 24]}}
+    position: [140, 0, -27.5]
+    mass_g: 250
+    provenance: {mass_source: measured}
+attachments:
+  - {id: wing-body, parent: center_body, child: wing, method: slot-tab, location: [150, 0, 0], embed_ok: true, rated_load_n: 125}
+  - {id: battery-bay, parent: center_body, child: battery, method: clamp, location: [140, 0, -27.5], embed_ok: true, rated_load_n: 80}
+bom:
+  items:
+    - id: bom-battery
+      component_ids: [battery]
+      part_number: "3S 2200mAh"
+      supplier: Example Hobby
+      url: "https://example.com/battery"
+      qty: 1
+      unit_cost_usd: 24.5
+      mass_g: 250
+      verified: {by: team, date: "2026-11-20", method: datasheet, evidence: "datasheet page 2"}
+wiring:
+  harnesses:
+    - {id: h-batt, from: battery, to: center_body, route: [center_body], gauge_awg: 16, exposed_ok: {reason: "short run inside the fuselage"}}
+mechanisms:
+  - {id: m-demo, driver: wing-body, driven: [battery-bay], input_range_deg: [0, 30], expect: [{attachment: battery-bay, ratio: 1.0}]}
+transport:
+  disassembly:
+    - {group: wing, component_ids: [wing]}
+assembly:
+  sequence:
+    - {step: 1, add: [center_body], tool: none, note: "start here"}
+    - {step: 2, add: [wing, battery], tool: "2 mm hex key"}
