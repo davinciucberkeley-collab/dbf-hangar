@@ -1067,9 +1067,9 @@ Content rules (from the advisor): `design-iterate` — before any fix list ≥ 1
 **Interfaces:**
 - Produces: task YAML `{id, prompt, start_design, allowed: ["plane *"], grader: [{op, path, expect}]}`; `bench.run(task, agent: str, model: str) -> data.{passed, score, tokens, minutes}` (runs the agent headless with `claude -p` and the `design-engineer` role; grader uses ops only); `bench.report -> markdown table`.
 
-- [ ] **Step 1: Failing tests**: `test_grader_passes_on_known_good_solution` (hand-made solution design per task), `test_grader_fails_if_core_changed`.
-- [ ] **Step 2–4:** implement; run → PASS; run each task once with Haiku, Sonnet, Opus as `design-engineer` (9 runs) and commit `bench/results/2026-11-28.md` — this is a slide for Dec 1.
-- [ ] **Step 5: Commit** `git commit -m "bench: PlaneBench v0, 3 graded design tasks, first model comparison"`
+- [x] **Step 1: Failing tests**: `test_grader_passes_on_known_good_solution` (hand-made solution design per task), `test_grader_fails_if_core_changed`.
+- [x] **Step 2–4:** implement; run → PASS; run each task once with Haiku, Sonnet, Opus as `design-engineer` (9 runs) and commit `bench/results/2026-11-28.md` — this is a slide for Dec 1.
+- [x] **Step 5: Commit** `git commit -m "bench: PlaneBench v0, 3 graded design tasks, first model comparison"`
 
 ### Unit U3.4: Proof — an agent iterates concept-a with no code edits (R9, R7 acceptance)
 

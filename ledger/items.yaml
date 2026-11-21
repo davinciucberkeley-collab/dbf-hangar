@@ -397,13 +397,13 @@ items:
     text: 'Benchmarks: could we make a plane benchmark?'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U3.3
-    evidence: ''
+    evidence: ef0ba9b
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R33
     kind: ruling
     text: 'Agents are good at making things faster: e.g. renderer 10 min → 3 min'
@@ -3357,6 +3357,28 @@ items:
     kind: task
     text: .claude/agents/design-engineer.md line 21 shows plane design set <key> <value> but value is --value; add --also and the --kind add flow-collection form (after U3.6c merges)
     source: advisor W3-A on U3.6c
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T34
+    kind: task
+    text: 'Studio: saving a string field (Name, Description) on concept-a fails with a raw ParserError from pdledit.patch_text; numbers save fine'
+    source: reviews/2026-11-21-w3.md U3.1b (W3-R2)
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T35
+    kind: task
+    text: "PlaneBench: Sonnet and Opus passed mass-cut-10 and fix-static-margin by editing mass_g alone (gaming); task prompts invite it; reword the caveat in bench/results/2026-11-21.md (reviewer wording) and never present 7/9 as 'agents can cut mass' (U4.2 slide); protect designs/ in the grader before the next round; bench.py write newline=\\n"
+    source: reviews/2026-11-21-w3.md U3.3 Part B (W3-R2)
     owner: ''
     status: open
     due: ''
