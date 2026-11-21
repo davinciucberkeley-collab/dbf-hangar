@@ -458,12 +458,12 @@ items:
     text: Surrogate models matter for families (tens–hundreds of variants), not one
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: dropped
     due: ''
     units: []
     evidence: ''
-    decided_in: ''
-    updated: '2026-11-20'
+    decided_in: plans/2026-11-20-standardization.md section 8 (Not doing, v1.1)
+    updated: '2026-11-21'
   - id: R38
     kind: ruling
     text: Morphological chart from literature, not reinvented; synthesize options
