@@ -29,7 +29,7 @@
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U2.1 | Gate registry + T6 Mechanisms, T7 Integration, T8 Sourcing [hard] | 5/5 | done | ACCEPT |
-| U2.2 | Standards database — close the pending sources (R10, R13) | 6/6 | done | ACCEPT |
+| U2.2 | Standards database — close the pending sources (R10, R13) | 5/6 | in progress | ACCEPT |
 | U2.3 | Tool adapters — OpenCAE, MuJoCo, AeroSandbox, DaVinci [hard] | 5/5 | done | ACCEPT |
 | U2.4 | Team-ops commands (R7, R14, R26, R27, R31, R38) | 5/5 | done | ACCEPT |
 | U2.5 | Import concept A, decisions and program constraints from DBF-Combined [hard] | 5/5 | done | ACCEPT |
@@ -57,7 +57,7 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 16 | 23 | 0 | 1 | 0 | 40 |
-| task | 37 | 2 | 0 | 0 | 0 | 39 |
+| task | 38 | 2 | 0 | 0 | 0 | 40 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
 | decision | 14 | 0 | 0 | 3 | 210 | 227 |
 

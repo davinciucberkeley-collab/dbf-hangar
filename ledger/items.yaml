@@ -3430,3 +3430,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T40
+    kind: task
+    text: U2.2 Step 3a (knowledge import of DBF-Combined config-study, 43 concept cards) was ticked without a merge (W2-2b never ran); unticked by W3 audit; needs brief U2.2-2 and a builder, or a cut decision
+    source: W3-Au audit 2026-11-21
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
