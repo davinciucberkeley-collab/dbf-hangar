@@ -668,7 +668,7 @@ def test_reference_doc_is_current(tmp_path):
 ```
 
 - [x] **Step 2: Run** → FAIL
-- [x] **Step 3: Implement** schema additions, `migrate`, generator; migrate all committed designs (`plane design migrate designs/* --write`) in this PR — the only PR allowed to touch both `designs/**` and `core/**` (label `migration`, see U1.4).
+- [x] **Step 3: Implement** schema additions, `migrate`, generator; migrate all committed designs (`plane design migrate designs/* --write`) in this PR — the only PR allowed to touch both `designs/**` and `core/**` (label `migration`, see U1.4). — *Designs not migrated in U1.3 (D12): six designs move to 1.0 in W1-M; concept-a stays at 0.4 until its FEA is re-run.*
 - [x] **Step 4: Run** `pytest -q` → PASS; `plane baseline check --all` → no new failures
 - [x] **Step 5: Commit** `git commit -m "pdl: v1.0 schema (files, bom, wiring, mechanisms, transport, assembly, provenance) + migrate + reference"`
 
