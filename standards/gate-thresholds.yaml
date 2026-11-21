@@ -1,0 +1,30 @@
+# Thresholds for the T6 to T8 gates. Every entry needs a source; `source: pending` means provisional.
+# Kept apart from design-standards.yaml because core/hangar/fea.py hashes that file (D13, U2.3).
+# Criterion links look like: gate-thresholds.yaml#<key>
+version: "0.1"
+mechanism_ratio_tol:
+  value: 0.05
+  rule: "A follower must reach ratio x input within this fraction of ratio x input (or mechanism_abs_tol_deg, whichever is larger)."
+  source: internal convention
+mechanism_abs_tol_deg:
+  value: 0.5
+  rule: "Absolute tolerance floor, in degrees, for the follower angle check (small inputs)."
+  source: internal convention
+mechanism_contact_step_deg:
+  value: 5.0
+  rule: "Unattached-pair interference is checked every this many degrees of driver input (the driver itself is stepped 1 degree at a time)."
+  source: internal convention
+wire_clearance_mm:
+  value: 5.0
+  rule: "A harness segment between consecutive route components must lie inside the union of their envelopes grown by this distance."
+  source: pending
+  note: "D5: Dylan has not given a clearance; 5 mm is provisional."
+transport_box_mm:
+  value: [1250, 550, 450]
+  rule: "Default transport box [length, width, height] when requirements.transport_box_mm is absent; each disassembly group's oriented bounding box must fit."
+  source: team constraint
+  note: "D5: from DBF-Combined's K09-L box constraint (about 1.25 x 0.55 x 0.45 m)."
+bom_verified_max_age_days:
+  value: 30
+  rule: "A BOM line's verified.date may be at most this many days old."
+  source: internal convention

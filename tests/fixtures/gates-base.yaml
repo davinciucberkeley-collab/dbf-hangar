@@ -1,0 +1,46 @@
+# Fixture for the T7 and T8 gate tests (tests/test_gates.py). Boxes only. Tests overwrite the BOM dates and mutate copies.
+schema_version: "1.0"
+id: gates-base
+name: Gates base fixture
+status: concept
+morphology: {lift: flying-wing, vtol_method: none}
+requirements: {mtow_g: 900, budget_usd: 200, transport_box_mm: [1250, 550, 450]}
+root: body
+components:
+  - {id: body, type: fuselage, geometry: {box: {size: [300, 80, 80]}}, position: [150, 0, 0], mass_g: 120}
+  - id: wing
+    type: wing
+    geometry: {lifting_surface: {span: 1000, root_chord: 250, tip_chord: 150}}
+    position: [60, 0, 0]
+    mass_g: 180
+  - {id: esc, type: esc, geometry: {box: {size: [30, 20, 10]}}, position: [150, 0, 45], mass_g: 20}
+  - {id: motor_l, type: motor, geometry: {box: {size: [30, 30, 30]}}, position: [90, -250, 0], mass_g: 40, propulsion: {max_thrust_n: 8, axis: [-1, 0, 0]}, manufacturing: {method: purchased}}
+  - {id: far_pod, type: pod, geometry: {box: {size: [40, 40, 40]}}, position: [150, 600, 0], mass_g: 10}
+  - id: battery
+    type: battery
+    geometry: {box: {size: [100, 35, 24]}}
+    position: [140, 0, -27.5]
+    mass_g: 250
+    provenance: {mass_source: measured}
+    manufacturing: {method: purchased}
+attachments:
+  - {id: wing-body, parent: body, child: wing, method: bolted, location: [150, 0, 0], rated_load_n: 100}
+  - {id: esc-body, parent: body, child: esc, method: tape, location: [150, 0, 40], rated_load_n: 10}
+  - {id: motor-wing, parent: wing, child: motor_l, method: bolted, location: [90, -250, 0], rated_load_n: 50}
+  - {id: battery-bay, parent: body, child: battery, method: clamp, location: [140, 0, -27.5], rated_load_n: 80}
+  - {id: pod-wing, parent: wing, child: far_pod, method: bolted, location: [150, 500, 0], rated_load_n: 10}
+bom:
+  items:
+    - {id: battery, component_ids: [battery], qty: 1, unit_cost_usd: 24.5, verified: {by: team, date: "2000-01-01", method: datasheet, evidence: "datasheet"}}
+    - {id: motor, component_ids: [motor_l], qty: 1, unit_cost_usd: 18, verified: {by: team, date: "2000-01-01", method: datasheet, evidence: "datasheet"}}
+wiring:
+  harnesses:
+    - {id: esc_to_motor_l, from: esc, to: motor_l, route: [body, wing]}
+transport:
+  disassembly:
+    - {group: wing, component_ids: [wing]}
+assembly:
+  sequence:
+    - {step: 1, add: [body]}
+    - {step: 2, add: [wing, esc, battery]}
+    - {step: 3, add: [motor_l, far_pod]}

@@ -1,0 +1,39 @@
+# Program-level requirements: every active design inherits them (plan §1b, §5). Gates read them; designs do not copy them.
+# Every rule needs a source; `source: pending` means provisional.
+schema: program/1
+constraints:
+  budget_usd:
+    value: 2000
+    unit: USD
+    rule: Total physical budget (hardware, spares, batteries, test gear, shipping, tax); the Jacobs Hall Makers Pass is outside it.
+    source: team constraint, DBF-Combined CLAUDE.md @ a93f14d
+  deadline:
+    value: "2027-04-30"
+    rule: Built and flight-tested by this date.
+    source: team constraint, DBF-Combined CLAUDE.md @ a93f14d
+  mass_cap_kg:
+    value: 25
+    unit: kg
+    rule: Hard cap under 25 kg (55 lb); a team of 4 moves it routinely.
+    source: team constraint, DBF-Combined CLAUDE.md @ a93f14d
+  transport_pieces_max:
+    value: 2
+    rule: The packed aircraft fits one standard car trunk, two at most; it need not travel in one piece.
+    source: team constraint, 2026-11-14 (user), DBF-Combined CLAUDE.md @ a93f14d
+  transport_box_mm:
+    value: [1250, 550, 450]
+    unit: mm
+    rule: Default box (the K09-L transport box) until the team measures the car trunk; concept A's claims use the stricter 1200 x 500 x 400 mm.
+    source: team constraint (plan D5 default, Tristan 2026-11-20); trunk measurement pending
+  physics_pass:
+    value: true
+    rule: Every build step and the assembled aircraft pass a 3-D physics check with no part interpenetration, no open wire ends and no exemptions (gates T6, T7).
+    source: team constraint, 2026-11-14, DBF-Combined CLAUDE.md @ a93f14d
+  cad_real_parts:
+    value: true
+    rule: Every part is modelled to its real shape and dimensions from the vendor drawing or data sheet; where a dimension is unknown, say so and mark the part.
+    source: team constraint, 2026-11-15 (user), DBF-Combined CLAUDE.md @ a93f14d
+  exposed_wiring_minimised:
+    value: true
+    rule: Route wires inside tubes, wing-core channels, fairings or covers; every wire left exposed is listed with its length and the reason (gate T7).
+    source: team constraint, 2026-11-15 (user), DBF-Combined CLAUDE.md @ a93f14d

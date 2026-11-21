@@ -1,0 +1,73 @@
+# Fixture for the T6 mechanism gate tests (tests/test_gates.py). Boxes only.
+schema_version: '1.0'
+id: mech-good
+name: 'Mechanism fixture: linked flap'
+status: concept
+morphology: {lift: flying-wing, vtol_method: none}
+requirements: {mtow_g: 500}
+root: body
+components:
+- id: body
+  type: fuselage
+  geometry:
+    box:
+      size: [300, 80, 80]
+  position: [150, 0, 0]
+  mass_g: 120
+- id: wing
+  type: wing
+  geometry:
+    box:
+      size: [200, 600, 6]
+  position: [150, 0, 43]
+  mass_g: 60
+- id: flap
+  type: tail_surface
+  geometry:
+    box:
+      size: [40, 600, 4]
+  position: [270, 0, 44]
+  mass_g: 15
+- id: arm
+  type: servo
+  geometry:
+    box:
+      size: [10, 10, 30]
+  position: [20, 0, 55]
+  mass_g: 3
+attachments:
+- id: wing-body
+  parent: body
+  child: wing
+  method: bolted
+  location: [150, 0, 40]
+  rated_load_n: 20
+- id: flap_hinge
+  parent: wing
+  child: flap
+  method: hinge
+  location: &id001 [250, 0, 46]
+  rated_load_n: 20
+  articulation:
+    type: revolute
+    pivot: *id001
+    axis: [0, -1, 0]
+    range_deg: [0, 40]
+- id: servo_arm
+  parent: body
+  child: arm
+  method: hinge
+  location: &id002 [20, 0, 40]
+  rated_load_n: 20
+  articulation:
+    type: revolute
+    pivot: *id002
+    axis: [0, -1, 0]
+    range_deg: [0, 40]
+mechanisms:
+- id: flap_l
+  driver: servo_arm
+  driven: [flap_hinge]
+  input_range_deg: [0, 20]
+  expect:
+  - {attachment: flap_hinge, ratio: 1.0}

@@ -1,0 +1,74 @@
+"""Gate operations: list the registry, explain a check id, drive one mechanism (U2.1)."""
+from __future__ import annotations
+
+import re
+
+from . import OpInputError, OpResult, op
+from ..design import load_design
+from .. import pdledit
+
+
+def _rows() -> list[dict]:
+    from ..gates import _import_gates, load_gate_table
+    _import_gates()
+    return [{k: g[k] for k in ("id", "tier", "blocking", "needs", "criterion")} | {"name": g["id"].split(".", 1)[1]}
+            for g in load_gate_table()]
+
+
+def _render_list(r: OpResult) -> str:
+    return "\n".join(f"T{g['tier']} {g['id']:<18} {'blocking' if g['blocking'] else 'report-only':<12} {g['criterion']}"
+                     for g in r.data["gates"])
+
+
+@op(name="gate.list", summary="List the registered gates (tier, blocking, needs, criterion).", render=_render_list)
+def list_gates() -> OpResult:
+    rows = _rows()
+    return OpResult(ok=True, data={"gates": rows, "count": len(rows)})
+
+
+def _render_explain(r: OpResult) -> str:
+    d, t = r.data, r.data["threshold"]
+    lines = [f"{d['id']} (tier {d['tier']}, {'blocking' if d['blocking'] else 'report-only'}): {d['criterion']}"]
+    if t:
+        lines.append(f"{t['key']} = {t['value']}  [{t['source']}]  {t['rule']}")
+    return "\n".join(lines)
+
+
+@op(name="gate.explain", summary="Explain one check id: its gate, whether it blocks, and the threshold behind it.",
+    render=_render_explain)
+def explain(check_id: str) -> OpResult:
+    from ..gates.fidelity import resolve_threshold
+    rows = _rows()
+    m = re.match(r"^T(\d+)", check_id)
+    row = next((g for g in rows if m and g["tier"] == int(m.group(1))), None)
+    if row is None:
+        raise OpInputError(f"unknown check id {check_id!r}; gate ids: {', '.join(g['id'] for g in rows)}")
+    return OpResult(ok=True, data={**row, "threshold": resolve_threshold(row["criterion"])})
+
+
+def _load(path: str):
+    try:
+        return load_design(pdledit.resolve_design_path(path))
+    except Exception as e:  # noqa: BLE001
+        raise OpInputError(f"cannot load {path}: {e}") from e
+
+
+def _render_mech(r: OpResult) -> str:
+    return "\n".join(f"{s['input_deg']:>6.1f}  " + "  ".join(f"{k}={v:.1f}" for k, v in s["followers"].items())
+                     for s in r.data["steps"])
+
+
+@op(name="sim.mechanism",
+    summary="Drive one mechanism through its input range and return the follower angles per 1 degree step.",
+    render=_render_mech)
+def mechanism(path: str, mechanism_id: str) -> OpResult:
+    from ..gates.mechanisms import simulate_mechanism
+    design = _load(path)
+    mech = next((m for m in design.data.get("mechanisms", []) if m["id"] == mechanism_id), None)
+    if mech is None:
+        ids = [m["id"] for m in design.data.get("mechanisms", [])]
+        raise OpInputError(f"unknown mechanism {mechanism_id!r}; mechanisms: {', '.join(ids) or 'none'}")
+    try:
+        return OpResult(ok=True, data=simulate_mechanism(design, mech))
+    except RuntimeError as e:
+        raise OpInputError(str(e)) from e

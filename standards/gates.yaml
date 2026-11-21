@@ -1,0 +1,14 @@
+# Gate registry (§2.5). One entry per tier; core/hangar/gates/__init__.py reads it.
+# blocking: false = report-only (D7): FAIL and SKIP show as WARN until 2026-12-08, then flip to true.
+version: "0.1"
+gates:
+  - {id: T0.schema,        tier: 0, blocking: true,  needs: [], criterion: "schema/plane.schema.json"}
+  - {id: T1.geometry,      tier: 1, blocking: true,  needs: [], criterion: "design-standards.yaml#interference_max_mm3"}
+  - {id: T2.physics,       tier: 2, blocking: true,  needs: [], criterion: "design-standards.yaml#landing_load_factor"}
+  - {id: T3.aero,          tier: 3, blocking: true,  needs: [], criterion: "design-standards.yaml#static_margin"}
+  - {id: T4.manufacturing, tier: 4, blocking: true,  needs: [], criterion: "manufacturing.yaml"}
+  - {id: T5.standards,     tier: 5, blocking: true,  needs: [], criterion: "design-standards.yaml#faa_part107_max_mass_g"}
+  - {id: T6.mechanisms,    tier: 6, blocking: true,  needs: [], criterion: "gate-thresholds.yaml#mechanism_ratio_tol"}
+  - {id: T7.integration,   tier: 7, blocking: false, needs: [], criterion: "gate-thresholds.yaml#wire_clearance_mm"}
+  - {id: T8.sourcing,      tier: 8, blocking: false, needs: [], criterion: "gate-thresholds.yaml#bom_verified_max_age_days"}
+  - {id: T9.claims,        tier: 9, blocking: true,  needs: [], criterion: "claims.yaml#recompute_rel_tol"}

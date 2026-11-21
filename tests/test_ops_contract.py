@@ -52,7 +52,12 @@ def test_old_validate_alias_matches_new(cli_runner):
 
 def test_unknown_component_type_gives_skip_not_crash(tmp_design_with_type_wingletz):
     r = call("design.validate", path=str(tmp_design_with_type_wingletz))
-    assert not r.ok and any("wingletz" in m for m in r.messages)
+    assert not r.ok
+    row = next(x for t in r.data["tiers"] if t["tier"] == 0 for x in t["results"] if x["check_id"] == "T0.component_type")
+    assert row["status"] == "SKIP" and "wingletz" in row["message"]
+    assert not any(x["status"] == "FAIL" for t in r.data["tiers"] if t["tier"] == 0 for x in t["results"])
+    assert any("wingletz" in s for s in r.skipped)
+    assert len(r.data["tiers"]) > 1
 
 
 def test_schema_file_is_a_valid_schema_and_rejects_junk():
