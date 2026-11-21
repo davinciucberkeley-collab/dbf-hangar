@@ -3,8 +3,14 @@ name: validate
 on:
   pull_request:
     types: [opened, synchronize, reopened, labeled, unlabeled]
+    paths-ignore: ['plans/**', 'reviews/**']   # plan-only commits: progress.yml checks them
   push:
     branches: [main, 'std/**']
+    paths-ignore: ['plans/**', 'reviews/**']
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   validate:
@@ -24,7 +30,7 @@ jobs:
       - run: pip install -e ".[mcp,dev]"
       - name: Unit tests
         shell: bash
-        run: pytest -q
+        run: pytest -q -n auto -m ""
       - name: Designs and code stay apart
         shell: bash
         env:

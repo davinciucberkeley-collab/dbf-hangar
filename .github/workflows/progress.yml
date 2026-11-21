@@ -1,0 +1,22 @@
+name: progress
+
+# Runs on plan-only and review-only commits, which skip the validate workflow (paths-ignore there).
+on:
+  pull_request:
+    paths: ['plans/**', 'reviews/**', 'ledger/**', 'PROGRESS.md']
+  push:
+    branches: [main, 'std/**']
+    paths: ['plans/**', 'reviews/**', 'ledger/**', 'PROGRESS.md']
+
+jobs:
+  progress:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -e .
+      - name: PROGRESS.md is current
+        shell: bash
+        run: plane progress --check

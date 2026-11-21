@@ -16,6 +16,8 @@ from hangar.design import DESIGNS_DIR, load_design
 
 CONCEPT_A = DESIGNS_DIR / "concept-a" / "plane.yaml"
 
+pytestmark = pytest.mark.slow
+
 
 @pytest.fixture(scope="module")
 def concept_a():
