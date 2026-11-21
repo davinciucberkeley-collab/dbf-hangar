@@ -1052,9 +1052,9 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 
 Content rules (from the advisor): `design-iterate` — before any fix list ≥ 1 subtract, 1 modify and 1 adjust option, choose add only with a written reason, record `kind`, and run `recon` when the same check failed twice. `plan-scheme` — max effort, waves by dependency, units = PRs, surface decisions + one permissions prompt, then drop to medium. `get-it-together` — compares `ledger/prompts.jsonl`, the active plan and the roster rules with the session's actual state; output ≤ 15 lines. `make-skill` — research → recon of existing skills → synthesize → de-bloat pass (≤ 120 lines).
 
-- [ ] **Step 1: Failing tests**: `test_every_skill_has_six_sections`, `test_skill_commands_exist` (every `plane x y` in a skill is in `registry()`), `test_no_numbers_in_skills` (no thresholds; links to `standards/…#key` instead), `test_skill_under_120_lines`.
-- [ ] **Step 2–4:** write skills; run → PASS; dry-run `design-iterate` once on `example-tailsitter-wing` and commit the transcript to `reviews/`.
-- [ ] **Step 5: Commit** `git commit -m "skills: rebuilt on ops; design-iterate, recon, plan-scheme, get-it-together, weekly-update"`
+- [x] **Step 1: Failing tests**: `test_every_skill_has_six_sections`, `test_skill_commands_exist` (every `plane x y` in a skill is in `registry()`), `test_no_numbers_in_skills` (no thresholds; links to `standards/…#key` instead), `test_skill_under_120_lines`.
+- [x] **Step 2–4:** write skills; run → PASS; dry-run `design-iterate` once on `example-tailsitter-wing` and commit the transcript to `reviews/`.
+- [x] **Step 5: Commit** `git commit -m "skills: rebuilt on ops; design-iterate, recon, plan-scheme, get-it-together, weekly-update"`
 
 ### Unit U3.3: PlaneBench v0 (R32)
 

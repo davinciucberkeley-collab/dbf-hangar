@@ -30,15 +30,15 @@ items:
     text: API → CLI on top → simple natural-language layer on top of that (skills)
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.1
       - U1.2
       - U3.2
-    evidence: ''
+    evidence: efe5492
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R4
     kind: ruling
     text: Separate operations and data from code; don't edit code every time you run a simulation; saves tokens
@@ -186,26 +186,26 @@ items:
     text: Claude adds, rarely subtracts; fixes must consider add / subtract / modify / adjust and not add unless needed; weight is the constraint
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.4
       - U3.2
-    evidence: ''
+    evidence: efe5492
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R16
     kind: ruling
     text: 'Iterative research at every step: "wing too heavy → research how others fixed it without adding parts"; recon + benchmarking'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U3.2
-    evidence: ''
+    evidence: efe5492
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R17
     kind: ruling
     text: 'Hardest goal first: working, non-placeholder mechanisms before weight'
@@ -261,26 +261,26 @@ items:
     text: 'Hourly "get it together" audit (cheap Haiku): rules broken, stuck agent, plan drift; a fix that fails twice means something is wrong → advisor'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.2
       - U3.2
-    evidence: ''
+    evidence: efe5492
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R22
     kind: ruling
     text: 'Plan before executing (scheme): max effort for planning, waves by dependency, units ≈ one PR each, one agent per unit; broken unit is fixed in place, not patched with a new unit; surface unknown decisions and a permissions prompt up front'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U3.2
-    evidence: ''
+    evidence: efe5492
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R23
     kind: ruling
     text: 'Pointer files: AGENTS/CLAUDE.md point to rule files, not contain them; trim bloat (280 stale items)'
@@ -373,13 +373,13 @@ items:
     text: 'Skill-making skill: research → recon → synthesize best of existing skills → de-bloat pass; every analysis is a skill'
     source: plan §1; A 11-11
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U3.2
-    evidence: ''
+    evidence: efe5492
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R31
     kind: ruling
     text: Animate every step of manufacturing assembly; if Claude can't animate it, something is broken (self-check)
@@ -3243,3 +3243,36 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T25
+    kind: task
+    text: 'plane design validate table: Status column shows the tier status (t.status) instead of the row status (r.status), so passing rows in a failing tier read FAIL (core/hangar/design.py:114, since seed 6909134)'
+    source: reviews/2026-11-21-w3.md U3.2 (W3-R1)
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T26
+    kind: task
+    text: 'gate.explain resolves a check id by tier prefix only (core/hangar/ops/gates.py:42-43): plane gate explain T1.attachment_contact prints interference_max_mm3 instead of attach_tolerance_mm; U3.6 adds exact-id match for discipline ids only'
+    source: reviews/2026-11-21-w3.md U3.2 (W3-R1)
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T27
+    kind: task
+    text: auditor.md names plane ledger report --prompts --open, which does not exist
+    source: briefs/U3.2-skills.md decision 3
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
