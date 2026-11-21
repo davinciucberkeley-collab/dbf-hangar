@@ -58,8 +58,8 @@ class: easy|hard · role: builder|builder-plus · plan: §<n> <unit> · rules: R
 ## Environment
 - Windows 11 + Git Bash. Use absolute paths only (e.g. `C:/Users/trist/wt/<unit>/...`); never `../` or `~`: they resolve from the wrong folder inside a worktree.
 - Worktree: `git -C C:/Users/trist/dbf-hangar worktree add C:/Users/trist/wt/<unit> -b <branch> main`; work only there; create nothing outside `C:/Users/trist/wt/<unit>`.
-- Venv per worktree: `python -m venv C:/Users/trist/wt/<unit>/.venv`, then `C:/Users/trist/wt/<unit>/.venv/Scripts/python.exe -m pip install -e ".[mcp,dev]"`; use that python for every command.
-- CI status: use the GitHub CLI by full path, `"/c/Program Files/GitHub CLI/gh.exe" run list --branch <branch> --limit 1` and `... run view <id> --json jobs -q '.jobs[]|.name+" "+.conclusion'` (`--log-failed` on failure). Never poll api.github.com with unauthenticated curl.
+- Venv per worktree: `python -m venv C:/Users/trist/wt/<unit>/.venv`, then `cd C:/Users/trist/wt/<unit> && C:/Users/trist/wt/<unit>/.venv/Scripts/python.exe -m pip install -e ".[mcp,dev]"`; use that python for every command.
+- CI status: use the GitHub CLI by full path, with the repo given explicitly: `"/c/Program Files/GitHub CLI/gh.exe" -R davinciucberkeley-collab/dbf-hangar run list --branch <branch> --limit 1` and `"/c/Program Files/GitHub CLI/gh.exe" -R davinciucberkeley-collab/dbf-hangar run view <id> --json headSha,jobs -q '.headSha, (.jobs[]|.name+" "+.conclusion)'` (`--log-failed` on failure). Never poll api.github.com with unauthenticated curl.
 - Brief paths in launch prompts are repo-relative (`plans/<plan>/briefs/<name>.md`).
 - `.gitattributes` forces LF (`* text=auto eol=lf`); do not change line endings. After your commit, `git ls-files --eol | grep -c "w/crlf"` must print `0`.
 - Edit only the files the brief lists. No repo-wide `sed` or search-and-replace; nothing "while you are there".
