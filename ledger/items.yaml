@@ -944,3 +944,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-20'
+  - id: T18
+    kind: task
+    text: cli._attach_ops cannot merge generated ops into a hand-written click Group (e.g. import); convert plane import dbf to an op or let _attach_ops merge into Groups
+    source: U2.5b build stop 2026-11-21
+    owner: Tristan
+    status: open
+    due: '2026-11-30'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
