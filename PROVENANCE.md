@@ -47,3 +47,4 @@ Snapshot import, no history. Full history: aircraft-platform @ f462468 (plans/ a
 | knowledge/sources/std-ct-adhesives-tapes.md | external: https://westsystem.com/?p=2054 | none (scout summary, knowledge/sources) |
 | knowledge/sources/std-ct-electrical.md | external: https://www.china-amass.net/uploads/57.XT60-F-SPEC-2025V0.pdf | none (scout summary, knowledge/sources) |
 | knowledge/sources/std-ct-straps-hinges-thermal.md | external: https://www.trivantage.com/itemfiles/pdfs/tds/VELCRO_Essentials_13M_Loop_Specifications.pdf | none (scout summary, knowledge/sources) |
+| core/hangar/adapters/opencae.py | OpenCAEModel @ 792f0ab (= DBF-Combined tools/opencae-studio/), GPL-3.0 | external dependency launched by path through its own Python (find_opencae); no OpenCAE source is vendored; opencae_runner.py was imported earlier and is unchanged |
