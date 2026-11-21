@@ -516,6 +516,7 @@ Layers: **W3a** briefs for every unit in parallel, plus W3.0 (PROGRESS.md review
 | W3-5a, W3-5b, W3-5c | `builder` | Haiku | `briefs/U3.5-discipline-skills-{1,2,3}.md` (split by the tactician: skills+tests after U3.2 merges; scorecard+pointers and procedures+PROVENANCE (R18) any time) | `std/u3.5-discipline-skills`, `std/u3.5-scorecard`, `std/u3.5-procedures` | same |
 | W3-1, W3-6 | `builder-plus` | Sonnet | hard briefs | `std/u3.1-studio`, `std/u3.6-discipline-gates` | same |
 | W3-4 | `design-engineer` | Sonnet | §7 U3.4 step 1 goal, concept-a | `design/concept-a/*` PRs | `git diff --name-only main...<branch> \| grep -c '^core/'` → 0; scorecard failures < `baseline.json` |
+| W3-S1 | `scout` | Haiku | U3.6 brief decision 4: wire ampacity for 14 AWG (and the other gauges in concept-a harnesses) | `knowledge/sources/std-wire-ampacity.md` via `knowledge/TEMPLATE-source.md` | template filled from sources actually opened; gaps "not found" |
 | W3-R1, W3-R2 | `reviewer` | Opus (fresh, up to two) | units split between them | `reviews/2026-11-2x-w3.md` | "### Verdict: ACCEPT" per unit; merge order checked |
 | W3-Au | `auditor` | Haiku | session state | hourly report | ≤ 15 lines |
 | W3-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch |
