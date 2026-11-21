@@ -955,3 +955,2225 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: D-01
+    kind: decision
+    text: Chord 0.30 → 0.32 m; cruise 15 → 16 m/s
+    source: CHANGE-LOG#D-01
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-02
+    kind: decision
+    text: Airfoil MH 45 → S5010
+    source: CHANGE-LOG#D-02
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-03
+    kind: decision
+    text: Spar centre z 0 → +0.0066 m (camber line at x 0.080)
+    source: CHANGE-LOG#D-03
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-04
+    kind: decision
+    text: Motor tubes through the wing core at x = +0.045 m (B3 option O4b); fin LE on the tube, fin chord 0.275, two half-fins per side, printed through-core block joins tube, spar and core
+    source: CHANGE-LOG#D-04
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-05
+    kind: decision
+    text: Prop 11×4.5MR → APC 11×5.5MR/MRP; 4 × 11×4.5MR kept for the stand A/B
+    source: CHANGE-LOG#D-05
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-06
+    kind: decision
+    text: 'Voltage-sag thrust factor 0.93 → 0.72 (worst state: 20 % charge, 10 °C)'
+    source: CHANGE-LOG#D-06
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-07
+    kind: decision
+    text: Allocations 2 200 g, A1 reserve 400 g (wing 405, fins 370, pod 105, landing 40, propulsion 440, power 595, avionics 75, harness 105, mechanisms 65)
+    source: CHANGE-LOG#D-07
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-08
+    kind: decision
+    text: Pod LE −0.02 → −0.105 m (pod spans −0.105 … 0.095)
+    source: CHANGE-LOG#D-08
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-09
+    kind: decision
+    text: 3° tangential motor cant
+    source: CHANGE-LOG#D-09
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-10
+    kind: decision
+    text: CG range 0.040–0.049 m, target 0.044; static margin ≥ 5 % kept
+    source: CHANGE-LOG#D-10
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-11
+    kind: decision
+    text: Feet 45 mm beyond the TE, crush stroke ≥ 40 mm at η 0.5 (or ≥ 25 mm at η ≥ 0.8); landing allocation 24 → 40 g
+    source: CHANGE-LOG#D-11
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-12
+    kind: decision
+    text: Two flight packs. No 4S 4000 fallback; packs 3–4 ($87.37) only if the pessimistic reserve after the December order stays ≥ $309 + $87; test days at 2 sorties until then
+    source: CHANGE-LOG#D-12
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-13
+    kind: decision
+    text: Performance block at the 2.6 kg gate, conservative value carried where B1/E1/E2 disagree
+    source: CHANGE-LOG#D-13
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-14
+    kind: decision
+    text: Limits adopted from A2 (39) and C1 (5) as `requirements.` keys
+    source: CHANGE-LOG#D-14
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-15
+    kind: decision
+    text: 'Small adoptions: fin height 0.38 m confirmed; `fins.board_t_m` 0.0048; `battery.size_m` [0.140, 0.048, 0.050] and pod height 0.07; `propulsion.rpm_max` 9 350; pitot on the pod nose; download 1.06 kept; `SRC-X3108S`, `SRC-APC-11X45MR`, `SRC-APC-11X55MR`, `SRC-S5010` checked; `SRC-LANRC-45A`, `SRC-OVONIC-4S6500` stay unchecked'
+    source: CHANGE-LOG#D-15
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-16
+    kind: decision
+    text: Transport box 0.45 → 0.50 m high (external 1.25 × 0.55 × 0.50)
+    source: CHANGE-LOG#D-16
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-17
+    kind: decision
+    text: Hold the pod at −0.105 m; no further layout move until B3 re-derives the CG range at R1 geometry (c 0.32, S5010, tube at 0.045, 3° cant). Until then A3 carries the pack 29 mm forward of the pod centre (CG 0.044 on the R0 range). If the re-derived aft limit is < 0.051 m, A1 moves the pod to −0.125
+    source: CHANGE-LOG#D-17
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-18
+    kind: decision
+    text: Hover pitch-trim split limit 1.25 (`requirements.hover_split_max`)
+    source: CHANGE-LOG#D-18
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-19
+    kind: decision
+    text: Static margin stays 0.05; CR-J1-02's 0.03 rejected
+    source: CHANGE-LOG#D-19
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-20
+    kind: decision
+    text: 'Joint ownership rules: elevon hinge is owned by `wing` (D6 designs); ESC power leads by `harness` only (`power` owns the boxes); electrical `part_a` = supply side'
+    source: CHANGE-LOG#D-20
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-21
+    kind: decision
+    text: "CR-B3-07 superseded: cruise stays 16 m/s; `ARSPD_FBW_MIN` comes from B3's trimmed stall at R1 geometry, not the 16.6 m/s derived at c 0.30 / MH 45"
+    source: CHANGE-LOG#D-21
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-22
+    kind: decision
+    text: Box drop 0.3 m stays; D7 puts ≥ 70 mm crush foam under the spar cradles (or a cradle under the pod with ≥ 55 mm); 1.5 m/s sink stays
+    source: CHANGE-LOG#D-22
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-23
+    kind: decision
+    text: 'Mounts are the fuse: printed motor mounts and props fail before the tube and the through-core block in a tip-over; carry point on the pod/spar with a "do not lift by the motors" label, and C4 still sizes the fin joint to case G2 (10.7 N·m)'
+    source: CHANGE-LOG#D-23
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-24
+    kind: decision
+    text: "CG range at R1 geometry: 0.050–0.055 m, target 0.0526 m; the pod stays at the D-08 layout; D-17 closed. A3 sets the pack nominal centroid to x = −0.001 m (4 mm aft of the old pod centre); the −0.125 m fallback, `CALC-A1-POD-RULE` and `ASM-A1-POD-` are retired; replaced by `CALC-A1-CG-RANGE` (params range inside B3's claims, pack-centred CG +1.5 mm from the forward end)"
+    source: CHANGE-LOG#D-24
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-25
+    kind: decision
+    text: Pod nose shell to −0.115 m with an XPS crush block; pod 0.21 × 0.14 × 0.07 m; pitot tip [−0.195, −0.046, 0.045]; pod allocation 122 g. Tray, hatch and bay forward stop (x −0.1002) unchanged; the 3 mm printed forward stop is the spreader backstop; D2 re-lays the bay so the pack aft face reaches x 0.069 (0.073 with a 680 g pack); CR-C3-02 (−0.108) void
+    source: CHANGE-LOG#D-25
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-26
+    kind: decision
+    text: 'Fins: two board layers (one layer rejected), half-fins 0.21 m high, tube 0.344 m, fins allocation 408 g, half-fin ids `FIN-001-UR/UL/LR/LL`'
+    source: CHANGE-LOG#D-26
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-27
+    kind: decision
+    text: Motor cant 3° → 7°, same sense (UR + LL print A, UL + LR print B)
+    source: CHANGE-LOG#D-27
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-28
+    kind: decision
+    text: Prop plane x −0.0082 m, motor plate face x 0.0309 m (D3's CAD stack carried over E1's −0.0033); the tube front face stays at 0.034; D3 and E1 freeze the stack on the measured motor
+    source: CHANGE-LOG#D-28
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-29
+    kind: decision
+    text: 'Loads: n⁺ 3.4, VD 27.2 m/s, thrust limit 21.1 N per motor; elevon deflection schedule (full travel to VA 20.5 m/s, ≤ 1/3 at VD) enforced by F4; servo ≥ 3.93 kgf·cm'
+    source: CHANGE-LOG#D-29
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-30
+    kind: decision
+    text: Feet 48 mm, constant-force cartridge stroke ≥ 38 mm with biased plateaus; landing 43 g; tip-over ≥ 30° toward the pod side at the worst flying CG with the pad contact at z ±0.218 and z_cg subtracted; the 33° target (CR-A1-20) retired
+    source: CHANGE-LOG#D-30
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-31
+    kind: decision
+    text: Transport box 1.25 × 0.55 × 0.54 m (`PROPOSED`, freeze after two measured cars; fallback 0.50 m with a "max drop 0.15 m" label); box 3.63 kg; packs in the LiPo bag; envelope [1.15, 0.483, 0.438]; D-22's "costs no box height" corrected
+    source: CHANGE-LOG#D-31
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-32
+    kind: decision
+    text: Main disconnect Amass AS150U, packs re-terminated (XT60 rejected); `electrical.r_ext_mohm` 6.5; UBEC fitted with a 5 A fuse; power allocation 620 g. Closes CR-A2-08, CR-A4-09, CR-J1-04
+    source: CHANGE-LOG#D-32
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-33
+    kind: decision
+    text: 'Avionics: CoreWing F405 Wing APP V2 (Plane 4.7.x stable, target CoreWingF405WingV2); MS4525DO airspeed at 0x28 (MS5525 dropped); HGLRC M100-5883 on a 45°-tilted mast pad; telemetry over ELRS (no radio); RC FCC firmware; avionics 80 g; `requirements.rc_rssi_check_min_dbm` −93.8; range check at 25 mW'
+    source: CHANGE-LOG#D-33
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-34
+    kind: decision
+    text: Propulsion allocation 476 g; motor screws stay in `propulsion`; `propulsion.motor_max_a` 25 A, `esc_burst_a` 55 A added
+    source: CHANGE-LOG#D-34
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-35
+    kind: decision
+    text: Voltage-sag thrust factor 0.72 → 0.76 (E2's limiter-consistent value); E1's 0.854 (`CL-E1-TW-WORST` 2.18) is the other bound; E1 and E2 publish one worst-state claim and the cold-pack stand run decides
+    source: CHANGE-LOG#D-35
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-36
+    kind: decision
+    text: "Performance block from B1 rev 2 (16 m/s, 11×5.5MR): cruise 218 W / 14.7 A (pessimistic 285 W / 19.3 A), L/D 6.9, cruise after hover 13.7 min (E2 mission base; B1 17.0), pessimistic 7.3 (E2 re-run; B1 12.7), hover-only 11.9, lean 16 / 36°, transition 15.6 m/s (B3 `CL-B3-VT-TRIM` at the forward CG limit), stall 11.9. E1's 247 W not carried (reads the old L/D 5.6)"
+    source: CHANGE-LOG#D-36
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-37
+    kind: decision
+    text: Airspeed error allowance 1.0 → 0.5 m/s; cruise stays 16 m/s (B1's 16.5 m/s alternative not taken)
+    source: CHANGE-LOG#D-37
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-38
+    kind: decision
+    text: Mass allocations 2 324 g (wing 405, fins 408, pod 122, landing 43, propulsion 476, power 620, avionics 80, harness 105, mechanisms 65); A1 reserve 276 g; growth allowance 250 → 170 g; sized 2.59 kg. A3 re-runs the roll-up on these allocations; the gate rests on A3's maturity growth ≤ 170 g and the pack weigh-in
+    source: CHANGE-LOG#D-38
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-39
+    kind: decision
+    text: "Budget: ground-test equipment counts against the $2 000; cost keys from I1's BOM (spend 1 569.03 / 1 680.35, reserve 319.65); lever order for any new line: gate the Small Parts adapter set (X05, $26.40), SpeedyBee FC (+$21.25), defer the airspeed sensor last (+$66.14)"
+    source: CHANGE-LOG#D-39
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-40
+    kind: decision
+    text: 'Field kit: one 10 mm prop spanner is the single allowed tool (R-FIELD-SETUP "no tools" re-worded by A2)'
+    source: CHANGE-LOG#D-40
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-41
+    kind: decision
+    text: 'Thread engagement per type: 1.0 d metal, 1.5 d heat-set insert, 2.0 d self-tapping plastic, nyloc + 2 pitches'
+    source: CHANGE-LOG#D-41
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-42
+    kind: decision
+    text: 'Thermal keys: `env.ambient_ceiling_c` 43, `pack_takeoff_max_c` 34, `full_throttle_max_s` 10; motor mounts and ESC pads printed in ASA (PETG 58 °C limit fails by 8 K)'
+    source: CHANGE-LOG#D-42
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-43
+    kind: decision
+    text: Spar stays 22 × 20 mm at z +0.0066 m (CR-B2-09's +0.0070 and the 16 × 14 trade rejected)
+    source: CHANGE-LOG#D-43
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-44
+    kind: decision
+    text: '`R-STALL` is judged over the R3 CG range (0.050–0.055): B2 re-runs `CL-B2-STALL-GATE-FWD` at 0.050 (B3: 11.93 m/s there); the SM-7.8 % case at 0.040 is void'
+    source: CHANGE-LOG#D-44
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-45
+    kind: decision
+    text: Wing modes close by the tap-test branch of `R-VIBRATION` plus the rpm-tracking notch; B3 adds the 12–15 Hz antisymmetric torsion mode to the hover loop model; F4 keeps the rate-loop crossover ≤ 5 Hz
+    source: CHANGE-LOG#D-45
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-46
+    kind: decision
+    text: 'Shared tooling: A4 is assigned the `redesign/interfaces/` changes (19 plan connection types; `merge_check.py`: harness-owned electrical edges exempt from the `owner` warning, non-structural types skipped in the floating check, power wires followed `part_a` → `part_b`); A5 re-runs `fusion/tests` and `check.py` after'
+    source: CHANGE-LOG#D-46
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-47
+    kind: decision
+    text: 'CG fix: pod nose shell −0.115 → −0.130 m (pod 0.225 × 0.14 × 0.07), nose block 14.8 → 8.8 mm, the whole pack bay (forward stop −0.1002 → −0.1212, crush block ≥ 24.3 mm, spreader, spacers, aft stop 0.077 → 0.056) 21 mm forward; pack nominal centroid x −0.022 m (new key `pod.pack_x_nominal_m`), per weighed pack 680 g −0.014 / 550 g −0.022 / 503 g −0.0245; CG range 0.050–0.0549 m, target 0.0522 (B3 R3); pitot tip −0.210 (boom unchanged); envelope x 0.498 m'
+    source: CHANGE-LOG#D-47
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-48
+    kind: decision
+    text: "Mass allocations 2 355 g: wing 405, fins 418, pod 131, landing 43, propulsion 462, power 648, avionics 45, harness 123, mechanisms 80; A1 reserve 245 g; growth allowance 145 g; sized = gate 2.600 kg. Directed reductions inside the allocations: mechanisms 3/32 in inter-panel rod (−3.6 g, D6's own fallback), propulsion ESCs carried stripped of the factory power leads (−13.6 g, F2 solders its own), fins collar 16 → 12 mm (−3 g) pays C6's 15 mm root fillets (+3 g), harness returns 12 g if the factory phase leads reach"
+    source: CHANGE-LOG#D-48
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-49
+    kind: decision
+    text: Sag factor 0.76 → 0.851 (one E1/E2 calculation); cruise 240 W / 16.2 A, L/D 6.2 (E1 on B1 rev 3, D-13 conservative rule; B1 227.8 W / 300.6 W pessimistic); cruise after hover 12.7 / 6.8 min (E2 on B1 rev 3)
+    source: CHANGE-LOG#D-49
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-50
+    kind: decision
+    text: 'VD stays 27.2 m/s, n⁺ 3.4: F4 caps fixed-wing `THR_MAX` at 70 % (7 750 rpm, level 21.3 m/s ≤ 21.8), shown in the first full-throttle level log; the "≤ 1/3 travel at VD" half of the D-29 schedule is held by envelope (no raw-stick FW mode, `PTCH_LIM_MIN_DEG` −10, `AIRSPEED_MAX` 18), not by an airspeed surface limit; servo stays 3.93 kgf·cm; C6 bond areas fall back to 720 mm²; `vd_ms` is not rounded to 27.25'
+    source: CHANGE-LOG#D-50
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-51
+    kind: decision
+    text: Prop plane x −0.0082 → −0.0077 m (D3 `face_ahead_m` 0.0025, `prop_stack_m` 0.0373); `propulsion.motor_length_m` 0.0265; `x_plate_face_m` 0.0309 added
+    source: CHANGE-LOG#D-51
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-52
+    kind: decision
+    text: "Cant sense corrected: D3 sets `fin_detail.mount.cant_sense_UR = −1` (UR prop end leans toward the wing and outboard), same rule at every station; 7° kept, B4's 5° option open until T-B4-YAW; H1/H2 verify the sense on the built aircraft (inclinometer + hanging yaw test) before the first hover"
+    source: CHANGE-LOG#D-52
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-53
+    kind: decision
+    text: 'Transport: box 3.57 kg (loaded 5.84), 120 mm cradle columns, no lid lining; the 0.3 m drop is the floor drop; aft-wall drop taken by the feet (0.25 m); end, nose and lid-down drops are label-and-test only ("keep upright"); `transport.carry` added; props-on transport (CR-D7-15) rejected at R4'
+    source: CHANGE-LOG#D-53
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-54
+    kind: decision
+    text: "Feet: `foot_crush_stroke_min_m` 38 mm is the flange-to-sleeve gap (usable 35 mm after C5's 3 mm guard); envelope span 1.152 m with the TE corner caps; README feet row re-worded; the half-fin tip takes D5's step (`tip_square_m` 0.0454, flat step at \\"
+    source: CHANGE-LOG#D-54
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-55
+    kind: decision
+    text: 'Shared R3 stations promoted to `params.json`: `fins.stations.collar_end_xyz_m` [0.045, 0.3023, 0.1535], `brace_anchor_y_m` 0.242, `brace_anchor_y_in_m` 0.234, `landing.pad_contact_z_m` 0.218, `propulsion.stations.x_plate_face_m` 0.0309; stale notes fixed (`wing.elevon.inboard_y_m`, DP-MOUNT = tube front face 0.034)'
+    source: CHANGE-LOG#D-55
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-56
+    kind: decision
+    text: "Requirement texts: `R-MASS-GATE`, `R-TIPOVER`, `R-DISCONNECT` re-worded in `params/claims.json` (A2's R3 text, with the R4 reserve); new keys `electrical.wire_temp_rise_short_max_c` 30, `pack_lead_rise_max_c` 20; `thermal.` limits (motor 80, ESC 85, pack 50, FC 85 °C) as keys; CR-A1-37 closed"
+    source: CHANGE-LOG#D-56
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-57
+    kind: decision
+    text: 'Cost keys from I1-R3: spend 1 579.79 / 1 687.01, reserve 312.99 (+$3.99 over the crash), `reserve_pessimistic_allin_usd` 128.00; gates accepted: X05 adapter set, X07 box and field kit (built from Jacobs Hall stock first), X08 airspeed sensor (first fixed-wing tune on the synthetic estimate); lever order: borrow soldering / meter / hot-wire gear, then SpeedyBee FC, un-gate X08 if the bench is lent'
+    source: CHANGE-LOG#D-57
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-58
+    kind: decision
+    text: 'Deviations granted: (a) `E-PRP-01…04` prop-adapter screws minimum engagement 2.0 mm (vendor M3×4 in a ~2.5 mm bell top, 0.5 N·m + Loctite 243 tip, RF 1.70 at 2.0 mm, `CL-E1-ADAPTER-STRIP`), conditional on T-E1-MOTOR-RM measuring ≥ 2.5 mm of thread; (b) the supplied 2-56 clevises and M2 cover screws in mechanisms as exceptions to M3-only. Pack SKU: E2 names a 4S 6500 SKU ≤ 601 g with ≥ 10 AWG leads, or accepts re-leading and the 680 g mass (then the first build must come in under allocation, levers in MASS-CG.md)'
+    source: CHANGE-LOG#D-58
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-59
+    kind: decision
+    text: 'Pack bay trim (A1-R4a): aft travel 8 → 12 mm (`pod.pack_aft_travel_m` 0.012, aft stop 0.056 → 0.060), spacer step 2 mm (`pod.pack_spacer_step_m`); nose (−0.130), crush stack and the −0.022 datum unchanged. Each weighed pack flies at the spacer step, counted forward from the no-spacer station −0.010, that puts the basic CG nearest 0.0522 m, never ahead of the crush stack (−0.0254): 550 g −0.018 (8 mm), 503 g −0.024 (14 mm), 680 g −0.010 (none). Nose ballast ≤ 10 g from the A1 reserve if the balance test with a light pack is aft of the aft mark. Allocations unchanged (D-48 stands); the D-58 pack-SKU line moves 601 → 631 g'
+    source: CHANGE-LOG#D-59
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-60
+    kind: decision
+    text: CG range [0.050, 0.0549] → [0.0509, 0.0548] m on B3's R4 limits (0.05085 / 0.05490 rounded inward; B3's 0.0549 sat 2 µm aft of its own limit). B3's target 0.0529 was accepted but never written (`cg.x_target_m` stayed 0.0522); `CALC-A1-PACK-CASES` re-based on A3's live CG and `CL-A3-CG-X-PRED` (`ASM-A1-CG-GROWTH-DX` retired). Superseded by D-62
+    source: CHANGE-LOG#D-60
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-61
+    kind: decision
+    text: 'Prop plane 5 mm forward: D3 sets `fin_detail.mount.face_ahead_m` 0.0025 → 0.0075 m; `propulsion.stations.x_prop_plane_m` −0.0077 → −0.0127, `x_plate_face_m` 0.0309 → 0.0244 (D3 publishes the exact values with `CL-D3-X-PROP`; A1 copies them). No tool exemption for the tube; the 5° cant stays the fallback after T-B4-YAW'
+    source: CHANGE-LOG#D-61
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-62
+    kind: decision
+    text: "CG range re-derived with the CG height: `cg.x_range_m` [0.0509, 0.0548] → [0.0466, 0.0514] m, `cg.x_target_m` 0.0522 → 0.0490; `cg.z_target_m` 0 → 0.0185 (A3's value), `cg.z_range_m` [−0.02, 0.03] → [0.010, 0.025]. The CG moves forward to the target by the pack bay: pod nose shell −0.130 → −0.140 (pod 0.235 × 0.14 × 0.07), the whole bay 10 mm forward (forward stop −0.1312, crush block ≥ 24.3 mm and spreader unchanged, aft stop 0.060 → 0.050), `pod.pack_x_nominal_m` −0.022 → −0.032; pitot tip −0.220; envelope x 0.508 m; D7's nose pad 3/4 → 1/2 in"
+    source: CHANGE-LOG#D-62
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-63
+    kind: decision
+    text: "Mass allocations 2 386 g: fins 418 → 437, pod 131 → 146, landing 43 → 48, mechanisms 80 → 72 (wing 405, propulsion 462, power 648, avionics 45, harness 123 unchanged); A1 reserve 245 → 214 g; growth allowance 145 → 114 g; sized = gate 2.600 kg. The D-48 \"3/32 in rod\" directive is withdrawn. C4's shoe-cheek extension (+16 g, CR-C4-30) is not allocated: T-C4-FIN-PROOF on the as-drawn article decides it (CR-C4-36)"
+    source: CHANGE-LOG#D-63
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-64
+    kind: decision
+    text: "Pack SKU: Ovonic 4S 6500 mAh 120C hard case, EC5, 551 ± 5 g, 135 × 46 × 49 mm (`battery.pack`, `size_m`; `mass_kg` stays 0.55). I1 releases the pack cart after E2's two order-time checks (10 AWG leads confirmed; EC5 / 4S / 6500 / hard case / 2 packs). The held 130C XT60 SKU (680 g, 12 AWG) is not bought; re-leading is rejected. Pack acceptance line 631 → `CL-A1-PACK-ACCEPT` (592.6 g today, \"590 g\"): E2's `PACK_ACCEPT_KG` and the T-E2-WEIGH pass line follow it. The 503 / 680 g bounding listings of D-58/D-59 are retired as flight cases: the CG and gate checks run on 546 / 550 / 590 g (`ASM-A1-PACK-CASES-G`; A3 updates `ASM-A3-PACK-RANGE`)"
+    source: CHANGE-LOG#D-64
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-65
+    kind: decision
+    text: "Landing: `requirements.landing_sink_ms` 1.5 → 1.2 m/s at ≤ 10° of combined tilt in any direction (F4 holds `Q_PILOT_SPD_DN` ≤ 1.2 m/s, `Q_LAND_FINAL_SPD` 0.3, `Q_LAND_SPEED` ≤ 0.5); `landing_n_design` 6.0 → 6.6; the design foot side load is C5's simulated 39.3 N limit / 59.0 N ultimate (`CL-C5-SIM3D-SIDE-LOAD`, `-SIDE-ULT`) in D5, C4/D3 and C1; D5 redesigns the shoe sleeve end to RF ≥ 1 at 59 N (wall 2.0, rim 3.0, R 1.0 inside fillet, 25 mm engagement). C1's 1.5 m/s level and pitch-pair cases (L1, L4) stay the structural bounds. A2 re-words `R-LANDING-IMPACT`"
+    source: CHANGE-LOG#D-65
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-66
+    kind: decision
+    text: "Spiral mode (A1's position for A2's `R-SPIRAL`, CR-B3-26): option (b). Keep the CG height; amend `R-SPIRAL` to t2 ≥ 3.3 s with wing-borne flight only in roll-stabilised modes (FBWA / AUTO / QSTABILIZE…), no MANUAL / ACRO above 5 m; F4 sets `FLTMODE` accordingly. A2 decides and words it"
+    source: CHANGE-LOG#D-66
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-67
+    kind: decision
+    text: "Performance and thermal keys from the simulation round: `electrical.r_ext_mohm` 6.5 → 6.7; `performance.cruise_after_hover_min` 12.7 → 12.0, `_pess_min` 6.8 → 6.4 (E2's 240 W case); `cruise_power_w` 240 stands (B1 as designed 238.9 W at the gate, 1 W under E1; pessimistic 312.4 W: E2 re-runs); `ld_cruise` 6.2 stands until E1 re-runs on `CL-B1V-CD0` / `-K` (B1 5.57 at 2.436 kg); `env.ambient_ceiling_c` 43 → 44; `thermal.` notes 56.1 / 44.8 / 54.9 °C; `download_factor` note 1.025 (kept 1.06); `THR_MAX` 70 % stands (VH 21.0 m/s, 1.25 VH 26.3 ≤ 27.2)"
+    source: CHANGE-LOG#D-67
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-68
+    kind: decision
+    text: "Wing structure fixes from C2's 3-D FEA: D3 rounds the through-core block's four vertical edges R 3 mm; D1 cuts the pocket to match and lays a microballoon fillet bead ≥ 3 mm along the inboard and outboard pocket edges on both surfaces (60 mm doubler kept continuous over the edges); D1 radiuses the elevon cut-out corners at the fin-root tab (y ±0.30 / ±0.34) R ≥ 3 mm with the tab's tape carried round; the LE stays seam-free 32 mm each side (one continuous strip, seams aft of x/c 0.10, hot-wired LE sanded; block-pocket doublers exempt); the fin root fillet is credited fail-safe only (C4 sends C2 the fillet-intact load share for L4 and G2; C6 keeps the fillet RF on the joint side). Wing allocation 405 g unchanged (the beads sit inside the 18 g cushion); C2 re-runs the FEA on the revised pocket"
+    source: CHANGE-LOG#D-68
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-69
+    kind: decision
+    text: "Pod structure fixes from C3's FEA (D2 implements, +13.9 g in D-63): aft stop backed by three PETG ribs 3 × 14 × 14 mm to the handle-foot bridge (x 0.063 → 0.077) ending in a 40 × 14 × 2 mm pad; forward stop carried through a 3 × 54 mm floor slot to a 12 mm PETG flange under the floor; handle feet tied to the pod side walls by one bracket per side with ≥ 1 000 mm² epoxied to the wall; a 5 mm microballoon fillet in the recess-step corner (D1, before the pod goes in); `CL-D2-AFT-STOP-BOND` retired as the aft-stop check; `T-C3-STOP-PUSH` on tray pieces bonded to board offcuts, `T-C3-POD-PROOF` + 200 N on the brackets"
+    source: CHANGE-LOG#D-69
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-70
+    kind: decision
+    text: "Fin joints and vibration: edge-strip pins Ø 2 → 2.5 mm pultruded CF at the drawn 15 mm pitch (Ø 2 at 9 mm if 2.5 cannot be bought); station collar 12 → 13 mm (12 only if `T-C6-LAP-PETG` ≥ 4.1 MPa mean before the collars print); the strip-tail bond in the collar tail is a build inspection item (strips to the tube surface, epoxy fills both slots over the full 40 mm, tongue with 3 perimeters under each strip, tap/pull check before the fin closes); `T-C4-MOUNT-STIFF` pass level ≥ 1 100 N·m/rad; `R-VIBRATION` on the fin station passes at 0.29 (3-D, lower station 255.5 Hz vs 2P cruise 198.2 Hz) with re-run triggers: cruise rpm > 6 390 or station mass > +15 %; C4's shoe-cheek extension (CR-C4-30) held by `T-C4-FIN-PROOF` on the as-drawn article (legs 7 mm, 8 mm cheeks over both strip ends) with two strain gauges and a dial gauge; `T-C6-STRIP-ANCHOR` frame ≥ 1 560 N"
+    source: CHANGE-LOG#D-70
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-71
+    kind: decision
+    text: "`R-STALL` and `R-TRANSITION` are judged at the 2.6 kg gate and closed by test: `T-B2-STALL` (slow-flight stall at the gate mass and the forward CG, airspeed logged, three runs) is a gate on the twin and on the first build, before the December order and before `ARSPD_FBW_MIN` is frozen; F4 sets `ARSPD_FBW_MIN` = 1.3 × the measured trimmed stall, rounded up (15.6 from analysis until then); if the measured stall is > 12.3 m/s, cruise rises. B2 re-runs the forward-CG stall at the D-62 forward limit (0.0466) with the CG height (B3's `CL-B3-V-VT` 15.52 gives 11.94 m/s there); B1, B2 and B3 reconcile the trimmed CLmax (B1 AVL + XFOIL 0.862 vs B2 0.787 at SM 0.063) and the props-off NP (0.0708 vs 0.0738 m): A1 carries the lower CLmax. The forward limit is not moved further forward (each 1 mm costs ≈ +0.013 m/s)"
+    source: CHANGE-LOG#D-71
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-72
+    kind: decision
+    text: "Budget: the two 150 mm U.FL T-antennas (≈ $6, F5 CR-F5-11 / F3 CR-F3-15) are released against I1's first lever (borrow the soldering kit from Jacobs Hall, +$94.82); until H1 has Jacobs Hall's written yes (before 20 Nov) `CL-A1-RESERVE` reads $313 − $6 = $307, $2 under the $309 crash: I1 re-prices the BOM and A1 copies the cost keys"
+    source: CHANGE-LOG#D-72
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-73
+    kind: decision
+    text: "Tooling notes for `inputs/SIM-TOOLS.md` (orchestrator) and A4's checker: SU2 8.5 `LINEAR_SOLVER_PREC= ILU` diverges on thin-walled tube meshes yet exits \"Success\" (use `LU_SGS` or check `LINSOL_RESIDUAL` in every elasticity log); the installed SU2 has no PaStiX direct solver and its CG/ILU and FGMRES/ILU do not converge on laminated foam-board solids (C4's hex8 code + SciPy SuperLU, benchmarked against SU2 to 4.7 × 10⁻¹¹, is the structures fallback). `merge_check.check_budget` / `check.py graph:mass` compare at 0.05 g (CR-A1-59 stands: \"462 g > 462 g\" is float dust)"
+    source: CHANGE-LOG#D-73
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-74
+    kind: decision
+    text: "Drop the UBEC `PWR-005` and its 5 A fuse `PWR-007`: the CoreWing V2 power board's servo BEC, jumpered to 6 V (never 7.2 V), feeds the two elevon servos through the FC's Vx rail. Fallback only if `subsystems/power/BOARD-CHECK.md` step 7 reads Vx < 5.8 V at ≈ 5.4 A: then a named 4S-input 6 V UBEC with its own pod zone (BOM gate X12: F04, F05, F06). Add one Amass XT30U per ESC pair at the pod side exits (BOM `H06`, `HRN-113`); every bus-bar joint is made on the bench (one build order in power and harness `BUILD.md`). Define the power-board keep-out `KO-PWR-BOARD` (x −0.066 … −0.010, 34 mm wide, z to 0.0626 m) so the pod fits the board split or as the whole stack"
+    source: CHANGE-LOG#D-74
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-75
+    kind: decision
+    text: "One fin tip: the step front is where D5's foot stack puts it, x 0.2614 (step \\"
+    source: CHANGE-LOG#D-75
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-76
+    kind: decision
+    text: 'Landing D5-R7: crush cartridges in FOAMULAR 400 (40 psi, 276 kPa) at 14.5 × 9.8 mm with a 5/32 in bore for type L (same 37.5 N mean plateau, bias 1.046); the shoe sleeve shrinks to 19.1 × 14.4 mm (walls 1.2 mm kept, rim 2.8 → 3.4 mm), tine 16.3 × 11.6 mm with 2.0 mm rails, flange 1.6 → 1.8 mm. Landing 69.9 → 59.1 g. Fallback if F-400 cannot be bought or fails `T-D5-COUPON`: the R6 F-250 parts (+11 g, CG +1.1 mm)'
+    source: CHANGE-LOG#D-76
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-77
+    kind: decision
+    text: "Pack datum 4 mm forward: `pod.pack_x_nominal_m` −0.032 → −0.036 (16 mm CAD spacer stack: blue + green + white), `pod.pack_aft_travel_m` 0.012 → 0.016 (aft stop stays at 0.0475). Per-pack flight stations from A3's re-run: 546 g −0.036 (16 mm), 550 g −0.034 (14 mm), 590 g −0.030 (10 mm). D2 moves the forward strap −0.062 → −0.079 (slots 37 → 26 mm) to clear D-74's keep-outs"
+    source: CHANGE-LOG#D-77
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-78
+    kind: decision
+    text: 'Mass allocation: landing 48 → 60 g, power 648 → 636 g (total 2 387 g and the 213 g reserve unchanged)'
+    source: CHANGE-LOG#D-78
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-79
+    kind: decision
+    text: 'Mass allocation: harness 123 → 129 g, power 636 → 630 g (6 g moved; total allocations and the 213 g reserve unchanged)'
+    source: CHANGE-LOG#D-79
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-80
+    kind: decision
+    text: Motor-mount outboard cheek ends 1 mm ahead of the clamp slit (inboard cheek keeps the full 17 mm)
+    source: CHANGE-LOG#D-80
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-81
+    kind: decision
+    text: 'Clocking key: a 3 × 2.5 mm dog under the mount collar (front, −x) in a 3.4 mm notch at the top of the `FIN-008` ring; the pinch bolt stays the clamp'
+    source: CHANGE-LOG#D-81
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-82
+    kind: decision
+    text: Horn blade front follows the elevon bevel (+0.2 mm) instead of a vertical edge at hinge + 6 mm; the wing's horn slot opens from the hinge line
+    source: CHANGE-LOG#D-82
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-83
+    kind: decision
+    text: Fin-hole grommets drawn as parts `HRN-110-UR/UL/LR/LL` (flange OD 10, bore 7, 12 mm overall, barrel 7.9 mm in the 8 mm hole, CA'd), edges `E-HRN-42…45` to `FIN-001-<st>`
+    source: CHANGE-LOG#D-83
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-84
+    kind: decision
+    text: Collision fixes that change geometry (no mass or performance number moves beyond the re-run)
+    source: CHANGE-LOG#D-84
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-85
+    kind: decision
+    text: Harness routed as built; three holes and two slots that the routes need are now in the CAD
+    source: CHANGE-LOG#D-85
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-86
+    kind: decision
+    text: JR connectors drawn; ESC pairs and main jumper landed conductor by conductor; tape slit where leads pass; lower signal lead under the tape; phase leads tied along the tube; strict no-phasing gate
+    source: CHANGE-LOG#D-86
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-87
+    kind: decision
+    text: Conductors drawn concentric round every bend; no lead folds or crosses itself; leads land where the real pads are; bus bars 35 mm
+    source: CHANGE-LOG#D-87
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-88
+    kind: decision
+    text: Second gate on the exported model; every soldered lead enters square onto a real pad, under heat-shrink; cap drawn as its real can; booleans made exact
+    source: CHANGE-LOG#D-88
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-89
+    kind: decision
+    text: A wire end must land on a drawn termination (pad, solder joint, plug, header, cups, sleeve, lead exit, bus bar); the avionics boards, power board, pack and servos get them
+    source: CHANGE-LOG#D-89
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-89a
+    kind: decision
+    text: End faces enclosed; lap solder fillets; pitot lines and pushrods seated; BOM lines for what the CAD now draws
+    source: CHANGE-LOG#D-89a
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-95
+    kind: decision
+    text: "Mass budget re-based on delivered masses; one pack acceptance line; harness allocation 129 → 142 g. Allocations: wing 405 → 393, fins 438 → 434, power 630 → 627, avionics 45 → 37, harness 129 → 142, mechanisms 72 → 73 g (pod 146, landing 60, propulsion 462 unchanged). Sum 2 387 → 2 374 g. Growth allowance 113 → 123 g (A3's live growth by maturity, now checked by the new `CL-A1-GROWTH-COVERS`). Reserve 213 → 226 g = 123 + 100 overrun + 3 g free. `ASM-A1-R5-ADDED-G` 21.4 → 0 g. `T-E2-WEIGH` pass line: pack ≤ 560 g (`CL-A3-PACK-ACCEPT` = `CL-A1-PACK-ACCEPT` = `CL-E2-PACK-ACCEPT-KG` = 560.8 g). The 590 g pack stays as the heavy bounding case for CG stations and load cases only (`CL-A3-GATE-MARGIN-590` loses its limit). A3 adder `HRN-A3-ROUTED` 13.81 g carries F2's routed harness until F2 republishes `parts.csv`"
+    source: CHANGE-LOG#D-95
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-96
+    kind: decision
+    text: 'Stall and transition margins made robust (H9 and issue 4). (a) H9 = option (a): `cg.z_range_m` [0.010, 0.025] → [0.0165, 0.025]. (b) `requirements.stall_max_ms` 12.0 → 12.3 m/s. P7 is re-derived on the integer `AIRSPEED_MIN` 16 (K09L.param), which holds for any trimmed stall ≤ 16 / 1.3 = 12.31 m/s. (c) Planned fallback, analysed now: if `T-B2-STALL` measures a gate-mass stall above 12.31 m/s, set `AIRSPEED_MIN` = `AIRSPEED_CRUISE` = 17. This holds to 13.07 m/s at about 289 W cruise. (d) `T-B2-STALL` on the twin and the first build stays the gate before `AIRSPEED_MIN` is frozen (D-71)'
+    source: CHANGE-LOG#D-96
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-97
+    kind: decision
+    text: 'Cruise power (H10): carry 253 W at 16 m/s; L/D 5.66. 15 m/s cruise is rejected'
+    source: CHANGE-LOG#D-97
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-98
+    kind: decision
+    text: "One pack-station rule for the flight card (H8): A1's mid-band rule. Before weighing, each pack flies at the whole spacer step that minimises the worse range use of its basic and predicted CG. After `T-A3-CG-BALANCE`, the measured CG replaces both and the step nearest 0.0490 m is flown. If the measured CG is aft of 0.0514 m, D-59's nose ballast (≤ 10 g) comes from the predicted gate margin"
+    source: CHANGE-LOG#D-98
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-99
+    kind: decision
+    text: "I²C bus limit from the bus capacitance: `harness.rules.i2c_max_m` 0.5 → 1.0 m. The routed 0.522 m bus is accepted; no shorter route is required. F2 copies 1.0 m into `team/F2/harness.py` line 1813 (owner's file, not edited here), citing `CL-A1-I2C-LEN-MAX`"
+    source: CHANGE-LOG#D-99
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-100
+    kind: decision
+    text: "Proof-chain triage: stale inputs corrected. `CL-F3-SERVO-BEC` 4.5 → 8 A, the CoreWing V2 servo BEC D-74 already relies on (`ASM-F3-BEC` too). J1's XT60 claims (`-CONT`, `-CONT-PESS`, `-BURST`; XT60 not fitted, D-32 AS150U) and the bare-tube `CL-J1-TUBE-MODE-SEP` (superseded by C4's 3-D station model) lose their limits and requirement links. Every remaining fail is explained in `PROOFS.md`"
+    source: CHANGE-LOG#D-100
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-89b
+    kind: decision
+    text: Prop-adapter counterbores open to the face; horn bores become U-slots; power board seated on its washers; pitot barbs fit the socket bore
+    source: CHANGE-LOG#D-89b
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-89c
+    kind: decision
+    text: Cross-screw counterbore open to the boss face; strap eyes become four bonded parts `FIN-013`; horn U-slot opens upward and the horn backplate becomes `MEC-013`; motor-plate holes drawn as drilled and the inboard cheek moved out 0.6 mm; power board before its screws; FC lead tails loose until soldered
+    source: CHANGE-LOG#D-89c
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-90
+    kind: decision
+    text: 'Fin station on the D-65 loads: station collar 15 → 22 mm; strip pins 15 → 12 mm pitch; the strip tail stays 40 mm and is decided by coupon before any collar print'
+    source: CHANGE-LOG#D-90
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-91
+    kind: decision
+    text: "Motor-mount grip 12 → 18 mm (CR-H1-24): the station collar, brace ear and fin top-edge LE move 6 mm down; GT-17 pass line = C4's nominal-tube need"
+    source: CHANGE-LOG#D-91
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-92
+    kind: decision
+    text: 'Half-fin root fillets: 15 → 10 mm ahead of the hinge, 13 mm aft kept; no strength credit'
+    source: CHANGE-LOG#D-92
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-93
+    kind: decision
+    text: 'Station-mode separation: tube pass lines; nominal passes in the shell model, not yet in 3-D: the 70 GPa / 3 GPa corner becomes a record and the tube tests carry pass lines'
+    source: CHANGE-LOG#D-93
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-94
+    kind: decision
+    text: 'Clocking dog (D-81) sized as part of the fuse: printed ASA dog kept, 3 × 2.5 mm'
+    source: CHANGE-LOG#D-94
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-101
+    kind: decision
+    text: 'Landing shoe side-load margin (D5-R8): sleeve inside fillets R 1.0 → 2.0; rim y sides 3.4 → 4.6 mm, rim floor side 3.4 → 0.4 mm; tine chamfer 1.0 → 1.4 mm, rails 2.0 → 2.5 mm; sleeve section, roof rim, lip and fin step unchanged. The 59 N ultimate load case stays'
+    source: CHANGE-LOG#D-101
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-102
+    kind: decision
+    text: 'Pod: forward-stop T (D-69) accepted as drawn with the 1 mm microballoon bed as a structural hold point (BUILD step 9); bracket proof on the flight pod at limit, the crash force on test articles'
+    source: CHANGE-LOG#D-102
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-103
+    kind: decision
+    text: 'Recess-step corner (CR-C3-17): delete the WNG-007 fillet and the pod floor bevel; floor end square on the step; crash retention by fail-safe'
+    source: CHANGE-LOG#D-103
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-104
+    kind: decision
+    text: Wing modes vs rotor orders closed by forced response (R-VIBRATION (b)); props balanced to ISO 21940-11 G 16
+    source: CHANGE-LOG#D-104
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-105
+    kind: decision
+    text: 'Foot side load capped by the pad face: design value 24.5 N limit at pad μ ≤ 0.40'
+    source: CHANGE-LOG#D-105
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-106
+    kind: decision
+    text: 'Fin fix drawn: D5 shoe legs 7 → 30 mm (to \'
+    source: CHANGE-LOG#D-106
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-107
+    kind: decision
+    text: One table of printed-plastic design values; rule for when a printed part may claim ultimate only
+    source: CHANGE-LOG#D-107
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-108
+    kind: decision
+    text: D-89c parts get claims, stack rows and a bonded test
+    source: CHANGE-LOG#D-108
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-109
+    kind: decision
+    text: Fins mass is 434.9 g
+    source: CHANGE-LOG#D-109
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-110
+    kind: decision
+    text: "Station modes: H1 reads C4's lines live; the brace is not the lever"
+    source: CHANGE-LOG#D-110
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-111
+    kind: decision
+    text: Load cases G4 and P1; coupon lever 20:1; GT-17 load
+    source: CHANGE-LOG#D-111
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-112
+    kind: decision
+    text: Wing block pocket fails on the capped loads; grooves are not the cause
+    source: CHANGE-LOG#D-112
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-120
+    kind: decision
+    text: '`MIXING_GAIN` 0.5 → 0.65; the forward CG limit is re-derived on it; `cg.x_range_m` [0.0466, 0.0514] → [0.0394, 0.0513] m'
+    source: CHANGE-LOG#D-120
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-121
+    kind: decision
+    text: First fixed-wing flights at CG x ≤ 0.0465 m (static margin ≥ 6.5 % at 1.3 Vs); band 0.0453–0.0465 m; ≤ 30 g nose ballast
+    source: CHANGE-LOG#D-121
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-122
+    kind: decision
+    text: 'Tripped stall is the planning baseline (B6): `AIRSPEED_MIN` 16 → 17, `AIRSPEED_CRUISE` 16 → 17, `AIRSPEED_STALL` 12 → 13, `SCALING_SPEED` 16 → 17, `Q_ASSIST_SPEED` 13 → 14. Second fallback pre-computed: 18 / 18 / `AIRSPEED_MAX` 20 (PROPOSED, needs A1 / C1 on `AIRSPEED_MAX` 20)'
+    source: CHANGE-LOG#D-122
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-123
+    kind: decision
+    text: "`Q_A_ACC_Y_MAX` 135 deg/s/s (new line). The board's \"`Q_A_ACCEL_Y_MAX` 13 500\" is the 4.6 name and unit"
+    source: CHANGE-LOG#D-123
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-124
+    kind: decision
+    text: 'RC-loss timing restated for ArduPlane 4.7: `FS_SHORT_TIMEOUT` deleted (the firmware removed it), `RC_FS_TIMEOUT` 1.0 s stated, `FS_LONG_TIMEOUT` stays 5 s. Receiver failsafe mode "No Pulses" is a link setting and a `T-F5-BENCH` step'
+    source: CHANGE-LOG#D-124
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-125
+    kind: decision
+    text: '`THR_MAX` stays 70, but the first full-throttle level legs fly a 55 → 60 → 65 → 70 ladder and stop at the first leg above 21.0 m/s'
+    source: CHANGE-LOG#D-125
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-126
+    kind: decision
+    text: "Parameter file R6: six LEGACY duplicates deleted; firmware stated as \"4.7.2 stable or later\"; every name checked offline against ArduPilot's published list"
+    source: CHANGE-LOG#D-126
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-130
+    kind: decision
+    text: 'BOM R5: spares to `R-CRASH-REPAIR`, levers L1–L3 applied, missing lines priced from pages, `covers` column, dead links fixed'
+    source: CHANGE-LOG#D-130
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-131
+    kind: decision
+    text: Owned-or-borrowed list and test gates keep the at-order spend inside $2 000
+    source: CHANGE-LOG#D-131
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-132
+    kind: decision
+    text: 'Structures mass contingency booked: fins allocation +32 g; first-build overrun 100 → 64 g; gate unchanged'
+    source: CHANGE-LOG#D-132
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-133
+    kind: decision
+    text: 'Schedule I2-R2 / G4-R2: count stages 2–10, move 13 h of bench work before first cut, start the cores on 10 Jan'
+    source: CHANGE-LOG#D-133
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-134
+    kind: decision
+    text: Transport box 1.25 × 0.56 × 0.54 m, separate panels on two standard sheets; the saddle LE lips are the x-stops
+    source: CHANGE-LOG#D-134
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-135
+    kind: decision
+    text: Power board on a foam pad above the frame screws; screws back to head on the deck (CDR-17, CDR-EL-03)
+    source: CHANGE-LOG#D-135
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-136
+    kind: decision
+    text: Spar slot drawn in the core; cap strip `WNG-008` (build-film physics check)
+    source: CHANGE-LOG#D-136
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-137
+    kind: decision
+    text: Mass re-balanced after S1 and S4 (CDR-12)
+    source: CHANGE-LOG#D-137
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-138
+    kind: decision
+    text: Foot side-load cap confirmed at 24.5 N (B1)
+    source: CHANGE-LOG#D-138
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-139
+    kind: decision
+    text: "Pod aft deck: handle-leg holes opened as slots to the deck's front edge"
+    source: CHANGE-LOG#D-139
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-140
+    kind: decision
+    text: Tape skin and servo doubler cut out round each servo cover
+    source: CHANGE-LOG#D-140
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-141
+    kind: decision
+    text: Shallow core recess under each flat servo cover, 0.1 mm clear
+    source: CHANGE-LOG#D-141
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-142
+    kind: decision
+    text: 'Pushrod Z-bend modelled as built: main run beside the arm, leg through the 1.85 mm hole'
+    source: CHANGE-LOG#D-142
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-143
+    kind: decision
+    text: 'Hatch closes: latch tab shortened 12 → 8 mm (ends forward of the handle grip); crush block and spreader stop 3.0 mm under the hatch'
+    source: CHANGE-LOG#D-143
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-144
+    kind: decision
+    text: Hatch latch tab widened 40 → 60 mm for VD suction (integrator, after S2)
+    source: CHANGE-LOG#D-144
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-115
+    kind: decision
+    text: 'Path resistance re-based on the leads as routed: `electrical.r_ext_mohm` 6.7 → 7.9; `propulsion.voltage_sag` 0.851 → 0.850'
+    source: CHANGE-LOG#D-115
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-116
+    kind: decision
+    text: Motor current is judged in the winding (applies CDR decision B7). `CL-E1-ILIM-I` re-stated on winding current; it fails; the limiter value is not changed here
+    source: CHANGE-LOG#D-116
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-117
+    kind: decision
+    text: "`CL-F1-DROP-PEAK` and `CL-F1-ESC-LEN-ALLOW` get limits again, derived from E1's thrust need. The 5 % guideline (WB-11) is exceeded and accepted; no 14 AWG"
+    source: CHANGE-LOG#D-117
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-118
+    kind: decision
+    text: The maker's rows above 12 A are a second bound, not discarded data; the 17 m/s pessimistic case is a claim
+    source: CHANGE-LOG#D-118
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-119
+    kind: decision
+    text: 'Proof graph: a violated limit of 0 is a fail; the schedule requirements get claims; `team/E1/propulsion.py` writes no shared file by default'
+    source: CHANGE-LOG#D-119
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-145
+    kind: decision
+    text: Transition and cruise speed keys 17 m/s
+    source: CHANGE-LOG#D-145
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-146
+    kind: decision
+    text: Motor cant 9°, mount `face_ahead` 12.0 mm
+    source: CHANGE-LOG#D-146
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-147
+    kind: decision
+    text: Fin motor tubes Rock West 35046-S
+    source: CHANGE-LOG#D-147
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-148
+    kind: decision
+    text: Props stay 11×5.5MR; pack-current limiter lowered (value set by D-157)
+    source: CHANGE-LOG#D-148
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-149
+    kind: decision
+    text: Forward transition entered at ≥ 1.4 × W
+    source: CHANGE-LOG#D-149
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-150
+    kind: decision
+    text: Pod nose 7 mm forward; crush block ≥ 31.0 mm with an 8 × 3 mm fore-top step
+    source: CHANGE-LOG#D-150
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-151
+    kind: decision
+    text: C3 nose-path model reads the drawn stop
+    source: CHANGE-LOG#D-151
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-152
+    kind: decision
+    text: Land belly into the wind
+    source: CHANGE-LOG#D-152
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-153
+    kind: decision
+    text: 'Wing corner: tape skin and 2-layer block doubler are structural; vm(L/2) measure'
+    source: CHANGE-LOG#D-153
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-154
+    kind: decision
+    text: Battery counter from measured capacity; `BATT_LOW_MAH` 2 700
+    source: CHANGE-LOG#D-154
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-155
+    kind: decision
+    text: Mass package booked as drawn; allocations reset
+    source: CHANGE-LOG#D-155
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-156
+    kind: decision
+    text: '`Q_WVANE_TAKEOFF` 3 → 1'
+    source: CHANGE-LOG#D-156
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-157
+    kind: decision
+    text: Pack-current limiter 70.2 A with sensor calibration ±1.1 %
+    source: CHANGE-LOG#D-157
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-158
+    kind: decision
+    text: Mirrored spin-map case closed by a hold point
+    source: CHANGE-LOG#D-158
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-159
+    kind: decision
+    text: Cant stays 9°; contingency trigger 1.023 × model; 10° / 14 mm mounts printed as spares
+    source: CHANGE-LOG#D-159
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-182
+    kind: decision
+    text: 'Configuration: concept A, scaled quad tailsitter (0.90 m wing, 4 x MN2212 KV780, 4S). Reverses D-181 (quadplane)'
+    source: CHANGE-LOG#D-182
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-183
+    kind: decision
+    text: Cost levers, APC 9x4.5MR/MRP props, Q_M_SPIN_MAX 0.90; D-183b pack Tattu 4S 2300
+    source: CHANGE-LOG#D-183
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-184
+    kind: decision
+    text: Arms x1.2, cant 16 deg; wind limit 5 m/s edge-on within +-10 deg, belly-on 3 m/s
+    source: CHANGE-LOG#D-184
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-185
+    kind: decision
+    text: 'Vibration rule: strongly coupled modes (coupling >= 0.5) 20 % separation; weakly coupled modes pass a forced-response check'
+    source: CHANGE-LOG#D-185
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-186
+    kind: decision
+    text: 'SITL follow-ups: THR_MAX 68 + FWD_BAT, VD 24, RAT_VT 24, LOITER 40, 150 m racetrack, fence 240 m; above 3 m/s yaw edge-on before QLAND'
+    source: CHANGE-LOG#D-186
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-187
+    kind: decision
+    text: 'Elevon mass balance v2: 15.6 g lead strip at 20 mm per elevon'
+    source: CHANGE-LOG#D-187
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-188
+    kind: decision
+    text: Elevon flutter closed by a hinge viscous damper (dimethicone 12,500 cSt shear drum, c = 1.03e-3 N m s/rad, 2.5 g per elevon); preload strips for slack only; servo arm 19 -> 12 mm; PETG caps with mechanical stops at +-21 deg; spar bond over abs(y) <= 0.20 m
+    source: CHANGE-LOG#D-188
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-189
+    kind: decision
+    text: Motor cant 16 -> 17 deg (yaw authority 0.3465 -> 0.3631 N m against 0.35; vertical thrust -0.5 %)
+    source: CHANGE-LOG#D-189
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-190
+    kind: decision
+    text: 'Weigh-in gate 1.50 -> 1.47 kg (keeps the transition window >= +-5 %: +-5.29 % at 1.47; limit 1.478 kg at cant 17)'
+    source: CHANGE-LOG#D-190
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-191
+    kind: decision
+    text: 'Rate gains: pitch P 0.12 / D 0.0012 / FLTD 60, yaw P 0.37 (min gain margin with cage modes +-20 %: 1.64 -> 2.03)'
+    source: CHANGE-LOG#D-191
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-192
+    kind: decision
+    text: 'Hover wind limit 5 -> 4 m/s mean, gust 8 -> 6.4 m/s; motor-output limit restated: no motor above 0.85 for more than 0.5 s and none at the 0.90 cap'
+    source: CHANGE-LOG#D-192
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-193
+    kind: decision
+    text: 'CAD fidelity round (lanes A, B, C): wing section Selig S5010 (published, unscaled 9.82 % t/c; replaces the placeholder), hub as a printed frame, real APC 9x4.5MR/MRP blades from the PE0 file, T-Motor adapter and spinner nut drawn, real ESC board, pack 105 x 35 x 29 with leads/XT60, Kakute stack, servo linkage with the arm perpendicular to the rod (the old arm pointed along the rod: about +-4 deg of elevon travel)'
+    source: CHANGE-LOG#D-193
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-194
+    kind: decision
+    text: 'CAD integration of D-193: airfoil datum lowered 5.0 mm (spar foam 0.6 -> 5.6 mm); rib fairing blisters; FC stack on 3.0 mm pads with stock M2x25 screws; tray with integral lips (slotted lip bolts dropped) and a lead notch; core tray slot y +-57; motor cup holes 2.9 mm (M2.5); cove +6 deg; lower lens cap cut 4 mm ahead of the hinge; clevis pin split out (MEC-005); wires re-routed with solder-joint blocks; prop-direction labels in BOM/ORDER-LIST restated from the thrust side; new connection types CT-HW-SEATED, CT-A-M25-SHCS-MOTOR, CT-A-PROP-ADAPTER, CT-A-PROP-NUT. Basic mass 1,231.3 -> 1,259.1 g (+27.8 g, of which +28.8 g is the T-Motor adapter and spinner nut, in no earlier lump)'
+    source: CHANGE-LOG#D-194
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-197
+    kind: decision
+    text: 'Arm and motor-cup structure closed by analysis (QP-5 ARMS); explicit screw-head pockets in the cup sleeve. Motor cup (no bosses: 5 mm plate, M2.5 heads on the plate, thread into the motor base) checked at cap thrust, uncapped fault, 1P and the 30 N prop strike: lowest margins plate cantilever +0.49 and hole bearing +0.39 (strike); cup-to-arm bond +1.88; arm root with blade offset +0.82 (the earlier +1.41 omitted the 47 mm prop-plane offset). Fatigue over a 10 h life (about 4e6 1P cycles; knock-downs CFRP 0.40, PETG 0.20, bond 0.30 `EST`): lowest hub socket wall +1.17. Arm tip deflection 1.2-1.4 mm at the cap, thrust-line tilt 0.41-0.48 deg inboard on all four (no net force). The two y = -9.5 mm M2.5 heads sit 18 % into the sleeve wall; the build hid this inside the seat cut, so the pocket (5.0 mm, 3 mm deep) is now drawn as a printed feature. Bench: cup coupon (3 off: axial 65 N, transverse 65 N at 35 mm, torque 5.2 / 3.0 N m) joins the hub coupon; pull one motor screw to read the thread depth; 30 min thrust-stand soak with tap tests; cup plate temperature limit 55 C `EST`. If the plate margin is judged thin after coupons: extend the sleeve to +9.5 mm (+0.4 g per cup).'
+    source: CHANGE-LOG#D-197
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-196
+    kind: decision
+    text: 'Hub arm-socket wall thickened (user chose "thicken" over a coupon-test-only route, 2026-11-15): arm-socket boss wall 0.8 -> 2.0 mm over the outer 12 mm of each socket (the bearing patch of the hoop check), 0.8 mm deeper in; bridge sleeve 0.8 -> 1.2 mm; hub CGE-001 13.1 -> 17.7 g. A full-length 2.0 mm socket and sleeve (24.7 g, +11.6 g) was drawn first and rejected: predicted mass 1.464 kg broke the 1.46 kg target, the EST-cuts claim (45.1 of 41.6 g) and the forward-trim CG (18.68 < 19 mm). Pack forward trim travel 10 -> 8 mm (tray front lip 2 mm aft, `TRIM_FWD`) so the forward-trim CG (19.42 mm) stays inside the SITL-tested 19.3 mm end; aft travel 10 mm unchanged (CG 23.26 mm). Result: CAD basic 1,263.7 g, CG 21.13 mm; predicted 1.459 kg flat rule / 1,454 g itemised (target 1.46, gate 1.47); EST cuts required 40.8 of 41.6 g; structure 482.8 g (ceiling 494). The hoop check passes only with a 12 mm bearing patch (MS +0.05; -0.47 at 6 mm), so ASM-A-HUB-WALL stays UNVERIFIED until a bench coupon (print a 2.0 mm socket, bond a 12 mm tube, load to 1.5 x 332 N). Mass now sits 1 g under the target: any further growth must be cut or re-decided.'
+    source: CHANGE-LOG#D-196
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-195
+    kind: decision
+    text: 'QP-5 re-run of the analyses invalidated by D-193 / D-194; mass accepted, target re-based. (1) Mass: accept 1,449 g (itemised) to 1,454 g (flat rule) predicted, do not cut; design target 1.44 -> 1.46 kg, weigh-in gate stays 1.47 kg (D-190). Basis: 28.8 g of the added mass is the T-Motor adapter and spinner nut (real parts, no earlier lump); the prediction already holds 142 g of maturity growth and 48 g overrun (gate reached only at +16.8 % on the CAD basic, 190 g allowed); capped transition window +-5.8 % at 1.455 kg (floor 5), T/W 2.36 / 1.87 (limits 2.0 / 1.6), cruise to BATT_LOW 4.31 min (need 3.41); structure 479.3 g under the 494 g ceiling. Fallbacks not applied: lead 15.6 -> 12.8 g (-5.6 g, flutter passes), T-Motor hardware pack. (2) Aero: S5010 constants Cm0 0.015 -> +0.008 and zero-lift angle 0 -> -0.52 deg (aerodesign.de section table, own panel check +0.007 / -0.51 deg, AC 0.248 c); CLmax stays 0.75 `EST` (no measured S5010 CLmax found); NP stays 40.7 mm `EST` (SM 7.8 % at the CAD CG; 7.4 % with the CAD prop plane); trim elevon 4.8 deg TE up at 17 m/s, 1.455 kg (was 2.9-3.4). (3) CG band forward edge 20 -> 19 mm (A-P4): the +-10 mm pack slot spans 19.33-23.61 mm; SITL transition and roll at CG 19.3 pass (pitch use 0.59 of 0.60, no saturation). (4) Roll-rate test condition: the QP-4 roll steps ran at 14.4 m/s (stick at mid throttle), not 17; at 14.4 m/s the elevon saturates (86.7 deg/s at 1.455 kg); with the throttle held (16.3-19 m/s) 106.9 / 106.4 deg/s at 1.455 / 1.47 kg: A-P11 passes at cruise speed, the limit 90 is unchanged. (5) Elevon flutter re-run (elevon 6.7 g, hinge inertia 1.485e-5): lowest onset 38.5 m/s hot damper, 33.0 m/s half-filled damper (was 28.5, FAIL row); wing 33.4 m/s fins off; line 28.8. (6) `fe_a.py` motor lump +7.2 g (adapter, nut) and gain margin re-run: min 2.16 (was 2.03). (7) Open, not decided: hub arm-socket wall 0.8 mm gives MS -0.58 on a crude hoop model (needs 2.0 mm, +7.1 g, or a coupon test showing otherwise: ASM-A-HUB-WALL UNVERIFIED); A-P8a heading excursion 25.4 deg in one of seven turbulence seeds; the adapter / nut BOM line (G7 margin +$105.08 holds only about $5 more at +30 %).'
+    source: CHANGE-LOG#D-195
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-198
+    kind: decision
+    text: 'Harness enclosure (user rule 2026-11-15): phase leads inside the arm tubes, servo leads in foam grooves, a printed bay cover; bottom-up harness mass. (1) Motor cup: open lead slot dropped; 4.8 mm lead hole through plate and sleeve wall, lead collar (OD 14 / ID 12.2, y 3.5-8.0, 0.8 mm cap) holds the 4 mm bend, sleeve bore 12.2 mm; cup 4.0 -> 4.3 g. Lead exit on the motor base moved to y +5.5 mm, z 0 (the old z 13.5 and the new position are both `EST`, not on the T-Motor drawing). (2) Phase bundles (3 x 20 AWG, OD 1.8 mm, Pimoroni listing; stock leads 400 mm, T-Motor page) run 0.271 m inside each 10 mm arm bore (fill 9.7 %, bend >= 4 mm), leave through a 4.8 mm hole in each 2.0 mm hub socket floor; the hub-to-ESC run (0.256 / 0.341 m per motor) stays exposed. The bridge-tube route was rejected: side holes cut the 12 x 10 section to 0.45 / 0.22 of its second moment (prop-strike stress 91.9 -> 205 / 423 MPa vs 350, MS about -0.15 with Kt 2). (3) Servo leads: routed grooves 3 mm under the upper skin (slit at x 83,'
+    source: CHANGE-LOG#D-198
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-201
+    kind: decision
+    text: "Finding: the hub's radial webs fail at the worst flight case; flight hub on hold until redesigned and re-run through the FEA. 3-D FEA of one arm (sleeve, web, socket, tube, cup; tet10, 0.85 M and 1.56 M unknowns, MATLAB CHOLMOD solve; matches beam theory in the tube to 0.5 %). Flight case F1 (spin-cap thrust 8.81 N, torque 0.130 N m, pitch-over gyro 0.156 N m EST, 1P): tube free span 20.9 MPa (FoS 16.7), motor cup 7.0 MPa (2.9), cup bond 2.9, socket mouth 7.1: PASS. The 0.8 x 22 mm web joining each socket to the sleeve (`hub_arm_spoke`) carries 392 MPa mid-span (FoS 0.05 vs 2.16 required) because the 17 deg cant puts 29 % of the thrust across its thin direction; socket bond and tube-root shear fail as a consequence. No earlier check covered the web (ARMS.md assumed a rigid socket). A hollow 13.6 x 10.4 spoke cuts the peak 10 x but still fails (19.4 MPa mid-span, 102 at the 1.2 mm sleeve). Options in FEA-ARM.md s5 (continuous carbon arm pairs through the hub, or a solid printed core with 18 mm spokes, about +12-15 g EST); not decided."
+    source: CHANGE-LOG#D-201
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-200
+    kind: decision
+    text: 'Fin rib mass and BOM length follow the drawn rib (215.5 mm), and the viewer model is compressed by the pipeline. The CAD draws FIN-002 from x 70.5 to 286.0 mm (saddle socket to the fin-tube front, the length the 3-D gates check), but its mass (14.8 g) and BOM R09 used the DOC 0.227 m. The drawing governs: mass now tube_g(drawn length) = 14.1 g each (-1.4 g total), R09 text 2 x 0.2155 m. Basic mass 1,261.2 g, CG 20.51 mm (forward-trim CG 19.2 mm, limit 19); predicted 1.456 kg flat rule (target 1.46). Claims 0 fails; cost unchanged. `viewer_data_a.py` now runs the meshopt step itself (gltf-transform 4.5.1, 16-bit positions, 12-bit normals) and writes assets/concept-a.opt.glb + data/assembly.opt.glb.part1.js, which is what site/viewer.js loads; before, a CAD change would have left the Explorer showing a stale hand-compressed model.'
+    source: CHANGE-LOG#D-200
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-199
+    kind: decision
+    text: 'Hub-to-ESC phase run enclosed (raceway), smooth silicone-wire geometry, battery tail under the cover, drawn strap and anti-slip pad (user rule 2026-11-15). (1) Two closed printed raceways HRN-003-R/-L (1.8 g each, 0.6 mm walls, interior 8.4 x 5.4 mm) under the pack tray plate from the hub to the tray end x 22.5, four hub conduits HRN-004- (0.8 g each, along the hub webs, vertical drop at x -52), two slots in the hub tray-pad flange, a core groove and an open foam ditch (x 22.5-32) under the bay cover; every phase bundle is now enclosed from the motor to the ESC pad (exposed 3.6 strand-m -> 0.006); total exposed wire 4.27 -> 0.87 strand-m (0.60 without the vendor pack leads, which are now drawn as wires E-HRN-13 / -14 and counted: 4.54 -> 0.87 like for like). Bundle route 0.456-0.470 m (was 0.53-0.62 m), phase extension wire 1.10 m (was 2.47 m), HRN_ITEMS 17.5 -> 7.8 g. The bridge-tube route stays rejected (D-198). (2) Wire geometry: smooth dense curves (circular arcs, 4 mm at collar and floor hole, 6 mm for the conduits and the 14 AWG tail, 2.5-4 mm for the 28 AWG leads), phase triples lightly twisted (80 mm lay, EST), 0.8 mm drape on the free plate run, round twisted sensor clusters, pack leads following the skin; `_smooth` / `_strands_s` in `electrical.py`, minimum bend radii printed by `wire_inventory.py` (phase 4.0, tail 6.0 mm). (3) Battery tail E-HRN-12 no longer loops out of the cover: it lies on the plate, crosses the cover end wall through a bottom-open slot (roof closed), climbs to z 23.5 under the roof; ESC BAT pad moved 5.5 mm forward (x 104.5, EST layout) for the 6 mm bend; the phase notches of the cover are gone, the GPS lead leaves the plug inboard through a bottom-open slot. (4) PWR-002 strap is now the STRIX 20 x 300 mm buckle strap (V, 5.5 g, BOM W08; was an EST 25 mm hook-and-loop, 3.0 g); the anti-slip pad is drawn (PWR-003, 100 x 30 x 1.0 mm silicone rubber, 3.5 g, BOM W09 EST) and the pack stands 1 mm higher. BOM: W07 20 AWG wire 2 + 2 m ($3.96 V), W08, W09; W05 14 AWG wire cut from 6 m to 4 m; total $1,779.47, +30 % margin +$100.05, G7 PASS. (5) Mass: CAD basic 1,259.74 -> 1,262.64 g (+2.9: raceways +6.8, extension wire -9.7, hub slots -0.2, strap +2.5, pad +3.5), CG 21.32 -> 20.68 mm; forward pack travel 8 -> 6 mm so the forward-trim CG is 19.4 mm; predicted 1,454 g itemised / 1,458.1 g flat rule (target 1,460). (6) Structure: no load path touched, `arm_cup_checks.py` / `qp5_checks.py` unchanged; the pad-flange bond width falls 80 -> 59 mm (no check, bench coupon). (7) Build plan 41 -> 45 steps (B2a raceways from above, B2b conduits from aft, B2c thread, E3c pad; E-HRN-13 / -14 laid with the XT60). (8) Build film: views from below hide the stage floor and shadow. Not decided: pitot tube run (still not designed).'
+    source: CHANGE-LOG#D-199
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-203
+    kind: decision
+    text: 'Concept A wing core and fin fairings machined on the Jacobs ShopBot CNC router; hot wire kept as the backup (user, 2026-11-16). Basis: hot-wire cutting is not on the Jacobs equipment page (MANUFACTURING.md MF-03, checked 2026-11-13) and BOM-A has no hot-wire line; the ShopBot PRSalpha is listed. The user directs the plan to assume XPS is allowed on the ShopBot; this is not confirmed with the Jacobs staff (ask by 30 Nov, SCHEDULE-A). Method (A1): the constant-section S5010 core is machined in two halves split at the spar-bore plane (z 0, D-194 datum), each from a flat slab: side 1 a 1/2 in ball-nose groove (0.35 mm epoxy clearance on the 12 mm spar, EST), side 2 the airfoil surface and the pockets; the halves are bonded on a taped 12 mm rod, so A2 (spar pushed through the bore) is unchanged. Fin fairings C3/C4 faced to 3 mm and profiled on the ShopBot. Backup if refused: hot wire at workspace W, gear about $62.55 (K09-L G11 $46.01 + H05 $16.54, COST-TRADE.md 2026-11-14), bought only if needed: not added to BOM-A, cost unchanged. Open: CAM toolpaths and the S5010 gauge are not generated; the stage 1 film still shows the old "HOT-WIRE" label until the next film render; the viewer part note updates with the next viewer data build.'
+    source: CHANGE-LOG#D-203
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-202
+    kind: decision
+    text: 'Hub redesign: continuous carbon arms, printed crossing hub, carbon doublers and three 3 mm pins; the 30 N prop strike becomes a damage case (factor 1.0); glue coupon before the flight hub (user choices 2026-11-16/17). Replaces the D-193 hub whose 0.8 mm webs failed (D-201). (1) Geometry: opposite arms UR-LL and UL-LR are each one 12x10 tube, crossing at x -6.5 / +6.5 mm through a printed PETG hub: sleeves 1.5 mm wall over s +-24 mm, centre block 20 x 20 mm with 3 mm edge radii, bridge boss r 9.5 to HUB_X1 with the 12x10 bridge bonded from x +15 mm; phase-lead exits 4.8 mm at s +-18 on the tangential face, each under a 14x12 carbon doubler (s 11-32 mm); 3 mm carbon pins along x: one through both tubes at the crossing, one per tube at s +-8 mm. Printed hub 16.70 g (FEA solid). (2) FEA (`fea_hub.py`, tet10, 1.57 M unknowns, bridge tube modelled, equilibrium 6.5e-10): all flight cases pass at the full factors (worst mean bond shear 0.86 vs 0.93; tube hoop 15.7 vs 23.2, shear 13.3 vs 17.4; printed hub p99 <= 6.7 vs 9.3); the prop strike passes at factor 1.0 (tube axial 199 vs 350, hoop 31.7 vs 40, shear 23.1 vs 30, mean bond 1.91 vs 2.0) but not at the full factors, and pins alone (glue released, run `pinsrel`) do not carry it (hoop 59.6 vs 40). Bigger sleeves and 16x12 doublers would add about 9 g and break the 1,470 g gate; a thicker arm tube about 25 g (EST). Decision (user, 2026-11-17): the strike is a damage case: no failure at limit load, inspect the hub after any strike. (3) The 2.0 MPa bond allowable is EST: `COUPON-BOND-D202.md` must show >= 2.0 MPa before the flight hub is printed. (4) Open for the CAD round: the 15 MPa local peak where the bridge tube ends inside the boss (taper or radius it), pin and doubler prices, mass roll-up.'
+    source: CHANGE-LOG#D-202
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-204
+    kind: decision
+    text: "D-202 CAD round: choices made while drawing the hub (engineering, 2026-11-17). (1) Two continuous 12x10 tubes (552.4 mm, 30.6 g each) at x -81.5 (A: UR, LL) and -68.5 mm (B: LR, UL); hub core by 0.25 mm voxel volume 16.73 g (FEA 16.70), drawn hub 19.0 g with strut sockets and pad. (2) Sleeve outer radius 8.5 mm (6 + 1 doubler + 1.5 sleeve), doubler bore 12.2 mm (0.1 mm gap, as the cup). (3) Bridge end: 0.8 mm x 45 deg chamfer with a matching conical corner in the bore floor (the FEA's 15 MPa bore-end peak; not re-run). (4) Pins: tube A and crossing pins are flush with the sleeve front so they can be inserted (16 / 29 mm instead of 15 / 28); tube B pins get a 3 mm access hole from the block front face (not in the FEA). (5) Phase-lead exits: upper arms on the +t face as in the FEA, LOWER arms on the -t face: on +t they leave at z -3 mm in front of the strut socket boss, which blocks every aft route at lane height. Conduits HRN-004 rebuilt (chimney 12 mm over the tube, aft run, sideways step, drop / rise at x -53 into a raceway window). (6) Mass: basic 1,277.97 g (+16.7 g), CG 19.52 mm (-1.0 mm): predicted 1,475 g flat rule / 1,472 g itemised, OVER the 1,470 g gate by 2-5 g and the 1,460 g target; forward pack travel cut 6 -> 1 mm so the forward trim CG stays 19.3 mm. Structural claims still carry the old hub numbers (FEA-ARM hub section pending)."
+    source: CHANGE-LOG#D-204
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-205
+    kind: decision
+    text: "Mass and forward-trim recovery after the D-202 hub (user \"cut and shift\", 2026-11-17; details engineering). The D-202 CAD (D-204) predicted 1,475 g against the 1.47 kg gate and had cut forward pack travel to 1 mm. (1) Hub 6 mm aft: `HUB` x -75 -> -69 mm (motors, arm tubes, sleeves, pins move with it; hub aft face / tray face x -45 unchanged, so the boss and the bridge get 6 mm shorter). The phase-lead raceway front follows the hub (`RW_DX` 6 mm); the conduit drop column moves 3.8 mm (`CD_DX`), held ahead of the tray plate front. (2) Doublers s 11-25 (was 11-32): -1.8 g. (3) Lead fallback applied: elevon balance lead 15.6 -> 12.8 g per side (-5.6 g; documented in D-195). Re-run with 12.8 g, all damped cases pass (`structures/flutter_d205.md`): half-filled damper 31.5 m/s (was 33.0), hot 37.5. Wing flutter with fins off 33.7 m/s (`flutter_d205_wing.md`). Limit 28.8 m/s. The undamped case fails as it did at 15.6 g, so the damper stays required. (4) Forward pack travel back to 6 mm (`TRIM_FWD`). (5) Design target 1.46 -> 1.465 kg (A-D3, a derived requirement; the gate stays 1.47 kg and the SITL runs at 1.47). D-205 cut 10.7 g of basic mass against the hub's +16.7 g. The last 2.7 g to 1.46 would need structural cuts not backed by analysis, and the prediction already carries 142 g of growth and 48 g of overrun (D-195 rationale)."
+    source: CHANGE-LOG#D-205
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-206
+    kind: decision
+    text: "Bridge tube 12x10 -> 16x14 for torsion (user \"size the fix\", 2026-11-17; sizing engineering). Found by the hub FEA stress map (`review/QP-5/FEA-HUB.md`, run `d205`): the 12 x 10 bridge carries the cage's roll moment in torsion and was over its shear allowable (F2 28.3 MPa at limit, 49 at the 1.725 factor; S2 strike 53.0; allowed 30 `EST`). Earlier checks covered it in bending only. (1) Sized to carry the roll moment alone (`structures/bridge_torsion_d206.md`): worst roll moments from the hub FEA load set are F2 4.37 N m and S2 7.93 N m. The V struts' share lies between about 1 % (pinned sockets) and 60 % (rigid sockets) for the 12 x 10 bridge and is not known. Inertia relief and the tray pad are not counted. Options at tau = M r / J: 14 x 12 fails (30.4 / 32.0); 12 x 8 passes but is not stocked (+4.9 g); 16 x 14 passes (22.6 / 23.8), +2.1 g. (2) Stock: cut from the R02 16 x 14 fin-tube offcut (0.28 m left, 0.108 m needed): no purchase. BOM R02 / R08 notes and `cad/parts_links_a.py` updated. (3) CAD: bridge axis 2 mm below the hub axis (`BR_Z`), so the 16 mm tube top stays tangent to the tray plate underside (z 6.0). Hub boss radius 10.0 mm (2.0 mm wall round the 16 mm bore; 2.5 mm would put the prediction 0.4 g over the 1.465 kg target). Saddle socket and core slot widened; pack strap now passes under z -10. (4) Claims `CL-A-BRIDGE-TORSION-F2` / `-S2` added (`claims_a2_struct.py`). (5) Open: if the struts take their upper-bound share, their printed hub sockets see about 1.5 N m of bending each in the strike, which no analysis checks."
+    source: CHANGE-LOG#D-206
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-207
+    kind: decision
+    text: "Hub tidy and fillets; bridge seated on a conical bore floor (user \"tidy and fillet\", 2026-11-17; structures engineering). The d206 stress map showed red spots at the hub's sharp inside corners (sleeve to block, bridge-tube end): singular, so judged by the 99th percentile, but where a printed part cracks first. (1) Block: the centre block now runs on the bridge axis (z -2 mm, `BLK_Z`) to the tray face, 38 mm long (`BLK_AFT`), replacing the separate r 10 bridge boss, so the junctions can be filleted. (2) Fillets: 2.0 mm where sleeve B meets the block, then 1.5 mm for sleeve A (OpenCASCADE staged fillets; filleting all edges at once fails). The CAD hub outer body is now that OpenCASCADE geometry as one mesh body (`cad/amodel/hub_body.py`, cache `hub_body_cache.npz`; new fusionkit shape kind `mesh`, supported by the Blender, stub, manufacturing and proxy-collide backends; the Fusion backend's `_mesh_body` is UNVERIFIED in Fusion). (3) Bore floor: run `d207` (fillets) and its refined check `d207r` (2.4 M DOF; fillet peak 18.3 -> 18.8, converged) left the peak at the sharp bridge-bore floor (S1 24.7 -> 27.7 on refinement). A rounded floor with the bridge stopped 1 mm short (`d208`) made every case worse (S1 56.0, F2 34.0): the bond alone carried the load and ended at the tube's sharp edge. Chosen: the bridge's existing 0.8 mm x 45 deg end chamfer (D-202) seats on a matching 45 deg cone at the bore floor (`BR_CH`, run `d209`); bore depth 9 mm. (4) Mass target re-based 1.465 -> 1.467 kg (A-D3; the hub grew 1.3 g, user accepted about 1 g over on 11-17): 3 g left under the unchanged 1.47 kg gate; the EST cuts that must be real fall from 42.9 to 41.1 g of the 41.6 g. (5) Also fixed: two names lost when the hub body became a mesh (`x_a0`, `x_b1` in `build_cage`)."
+    source: CHANGE-LOG#D-207
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-208
+    kind: decision
+    text: 'Pitot and airspeed board moved to the left wing tip, pneumatic lines and I2C lead enclosed; mass target 1.467 -> 1.470 kg (user: "Yes, do the pitot" and "Move the sensor board", 2026-11-18; avionics engineering). The CAD had a placeholder probe (175 x 3 mm EST at y +0.41) and no pneumatic lines; the build step called the route an open item. (1) Sources: RMRC publishes the kit contents and the tubing only (`RMRC-PIX-AIR-SEN` page, read 2026-11-18: 2 mm ID / 4 mm OD, about 0.5 m; replacement pitot page: a Prandtl tube "with plastic attachment point"; mount page: no probe size). Holybro docs give no dimensions (product page rate-limited, not read). Probe length and OD, the attachment block, the barbs, the board size and its port / plug layout are EST, marked for measurement on arrival (step E1). (2) Probe to the left wing, y -0.420 (was +0.41): 10 mm outboard of the fin rib saddle ring, 0.11 m outboard of the prop discs ('
+    source: CHANGE-LOG#D-208
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-209
+    kind: decision
+    text: "Arm and motor-cup FEA re-run on the current design; judged zone and bond rule aligned with the hub FEA (user queue item \"arm FEA visuals\", 2026-11-18; structures engineering). The arm FEA (FEA-ARM, 11-16) modelled the replaced D-193 hub; the Explorer showed only the hub map. (1) New variant `current` in `fea_arm.py`: continuous 12 x 10 tube with pin and lead holes, the 14 x 12 doubler and the cup as drawn, fixed on the outer surfaces inside the 24 mm hub sleeve (116 k elements, 0.58 M unknowns). (2) Judged zone: the tube and doubler are judged from s 36 mm (sleeve plus one tube diameter, St-Venant); a first pass judged from the sleeve edge and reported a doubler bond of 7.8 MPa and tube peaks at s 25 mm that were support artefacts (the doubler sticks out of the sleeve by 1 mm). The hub FEA covers s 0-45 mm. (3) Bond rule: mean shear over the bonded area, as `fea_hub.py` (peak and 99th percentile also stored). (4) Cup: judged by the 99th percentile like the hub (D-207); its single highest point is the sharp corner where the sleeve ends on the plate (S2 23.6, S3 39.5 MPa against 20 at factor 1.0). Open item: 1 mm fillet there at the cup's next revision (done: D-210)."
+    source: CHANGE-LOG#D-209
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-210
+    kind: decision
+    text: "Motor cup: 1 mm fillets on the sleeve-to-plate junction and a filleted web joining the lead collar to the plate (user \"Yes, add the fillet\", 2026-11-18; structures engineering). D-209 left the cup's single highest point at the sharp corner where the sleeve ends on the plate (S2 23.6, S3 39.5 MPa against 20). (1) 1 mm fillets on that edge and on the two sleeve-to-plate lines along the arm (`wing.py cup_fillet_loops`, prisms: the fusionkit kinds cannot fillet, but these junctions are straight, so the fillet is an exact constant-section prism). (2) The FEA cup now includes the D-198 lead collar, cap and 4.8 mm phase-lead hole (left out before). That moved the peak to the collar: its 14 mm OD is tangent to the plate face at x 7 mm, so collar and plate met along a bare line, a knife-edge joint (d210a: F2 10.8 MPa, utilisation 1.17). (3) Web: the cusp filled with a 1 mm fillet each side over the collar and cap (`cup_web_loop`), 1 mm fillet where it ends (`cup_chord_loop`). The FEA builds the same five prisms from the same loops."
+    source: CHANGE-LOG#D-210
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D-211
+    kind: decision
+    text: 'Wing core drawn as a hand-cut set; buried lead grooves made as knife slits (user "make it something someone could follow and do the cuts by hand", 2026-11-18; manufacturing engineering). The WNG-001 sheet listed 64 raw CAD boxes in the design frame and was hard to follow. (1) `qp/A/drawings/core_hand.py` now draws WNG-001 as 10 sheets, generated from the CAD: method and order of work; 1:1 templates for the two halves split at the spar centre (z 0, as BUILD-GUIDE-A step A1) with the S5010 coordinates; plans of each face of each half (1:2.5); a 41-line cut table (x from the leading edge, y from the centreline, depth from the flat split face, method); 14 full-size sections sliced from the shop mesh; and a trace of all 95 CAD cuts to their table lines (cuts inside a bigger cut to 0.6 mm, or removing no foam, are marked so). (2) Finding: the CAD draws the servo-lead runs (D-198) and the I2C lead groove (D-208) as tunnels 0.7-4.7 mm under the skin. Neither a knife nor the ShopBot can cut a closed tunnel. Decision: cut a knife slit along the line to the groove floor depth and press the lead to the bottom; the XPS closes over it. The CAD groove volume stays (the lead sits there), the slit has no width. (3) Care note: with the split at z 0 the upper half is 0.3 mm thick at the hinge (x 183.75): cut that edge last, supported. No mass, cost or geometry change. Gates not affected (drawing only).'
+    source: CHANGE-LOG#D-211
+    owner: ''
+    status: decided
+    due: ''
+    units: []
+    evidence: DBF-Combined redesign/params/CHANGE-LOG.md @ a93f14d
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-1
+    kind: decision
+    text: 'Design baseline for the whole team Decision needed: adopt the 11-02 resize as the single team baseline (then migrate `inventory/`, `fusion/`,'
+    source: DECISIONS.md#D1
+    owner: ''
+    status: superseded
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: D9
+    updated: '2026-11-20'
+  - id: DD-2
+    kind: decision
+    text: 'Cruise speed: 18 or 20 m/s parameter file. Decision needed: confirm 18 m/s or revert to 20 m/s.'
+    source: DECISIONS.md#D2
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-3
+    kind: decision
+    text: 'MTOW, wing area and chord (and R2 sign-off) (`docs/DESIGN-BASIS.md` R2). Decision needed: accept the 11-02 sizing (follows D1, D2, D4) and sign off R2.'
+    source: DECISIONS.md#D3
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-4
+    kind: decision
+    text: 'Payload and ballast (R12) Decision needed: confirm "no payload, no ballast" or restore a payload/ballast allowance (it changes MTOW, CG and'
+    source: DECISIONS.md#D4
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-5
+    kind: decision
+    text: 'Battery disconnect plug (R20): XT90S or Amass AS150U — **SAFETY** transition current exceeds its continuous rating. Decision needed: pick the plug, buy matching battery leads'
+    source: DECISIONS.md#D5
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-6
+    kind: decision
+    text: 'Lift ESCs: LANRC or SoloGood Decision needed: which ESC to buy; check DShot/BLHeli support against `docs/research/electrical-architecture.md` risk R-A.'
+    source: DECISIONS.md#D6
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-7
+    kind: decision
+    text: 'Airspeed sensor: RMRC MS4525DO or Holybro MS5525DSO Decision needed: pick the sensor; keep `ARSPD_TYPE` and the I2C wiring consistent with it.'
+    source: DECISIONS.md#D7
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-8
+    kind: decision
+    text: 'GPS: RMRC SAM-M10Q-5883 or HGLRC M100-5883 Decision needed: pick one; it changes the vendor orders (ReadyMadeRC consolidation in `docs/research/bom-savings.md`).'
+    source: DECISIONS.md#D8
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-9
+    kind: decision
+    text: 'Spare X4110S motor Decision needed: buy the spare or keep the cash.'
+    source: DECISIONS.md#D9
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-10
+    kind: decision
+    text: 'Committed spend and reserve Follows D5–D9. Decision needed: after D5–D9, regenerate one BOM and feed it to `inventory/` and the Google Sheet.'
+    source: DECISIONS.md#D10
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-11
+    kind: decision
+    text: 'Thermal design ambient (R21) Decision needed: accept the 25 °C flight restriction (an operating limit for April flights) or design for a hotter day.'
+    source: DECISIONS.md#D11
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-12
+    kind: decision
+    text: 'Nautical Wings prop spec sheet (before it is sent) Decision needed: update the design point (after D1–D3) before the spec goes to the sponsor. The message itself is'
+    source: DECISIONS.md#D12
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: DD-13
+    kind: decision
+    text: 'Which CAD model is the build reference Decision needed: confirm SOLIDWORKS rev G as the build reference and whether the Fusion model is migrated or frozen.'
+    source: DECISIONS.md#D13
+    owner: ''
+    status: superseded
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: D9
+    updated: '2026-11-20'
+  - id: DD-14
+    kind: decision
+    text: 'Tilt-wing status trade study (`analysis/tradestudy.json`) ranks C0 first. Decision needed: confirm it is archived, not a competing'
+    source: DECISIONS.md#D14
+    owner: ''
+    status: superseded
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: D9
+    updated: '2026-11-20'
+  - id: DD-15
+    kind: decision
+    text: 'Canonical published links and old repositories Decision needed: which Pages URL is canonical, and whether DBF-VTOL, DillonVTOL and TiltWing are archived'
+    source: DECISIONS.md#D15
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
