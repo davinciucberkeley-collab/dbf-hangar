@@ -20,9 +20,9 @@
 | U1.1 | Operations registry and the OpResult contract [hard] | 5/5 | done | ACCEPT |
 | U1.2 | MCP and Studio generated from the registry (subtraction) | 5/5 | done | ACCEPT |
 | U1.3 | PDL v1.0 schema, reference doc, migration [hard] | 5/5 | done | ACCEPT |
-| U1.4 | Edit, sweep, diff, propose — iterate without code (R4, R5, R8, R15, R25) | 0/5 | not started | - |
-| U1.5 | Claims graph in PDL + T9 Claims gate [hard] (from DBF-Combined `proofs/1`) | 0/5 | not started | - |
-| U1.6 | Interface graph and connection-type library (from DBF-Combined `dbf-interfaces/1`) | 0/3 | not started | - |
+| U1.4 | Edit, sweep, diff, propose — iterate without code (R4, R5, R8, R15, R25) | 5/5 | done | ACCEPT |
+| U1.5 | Claims graph in PDL + T9 Claims gate [hard] (from DBF-Combined `proofs/1`) | 0/5 | not started | REJECT |
+| U1.6 | Interface graph and connection-type library (from DBF-Combined `dbf-interfaces/1`) | 3/3 | done | ACCEPT |
 
 ### W2 Gates, adapters, import, team ops
 
@@ -55,7 +55,7 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 35 | 5 | 0 | 0 | 0 | 40 |
-| task | 7 | 0 | 0 | 0 | 0 | 7 |
+| task | 8 | 0 | 0 | 0 | 0 | 8 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
 | decision | 1 | 0 | 0 | 0 | 13 | 14 |
 

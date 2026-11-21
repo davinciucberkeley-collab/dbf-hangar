@@ -735,3 +735,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T8
+    kind: task
+    text: "design.set on a plain string containing ', ' (e.g. concept-a name) exits 1 instead of 2: pdledit token pattern stops at the comma; nothing written"
+    source: reviews/2026-11-21-w1.md U1.4 note
+    owner: Tristan
+    status: open
+    due: '2026-11-25'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'

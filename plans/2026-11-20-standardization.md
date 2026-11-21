@@ -666,7 +666,7 @@ def test_reference_doc_is_current(tmp_path):
   - `design.propose(path, title) -> data.pr_url` (branch `design/<id>/<slug>`, commit, push, open PR via `gh api`).
   - `check_separation(base: str) -> list[str]` (violations).
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 def test_set_changes_one_value_keeps_comments_and_logs(tmp_concept_a):
@@ -694,10 +694,10 @@ def test_separation_flags_design_pr_touching_core():
     assert check_separation_files(["designs/x/plane.yaml", "core/hangar/checks.py"], labels=["migration"]) == []
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement** (path backslashes normalised in the one `_resolve_design_path` helper all ops use).
-- [ ] **Step 4: Run** `pytest -q` → PASS; CI green on Linux and Windows
-- [ ] **Step 5: Commit** `git commit -m "ops: design set/get/diff/copy/sweep/propose; CI keeps designs and code apart"`
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement** (path backslashes normalised in the one `_resolve_design_path` helper all ops use).
+- [x] **Step 4: Run** `pytest -q` → PASS; CI green on Linux and Windows
+- [x] **Step 5: Commit** `git commit -m "ops: design set/get/diff/copy/sweep/propose; CI keeps designs and code apart"`
 
 ### Unit U1.5: Claims graph in PDL + T9 Claims gate [hard] (from DBF-Combined `proofs/1`)
 
@@ -741,9 +741,9 @@ def test_concept_a_claims_import_roundtrip(dbf_combined_claims):   # 4 claims.*.
 **Interfaces:**
 - Produces: `T1.interfaces.floating` (every component reachable from root through attachments — already T1 connectivity; this adds that each attachment's `connection` exists in the library), `T1.interfaces.connection_known`, op `standards.connections`.
 
-- [ ] **Step 1: Failing tests**: `test_unknown_connection_type_fails`, `test_every_library_type_has_source_or_pending`, `test_dbf_interfaces_import_keeps_edge_count` (concept A `interfaces.json` edges == PDL attachments + `edges_pending`).
-- [ ] **Step 2–4:** implement; run → PASS
-- [ ] **Step 5: Commit** `git commit -m "interfaces: shared connection-type library; attachments name their connection"`
+- [x] **Step 1: Failing tests**: `test_unknown_connection_type_fails`, `test_every_library_type_has_source_or_pending`, `test_dbf_interfaces_import_keeps_edge_count` (concept A `interfaces.json` edges == PDL attachments + `edges_pending`).
+- [x] **Step 2–4:** implement; run → PASS
+- [x] **Step 5: Commit** `git commit -m "interfaces: shared connection-type library; attachments name their connection"`
 
 ### Unit U2.1: Gate registry + T6 Mechanisms, T7 Integration, T8 Sourcing [hard]
 
