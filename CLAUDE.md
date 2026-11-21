@@ -9,5 +9,6 @@ This file only points. Read what applies before acting.
 - Thresholds live only in `standards/*.yaml`, each with a source or `pending`. Fix the design, not the threshold.
 - Imports from other repos are adapted, not copied, and recorded in `PROVENANCE.md`.
 - Research goes into `knowledge/` through its templates. Cite only sources you opened.
+- `PROGRESS.md` is generated: after ticking plan boxes, adding review verdicts or changing the ledger, run `plane progress --write` in the same commit.
 - Be quiet: report results, decisions and questions; don't narrate.
 - Every commit message ends with the trailer `Co-authored-by: Tristan Hottier <185231225+TristanHottier@users.noreply.github.com>` (repo owner), alongside any agent attribution lines.
