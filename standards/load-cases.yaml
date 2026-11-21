@@ -1,0 +1,7 @@
+# Load-case factors read by the T2 discipline gate (U3.6). Entry shape as gate-thresholds.yaml.
+version: "0.1"
+joint_rf_min:
+  value: 1.0
+  rule: "Reserve factor (connection-type rating / computed joint load, ultimate) of every attachment that declares a connection must be at least this."
+  source: internal convention
+  note: "definition: capacity >= demand"

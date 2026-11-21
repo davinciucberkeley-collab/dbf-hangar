@@ -4,6 +4,11 @@
 # The source file gives no ratings and no sources, so every type is placeholder / pending until a research pass fills it in.
 # structural: false marks a type that locates a part but never carries its flight load; omitted means true.
 version: '0.1'
+wire_ampacity_a:
+  value: {8: 100, 10: 75, 12: 55, 14: 45, 16: 32, 18: 24, 20: 17, 22: 13, 24: 10, 26: 7}
+  rule: "Current a wire gauge (AWG) may carry; T7.electrical_rating compares the peak battery current with it (times `operations.yaml#wire_pair_derate`). Assumes silicone (200 C class) insulation; PDL has no insulation field."
+  source: "Multicable reference table, via knowledge/sources/std-wire-ampacity.md"
+  note: "free air, 30 C ambient; bundled harnesses derate"
 connection_types:
 - id: CT-M2-SCREW-PLASTIC
   kind: mechanical
@@ -11,12 +16,14 @@ connection_types:
   spec: M2 self-tapping or machine screw into printed/plastic boss (servo ears)
   rating_basis: placeholder
   source: pending
+# rated_load_n: ultimate pull-out or tensile N (std-ct-fasteners, std-ct-straps-hinges-thermal); omitted = no opened source
 - id: CT-M3-SHCS-INSERT
   kind: mechanical
   method: fastened
   spec: M3 SHCS into M3 brass heat-set insert
   rating_basis: sourced
   source: 'std-ct-fasteners ("Are Our Heat-Set Insert Datasheets Wrong?", sections "Pull-out strength of the as-printed samples" and "Printing and drilling the test samples")'
+  rated_load_n: 1167
 - id: CT-M3-SHCS-NYLOC
   kind: mechanical
   method: fastened
@@ -90,6 +97,7 @@ connection_types:
   structural: false
   rating_basis: sourced
   source: 'std-ct-straps-hinges-thermal (Panduit PLT2S-M, DigiKey product attributes; distributor listing, loop tensile 50 lb)'
+  rated_load_n: 222
 - id: CT-STRAP-SLOT
   kind: mechanical
   method: slid
@@ -171,30 +179,35 @@ connection_types:
   spec: steel pushrod end (Z-bend or clevis) in a horn or arm hole
   rating_basis: placeholder
   source: pending
+# rated_current_a: continuous A (std-ct-electrical); omitted = no opened source
 - id: CT-XT60
   kind: electrical
   method: connector
   spec: XT60 (battery main)
   rating_basis: sourced
   source: 'std-ct-electrical (Amass XT60-F spec 2025V0, "Electrical SPEC" table, p. 1)'
+  rated_current_a: 30
 - id: CT-XT90
   kind: electrical
   method: connector
   spec: XT90 (battery main, high current)
   rating_basis: sourced
   source: 'std-ct-electrical (Amass catalogue, "Specifications" table for XT90H / XT90HW / XT90S, p. 21)'
+  rated_current_a: 45
 - id: CT-AS150U
   kind: electrical
   method: connector
   spec: Amass AS150U anti-spark pair (battery main; 70 A continuous, 140 A momentary per maker; packs re-terminated, D-32)
   rating_basis: placeholder
   source: pending
+  rated_current_a: 75
 - id: CT-MR30
   kind: electrical
   method: connector
   spec: MR30 3-pin (motor phases at a removable joint)
   rating_basis: sourced
   source: 'std-ct-electrical (Amass catalogue, "Specifications" table for MR30 / MT30, p. 9)'
+  rated_current_a: 20
 - id: CT-BULLET-3
   kind: electrical
   method: connector
@@ -225,12 +238,14 @@ connection_types:
   spec: JST-GH 4-pin (UART or I2C)
   rating_basis: sourced
   source: 'std-ct-electrical (JST GH series page, specifications: rated current 1 A AC/DC)'
+  rated_current_a: 1
 - id: CT-JST-GH-6
   kind: electrical
   method: connector
   spec: JST-GH 6-pin (telemetry / GPS)
   rating_basis: sourced
   source: 'std-ct-electrical (JST GH series page, specifications: rated current 1 A AC/DC)'
+  rated_current_a: 1
 - id: CT-ELRS-RF
   kind: electrical
   method: radio

@@ -93,7 +93,12 @@ def tier0_schema(design: Design) -> TierReport:
                             ("assembly", "assembly" in d),
                             ("components[].provenance", any("provenance" in c for c in d.get("components", []))),
                             ("attachments[].connection/seat", any("connection" in a or "seat" in a for a in d.get("attachments", []))),
-                            ("requirements.transport_box_mm", "transport_box_mm" in d.get("requirements", {})))
+                            ("requirements.transport_box_mm", "transport_box_mm" in d.get("requirements", {})),
+                            ("D21 fields (components[].battery, propulsion.max_current_a, propulsion.prop_diameter_mm, "
+                             "flight.cruise_ld, flight.transition_speed_mps)",
+                             any("battery" in c or any(k in c.get("propulsion", {}) for k in ("max_current_a", "prop_diameter_mm"))
+                                 for c in d.get("components", []))
+                             or any(k in d.get("flight", {}) for k in ("cruise_ld", "transition_speed_mps"))))
           if used]
     if v1 and _below(design, "1.0"):
         res.append(CheckResult("T0.version", FAIL, ", ".join(v1) + " need schema_version \"1.0\"",

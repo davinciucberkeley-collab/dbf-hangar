@@ -32,7 +32,16 @@ class GateContext:
     today: datetime.date
 
 
+@dataclass(frozen=True)
+class DisciplineCheck:
+    id: str
+    tier: int
+    name: str
+    fn: Callable[["GateContext", "TierReport | None"], "list[CheckResult]"]
+
+
 GATES: dict[str, Gate] = {}
+DISCIPLINE: dict[str, DisciplineCheck] = {}
 
 
 def gate(id: str, tier: int, *, needs_mass: bool = False):
@@ -47,6 +56,16 @@ def gate(id: str, tier: int, *, needs_mass: bool = False):
     return deco
 
 
+def discipline_check(id: str, tier: int):
+    """Register `fn(ctx, rep) -> list[CheckResult]` as a sub-check of `tier`; `rep` is that tier's TierReport so far (or None). Returns fn."""
+    def deco(fn):
+        if id in DISCIPLINE:
+            raise ValueError(f"duplicate discipline check id {id!r}")
+        DISCIPLINE[id] = DisciplineCheck(id, tier, id.split(".", 1)[1], fn)
+        return fn
+    return deco
+
+
 @functools.lru_cache(maxsize=None)
 def _text(path) -> str:
     return path.read_text(encoding="utf-8")
@@ -55,6 +74,11 @@ def _text(path) -> str:
 def load_gate_table() -> list[dict]:
     """Rows of standards/gates.yaml in file order (fresh copies)."""
     return yaml.safe_load(_text(GATES_PATH))["gates"]
+
+
+def load_discipline_table() -> list[dict]:
+    """Rows of standards/gates.yaml `discipline_checks:` in file order."""
+    return yaml.safe_load(_text(GATES_PATH))["discipline_checks"]
 
 
 def load_gate_thresholds() -> dict[str, dict]:
@@ -66,7 +90,7 @@ def load_gate_thresholds() -> dict[str, dict]:
 
 def _import_gates() -> None:
     from .. import checks  # noqa: F401  (registers tiers 0 to 5)
-    from . import mechanisms, integration, sourcing, claims  # noqa: F401
+    from . import mechanisms, integration, sourcing, claims, discipline  # noqa: F401
 
 
 def _report_only(rep: TierReport) -> None:
@@ -77,6 +101,24 @@ def _report_only(rep: TierReport) -> None:
             r.status = WARN
 
 
+def _run_discipline(ctx: GateContext, g: Gate, rep: "TierReport | None", dtable: list[dict], strict: bool) -> list[CheckResult]:
+    out: list[CheckResult] = []
+    for row in dtable:
+        check = DISCIPLINE.get(row["id"])
+        if check is None or check.tier != g.tier:
+            continue
+        try:
+            rows = check.fn(ctx, rep)
+        except Exception as e:  # noqa: BLE001
+            rows = [CheckResult(check.id, FAIL, f"{type(e).__name__}: {e}", row["criterion"])]
+        if not strict and not row["blocking"]:
+            tmp = TierReport(g.tier, g.name, rows)
+            _report_only(tmp)
+            rows = tmp.results
+        out += rows
+    return out
+
+
 def run_gates(design: Design, max_tier: int = 9, *, strict: bool = False,
               only_tiers: "set[int] | None" = None, today: "datetime.date | None" = None) -> Scorecard:
     _import_gates()
@@ -84,6 +126,7 @@ def run_gates(design: Design, max_tier: int = 9, *, strict: bool = False,
     from .fidelity import compute_fidelity
 
     table = {r["id"]: r for r in load_gate_table()}
+    dtable = load_discipline_table()
     ordered = sorted(GATES.values(), key=lambda g: g.tier)
     ctx = GateContext(design, load_standards(), None, today or datetime.date.today())
 
@@ -108,9 +151,13 @@ def run_gates(design: Design, max_tier: int = 9, *, strict: bool = False,
         except Exception as e:  # noqa: BLE001
             rep = TierReport(g.tier, g.name, [CheckResult(f"T{g.tier}.error", FAIL, f"{type(e).__name__}: {e}",
                                                           table[g.id]["criterion"])])
+        if rep is not None and not strict and not table[g.id]["blocking"]:
+            _report_only(rep)
+        extra = _run_discipline(ctx, g, rep, dtable, strict)
+        if extra:
+            rep = rep or TierReport(g.tier, g.name, [])
+            rep.results.extend(extra)
         if rep is None:
             continue
-        if not strict and not table[g.id]["blocking"]:
-            _report_only(rep)
         tiers.append(rep)
     return card(tiers)

@@ -172,9 +172,11 @@ def test_unknown_type_is_skip_naming_the_type():
     assert any(r.check_id == "T0.schema" and r.status == FAIL for r in run(bad, max_tier=0).tiers[0].results)
 
 
-def test_no_blocks_no_t6_t7_tiers():
+def test_no_blocks_no_t6_and_only_discipline_t7():
     card = run(load_design(EXAMPLE), only_tiers={6, 7})
-    assert not [t for t in card.tiers if t.tier in (6, 7)]
+    assert not [t for t in card.tiers if t.tier == 6]
+    t7 = [r for t in card.tiers if t.tier == 7 for r in t.results]
+    assert all(r.check_id == "T7.electrical_rating" and r.status == WARN for r in t7)
     t8 = next(t for t in run(load_design(EXAMPLE), only_tiers={8}).tiers if t.tier == 8)
     assert [r.check_id for r in t8.results] == ["T8.program.budget"] and t8.results[0].status == WARN
 
@@ -189,7 +191,7 @@ def test_gate_ops():
     from hangar.ops import call, registry
     assert {"gate.list", "gate.explain", "sim.mechanism"} <= set(registry())
     r = call("gate.list")
-    assert r.ok and r.data["count"] == 10
+    assert r.ok and r.data["count"] == 15
     r = call("gate.explain", check_id="T7.wiring.x")
     assert r.ok and r.data["blocking"] is False and r.data["threshold"]["source"] == "pending"
     assert call("gate.explain", check_id="Q1.x").exit_code == 2
