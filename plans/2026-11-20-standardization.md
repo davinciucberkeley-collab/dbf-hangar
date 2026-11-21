@@ -223,6 +223,8 @@ Each has a default the plan uses if nobody answers by the date. Recorded with `p
 | D10 | Archive DBF-Combined and aircraft-platform (read-only) once hangar v1.0 is out? | yes, after 12-01, with a README pointer to hangar | team | 12-01 | open: decided when v1.0 is done |
 | D11 | Who turns an unknown component type into a SKIP instead of a T0.schema FAIL (Review Focus #1)? | U2.1 (gate registry); schema stays strict until then | Tristan | 11-21 | decided: U2.1 (Tristan, 2026-11-21) |
 | D12 | Does U1.3 migrate the committed designs (§7 U1.3 step 3)? | no: a designs-only PR after U1.3 migrates the designs whose results don't hash plane.yaml; concept-a stays at 0.4 until its FEA is re-run (fea.py hashes plane.yaml) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
+| D13 | FEA part hashes include all of `standards/design-standards.yaml`, so any standards edit (e.g. U2.2 closing a pending source) makes every FEA result stale | U2.3 narrows `fea.part_hash` to the standards keys FEA reads; existing results re-hashed once from unchanged inputs | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
+| D14 | May a design carry executable calcs (`designs/<id>/calcs.py`)? | no: calcs live only in `core/hangar/calcs/`; claims reference them by registered name; designs stay data | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -699,7 +701,7 @@ def test_separation_flags_design_pr_touching_core():
 
 **Files:**
 - Create: `schema/claims.schema.json` (adapted from DBF-Combined `redesign/proofs/SCHEMA.md`: node types requirement, claim, calculation, parameter, source, assumption, test), `core/hangar/claims/{graph,calc}.py`, `ops/claims.py`, `gates/claims.py`
-- Per design: `designs/<id>/claims.yaml` (optional); `calculation.script` must be a function in `core/hangar/calcs/` or the design's own `calcs.py` registered by name, never a path into another repo
+- Per design: `designs/<id>/claims.yaml` (optional); `calculation.script` must be a function in `core/hangar/calcs/` registered by name (D14: no `calcs.py` inside `designs/`), never a path into another repo
 - Test: `tests/test_claims.py`, fixture `tests/fixtures/claims-mini/` (3 requirements, 4 claims, 2 calcs, 1 failing margin)
 
 **Interfaces:**
@@ -798,6 +800,7 @@ def test_scorecard_reports_fidelity(concept_a):
 - Create: `core/hangar/adapters/{__init__,opencae,mujoco,aerosandbox,blender,sitl,davinci}.py` (`blender` ports DBF-Combined `redesign/collision/collide.py` as an optional higher-fidelity collision/transport check; `sitl` wraps `redesign/qp/A/sitl/a_plant.py`, report-only), `ops/tools.py` (`tools.doctor`), `ops/fea.py` (`fea.plan`, `fea.run`)
 - Modify: `opencae_runner.py` → used only by `adapters/opencae.py`; `plane fea` becomes an alias
 - Test: `tests/test_adapters.py`
+- Also (D13, Tristan 2026-11-21): `fea.part_hash` hashes only the standards keys FEA reads (not the whole `design-standards.yaml`), lands before U2.2 edits standards; concept-a results are re-hashed once from unchanged inputs, with a test that editing an unrelated standards key leaves results fresh.
 
 **Interfaces:**
 - Produces: `class Adapter(Protocol): name: str; def available(self) -> tuple[bool, str]` (reason + fix command); `def run(self, design: Design, **params) -> OpResult`. `get_adapter(name) -> Adapter`. OpenCAE adapter prefers Vibhav's `opencae` CLI if on PATH (contract agreed with him in this unit: `opencae solve --deck <inp> --json`), else the current in-repo runner.

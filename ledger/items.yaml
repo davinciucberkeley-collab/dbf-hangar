@@ -691,3 +691,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: D13
+    kind: decision
+    text: FEA part hashes include all of `standards/design-standards.yaml`, so any standards edit (e.g. U2.2 closing a pending source) makes every FEA result stale
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-11-21'
+    units: []
+    evidence: 'default: U2.3 narrows `fea.part_hash` to the standards keys FEA reads; existing results re-hashed once from unchanged inputs'
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D14
+    kind: decision
+    text: May a design carry executable calcs (`designs/<id>/calcs.py`)?
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-11-21'
+    units: []
+    evidence: 'default: no: calcs live only in `core/hangar/calcs/`; claims reference them by registered name; designs stay data'
+    decided_in: ''
+    updated: '2026-11-20'
