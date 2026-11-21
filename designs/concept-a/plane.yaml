@@ -39,7 +39,7 @@ components:
     description: "Avionics plate"
     geometry: {mesh: {file: meshes/avn-001.stl}}
     position: [0, 0, 0]
-    mass_g: 8
+    mass_g: 10
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
 
