@@ -419,6 +419,7 @@ Fold DBF-Combined `redesign/TEAM.md` (45 roles listed, A1–J6; 39 role folders)
 | DF-S4 | `scout` | Haiku | team/{E3,F1..F5,G1,G2} | 8 extract files | same |
 | DF-S5 | `scout` | Haiku | team/{G3,G4,H1..H3,I1,I2,J1} | 8 extract files | same |
 | DF-S6 | `scout` | Haiku | TEAM.md rows J2..J6 (no folders) | 5 extract files | same |
+| DF-T1…T6 | `scout` | Haiku | the same role groups + `discipline-extract/_RULES.md` (conductor's codes) | a `lands as` column on every check row + a counts block per file | every row has exactly one allowed code; counts sum to the row count |
 | DF-A | `advisor` | Opus | §1c + amended U2.1/U2.2/U3.2/U3.5 text | recommendation | intent check: work-level roles, subtract before adding, gates a design can't pass without working |
 | DF-R | `reviewer` | Opus (fresh) | the plan diff | `reviews/2026-11-21-discipline-foldin.md` | "### Verdict: ACCEPT" |
 
