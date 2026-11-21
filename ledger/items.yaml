@@ -71,13 +71,13 @@ items:
     text: Lots of new things, **no new interfaces**; you have ~15, need ~3; one interface, different modes, one design language, one surface
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U3.1
-    evidence: ''
+    evidence: 00f56ea
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R7
     kind: ruling
     text: "Stretch: every team task doable via CLI without editing code: sending designs, updating morphological chart, sending an idea, researching, consolidating, testing assembly, Dillon's tasks"
@@ -135,14 +135,14 @@ items:
     text: 'Rigid-body physics (frictionless first) to check mechanisms: motor motions, flap movements, "if you pull this, does it pull that"; drop the drone in and drag it around'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U2.1
       - U3.1
-    evidence: ''
+    evidence: 00f56ea
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R12
     kind: ruling
     text: 'Gates: transport by car (the box), no exposed wires and rules for how wiring works'
@@ -323,14 +323,14 @@ items:
     text: "Weekly updates: one artifact/page with each person's thing and link, sent before the meeting; drafted early in the week as a checklist; doc in Drive with links"
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U2.4
       - U3.1
-    evidence: ''
+    evidence: 00f56ea
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R27
     kind: ruling
     text: Before each meeting, list every task/idea from transcripts and compare with what repos have; beware "not done" vs "decided not to"

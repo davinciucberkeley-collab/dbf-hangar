@@ -1036,11 +1036,11 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 - Consumes: `/api/op/<name>` (U1.2), `build-index` JSON
 - Produces: `viewer/data/index.json` v2: `{designs, scorecards, mechanisms, ledger, updates, generated_at}`
 
-- [ ] **Step 1: Failing tests** (`test_every_mode_renders_without_console_errors[mode]`, `test_pages_build_has_no_edit_controls`, `test_physics_mode_plays_mechanism_sweep`)
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement**; budget: total JS lines after ≤ lines before + 30 %.
+- [x] **Step 1: Failing tests** (`test_every_mode_renders_without_console_errors[mode]`, `test_pages_build_has_no_edit_controls`, `test_physics_mode_plays_mechanism_sweep`)
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement**; budget: total JS lines after ≤ lines before + 30 %.
 - [ ] **Step 4: Run** → PASS; the Pages URL shows this week's update (R28)
-- [ ] **Step 5: Commit** `git commit -m "studio: one app with modes; Pages build is the same app read-only"`
+- [x] **Step 5: Commit** `git commit -m "studio: one app with modes; Pages build is the same app read-only"`
 
 ### Unit U3.2: Skills on the ops layer (R3, R15, R16, R21, R22, R30)
 
