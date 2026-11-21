@@ -1,0 +1,8 @@
+{"schema": "proofs/1", "generated_by": "x", "params": ["../params-A.json"], "nodes": [
+ {"id": "SRC-X-ENV", "type": "source", "title": "Env sheet", "kind": "datasheet"},
+ {"id": "R-X", "type": "requirement", "title": "Req", "text": "span plus g at least 1"},
+ {"id": "CALC-X", "type": "calculation", "title": "Sum", "script": "redesign/qp/A/proofs/x.py", "function": "sum_values",
+  "inputs": {"a": "P:wing.span_m", "b": "P:env.g_ms2"}, "input_values": {"a": 0.9, "b": 9.807}, "outputs": {"total": 10.707}},
+ {"id": "CL-X-A", "type": "claim", "title": "Sum above limit", "calc": "CALC-X", "output": "total", "unit": "m", "value": 10.707,
+  "limit": {"op": ">=", "ref": "P:req.lim"}, "verifies": ["R-X"], "parts": ["WNG-001", "AVN-001"], "how": "x"},
+ {"id": "CL-X-B", "type": "claim", "title": "Sum, no limit", "calc": "CALC-X", "output": "total", "unit": "m", "value": 10.707, "how": "x"}]}

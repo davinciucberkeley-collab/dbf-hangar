@@ -14,7 +14,7 @@
       "additionalProperties": false,
       "required": ["id", "kind", "text", "source", "owner", "status", "due", "units", "evidence", "decided_in", "updated"],
       "properties": {
-        "id": {"type": "string", "pattern": "^(R|T|I|D)\\d+$"},
+        "id": {"type": "string", "pattern": "^((R|T|I|D)\\d+|D-\\d+[a-z]*|DD-\\d+)$"},
         "kind": {"enum": ["ruling", "task", "idea", "decision"]},
         "text": {"type": "string"},
         "source": {"type": "string"},
