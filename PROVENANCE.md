@@ -38,3 +38,12 @@ Snapshot import, no history. Full history: aircraft-platform @ f462468 (plans/ a
 | `core/hangar/importers/changelog.py` | DBF-Combined @ a93f14d : redesign/params/CHANGE-LOG.md (decision rows D-01 … D-208), DECISIONS.md (D1 … D15) | one ledger `decision` item per row, `source: CHANGE-LOG#D-n`; DECISIONS.md items become `DD-n` (D1, D13, D14 superseded by plan D9, the rest open) |
 | `schema/ledger.schema.json` (id pattern) | dbf-hangar | widened for `D-<n>` and `DD-<n>` ids |
 | `core/hangar/ops/import_dbf.py`, `tests/test_import_dbf_v2.py`, `tests/fixtures/dbf-mini/` | dbf-hangar (new) | no source file; fixtures hand-written; ops are `claim.import-dbf` and `ledger.import-dbf` (registry names allow no underscore, and the `import` CLI group is hand-written) |
+| knowledge/sources/std-stanag-4703-annex-b-landing.md | external: https://assets.publishing.service.gov.uk/media/5a7ec5c940f0b62305b83155/20140916-STANAG-4703_AEP-83_A__1_.pdf | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-astm-f3298-load-tables.md | external: https://store.astm.org/f3298-24.html | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-vtol-thrust-to-weight-paper.md | external: http://medcraveonline.com/AAOAJ/AAOAJ-02-00047.pdf | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-nasa-additive-factors.md | external: https://standards.nasa.gov/sites/default/files/standards/NASA/Baseline/0/2021-04-21_nasa-std-6030-approveddocx.pdf | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-dbf-rules-box-size.md | external: https://aiaa.org/wp-content/uploads/2026/10/DBF-2027-Rules-Final.pdf | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-ct-fasteners.md | external: https://www.cnckitchen.com/blog/threaded-inserts-for-3d-prints-cheap-vs-expensive | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-ct-adhesives-tapes.md | external: https://westsystem.com/?p=2054 | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-ct-electrical.md | external: https://www.china-amass.net/uploads/57.XT60-F-SPEC-2025V0.pdf | none (scout summary, knowledge/sources) |
+| knowledge/sources/std-ct-straps-hinges-thermal.md | external: https://www.trivantage.com/itemfiles/pdfs/tds/VELCRO_Essentials_13M_Loop_Specifications.pdf | none (scout summary, knowledge/sources) |

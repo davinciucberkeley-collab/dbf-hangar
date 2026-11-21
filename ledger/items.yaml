@@ -567,7 +567,7 @@ items:
     status: decided
     due: '2026-11-25'
     units: []
-    evidence: 'default: one value per key, chosen from sources found in U2.2, recorded as a decision'
+    evidence: 'default (plan section 3 standing rule, one value per key from sources found in U2.2): hover_thrust_to_weight_min = 1.5, top of the 1.2 to 1.5 range in knowledge/sources/std-vtol-thrust-to-weight-paper.md (Kamal and Ramirez-Serrano 2018, citing Raymer); landing_load_factor stays source: pending with options in its note (STANAG 4703 Annex B formula in std-stanag-4703-annex-b-landing; FAR 23.473 2.67 in std-astm-f3298-load-tables)'
     decided_in: ''
     updated: '2026-11-20'
   - id: D7
