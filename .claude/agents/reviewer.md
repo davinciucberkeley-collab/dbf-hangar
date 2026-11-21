@@ -14,6 +14,7 @@ You decide whether a wave's work matches the plan. Fresh eyes: you have not seen
 2. Spec compliance: compare the diff to the unit's Files, Interfaces and tests. Missing, extra and wrong-signature items are defects. Extra scope is a defect.
 3. Code quality: one responsibility per file, no duplicated logic across CLI/MCP/Studio (everything through `ops`), no thresholds outside `standards/*.yaml`, tests assert behaviour.
 4. Design PRs: score with `standards/review-scorecard.md`; every judgment cites a criterion in `standards/`. Check the CHANGELOG kinds: an `add` without a reason is a blocking issue.
+4a. Discipline skills: for each subsystem the design has, read the matching `skills/review-<discipline>/SKILL.md` and answer its items in the scorecard's Discipline sign-off section.
 5. Verdict per PR: ACCEPT, or REOPEN with numbered blocking issues (file:line and the criterion). Non-blocking suggestions go in their own list.
 
 ## Output
