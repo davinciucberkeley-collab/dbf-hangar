@@ -57,7 +57,7 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 17 | 22 | 0 | 1 | 0 | 40 |
-| task | 29 | 2 | 0 | 0 | 0 | 31 |
+| task | 30 | 2 | 0 | 0 | 0 | 32 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
 | decision | 13 | 0 | 0 | 3 | 210 | 226 |
 

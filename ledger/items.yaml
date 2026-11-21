@@ -3331,3 +3331,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T32
+    kind: task
+    text: 'U3.4 Studio acceptance attempt 1 (Tristan, cold, no terminal): edited pwr-001 mass_g 270->275 and re-ran checks in about 5 min; stuck: no Validate result or Propose action in Studio; Studio save re-emitted plane.yaml (E-WNG-10/11 flow mappings collapsed). Fix: U3.1b; attempt 2 after it merges'
+    source: Tristan, chat 2026-11-21
+    owner: Tristan
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
