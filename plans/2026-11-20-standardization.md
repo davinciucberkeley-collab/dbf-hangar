@@ -394,7 +394,9 @@ Layers (to be confirmed by the briefs' Interfaces): **W2a** U2.1 [hard], U2.3 [h
 | W2-T2, T4 | `tactician` | Sonnet | §7 U2.2, U2.4 | `briefs/U2.2-standards.md`, `briefs/U2.4-team-ops.md` | same |
 | W2-A | `advisor` | Opus | the three hard briefs | recommendation per brief | "builder-ready" or numbered gaps |
 | W2-1, W2-3, W2-5 | `builder-plus` | Sonnet | hard briefs | `std/u2.1-gates`, `std/u2.3-adapters`, `std/u2.5-import` | brief's targeted tests; CI green on both OSes |
+| W2-S1…S9 | `scout` | Haiku | `briefs/U2.2-standards.md` Part A (one source each) | `knowledge/sources/std-*.md` in the u2.2 worktree | each filled from sources actually opened; inline check passes |
 | W2-2, W2-4 | `builder` | Haiku | their briefs | `std/u2.2-standards`, `std/u2.4-team-ops` | same |
+| W2-2b | `builder` | Haiku | brief U2.2-2 (to be written): §7 U2.2 step 3a, knowledge import of DBF-Combined `redesign/config-study/research/` | `std/u2.2b-knowledge` | brief's checks; CI green |
 | W2-R1, W2-R2 | `reviewer` | Opus (fresh, up to two) | units split between them | `reviews/2026-11-2x-w2.md` | "### Verdict: ACCEPT" per unit; merge order checked |
 | W2-Au | `auditor` | Haiku | session state | hourly report | ≤ 15 lines |
 | W2-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch |
