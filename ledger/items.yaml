@@ -3298,3 +3298,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T29
+    kind: task
+    text: "plane tools doctor reports OpenCAE ok without checking the runner's imports: with python set to the CalculiX-only env 'opencae', fea run fails 'No module named numpy'. Doctor should import numpy and scipy with the configured python, and fea setup should refuse a python without them. (OpenCAE INSTALL_WINDOWS.md: Python env is qt_test; 'opencae' is the solver env.)"
+    source: Tristan task 1 (U3.4 step 4), 2026-11-21
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T30
+    kind: task
+    text: "U3.4 acceptance (Windows FEA, done by Tristan per D24), attempt 1 2026-11-21: tools doctor ok (opencae, mujoco), aerosandbox missing, davinci missing (D3); fea run concept-a --part cge-001 FAILED: ModuleNotFoundError numpy (opencae.local.json pointed at the solver env). Warning 'only got 2458/3000 samples'. Config repointed to qt_test; rerun pending."
+    source: Tristan, PowerShell output pasted in session, 2026-11-21
+    owner: Tristan
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
