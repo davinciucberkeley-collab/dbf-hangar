@@ -76,3 +76,58 @@ def test_no_numbers_in_skills(path):
 def test_skill_under_120_lines(path):
     n = len(_read(path).splitlines())
     assert n <= MAX_LINES, f"{path}: {n} lines, limit {MAX_LINES}"
+
+
+DISCIPLINE_SKILLS = [
+    "review-structures", "review-aero", "review-controls",
+    "review-propulsion", "review-manufacturing", "review-test-safety",
+]
+_D_REPO = Path(__file__).resolve().parents[1]
+_D_EXTRACT = _D_REPO / "plans" / "2026-11-20-standardization" / "discipline-extract"
+_D_ITEM = re.compile(r"^- \*\*([A-Za-z0-9-]+)\*\*: .+ \(discipline-extract/([A-J][0-9]+)\.md#([0-9]+)\)$")
+_D_LANDS = re.compile(r"^SKILL:([a-z-]+)/([A-Za-z0-9-]+)")
+
+
+def _d_expected_rows():
+    """{skill: {(role_id, row_number): slug}} from the `lands as` cell of every extract row."""
+    out = {name: {} for name in DISCIPLINE_SKILLS}
+    for f in sorted(_D_EXTRACT.glob("[A-J][0-9].md")):
+        for line in f.read_text(encoding="utf-8").splitlines():
+            m = re.match(r"^\| ([0-9]+) \|", line)
+            if not m:
+                continue
+            last = line.split("|")[-2].strip()
+            lm = _D_LANDS.match(last)
+            if lm and lm.group(1) in out:
+                out[lm.group(1)][(f.stem, int(m.group(1)))] = lm.group(2)
+    return out
+
+
+def test_discipline_skills_size_and_sections():
+    for name in DISCIPLINE_SKILLS:
+        path = _D_REPO / "skills" / name / "SKILL.md"
+        assert path.is_file(), name
+        lines = path.read_text(encoding="utf-8").splitlines()
+        assert len(lines) <= 120, (name, len(lines))
+        heads = [ln[3:].strip() for ln in lines if ln.startswith("## ")]
+        missing = [s for s in SECTIONS if s not in heads]
+        assert not missing, (name, missing)
+
+
+def test_discipline_skill_items_cite_extract_rows():
+    expected = _d_expected_rows()
+    assert sum(len(v) for v in expected.values()) == 97
+    for name in DISCIPLINE_SKILLS:
+        text = (_D_REPO / "skills" / name / "SKILL.md").read_text(encoding="utf-8")
+        cited = []
+        for ln in text.splitlines():
+            if not ln.startswith("- **"):
+                continue
+            m = _D_ITEM.match(ln)
+            assert m, (name, ln)
+            key = (m.group(2), int(m.group(3)))
+            assert key in expected[name], (name, key, "row is not tagged SKILL:" + name)
+            assert expected[name][key] == m.group(1), (name, key, "slug mismatch")
+            cited.append(key)
+        assert len(cited) == len(set(cited)), (name, "a row is cited twice")
+        assert set(cited) == set(expected[name]), (name, sorted(set(expected[name]) - set(cited)))
