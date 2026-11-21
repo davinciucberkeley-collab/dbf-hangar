@@ -1,0 +1,3 @@
+items:
+  - {kind: task, text: "Order foam for the wing", source: "transcript 11-24 00:03:10", owner: ana}
+  - {kind: idea, text: "Try coroplast fins", source: "transcript 11-24 00:07:00"}
