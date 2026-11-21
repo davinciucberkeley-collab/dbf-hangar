@@ -81,6 +81,7 @@ def tier0_schema(design: Design) -> TierReport:
                             ("mechanisms", "mechanisms" in d), ("transport", "transport" in d),
                             ("assembly", "assembly" in d),
                             ("components[].provenance", any("provenance" in c for c in d.get("components", []))),
+                            ("attachments[].connection/seat", any("connection" in a or "seat" in a for a in d.get("attachments", []))),
                             ("requirements.transport_box_mm", "transport_box_mm" in d.get("requirements", {})))
           if used]
     if v1 and _below(design, "1.0"):
@@ -582,6 +583,8 @@ def tier1_geometry(design: Design, std: dict) -> TierReport:
                            f"not attached to '{root}' (would fall off): {loose}" if loose
                            else f"all {len(all_ids)} components connect to '{root}'",
                            STD + "attach_tolerance_mm", {"parts": loose}))
+    from .gates.interfaces import connection_known_results   # U1.6: only when an attachment names a connection
+    res += connection_known_results(design)
 
     identity = {cid: np.eye(4) for cid in all_ids}
     cache = _PairCache()

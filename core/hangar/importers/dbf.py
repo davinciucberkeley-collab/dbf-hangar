@@ -378,6 +378,8 @@ def import_concept(dbf_root, concept: str = "A", out_dir=None, log=print) -> Pat
     report["attachments"] = len(att_rows)
     report["bridging_edges_not_emitted"] = [e["id"] for e in bridging]
     report["wire_edges_not_emitted"] = sorted(wire_edges)
+    report["interfaces"] = account_interface_edges(read_interface_edges(root, concept), {r["edge"]["id"] for r in att_rows},
+                                                   {e["id"] for e in bridging}, wire_edges)
     report["ratings"] = rating_rows
     report["embed_ok"] = sorted(r["edge"]["id"] for r in att_rows if r["embed"])
     (out / "import-report.json").write_text(json.dumps(report, indent=1, sort_keys=True) + "\n")
@@ -387,6 +389,36 @@ def import_concept(dbf_root, concept: str = "A", out_dir=None, log=print) -> Pat
 def _overlap_volume_fn():
     from ..checks import _overlap_volume
     return lambda a, b: _overlap_volume([a], [b])
+
+
+def read_interface_edges(root, concept: str = "A") -> dict:
+    """Every edge declared in <root>/redesign/qp/<concept>/cad/model/*/interfaces.json (schema dbf-interfaces/1).
+    Returns {"edges": [edge dicts, sorted by id], "declared_pending": [edge ids from any edges_pending list]}."""
+    files = sorted((Path(root) / "redesign" / "qp" / concept / "cad" / "model").glob("*/interfaces.json"))
+    edges, seen, declared_pending = [], set(), []
+    for f in files:
+        doc = json.loads(f.read_bytes().decode("utf-8"))
+        if doc.get("schema") != "dbf-interfaces/1":
+            raise ValueError(f"{f}: not dbf-interfaces/1")
+        for e in doc.get("edges", []):
+            if e["id"] in seen:
+                raise ValueError(f"duplicate interface edge id {e['id']} in {f}")
+            seen.add(e["id"])
+            edges.append(e)
+        declared_pending += [e["id"] for e in doc.get("edges_pending", [])]
+    return {"edges": sorted(edges, key=lambda e: e["id"]), "declared_pending": declared_pending}
+
+
+def account_interface_edges(interface_edges: dict, attachment_ids, bridging_ids, wire_ids) -> dict:
+    """Partition the interface edges. Returns {"edges": n, "attachments": n, "bridging": n, "wires": n,
+    "pending": n, "pending_ids": sorted ids, "declared_pending": n, "unknown_ids": sorted ids}."""
+    ids = {e["id"] for e in interface_edges["edges"]}
+    att, bri, wir = set(attachment_ids), set(bridging_ids), set(wire_ids)
+    pending_ids = sorted(ids - att - bri - wir)
+    unknown_ids = sorted((att | bri | wir) - ids)
+    return {"edges": len(ids), "attachments": len(ids & att), "bridging": len(ids & bri), "wires": len(ids & wir),
+            "pending": len(pending_ids), "pending_ids": pending_ids,
+            "declared_pending": len(interface_edges["declared_pending"]), "unknown_ids": unknown_ids}
 
 
 # ----------------------------------------------------------------------------- yaml
@@ -404,7 +436,7 @@ def _write_yaml(data, PARTS, ids, comps, proxies, meshes, cg, parts_csv, params,
     add("# Frame: the source's own (metres; x aft from the wing leading edge, y right, z up in cruise) scaled x1000 to mm;")
     add("# the origin is the wing LE at the centre, not a nose datum. Read README.md for provenance and gaps.")
     add("# Every number cites its source in a comment; anything the source does not give is marked \"placeholder - not from source\".")
-    add('schema_version: "0.4"')
+    add('schema_version: "1.0"')
     add("id: concept-a")
     add("name: Concept A, scaled quad tailsitter flying wing (D-182)")
     add('authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "imported for dbf-hangar by `plane import dbf`"]')
@@ -529,6 +561,7 @@ def _write_yaml(data, PARTS, ids, comps, proxies, meshes, cg, parts_csv, params,
             fields.append("embed_ok: true")
         fields.append(f"rated_load_n: {_n(val, 1)}")
         fields.append(f"rating_basis: {rt.rating_basis(kind)}")
+        fields.append(f"connection: {e['via']}")
         if child in KINEMATIC_LINK_CHILDS:
             add("  # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'")
             fields.append("kinematic_link: true")
