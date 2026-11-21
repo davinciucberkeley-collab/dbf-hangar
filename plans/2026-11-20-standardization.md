@@ -391,7 +391,7 @@ Prepared by the conductor as a one-message task with exact commands; sent by Tri
 | Mon 11-23 | Dillon | `plane design set` one concept-A mass on a branch, `plane design validate`, `plane design propose` | PR link |
 | Tue 11-24 | Vaibhav → Tristan (2026-11-21) | `plane tools doctor` + `plane fea run designs/concept-a --part <one>` on Windows | output pasted in ledger |
 | Wed 11-25 | all | `plane update add` own line; Tristan runs `plane update publish` | the link |
-| Fri 11-27 | Dillon → Tristan (2026-11-21; Dillon repeats later for R9) | one iteration in Plane Studio, no terminal (U3.4 step 4) | time taken |
+| Fri 11-27 | Dillon → Tristan (2026-11-21; counts for R9 as an outside user) | one iteration in Plane Studio, no terminal (U3.4 step 4) | time taken |
 
 ### 6c. Agent table for W0-early (launched 2026-11-20, before U0.4)
 
@@ -1076,7 +1076,7 @@ Not a code unit; it tests everything above.
 - [ ] **Step 1:** Conductor launches `design-engineer` (Sonnet) on concept-a with the goal: "reduce failing checks without adding mass; mechanisms first." Hooks active; `design-engineer` has Bash limited to `plane *` and no Edit on `core/`.
 - [ ] **Step 2:** It runs `plane design validate`, `plane sim mechanism`, `plane fea run`, `plane design set|sweep`, and opens one or more `plane design propose` PRs. `auditor` runs hourly.
 - [ ] **Step 3:** Verify mechanically: `git diff --name-only main...design/concept-a/* | grep -c '^core/'` → `0`; scorecard failures fewer than `baseline.json`.
-- [ ] **Step 4:** Acceptance: Dillon repeats one iteration himself in Plane Studio (no terminal), Vaibhav repeats one with `plane fea` on Windows. Each records time taken in the ledger. *(Tristan, 2026-11-21: Tristan runs both checks himself to close W3; each is logged as "done by Tristan". R9 stays open until Dillon repeats one Studio iteration; R25 approval of concept-a PRs is Tristan's until Dillon is available.)*
+- [ ] **Step 4:** Acceptance: Dillon repeats one iteration himself in Plane Studio (no terminal), Vaibhav repeats one with `plane fea` on Windows. Each records time taken in the ledger. *(Tristan, 2026-11-21: Tristan runs both checks himself to close W3; each is logged as "done by Tristan". Tristan does the Studio iteration cold, as an outside user who does not know the internals, so his run counts for R9 and Dillon need not repeat it; R25 approval of concept-a PRs is Tristan's until Dillon is available.)*
 - [ ] **Step 5:** Tristan merges or closes the PRs after Dillon's approval (R25). `plane ledger set R7 R9 done --evidence <PR urls>`.
 
 ### Unit U3.5: Discipline skills, scorecard and procedures (from §1c; not on the core path)
