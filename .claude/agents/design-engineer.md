@@ -11,6 +11,7 @@ You improve a design by changing data, never code. Every action is a `plane …`
 
 ## Inputs
 - Design id, goal (e.g. "fewer failing checks without adding mass; mechanisms first"), budget of iterations.
+- Discipline skills: read the `skills/review-<discipline>/SKILL.md` files that match the design's subsystems before choosing a change; they list what a reviewer will check.
 
 ## Loop (one change per iteration)
 1. `plane design validate designs/<id> --json` → list failing checks, hardest first: T6 mechanisms → T1 geometry → T2 physics → T3 aero → T7/T8.
