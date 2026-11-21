@@ -847,7 +847,7 @@ items:
     updated: '2026-11-20'
   - id: T14
     kind: task
-    text: Build U3.6 seven discipline gates on the U2.1 registry (after D19/D20)
+    text: Build U3.6 five discipline gates on the U2.1 registry (after D19/D20)
     source: plan 1c, U3.6
     owner: Tristan
     status: open
@@ -858,7 +858,7 @@ items:
     updated: '2026-11-20'
   - id: D19
     kind: decision
-    text: §1c proposes 501 standards keys from the role checklists; how many become `standards/*.yaml` entries?
+    text: §1c proposes 367 standards keys (after the re-tag pass) from the role checklists; how many become `standards/*.yaml` entries?
     source: plan §3
     owner: ''
     status: decided
