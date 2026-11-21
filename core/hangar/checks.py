@@ -1023,7 +1023,8 @@ def tier5_standards(design: Design, std: dict, mp: dict) -> TierReport:
 # ---------------------------------------------------------------- runner
 # Criterion for results that are not tied to one rule (crashes, blocked tiers).
 TIER_CRITERION = {1: STD + "interference_max_mm3", 2: STD + "landing_load_factor", 3: STD + "static_margin",
-                  4: "manufacturing.yaml", 5: STD + "faa_part107_max_mass_g"}
+                  4: "manufacturing.yaml", 5: STD + "faa_part107_max_mass_g",
+                  9: "claims.yaml#recompute_rel_tol"}
 
 
 def validate(design: Design, max_tier: int = 5) -> Scorecard:
@@ -1067,4 +1068,9 @@ def validate(design: Design, max_tier: int = 5) -> Scorecard:
         tiers.append(run(4, "manufacturing", lambda: tier4_manufacturing(design)))
     if max_tier >= 5:
         tiers.append(run(5, "standards", lambda: tier5_standards(design, std, mp)))
+    if max_tier >= 5:    # T9 Claims (U1.5): runs with the full run only; U2.1 moves this into the gate registry
+        from .gates.claims import tier9_claims
+        rep9 = run(9, "claims", lambda: tier9_claims(design))
+        if rep9 is not None:
+            tiers.append(rep9)
     return Scorecard(design.id, tiers, max_tier)

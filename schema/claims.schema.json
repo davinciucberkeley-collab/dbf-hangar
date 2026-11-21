@@ -1,0 +1,512 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Claims graph claims/1",
+  "description": "The claims graph of one design, written as claims.yaml beside plane.yaml. Nodes are requirements, claims, calculations, parameters, sources, assumptions and tests; a calculation names a registered function, never a file path.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "nodes"
+  ],
+  "properties": {
+    "schema": {
+      "const": "claims/1"
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/node"
+      }
+    }
+  },
+  "$defs": {
+    "id_slug": {
+      "type": "string",
+      "pattern": "^[A-Za-z][A-Za-z0-9_.-]*$"
+    },
+    "limit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "op"
+      ],
+      "properties": {
+        "op": {
+          "enum": [
+            ">=",
+            "<="
+          ]
+        },
+        "value": {
+          "type": "number"
+        },
+        "ref": {
+          "type": "string"
+        }
+      },
+      "oneOf": [
+        {
+          "required": [
+            "value"
+          ]
+        },
+        {
+          "required": [
+            "ref"
+          ]
+        }
+      ]
+    },
+    "requirement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "text"
+      ],
+      "properties": {
+        "type": {
+          "const": "requirement"
+        },
+        "note": {
+          "type": "string"
+        },
+        "defined_in": {
+          "type": "string"
+        },
+        "id": {
+          "$ref": "#/$defs/id_slug"
+        },
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "ref": {
+          "type": "string"
+        },
+        "cites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "unit"
+      ],
+      "properties": {
+        "type": {
+          "const": "claim"
+        },
+        "note": {
+          "type": "string"
+        },
+        "defined_in": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^CL-[A-Za-z0-9_.-]+$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "value": {
+          "type": [
+            "number",
+            "string",
+            "boolean"
+          ]
+        },
+        "calc": {
+          "type": "string"
+        },
+        "output": {
+          "type": "string"
+        },
+        "limit": {
+          "$ref": "#/$defs/limit"
+        },
+        "verifies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assumes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "how": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "PROPOSED"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": [
+              "calc"
+            ]
+          },
+          "then": {
+            "required": [
+              "output"
+            ]
+          }
+        }
+      ]
+    },
+    "calculation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "function",
+        "inputs"
+      ],
+      "properties": {
+        "type": {
+          "const": "calculation"
+        },
+        "note": {
+          "type": "string"
+        },
+        "defined_in": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^CALC-[A-Za-z0-9_.-]+$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "function": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "inputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "equation": {
+          "type": "string"
+        },
+        "units": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "outputs": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "number"
+          }
+        },
+        "tol": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "input_values": {
+          "type": "object"
+        },
+        "assumes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "cites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "imported_from": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "script": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title"
+      ],
+      "properties": {
+        "type": {
+          "const": "parameter"
+        },
+        "note": {
+          "type": "string"
+        },
+        "defined_in": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^P:[A-Za-z][A-Za-z0-9_.\\[\\]-]*$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "value": {},
+        "unit": {
+          "type": "string"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ]
+        },
+        "status": {
+          "type": "string"
+        },
+        "file": {
+          "type": "string"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "kind"
+      ],
+      "properties": {
+        "type": {
+          "const": "source"
+        },
+        "note": {
+          "type": "string"
+        },
+        "defined_in": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^SRC-[A-Za-z0-9_.-]+$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "datasheet",
+            "paper",
+            "book",
+            "web",
+            "test",
+            "standard",
+            "file",
+            "repo",
+            "code"
+          ]
+        },
+        "url": {
+          "type": "string"
+        },
+        "checked": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "where": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        }
+      }
+    },
+    "assumption": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "text",
+        "basis"
+      ],
+      "properties": {
+        "type": {
+          "const": "assumption"
+        },
+        "note": {
+          "type": "string"
+        },
+        "defined_in": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^ASM-[A-Za-z0-9_.-]+$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "basis": {
+          "type": "string"
+        },
+        "value": {},
+        "unit": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "PROPOSED",
+            "UNVERIFIED"
+          ]
+        },
+        "cites": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "test": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "verifies",
+        "state"
+      ],
+      "properties": {
+        "type": {
+          "const": "test"
+        },
+        "note": {
+          "type": "string"
+        },
+        "defined_in": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^T-[A-Za-z0-9_.-]+$"
+        },
+        "title": {
+          "type": "string"
+        },
+        "verifies": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "state": {
+          "enum": [
+            "planned",
+            "run"
+          ]
+        },
+        "procedure": {
+          "type": "string"
+        },
+        "evidence": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "fail"
+          ]
+        },
+        "measured": {}
+      }
+    },
+    "node": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/requirement"
+        },
+        {
+          "$ref": "#/$defs/claim"
+        },
+        {
+          "$ref": "#/$defs/calculation"
+        },
+        {
+          "$ref": "#/$defs/parameter"
+        },
+        {
+          "$ref": "#/$defs/source"
+        },
+        {
+          "$ref": "#/$defs/assumption"
+        },
+        {
+          "$ref": "#/$defs/test"
+        }
+      ]
+    }
+  }
+}

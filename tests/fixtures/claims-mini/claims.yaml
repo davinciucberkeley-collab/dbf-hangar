@@ -1,0 +1,58 @@
+schema: claims/1
+nodes:
+  - {id: R-MASS, type: requirement, title: Mass cap, text: "MTOW <= 500 g", ref: "plane.yaml#requirements.mtow_g"}
+  - {id: R-HOVER, type: requirement, title: Hover margin, text: "hover T/W >= 1.6"}
+  - {id: R-STRUCT, type: requirement, title: Structural clearance, text: "wing to fuselage clearance >= 0 m"}
+  - {id: SRC-MOTOR-DS, type: source, title: Motor datasheet, kind: datasheet, url: "https://example.com/motor", checked: "2026-11-20", where: "table 2"}
+  - {id: ASM-STATIC-THRUST, type: assumption, title: Static thrust at hover, text: "Bench static thrust holds in hover", basis: "hover is close to static; within 10 percent", status: PROPOSED}
+  - {id: "P:env.total_thrust_g", type: parameter, title: Total static thrust, value: 946, unit: g, source: SRC-MOTOR-DS}
+  - {id: "P:components[battery].mass_g", type: parameter, title: Battery mass, unit: g}
+  - id: CALC-MASS
+    type: calculation
+    title: Primary mass roll-up
+    function: sum_values
+    equation: "total = fuselage + wing + battery"
+    inputs: {fuselage: "P:components[center_body].mass_g", wing: "P:components[wing].mass_g", battery: "P:components[battery].mass_g"}
+    units: {battery: g}
+  - id: CALC-TW
+    type: calculation
+    title: Hover thrust to weight
+    function: hover_tw
+    equation: "tw = thrust / mass"
+    inputs: {thrust_g: "P:env.total_thrust_g", mass_g: CL-MASS-GATE}
+    units: {thrust_g: g, mass_g: g}
+    assumes: [ASM-STATIC-THRUST]
+  - id: CL-MASS-GATE
+    type: claim
+    title: Primary mass within cap
+    calc: CALC-MASS
+    output: total
+    unit: g
+    limit: {op: "<=", ref: "P:requirements.mtow_g"}
+    verifies: [R-MASS]
+    parts: [center_body, wing, battery]
+    how: "Weigh the assembled airframe."
+  - id: CL-AERO-TW
+    type: claim
+    title: Hover thrust to weight
+    calc: CALC-TW
+    output: tw
+    unit: "-"
+    limit: {op: ">=", value: 1.6}
+    verifies: [R-HOVER]
+    how: "Static thrust bench plus weigh-in."
+  - id: CL-STR-CLEAR
+    type: claim
+    title: Wing to fuselage clearance
+    value: 0.0012
+    unit: m
+    limit: {op: ">=", value: 0}
+    verifies: [R-STRUCT]
+    how: "Feeler gauge on the assembled joint."
+  - id: CL-PROP-NOISE
+    type: claim
+    title: Prop noise at 1 m
+    value: 78
+    unit: dB
+    status: PROPOSED
+    how: "Measure at 1 m with a phone meter."
