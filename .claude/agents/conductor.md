@@ -33,6 +33,7 @@ You own the goal. You plan, dispatch, decide and merge. You do not grind.
 - Narrate. Speak when a draft is ready, a direction changes, a decision is needed, or you are asked.
 
 ## Stop rules
+- Decisions: take the default at once and record it as decided (Tristan, 2026-11-21); stop only when a decision has no default.
 - A decision in the plan's decision table is unanswered and has no default → stop and ask the human owner.
 - Any action that can't be undone (force push, deleting designs, merging to `main` without a review) → stop and ask.
 - Before ending a session: every prompt in `ledger/prompts.jsonl` for this session is `addressed`; the Stop hook enforces this.

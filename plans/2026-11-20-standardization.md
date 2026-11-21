@@ -272,7 +272,7 @@ Gates are registered in `standards/gates.yaml` (`id, tier, blocking, needs: [ada
 
 ## 3. Decisions the team must make (surface now, R22)
 
-Each has a default the plan uses if nobody answers by the date. Recorded with `plane ledger add --kind decision`.
+Each has a default the plan uses if nobody answers by the date. **Standing rule (Tristan, 2026-11-21): every decision takes its default at once; the conductor records it as decided and does not wait for approval. Tristan can overrule later.** Recorded with `plane ledger add --kind decision`.
 
 | D | Question | Default if unanswered | Ask | By | Status |
 |---|---|---|---|---|---|
@@ -294,9 +294,9 @@ Each has a default the plan uses if nobody answers by the date. Recorded with `p
 | D16 | Should concept-A's claims react to `plane design set`? | yes: U2.5b `PDL_MAP` maps params-A refs to PDL paths (unit scaling allowed, e.g. MTOW) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D17 | DBF-Combined DECISIONS.md items on import | DD-1, DD-13, DD-14 `superseded` (decided_in D9); the other 12 `open` for triage | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D18 | FEA staleness when concept-A is edited (U3.4) | U2.3a hashes every input the load model reads (all masses, geometry, propulsion, attachments, root, VTOL method, all mesh bytes) instead of the whole plane.yaml; requirements, flight, description edits keep FEA fresh; physical edits correctly make it stale | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
-| D19 | §1c proposes 501 standards keys from the role checklists; how many become `standards/*.yaml` entries? | only keys a gate or a discipline skill reads, each with `source:` or `pending` (estimate ≤ 80); the rest stay in the extracts as evidence | Tristan | 11-24 | open: default applies if unanswered |
-| D20 | Discipline gates: five (thermal and modal as skill items + T9 claims) or seven (those two SKIP-only)? | five, in U3.6, report-only until 12-08 (D7); cut first if W3 slips (§6a 0a) | Tristan | 11-24 | open: default applies if unanswered |
-| D21 | May U3.6 add optional PDL fields the gates need (battery capacity, wire gauge, current ratings, control-surface data)? | yes: optional fields in a schema minor version, merged with a `migration:` commit line; concept-a's values set later with `plane design set` | Tristan | 11-24 | open: default applies if unanswered |
+| D19 | §1c proposes 501 standards keys from the role checklists; how many become `standards/*.yaml` entries? | only keys a gate or a discipline skill reads, each with `source:` or `pending` (estimate ≤ 80); the rest stay in the extracts as evidence | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
+| D20 | Discipline gates: five (thermal and modal as skill items + T9 claims) or seven (those two SKIP-only)? | five, in U3.6, report-only until 12-08 (D7); cut first if W3 slips (§6a 0a) | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
+| D21 | May U3.6 add optional PDL fields the gates need (battery capacity, wire gauge, current ratings, control-surface data)? | yes: optional fields in a schema minor version, merged with a `migration:` commit line; concept-a's values set later with `plane design set` | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
