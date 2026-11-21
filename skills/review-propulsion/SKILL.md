@@ -22,7 +22,7 @@ Answer each item from the design, its README and the cited extract row.
 - **incoming-inspection**: Inspect each incoming motor for weight, winding pattern, hole depth, E-clip and phase resistance before fitting. (discipline-extract/G4.md#31)
 - **motor-direction**: Confirm each motor turns in its stated direction, and every screw and nut carries a witness mark. (discipline-extract/G4.md#27)
 - **motor-out-handling**: Confirm the motor-out handling rule is a throttle cut into a glide, as written in the flight card. (discipline-extract/F4.md#61)
-- **pack-capacity**: Check pack capacity at 1C to the cell cut-off voltage meets the minimum fraction of rated capacity (limit pending in standards/). (discipline-extract/A2.md#14)
+- **pack-capacity**: Check pack capacity at one C (one times capacity) to the cell cut-off voltage meets the minimum fraction of rated capacity (limit pending in standards/). (discipline-extract/A2.md#14)
 - **pack-spec**: Confirm the pack cell count, discharge rating and connector match the propulsion spec, and the wrong connector SKU is not ordered. (discipline-extract/I1.md#32)
 - **prop-hand-check**: Hand-check each prop adapter nut tightens under prop torque, and left-hand threads are used where motor direction requires. (discipline-extract/H1.md#16)
 - **prop-selection**: Check the hover pack power ratio of the chosen prop against the baseline prop at gate mass (limit pending in standards/). (discipline-extract/B4.md#7)

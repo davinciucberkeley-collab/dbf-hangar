@@ -34,7 +34,7 @@ Answer each item from the design, its README and the cited extract row.
 - **flex-loop-margin**: Confirm the hover yaw loop gain margin with the antisymmetric torsion mode stays at or above its minimum (limit pending in standards/). (discipline-extract/B3.md#56)
 - **flex-loop-margin**: Confirm the flexible hover pitch and yaw phase margins each stay at or above the phase margin minimum (limit pending in standards/). (discipline-extract/B3.md#57)
 - **fsw-params**: Check the tailsitter parameter file sets the enable flags, frame class, frame type and option bits the airframe needs. (discipline-extract/A2.md#27)
-- **harmonic-notch**: Confirm the harmonic notch uses ESC rpm telemetry, with its harmonics centred on the 1P sweep range. (discipline-extract/J1.md#26)
+- **harmonic-notch**: Confirm the harmonic notch uses ESC rpm telemetry, with its harmonics centred on the once-per-revolution sweep range. (discipline-extract/J1.md#26)
 - **loop-crossover**: Confirm the highest hover pitch crossover, at the stated gain and phase margins, stays at or above its minimum (limit pending in standards/). (discipline-extract/B3.md#58)
 - **loop-crossover**: Confirm the highest hover yaw crossover stays at or above its minimum (limit pending in standards/). (discipline-extract/B3.md#59)
 - **neutral-point**: Confirm the neutral point from elevon trim against lift coefficient has zero slope (limit pending in standards/). (discipline-extract/H2.md#23)

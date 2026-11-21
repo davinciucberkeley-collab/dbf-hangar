@@ -26,7 +26,7 @@ Answer each item from the design, its README and the cited extract row.
 - **fatigue-limit**: Confirm the flights-per-session and rest limits for each pilot are set in the card, not left blank (limit pending in standards/). (discipline-extract/H3.md#63)
 - **fence-recovery**: Confirm the aircraft refuses a mode switch during fence recovery, as the flight card follow-up requires. (discipline-extract/F4.md#64)
 - **first-hover-entry**: Confirm each first-hover entry gate is met: prior gates passed, simulator time logged, flight-rules request accepted, range check passed, card signed (limit pending in standards/). (discipline-extract/G4.md#43)
-- **go-around-triggers**: Confirm go-around is called on drift beyond the stated distance, tilt beyond the stated angle, a spotter call, a link warning or a gust above the card (limit pending in standards/). (discipline-extract/H3.md#47)
+- **go-around-triggers**: Confirm go-around is called for excess drift or tilt, a spotter call, a link warning or a gust above the card (limit pending in standards/). (discipline-extract/H3.md#47)
 - **hover-hold**: Confirm the aircraft holds the hover point for the stated duration at the stated thrust (limit pending in standards/). (discipline-extract/H1.md#23)
 - **landing-site**: Confirm the landing mat is the required size and level within tolerance, with slope room for a calm landing (limit pending in standards/). (discipline-extract/C5.md#71)
 - **lipo-retermination**: Confirm LiPo leads are re-terminated only below the cell voltage limit, one lead bare at a time, in the electronics lab (limit pending in standards/). (discipline-extract/G1.md#37)
