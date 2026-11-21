@@ -102,10 +102,75 @@ Inventory taken 2026-11-20. "Lands as" is the only form a piece may take in hang
 | DBF-Combined : `redesign/qp/A/sitl/` (ArduPilot SITL plant, batches), `firmware/` | flight-case simulation | `sitl` adapter, report-only in v1.0 (§8) | U2.3 |
 | DBF-Combined : `redesign/site/` (Explorer: 3-D with vendor links, build guide, hub stress map, BOM, status, morph chart, proofs) | the team's best viewer | its features become Studio modes (Build, BOM, Proofs, Stress); the site itself is not imported | U3.1 |
 | DBF-Combined : `redesign/config-study/` (43 concepts, judging), `docs/research/`, `redesign/inputs/` | trade study and research | `knowledge/` entries via templates; concept cards linked to morph chart cells | U2.2 |
-| DBF-Combined : `redesign/TEAM.md` (40 discipline roles) | agent roles by discipline | not imported: replaced by the 10 work-level roles (R18); its useful checklists become gate criteria | — |
+| DBF-Combined : `redesign/TEAM.md` (40 discipline roles) | agent roles by discipline | not imported as agents: replaced by the 10 work-level roles (R18); its checklists land as gates, standards, skills, scorecard sections and knowledge per §1c | U3.5, U3.6, U2.2 |
 | DBF-Combined : `analysis/`, `cad/` (SOLIDWORKS rev G), `inventory/`, `fusion/` (v0.3.1), `explorations/tiltwing/`, `sim/` | earlier design states (C0 lift+cruise, K09-L, tiltwing) | `status: retired` designs only where aircraft-platform already has them (`c0-*`, `tiltwing-cakir`); the rest stays in DBF-Combined, linked from `PROVENANCE.md` | U2.5 |
 | OpenCAEModel @ `792f0ab` (= DBF-Combined `tools/opencae-studio/`) | CalculiX-based CAE app, GPL-3.0 | external dependency behind the `opencae` adapter; hangar pins the version | U2.3 |
 | DBF-VTOL, DillonVTOL, TiltWing | already inside DBF-Combined (its `PROVENANCE.md`) | nothing extra | — |
+
+## 1c. Discipline roles → checks, standards and skills (Tristan, 2026-11-21)
+
+DBF-Combined `redesign/TEAM.md` @ `a93f14d` lists **45** discipline roles (A1–J6; 39 with a `team/<id>/` folder). None becomes an agent: the 10 work-level roles stay (R18; Douglas 11-18). Each role's checklist was extracted by scouts into `plans/2026-11-20-standardization/discipline-extract/<id>.md` (1,935 check rows, each citing its source file and line), and every row was given exactly one destination under the fixed rules in `discipline-extract/_RULES.md`. Leadership and integration roles (A1 chief engineer, A2 systems, A4 configuration, J2 proof chain, J6 review board) land on what already exists: the conductor and advisor (decisions), the ledger (change requests, traceability), the claims graph and T9 (verification), and `standards/review-scorecard.md` (review rules).
+
+**Totals (rows):** gate 327 · standards 512 (501 distinct keys, 55 `pending`) · skill 89 · scorecard 60 · knowledge 101 · dropped 846 (mostly `k09l-instance`: a number about one K09-L part, whose general rule is captured once under another code).
+
+**Where the rows land**
+- **Existing gates** take most gate rows (T1.interference, T1.interfaces, T2.fea_strength, T3.mass, T3.static_margin, T3.hover_tw, T7.*, T8.*, T9.claims): no new code, they become test fixtures and criteria text in U3.6.
+- **New gates (7, U3.6, all report-only until D7's 12-08 date):** `T2.joint_rf` (joint reserve factor ≥ `joint_rf_min` from the connection-type rating vs the computed joint load; extends T2.joint_load), `T2.modal_separation` (first structural mode outside the motor/prop excitation band), `T3.control_authority` (hover differential-thrust moment and control-surface authority ≥ required margins), `T3.transition_margin` (VTOL designs only: transition speed vs stall/cruise margin), `T3.endurance` (usable energy ≥ mission energy + reserve), `T7.thermal` (motor/ESC/pack temperature rise at field ambient ≤ rating), `T7.electrical_rating` (wire gauge and disconnect rating ≥ peak current). The eighth candidate, `T2.load_case_coverage`, drew no rows and is dropped (subtract); load cases become a standards file that T2.fea_strength reads.
+- **Standards:** 501 candidate keys is far more than gates read. D19 limits import to keys a gate or skill reads, with a source or `pending` (estimate ≤ 80); the rest stay in the extracts as evidence. New files: `standards/load-cases.yaml`, `standards/operations.yaml` (wind/gust/flight-window limits, go/no-go). No edit to `design-standards.yaml` beyond keys FEA does not read (D13/D18 keep FEA results fresh).
+- **Skills (6, U3.5, ≤ 120 lines each):** `review-structures` (C1–C6, D1–D3, D5), `review-aero` (B1–B4, A3 mass and CG), `review-controls` (B3 stability, F3–F5 avionics, flight software, RC link), `review-propulsion` (E1–E3, F1–F2: motors, props, power, energy, thermal, harness), `review-manufacturing` (G1–G4, D6–D7), `review-test-safety` (H1–H3). `review-mass` and `review-interfaces` drew 1 and 0 rows and are merged/dropped (subtract). Read by `reviewer` and `design-engineer`.
+- **Scorecard (U3.5):** two new sections in `standards/review-scorecard.md`: *Evidence and closure* (a fail closes only by a design change, a corrected model with a stated reason, or a deciding test; limits are never loosened; reviewer estimates are labelled; figures spot-checked against the claims graph) and *Discipline sign-off* (each relevant discipline skill read and its items answered).
+- **Knowledge (U3.5):** procedures, not checks: ground-test plan, build sequence, flight card, flight-test plan, transition procedure, battery handling, procurement lead times and smaller entries (19 topics, 101 rows), via `knowledge/` templates.
+- **Dropped (846):** K09-L part values (claims about the retired configuration, D9), inactive D4, generated output (J3 renders, J4 visual design → Studio/Pages), duplicates and rows already covered.
+
+**Per role** (counts by destination; main destinations = the three most frequent codes):
+
+| Role | Name | Status | Rows | GATE | STD | SKILL | SCORECARD | KNOW | DROP | Main destinations |
+|---|---|---|---|---|---|---|---|---|---|---|
+| A1 | Chief engineer / integrator | active | 28 | 20 | 5 | 0 | 0 | 0 | 3 | `GATE:T3.static_margin` 7, `GATE:T3.mass` 4, `STD:connection-types` 3 |
+| A2 | Systems engineer | K09-L in part | 59 | 21 | 18 | 5 | 0 | 2 | 13 | `STD:operations` 8, `STD:load-cases` 4, `GATE:T3.control_authority` 3 |
+| A3 | Mass-properties engineer | active | 33 | 26 | 0 | 0 | 0 | 0 | 7 | `GATE:T3.static_margin` 11, `GATE:T3.mass` 5, `GATE:T3.control_authority` 4 |
+| A4 | Configuration / interface manager | K09-L in part | 32 | 19 | 0 | 0 | 1 | 0 | 12 | `GATE:T0.schema` 4, `GATE:T1.interference` 4, `GATE:T7.wiring` 3 |
+| A5 | CAD lead | active | 25 | 9 | 2 | 0 | 0 | 0 | 14 | `GATE:T3.static_margin` 5, `GATE:T0.schema` 2, `GATE:T9.claims` 2 |
+| B1 | Aero performance engineer | K09-L in part | 40 | 8 | 5 | 0 | 1 | 0 | 26 | `STD:design-standards` 4, `GATE:T3.transition_margin` 3, `GATE:T3.control_authority` 2 |
+| B2 | Wing aero engineer | K09-L in part | 45 | 17 | 3 | 3 | 4 | 0 | 18 | `GATE:T3.stall` 6, `SCORECARD:evidence-and-closure` 4, `GATE:T3.static_margin` 3 |
+| B3 | Stability and control engineer | K09-L-specific | 72 | 16 | 3 | 5 | 5 | 0 | 43 | `GATE:T3.control_authority` 6, `GATE:T3.transition_margin` 6, `SCORECARD:evidence-and-closure` 5 |
+| B4 | Rotor / propeller aero engineer | active | 48 | 3 | 10 | 1 | 1 | 0 | 33 | `STD:design-standards` 7, `STD:program` 3, `SCORECARD:evidence-and-closure` 1 |
+| C1 | Loads engineer | active | 23 | 2 | 12 | 0 | 1 | 0 | 8 | `STD:program` 6, `STD:load-cases` 4, `STD:operations` 1 |
+| C2 | Wing structures engineer | active | 57 | 2 | 12 | 0 | 1 | 0 | 42 | `STD:manufacturing` 9, `STD:program` 3, `GATE:T2.fea_strength` 1 |
+| C3 | Pod structures engineer | K09-L in part | 35 | 3 | 12 | 0 | 0 | 0 | 20 | `STD:manufacturing` 9, `STD:design-standards` 3, `GATE:T2.joint_rf` 1 |
+| C4 | Fin and motor-tube structures engineer | K09-L in part | 54 | 2 | 7 | 0 | 1 | 0 | 44 | `STD:manufacturing` 6, `SCORECARD:evidence-and-closure` 1, `STD:program` 1 |
+| C5 | Landing / impact engineer | K09-L in part | 79 | 2 | 23 | 2 | 1 | 3 | 48 | `STD:operations` 9, `STD:program` 7, `STD:design-standards` 6 |
+| C6 | Joints and fasteners engineer | active | 67 | 4 | 12 | 0 | 0 | 1 | 50 | `STD:connection-types` 7, `STD:manufacturing` 5, `GATE:T2.joint_rf` 1 |
+| D1 | Wing designer | active | 21 | 2 | 8 | 0 | 0 | 0 | 11 | `STD:manufacturing` 6, `STD:design-standards` 2, `GATE:T3.mass` 1 |
+| D2 | Pod designer | K09-L-specific | 38 | 7 | 2 | 0 | 0 | 4 | 25 | `KNOW:ground-test-plan` 4, `GATE:T1.interfaces` 1, `GATE:T3.static_margin` 1 |
+| D3 | Fin and motor-tube designer | K09-L-specific | 23 | 6 | 0 | 0 | 0 | 5 | 12 | `KNOW:ground-test-plan` 4, `GATE:T2.joint_rf` 1, `GATE:T1.interference` 1 |
+| D4 | Tail designer | inactive | 0 | 0 | 0 | 0 | 0 | 0 | 0 | — |
+| D5 | Landing designer | K09-L-specific | 38 | 7 | 8 | 0 | 0 | 6 | 17 | `KNOW:ground-test-plan` 5, `STD:design-standards` 4, `STD:load-cases` 3 |
+| D6 | Mechanisms designer | K09-L in part | 27 | 7 | 0 | 0 | 0 | 4 | 16 | `KNOW:ground-test-plan` 4, `GATE:T6.mechanism` 1, `GATE:T2.fea_strength` 1 |
+| D7 | Transport and packaging designer | active | 29 | 3 | 9 | 0 | 0 | 5 | 12 | `KNOW:ground-test-plan` 5, `STD:load-cases` 3, `STD:design-standards` 3 |
+| E1 | Propulsion engineer | K09-L in part | 52 | 10 | 3 | 0 | 0 | 3 | 36 | `KNOW:ground-test-plan` 3, `STD:design-standards` 2, `GATE:T7.electrical_rating` 1 |
+| E2 | Battery / energy engineer | active | 30 | 5 | 5 | 0 | 1 | 4 | 15 | `KNOW:ground-test-plan` 4, `STD:design-standards` 3, `STD:operations` 2 |
+| E3 | Thermal engineer | active | 38 | 6 | 16 | 0 | 0 | 1 | 15 | `STD:design-standards` 6, `STD:operations` 3, `STD:gate-thresholds` 3 |
+| F1 | Power distribution engineer | K09-L in part | 55 | 6 | 18 | 0 | 1 | 0 | 30 | `STD:design-standards` 12, `GATE:T7.electrical_rating` 4, `STD:gate-thresholds` 4 |
+| F2 | Harness engineer | active | 22 | 3 | 16 | 0 | 0 | 0 | 3 | `STD:design-standards` 13, `GATE:T1.interference` 2, `STD:gate-thresholds` 1 |
+| F3 | Avionics hardware engineer | K09-L in part | 38 | 3 | 16 | 0 | 0 | 0 | 19 | `STD:design-standards` 11, `STD:gate-thresholds` 4, `GATE:T1.interfaces` 1 |
+| F4 | Flight-control software engineer | active | 65 | 21 | 27 | 3 | 0 | 5 | 9 | `STD:design-standards` 17, `GATE:T3.control_authority` 9, `STD:operations` 5 |
+| F5 | RC link, telemetry and ground station engineer | active | 47 | 5 | 18 | 3 | 2 | 7 | 12 | `STD:gate-thresholds` 12, `STD:operations` 4, `GATE:T3.transition_margin` 3 |
+| G1 | Manufacturing engineer | active | 38 | 6 | 21 | 4 | 2 | 3 | 2 | `STD:manufacturing` 14, `STD:program` 6, `KNOW:build-sequence` 3 |
+| G2 | Composites and foam specialist | active | 46 | 2 | 9 | 5 | 2 | 15 | 13 | `KNOW:build-sequence` 11, `STD:manufacturing` 8, `SKILL:review-manufacturing` 5 |
+| G3 | 3D-printing specialist | active | 18 | 4 | 5 | 5 | 0 | 1 | 3 | `SKILL:review-manufacturing` 5, `STD:manufacturing` 3, `GATE:T8.bom` 1 |
+| G4 | Assembly sequence engineer | active | 46 | 6 | 15 | 10 | 4 | 2 | 9 | `STD:design-standards` 5, `STD:program` 4, `STD:manufacturing` 4 |
+| H1 | Ground test engineer | active | 162 | 10 | 97 | 11 | 0 | 7 | 37 | `STD:gate-thresholds` 35, `STD:design-standards` 25, `STD:connection-types` 19 |
+| H2 | Flight test engineer | active | 80 | 8 | 38 | 8 | 3 | 3 | 20 | `STD:operations` 18, `STD:gate-thresholds` 16, `SKILL:review-controls` 8 |
+| H3 | Safety officer | active | 80 | 3 | 28 | 10 | 1 | 12 | 26 | `STD:operations` 20, `SKILL:review-test-safety` 9, `KNOW:battery-procedure` 5 |
+| I1 | Procurement / BOM engineer | active | 48 | 10 | 8 | 5 | 10 | 4 | 11 | `GATE:T8.budget` 9, `STD:program` 8, `SCORECARD:discipline-sign-off` 8 |
+| I2 | Schedule planner | active | 29 | 13 | 1 | 0 | 2 | 1 | 12 | `GATE:T8.program` 12, `SCORECARD:discipline-sign-off` 2, `STD:program` 1 |
+| J1 | Outside research analyst | active | 45 | 2 | 7 | 8 | 1 | 1 | 26 | `STD:design-standards` 4, `SKILL:review-controls` 4, `SKILL:review-aero` 3 |
+| J2 | Verification / proof-chain engineer | active | 22 | 14 | 0 | 0 | 0 | 0 | 8 | `GATE:T9.claims` 9, `GATE:T0.schema` 5 |
+| J3 | Technical illustrator | active | 24 | 1 | 0 | 0 | 0 | 0 | 23 | `GATE:T7.assembly` 1 |
+| J4 | Visual designer | active | 22 | 0 | 0 | 0 | 3 | 0 | 19 | `SCORECARD:evidence-and-closure` 3 |
+| J5 | Technical writer / documentation | active | 20 | 1 | 0 | 1 | 1 | 2 | 15 | `KNOW:build-sequence` 2, `SKILL:review-test-safety` 1, `SCORECARD:evidence-and-closure` 1 |
+| J6 | Design review board | active | 35 | 2 | 13 | 0 | 11 | 0 | 9 | `SCORECARD:evidence-and-closure` 7, `STD:gate-thresholds` 5, `STD:design-standards` 5 |
 
 ## 2. Spec: what v1.0 is
 
@@ -229,6 +294,8 @@ Each has a default the plan uses if nobody answers by the date. Recorded with `p
 | D16 | Should concept-A's claims react to `plane design set`? | yes: U2.5b `PDL_MAP` maps params-A refs to PDL paths (unit scaling allowed, e.g. MTOW) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D17 | DBF-Combined DECISIONS.md items on import | DD-1, DD-13, DD-14 `superseded` (decided_in D9); the other 12 `open` for triage | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D18 | FEA staleness when concept-A is edited (U3.4) | U2.3a hashes every input the load model reads (all masses, geometry, propulsion, attachments, root, VTOL method, all mesh bytes) instead of the whole plane.yaml; requirements, flight, description edits keep FEA fresh; physical edits correctly make it stale | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
+| D19 | §1c proposes 501 standards keys from the role checklists; how many become `standards/*.yaml` entries? | only keys a gate or a discipline skill reads, each with `source:` or `pending` (estimate ≤ 80); the rest stay in the extracts as evidence | Tristan | 11-24 | open: default applies if unanswered |
+| D20 | Seven new discipline gates (§1c) or skills only? | gates in U3.6, report-only until 12-08 (D7); cut first if W3 slips (§6a 0a) | Tristan | 11-24 | open: default applies if unanswered |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -284,7 +351,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W1 Ops layer & PDL | Sat 11-21 → Mon 11-23 | U1.1 [hard], U1.2, U1.3 [hard], U1.4, U1.5 [hard], U1.6 |
 | W2 Gates, adapters, import, team ops | Mon 11-23 → Wed 11-25 | U2.1 [hard], U2.2, U2.3 [hard], U2.4, U2.5 [hard] |
 | — async check-in (no meeting) | Wed 11-25 | `plane update publish` → link in the Drive doc |
-| W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4 |
+| W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
 | Freeze | Sun 11-29 18:00 | — |
 | W4 Review, release, presentation | Sun 11-29 → Mon 11-30 | U4.1, U4.2 |
 | Present | **Tue 12-01** | demo + deck |
@@ -301,6 +368,8 @@ The Dec 1 demo needs only the **core path**: U0.4 → U0.2/U0.3 → U1.1 → U1.
 
 | Cut order | Unit | What is lost if cut | Fallback for the demo |
 |---|---|---|---|
+| 0a | U3.6 discipline gates | seven discipline checks | criteria stay as `review-*` skill items (U3.5) |
+| 0b | U3.5 discipline skills, scorecard, procedures | discipline review checklists | §1c and the extracts remain the reference |
 | 1 | U3.3 PlaneBench | model-comparison slide | show `design.sweep` table instead |
 | 2 | U2.1 T7/T8 parts | wiring/transport/BOM gates | T7/T8 stay report-only via claims (U1.5 already has budget and mass claims) |
 | 3 | U2.2 source closing | two `pending` thresholds | listed as open decisions D6 |
@@ -792,6 +861,7 @@ def test_concept_a_claims_import_roundtrip(dbf_combined_claims):   # 4 claims.*.
 - Create: `standards/gates.yaml`, `core/hangar/gates/{__init__,mechanisms,integration,sourcing}.py`
 - Modify: `core/hangar/checks.py` (tiers 0–5 registered through `gates/`, behaviour unchanged), `standards/design-standards.yaml` (new keys: `mechanism_ratio_tol` (internal convention), `wire_clearance_mm` (pending, D5), `transport_box_mm` default (pending, D5), `bom_verified_max_age_days: 30` (internal convention)), `designs/example-tailsitter-wing/plane.yaml` gets a mechanism and wiring so the gates have a positive example
 - Test: `tests/test_gates.py`, fixtures `tests/fixtures/mech-{good,jammed,unlinked}.yaml`
+- Also (§1c, 2026-11-21): the seven discipline gates from the DBF-Combined role checklists are **not** added here; they register on this unit's registry in U3.6.
 - Also (D11, Tristan 2026-11-21): a component whose `type` the gates don't know gets a SKIP naming the type and what is missing, not a T0.schema FAIL; extends `tests/test_ops_contract.py::test_unknown_component_type_gives_skip_not_crash` to assert SKIP (Review Focus #1).
 
 **Interfaces:**
@@ -826,6 +896,7 @@ def test_scorecard_reports_fidelity(concept_a):
 - Create: `ops/standards.py` (`standards.list`, `standards.show`, `standards.pending`), `knowledge/sources/std-*.md` (new, one per source opened)
 - Modify: `standards/design-standards.yaml` (sources), `knowledge/sources/std-SUMMARY.md`
 - Test: `tests/test_standards.py`
+- Also (§1c, D19, 2026-11-21): close the sources of the standards keys §1c selects (only keys a gate or skill reads; each with `source:` or `pending`); the remaining `STD:` rows stay in `discipline-extract/` as evidence.
 
 **Interfaces:**
 - Produces: `standards.pending -> data.items: list[{key, value, blocking: bool, candidates: list[source ids]}]`
@@ -946,6 +1017,7 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 - Rewrite: `skills/{design-concept,review-design,research,make-skill}/SKILL.md` to call ops only
 - Create: `skills/design-iterate/SKILL.md`, `skills/recon/SKILL.md`, `skills/plan-scheme/SKILL.md`, `skills/get-it-together/SKILL.md`, `skills/weekly-update/SKILL.md`
 - Test: `tests/test_skills.py`
+- Also (§1c, 2026-11-21): the six discipline review skills are U3.5, built on this unit's skill shape and tests; `review-design` points to them.
 
 Content rules (from the advisor): `design-iterate` — before any fix list ≥ 1 subtract, 1 modify and 1 adjust option, choose add only with a written reason, record `kind`, and run `recon` when the same check failed twice. `plan-scheme` — max effort, waves by dependency, units = PRs, surface decisions + one permissions prompt, then drop to medium. `get-it-together` — compares `ledger/prompts.jsonl`, the active plan and the roster rules with the session's actual state; output ≤ 15 lines. `make-skill` — research → recon of existing skills → synthesize → de-bloat pass (≤ 120 lines).
 
@@ -975,6 +1047,29 @@ Not a code unit; it tests everything above.
 - [ ] **Step 3:** Verify mechanically: `git diff --name-only main...design/concept-a/* | grep -c '^core/'` → `0`; scorecard failures fewer than `baseline.json`.
 - [ ] **Step 4:** Acceptance: Dylan repeats one iteration himself in Plane Studio (no terminal), Vibhav repeats one with `plane fea` on Windows. Each records time taken in the ledger.
 - [ ] **Step 5:** Tristan merges or closes the PRs after Dylan's approval (R25). `plane ledger set R7 R9 done --evidence <PR urls>`.
+
+### Unit U3.5: Discipline skills, scorecard and procedures (from §1c; not on the core path)
+
+**Files:**
+- Create: `skills/{review-structures,review-aero,review-controls,review-propulsion,review-manufacturing,review-test-safety}/SKILL.md` (each ≤ 120 lines, six sections like the U3.2 skills, every check item cites its extract row `discipline-extract/<id>.md#<n>`, no thresholds in skill text — numbers come from `standards/` keys by name)
+- Modify: `standards/review-scorecard.md` (sections *Evidence and closure*, *Discipline sign-off*), `.claude/agents/{reviewer,design-engineer}.md` (one pointer line each: read the discipline skills that match the design's subsystems)
+- Create: `knowledge/procedures/<topic>.md` for the 19 §1c knowledge topics via the knowledge template; `PROVENANCE.md` rows (one per source role folder)
+- Test: `tests/test_skills.py` gains `test_discipline_skills_size_and_sections` (each ≤ 120 lines, six sections), `test_discipline_skill_items_cite_extract_rows`, `test_no_numbers_in_skills` already covers thresholds
+
+- [ ] **Step 1: Failing tests** (the three above)
+- [ ] **Step 2–4:** write skills from the `SKILL:` rows of the extracts, the scorecard sections from the `SCORECARD:` rows, knowledge entries from the `KNOW:` rows; run → PASS
+- [ ] **Step 5: Commit** `git commit -m "skills: six discipline review skills, scorecard evidence and sign-off, procedures (from DBF-Combined TEAM roles)"`
+
+### Unit U3.6: Discipline gates [hard] (from §1c; not on the core path)
+
+**Files:**
+- Create: `core/hangar/gates/discipline.py` registering `T2.joint_rf`, `T2.modal_separation`, `T3.control_authority`, `T3.transition_margin`, `T3.endurance`, `T7.thermal`, `T7.electrical_rating` in the U2.1 gate registry; `standards/load-cases.yaml`, `standards/operations.yaml`; the D19-selected keys in `standards/gate-thresholds.yaml` and `standards/connection-types.yaml` (ratings), each with `source:` or `pending`
+- Test: `tests/test_discipline_gates.py` (per gate: a passing and a failing fixture built from the §1c generic rules; a design without the needed data gets SKIP naming what is missing, never PASS)
+- Rules: every new gate is report-only (WARN) until D7's date; a gate a design can pass without the data it checks is a bug (§1c, advisor); no `design-standards.yaml` key that FEA reads
+
+- [ ] **Step 1: Failing tests**
+- [ ] **Step 2–4:** implement the seven gates on the registry; run → PASS; `plane baseline check --all` shows only new WARN rows
+- [ ] **Step 5: Commit** `git commit -m "gates: seven discipline gates (joint RF, modal, control authority, transition, endurance, thermal, electrical rating)"`
 
 ### Unit U4.1: Whole-branch review, performance, release
 

@@ -823,3 +823,58 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-20'
+  - id: T12
+    kind: task
+    text: Triage source conflicts recorded in discipline-extract Gaps (e.g. mass gate 2.6 vs 2.7 kg, thermal 40/50 vs 33/38 K, pack charge 4.20 vs 4.35 V); conflicting keys stay pending until decided
+    source: plan 1c
+    owner: Tristan
+    status: open
+    due: '2026-11-26'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T13
+    kind: task
+    text: Build U3.5 discipline skills, scorecard sections and procedures from discipline-extract (after D19/D20)
+    source: plan 1c, U3.5
+    owner: Tristan
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T14
+    kind: task
+    text: Build U3.6 seven discipline gates on the U2.1 registry (after D19/D20)
+    source: plan 1c, U3.6
+    owner: Tristan
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D19
+    kind: decision
+    text: §1c proposes 501 standards keys from the role checklists; how many become `standards/*.yaml` entries?
+    source: plan §3
+    owner: ''
+    status: open
+    due: '2026-11-24'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D20
+    kind: decision
+    text: Seven new discipline gates (§1c) or skills only?
+    source: plan §3
+    owner: ''
+    status: open
+    due: '2026-11-24'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'

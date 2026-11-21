@@ -42,6 +42,8 @@
 | U3.2 | Skills on the ops layer (R3, R15, R16, R21, R22, R30) | 0/3 | not started | - |
 | U3.3 | PlaneBench v0 (R32) | 0/3 | not started | - |
 | U3.4 | Proof — an agent iterates concept-a with no code edits (R9, R7 acceptance) | 0/5 | not started | - |
+| U3.5 | Discipline skills, scorecard and procedures (from §1c; not on the core path) | 0/3 | not started | - |
+| U3.6 | Discipline gates [hard] (from §1c; not on the core path) | 0/3 | not started | - |
 
 ### W4 Review, release, presentation
 
@@ -55,9 +57,9 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 35 | 5 | 0 | 0 | 0 | 40 |
-| task | 10 | 1 | 0 | 0 | 0 | 11 |
+| task | 13 | 1 | 0 | 0 | 0 | 14 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
-| decision | 1 | 0 | 0 | 0 | 17 | 18 |
+| decision | 3 | 0 | 0 | 0 | 17 | 20 |
 
 ## Overdue
 
