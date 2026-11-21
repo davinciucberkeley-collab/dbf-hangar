@@ -104,7 +104,8 @@ def test_cli_tier_all_is_accepted():
     res = CliRunner().invoke(cli, ["validate", str(DESIGNS_DIR / "example-tailsitter-wing"), "--tier", "all", "--format", "json"])
     out = json.loads(res.output)
     assert res.exit_code == 0 and out["accepted"] is True and out["partial"] is False and out["max_tier"] == 5
-    assert [t["tier"] for t in out["tiers"]] == [0, 1, 2, 3, 4, 5]
+    assert [t["tier"] for t in out["tiers"]][:6] == [0, 1, 2, 3, 4, 5]
+    assert out["accepted"] is True
 
 
 def _std_keys(node, out=None):

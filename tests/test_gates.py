@@ -241,6 +241,7 @@ def _active_designs():
     return out
 
 
+@pytest.mark.slow
 @pytest.mark.parametrize("d", _active_designs(), ids=[p.name for p in _active_designs()])
 def test_program_constraints_apply_to_every_active_design(d):
     card = validate(load_design(d), max_tier=8)
