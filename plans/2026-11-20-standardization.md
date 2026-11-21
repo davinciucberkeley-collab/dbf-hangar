@@ -407,6 +407,21 @@ Layers (from the briefs, 2026-11-21): **W2a** U2.3a (FEA hash, D13; first), U2.1
 
 **Permissions for W2:** as W1, plus whatever external tools the U2.3 brief names for `plane tools doctor` (read-only probes; installing OpenCAE/MuJoCo is Tristan's, not an agent's), and `uv` for venv installs once W1-P lands.
 
+### 6g. Agent table for the discipline fold-in (Tristan, 2026-11-21; plan-only task, no build)
+
+Fold DBF-Combined `redesign/TEAM.md` (45 roles listed, A1–J6; 39 role folders) into hangar as gate criteria, standards keys, discipline skills, scorecard sections and knowledge entries, not agents (§1b; Douglas 11-18: roles by work level). Source: the read-only clone `C:/Users/trist/DBF-Combined` @ `a93f14d` (sparse to `redesign/`). Extracts go to `plans/2026-11-20-standardization/discipline-extract/<role id>.md`; the conductor writes §1c from them.
+
+| Step | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| DF-S1 | `scout` | Haiku | TEAM.md + team/{A1..A5,B1..B3} | 8 extract files | fixed template filled; gaps "not found"; only what files say |
+| DF-S2 | `scout` | Haiku | team/{B4,C1..C6,D1} | 8 extract files | same |
+| DF-S3 | `scout` | Haiku | team/{D2..D7,E1,E2} (D4 inactive) | 8 extract files | same |
+| DF-S4 | `scout` | Haiku | team/{E3,F1..F5,G1,G2} | 8 extract files | same |
+| DF-S5 | `scout` | Haiku | team/{G3,G4,H1..H3,I1,I2,J1} | 8 extract files | same |
+| DF-S6 | `scout` | Haiku | TEAM.md rows J2..J6 (no folders) | 5 extract files | same |
+| DF-A | `advisor` | Opus | §1c + amended U2.1/U2.2/U3.2/U3.5 text | recommendation | intent check: work-level roles, subtract before adding, gates a design can't pass without working |
+| DF-R | `reviewer` | Opus (fresh) | the plan diff | `reviews/2026-11-21-discipline-foldin.md` | "### Verdict: ACCEPT" |
+
 ## 7. Units
 
 Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPATH=$PWD/core` in worktrees; finish with
