@@ -160,9 +160,10 @@ def _create(root, key: str, new, mk_map, mk_list):
                 raise OpInputError(f"{key}: no key {v!r}; cannot add a list element by index")
             node = node[v]
         elif kind == "index" or any(isinstance(x, dict) and str(x.get("id")) == v for x in (node if isinstance(node, list) else [])):
+            child = _child(node, step, key)[0]      # an out-of-range index raises here
             if last:
                 raise OpInputError(f"{key}: already set; use --kind modify")
-            node = _child(node, step, key)[0]
+            node = child
         else:
             if not isinstance(node, list):
                 raise OpInputError(f"{key}: [{v}] needs a list")

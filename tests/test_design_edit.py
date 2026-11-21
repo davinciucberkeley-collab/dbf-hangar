@@ -276,3 +276,12 @@ def test_add_connection_changes_one_line(tmp_concept_a):
     ops = [o for o in difflib.SequenceMatcher(None, old, new, autojunk=False).get_opcodes() if o[0] != "equal"]
     assert len(ops) == 1 and ops[0][0] == "replace" and ops[0][2] - ops[0][1] == 1 and ops[0][4] - ops[0][3] == 1
     assert "E-WNG-01" in old[ops[0][1]] and "{" in old[ops[0][1]]
+
+
+def test_add_out_of_range_index_names_the_range_and_writes_nothing(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    r = call("design.set", path=str(tmp_concept_a), key="components[pwr-001].position[5]", value="1", why="x", kind="add")
+    assert r.ok is False and r.exit_code == 2
+    msg = " ".join(r.messages)
+    assert "out of range" in msg and "5" in msg and "already set" not in msg
+    assert _bytes(tmp_concept_a) == before
