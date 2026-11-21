@@ -540,6 +540,37 @@ def ledger_report(today):
     click.echo(Ledger(root / "ledger" / "items.yaml").report(today=today, prompts=root / "ledger" / "prompts.jsonl"))
 
 
+@cli.command("progress")
+@click.option("--write", "write", is_flag=True, help="Write PROGRESS.md at the repo root.")
+@click.option("--check", "check", is_flag=True, help="Exit 1 if PROGRESS.md differs from the generated text.")
+@click.option("--today", default=None, help="Add an 'as of' line and the overdue list (YYYY-MM-DD). Default: none, so output is deterministic.")
+def progress_cmd(write, check, today):
+    """Print, write or check PROGRESS.md (generated from the plan, reviews and ledger)."""
+    from .progress import build_progress
+
+    if write and check:
+        click.echo("plane: use --write or --check, not both", err=True)
+        sys.exit(2)
+    root = _repo_root()
+    text = build_progress(root, today=today)
+    target = root / "PROGRESS.md"
+    if write:
+        target.write_bytes(text.encode("utf-8"))
+        click.echo("wrote PROGRESS.md")
+    elif check:
+        if not target.exists() or target.read_bytes() != text.encode("utf-8"):
+            click.echo("PROGRESS.md is stale: run `plane progress --write` and commit it")
+            sys.exit(1)
+        click.echo("PROGRESS.md is up to date")
+    else:
+        buf = getattr(sys.stdout, "buffer", None)
+        if buf is None:
+            click.echo(text, nl=False)
+        else:
+            buf.write(text.encode("utf-8"))
+            sys.stdout.flush()
+
+
 def main():
     cli()
 

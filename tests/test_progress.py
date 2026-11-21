@@ -1,0 +1,154 @@
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+import pytest
+from click.testing import CliRunner
+
+from hangar.cli import cli
+from hangar.ledger import Ledger
+from hangar.progress import build_progress, latest_verdicts, parse_units
+
+REPO = Path(__file__).resolve().parents[1]
+
+PLAN = """# P
+## 6. Schedule
+
+| Wave | Dates (PT) | Units |
+|---|---|---|
+| W0 First | Fri 11-20 | U0.1, U0.2 [hard] |
+| W1 Second | Sat 11-21 | U1.1 |
+| Freeze | Sun | - |
+
+## 7. Units
+
+### Unit U0.1: Alpha
+- [x] **Step 1: a**
+- [x] **Step 2: b**
+### Unit U0.2: Beta (extra) [hard]
+- [x] a
+- [ ] b
+@@
+- [ ] inside a code fence is ignored
+@@
+### Unit U1.1: Gamma
+- [ ] a
+### Unit U9.9: Orphan
+- [x] a
+## 8. End
+- [ ] not counted
+""".replace("@@", "```")
+REVIEW_A = """## U0.1 Alpha @ branch
+### Verdict: REJECT (round 1). fix
+### Round 2
+### Verdict round 2: ACCEPT
+## U0.2 Beta
+### Verdict: REJECT (round 1). fix
+## W9 not a unit
+### Verdict: ACCEPT
+"""
+REVIEW_B = """## U0.2 Beta round 2
+### Verdict: ACCEPT
+"""
+
+
+@pytest.fixture
+def repo(tmp_path, monkeypatch):
+    (tmp_path / "pyproject.toml").write_text("[project]\nname='x'\n", encoding="utf-8")
+    (tmp_path / "plans").mkdir()
+    (tmp_path / "plans" / "2026-11-20-p.md").write_text(PLAN, encoding="utf-8")
+    (tmp_path / "reviews").mkdir()
+    (tmp_path / "reviews" / "2026-11-20-a.md").write_text(REVIEW_A, encoding="utf-8")
+    (tmp_path / "reviews" / "2026-11-21-b.md").write_text(REVIEW_B, encoding="utf-8")
+    led = Ledger(tmp_path / "ledger" / "items.yaml")
+    led.add("task", "late thing", source="x", due="2026-11-01")
+    led.add("idea", "someday", source="x")
+    monkeypatch.chdir(tmp_path)
+    return tmp_path
+
+
+def run(*args):
+    return CliRunner().invoke(cli, ["progress", *args])
+
+
+def test_counts_per_unit_ignore_fences_and_other_sections(repo):
+    u = parse_units(PLAN.splitlines())
+    assert (u["U0.1"]["done"], u["U0.1"]["total"]) == (2, 2)
+    assert (u["U0.2"]["done"], u["U0.2"]["total"]) == (1, 2)
+    assert (u["U1.1"]["done"], u["U1.1"]["total"]) == (0, 1)
+
+
+def test_waves_status_and_verdict_columns(repo):
+    text = build_progress(repo)
+    assert text.index("### W0 First") < text.index("### W1 Second") < text.index("### Unscheduled")
+    assert "| U0.1 | Alpha | 2/2 | done | ACCEPT |" in text
+    assert "| U0.2 | Beta (extra) [hard] | 1/2 | in progress | ACCEPT |" in text
+    assert "| U1.1 | Gamma | 0/1 | not started | - |" in text
+    assert "| U9.9 | Orphan | 1/1 | done | - |" in text
+
+
+def test_verdict_rule_last_in_section_then_later_file_wins(repo):
+    assert latest_verdicts(repo) == {"U0.1": "ACCEPT", "U0.2": "ACCEPT"}
+
+
+def test_ledger_counts_and_overdue(repo):
+    text = build_progress(repo)
+    assert "| task | 1 | 0 | 0 | 0 | 0 | 1 |" in text
+    assert "| idea | 1 | 0 | 0 | 0 | 0 | 1 |" in text
+    assert "not computed" in text and "As of" not in text
+    dated = build_progress(repo, today="2026-11-20")
+    assert "As of 2026-11-20." in dated and "(due 2026-11-01): late thing" in dated
+
+
+def test_output_is_deterministic(repo):
+    assert build_progress(repo) == build_progress(repo)
+    assert build_progress(repo, today="2026-11-20") == build_progress(repo, today="2026-11-20")
+
+
+def test_check_exit_codes(repo):
+    assert run("--check").exit_code == 1  # no PROGRESS.md yet
+    assert run("--write").exit_code == 0
+    assert run("--check").exit_code == 0
+    p = repo / "plans" / "2026-11-20-p.md"
+    p.write_text(PLAN.replace("- [ ] b", "- [x] b"), encoding="utf-8")
+    r = run("--check")
+    assert r.exit_code == 1 and "stale" in r.output and len(r.output.strip().splitlines()) == 1
+    assert run("--write", "--check").exit_code == 2
+
+
+def test_no_flag_prints_to_stdout_and_writes_nothing(repo):
+    r = run()
+    assert r.exit_code == 0 and r.output.startswith("# Progress")
+    assert not (repo / "PROGRESS.md").exists()
+
+
+def test_print_survives_cp1252_stdout():
+    env = dict(os.environ, PYTHONIOENCODING="cp1252", PYTHONUTF8="0", PYTHONPATH=str(REPO / "core"))
+    r = subprocess.run([sys.executable, "-m", "hangar.cli", "progress"], cwd=REPO, env=env, capture_output=True)
+    assert r.returncode == 0, r.stderr.decode("utf-8", "replace")
+    assert "→".encode("utf-8") in r.stdout
+
+
+def test_real_repo_write_then_check_passes(tmp_path, monkeypatch):
+    shutil.copytree(REPO / "plans", tmp_path / "plans")
+    shutil.copytree(REPO / "reviews", tmp_path / "reviews")
+    shutil.copytree(REPO / "ledger", tmp_path / "ledger", ignore=shutil.ignore_patterns("prompts.jsonl", "events.jsonl"))
+    (tmp_path / "pyproject.toml").write_text("[project]\nname='x'\n", encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+    assert run("--write").exit_code == 0
+    assert run("--check").exit_code == 0
+
+
+def test_committed_progress_md_is_fresh_and_marked_generated():
+    committed = (REPO / "PROGRESS.md").read_bytes()
+    assert committed == build_progress(REPO).encode("utf-8")
+    assert b"GENERATED by `plane progress --write`" in committed
+
+
+def test_roadmap_is_short_and_traceable():
+    text = (REPO / "ROADMAP.md").read_text(encoding="utf-8")
+    assert len(text.splitlines()) <= 60
+    for needle in ["2026-12-01", "W0", "W1", "W2", "W3", "W4", "D10", "plans/2026-11-20-standardization.md", "PROGRESS.md"]:
+        assert needle in text, needle
