@@ -6,11 +6,18 @@ Logic lives in `core/hangar/`; the server is `core/hangar/mcp_server.py`.
 
 ## Tools
 
-- `list_designs()` - id, name, status and morphology of every design.
-- `get_design(design_id)` - raw plane.yaml text.
-- `validate_design(design_id, max_tier=5)` - scorecard across validation tiers 0-5.
-- `get_mass_properties(design_id)` - total mass, CG, inertia and per-component mass.
-- `export_design(design_id, format)` - write glb, stl or json to `build/`; returns the paths.
+Every registry op is a tool; name = op name with `.` replaced by `_`; each returns the `OpResult` JSON as a dict; run `ops_list` to see all of them and their parameters.
+
+- `design_list()` - every design under designs/: id, name, status and morphology.
+- `design_get(path)` - the plane.yaml text, in `data.text`.
+- `design_validate(path, tier)` - scorecard across validation tiers 0-5 (`tier` is `"0"` to `"5"` or `"all"`).
+- `design_mass(path)` - total mass, CG, inertia and per-component mass.
+- `design_export(path, format, out)` - write glb, stl, json or mjcf to `out`; returns the written files. This is a breaking change from `export_design`: `out` is now required, and the old tool wrote to `build/` itself.
+- `design_new(new_id, template)` - create a design from a template.
+- `ops_list()` - every op and its parameters.
+
+### Hand-written (until their op exists)
+
 - `save_design(design_id, yaml_text, overwrite=False)` - schema-check then write designs/<id>/plane.yaml.
 - `structural_check(design_id, part_id='', all_printed=False)` - OpenCAE/CalculiX stress check of printed parts (slow; needs `plane fea --setup` once).
 - `list_structural_parts(design_id)` - printed structural parts and whether their stored stress result is current.

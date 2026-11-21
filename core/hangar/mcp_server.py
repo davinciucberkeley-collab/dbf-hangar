@@ -1,14 +1,15 @@
-"""MCP server: lets Claude list, read, validate, measure, export and save designs without hand-editing files.
+"""MCP server: one tool per registry op (name = op name with '.' -> '_'), plus a few hand-written tools whose ops do not exist yet (see docs/mcp.md).
 
-Run over stdio with the `plane-mcp` entry point. Thin wrapper: all logic lives in design.py,
-checks.py, mass.py and export.py.
+Run over stdio with the `plane-mcp` entry point. Thin wrapper: all logic lives in the ops registry
+(hangar.ops) and the modules it calls.
 """
 from __future__ import annotations
 
+import inspect
 import json
 import re
 from pathlib import Path
-from typing import Any
+from typing import Callable, Literal
 
 import yaml
 try:  # mcp >= 2
@@ -17,15 +18,13 @@ except ImportError:  # mcp 1.x
     from mcp.server.fastmcp import FastMCP
 
 from .checks import validate
-from .design import (Design, DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH,
-                     list_designs as _design_files, load_design)
-from .export import export_glb, export_json, export_stl
-from .mass import mass_properties
+from .design import Design, DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, load_design
+from .ops import registry, _call_spec
+from .surfaces import map_params, public_name
 
 mcp = FastMCP("dbf-hangar")
 
 _ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
-_EXPORT_DIR = REPO_ROOT / "build"
 
 
 def _design_path(design_id: str, must_exist: bool = True) -> Path:
@@ -38,76 +37,38 @@ def _design_path(design_id: str, must_exist: bool = True) -> Path:
     return path
 
 
-@mcp.tool()
-def list_designs() -> list[dict]:
-    """List every design in the repo with its id, name, status and morphology.
-
-    Use this first to find out which design ids exist before calling any other design tool.
-    """
-    out = []
-    for path in _design_files():
-        data = yaml.safe_load(path.read_text()) or {}
-        out.append({
-            "id": data.get("id", path.parent.name),
-            "name": data.get("name"),
-            "status": data.get("status"),
-            "morphology": data.get("morphology"),
-        })
-    return out
+_PY_TYPES = {"str": str, "path": str, "bool": bool, "int": int, "float": float}
+GENERATED: dict[str, Callable] = {}
 
 
-@mcp.tool()
-def get_design(design_id: str) -> str:
-    """Return the raw plane.yaml text of one design.
-
-    Use this to read a design's full definition before editing it or to copy it as a starting point
-    for save_design.
-    """
-    return _design_path(design_id).read_text()
+def _annotation(p):
+    if p.type_name == "choice":
+        return Literal[p.choices]
+    if p.type_name == "list[str]":
+        return list[str]
+    return _PY_TYPES[p.type_name]
 
 
-@mcp.tool()
-def validate_design(design_id: str, max_tier: int = 5) -> dict:
-    """Run the validation tiers on a design and return its scorecard.
+def _make_tool(spec):
+    """One MCP tool for one op: same params, same OpResult dict as hangar.ops.call()."""
+    def tool(**kwargs) -> dict:
+        given = {k: v for k, v in kwargs.items() if v is not None}
+        return json.loads(_call_spec(spec, **map_params(spec, given)).to_json())
 
-    Use this after changing a design, or to check whether a design is accepted. Tiers: 0 schema,
-    1 geometry, 2 physics, 3 aero, 4 manufacturing, 5 standards. Lower max_tier to run only the
-    early, faster checks. The result has 'accepted' (bool; always false for a partial run, see 'partial') and per-check results with messages.
-    """
-    design = load_design(_design_path(design_id))
-    return validate(design, max_tier).to_dict()
-
-
-@mcp.tool()
-def get_mass_properties(design_id: str) -> dict:
-    """Return total mass (g), centre of gravity (mm, body frame), inertia about the CG (g*mm^2)
-    and per-component mass and CG.
-
-    Use this when you need mass or balance numbers, for example to check a weight change or CG shift.
-    """
-    return mass_properties(load_design(_design_path(design_id)))
+    params = [inspect.Parameter(
+        public_name(p), inspect.Parameter.KEYWORD_ONLY, annotation=_annotation(p),
+        default=inspect.Parameter.empty if p.required else (str(p.default) if isinstance(p.default, Path) else p.default))
+        for p in spec.params]
+    tool.__signature__ = inspect.Signature(params, return_annotation=dict)
+    tool.__annotations__ = {**{public_name(p): _annotation(p) for p in spec.params}, "return": dict}
+    tool.__name__ = spec.name.replace(".", "_")
+    return tool
 
 
-@mcp.tool()
-def export_design(design_id: str, format: str) -> list[str]:
-    """Export a design for viewing or fabrication and return the written file paths.
-
-    format must be one of:
-      "glb"  - one glTF binary scene for the 3D viewer, written to build/<id>.glb
-      "stl"  - one STL per component in mm for manufacturing, written to build/<id>-stl/
-      "json" - the canonical design as JSON, written to build/<id>.json
-    Any other format is rejected.
-    """
-    if format not in ("glb", "stl", "json"):
-        raise ValueError(f"unsupported format {format!r}: use 'glb', 'stl' or 'json'")
-    design = load_design(_design_path(design_id))
-    if format == "glb":
-        written = [export_glb(design, _EXPORT_DIR / f"{design_id}.glb")]
-    elif format == "stl":
-        written = export_stl(design, _EXPORT_DIR / f"{design_id}-stl")
-    else:
-        written = [export_json(design, _EXPORT_DIR / f"{design_id}.json")]
-    return [str(p) for p in written]
+for _spec in registry().values():
+    _tool = _make_tool(_spec)
+    GENERATED[_tool.__name__] = _tool
+    mcp.add_tool(_tool, name=_tool.__name__, description=_spec.summary + (" Writes files." if _spec.mutates else ""))
 
 
 @mcp.tool()

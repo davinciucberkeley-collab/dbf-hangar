@@ -17,11 +17,11 @@ A new or changed `designs/<id>/plane.yaml` that conforms to `schema/plane.schema
 | Final review | Reviewer | Opus (one) |
 
 ## Steps
-1. Check what already exists: `plane list` (MCP: `list_designs`). Check `knowledge/morphological-chart.yaml` for the cell this concept fills, and `knowledge/diy-projects/` for prior art. Record both under `lineage`.
+1. Check what already exists: `plane list` (MCP: `design_list`). Check `knowledge/morphological-chart.yaml` for the cell this concept fills, and `knowledge/diy-projects/` for prior art. Record both under `lineage`.
 2. Start from the closest design: `plane new <id> --from <closest-id>`.
 3. Set `morphology`, `requirements`, then components. Units: mm, g, N, deg. Body frame: +x aft from the nose, +y right, +z up. Model propellers as swept-disc cylinders so prop strikes are caught.
 4. Declare every joint in `attachments`, with `location`, `method` and `rated_load_n`. Use `embed_ok: true` only when a part is meant to pass into another (spar into slot, battery in bay).
-5. Run `plane validate designs/<id>` (MCP: `validate_design`). Fix FAILs in tier order — a tier-1 failure invalidates everything above it.
+5. Run `plane validate designs/<id>` (MCP: `design_validate`). Fix FAILs in tier order — a tier-1 failure invalidates everything above it.
 6. When a sim or load check fails, fix the design (stronger joint, different geometry), not the threshold. Threshold changes go through `standards/` with a source.
 6a. After any change to a printed part or its joints, re-run its stress check: `plane fea designs/<id> --part <part>` (MCP: `structural_check`), and commit `designs/<id>/fea/<part>.json`.
 6b. Moving parts (tilt wing, tilt rotor): set `schema_version: "0.2"` and add `articulation` (revolute, `pivot`, `axis`, `range_deg`, named `poses`) to the joint's attachment; rotation applies to the child side. Tier 1 re-runs its contact/clipping checks in every pose and at both range ends; name `flight.hover_pose` / `flight.cruise_pose` so tiers 2–3 use them.

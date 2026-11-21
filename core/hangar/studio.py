@@ -1,6 +1,6 @@
 """Plane Studio: a local point-and-click app over the core library (`plane studio`).
 
-It serves the viewer (viewer/) plus a small JSON API on 127.0.0.1 only. Every action calls the same
+It serves the viewer (viewer/) plus `POST /api/op/<name>` (every registry op) and a few Studio-only routes, on 127.0.0.1 only. Every action calls the same
 functions as the CLI and MCP server, so the app can never disagree with CI. Results are cached in
 .studio/ (gitignored), keyed by a hash of each design's files and the standards, so restarts are fast.
 """
@@ -29,6 +29,8 @@ import yaml
 from . import __version__
 from .design import DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, list_designs, load_design
 from .index import design_entry, dumps, error_entry
+from .ops import OpResult, call, registry
+from .surfaces import map_params
 
 VIEWER_DIR = REPO_ROOT / "viewer"
 STUDIO_DIR = REPO_ROOT / ".studio"
@@ -231,12 +233,6 @@ class Studio:
                 "ultimate_factor": std.get("ultimate_factor")}
 
     # ---------- actions (called from the HTTP thread) ----------
-    def new(self, new_id: str, template: str) -> str:
-        from .cli import new_design
-        new_design(new_id, template)
-        self.scan()
-        return new_id
-
     def read_yaml(self, did: str) -> str:
         return (DESIGNS_DIR / _check_id(did) / "plane.yaml").read_text()
 
@@ -445,11 +441,9 @@ def make_handler(studio: Studio):
             try:
                 if path == "/api/ping":
                     return self._json({"studio": True, "version": __version__, "dbf_root_guess": _guess_dbf_root(),
-                                       "designs": sorted(studio.entries)})
+                                       "designs": sorted(studio.entries), "designs_dir": DESIGNS_DIR.as_posix()})
                 if path == "/api/state":
                     return self._json(studio.state())
-                if path == "/api/yaml":
-                    return self._json({"id": qs.get("id"), "text": studio.read_yaml(qs.get("id", ""))})
                 if path == "/api/fea":
                     return self._json(studio.fea_state(qs.get("id", "")))
                 if path == "/api/fea-file":
@@ -483,6 +477,14 @@ def make_handler(studio: Studio):
             path = urlparse(self.path).path
             try:
                 b = self._body()
+                if path.startswith("/api/op/"):
+                    name = path[len("/api/op/"):]
+                    if name not in registry():
+                        return self._json(json.loads(OpResult(False, {"error": "input"}, [f"unknown op {name!r}"]).to_json()), 404)
+                    res = call(name, **map_params(registry()[name], b))
+                    if registry()[name].mutates and res.ok:
+                        studio.scan()
+                    return self._json(json.loads(res.to_json()), 400 if res.exit_code == 2 else 200)
                 if path == "/api/check":
                     did = _check_id(b.get("id"))
                     return self._json(studio.submit("check", did, f"Check {did}"))
@@ -490,9 +492,6 @@ def make_handler(studio: Studio):
                     for did in sorted(studio.entries):
                         studio.submit("check", did, f"Check {did}")
                     return self._json({"ok": True})
-                if path == "/api/new":
-                    did = studio.new(_check_id(b.get("id")), _check_id(b.get("from")))
-                    return self._json({"id": did})
                 if path == "/api/yaml":
                     studio.write_yaml(b.get("id", ""), b.get("text", ""))
                     return self._json({"ok": True})

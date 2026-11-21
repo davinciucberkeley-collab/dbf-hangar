@@ -29,6 +29,13 @@ async function api(path, body) {
   if (!r.ok || data.error) throw new Error(data.error || `HTTP ${r.status}`);
   return data;
 }
+async function op(name, params = {}) {
+  const r = await fetch('api/op/' + name, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
+  const body = await r.json().catch(() => ({ ok: false, messages: [`HTTP ${r.status}`] }));
+  if (!body.ok) throw new Error((body.messages || []).join('; ') || `HTTP ${r.status}`);
+  return body.data;
+}
+const designPath = (id) => ping.designs_dir + '/' + id;
 
 function toast(text, kind = '') {
   const t = h('div', { class: 'toast ' + kind, role: 'status' }, text);
@@ -72,7 +79,7 @@ function newDesignDialog(fromId) {
   ], primary('Create', async (dlg) => {
     const id = slug(name.value);
     if (!id) throw new Error('Give the new design a name.');
-    await api('new', { id, from: from.value });
+    await op('design.new', { new_id: id, template: from.value });
     dlg.close(); toast(`Created ${id}. Checking it now.`);
     await V.reload(id);
   }));
@@ -113,7 +120,7 @@ const changed = (el) => String(el.value) !== String(el.dataset.orig);
 async function editDialog(id) {
   const d = V.designs().find((x) => x.id === id);
   const [{ data, enums }, { text }, sc] = await Promise.all([
-    api('design?id=' + encodeURIComponent(id)), api('yaml?id=' + encodeURIComponent(id)),
+    api('design?id=' + encodeURIComponent(id)), op('design.get', { path: designPath(id) }),
     d?.scorecard ? fetch('data/' + d.scorecard).then((r) => r.json()).catch(() => null) : null]);
   const failMsgs = (sc?.tiers || []).flatMap((t) => t.results).filter((r) => r.status === 'FAIL').map((r) => r.message);
   const failsFor = (jid) => failMsgs.filter((m) => m.includes(jid + ':') || m.includes(jid + ' '));
