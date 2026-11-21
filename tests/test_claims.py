@@ -101,6 +101,12 @@ def test_failing_margin_fails_t9(mini):
     assert status(mini, "T9.claim.CL-AERO-TW") == PASS
 
 
+def test_t9_claim_rows_name_their_claim_as_subject(mini):
+    rows = {r.check_id: r for r in tier9_claims(mini).results}
+    assert rows["T9.claim.CL-AERO-TW"].data["claim"] == "CL-AERO-TW"
+    assert rows["T9.claim.CL-PROP-NOISE"].data["claim"] == "CL-PROP-NOISE"
+
+
 def test_claim_without_calc_is_proposed_not_pass(mini):
     assert status(mini, "T9.claim.CL-PROP-NOISE") == SKIP
     assert status(mini, "T9.claim.CL-STR-CLEAR") == SKIP
