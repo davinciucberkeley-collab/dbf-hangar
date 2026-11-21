@@ -115,8 +115,8 @@ DBF-Combined `redesign/TEAM.md` @ `a93f14d` lists **45** discipline roles (A1–
 
 **Where the rows land**
 - **Existing gates** take most gate rows (T1.interference, T1.interfaces, T2.fea_strength, T3.mass, T3.static_margin, T3.hover_tw, T7.*, T8.*, T9.claims): no new code, they become test fixtures and criteria text in U3.6.
-- **New gates (7, U3.6, all report-only until D7's 12-08 date):** `T2.joint_rf` (joint reserve factor ≥ `joint_rf_min` from the connection-type rating vs the computed joint load; extends T2.joint_load), `T2.modal_separation` (first structural mode outside the motor/prop excitation band), `T3.control_authority` (hover differential-thrust moment and control-surface authority ≥ required margins), `T3.transition_margin` (VTOL designs only: transition speed vs stall/cruise margin), `T3.endurance` (usable energy ≥ mission energy + reserve), `T7.thermal` (motor/ESC/pack temperature rise at field ambient ≤ rating), `T7.electrical_rating` (wire gauge and disconnect rating ≥ peak current). The eighth candidate, `T2.load_case_coverage`, drew no rows and is dropped (subtract); load cases become a standards file that T2.fea_strength reads.
-- **Standards:** 501 candidate keys is far more than gates read. D19 limits import to keys a gate or skill reads, with a source or `pending` (estimate ≤ 80); the rest stay in the extracts as evidence. New files: `standards/load-cases.yaml`, `standards/operations.yaml` (wind/gust/flight-window limits, go/no-go). No edit to `design-standards.yaml` beyond keys FEA does not read (D13/D18 keep FEA results fresh).
+- **New gates (5, U3.6, report-only until D7's 12-08 date; advisor DF-A cut 7 to 5):** `T2.joint_rf` (every attachment with a `connection`: reserve factor = connection-type rating / computed joint load >= `joint_rf_min`; extends T2.joint_load), `T3.control_authority` (pitch, roll and yaw separately: hover control moment with a sagged pack / wind moment from `operations.yaml` >= `hover_ctrl_factor`; yaw usually binds), `T3.transition_margin` (VTOL only: transition speed margin over stall and entry thrust fraction <= 0.8 with a sagged pack; a non-VTOL design gets SKIP "not applicable", never PASS), `T3.endurance` (power computed from PDL, not a declared number; usable energy >= mission energy + reserve), `T7.electrical_rating` (wire gauge and disconnect rating >= peak current). Every gate names the PDL paths and `standards/` keys it reads; a pending threshold or a declared value without a calculation or source gives SKIP, as T9 does. Cut: `T7.thermal` and `T2.modal_separation` (no adapter produces their data) become `review-propulsion` / `review-structures` items plus T9 claims (U2.5 imports the E1-E3 temperature claims); `T2.load_case_coverage` drew no rows. Load cases become `standards/load-cases.yaml`, read by T2.fea_strength.
+- **Standards:** D19 limits import to keys a gate or skill reads, enforced by a test (every `standards/*.yaml` key is referenced by a gate or a skill), and only design-independent values (ratios, factors, process/material ratings, field conditions); a number sized for one K09-L part never becomes a standards default, not even as `pending` (DF-A re-tag pass, `_RULES.md` amendments). New files: `standards/load-cases.yaml`, `standards/operations.yaml` (wind/gust/flight-window limits, go/no-go). No `gate-thresholds.yaml`; other keys go to `design-standards.yaml` only if FEA does not read them (D13/D18).
 - **Skills (6, U3.5, ≤ 120 lines each):** `review-structures` (C1–C6, D1–D3, D5), `review-aero` (B1–B4, A3 mass and CG), `review-controls` (B3 stability, F3–F5 avionics, flight software, RC link), `review-propulsion` (E1–E3, F1–F2: motors, props, power, energy, thermal, harness), `review-manufacturing` (G1–G4, D6–D7), `review-test-safety` (H1–H3). `review-mass` and `review-interfaces` drew 1 and 0 rows and are merged/dropped (subtract). Read by `reviewer` and `design-engineer`.
 - **Scorecard (U3.5):** two new sections in `standards/review-scorecard.md`: *Evidence and closure* (a fail closes only by a design change, a corrected model with a stated reason, or a deciding test; limits are never loosened; reviewer estimates are labelled; figures spot-checked against the claims graph) and *Discipline sign-off* (each relevant discipline skill read and its items answered).
 - **Knowledge (U3.5):** procedures, not checks: ground-test plan, build sequence, flight card, flight-test plan, transition procedure, battery handling, procurement lead times and smaller entries (19 topics, 101 rows), via `knowledge/` templates.
@@ -295,7 +295,8 @@ Each has a default the plan uses if nobody answers by the date. Recorded with `p
 | D17 | DBF-Combined DECISIONS.md items on import | DD-1, DD-13, DD-14 `superseded` (decided_in D9); the other 12 `open` for triage | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D18 | FEA staleness when concept-A is edited (U3.4) | U2.3a hashes every input the load model reads (all masses, geometry, propulsion, attachments, root, VTOL method, all mesh bytes) instead of the whole plane.yaml; requirements, flight, description edits keep FEA fresh; physical edits correctly make it stale | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
 | D19 | §1c proposes 501 standards keys from the role checklists; how many become `standards/*.yaml` entries? | only keys a gate or a discipline skill reads, each with `source:` or `pending` (estimate ≤ 80); the rest stay in the extracts as evidence | Tristan | 11-24 | open: default applies if unanswered |
-| D20 | Seven new discipline gates (§1c) or skills only? | gates in U3.6, report-only until 12-08 (D7); cut first if W3 slips (§6a 0a) | Tristan | 11-24 | open: default applies if unanswered |
+| D20 | Discipline gates: five (thermal and modal as skill items + T9 claims) or seven (those two SKIP-only)? | five, in U3.6, report-only until 12-08 (D7); cut first if W3 slips (§6a 0a) | Tristan | 11-24 | open: default applies if unanswered |
+| D21 | May U3.6 add optional PDL fields the gates need (battery capacity, wire gauge, current ratings, control-surface data)? | yes: optional fields in a schema minor version, merged with a `migration:` commit line; concept-a's values set later with `plane design set` | Tristan | 11-24 | open: default applies if unanswered |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -368,7 +369,7 @@ The Dec 1 demo needs only the **core path**: U0.4 → U0.2/U0.3 → U1.1 → U1.
 
 | Cut order | Unit | What is lost if cut | Fallback for the demo |
 |---|---|---|---|
-| 0a | U3.6 discipline gates | seven discipline checks | criteria stay as `review-*` skill items (U3.5) |
+| 0a | U3.6 discipline gates | five discipline checks | criteria stay as `review-*` skill items (U3.5) |
 | 0b | U3.5 discipline skills, scorecard, procedures | discipline review checklists | §1c and the extracts remain the reference |
 | 1 | U3.3 PlaneBench | model-comparison slide | show `design.sweep` table instead |
 | 2 | U2.1 T7/T8 parts | wiring/transport/BOM gates | T7/T8 stay report-only via claims (U1.5 already has budget and mass claims) |
@@ -489,6 +490,7 @@ Fold DBF-Combined `redesign/TEAM.md` (45 roles listed, A1–J6; 39 role folders)
 | DF-S5 | `scout` | Haiku | team/{G3,G4,H1..H3,I1,I2,J1} | 8 extract files | same |
 | DF-S6 | `scout` | Haiku | TEAM.md rows J2..J6 (no folders) | 5 extract files | same |
 | DF-T1…T6 | `scout` | Haiku | the same role groups + `discipline-extract/_RULES.md` (conductor's codes) | a `lands as` column on every check row + a counts block per file | every row has exactly one allowed code; counts sum to the row count |
+| DF-T7…T9 | `scout` | Haiku | 15 extract files each + `_RULES.md` DF-A amendments | re-tagged `STD:`, no-limit `GATE:`, H1 rig-tolerance and removed-gate rows; recounted blocks | every row still has exactly one allowed code; counts sum to rows |
 | DF-A | `advisor` | Opus | §1c + amended U2.1/U2.2/U3.2/U3.5 text | recommendation | intent check: work-level roles, subtract before adding, gates a design can't pass without working |
 | DF-R | `reviewer` | Opus (fresh) | the plan diff | `reviews/2026-11-21-discipline-foldin.md` | "### Verdict: ACCEPT" |
 
@@ -861,7 +863,7 @@ def test_concept_a_claims_import_roundtrip(dbf_combined_claims):   # 4 claims.*.
 - Create: `standards/gates.yaml`, `core/hangar/gates/{__init__,mechanisms,integration,sourcing}.py`
 - Modify: `core/hangar/checks.py` (tiers 0–5 registered through `gates/`, behaviour unchanged), `standards/design-standards.yaml` (new keys: `mechanism_ratio_tol` (internal convention), `wire_clearance_mm` (pending, D5), `transport_box_mm` default (pending, D5), `bom_verified_max_age_days: 30` (internal convention)), `designs/example-tailsitter-wing/plane.yaml` gets a mechanism and wiring so the gates have a positive example
 - Test: `tests/test_gates.py`, fixtures `tests/fixtures/mech-{good,jammed,unlinked}.yaml`
-- Also (§1c, 2026-11-21): the seven discipline gates from the DBF-Combined role checklists are **not** added here; they register on this unit's registry in U3.6.
+- Also (§1c, 2026-11-21): the five discipline gates from the DBF-Combined role checklists are **not** added here; they register on this unit's registry in U3.6.
 - Also (D11, Tristan 2026-11-21): a component whose `type` the gates don't know gets a SKIP naming the type and what is missing, not a T0.schema FAIL; extends `tests/test_ops_contract.py::test_unknown_component_type_gives_skip_not_crash` to assert SKIP (Review Focus #1).
 
 **Interfaces:**
@@ -896,7 +898,7 @@ def test_scorecard_reports_fidelity(concept_a):
 - Create: `ops/standards.py` (`standards.list`, `standards.show`, `standards.pending`), `knowledge/sources/std-*.md` (new, one per source opened)
 - Modify: `standards/design-standards.yaml` (sources), `knowledge/sources/std-SUMMARY.md`
 - Test: `tests/test_standards.py`
-- Also (§1c, D19, 2026-11-21): close the sources of the standards keys §1c selects (only keys a gate or skill reads; each with `source:` or `pending`); the remaining `STD:` rows stay in `discipline-extract/` as evidence.
+- Also (§1c, D19, 2026-11-21): close sources only for keys that **existing** gates and skills read (U2.1 and earlier); U3.6 adds its own keys as `pending`. The remaining `STD:` rows stay in `discipline-extract/` as evidence.
 
 **Interfaces:**
 - Produces: `standards.pending -> data.items: list[{key, value, blocking: bool, candidates: list[source ids]}]`
@@ -1063,13 +1065,13 @@ Not a code unit; it tests everything above.
 ### Unit U3.6: Discipline gates [hard] (from §1c; not on the core path)
 
 **Files:**
-- Create: `core/hangar/gates/discipline.py` registering `T2.joint_rf`, `T2.modal_separation`, `T3.control_authority`, `T3.transition_margin`, `T3.endurance`, `T7.thermal`, `T7.electrical_rating` in the U2.1 gate registry; `standards/load-cases.yaml`, `standards/operations.yaml`; the D19-selected keys in `standards/gate-thresholds.yaml` and `standards/connection-types.yaml` (ratings), each with `source:` or `pending`
-- Test: `tests/test_discipline_gates.py` (per gate: a passing and a failing fixture built from the §1c generic rules; a design without the needed data gets SKIP naming what is missing, never PASS)
-- Rules: every new gate is report-only (WARN) until D7's date; a gate a design can pass without the data it checks is a bug (§1c, advisor); no `design-standards.yaml` key that FEA reads
+- Create: `core/hangar/gates/discipline.py` registering `T2.joint_rf`, `T3.control_authority`, `T3.transition_margin`, `T3.endurance`, `T7.electrical_rating` in the U2.1 gate registry (criteria in §1c; each names its PDL paths and standards keys); `standards/load-cases.yaml`, `standards/operations.yaml`; its own keys as `pending` there, in `standards/connection-types.yaml` (ratings) or in non-FEA keys of `design-standards.yaml`; optional PDL fields the gates need (D21)
+- Test: `tests/test_discipline_gates.py` (per gate: a passing and a failing fixture from the §1c rules; missing data or a pending threshold gives SKIP naming what is missing, never PASS; acceptance: concept-a gets PASS or FAIL, not SKIP, for each gate once its D21 fields are set); `tests/test_standards_referenced.py` (D19: every `standards/*.yaml` key is read by a gate or named by a skill)
+- Rules: five gates (D20); every new gate is report-only (WARN) until D7's date; a gate a design can pass without the data it checks is a bug (§1c, advisor); no `design-standards.yaml` key that FEA reads
 
 - [ ] **Step 1: Failing tests**
-- [ ] **Step 2–4:** implement the seven gates on the registry; run → PASS; `plane baseline check --all` shows only new WARN rows
-- [ ] **Step 5: Commit** `git commit -m "gates: seven discipline gates (joint RF, modal, control authority, transition, endurance, thermal, electrical rating)"`
+- [ ] **Step 2–4:** implement the five gates on the registry; run → PASS; `plane baseline check --all` shows only new WARN rows
+- [ ] **Step 5: Commit** `git commit -m "gates: five discipline gates (joint RF, control authority, transition, endurance, electrical rating)"`
 
 ### Unit U4.1: Whole-branch review, performance, release
 

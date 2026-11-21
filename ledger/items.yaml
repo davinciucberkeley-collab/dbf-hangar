@@ -869,7 +869,18 @@ items:
     updated: '2026-11-20'
   - id: D20
     kind: decision
-    text: Seven new discipline gates (§1c) or skills only?
+    text: 'Discipline gates: five (thermal and modal as skill items + T9 claims) or seven (those two SKIP-only)?'
+    source: plan §3
+    owner: ''
+    status: open
+    due: '2026-11-24'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D21
+    kind: decision
+    text: May U3.6 add optional PDL fields the gates need (battery capacity, wire gauge, current ratings, control-surface data)?
     source: plan §3
     owner: ''
     status: open

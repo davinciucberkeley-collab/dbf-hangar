@@ -16,3 +16,11 @@ Every check row in `<role>.md` gets exactly one **lands as** code. Use only thes
 - A numeric claim on a named K09-L part is `DROP:k09l-instance`; if it is one instance of a general rule (e.g. "every joint RF >= 1.0"), tag the **first** such row with the GATE/STD code and the rest `DROP:k09l-instance (rule: <code>)`.
 - Prefer existing codes over proposed; prefer GATE over SKILL when the item is mechanically checkable from PDL data; SKILL when it needs judgment or data PDL does not hold.
 - No new agents or roles. Leadership/integration items (decisions, change requests, traceability) map to `SCORECARD:` or `covered` (conductor, advisor, ledger, claims graph).
+
+## Amendments after the advisor (DF-A, 2026-11-21) - re-tag pass
+- `STD:` only for design-independent values: ratios, factors, process or material ratings, field/operating conditions, with a source or `pending`. A number sized for one K09-L part (a length, mass, thrust, capacity, deflection or count of a specific part) is `DROP:k09l-instance (rule: <code>)`.
+- A row with no limit (record-only value, information row) cannot be a gate criterion: recode `GATE:` rows without a limit to `DROP:k09l-instance` (or `duplicate`/`covered` as fits).
+- Test-rig and instrument tolerances (load-cell linearity, drift, u95, calibration) are `KNOW:ground-test-plan`, not `STD:`.
+- `SKILL:review-mass` becomes `SKILL:review-aero`.
+- New gates are now five: T2.joint_rf, T3.control_authority, T3.transition_margin, T3.endurance, T7.electrical_rating. Rows coded `GATE:T7.thermal` become `SKILL:review-propulsion/thermal`; `GATE:T2.modal_separation` become `SKILL:review-structures/modal`.
+- `STD:gate-thresholds` is not a file; use `STD:design-standards` (keys FEA does not read) or `STD:operations`.
