@@ -7,11 +7,19 @@ import threading
 import time
 import urllib.request
 from http.server import ThreadingHTTPServer
+from pathlib import Path
 
 import pytest
+import yaml
+from click.testing import CliRunner
 
 from hangar import cli, design as design_mod, studio
+from hangar.design import load_design
+from hangar.gates.mechanisms import simulate_mechanism
+from hangar.index import index_extras, mechanism_sweeps
 from hangar.yamlio import dump, load
+
+FIXTURES = Path(__file__).parent / "fixtures"
 
 EXAMPLE = design_mod.DESIGNS_DIR / "example-tailsitter-wing"
 
@@ -87,6 +95,7 @@ def test_studio_api_end_to_end(sandbox):
         st = _wait_idle(base)
         assert [j["state"] for j in st["jobs"]] == ["done"]
         _, index = _call(base, "/data/index.json")
+        assert index["version"] == 2 and "generated_at" in index and "scorecards" in index
         (entry,) = index["designs"]
         assert index["studio"] and entry["id"] == "example-tailsitter-wing" and entry["accepted"] and not entry["pending"]
         assert _call(base, "/data/" + entry["glb"])[0] == 200
@@ -121,3 +130,80 @@ def test_studio_api_end_to_end(sandbox):
     finally:
         httpd.shutdown()
         httpd.server_close()
+
+
+PUBLIC_KEYS = {"id", "kind", "status", "owner", "summary", "due", "decided_in"}
+
+
+def _write(path, text):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text)
+
+
+def test_index_extras_v2_shape(tmp_path):
+    _write(tmp_path / "ledger" / "items.yaml", "schema: ledger/1\nitems:\n  - {id: R1, kind: ruling, text: t, source: s, status: open}\n")
+    _write(tmp_path / "updates" / "2026-11-16" / "updates.yaml",
+           'entries:\n  - {person: Ana, link: "https://example.com/a", changed: did x}\n')
+    ex = index_extras([{"id": "a", "scorecard": "a.scorecard.json", "mechanisms": None}], tmp_path)
+    assert set(ex) == {"version", "generated_at", "scorecards", "mechanisms", "ledger", "updates"}
+    assert ex["version"] == 2 and ex["scorecards"] == {"a": "a.scorecard.json"} and ex["mechanisms"] == {}
+    assert ex["ledger"][0]["id"] == "R1"
+    assert ex["updates"] == [{"week": "2026-11-16", "entries": [{"person": "Ana", "link": "https://example.com/a", "changed": "did x"}]}]
+    empty = tmp_path / "empty"
+    empty.mkdir()
+    ex = index_extras([], empty)
+    assert ex["ledger"] == [] and ex["updates"] == []
+
+
+def test_mechanism_sweep_matches_gate_and_moves_parts():
+    design = load_design(FIXTURES / "mech-good.yaml")
+    mech = design.data["mechanisms"][0]
+    sw = mechanism_sweeps(design)
+    (m,) = sw["mechanisms"]
+    assert m["id"] == "flap_l" and len(m["steps"]) == 21
+    assert m["steps"][0]["transforms"] == {}
+    assert m["steps"][-1]["followers"] == {"flap_hinge": 20.0}
+    assert m["steps"][-1]["followers"] == simulate_mechanism(design, mech)["steps"][-1]["followers"]
+    assert len(m["steps"][-1]["transforms"]["flap"]) == 16
+    assert mechanism_sweeps(load_design(EXAMPLE / "plane.yaml")) is None
+
+
+def test_articulations_without_mechanisms_get_pseudo_sweeps(tmp_path):
+    data = yaml.safe_load((FIXTURES / "mech-good.yaml").read_text())
+    del data["mechanisms"]
+    _write(tmp_path / "d" / "plane.yaml", yaml.safe_dump(data))
+    sw = mechanism_sweeps(load_design(tmp_path / "d" / "plane.yaml"))
+    assert sw is not None and sw["mechanisms"]
+    for m in sw["mechanisms"]:
+        assert m["id"].startswith("sweep-") and len(m["steps"]) > 1
+        assert m["steps"][-1]["transforms"]
+
+
+@pytest.mark.slow
+def test_concept_a_pseudo_sweeps_match_articulations():
+    sw = mechanism_sweeps(load_design(design_mod.REPO_ROOT / "designs" / "concept-a" / "plane.yaml"))
+    assert {m["id"] for m in sw["mechanisms"]} == {"sweep-E-WNG-10", "sweep-E-WNG-11"}
+
+
+def test_public_index_ledger_has_only_allowed_keys(tmp_path):
+    _write(tmp_path / "ledger" / "items.yaml",
+           "schema: ledger/1\nitems:\n  - {id: R1, kind: ruling, text: t, source: quote, status: open, evidence: secret}\n")
+    (item,) = index_extras([], tmp_path, public=True)["ledger"]
+    assert set(item) == PUBLIC_KEYS
+    assert "secret" not in str(item.values()) and "quote" not in str(item.values())
+    assert index_extras([], tmp_path, public=False)["ledger"][0]["evidence"] == "secret"
+
+
+def test_build_index_writes_v2_and_sweep_files(sandbox, tmp_path):
+    (sandbox / "mech-good").mkdir()
+    shutil.copy(FIXTURES / "mech-good.yaml", sandbox / "mech-good" / "plane.yaml")
+    out = tmp_path / "out"
+    res = CliRunner().invoke(cli.cli, ["build-index", "--out", str(out)])
+    assert res.exit_code == 0, res.output
+    index = json.loads((out / "index.json").read_text())
+    assert index["version"] == 2 and "studio" not in index
+    assert (out / index["mechanisms"]["mech-good"]).is_file()
+    assert all(set(i) == PUBLIC_KEYS for i in index["ledger"])
+    by_id = {e["id"]: e for e in index["designs"]}
+    assert all("mechanisms" in e and "fea" in e for e in by_id.values())
+    assert by_id["example-tailsitter-wing"]["mechanisms"] is None

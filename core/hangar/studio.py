@@ -28,7 +28,7 @@ import yaml
 
 from . import __version__
 from .design import DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, list_designs, load_design
-from .index import design_entry, dumps, error_entry
+from .index import design_entry, dumps, error_entry, index_extras
 from .ops import OpResult, call, registry
 from .surfaces import map_params
 
@@ -89,7 +89,7 @@ class Studio:
             seen.add(did)
             hsh = design_hash(p.parent)
             c = self.cache.get(did)
-            ok = c and c.get("hash") == hsh and (c["entry"].get("error") or (DATA_DIR / (c["entry"].get("glb") or "_")).exists())
+            ok = c and c.get("hash") == hsh and "mechanisms" in c["entry"] and (c["entry"].get("error") or (DATA_DIR / (c["entry"].get("glb") or "_")).exists())
             with self.lock:
                 if ok:
                     self.entries[did] = dict(c["entry"], pending=False)
@@ -115,7 +115,7 @@ class Studio:
     def index(self) -> dict:
         with self.lock:
             designs = sorted(self.entries.values(), key=lambda e: e["id"])
-            return {"generated": _now(), "studio": True, "designs": designs}
+            return {"studio": True, "designs": designs, **index_extras(designs, DESIGNS_DIR.parent, public=False)}
 
     def state(self) -> dict:
         with self.lock:

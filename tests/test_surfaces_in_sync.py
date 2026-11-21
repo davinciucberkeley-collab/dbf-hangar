@@ -158,7 +158,7 @@ def test_removed_studio_routes_are_gone(studio_base):
 
 
 def test_studio_js_calls_op_route_for_new_and_yaml_read():
-    js = (design_mod.REPO_ROOT / "viewer" / "studio.js").read_text(encoding="utf-8")
+    js = (design_mod.REPO_ROOT / "viewer" / "modes" / "edit.js").read_text(encoding="utf-8")
     assert "op('design.new'" in js
     assert "op('design.get'" in js
     assert "api('new'" not in js

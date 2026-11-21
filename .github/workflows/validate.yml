@@ -28,6 +28,11 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -e ".[mcp,dev]"
+      - name: Browser for viewer smoke test
+        shell: bash
+        run: |
+          python -m playwright install chromium
+          if [ "$RUNNER_OS" = "Linux" ]; then python -m playwright install-deps chromium; fi
       - name: Unit tests
         shell: bash
         run: pytest -q -n auto -m ""

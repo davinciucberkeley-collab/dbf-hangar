@@ -6,7 +6,6 @@ import os
 import re
 import shutil
 import sys
-from datetime import datetime, timezone
 from pathlib import Path
 
 import click
@@ -170,7 +169,7 @@ def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
               help="Directory to write per-design artifacts and index.json into.")
 def build_index_cmd(out_dir):
     """Export glb, scorecard and mass for every design, then write index.json."""
-    from .index import design_entry, error_entry
+    from .index import design_entry, error_entry, index_extras
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     entries = []
@@ -185,7 +184,7 @@ def build_index_cmd(out_dir):
             entries.append(design_entry(design, out))
         except Exception as e:  # noqa: BLE001
             entries.append(error_entry(str(design.data.get("id", fallback_id)), str(e), design.data))
-    index = {"generated": datetime.now(timezone.utc).isoformat(timespec="seconds"), "designs": entries}
+    index = {"designs": entries, **index_extras(entries, DESIGNS_DIR.parent, public=True)}
     (out / "index.json").write_text(_dumps(index) + "\n")
     click.echo(str(out / "index.json"))
 

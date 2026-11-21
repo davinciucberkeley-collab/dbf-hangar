@@ -28,6 +28,7 @@ jobs:
       - run: pip install -e .
       - run: plane build-index --out viewer/data
       - run: for d in updates/*/; do [ -d "$d" ] && { plane update publish "$(basename "$d")" || echo "skip $d"; }; done; true
+      - run: python -c "import json; d=json.load(open('viewer/data/index.json')); assert d['version']==2 and 'studio' not in d and isinstance(d['updates'], list)"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
