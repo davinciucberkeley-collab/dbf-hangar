@@ -15,6 +15,7 @@ You give the conductor a reality check. You find problems; you fix nothing.
 3. **Stuck**: a unit with the same failure after 2 fixes, or no commit/progress for 45 min while marked in progress.
 4. **Drift**: work in progress that maps to no unit or R-id in the plan; a "fix-the-fix" unit.
 5. **Ledger**: `plane ledger check` — items `done` without evidence; items listed overdue that a meeting decided against (they should be `dropped` with `decided_in`, not overdue).
+7. **R-ids**: for each R-id in plan §1 whose units are all merged (plan §7 boxes ticked), its ledger status is `done` with a merge-commit evidence, or open with a note on what is missing; an R-id marked `done` while a listed unit is unmerged is a finding.
 6. **Bloat**: open ledger items older than 3 weeks with no owner.
 
 ## Output (≤ 15 lines)

@@ -9,7 +9,7 @@ items:
     due: ''
     units:
       - U1.3
-    evidence: ''
+    evidence: 'open: PDL 1.0 exists (dfcbf16) but concept-a is still 0.4 without files/bom; needs U2.5d'
     decided_in: ''
     updated: '2026-11-20'
   - id: R2
@@ -17,12 +17,12 @@ items:
     text: CLI **and** MCP so different agents interface with one app; `plane add …` instead of agents editing HTML per plane
     source: plan §1; A 11-11
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.1
       - U1.2
-    evidence: ''
+    evidence: 73b0986
     decided_in: ''
     updated: '2026-11-20'
   - id: R3
@@ -44,13 +44,13 @@ items:
     text: Separate operations and data from code; don't edit code every time you run a simulation; saves tokens
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.1
       - U1.4
       - U2.3
-    evidence: ''
+    evidence: ac5f76b
     decided_in: ''
     updated: '2026-11-20'
   - id: R5
@@ -58,12 +58,12 @@ items:
     text: Bring in new plane designs without changing design-software code ("put a window in, don't remove bricks")
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.4
       - U2.1
-    evidence: ''
+    evidence: c82b07b
     decided_in: ''
     updated: '2026-11-20'
   - id: R6
@@ -97,11 +97,11 @@ items:
     text: CLI lets Claude test a design, change one parameter, re-test, see how it evolves, iterate fast
     source: plan §1; A 11-18 (to Tristan)
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.4
-    evidence: ''
+    evidence: b483b22
     decided_in: ''
     updated: '2026-11-20'
   - id: R9
@@ -127,7 +127,7 @@ items:
     units:
       - U2.1
       - U2.2
-    evidence: ''
+    evidence: 'open: T6 analytic (D15), blender collision adapter planned, landing_load_factor pending; needs physics-sim mechanism check (U3.1/R11) and blender adapter'
     decided_in: ''
     updated: '2026-11-20'
   - id: R11
@@ -153,7 +153,7 @@ items:
     units:
       - U1.3
       - U2.1
-    evidence: ''
+    evidence: 'open: T7 gates exist (c82b07b) but report-only (D7), wire_clearance_mm pending, no design has wiring/transport; needs U2.5d data and the D7 flip'
     decided_in: ''
     updated: '2026-11-20'
   - id: R13
@@ -161,11 +161,11 @@ items:
     text: Database of plane guidelines and standards every design is evaluated against; manufacturing methods; "does a tailsitter actually work?" evidence
     source: plan §1; A 11-11
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U2.2
-    evidence: ''
+    evidence: b4663d5
     decided_in: ''
     updated: '2026-11-20'
   - id: R14
@@ -178,7 +178,7 @@ items:
     units:
       - U1.3
       - U2.4
-    evidence: ''
+    evidence: 'open: bom.verify and T8 exist (9d1ce6a, c82b07b) but no committed design has a BOM; needs concept-a BOM import (U2.5d)'
     decided_in: ''
     updated: '2026-11-20'
   - id: R15
@@ -215,7 +215,7 @@ items:
     due: ''
     units:
       - U2.1
-    evidence: ''
+    evidence: 'open: ordering kept (c82b07b) but no design has real mechanisms; needs concept-a mechanisms (U2.5d) and U3.4 iteration'
     decided_in: ''
     updated: '2026-11-20'
   - id: R18
@@ -227,7 +227,7 @@ items:
     due: ''
     units:
       - U0.1
-    evidence: reviews/2026-11-21-w0.md
+    evidence: '7e18070'
     decided_in: ''
     updated: '2026-11-20'
   - id: R19
@@ -240,7 +240,7 @@ items:
     units:
       - U0.1
       - U0.2
-    evidence: reviews/2026-11-21-w0.md
+    evidence: 015fac7
     decided_in: ''
     updated: '2026-11-20'
   - id: R20
@@ -253,7 +253,7 @@ items:
     units:
       - U0.2
       - U0.3
-    evidence: reviews/2026-11-21-w0.md
+    evidence: dc255c9
     decided_in: ''
     updated: '2026-11-20'
   - id: R21
@@ -303,7 +303,7 @@ items:
     due: ''
     units:
       - U0.2
-    evidence: reviews/2026-11-21-w0.md
+    evidence: 015fac7
     decided_in: ''
     updated: '2026-11-20'
   - id: R25
@@ -315,7 +315,7 @@ items:
     due: ''
     units:
       - U1.4
-    evidence: ''
+    evidence: "open: design.propose exists (b483b22) but only ran mocked; needs a live propose round with Dillon's pick (U3.4 step 5)"
     decided_in: ''
     updated: '2026-11-20'
   - id: R26
@@ -336,11 +336,11 @@ items:
     text: Before each meeting, list every task/idea from transcripts and compare with what repos have; beware "not done" vs "decided not to"
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.3
-    evidence: ''
+    evidence: dac0ed8
     decided_in: ''
     updated: '2026-11-20'
   - id: R28
@@ -361,12 +361,12 @@ items:
     text: Connect DaVinci API to Claude; do a full build in DaVinci
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: superseded
     due: ''
     units:
       - U2.3
-    evidence: ''
-    decided_in: ''
+    evidence: 'deferred under D3: DaVinci adapter ships as SKIP-with-reason (65ee21f); full DaVinci build after the Dec 2 deadline'
+    decided_in: D3
     updated: '2026-11-20'
   - id: R30
     kind: ruling
@@ -389,7 +389,7 @@ items:
     due: ''
     units:
       - U2.4
-    evidence: ''
+    evidence: 'open: assembly.animate exists (7fb3e9d) but no design has assembly.sequence; needs concept-a build steps (no unit owns this yet)'
     decided_in: ''
     updated: '2026-11-20'
   - id: R32
@@ -437,7 +437,7 @@ items:
     units:
       - U0.1
       - U0.2
-    evidence: reviews/2026-11-21-w0.md
+    evidence: '7e18070'
     decided_in: ''
     updated: '2026-11-20'
   - id: R36
@@ -445,12 +445,12 @@ items:
     text: Finish CLI + plane format; CLI is for Claude, not humans
     source: plan §1; T 11-18 (Tristan)
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.1
       - U1.4
-    evidence: ''
+    evidence: b483b22
     decided_in: ''
     updated: '2026-11-20'
   - id: R37
@@ -469,11 +469,11 @@ items:
     text: Morphological chart from literature, not reinvented; synthesize options
     source: plan §1; A 11-11
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U2.4
-    evidence: ''
+    evidence: 9d1ce6a
     decided_in: ''
     updated: '2026-11-20'
   - id: R39
@@ -488,7 +488,7 @@ items:
       - U1.5
       - U1.6
       - U2.5
-    evidence: ''
+    evidence: 'open: hangar adapts the sources (4f8f2b2, 33e6655, b43daf0, 654888d) but U2.5d, U2.2-2, U3.1 Explorer features and blender/sitl adapters have not landed'
     decided_in: ''
     updated: '2026-11-20'
   - id: R40
@@ -501,7 +501,7 @@ items:
     units:
       - U0.4
       - U2.5
-    evidence: ''
+    evidence: 'open: integration started (same commits as R39); one tool everyone works on needs U3.1 and the U3.4 acceptance'
     decided_in: ''
     updated: '2026-11-20'
   - id: D1
@@ -3228,6 +3228,17 @@ items:
     owner: Tristan
     status: open
     due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T24
+    kind: task
+    text: 'Make U2.5d a unit: concept-a re-import into PDL 1.0 (params, BOM, requirements, files, wiring/transport, mechanisms, assembly sequence) after an FEA re-run; closes R1, R12, R14, R17, R31 data gaps'
+    source: reviews/2026-11-21-ledger-audit.md
+    owner: Tristan
+    status: open
+    due: '2026-11-25'
     units: []
     evidence: ''
     decided_in: ''

@@ -21,7 +21,8 @@ You own the goal. You plan, dispatch, decide and merge. You do not grind.
 4. While a wave runs longer than an hour: launch `auditor` hourly and act on its report.
 5. A rejected unit is reopened and fixed in place. Never create a "fix-the-fix" unit.
 6. Mark progress only in the plan's checkboxes and with `plane ledger set`. Your memory is not the record.
-7. Any commit that ticks a plan checkbox, adds or changes a `### Verdict:` line in `reviews/`, or changes `ledger/items.yaml` also runs `plane progress --write` and includes `PROGRESS.md` in the same commit; CI (`plane progress --check`) fails otherwise.
+7. When a unit merges, set the R-ids it closes (plan §1 Unit(s) column: every listed unit merged) with `plane ledger set <R> done --evidence <merge commit>` in the same commit as the checkbox ticks; an R-id whose units are not all merged stays open. The auditor checks this.
+8. Any commit that ticks a plan checkbox, adds or changes a `### Verdict:` line in `reviews/`, or changes `ledger/items.yaml` also runs `plane progress --write` and includes `PROGRESS.md` in the same commit; CI (`plane progress --check`) fails otherwise.
 
 ## Outputs
 - The plan file, the agent table, ledger updates, merge decisions, one short status line per wave.
