@@ -347,6 +347,34 @@ Order: W0-1 first; when it is merged, W0-2, W0-3 and W0-4 run in parallel, each 
 
 **LFS fallback (D8):** if `git push` of LFS objects is refused by the git host or proxy, the conductor removes the LFS patterns for meshes (they total about 5 MB) and commits them as plain git, and records "D8 amended: plain git" in §3. No builder handles this.
 
+### 6e. Agent table for W1 (prepared 2026-11-21)
+
+W1 runs in two layers, because the units depend on each other (§7 Interfaces):
+- **W1a:** U1.1 [hard] and U1.3 [hard] in parallel. U1.3's `ops/schema.py` is written against U1.1's `@op` interface as fixed in §7. U1.1 merges first, then U1.3 rebases onto it before its final pass check. U1.3 does not edit `core/hangar/cli.py`.
+- **W1b**, after W1a is merged: U1.2, U1.4, U1.5 [hard] and U1.6 in parallel. U1.5 and U1.6 both edit `schema/plane.schema.json`; the second one to be accepted rebases before merging. U1.4's Windows CI job already exists (W0-5).
+- Briefs follow the template in `standards/agents.md`. Each lists every §7 step in Plan coverage. Hard-unit briefs are drafted by a `tactician` and then checked by the `advisor` before any builder runs (§5: hard → Opus via advisor). Tristan reads the U1.1 and U1.3 briefs before their builders launch.
+- Every commit that ticks a box, adds a verdict or changes the ledger also runs `plane progress --write` (W0.6c).
+- Reviewer notes carried into W1 briefs: the gate rejects worktree or space-containing brief paths unless the brief is inline (give repo-relative brief paths); `progress.py` repeats the ledger count table (U2.4 may unify it).
+
+| Step | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| W1-0 | `builder` | Haiku | inline brief: the progress rule in `.claude/agents/conductor.md` and CLAUDE.md; `gh` by full path and an absolute venv path in the brief template | branch `std/w1.0-rules` | `pytest -q` green, CLAUDE.md ≤ 25 lines, CI green |
+| W1-T1 | `tactician` | Sonnet | §7 U1.1 | `briefs/U1.1-ops-registry.md` | builder-ready bar; Plan coverage complete |
+| W1-T3 | `tactician` | Sonnet | §7 U1.3 | `briefs/U1.3-pdl.md` | same |
+| W1-A1 | `advisor` | Opus | the U1.1 and U1.3 briefs | recommendation per brief | "builder-ready" or a numbered list of gaps |
+| W1-1 | `builder-plus` | Sonnet | `briefs/U1.1-ops-registry.md` | branch `std/u1.1-ops` | brief's pass check; CI green on both OSes |
+| W1-3 | `builder-plus` | Sonnet | `briefs/U1.3-pdl.md` | branch `std/u1.3-pdl` | same |
+| W1-T2, T4, T6 | `tactician` | Sonnet | §7 U1.2, U1.4, U1.6, plus merged W1a code | `briefs/U1.2-surfaces.md`, `briefs/U1.4-edit.md`, `briefs/U1.6-interfaces.md` | builder-ready bar |
+| W1-T5 | `tactician` | Sonnet | §7 U1.5, plus DBF-Combined @ `a93f14d` `redesign/proofs/` | `briefs/U1.5-claims.md` | same |
+| W1-A2 | `advisor` | Opus | the U1.5 brief | recommendation | as W1-A1 |
+| W1-2, W1-4, W1-6 | `builder` | Haiku | their briefs | branches `std/u1.2-surfaces`, `std/u1.4-edit`, `std/u1.6-interfaces` | brief's pass check; CI green |
+| W1-5 | `builder-plus` | Sonnet | `briefs/U1.5-claims.md` | branch `std/u1.5-claims` | same |
+| W1-R | `reviewer` | Opus (fresh for W1, reused for W1a, W1b and re-reviews) | each branch as it lands | `reviews/2026-11-2x-w1.md` | "### Verdict: ACCEPT" per unit |
+| W1-Au | `auditor` | Haiku | session state, ledger, this table | report to conductor, hourly | ≤ 15 lines, evidence per finding |
+| W1-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch recommended |
+
+**Permissions for W1 (approve once):** everything in §6d's W0 list, plus: `git push origin std/*` (CI runs on these branches); the GitHub CLI at `C:/Program Files/GitHub CLI/gh.exe` for `run list|view|watch` and `api` (read-only); `git push origin --delete std/*` for merged branches only; a read-only partial clone of `https://github.com/davinciucberkeley-collab/DBF-Combined` into `C:/Users/trist/DBF-Combined`, checked out at `a93f14d` (`git clone --filter=blob:none --sparse`, sparse to `redesign/`), used by U1.5 and U1.6; `pip install -e ".[mcp,dev]"` in worktree venvs, including new dependencies a brief names (e.g. `ruamel.yaml`), added to `pyproject.toml`; background `sleep 3600` timers that wake the conductor for the hourly audit.
+
 ## 7. Units
 
 Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPATH=$PWD/core` in worktrees; finish with
