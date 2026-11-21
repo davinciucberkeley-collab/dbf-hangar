@@ -72,6 +72,7 @@ class Scorecard:
     design_id: str
     tiers: list[TierReport]
     max_tier: int = 5
+    fidelity: dict = field(default_factory=dict)
 
     @property
     def partial(self) -> bool:
@@ -88,7 +89,7 @@ class Scorecard:
         return not self.partial and all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
 
     def to_dict(self) -> dict:
-        return {
+        d = {
             "design_id": self.design_id,
             "accepted": self.accepted,
             "partial": self.partial,
@@ -99,6 +100,9 @@ class Scorecard:
                 for t in self.tiers
             ],
         }
+        if self.fidelity:
+            d["fidelity"] = self.fidelity
+        return d
 
     def to_markdown(self) -> str:
         lines = [f"# Scorecard: {self.design_id}", "",
@@ -108,7 +112,12 @@ class Scorecard:
         for t in self.tiers:
             for r in t.results:
                 lines.append(f"| {t.tier} {t.name} | {t.status} | {r.check_id} | {r.status}: {r.message} | {r.criterion} |")
-        return "\n".join(lines) + "\n"
+        out = "\n".join(lines) + "\n"
+        if self.fidelity:
+            f = self.fidelity
+            out += (f"\nFidelity: {f['sourced_blocking']} of {f['blocking']} blocking checks use sourced thresholds; "
+                    f"{f['measured_mass_parts']} components have measured mass.\n")
+        return out
 
 
 def load_design(path: str | Path) -> Design:

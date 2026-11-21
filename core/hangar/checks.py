@@ -24,6 +24,7 @@ from .design import (Design, CheckResult, TierReport, Scorecard, SCHEMA_PATH, RE
 from .geometry import (component_parts, lifting_surface_properties, articulated_attachments, att_label,
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
+from .gates import gate, run_gates
 from .mass import mass_properties
 from .migrate import KNOWN_VERSIONS
 
@@ -42,11 +43,21 @@ def _below(design: Design, version: str) -> bool:
 def tier0_schema(design: Design) -> TierReport:
     schema = json.loads(SCHEMA_PATH.read_text())
     errors = sorted(Draft202012Validator(schema).iter_errors(design.data), key=lambda e: list(e.path))
+    unknown = [e for e in errors if e.validator == "enum" and len(e.path) == 3
+               and e.path[0] == "components" and isinstance(e.path[1], int) and e.path[2] == "type"]
+    errors = [e for e in errors if e not in unknown]
     if errors:
         res = [CheckResult("T0.schema", FAIL, f"{'/'.join(map(str, e.path)) or '<root>'}: {e.message}",
                            "schema/plane.schema.json", {"parts": ["/".join(map(str, e.path)) or "<root>"]}) for e in errors[:20]]
     else:
         res = [CheckResult("T0.schema", PASS, f"matches schema v{design.data.get('schema_version', '0.1')}", "schema/plane.schema.json")]
+    for e in unknown:
+        cid = design.data["components"][e.path[1]].get("id", f"#{e.path[1]}")
+        res.append(CheckResult("T0.component_type", SKIP,
+                               f"component {cid}: type '{e.instance}' is not a known component type "
+                               f"(known: {', '.join(sorted(e.validator_value))}); type-specific checks cannot run "
+                               "for it and it is checked as a generic part",
+                               "schema/plane.schema.json", {"component": cid}))
     uses_v02 = any(a.get("articulation") for a in design.data.get("attachments", [])) or \
         any(k in design.data.get("flight", {}) for k in ("hover_pose", "cruise_pose"))
     if uses_v02 and _below(design, "0.2"):
@@ -1027,50 +1038,53 @@ TIER_CRITERION = {1: STD + "interference_max_mm3", 2: STD + "landing_load_factor
                   9: "claims.yaml#recompute_rel_tol"}
 
 
-def validate(design: Design, max_tier: int = 5) -> Scorecard:
-    std = load_standards()
-    tiers = [tier0_schema(design)]
-    if tiers[0].status == FAIL:
-        return Scorecard(design.id, tiers, max_tier)
-    def run(tier: int, name: str, fn):
-        """Run one tier; a crash becomes a FAIL result instead of killing the whole scorecard."""
-        try:
-            return fn()
-        except Exception as e:  # noqa: BLE001
-            return TierReport(tier, name, [CheckResult(f"T{tier}.error", FAIL, f"{type(e).__name__}: {e}", TIER_CRITERION[tier])])
+@gate("T0.schema", 0)
+def _gate_t0(ctx):
+    return tier0_schema(ctx.design)
 
-    if max_tier >= 1:
-        tiers.append(run(1, "geometry", lambda: tier1_geometry(design, std)))
+
+@gate("T1.geometry", 1)
+def _gate_t1(ctx):
+    return tier1_geometry(ctx.design, ctx.std)
+
+
+def _tier2(ctx):
+    rep = tier2_physics(ctx.design, ctx.std, ctx.mp)
     try:
-        mp = mass_properties(design)
-    except Exception as e:  # noqa: BLE001
-        later = [(2, "physics"), (3, "aero"), (4, "manufacturing"), (5, "standards")]
-        tiers += [TierReport(t, n, [CheckResult(f"T{t}.blocked", FAIL, f"mass properties failed: {e}", TIER_CRITERION[t])])
-                  for t, n in later if t <= max_tier]
-        return Scorecard(design.id, tiers, max_tier)
-
-    def tier2():
-        rep = tier2_physics(design, std, mp)
-        try:
-            from .sim import tier2_sim
-        except ImportError:
-            return rep
-        rep.results.extend(tier2_sim(design, std, mp))
-        from .fea import tier2_fea
-        rep.results.extend(tier2_fea(design))
+        from .sim import tier2_sim
+    except ImportError:
         return rep
+    rep.results.extend(tier2_sim(ctx.design, ctx.std, ctx.mp))
+    from .fea import tier2_fea
+    rep.results.extend(tier2_fea(ctx.design))
+    return rep
 
-    if max_tier >= 2:
-        tiers.append(run(2, "physics", tier2))
-    if max_tier >= 3:
-        tiers.append(run(3, "aero", lambda: tier3_aero(design, std, mp)))
-    if max_tier >= 4:
-        tiers.append(run(4, "manufacturing", lambda: tier4_manufacturing(design)))
-    if max_tier >= 5:
-        tiers.append(run(5, "standards", lambda: tier5_standards(design, std, mp)))
-    if max_tier >= 5:    # T9 Claims (U1.5): runs with the full run only; U2.1 moves this into the gate registry
-        from .gates.claims import tier9_claims
-        rep9 = run(9, "claims", lambda: tier9_claims(design))
-        if rep9 is not None:
-            tiers.append(rep9)
-    return Scorecard(design.id, tiers, max_tier)
+
+gate("T2.physics", 2, needs_mass=True)(_tier2)
+
+
+@gate("T3.aero", 3, needs_mass=True)
+def _gate_t3(ctx):
+    return tier3_aero(ctx.design, ctx.std, ctx.mp)
+
+
+@gate("T4.manufacturing", 4, needs_mass=True)
+def _gate_t4(ctx):
+    return tier4_manufacturing(ctx.design)
+
+
+@gate("T5.standards", 5, needs_mass=True)
+def _gate_t5(ctx):
+    return tier5_standards(ctx.design, ctx.std, ctx.mp)
+
+
+@gate("T9.claims", 9)
+def _gate_t9(ctx):
+    from .gates.claims import tier9_claims
+    return tier9_claims(ctx.design)
+
+
+def validate(design: Design, max_tier: int = 5) -> Scorecard:
+    card = run_gates(design, 9 if max_tier >= 5 else max_tier)
+    card.max_tier = max_tier
+    return card
