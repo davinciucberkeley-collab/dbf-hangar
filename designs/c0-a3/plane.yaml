@@ -5,7 +5,7 @@ schema_version: "1.0"
 id: c0-a3
 name: A3 aligned, faired stopped lift rotors (derived from C0 v0.4.0)
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "converted for aircraft-platform by a tactician agent"]
-status: concept
+status: retired
 description: >
   C0 airframe with a printed NACA 0022 nacelle around each lift motor mount and a rotating hub cap on each lift prop; a magnetic detent
   (and, in phase 2, a reed switch plus Lua nudge) parks each two-blade prop fore-aft in cruise so the stopped rotors cost less drag.

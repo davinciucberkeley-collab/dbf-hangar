@@ -7,7 +7,7 @@ schema_version: "1.0"
 id: c0-lift-cruise
 name: C0 lift+cruise quadplane (UC Berkeley DBF capstone, v0.4.0)
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "converted for aircraft-platform by a tactician agent"]
-status: designed
+status: retired
 description: >
   Four-lift-rotor twin-boom quadplane with a pusher and a 2.4 m NACA 2415 foam wing, H-tail with twin
   rudders on the booms. Nothing has been built or flown (README.md of the source, status 2026-11-08).

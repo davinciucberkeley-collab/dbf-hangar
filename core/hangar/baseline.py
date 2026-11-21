@@ -15,9 +15,9 @@ from .design import FAIL, REPO_ROOT, SKIP, Scorecard
 
 SCHEMA_VERSION = 1
 
-# A result must say which subject it is about (a component, joint, pair, parts, pose or machine) in its data,
+# A result must say which subject it is about (a component, joint, pair, parts, pose, machine or claim) in its data,
 # unless its check is about the whole design. Enforced by tests/test_baseline.py.
-SUBJECT_KEYS = ("component", "joint", "pair", "parts", "pose", "machine")
+SUBJECT_KEYS = ("component", "joint", "pair", "parts", "pose", "machine", "claim")
 DESIGN_LEVEL = frozenset({
     "T3.mass", "T3.stall", "T3.static_margin", "T3.lateral_cg", "T3.hover_tw", "T3.planform_matches_geometry",
     "T2.hover_moment", "T2.sim_rest", "T2.sim_stable",
