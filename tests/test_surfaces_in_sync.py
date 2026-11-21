@@ -21,7 +21,7 @@ from hangar.surfaces import public_name
 EXAMPLE = design_mod.DESIGNS_DIR / "example-tailsitter-wing"
 HANDWRITTEN_TOOLS = {"save_design", "get_schema", "get_standards", "list_structural_parts"}
 STUDIO_ONLY_ROUTES = {"/api/ping", "/api/state", "/api/fea", "/api/fea-file", "/api/design", "/api/export",
-                      "/api/check", "/api/check-all", "/api/yaml", "/api/patch", "/api/import-dbf",
+                      "/api/check", "/api/check-all", "/api/import-dbf",
                       "/api/fea-setup", "/api/rescan"}
 
 
@@ -163,6 +163,16 @@ def test_studio_js_calls_op_route_for_new_and_yaml_read():
     assert "op('design.get'" in js
     assert "api('new'" not in js
     assert "api('yaml?" not in js
+
+
+def test_studio_js_saves_validates_and_proposes_through_ops():
+    js = (design_mod.REPO_ROOT / "viewer" / "modes" / "edit.js").read_text(encoding="utf-8")
+    assert "op('design.set'" in js
+    assert "opRaw('design.validate'" in js
+    assert "op('design.propose'" in js
+    assert "api('patch'" not in js
+    assert "api('yaml'" not in js
+    assert "data.markdown" not in js
 
 
 def test_design_export_takes_public_name_format(studio_base, sandbox, tmp_path):

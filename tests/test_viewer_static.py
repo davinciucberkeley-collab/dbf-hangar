@@ -7,11 +7,13 @@ import os
 import shutil
 import threading
 import time
+import urllib.error
 import urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 
 import pytest
+import yaml
 from click.testing import CliRunner
 
 if os.environ.get("CI"):
@@ -133,15 +135,107 @@ def test_every_mode_renders_without_console_errors(browser, pages_base, mode):
 
 def test_pages_build_has_no_edit_controls(browser, pages_base, studio_base):
     page = browser.new_page()
+    requests = []
+    page.on("request", lambda r: requests.append(r.url))
     page.goto(pages_base)
     page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
     assert page.locator("[data-edit]").count() == 0
     assert page.locator("#modes button").count() == 6
     assert "studio" not in page.evaluate("fetch('data/index.json').then(r => r.json())")
+    assert not any("modes/edit.js" in u for u in requests)
+    assert page.locator('[data-testid="btn-edit"], [data-testid="btn-validate"], [data-testid="btn-propose"], [data-testid="save"]').count() == 0
     page.goto(studio_base)
     page.wait_for_selector("[data-edit]", timeout=30000)
     assert page.locator("[data-edit]").count() > 0
+    page.wait_for_selector('[data-testid="btn-validate"]', timeout=30000)
+    assert page.locator('[data-testid="btn-propose"]').count() == 1
     assert page.evaluate("document.title") == "Plane Studio"
+    page.close()
+
+
+def test_studio_edit_save_validate_propose(browser, studio_base, monkeypatch):
+    from hangar.ops import edit as edit_ops
+    calls = []
+    URL = "https://github.com/davinciucberkeley-collab/dbf-hangar/pull/999"
+
+    def fake_run(argv, cwd):
+        calls.append(list(argv))
+        if "--show-toplevel" in argv:
+            return str(Path(cwd).parent)
+        if "status" in argv:
+            return " M plane.yaml\n"
+        if "--abbrev-ref" in argv:
+            return "main\n"
+        if "pr" in argv and "create" in argv:
+            return URL + "\n"
+        return ""
+    monkeypatch.setattr(edit_ops, "_run", fake_run)
+
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(studio_base + "#m=designs&d=example-tailsitter-wing")
+    page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
+    page.wait_for_selector('[data-testid="btn-validate"]:not([disabled])', timeout=120000)
+
+    # edit one field, first without a why (refused), then with one
+    page.click('[data-testid="btn-edit"]')
+    page.get_by_role("button", name="Parts", exact=True).click()
+    page.fill('tr[data-q^="wing wing"] input.sm', "185")
+    page.select_option('[data-testid="save-kind"]', "subtract")
+    page.click('[data-testid="save"]')
+    page.wait_for_selector(".dlg-err:not([hidden])", timeout=30000)
+    assert page.inner_text(".dlg-err") == "Say why in one line."
+    page.fill('[data-testid="save-why"]', "lighter foam")
+    page.click('[data-testid="save"]')
+    page.wait_for_selector("dialog.dlg", state="detached", timeout=30000)
+
+    ddir = studio.DESIGNS_DIR / "example-tailsitter-wing"
+    assert "mass_g: 185" in (ddir / "plane.yaml").read_text()
+    log = yaml.safe_load((ddir / "CHANGELOG.yaml").read_text())
+    assert log[-1]["key"] == "components[wing].mass_g"
+    assert log[-1]["why"] == "lighter foam" and log[-1]["kind"] == "subtract"
+
+    # wait for the re-check, then validate
+    t0 = time.time()
+    while time.time() - t0 < 240:
+        with urllib.request.urlopen(studio_base + "api/state", timeout=60) as r:
+            if not json.loads(r.read())["busy"]:
+                break
+        time.sleep(0.3)
+    else:
+        raise AssertionError("studio jobs did not finish")
+    page.wait_for_selector('[data-testid="btn-validate"]:not([disabled])', timeout=120000)
+    page.click('[data-testid="btn-validate"]')
+    page.wait_for_selector('[data-testid="validate-result"] .result', timeout=120000)
+    req = urllib.request.Request(studio_base + "api/op/design.validate",
+                                 data=json.dumps({"path": str(ddir)}).encode(),
+                                 headers={"Content-Type": "application/json"}, method="POST")
+    try:
+        with urllib.request.urlopen(req, timeout=120) as r:
+            body = r.read()
+    except urllib.error.HTTPError as e:
+        body = e.read()
+    card = json.loads(body)["data"]
+    expected = {(r["check_id"], r["status"]) for t in card["tiers"] for r in t["results"]}
+    actual = page.eval_on_selector_all(
+        '[data-testid="validate-result"] .result',
+        "els => els.map(e => [e.querySelector('.cid').textContent, e.querySelector('.badge').textContent, e.className.split(' ')[1]])")
+    assert {(c, s) for c, s, _ in actual} == expected
+    assert all(s == cls for _, s, cls in actual), "each row must show its own status"
+    assert page.inner_text('[data-testid="validate-result"] h3').startswith("Validation:")
+
+    # propose a pull request (git and gh are faked at _run)
+    page.click('[data-testid="btn-propose"]')
+    assert page.input_value('[data-testid="propose-title"]') == "Edit example-tailsitter-wing"
+    page.fill('[data-testid="propose-title"]', "Lighter wing foam")
+    page.click('[data-testid="propose-go"]')
+    page.wait_for_selector('a[data-testid="pr-link"]', timeout=30000)
+    assert page.get_attribute('a[data-testid="pr-link"]', "href") == URL
+    assert page.inner_text('a[data-testid="pr-link"]') == URL
+    assert any(c[-2:] == ["design/example-tailsitter-wing/lighter-wing-foam"]
+               or ("switch" in c and "-c" in c and "design/example-tailsitter-wing/lighter-wing-foam" in c) for c in calls)
+    assert any("--title" in c and "design(example-tailsitter-wing): Lighter wing foam" in c for c in calls)
+    assert errors == []
     page.close()
 
 

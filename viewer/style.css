@@ -183,3 +183,4 @@ table.edit tr.failing td { background: var(--fail-bg); }
 .mono { font-family: var(--mono); }
 .badge.PASS, .badge.FAIL, .badge.WARN, .badge.SKIP, .badge.NONE { font-size: 11px; }
 a.filelink { margin-right: 8px; color: var(--accent); }
+.studio-result { margin: 8px 0 12px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 8px; } .studio-result h3 { font-size: 13px; margin: 0 0 6px; } .studio-result a { word-break: break-all; }
