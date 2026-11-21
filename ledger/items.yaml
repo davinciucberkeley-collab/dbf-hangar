@@ -922,3 +922,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-20'
+  - id: T17
+    kind: task
+    text: bom.py crashes on a non-mapping verified block or missing qty (should exit 2); ingest de-dup should key on kind+text, add a cross-kind test
+    source: reviews/2026-11-21-w2.md U2.4b
+    owner: Tristan
+    status: open
+    due: '2026-11-27'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
