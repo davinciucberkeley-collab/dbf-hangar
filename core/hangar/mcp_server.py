@@ -123,42 +123,8 @@ def get_standards() -> str:
 
 
 @mcp.tool()
-def structural_check(design_id: str, part_id: str = "", all_printed: bool = False) -> dict:
-    """Run a finite-element stress check of printed parts in OpenCAE Studio (CalculiX) and return the verdicts.
-
-    part_id: one component id (see list_structural_parts); or all_printed=True for every printed structural part.
-    The load cases come from the design itself (joint forces and moments from the tier-2 drop test, and from hover
-    at full thrust held at the root), times the ultimate factor; supports are the joints leading toward the root. A part passes when its peak
-    von Mises stress away from the clamps is within structure.fea_allowable_printed_petg_mpa.
-    Results are saved in designs/<id>/fea/<part>.json and appear in validate_design (tier 2, T2.fea_strength).
-    Slow: seconds to a few minutes per part. Needs OpenCAE set up once (plane fea --setup).
-    """
-    from . import fea
-    design = load_design(_design_path(design_id))
-    parts = fea.eligible_parts(design) if all_printed else [part_id]
-    if not parts or not parts[0]:
-        raise ValueError("give part_id, or all_printed=True")
-    oc = fea.find_opencae()
-    if not oc["found"]:
-        raise RuntimeError("OpenCAE is not set up on this computer: run `plane fea --setup --opencae-python <python> "
-                           "--opencae-root <OpenCAE folder>` once")
-    drop = fea.joint_loads(design)
-    out = []
-    for pid in parts:
-        try:
-            r = fea.run(design, pid, oc, drop=drop, log=lambda m: None)
-            out.append({"part": pid, "status": r["status"], "error": r["error"], "notes": r["notes"],
-                        "cases": [{k: c.get(k) for k in ("name", "status", "max_von_mises_away_mpa", "max_von_mises_mpa",
-                                                         "safety_factor_at_ultimate", "max_displacement_mm", "message")}
-                                  for c in r["cases"]]})
-        except Exception as e:  # noqa: BLE001 - one bad part must not hide the others
-            out.append({"part": pid, "status": "ERROR", "error": f"{type(e).__name__}: {e}"})
-    return {"design": design_id, "allowable_mpa_key": "structure.fea_allowable_printed_petg_mpa", "results": out}
-
-
-@mcp.tool()
 def list_structural_parts(design_id: str) -> list[dict]:
-    """Printed structural parts that structural_check can analyse, with their stored result (if any)."""
+    """Printed structural parts that fea.run can analyse, with their stored result (if any)."""
     from . import fea
     design = load_design(_design_path(design_id))
     rows = []

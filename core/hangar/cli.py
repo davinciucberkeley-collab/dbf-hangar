@@ -534,6 +534,19 @@ def _make_command(spec: ops.OpSpec) -> click.Command:
     return click.Command(spec.verb, params=params, callback=callback, help=spec.summary)
 
 
+class _FallbackGroup(click.Group):
+    """A generated op group that still runs the old command (aliases until v1.1): when the first argument is not a
+    subcommand, the whole argument list goes to the old command."""
+    def __init__(self, name, legacy: click.Command):
+        super().__init__(name, help=legacy.help, context_settings={"ignore_unknown_options": True})
+        self._legacy = legacy
+
+    def resolve_command(self, ctx, args):
+        if args and not args[0].startswith("-") and args[0] in self.commands:
+            return super().resolve_command(ctx, args)
+        return self._legacy.name, self._legacy, args
+
+
 def _attach_ops(group: click.Group, specs: dict[str, ops.OpSpec]) -> None:
     for spec in specs.values():
         existing = group.commands.get(spec.group)
@@ -552,6 +565,8 @@ def _attach_ops(group: click.Group, specs: dict[str, ops.OpSpec]) -> None:
 
                 sub = click.Group(spec.group, help=existing.help, invoke_without_command=True,
                                   callback=_run_legacy)
+            elif type(existing) is click.Command:
+                sub = _FallbackGroup(spec.group, existing)
             else:
                 raise RuntimeError(f"op {spec.name!r} collides with existing command {spec.group!r}")
             sub._hangar_generated = True

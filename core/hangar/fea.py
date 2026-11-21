@@ -337,17 +337,10 @@ def run(design: Design, part_id: str, opencae: dict | None = None, keep_project:
             shutil.rmtree(proj_dir, ignore_errors=True)
             job["project_dir"] = str(proj_dir)
         (work / "job.json").write_text(json.dumps(job))
-        env = dict(os.environ, PYTHONPATH=str(oc["root"]) + os.pathsep + os.environ.get("PYTHONPATH", ""),
-                   PYTHONIOENCODING="utf-8")
         log(f"{part_id}: {len(job['supports'])} support(s), {sum(len(c['loads']) for c in job['cases'])} load(s); "
             f"running OpenCAE")
-        proc = subprocess.run([oc["python"], str(RUNNER), str(work / "job.json")], cwd=str(work), env=env,
-                              capture_output=True, text=True, timeout=3600)
-        for line in proc.stdout.splitlines():
-            log(line)
-        if not (work / "result.json").exists():
-            raise RuntimeError("OpenCAE run failed:\n" + (proc.stderr or proc.stdout)[-3000:])
-        res = json.loads((work / "result.json").read_text())
+        from .adapters.opencae import OpenCAE
+        res = OpenCAE().solve_job(job, oc, log=log)
     finally:
         shutil.rmtree(work, ignore_errors=True)
     for c in res.get("cases", []):  # keep stored records free of machine-specific paths

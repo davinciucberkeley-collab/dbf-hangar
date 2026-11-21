@@ -19,7 +19,7 @@ from hangar.ops import call, registry
 from hangar.surfaces import public_name
 
 EXAMPLE = design_mod.DESIGNS_DIR / "example-tailsitter-wing"
-HANDWRITTEN_TOOLS = {"save_design", "get_schema", "get_standards", "structural_check", "list_structural_parts"}
+HANDWRITTEN_TOOLS = {"save_design", "get_schema", "get_standards", "list_structural_parts"}
 STUDIO_ONLY_ROUTES = {"/api/ping", "/api/state", "/api/fea", "/api/fea-file", "/api/design", "/api/export",
                       "/api/check", "/api/check-all", "/api/yaml", "/api/patch", "/api/import-dbf",
                       "/api/fea-setup", "/api/rescan"}
