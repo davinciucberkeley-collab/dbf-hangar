@@ -353,7 +353,7 @@ Order: W0-1 first; when it is merged, W0-2, W0-3 and W0-4 run in parallel, each 
 
 W1 runs in two layers, because the units depend on each other (§7 Interfaces):
 - **W1a:** U1.1 [hard] and U1.3 [hard] in parallel. U1.3's `ops/schema.py` is written against U1.1's `@op` interface as fixed in §7. U1.1 merges first, then U1.3 rebases onto it before its final pass check. U1.3 does not edit `core/hangar/cli.py`.
-- **W1b**, after W1a is merged: U1.2, U1.4, U1.5 [hard] and U1.6 in parallel. U1.5 and U1.6 both edit `schema/plane.schema.json`; the second one to be accepted rebases before merging. U1.4's Windows CI job already exists (W0-5).
+- **W1b**, after W1a is merged (U1.2 needs only U1.1 and touches none of U1.3's files, so it starts once U1.1 is merged; conductor, 2026-11-21): U1.2, U1.4, U1.5 [hard] and U1.6 in parallel. U1.5 and U1.6 both edit `schema/plane.schema.json`; the second one to be accepted rebases before merging. U1.4's Windows CI job already exists (W0-5).
 - Briefs follow the template in `standards/agents.md`. Each lists every §7 step in Plan coverage. Hard-unit briefs are drafted by a `tactician` and then checked by the `advisor` before any builder runs (§5: hard → Opus via advisor). Tristan reads the U1.1 and U1.3 briefs before their builders launch.
 - Every commit that ticks a box, adds a verdict or changes the ledger also runs `plane progress --write` (W0.6c).
 - Reviewer notes carried into W1 briefs: the gate rejects worktree or space-containing brief paths unless the brief is inline (give repo-relative brief paths); `progress.py` repeats the ledger count table (U2.4 may unify it).
