@@ -3314,6 +3314,17 @@ items:
     text: "U3.4 acceptance (Windows FEA, done by Tristan per D24), attempt 1 2026-11-21: tools doctor ok (opencae, mujoco), aerosandbox missing, davinci missing (D3); fea run concept-a --part cge-001 FAILED: ModuleNotFoundError numpy (opencae.local.json pointed at the solver env). Warning 'only got 2458/3000 samples'. Config repointed to qt_test; rerun pending."
     source: Tristan, PowerShell output pasted in session, 2026-11-21
     owner: Tristan
+    status: done
+    due: ''
+    units: []
+    evidence: 'attempt 2 2026-11-21 (Tristan, Windows): fea run concept-a --part cge-001 ran end to end (OpenCAE meshed 47636 nodes, CalculiX solved landing + thrust); verdict NOT CHECKED: requested 1.2 mm mesh, achieved 2.5 mm elements on the direct-STL route, > 2x the 1.2 mm walls (fea.py:377). Time not recorded.'
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T31
+    kind: task
+    text: 'cge-001 FEA NOT CHECKED: direct-STL route asked for 1.2 mm but produced 2.5 mm elements, too coarse for 1.2 mm walls. Needs a STEP source for cge-001 or a finer direct mesh; check whether the direct route honours size_max.'
+    source: U3.4 Windows FEA check attempt 2, 2026-11-21
+    owner: conductor
     status: open
     due: ''
     units: []

@@ -43,7 +43,7 @@
 | U3.3 | PlaneBench v0 (R32) | 0/3 | not started | - |
 | U3.4 | Proof — an agent iterates concept-a with no code edits (R9, R7 acceptance) | 0/5 | not started | - |
 | U3.5 | Discipline skills, scorecard and procedures (from §1c; not on the core path) | 0/3 | not started | REJECT |
-| U3.6 | Discipline gates [hard] (from §1c; not on the core path) | 0/3 | not started | - |
+| U3.6 | Discipline gates [hard] (from §1c; not on the core path) | 0/3 | not started | REJECT |
 
 ### W4 Review, release, presentation
 
@@ -57,7 +57,7 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 20 | 19 | 0 | 1 | 0 | 40 |
-| task | 29 | 1 | 0 | 0 | 0 | 30 |
+| task | 29 | 2 | 0 | 0 | 0 | 31 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
 | decision | 13 | 0 | 0 | 3 | 210 | 226 |
 
