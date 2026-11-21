@@ -35,19 +35,26 @@ def _text(p: Path) -> str:
     return p.read_bytes().decode("utf-8")     # never read_text: it would turn CRLF into LF
 
 
-@op(name="design.set", summary="Change or add values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --also KEY=VALUE for more pairs in one atomic call) and log them in CHANGELOG.yaml.",
+@op(name="design.set", summary="Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove) and log them in CHANGELOG.yaml.",
     mutates=True, render=lambda r: "\n".join(r.messages))
-def set_op(path: str, key: str, *, value: str, why: str,
-           kind: Literal["add", "subtract", "modify"] = "modify", also: list[str] = None) -> OpResult:
+def set_op(path: str, key: str, *, value: str = None, why: str,
+           kind: Literal["add", "subtract", "modify", "remove"] = "modify", also: list[str] = None) -> OpResult:
     plane = _plane(path)
     text = _text(plane)
     if not why.strip():
         raise OpInputError("why must not be empty")
+    if kind == "remove":
+        if value is not None:
+            raise OpInputError("--kind remove takes no --value")
+    elif value is None:
+        raise OpInputError("value is required unless --kind remove")
     pairs = [(key, value)]
     for item in also or []:
         k, sep, v = item.partition("=")
         if not sep or not k.strip():
             raise OpInputError("--also needs KEY=VALUE")
+        if kind == "remove" and v != "":
+            raise OpInputError(f"{k.strip()}: --kind remove takes no value; write KEY= with nothing after the =")
         pairs.append((k.strip(), v))
     if len({k for k, _ in pairs}) != len(pairs):
         raise OpInputError("a key is given more than once")
@@ -55,6 +62,10 @@ def set_op(path: str, key: str, *, value: str, why: str,
     working, entries = text, []
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     for k, raw in pairs:
+        if kind == "remove":
+            working, gone = pdledit.remove_element(working, k)
+            entries.append({"date": stamp, "key": k, "old": pdledit.render_flow(gone), "new": None, "why": why, "kind": kind})
+            continue
         new = pdledit.parse_value(raw) if kind == "add" else pdledit.parse_scalar(raw)
         data = yaml.safe_load(working)
         if pdledit.exists(data, k):

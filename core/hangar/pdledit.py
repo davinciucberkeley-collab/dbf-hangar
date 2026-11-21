@@ -346,6 +346,59 @@ def add_value(text: str, key: str, new) -> str:
     return out.replace("\n", "\r\n") if crlf else out
 
 
+def remove_element(text: str, key: str) -> tuple[str, object]:
+    """Return (patched text, removed element): `key` is `name[id]`; exactly that element's lines are deleted.
+
+    Deleted: the element's own lines (one line for a one-line flow entry `- {...}`; for a block entry its dash line
+    through its last more-indented line) and the directly preceding comment lines that belong to it. Nothing is re-emitted.
+    """
+    crlf = "\r\n" in text
+    t = text.replace("\r\n", "\n")
+    hand = f"{key}: cannot remove this element without rewriting other text; edit the file by hand"
+    steps = parse_key(key)
+    if steps[-1][0] == "index":
+        raise OpInputError(f"{key}: remove by index is not supported; address the element by id, like name[id]")
+    if len(steps) > 2:
+        raise OpInputError(f"{key}: remove takes a top-level list element name[id]; a nested path (one field, or a list below an element) is not supported")
+    if len(steps) != 2 or steps[1][0] != "id":
+        raise OpInputError(f"{key}: remove needs a list element like name[id]; this is not one")
+    data = yaml.safe_load(t)
+    element = walk(data, key)[0]                 # raises the "no key", "needs a list" and "no element with id" errors
+    expected = copy.deepcopy(data)
+    _, exp_list, _, exp_i = walk(expected, key)
+    del exp_list[exp_i]                          # the reference result for Verify 1
+    _, seq, _, i = walk(yamlio.load(t), key)
+    if seq.fa.flow_style():
+        raise OpInputError(hand)
+    lines = t.split("\n")
+    start, col = seq.lc.item(i)
+    body = lines[start].lstrip()
+    if not body.startswith("- "):
+        raise OpInputError(hand)
+    if seq[i].fa.flow_style():
+        close = _close_brace(lines[start], col) if lines[start][col:col + 1] == "{" else -1
+        rest = lines[start][close + 1:].strip() if close >= 0 else "?"
+        if rest and not rest.startswith("#"):
+            raise OpInputError(hand)             # a multi-line flow entry, or text after the closing brace
+        last = start
+    else:
+        last = _block_end(lines, start, len(lines[start]) - len(body), False)
+    first = start
+    mine = re.compile(r"#\s*" + re.escape(str(steps[1][1])) + r"(?![A-Za-z0-9_-])")
+    j = start - 1
+    while j >= 0 and lines[j].lstrip().startswith("#"):
+        if mine.match(lines[j].lstrip()):
+            first = j                            # the topmost comment line that begins with the id
+        j -= 1
+    out = "\n".join(lines[:first] + lines[last + 1:])
+    if yaml.safe_load(out) != expected:
+        raise OpInputError(hand)
+    for tag, *_ in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+        if tag not in ("equal", "delete"):
+            raise OpInputError(f"{key}: removing would rewrite other lines; edit the file by hand")
+    return (out.replace("\n", "\r\n") if crlf else out), element
+
+
 def _errors(data) -> dict:
     v = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
     return {(tuple(map(str, e.absolute_path)), e.message): e for e in v.iter_errors(data)}
