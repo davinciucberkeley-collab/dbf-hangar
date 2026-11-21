@@ -135,8 +135,8 @@ def test_scorecard_rows_and_staleness(tmp_path, monkeypatch):
     rows = fea.tier2_fea(d)
     ok = [r for r in rows if r.status == "PASS"]
     assert len(ok) == 1 and "ger-001-ll landing" in ok[0].message and ok[0].criterion.endswith("fea_allowable_printed_petg_mpa")
-    # any edit to the design makes the stored result out of date
-    (dst / "plane.yaml").write_text((dst / "plane.yaml").read_text() + "\n# edited\n")
+    # an edit to the part's own geometry makes the stored result out of date
+    import yaml; data = yaml.safe_load((dst / "plane.yaml").read_text(encoding="utf-8")); next(c for c in data["components"] if c["id"] == "ger-001-ll")["position"][0] += 1.0; (dst / "plane.yaml").write_text(yaml.safe_dump(data, sort_keys=False), encoding="utf-8")
     d2 = load_design(dst / "plane.yaml")
     assert any(r.status == "SKIP" and "out of date" in r.message for r in fea.tier2_fea(d2))
 

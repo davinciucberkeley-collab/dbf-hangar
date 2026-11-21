@@ -32,7 +32,7 @@ from pathlib import Path
 import numpy as np
 import trimesh
 
-from .design import REPO_ROOT, STANDARDS_PATH, CheckResult, Design, load_standards
+from .design import REPO_ROOT, CheckResult, Design, load_standards
 from .geometry import component_parts
 
 STD = "design-standards.yaml#"
@@ -154,14 +154,49 @@ def _wall_thickness(mesh: trimesh.Trimesh, n: int = 3000) -> dict:
     return {"p5": round(float(np.percentile(t, 5)), 2), "median": round(float(np.median(t)), 2)}
 
 
+# The standards values FEA results depend on (fea.plan, and sim.joint_load_cases for the load cases).
+# Add a key here when fea.py or sim.py starts reading another one; the hash covers values only, not rule/source text.
+FEA_STANDARDS_KEYS = {
+    "structure": ("fea_allowable_printed_petg_mpa", "fea_material_printed_petg", "fea_singularity_band_mm",
+                  "ultimate_factor"),
+    "sim": ("drop_height_m", "duration_s"),
+}
+
+
+def standards_fingerprint() -> bytes:
+    """Canonical bytes of the `value` of each standards key in FEA_STANDARDS_KEYS (see part_hash)."""
+    std = load_standards()
+    picked = {sec: {k: std[sec][k]["value"] for k in keys} for sec, keys in FEA_STANDARDS_KEYS.items()}
+    return json.dumps(picked, sort_keys=True, separators=(",", ":")).encode("utf-8")
+
+
+# Keys of OTHER components that the load cases read (geometry.py and sim.py). The part's own entry is hashed whole.
+FEA_COMPONENT_KEYS = ("id", "type", "mass_g", "position", "rotation_deg", "cg_offset", "geometry", "cavities", "propulsion")
+
+
+def part_inputs_fingerprint(design: Design, part_id: str) -> bytes:
+    """Canonical bytes of the plane.yaml fields this part's result depends on: its own component entry, the load-relevant
+    keys of every other component, all attachments (supports, load joints, welds), the root and the VTOL method."""
+    data = design.data
+    comps = [c if c["id"] == part_id else {k: c[k] for k in FEA_COMPONENT_KEYS if k in c} for c in design.components]
+    picked = {"root": data.get("root"), "vtol_method": (data.get("morphology") or {}).get("vtol_method"),
+              "components": comps, "attachments": data.get("attachments", [])}
+    return json.dumps(picked, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
+
+
 def part_hash(design: Design, part_id: str) -> str:
-    """Everything the result depends on: the design file, the part's files, the standards and the runner."""
+    """Everything the result depends on: this part's inputs in the design file, the mesh files of the part and of every component, the standards values FEA reads and the runner."""
     h = hashlib.sha256()
-    h.update((design.base_dir / "plane.yaml").read_bytes())
-    for f in sorted((design.base_dir / "meshes").glob("*")) if (design.base_dir / "meshes").is_dir() else []:
-        if f.stem == part_id:
-            h.update(f.read_bytes())
-    h.update(STANDARDS_PATH.read_bytes())
+    h.update(part_inputs_fingerprint(design, part_id))
+    mesh_dir = design.base_dir / "meshes"
+    files = {f for f in mesh_dir.glob("*") if f.stem == part_id} if mesh_dir.is_dir() else set()
+    for c in design.components:   # other components' meshes set the aircraft's CG and so every joint load
+        mf = ((c.get("geometry") or {}).get("mesh") or {}).get("file")
+        if mf and (design.base_dir / mf).is_file():
+            files.add(design.base_dir / mf)
+    for f in sorted(files):
+        h.update(f.read_bytes())
+    h.update(standards_fingerprint())
     h.update(RUNNER.read_bytes())
     return h.hexdigest()[:16]
 
