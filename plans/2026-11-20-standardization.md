@@ -512,7 +512,8 @@ Layers: **W3a** briefs for every unit in parallel, plus W3.0 (PROGRESS.md review
 | W3-T1, T6 | `tactician` | Sonnet | §7 U3.1, U3.6 (+ §1c, §2.7) + merged W2 code | `briefs/U3.1-studio.md`, `briefs/U3.6-discipline-gates.md` | builder-ready bar; Plan coverage complete |
 | W3-T2, T3, T5 | `tactician` | Sonnet | §7 U3.2, U3.3, U3.5 (+ §1c, extracts) | `briefs/U3.2-skills.md`, `briefs/U3.3-bench.md`, `briefs/U3.5-discipline-skills.md` | same |
 | W3-A | `advisor` | Opus | the two hard briefs | recommendation per brief | "builder-ready" or numbered gaps |
-| W3-0, W3-2, W3-3, W3-5 | `builder` | Haiku | their briefs | `std/w3.0-progress`, `std/u3.2-skills`, `std/u3.3-bench`, `std/u3.5-discipline-skills` | brief's checks; CI green on both OSes |
+| W3-0, W3-2, W3-3 | `builder` | Haiku | their briefs | `std/w3.0-progress`, `std/u3.2-skills`, `std/u3.3-bench` | brief's checks; CI green on both OSes |
+| W3-5a, W3-5b, W3-5c | `builder` | Haiku | `briefs/U3.5-discipline-skills-{1,2,3}.md` (split by the tactician: skills+tests after U3.2 merges; scorecard+pointers and procedures+PROVENANCE (R18) any time) | `std/u3.5-discipline-skills`, `std/u3.5-scorecard`, `std/u3.5-procedures` | same |
 | W3-1, W3-6 | `builder-plus` | Sonnet | hard briefs | `std/u3.1-studio`, `std/u3.6-discipline-gates` | same |
 | W3-4 | `design-engineer` | Sonnet | §7 U3.4 step 1 goal, concept-a | `design/concept-a/*` PRs | `git diff --name-only main...<branch> \| grep -c '^core/'` → 0; scorecard failures < `baseline.json` |
 | W3-R1, W3-R2 | `reviewer` | Opus (fresh, up to two) | units split between them | `reviews/2026-11-2x-w3.md` | "### Verdict: ACCEPT" per unit; merge order checked |
