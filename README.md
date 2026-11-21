@@ -34,13 +34,13 @@ plane tools doctor            # each tool: ok, missing (with the fix) or planned
 python -m pytest -q -m "not slow" -n auto
 ```
 
-If `plane --version` does not show the version from this checkout, an older `plane` is earlier on PATH. Run `.venv/Scripts/plane` (Git Bash) or `.\.venv\Scripts\plane` (PowerShell) instead.
+`plane --version` should print `1.0.0.dev0`. If it does not, an older `plane` is earlier on PATH. Run `.venv/Scripts/plane` (Git Bash) or `.\.venv\Scripts\plane` (PowerShell) instead.
 
 ## Common tasks
 
 Replace `<id>` with a design folder name from `plane list`. Most commands take `--json` for machine-readable output.
 
-- **Validate a design:** `plane design validate designs/<id>`
+- **Validate a design:** `plane design validate designs/<id>` (runs T0 to T5 by default; `--tier all` runs every tier)
 - **Change a value:** `plane design set designs/<id> requirements.mtow_g --value 950 --why "reason"`. The key is a dotted path into `plane.yaml`; `--kind add|subtract|modify` (default `modify`) is logged in `CHANGELOG.yaml`.
 - **Compare two designs:** `plane design diff designs/<id-a> designs/<id-b>`
 - **Sweep one value:** `plane design sweep designs/<id> requirements.mtow_g --values 900 --values 1000` (each value runs on a scratch copy; the source is not touched)
@@ -56,7 +56,7 @@ Replace `<id>` with a design folder name from `plane list`. Most commands take `
 ## How it fits together
 
 - A design is a folder `designs/<id>/` with a `plane.yaml` written in PDL (Plane Design Language). Designs are data, not code.
-- One operations layer (`core/hangar/ops/`) holds every operation. The `plane` CLI, the MCP server ([docs/mcp.md](docs/mcp.md)) and Plane Studio are all generated from it.
+- One operations layer (`core/hangar/ops/`) holds every operation. The `plane` CLI and the MCP server ([docs/mcp.md](docs/mcp.md)) are generated from it, and Plane Studio is built on it.
 - Checks run as gates T0 to T9 (`plane gate list`): schema, geometry, physics, aero, manufacturing, standards, mechanisms, integration, sourcing and claims.
 - Every threshold lives in `standards/*.yaml`, with a source or marked `pending`.
 - Claims in `claims.yaml` are recomputed from the design's values on every check. A claim with a negative margin fails T9; a claim with no calculation stays proposed.
@@ -64,7 +64,7 @@ Replace `<id>` with a design folder name from `plane list`. Most commands take `
 
 ## Rules
 
-- Design changes and code changes go in separate PRs. CI rejects a PR that touches both `designs/` and `core/`, unless it has the `migration` label.
+- Each commit either changes `designs/` or `core/`, not both. CI checks each commit; a commit that touches both needs a `migration:` line in its message.
 - Change designs with `plane design set` and the other design commands. Do not edit code to change a design.
 - Thresholds go only in `standards/*.yaml`, each with a source or `pending`. Fix the design, not the threshold.
 - `PROGRESS.md` is generated. After ticking plan boxes, adding review verdicts or changing the ledger, run `plane progress --write` in the same commit. Do not edit it by hand.
