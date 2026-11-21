@@ -77,8 +77,8 @@ aero:
   hover_thrust_to_weight_min:
     value: 1.5
     rule: VTOL designs need total lift-motor thrust at least this multiple of weight.
-    source: pending
-    note: "Options from knowledge/sources: 1.5 (std-vtol-thrust-to-weight-paper, top of the 1.2 to 1.5 range cited to Raymer, ref. 16, Introduction p. 166; current value); 1.2 (std-vtol-thrust-to-weight-paper, bottom of the same range); 1.05 floor not found in that paper (std-vtol-thrust-to-weight-paper); 2.0 (no scout file gives it). Decision D6 (Tristan/Dylan) picks one value; until then this key stays pending."
+    source: "knowledge/sources/std-vtol-thrust-to-weight-paper.md (Kamal and Ramirez-Serrano 2018, citing Raymer 5e: hover T/W 1.2 to 1.5, Introduction p. 166)"
+    note: "top of cited range (D6 default). 1.05 floor not found in that paper; 2.0 has no scout source."
   hover_moment_reference_lever_m:
     value: 0.05
     rule: Reference lever arm for the hover moment check; imbalance is compared with total lift thrust times this lever.

@@ -56,7 +56,8 @@ def test_standards_pending_shape():
         assert isinstance(row["blocking"], bool)
         assert isinstance(row["candidates"], list) and all(isinstance(c, str) for c in row["candidates"])
     keys = {row["key"] for row in items}
-    assert {"hover_thrust_to_weight_min", "landing_load_factor"} <= keys
+    assert "landing_load_factor" in keys
+    assert "hover_thrust_to_weight_min" not in keys
     conn_pending = {t["id"] for t in call("standards.connections").data["connection_types"]
                     if t["source"] == "pending"}
     conn_rows = [row for row in items if row["key"] in conn_pending]
@@ -67,7 +68,7 @@ def test_standards_pending_shape():
 def test_every_pending_value_is_listed_with_candidates():
     rows = {row["key"]: row for row in call("standards.pending").data["items"]}
     stems = {p.stem for p in SOURCES.glob("*.md")}
-    for key in ("landing_load_factor", "hover_thrust_to_weight_min"):
+    for key in ("landing_load_factor",):
         candidates = rows[key]["candidates"]
         assert candidates, key
         assert set(candidates) <= stems, key
