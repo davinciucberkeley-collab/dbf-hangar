@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+import difflib
 import json
 import math
 import re
@@ -11,6 +12,7 @@ import yaml
 from jsonschema import Draft202012Validator
 from ruamel.yaml import YAML
 
+from . import yamlio
 from .design import SCHEMA_PATH
 from .ops import OpInputError
 
@@ -122,6 +124,179 @@ def patch_text(text: str, key: str, new) -> str:
     if yaml.safe_load(patched) != expected:
         raise OpInputError(f"{key}: cannot change this value without rewriting other text; edit the file by hand")
     return patched
+
+
+def exists(data, key: str) -> bool:
+    """True when every step of `key` resolves in `data` (uses walk; False on OpInputError)."""
+    try:
+        walk(data, key)
+    except OpInputError:
+        return False
+    return True
+
+
+def _create(root, key: str, new, mk_map, mk_list):
+    """Walk `key` from `root`, creating what is missing; return the mapping that received the final key."""
+    steps = parse_key(key)
+    node = root
+    for i, step in enumerate(steps):
+        kind, v = step
+        last = i == len(steps) - 1
+        nxt = None if last else steps[i + 1]
+        if kind == "key":
+            if not isinstance(node, dict):
+                raise OpInputError(f"{key}: {v!r} needs a mapping")
+            if v in node:
+                if last:
+                    raise OpInputError(f"{key}: already set; use --kind modify")
+            elif last:
+                node[v] = new
+                return node
+            elif nxt[0] == "id":
+                node[v] = mk_list()
+            elif nxt[0] == "key":
+                node[v] = mk_map()
+            else:
+                raise OpInputError(f"{key}: no key {v!r}; cannot add a list element by index")
+            node = node[v]
+        elif kind == "index" or any(isinstance(x, dict) and str(x.get("id")) == v for x in (node if isinstance(node, list) else [])):
+            child = _child(node, step, key)[0]      # an out-of-range index raises here
+            if last:
+                raise OpInputError(f"{key}: already set; use --kind modify")
+            node = child
+        else:
+            if not isinstance(node, list):
+                raise OpInputError(f"{key}: [{v}] needs a list")
+            if last:
+                raise OpInputError(f"{key}: name a scalar value, not a list element")
+            item = mk_map()
+            item["id"] = v
+            node.append(item)
+            node = item
+    raise OpInputError(f"{key}: nothing to add")
+
+
+def _locate(root, key: str):
+    """Deepest existing node on `key`'s path and the steps still to create (key already passed _create)."""
+    steps = parse_key(key)
+    node = root
+    for i, step in enumerate(steps):
+        kind, v = step
+        if kind == "key":
+            if v not in node:
+                return node, steps[i:]
+        elif kind == "index":
+            pass
+        elif not any(isinstance(x, dict) and str(x.get("id")) == v for x in node):
+            return node, steps[i:]
+        node = _child(node, step, key)[0]
+    raise OpInputError(f"{key}: nothing to add")
+
+
+def _emit(rest, indent: int, new, key: str) -> list[str]:
+    """Block-YAML lines that create the chain `rest` (key / id steps) at `indent`, in the repo's layout."""
+    sp = " " * indent
+    kind, v = rest[0]
+    if kind != "key":
+        raise OpInputError(f"{key}: cannot add this value without rewriting other text; edit the file by hand")
+    if len(rest) == 1:
+        return [f"{sp}{v}: {render_scalar(new)}"]
+    if rest[1][0] == "key":
+        return [f"{sp}{v}:"] + _emit(rest[1:], indent + 2, new, key)
+    if rest[1][0] == "id" and len(rest) > 2 and rest[2][0] == "key":
+        out = _emit(rest[2:], indent + 4, new, key)
+        return [f"{sp}{v}:", f"{sp}  - id: {render_scalar(rest[1][1])}"] + out
+    raise OpInputError(f"{key}: cannot add this value without rewriting other text; edit the file by hand")
+
+
+def _block_end(lines: list[str], start: int, ind: int, same_indent_dash: bool) -> int:
+    """Index of the last content line of the block whose last entry starts at `start`."""
+    end = start
+    for j in range(start + 1, len(lines)):
+        line = lines[j]
+        body = line.lstrip()
+        if not body or body.startswith("#"):
+            continue
+        n = len(line) - len(body)
+        if n > ind or (same_indent_dash and n == ind and body.startswith("- ")):
+            end = j
+        else:
+            break
+    return end
+
+
+def _close_brace(line: str, col: int) -> int:
+    depth, i, q = 0, col, None
+    while i < len(line):
+        c = line[i]
+        if q:
+            if q == '"' and c == "\\":
+                i += 1
+            elif c == q:
+                q = None
+        elif c in "\"'":
+            q = c
+        elif c in "{[":
+            depth += 1
+        elif c in "}]":
+            depth -= 1
+            if depth == 0:
+                return i
+        i += 1
+    return -1
+
+
+def add_value(text: str, key: str, new) -> str:
+    """Return the patched text: create what `key` needs and set the last step to the scalar `new`.
+
+    The new lines are spliced into the original text (comments and layout stay); the file is never re-emitted.
+    """
+    crlf = "\r\n" in text
+    t = text.replace("\r\n", "\n")
+    expected = copy.deepcopy(yaml.safe_load(t))
+    _create(expected, key, new, dict, list)      # raises the input errors; also the reference result
+    node, rest = _locate(yamlio.load(t), key)
+    lines = t.split("\n")
+    hand = f"{key}: cannot add this value without rewriting other text; edit the file by hand"
+    flow_line = None
+    if isinstance(node, dict) and node.fa.flow_style():
+        line_no, col = node.lc.line, node.lc.col
+        end = _close_brace(lines[line_no], col) if lines[line_no][col:col + 1] == "{" else -1
+        if len(rest) != 1 or end < 0:
+            raise OpInputError(hand)
+        head = lines[line_no][:end].rstrip()
+        sep = "" if head.endswith("{") else ","
+        lines[line_no] = f"{head}{sep} {rest[0][1]}: {render_scalar(new)}{lines[line_no][end:]}"
+        flow_line = line_no
+    elif isinstance(node, dict):
+        first = next(iter(node), None)
+        if first is None:
+            raise OpInputError(hand)
+        ind = node.lc.key(first)[1]
+        last_key = list(node)[-1]
+        at = _block_end(lines, node.lc.key(last_key)[0], ind, True)
+        lines[at + 1:at + 1] = _emit(rest, ind, new, key)
+    else:
+        if not node or node.fa.flow_style() or len(rest) < 2 or rest[0][0] != "id" or rest[1][0] != "key":
+            raise OpInputError(hand)
+        start = node.lc.item(len(node) - 1)[0]
+        dash = len(lines[start]) - len(lines[start].lstrip())
+        if not lines[start].lstrip().startswith("- "):
+            raise OpInputError(hand)
+        at = _block_end(lines, start, dash, False)
+        body = _emit(rest[1:], dash + 2, new, key)
+        body[0] = " " * dash + "- id: " + render_scalar(rest[0][1]) + "\n" + body[0]
+        lines[at + 1:at + 1] = "\n".join(body).split("\n")
+    out = "\n".join(lines)
+    if yaml.safe_load(out) != expected:
+        raise OpInputError(hand)
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+        if tag in ("equal", "insert"):
+            continue
+        if tag == "replace" and i2 - i1 == 1 and j2 - j1 == 1 and i1 == flow_line:
+            continue
+        raise OpInputError(f"{key}: adding would rewrite other lines; edit the file by hand")
+    return out.replace("\n", "\r\n") if crlf else out
 
 
 def _errors(data) -> dict:
