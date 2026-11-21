@@ -206,7 +206,9 @@ class ClaimGraph:
                 return self._pdl(ref)
             if t == "claim":
                 res, unconf = evaluate(ref)
-                return (res.value is not None and unconf is None), res.value
+                # confirmed only if recomputed in this run from its own calc (not stored-only, not PROPOSED)
+                recomputed = "calc" in n and unconf is None and res.status in ("PASS", "FAIL", "STALE")
+                return (res.value is not None and recomputed), res.value
             if t == "assumption":
                 return n.get("value") is not None, n.get("value")
             return False, None

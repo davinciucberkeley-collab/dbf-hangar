@@ -352,3 +352,22 @@ def test_design_dir_calcs_py_is_never_imported(tmp_mini):
     tier9_claims(d)
     assert r["CL-AERO-TW"].value == pytest.approx(1.72)
     assert call("claim.check", path=str(tmp_mini)).data.get("error") != "internal"
+
+
+def test_calc_over_stored_only_claim_is_proposed(tmp_mini):
+    def fn(n):
+        n["CALC-DBL"] = {"id": "CALC-DBL", "type": "calculation", "title": "d", "function": "twice",
+                         "inputs": {"x": "CL-STR-CLEAR"}}
+        n["CL-DBL"] = {"id": "CL-DBL", "type": "claim", "title": "d", "calc": "CALC-DBL", "output": "y", "unit": "m",
+                       "limit": {"op": ">=", "value": 0}, "how": "x"}
+    edit_claims(tmp_mini, fn)
+    register_calcs({"twice": _twice})
+    d = load_design(tmp_mini)
+    r = results(d)
+    assert r["CL-STR-CLEAR"].status == "PROPOSED"
+    assert r["CL-DBL"].status == "PROPOSED" and "CL-STR-CLEAR" in r["CL-DBL"].message
+    assert status(d, "T9.claim.CL-DBL") == SKIP
+
+
+def _twice(x):
+    return {"y": 2 * x}
