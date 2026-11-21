@@ -57,9 +57,9 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 35 | 5 | 0 | 0 | 0 | 40 |
-| task | 18 | 1 | 0 | 0 | 0 | 19 |
+| task | 19 | 1 | 0 | 0 | 0 | 20 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
-| decision | 13 | 0 | 0 | 3 | 209 | 225 |
+| decision | 12 | 0 | 0 | 3 | 210 | 225 |
 
 ## Overdue
 
