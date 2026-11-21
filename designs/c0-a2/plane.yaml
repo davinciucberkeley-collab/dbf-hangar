@@ -5,7 +5,7 @@ schema_version: "1.0"
 id: c0-a2
 name: A2 BLI pusher on a stretched boat-tail (derived from C0 v0.4.0)
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "converted for aircraft-platform by a tactician agent"]
-status: concept
+status: retired
 description: >
   C0 with the pod tail cone stretched 100 mm (0.35 m to 0.45 m) so the pusher runs deeper in the pod wake, the cone built as a
   removable printed module. Same motor, ESC and prop as C0. Numbers from the team's A2 variant (v0.3.1 baseline, rev 2) applied as

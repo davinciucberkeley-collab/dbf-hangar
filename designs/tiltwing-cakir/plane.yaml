@@ -9,7 +9,7 @@ schema_version: "1.0"
 id: tiltwing-cakir
 name: TiltWing tilt-wing VTOL (Cakir & Kurtulus 2022 study)
 authors: ["davinciucberkeley-collab/TiltWing (source repo, model after Cakir & Kurtulus 2022)", "converted for aircraft-platform by a tactician agent"]
-status: concept
+status: retired
 description: >
   Parametric tilt-wing VTOL study: 2.0 m S1223 tilting wing with 4 tractor rotors, tilting NACA 0009 horizontal tail
   with 2 rotors, no vertical tail (model.js header). Mass 9.153 kg by the sizing (M1). Nothing has been built
