@@ -1,7 +1,7 @@
 # A2: C0 (v0.4.0) with the pod boat-tail stretched 100 mm and the pusher moved aft with it. Derived from designs/c0-lift-cruise.
 # Baseline: variant numbers are from the v0.3.1 baseline (6.182 kg, 20 m/s) per DECISIONS.md; every parameter not changed by the variant is C0 v0.4.0. See README.md.
 # Frame: same transform as C0 (body x aft from the pod nose, x = 600 - 1000 X_cad), see designs/c0-lift-cruise/README.md.
-schema_version: "0.1"
+schema_version: "1.0"
 id: c0-a2
 name: A2 BLI pusher on a stretched boat-tail (derived from C0 v0.4.0)
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "converted for aircraft-platform by a tactician agent"]

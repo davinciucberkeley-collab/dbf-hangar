@@ -1,6 +1,6 @@
 # Example design so every tool has something real to run on.
 # Twin-motor flying-wing tailsitter: hovers nose-up on its wingtip fins, transitions to wing-borne flight.
-schema_version: "0.1"
+schema_version: "1.0"
 id: example-tailsitter-wing
 name: Example twin-motor tailsitter flying wing
 authors: [platform bootstrap]

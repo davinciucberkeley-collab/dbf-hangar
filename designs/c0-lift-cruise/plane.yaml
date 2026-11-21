@@ -3,7 +3,7 @@
 # transform (CAD X fwd / Y up / Z right, metres, nose at X +0.600  ->  body x = 600 - 1000 X,
 # y = 1000 Z, z = 1000 Y) and the provenance table. Every number cites its source in a comment;
 # anything the source does not give is marked "placeholder — not from source".
-schema_version: "0.1"
+schema_version: "1.0"
 id: c0-lift-cruise
 name: C0 lift+cruise quadplane (UC Berkeley DBF capstone, v0.4.0)
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "converted for aircraft-platform by a tactician agent"]
