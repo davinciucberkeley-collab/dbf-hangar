@@ -38,36 +38,55 @@ def _text(p: Path) -> str:
 @op(name="design.set", summary="Change one scalar in plane.yaml (byte-preserving) and log it in CHANGELOG.yaml.",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def set_op(path: str, key: str, *, value: str, why: str,
-           kind: Literal["add", "subtract", "modify"] = "modify") -> OpResult:
+           kind: Literal["add", "subtract", "modify"] = "modify", also: list[str] = None) -> OpResult:
     plane = _plane(path)
     text = _text(plane)
     if not why.strip():
         raise OpInputError("why must not be empty")
-    new = pdledit.parse_scalar(value)
+    pairs = [(key, value)]
+    for item in also or []:
+        k, sep, v = item.partition("=")
+        if not sep or not k.strip():
+            raise OpInputError("--also needs KEY=VALUE")
+        pairs.append((k.strip(), v))
+    if len({k for k, _ in pairs}) != len(pairs):
+        raise OpInputError("a key is given more than once")
     before = yaml.safe_load(text)
-    old = pdledit.get_value(before, key)
-    if old == new and type(old) is type(new):
-        return OpResult(True, {"key": key, "old": old, "new": new, "changed": False}, [f"{key}: unchanged"])
-    patched = pdledit.patch_text(text, key, new)
-    pdledit.check_schema(before, yaml.safe_load(patched), key)
+    working, entries = text, []
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    for k, raw in pairs:
+        new = pdledit.parse_scalar(raw)
+        data = yaml.safe_load(working)
+        if pdledit.exists(data, k):
+            old = pdledit.get_value(data, k)
+            if len(pairs) == 1 and old == new and type(old) is type(new):
+                return OpResult(True, {"key": k, "old": old, "new": new, "changed": False}, [f"{k}: unchanged"])
+            working = pdledit.patch_text(working, k, new)
+        elif kind == "add":
+            old = None
+            working = pdledit.add_value(working, k, new)
+        else:
+            pdledit.get_value(data, k)      # raises the "no key" error
+        entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": kind})
+    pdledit.check_schema(before, yaml.safe_load(working), key)
     log = plane.with_name("CHANGELOG.yaml")
     eol = "\r\n" if "\r\n" in text else "\n"
     log_text = _text(log) if log.exists() else ""
     if log_text.strip() == "[]":
         log_text = ""
-    entry = {"date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "key": key, "old": old, "new": new,
-             "why": why, "kind": kind}
-    block = yaml.safe_dump([entry], sort_keys=False, allow_unicode=True).replace("\n", eol)
+    block = yaml.safe_dump(entries, sort_keys=False, allow_unicode=True).replace("\n", eol)
     if log_text and not log_text.endswith("\n"):
         log_text += eol
     combined = log_text + block
     parsed = yaml.safe_load(combined)
-    if not isinstance(parsed, list) or not parsed or parsed[-1] != entry:
+    if not isinstance(parsed, list) or len(parsed) < len(entries) or parsed[-len(entries):] != entries:
         raise OpInputError("CHANGELOG.yaml is not a YAML list; fix it by hand")
-    plane.write_bytes(patched.encode("utf-8"))
+    plane.write_bytes(working.encode("utf-8"))
     log.write_bytes(combined.encode("utf-8"))
-    return OpResult(True, {"key": key, "old": old, "new": new, "kind": kind, "changed": True},
-                    [f"{key}: {old!r} -> {new!r}"], changed_files=[str(plane), str(log)])
+    msgs = [f"{e['key']}: {e['old']!r} -> {e['new']!r}" for e in entries]
+    return OpResult(True, {"key": key, "old": entries[0]["old"], "new": entries[0]["new"], "kind": kind, "changed": True,
+                           "changes": [{"key": e["key"], "old": e["old"], "new": e["new"]} for e in entries]},
+                    msgs, changed_files=[str(plane), str(log)])
 
 
 @op(name="design.diff", summary="List the keys whose values differ between two designs.",

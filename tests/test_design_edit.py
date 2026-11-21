@@ -173,3 +173,106 @@ def test_propose_refuses_when_nothing_changed(tmp_example, tmp_path, monkeypatch
     monkeypatch.setattr(edit, "_run", fake_run)
     r = call("design.propose", path=str(tmp_example), title="x")
     assert r.ok is False and r.exit_code == 2
+
+
+# ---- design.set --kind add (U3.6-2) ----
+import difflib
+
+from hangar import pdledit
+from hangar.ops import OpInputError
+
+
+def _bytes(d):
+    return (d / "plane.yaml").read_bytes(), (d / "CHANGELOG.yaml").read_bytes() if (d / "CHANGELOG.yaml").exists() else None
+
+
+def test_add_creates_missing_scalar_and_keeps_comments(tmp_concept_a):
+    plane = tmp_concept_a / "plane.yaml"
+    old_text = plane.read_text(encoding="utf-8")
+    r = call("design.set", path=str(tmp_concept_a), key="flight.hover_pose", value="up", why="d21", kind="add")
+    assert r.ok, r.messages
+    new_text = plane.read_text(encoding="utf-8")
+    assert yaml.safe_load(new_text)["flight"]["hover_pose"] == "up"
+    for line in old_text.splitlines():
+        if line.strip().startswith("#"):
+            assert line in new_text.splitlines()
+    log = yaml.safe_load((tmp_concept_a / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+    assert log[-1]["kind"] == "add" and log[-1]["old"] is None and log[-1]["new"] == "up"
+
+
+def test_add_creates_list_element_and_mapping(tmp_concept_a):
+    text = (tmp_concept_a / "plane.yaml").read_text(encoding="utf-8")
+    t1 = pdledit.add_value(text, "wiring.harnesses[hrn-bat].from", "pwr-001")
+    assert yaml.safe_load(t1)["wiring"]["harnesses"] == [{"id": "hrn-bat", "from": "pwr-001"}]
+    t2 = pdledit.add_value(t1, "wiring.harnesses[hrn-bat].to", "prp-003")
+    assert yaml.safe_load(t2)["wiring"]["harnesses"] == [{"id": "hrn-bat", "from": "pwr-001", "to": "prp-003"}]
+
+
+_HARNESS = "wiring.harnesses[hrn-bat]"
+
+
+def test_add_op_builds_harness_in_one_call(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    r = call("design.set", path=str(tmp_concept_a), key=f"{_HARNESS}.from", value="pwr-001", why="d21", kind="add")
+    assert r.ok is False and "required" in " ".join(r.messages)
+    assert _bytes(tmp_concept_a) == before
+    r = call("design.set", path=str(tmp_concept_a), key=f"{_HARNESS}.from", value="pwr-001", why="d21", kind="add",
+             also=[f"{_HARNESS}.to=prp-003", f"{_HARNESS}.gauge_awg=14"])
+    assert r.ok, r.messages
+    v = call("design.validate", path=str(tmp_concept_a), tier="0")
+    assert not [m for m in v.messages if m.startswith("T0.schema")], v.messages
+    log = yaml.safe_load((tmp_concept_a / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+    assert len(log) == 3
+
+
+def test_add_two_pairs_bad_type_writes_nothing(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    r = call("design.set", path=str(tmp_concept_a), key=f"{_HARNESS}.from", value="pwr-001", why="d21", kind="add",
+             also=[f"{_HARNESS}.to=prp-003", f"{_HARNESS}.gauge_awg=x"])
+    assert r.ok is False
+    assert _bytes(tmp_concept_a) == before
+
+
+def test_modify_on_missing_key_still_fails(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    r = call("design.set", path=str(tmp_concept_a), key="flight.hover_pose", value="up", why="x", kind="modify")
+    assert r.ok is False and r.exit_code == 2
+    assert _bytes(tmp_concept_a) == before
+
+
+def test_add_preserves_crlf(tmp_example):
+    p = tmp_example / "plane.yaml"
+    p.write_bytes(p.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n"))
+    r = call("design.set", path=str(tmp_example), key="flight.hover_pose", value="up", why="x", kind="add")
+    assert r.ok, r.messages
+    raw = p.read_bytes()
+    assert raw.count(b"\n") == raw.count(b"\r\n") > 0
+
+
+def test_add_value_refuses_existing_key(tmp_example):
+    text = (tmp_example / "plane.yaml").read_text(encoding="utf-8")
+    with pytest.raises(OpInputError, match="already set"):
+        pdledit.add_value(text, "flight.cl_max", 1.0)
+
+
+def test_add_provenance_pair_is_inserts_only(tmp_concept_a):
+    plane = tmp_concept_a / "plane.yaml"
+    old = plane.read_text(encoding="utf-8").splitlines()
+    r = call("design.set", path=str(tmp_concept_a), key="components[pwr-001].provenance.mass_source", value="datasheet",
+             why="d21", kind="add", also=["components[pwr-001].provenance.geometry_source=vendor drawing"])
+    assert r.ok, r.messages
+    new = plane.read_text(encoding="utf-8").splitlines()
+    tags = {t for t, *_ in difflib.SequenceMatcher(None, old, new, autojunk=False).get_opcodes()}
+    assert tags <= {"equal", "insert"} and "insert" in tags
+
+
+def test_add_connection_changes_one_line(tmp_concept_a):
+    plane = tmp_concept_a / "plane.yaml"
+    old = plane.read_text(encoding="utf-8").splitlines()
+    r = call("design.set", path=str(tmp_concept_a), key="attachments[E-WNG-01].connection", value="CT-M3-SHCS-INSERT",
+             why="d21", kind="add")
+    assert r.ok, r.messages
+    new = plane.read_text(encoding="utf-8").splitlines()
+    ops = [o for o in difflib.SequenceMatcher(None, old, new, autojunk=False).get_opcodes() if o[0] != "equal"]
+    assert len(ops) == 1 and ops[0][0] == "replace" and ops[0][2] - ops[0][1] == 1 and ops[0][4] - ops[0][3] == 1
+    assert "E-WNG-01" in old[ops[0][1]] and "{" in old[ops[0][1]]
