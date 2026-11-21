@@ -51,5 +51,29 @@ Spec: Tristan's request (§6g task text) and plan §1b. Criteria: `_RULES.md` (c
 6. U3.5 Step 1 says "the three above" but the Test line names two new tests and one existing.
 7. Local env: the `plane` script on PATH is a stale install; `pip install -e .` would let reviewers run the documented commands.
 
-### Verdict: REJECT
+Round 1 result (55f9611): REJECT
 Eight text fixes (counts, stale "40"/"seven"/modal pointer, brief scope, §1c↔U3.6 promise). The fold-in itself (codes, counts table, no agents, units off the core path, D19-D21, T12-T14, PROVENANCE) meets the spec; re-review needs only the eight lines.
+
+## Round 2 (main @ 874c16f, "discipline fold-in review fixes 1-8")
+Verified with `git diff 55f9611 HEAD -- plans/ ledger/items.yaml` (other changes in that range are W2 merges and ticks, ignored).
+
+| Check | Result |
+|---|---|
+| Extract script, rerun | 1935 rows, every row exactly one allowed code (0 bad, 0 multi-code); totals unchanged and equal to §1c line 114; 367 distinct STD keys; 0 `T2.modal_separation` references left |
+| `plane ledger check` | `ledger check: no problems` |
+| `plane progress --check` | `PROGRESS.md is up to date` |
+
+| Fix | Result | Evidence |
+|---|---|---|
+| 1 D19 count | PASS | plan D19 and ledger D19 text: "367 standards keys (after the re-tag pass)" |
+| 2 knowledge rows | PASS | §1c: "(19 topics, 128 rows)" |
+| 3 dropped rows | PASS | §1c: "**Dropped (1,015):**" |
+| 4 §1b roles | PASS | line 105: "(45 discipline roles)" |
+| 5 T14 | PASS | items.yaml T14: "five discipline gates" |
+| 6 A2.md:30 pointer | PASS | "DROP:k09l-instance (rule: SKILL:review-structures/modal)" |
+| 7 U2.2 brief scope | PASS | brief line 136: "only keys that **existing** gates and skills on `main` read"; matches plan line 902 |
+| 8 §1c line 117 vs U3.6 | PASS | plan:1072 inside U3.6: existing-gate rows become fixtures and criteria text (`test_discipline_gates.py::test_existing_gate_rows_*`), no new code |
+
+Non-blocking note 5 (design-sized STD keys) is accepted as handled by D19's design-independence filter when keys are imported; U2.2/U3.6 reviewers should confirm `vd_ms`, `vh_max_ms` and `aeroelastic_speed_min` do not enter `standards/` with K09-L values. Non-blocking notes 1-4, 6, 7 stay open as suggestions.
+
+### Verdict: ACCEPT
