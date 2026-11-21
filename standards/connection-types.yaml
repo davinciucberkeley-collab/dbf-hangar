@@ -1,0 +1,275 @@
+# Shared connection-type library for PDL attachments[].connection (T1.interfaces.connection_known).
+# Adapted from DBF-Combined redesign/interfaces/connection_types.json @ a93f14d (44 types, ids kept).
+# rating_basis: sourced | derived | placeholder (same meaning as attachment.rating_basis). source: a citation, or `pending`.
+# The source file gives no ratings and no sources, so every type is placeholder / pending until a research pass fills it in.
+# structural: false marks a type that locates a part but never carries its flight load; omitted means true.
+version: '0.1'
+connection_types:
+- id: CT-M2-SCREW-PLASTIC
+  kind: mechanical
+  method: fastened
+  spec: M2 self-tapping or machine screw into printed/plastic boss (servo ears)
+  rating_basis: placeholder
+  source: pending
+- id: CT-M3-SHCS-INSERT
+  kind: mechanical
+  method: fastened
+  spec: M3 SHCS into M3 brass heat-set insert
+  rating_basis: placeholder
+  source: pending
+- id: CT-M3-SHCS-NYLOC
+  kind: mechanical
+  method: fastened
+  spec: M3 SHCS through clearance hole, nyloc nut
+  rating_basis: placeholder
+  source: pending
+- id: CT-M3-SHCS-MOTOR
+  kind: mechanical
+  method: fastened
+  spec: M3 SHCS into motor base tapped hole (manufacturer pattern)
+  rating_basis: placeholder
+  source: pending
+- id: CT-M4-SHCS-NYLOC
+  kind: mechanical
+  method: fastened
+  spec: M4 SHCS through clearance hole, nyloc nut
+  rating_basis: placeholder
+  source: pending
+- id: CT-PROP-ADAPTER
+  kind: mechanical
+  method: fastened
+  spec: bolt-on prop adapter, 3 x M2.5 SHCS on a 15 mm circle into the motor bell, pilot on the shaft
+  rating_basis: placeholder
+  source: pending
+- id: CT-PROP-NUT
+  kind: mechanical
+  method: fastened
+  spec: M6x1 nut and washer clamp the prop hub on the adapter post (field joint)
+  rating_basis: placeholder
+  source: pending
+- id: CT-SERVO-SPLINE
+  kind: mechanical
+  method: fastened
+  spec: servo arm on the output spline, M2 retaining screw
+  rating_basis: placeholder
+  source: pending
+- id: CT-EPOXY
+  kind: mechanical
+  method: bonded
+  spec: epoxy bond (30 min laminating epoxy), surfaces scuffed
+  rating_basis: placeholder
+  source: pending
+- id: CT-CA
+  kind: mechanical
+  method: bonded
+  spec: cyanoacrylate bond (foam-safe CA where foam)
+  rating_basis: placeholder
+  source: pending
+- id: CT-TUBE-CLAMP
+  kind: mechanical
+  method: clamped
+  spec: printed split clamp around round tube, closed by fasteners listed in the joint stack
+  rating_basis: placeholder
+  source: pending
+- id: CT-STRAP-VELCRO
+  kind: mechanical
+  method: strapped
+  spec: hook-and-loop strap + anti-slip pad
+  rating_basis: placeholder
+  source: pending
+- id: CT-HATCH-HL
+  kind: mechanical
+  method: strapped
+  spec: 'hatch: printed tongue under a fixed lip at one end, hook-and-loop tab at the other (tool-free, no magnets)'
+  rating_basis: placeholder
+  source: pending
+- id: CT-TIE
+  kind: mechanical
+  method: strapped
+  spec: cable tie to a tie point or round a tube
+  structural: false
+  rating_basis: placeholder
+  source: pending
+- id: CT-STRAP-SLOT
+  kind: mechanical
+  method: slid
+  spec: strap threaded through slots in a printed tray
+  rating_basis: placeholder
+  source: pending
+- id: CT-CRADLE-CONTACT
+  kind: mechanical
+  method: slid
+  spec: aircraft rests in a foam-lined cradle, no fastening (transport only)
+  rating_basis: placeholder
+  source: pending
+- id: CT-PLUG-IN
+  kind: mechanical
+  method: slid
+  spec: boom pushed into a printed socket, keyed, retained by a detent or O-ring; tool-free field joint
+  rating_basis: placeholder
+  source: pending
+- id: CT-TAPE-SKIN
+  kind: mechanical
+  method: taped
+  spec: packing-tape skin or cover, spanwise strips, 10 % overlap
+  rating_basis: placeholder
+  source: pending
+- id: CT-TAPE-FOAM
+  kind: mechanical
+  method: taped
+  spec: double-sided foam tape (3M VHB-class) + one cable tie as secondary retention
+  rating_basis: placeholder
+  source: pending
+- id: CT-TAPE-TIE
+  kind: mechanical
+  method: taped
+  spec: double-sided foam tape + two cable ties around pad and part; heat-sink face left uncovered
+  rating_basis: placeholder
+  source: pending
+- id: CT-GEL-PAD
+  kind: mechanical
+  method: taped
+  spec: adhesive vibration-isolation gel pads (Zeal class, 5 mm) on a scuffed face, no screws; secondary tie or strap with slack
+  rating_basis: placeholder
+  source: pending
+- id: CT-LABEL
+  kind: mechanical
+  method: taped
+  spec: adhesive label on the skin (FAA number)
+  structural: false
+  rating_basis: placeholder
+  source: pending
+- id: CT-WIRE-CHANNEL
+  kind: mechanical
+  method: taped
+  spec: wires laid in a hot-wired or routed channel in the core, closed with tape
+  structural: false
+  rating_basis: placeholder
+  source: pending
+- id: CT-PITOT-TUBING
+  kind: mechanical
+  method: press_fit
+  spec: silicone tubing pushed on the pitot and sensor barbs, total and static lines (pneumatic)
+  structural: false
+  rating_basis: placeholder
+  source: pending
+- id: CT-TAPE-HINGE
+  kind: kinematic
+  method: hinged
+  spec: tape hinge (top surface), control surface
+  rating_basis: placeholder
+  source: pending
+- id: CT-PIN-HINGE
+  kind: kinematic
+  method: hinged
+  spec: pin hinge, printed knuckles + steel pin
+  rating_basis: placeholder
+  source: pending
+- id: CT-CLEVIS
+  kind: kinematic
+  method: hinged
+  spec: steel pushrod end (Z-bend or clevis) in a horn or arm hole
+  rating_basis: placeholder
+  source: pending
+- id: CT-XT60
+  kind: electrical
+  method: connector
+  spec: XT60 (battery main)
+  rating_basis: placeholder
+  source: pending
+- id: CT-XT90
+  kind: electrical
+  method: connector
+  spec: XT90 (battery main, high current)
+  rating_basis: placeholder
+  source: pending
+- id: CT-AS150U
+  kind: electrical
+  method: connector
+  spec: Amass AS150U anti-spark pair (battery main; 70 A continuous, 140 A momentary per maker; packs re-terminated, D-32)
+  rating_basis: placeholder
+  source: pending
+- id: CT-MR30
+  kind: electrical
+  method: connector
+  spec: MR30 3-pin (motor phases at a removable joint)
+  rating_basis: placeholder
+  source: pending
+- id: CT-BULLET-3
+  kind: electrical
+  method: connector
+  spec: 3 x gold bullet connectors, motor phases (size per E1)
+  rating_basis: placeholder
+  source: pending
+- id: CT-SOLDER-PHASE
+  kind: electrical
+  method: soldered
+  spec: soldered motor phase wires, heat-shrink
+  rating_basis: placeholder
+  source: pending
+- id: CT-SOLDER-DC
+  kind: electrical
+  method: soldered
+  spec: soldered DC power joint, heat-shrink
+  rating_basis: placeholder
+  source: pending
+- id: CT-SERVO-JR
+  kind: electrical
+  method: connector
+  spec: JR/Futaba 3-pin servo connector
+  rating_basis: placeholder
+  source: pending
+- id: CT-JST-GH-4
+  kind: electrical
+  method: connector
+  spec: JST-GH 4-pin (UART or I2C)
+  rating_basis: placeholder
+  source: pending
+- id: CT-JST-GH-6
+  kind: electrical
+  method: connector
+  spec: JST-GH 6-pin (telemetry / GPS)
+  rating_basis: placeholder
+  source: pending
+- id: CT-ELRS-RF
+  kind: electrical
+  method: radio
+  spec: ExpressLRS 2.4 GHz radio link, CRSF to the FC (control and telemetry); no wire
+  rating_basis: placeholder
+  source: pending
+- id: CT-THERMAL-PAD
+  kind: thermal
+  method: conductive
+  spec: thermal pad between heat source and sink
+  rating_basis: placeholder
+  source: pending
+- id: CT-THERMAL-CONTACT
+  kind: thermal
+  method: conductive
+  spec: dry contact of a heat source on the part that carries it (conduction path; treated as insulating where the thermal block says so)
+  rating_basis: placeholder
+  source: pending
+- id: CT-HW-SEATED
+  kind: mechanical
+  method: fastened
+  spec: loose hardware (screw, nut, washer) seated in the hole or pocket of the part it fastens; named in collide.py MOVE_VIA, added for concept A (2026-11-15)
+  rating_basis: placeholder
+  source: pending
+- id: CT-A-M25-SHCS-MOTOR
+  kind: mechanical
+  method: fastened
+  spec: 'concept A: 4 x M2.5 SHCS through 2.9 mm clearance holes in the printed motor cup into the T-Motor MN2212 base (4-M2.5 on a 19 x 16 mm rectangle, T-Motor drawing)'
+  rating_basis: placeholder
+  source: pending
+- id: CT-A-PROP-ADAPTER
+  kind: mechanical
+  method: fastened
+  spec: 'concept A: T-Motor MN2212 prop adapter (Phi19 x 4.5 flange, M5 stud) on the bell top, 2 x M3 at 12 mm pitch (Phi3.2 holes, Phi5.7 counterbore), Phi4 shaft bore (T-Motor drawing)'
+  rating_basis: placeholder
+  source: pending
+- id: CT-A-PROP-NUT
+  kind: mechanical
+  method: fastened
+  spec: 'concept A: APC hub with its adapter ring (ID 5 mm, EST) on the M5 stud of the T-Motor adapter, clamped by an M5 spinner nut Phi12 x 16 (field joint); replaces the M6x1 text of CT-PROP-NUT, which is the K09-L meaning'
+  rating_basis: placeholder
+  source: pending

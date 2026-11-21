@@ -8,7 +8,7 @@ Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, se
 
 | Field | Type | Required | Description |
 |---|---|---|---|
-| `schema_version` | one of `0.1`, `0.2`, `0.3`, `0.4`, `1.0` | yes | 0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. |
+| `schema_version` | one of `0.1`, `0.2`, `0.3`, `0.4`, `1.0` | yes | 0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat. |
 | `id` | `slug` | yes |  |
 | `name` | string | yes |  |
 | `authors` | array of string |  |  |
@@ -123,6 +123,8 @@ Type: array of number
 | `articulation.axis` | `vec3` | yes | Rotation axis direction (right-hand rule), body frame, at 0 deg. |
 | `articulation.range_deg` | array of number | yes | [min, max] angle in degrees. |
 | `articulation.poses` | object |  | Named poses -> angle in degrees (each within range_deg). |
+| `connection` | string |  | v1.0. Id of a connection type in standards/connection-types.yaml (for example CT-M3-SHCS-INSERT). Optional. T1.interfaces.connection_known fails an id that is not in the library. |
+| `seat` | string |  | v1.0. Optional. Short text naming the recess, pocket or slot machined in the parent that receives the child (for example "pod recess cut in the core"). Data only; no check reads it. |
 
 ### `lifting_surface`
 

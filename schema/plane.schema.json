@@ -24,7 +24,7 @@
         "0.4",
         "1.0"
       ],
-      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged."
+      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat."
     },
     "id": {
       "$ref": "#/$defs/slug"
@@ -746,6 +746,16 @@
               }
             }
           }
+        },
+        "connection": {
+          "type": "string",
+          "pattern": "^CT-[A-Z0-9-]+$",
+          "description": "v1.0. Id of a connection type in standards/connection-types.yaml (for example CT-M3-SHCS-INSERT). Optional. T1.interfaces.connection_known fails an id that is not in the library."
+        },
+        "seat": {
+          "type": "string",
+          "minLength": 1,
+          "description": "v1.0. Optional. Short text naming the recess, pocket or slot machined in the parent that receives the child (for example \"pod recess cut in the core\"). Data only; no check reads it."
         }
       }
     },
