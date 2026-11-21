@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import datetime
+import re
 from pathlib import Path
 
 import pytest
@@ -89,10 +90,26 @@ def test_stale_bom_line_fails():
 _COMMITTED = sorted(p.parent for p in DESIGNS_DIR.glob("*/baseline.json"))
 
 
+def _tier_of(check_id):
+    m = re.match(r"T(\d+)", check_id)
+    return int(m.group(1)) if m else 0
+
+
+def _baseline_up_to_tier_5(baseline):
+    """The baseline restricted to tiers 0-5, since this test runs the gates only to tier 5."""
+    if baseline is None:
+        return None
+    m = dict(baseline)
+    m["known"] = [e for e in baseline.get("known", []) if _tier_of(e["check_id"]) <= 5]
+    if "tiers_run" in baseline:
+        m["tiers_run"] = [n for n in baseline["tiers_run"] if n <= 5]
+    return m
+
+
 @pytest.mark.parametrize("d", _COMMITTED, ids=[p.name for p in _COMMITTED])
 def test_tiers_0_5_unchanged_for_committed_designs(d):
     card = run_gates(load_design(d), 5)
-    assert compare(snapshot(card), read_baseline(d))["regressions"] == []
+    assert compare(snapshot(card), _baseline_up_to_tier_5(read_baseline(d)))["regressions"] == []
 
 
 def test_scorecard_reports_fidelity():
