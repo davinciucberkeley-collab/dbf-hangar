@@ -20,7 +20,7 @@ if os.environ.get("CI"):
     import playwright.sync_api  # noqa: F401  (a missing install must fail loudly)
 else:
     pytest.importorskip("playwright.sync_api")
-from playwright.sync_api import Error as PWError, sync_playwright  # noqa: E402
+from playwright.sync_api import Error as PWError, expect, sync_playwright  # noqa: E402
 
 from hangar import cli, design as design_mod, studio  # noqa: E402
 
@@ -68,10 +68,9 @@ def pages_base(tmp_path_factory):
     httpd.server_close()
 
 
-@pytest.fixture
-def studio_base(tmp_path, monkeypatch):
+def _start_studio(tmp_path, monkeypatch, seed):
     designs = tmp_path / "designs"
-    _seed(designs)
+    seed(designs)
     for mod in (cli, design_mod, studio):
         monkeypatch.setattr(mod, "DESIGNS_DIR", designs, raising=False)
     monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
@@ -88,7 +87,21 @@ def studio_base(tmp_path, monkeypatch):
         time.sleep(0.3)
     else:
         raise AssertionError("studio jobs did not finish")
-    yield base + "/"
+    return httpd, base + "/"
+
+
+@pytest.fixture
+def studio_base(tmp_path, monkeypatch):
+    httpd, base = _start_studio(tmp_path, monkeypatch, _seed)
+    yield base
+    httpd.shutdown()
+    httpd.server_close()
+
+
+@pytest.fixture
+def concept_a_studio(tmp_path, monkeypatch):
+    httpd, base = _start_studio(tmp_path, monkeypatch, lambda d: shutil.copytree(REPO / "designs" / "concept-a", d / "concept-a"))
+    yield base
     httpd.shutdown()
     httpd.server_close()
 
@@ -253,5 +266,75 @@ def test_physics_mode_plays_mechanism_sweep(browser, pages_base):
     assert page.input_value('[data-testid="phys-slider"]') == "20"
     after = page.locator("#vp-phys canvas").screenshot()
     assert before != after
+    assert errors == []
+    page.close()
+
+
+def _wait_studio_idle(base, timeout=240):
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        with urllib.request.urlopen(base + "api/state", timeout=60) as r:
+            if not json.loads(r.read())["busy"]:
+                return
+        time.sleep(0.3)
+    raise AssertionError("studio jobs did not finish")
+
+
+def test_propose_link_survives_real_git_side_effects(browser, concept_a_studio, monkeypatch):
+    # Real git does two things the mocked test above does not: switching back to main rewrites plane.yaml to
+    # main's version (so the design changes on disk and gets re-checked), and gh prints progress before the URL.
+    from hangar.ops import edit as edit_ops
+    URL = "https://github.com/davinciucberkeley-collab/dbf-hangar/pull/1"
+    plane = studio.DESIGNS_DIR / "concept-a" / "plane.yaml"
+    main_text = plane.read_text()  # the committed file; git restores it when we switch back to main
+
+    def fake_run(argv, cwd):
+        if "--show-toplevel" in argv:
+            return str(Path(cwd).parent)
+        if "status" in argv:
+            return " M plane.yaml\n"
+        if "--abbrev-ref" in argv:
+            return "main\n"
+        if "switch" in argv and "-c" in argv:
+            return ""
+        if "switch" in argv:
+            time.sleep(2)
+            plane.write_text(main_text)
+            return ""
+        if "pr" in argv and "create" in argv:
+            time.sleep(4)  # gh talks to GitHub: seconds, while the poll loop keeps running
+            return ("Creating pull request for design/concept-a/avionics-plate-mass into main "
+                    f"in davinciucberkeley-collab/dbf-hangar\n\n{URL}\n")
+        return ""
+    monkeypatch.setattr(edit_ops, "_run", fake_run)
+
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(concept_a_studio + "#m=designs&d=concept-a")
+    page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
+    page.wait_for_selector('[data-testid="btn-validate"]:not([disabled])', timeout=240000)
+    page.click('[data-testid="btn-edit"]')
+    page.get_by_role("button", name="Parts", exact=True).click()
+    page.fill('tr[data-q^="avn-001"] input.sm', "10")
+    page.fill('[data-testid="save-why"]', "heavier plate")
+    page.click('[data-testid="save"]')
+    page.wait_for_selector("dialog.dlg", state="detached", timeout=30000)
+    _wait_studio_idle(concept_a_studio)
+    page.wait_for_selector('[data-testid="btn-propose"]', timeout=60000)
+
+    page.click('[data-testid="btn-propose"]')
+    page.fill('[data-testid="propose-title"]', "Avionics plate mass")
+    page.click('[data-testid="propose-go"]')
+    page.wait_for_selector('a[data-testid="pr-link"]', timeout=30000)
+    expect(page.locator('[data-testid="pr-result"]')).to_be_in_viewport()
+    assert page.get_attribute('a[data-testid="pr-link"]', "href") == URL
+    assert page.locator(f'#toasts a[href="{URL}"]').count() == 1
+    page.wait_for_timeout(6000)  # longer than a normal toast lasts: a toast with a link must stay
+
+    _wait_studio_idle(concept_a_studio)  # the revert triggers a re-check; the link must stay
+    page.wait_for_selector('[data-testid="btn-validate"]:not([disabled])', timeout=240000)
+    assert page.get_attribute('a[data-testid="pr-link"]', "href") == URL
+    expect(page.locator('[data-testid="pr-result"]')).to_be_in_viewport()
+    assert page.locator(f'#toasts a[href="{URL}"]').count() == 1
     assert errors == []
     page.close()
