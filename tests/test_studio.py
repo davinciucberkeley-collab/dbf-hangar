@@ -53,18 +53,6 @@ def test_new_design_copies_files_and_keeps_comments(sandbox):
         cli.new_design("Bad Name", "example-tailsitter-wing")
 
 
-def test_patch_changes_only_the_edited_line():
-    src = (EXAMPLE / "plane.yaml").read_text()
-    doc = load(src)
-    studio._step(doc["components"], {"id": "wing"})["mass_g"] = 181
-    out = dump(doc)
-    changed = [(a, b) for a, b in zip(src.splitlines(), out.splitlines()) if a != b]
-    assert len(src.splitlines()) == len(out.splitlines())
-    assert changed == [("    mass_g: 180", "    mass_g: 181")]
-    with pytest.raises(ValueError):
-        studio._step(doc["components"], {"id": "no-such-part"})
-
-
 def _call(base, path, body=None):
     req = urllib.request.Request(base + path, data=None if body is None else json.dumps(body).encode(),
                                  headers={"Content-Type": "application/json"})
@@ -101,18 +89,17 @@ def test_studio_api_end_to_end(sandbox):
         assert _call(base, "/data/" + entry["glb"])[0] == 200
 
         # form edit: one field, saved with a backup, re-checked
-        code, res = _call(base, "/api/patch", {"id": "example-tailsitter-wing",
-                                               "changes": [{"path": ["components", {"id": "wing"}, "mass_g"], "value": 999}]})
-        assert code == 200 and res["changed"] == 1
+        code, res = _call(base, "/api/op/design.set", {"path": str(sandbox / "example-tailsitter-wing"),
+            "key": "components[wing].mass_g", "value": "999", "why": "test edit", "kind": "modify"})
+        assert code == 200 and res["ok"] and res["data"]["changed"]
         assert "mass_g: 999" in (sandbox / "example-tailsitter-wing" / "plane.yaml").read_text()
-        assert len(list(studio.BACKUP_DIR.glob("*.yaml"))) == 1
+        assert "test edit" in (sandbox / "example-tailsitter-wing" / "CHANGELOG.yaml").read_text()
         _wait_idle(base)
         _, index = _call(base, "/data/index.json")
         assert index["designs"][0]["mass_g"] > entry["mass_g"]
 
         # bad edits are refused and leave the file alone
-        assert _call(base, "/api/yaml", {"id": "example-tailsitter-wing", "text": "id: [unclosed"})[0] == 400
-        assert _call(base, "/api/yaml", {"id": "example-tailsitter-wing", "text": "id: other\n"})[0] == 400
+        assert _call(base, "/api/op/design.set", {"path": str(sandbox / "example-tailsitter-wing"), "key": "components[wing].mass_g", "value": "1", "why": ""})[0] == 400
         assert _call(base, "/api/op/design.new", {"new_id": "../escape", "template": "example-tailsitter-wing"})[0] == 400
 
         # copy, then download the scorecard report
@@ -130,6 +117,59 @@ def test_studio_api_end_to_end(sandbox):
     finally:
         httpd.shutdown()
         httpd.server_close()
+
+
+def _serve_studio(sandbox):
+    s = studio.Studio()
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), studio.make_handler(s))
+    threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    return httpd, f"http://127.0.0.1:{httpd.server_port}"
+
+
+@pytest.mark.parametrize("eol", [b"\n", b"\r\n"], ids=["lf", "crlf"])
+def test_studio_set_changes_only_the_edited_line(sandbox, eol):
+    src = Path(design_mod.REPO_ROOT) / "designs" / "concept-a" / "plane.yaml"
+    raw = src.read_bytes().replace(b"\r\n", b"\n")
+    before = raw.replace(b"\n", eol)
+    dst = sandbox / "concept-a" / "plane.yaml"
+    dst.parent.mkdir()
+    dst.write_bytes(before)
+    httpd, base = _serve_studio(sandbox)
+    try:
+        code, res = _call(base, "/api/op/design.set", {"path": str(sandbox / "concept-a"),
+            "key": "components[pwr-001].mass_g", "value": "275", "why": "test", "kind": "modify"})
+        assert code == 200 and res["ok"]
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+    after = dst.read_bytes()
+    a, b = before.splitlines(keepends=True), after.splitlines(keepends=True)
+    assert len(a) == len(b)
+    diff = [(x, y) for x, y in zip(a, b) if x != y]
+    assert len(diff) == 1
+    assert diff[0][0].strip() == b"mass_g: 270"
+    assert diff[0][1].strip() == b"mass_g: 275"
+    assert diff[0][0].endswith(eol) and diff[0][1].endswith(eol)
+    assert (b"\r\n" in after) == (eol == b"\r\n")
+    assert b"E-WNG-10" in after
+    assert before.count(eol) == after.count(eol)
+    log = yaml.safe_load(dst.with_name("CHANGELOG.yaml").read_text())
+    assert isinstance(log, list) and len(log) == 1
+    assert log[0]["key"] == "components[pwr-001].mass_g"
+    assert log[0]["old"] == 270 and log[0]["new"] == 275
+    assert log[0]["why"] == "test" and log[0]["kind"] == "modify"
+
+
+def test_studio_has_no_reemitting_save_routes(sandbox):
+    httpd, base = _serve_studio(sandbox)
+    try:
+        assert _call(base, "/api/patch", {"id": "x", "changes": []})[0] == 404
+        assert _call(base, "/api/yaml", {"id": "x", "text": ""})[0] == 404
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+    assert not hasattr(studio.Studio, "patch")
+    assert not hasattr(studio.Studio, "write_yaml")
 
 
 PUBLIC_KEYS = {"id", "kind", "status", "owner", "summary", "due", "decided_in"}

@@ -20,6 +20,6 @@ python3 -m http.server -d viewer      # http://localhost:8000
 ## Features
 One app, Plane Studio, with six modes (tabs): Designs (3D view with click-to-highlight, CG marker, scorecard with FAIL rows first), Compare (two viewports plus table of mass, CG, tiers and key numbers), Physics (replays a mechanism sweep on the real parts), Stress (per-part stress-check results; replaces the OpenCAE dashboard), Updates (weekly updates) and Ledger (filterable). Sidebar with text and VTOL-method filters. Deep links: `#m=<mode>&d=<id>` or `#m=compare&a=<id>&b=<id>` (`#d=<id>` and `#a=<id>&b=<id>` still work). Each mode is `modes/<id>.js`; shared helpers are in `lib.js`.
 
-`plane studio` serves this same page from your computer; `index.json` then has `"studio": true`, which loads `modes/edit.js` (new, copy, edit, import, check, stress run, download) through a local API. The GitHub Pages copy is the same app without it: no element with `data-edit` exists there.
+`plane studio` serves this same page from your computer; `index.json` then has `"studio": true`, which loads `modes/edit.js` (new, copy, edit and save through `plane design set` with a kind and a why, validate, propose a PR, import, check, stress run, download) through a local API. The GitHub Pages copy is the same app without it: no element with `data-edit` exists there.
 
 three.js 0.160.0 loads from cdn.jsdelivr.net, so the page needs network access. Deployed by `.github/workflows/pages.yml`.

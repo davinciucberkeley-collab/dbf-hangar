@@ -12,7 +12,6 @@ import json
 import mimetypes
 import queue
 import re
-import shutil
 import tempfile
 import threading
 import traceback
@@ -236,52 +235,9 @@ class Studio:
     def read_yaml(self, did: str) -> str:
         return (DESIGNS_DIR / _check_id(did) / "plane.yaml").read_text()
 
-    def write_yaml(self, did: str, text: str) -> None:
-        path = DESIGNS_DIR / _check_id(did) / "plane.yaml"
-        if not path.is_file():
-            raise ValueError(f"no design {did!r}")
-        try:
-            data = yaml.safe_load(text)
-        except yaml.YAMLError as e:
-            raise ValueError(f"YAML error: {e}") from e
-        if not isinstance(data, dict):
-            raise ValueError("the file must be a YAML mapping (key: value lines)")
-        if str(data.get("id")) != did:
-            raise ValueError(f"id must stay {did!r} (to make a copy, use New design)")
-        BACKUP_DIR.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(path, BACKUP_DIR / f"{did}-{datetime.now().strftime('%Y%m%d-%H%M%S')}.yaml")
-        path.write_text(text)
-        self.scan()
-
     def read_design(self, did: str) -> dict:
         data = yaml.safe_load(self.read_yaml(did))
         return {"id": did, "data": data, "enums": _schema_enums()}
-
-    def patch(self, did: str, changes: list) -> int:
-        """Apply small field edits from the form editor, keeping the file's comments and layout (ruamel round-trip)."""
-        from .yamlio import dump, load
-        path = DESIGNS_DIR / _check_id(did) / "plane.yaml"
-        doc = load(path.read_text())
-        if not isinstance(changes, list) or not changes:
-            raise ValueError("nothing to save")
-        for ch in changes:
-            node, keys = doc, ch.get("path") or []
-            if not keys:
-                raise ValueError("empty path")
-            for k in keys[:-1]:
-                node = _step(node, k)
-            last = keys[-1]
-            if not isinstance(last, str):
-                raise ValueError("a change must end on a field name")
-            value = ch.get("value")
-            if value is None or value == "":
-                if hasattr(node, "pop"):
-                    node.pop(last, None)
-            else:
-                node[last] = value
-        text = dump(doc)
-        self.write_yaml(did, text)  # same checks, backup and re-check as a hand edit
-        return len(changes)
 
     def export(self, did: str, fmt: str) -> tuple[bytes, str, str]:
         from .export import export_glb, export_json, export_stl
@@ -306,22 +262,6 @@ class Studio:
                 md = validate(design).to_markdown()
                 return md.encode(), f"{did}-scorecard.md", "text/markdown; charset=utf-8"
         raise ValueError(f"unknown format {fmt!r}")
-
-
-def _step(node, key):
-    """Follow one path segment: a mapping key, a list index, or {"id": ...} to pick a component or joint."""
-    if isinstance(key, dict) and "id" in key:
-        for item in node or []:
-            if isinstance(item, dict) and str(item.get("id")) == str(key["id"]):
-                return item
-        raise ValueError(f"no entry with id {key['id']!r}")
-    if isinstance(key, int):
-        return node[key]
-    if isinstance(key, str):
-        if key not in node:
-            node[key] = {}
-        return node[key]
-    raise ValueError(f"bad path segment {key!r}")
 
 
 _ENUMS: dict | None = None
@@ -492,12 +432,6 @@ def make_handler(studio: Studio):
                     for did in sorted(studio.entries):
                         studio.submit("check", did, f"Check {did}")
                     return self._json({"ok": True})
-                if path == "/api/yaml":
-                    studio.write_yaml(b.get("id", ""), b.get("text", ""))
-                    return self._json({"ok": True})
-                if path == "/api/patch":
-                    n = studio.patch(b.get("id", ""), b.get("changes"))
-                    return self._json({"ok": True, "changed": n})
                 if path == "/api/import-dbf":
                     root = str(b.get("root") or "").strip().strip('"')
                     if not root or not Path(root).is_dir():

@@ -31,9 +31,14 @@ export async function api(path, body) {
   if (!r.ok || data.error) throw new Error(data.error || `HTTP ${r.status}`);
   return data;
 }
-export async function opCall(name, params = {}) {
+export async function opRaw(name, params = {}) {
   const r = await fetch('api/op/' + name, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(params) });
-  const body = await r.json().catch(() => ({ ok: false, messages: [`HTTP ${r.status}`] }));
-  if (!body.ok) throw new Error((body.messages || []).join('; ') || `HTTP ${r.status}`);
+  const body = await r.json().catch(() => null);
+  if (!body) throw new Error(`HTTP ${r.status}`);
+  return { ...body, httpStatus: r.status };
+}
+export async function opCall(name, params = {}) {
+  const body = await opRaw(name, params);
+  if (!body.ok) throw new Error((body.messages || []).join('; ') || `HTTP ${body.httpStatus}`);
   return body.data;
 }

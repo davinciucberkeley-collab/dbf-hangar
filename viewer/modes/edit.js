@@ -1,14 +1,16 @@
 // Plane Studio edit controls (new, copy, edit, import, check, stress, download). Loaded only when the page is served
 // by `plane studio` (index.json has "studio": true); the GitHub Pages build never loads it. Every control carries
 // data-edit. Every action calls the local API, which runs the same core library as the CLI and CI.
-import { h, $, api, opCall as op, getJSON } from '../lib.js';
+import { h, $, api, opCall as op, opRaw, getJSON, STATUS_ORDER } from '../lib.js';
 
 let V;
 let ping = {};
 let lastRev = -1;
 let lastJobState = '';
+const results = {}; // design id -> {validate?, pr?}; cleared for a design when it is saved
 
 const designPath = (id) => ping.designs_dir + '/' + id;
+const keyOf = (path) => path.map((s, i) => typeof s === 'string' ? (i ? '.' : '') + s : `[${s.id}]`).join('');
 
 function toast(text, kind = '') {
   const t = h('div', { class: 'toast ' + kind, role: 'status' }, text);
@@ -92,7 +94,7 @@ const changed = (el) => String(el.value) !== String(el.dataset.orig);
 
 async function editDialog(id) {
   const d = V.designs().find((x) => x.id === id);
-  const [{ data, enums }, { text }, sc] = await Promise.all([
+  const [{ data, enums }, , sc] = await Promise.all([
     api('design?id=' + encodeURIComponent(id)), op('design.get', { path: designPath(id) }),
     d?.scorecard ? getJSON(d.scorecard).catch(() => null) : null]);
   const failMsgs = (sc?.tiers || []).flatMap((t) => t.results).filter((r) => r.status === 'FAIL').map((r) => r.message);
@@ -146,42 +148,48 @@ async function editDialog(id) {
   const joints = h('div', { class: 'tabpane', hidden: true }, jointFilter,
     h('table', { class: 'edit' }, h('thead', {}, h('tr', {}, ['Joint', 'Connects', 'Method', 'Strength (N)', 'Strength source'].map((t) => h('th', {}, t)))), h('tbody', {}, jointRows)));
 
-  // File
-  const ta = h('textarea', { class: 'yaml', spellcheck: 'false', wrap: 'off' }); ta.value = text;
-  ta.addEventListener('keydown', (e) => { if (e.key === 'Tab') { e.preventDefault(); const s0 = ta.selectionStart; ta.setRangeText('  ', s0, ta.selectionEnd, 'end'); } });
-  const file = h('div', { class: 'tabpane', hidden: true }, h('p', { class: 'muted' }, 'The whole design file, for anything the forms don’t cover. Units: mm, g, N, degrees.'), ta);
-
-  const panes = { Overview: overview, Parts: parts, [`Joints${nFail ? ` (${nFail} failing)` : ''}`]: joints, 'File (advanced)': file };
+  const panes = { Overview: overview, Parts: parts, [`Joints${nFail ? ` (${nFail} failing)` : ''}`]: joints };
   const tabs = h('div', { class: 'seg tabs' }, Object.entries(panes).map(([name, pane], i) => h('button', { type: 'button', class: i ? '' : 'active', onclick: (e) => {
     tabs.querySelectorAll('button').forEach((b) => b.classList.toggle('active', b === e.currentTarget));
     Object.values(panes).forEach((p) => (p.hidden = p !== pane));
-    if (pane === file) { ta.setSelectionRange(0, 0); ta.scrollTop = 0; }
   } }, name)));
+  const kindSel = h('select', { 'data-testid': 'save-kind' }, ['modify', 'subtract', 'add'].map((k) => h('option', { value: k, selected: k === 'modify' }, k)));
+  const whyIn = h('input', { type: 'text', 'data-testid': 'save-why', placeholder: 'One line: why this change' });
 
   const dlg = dialog(`Edit ${d?.name || id}`, [
-    h('p', { class: 'muted' }, 'Change values, then Save. Every save keeps a backup and re-runs all the checks.'), tabs, overview, parts, joints, file,
-  ], primary('Save and check', async (dd) => {
-    const fileChanged = ta.value !== text;
-    const changes = [];
+    h('p', { class: 'muted' }, 'Change values, then Save.'), tabs, overview, parts, joints,
+    h('div', { class: 'row' }, field('Kind', kindSel, 'add: the field was blank; subtract: you removed or reduced something'), field('Why', whyIn)),
+  ], primary('Save', async (dd) => {
+    const BLANK = 'Blank values are not supported here. Type a value.';
+    const pairs = [];
     for (const e of edits) {
       if (e.kind === 'pos') {
         if (!e.els.some(changed)) continue;
         const v = e.els.map((x) => num(x.value));
-        if (v.some((x) => x == null || Number.isNaN(x))) throw new Error(`${e.path[1].id}: fill in all three position numbers`);
-        changes.push({ path: e.path, value: v });
+        if (v.some((x) => x == null)) throw new Error(BLANK);
+        if (v.some(Number.isNaN)) throw new Error(`${e.path[1].id}: not a number`);
+        v.forEach((x, i) => pairs.push({ key: `${keyOf(e.path)}[${i}]`, value: String(x) }));
       } else if (changed(e.el)) {
-        const v = e.kind === 'num' ? num(e.el.value) : e.el.value;
-        if (e.kind === 'num' && Number.isNaN(v)) throw new Error(`Not a number: ${e.el.value}`);
-        changes.push({ path: e.path, value: v });
+        if (e.kind === 'num') {
+          const v = num(e.el.value);
+          if (v == null) throw new Error(BLANK);
+          if (Number.isNaN(v)) throw new Error(`Not a number: ${e.el.value}`);
+          pairs.push({ key: keyOf(e.path), value: String(v) });
+        } else {
+          if (e.el.value === '') throw new Error(BLANK);
+          pairs.push({ key: keyOf(e.path), value: JSON.stringify(e.el.value) });
+        }
       }
     }
-    if (fileChanged && changes.length) throw new Error('You changed both the forms and the file. Save one of them: undo the other first.');
-    if (fileChanged) await api('yaml', { id, text: ta.value });
-    else if (changes.length) await api('patch', { id, changes });
-    else { dd.close(); return; }
-    dd.close(); toast(`Saved ${id}${changes.length ? ` (${changes.length} change${changes.length > 1 ? 's' : ''})` : ''}. Checking it now.`);
+    if (!pairs.length) { dd.close(); return; }
+    const why = whyIn.value.trim();
+    if (!why) throw new Error('Say why in one line.');
+    await op('design.set', { path: designPath(id), key: pairs[0].key, value: pairs[0].value, why, kind: kindSel.value,
+      also: pairs.slice(1).map((p) => p.key + '=' + p.value) });
+    delete results[id];
+    dd.close(); toast(`Saved ${id} (${pairs.length} change${pairs.length > 1 ? 's' : ''}). Click Validate to see the checks.`);
     await V.reload(id);
-  }));
+  }, { 'data-testid': 'save', 'data-edit': true }));
   dlg.classList.add('wide');
 }
 
@@ -241,6 +249,53 @@ const EXPORTS = [
   ['mjcf', 'Physics sim model (MuJoCo, zipped)', ''],
   ['json', 'Design data (.json)', ''],
 ];
+// ---------- validate and propose (results stay on the scorecard until the design is saved) ----------
+function validatePanel(data) {
+  const rows = data.tiers.flatMap((t) => t.results).sort((a, b) => (STATUS_ORDER[a.status] ?? 9) - (STATUS_ORDER[b.status] ?? 9));
+  const nFail = rows.filter((r) => r.status === 'FAIL').length;
+  return [h('h3', {}, `Validation: ${data.accepted ? 'accepted' : 'rejected'} (${nFail} FAIL)`),
+    ...rows.map((r) => h('div', { class: 'result ' + r.status },
+      h('div', { class: 'top' }, h('span', { class: 'badge ' + r.status }, r.status), h('span', { class: 'cid' }, r.check_id)),
+      h('div', { class: 'msg' }, r.message)))];
+}
+function prPanel(pr) {
+  const url = pr.pr_url || '';
+  return [h('h3', {}, 'Pull request'),
+    /^https?:\/\//.test(url) ? h('a', { 'data-testid': 'pr-link', href: url, target: '_blank', rel: 'noopener' }, url) : url,
+    h('div', { class: 'muted' }, `branch ${pr.branch}`)];
+}
+function renderResults(box, d) {
+  const r = results[d.id] || {};
+  const panels = [];
+  if (r.validate) panels.push(h('div', { class: 'studio-result', 'data-edit': true, 'data-testid': 'validate-result' }, validatePanel(r.validate)));
+  if (r.pr) panels.push(h('div', { class: 'studio-result', 'data-edit': true, 'data-testid': 'pr-result' }, prPanel(r.pr)));
+  box.querySelector('.studio-bar')?.after(...panels);
+}
+async function validate(id, btn) {
+  const label = btn.textContent;
+  btn.textContent = 'Validating…'; btn.disabled = true;
+  try {
+    const body = await opRaw('design.validate', { path: designPath(id) });
+    if (!body.data?.tiers) throw new Error((body.messages || []).join('; ') || 'Validation failed');
+    results[id] = { ...results[id], validate: body.data };
+    V.refresh();
+  } catch (e) { toast(e.message, 'err'); } finally { btn.textContent = label; btn.disabled = false; }
+}
+function proposeDialog(id) {
+  const titleInput = h('input', { type: 'text', 'data-testid': 'propose-title', value: 'Edit ' + id });
+  dialog('Propose change', [
+    h('p', { class: 'muted' }, `Commits the saved changes in designs/${id} on a new branch and opens a pull request against main.`),
+    field('Title', titleInput, 'One line; becomes the PR title.'),
+  ], primary('Open pull request', async (dlg) => {
+    const title = titleInput.value.trim();
+    if (!title) throw new Error('Give the change a title.');
+    const pr = await op('design.propose', { path: designPath(id), title });
+    results[id] = { ...results[id], pr };
+    dlg.close(); toast('Pull request opened.');
+    V.refresh();
+  }, { 'data-testid': 'propose-go', 'data-edit': true }));
+}
+
 function actionBar(box, d) {
   const exp = h('details', { class: 'menu' }, h('summary', { class: 'btn' }, 'Download ▾'),
     h('div', { class: 'menu-list' }, EXPORTS.map(([f, label, hint]) =>
@@ -248,11 +303,14 @@ function actionBar(box, d) {
         h('b', {}, label), hint ? h('span', {}, hint) : null))));
   const bar = h('div', { class: 'studio-bar', 'data-edit': true },
     h('button', { class: 'btn', disabled: d.pending, onclick: async () => { await api('check', { id: d.id }); toast(`Checking ${d.id}…`); } }, d.pending ? 'Checking…' : 'Check again'),
-    h('button', { class: 'btn', onclick: () => editDialog(d.id).catch((e) => toast(e.message, 'err')) }, 'Edit design'),
+    h('button', { class: 'btn', 'data-testid': 'btn-edit', onclick: () => editDialog(d.id).catch((e) => toast(e.message, 'err')) }, 'Edit design'),
+    h('button', { class: 'btn', 'data-testid': 'btn-validate', 'data-edit': true, disabled: d.pending || d.error, title: 'Run all checks on the saved file and show the scorecard', onclick: (e) => validate(d.id, e.currentTarget) }, 'Validate'),
+    h('button', { class: 'btn', 'data-testid': 'btn-propose', 'data-edit': true, title: 'Commit the saved changes on a new branch and open a pull request', onclick: () => proposeDialog(d.id) }, 'Propose change'),
     h('button', { class: 'btn', onclick: () => newDesignDialog(d.id) }, 'Make a copy'),
     h('button', { class: 'btn', onclick: () => feaDialog(d.id).catch((e) => toast(e.message, 'err')) }, 'Stress check'),
     d.error || d.pending ? null : exp);
   box.querySelector('.sub')?.after(bar);
+  renderResults(box, d);
 }
 
 // ---------- jobs ----------
