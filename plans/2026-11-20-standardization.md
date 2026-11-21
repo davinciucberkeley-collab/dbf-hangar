@@ -730,7 +730,7 @@ def test_separation_flags_design_pr_touching_core():
 **Interfaces:**
 - Produces: `load_claims(design: Design) -> ClaimGraph`; `ClaimGraph.recompute() -> list[ClaimResult(id, value, limit, margin, margin_abs: bool, status: Literal["PASS","FAIL","PROPOSED","STALE"])]`; ops `claim.list(path)`, `claim.explain(path, claim_id)` (chain down to sources), `claim.check(path)`; gate `T9.claim.<id>`; `parameter` nodes read PDL values (`P:components[wng-004-l].mass_g`) so `design.set` changes flow into claims.
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 def test_margin_rules_match_proofs_1(mini):          # >= and <= margins, limit 0 → margin_abs
@@ -747,10 +747,10 @@ def test_concept_a_claims_import_roundtrip(dbf_combined_claims):   # 4 claims.*.
     g = import_proofs1(dbf_combined_claims); assert len(g.nodes) == count_nodes(dbf_combined_claims)
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement** (port the margin rules from DBF-Combined `redesign/proofs/build_graph.py`; record the port in `PROVENANCE.md`); `import_proofs1(paths) -> ClaimGraph` used by U2.5.
-- [ ] **Step 4: Run** → PASS
-- [ ] **Step 5: Commit** `git commit -m "claims: proofs/1 graph as PDL claims.yaml, recompute, T9 gate, claim ops"`
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement** (port the margin rules from DBF-Combined `redesign/proofs/build_graph.py`; record the port in `PROVENANCE.md`); `import_proofs1(paths) -> ClaimGraph` used by U2.5.
+- [x] **Step 4: Run** → PASS
+- [x] **Step 5: Commit** `git commit -m "claims: proofs/1 graph as PDL claims.yaml, recompute, T9 gate, claim ops"`
 
 ### Unit U1.6: Interface graph and connection-type library (from DBF-Combined `dbf-interfaces/1`)
 
