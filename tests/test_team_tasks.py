@@ -1,8 +1,7 @@
 from __future__ import annotations
-import os, shutil, subprocess, sys
+import importlib.util, os, shutil, subprocess, sys
 from pathlib import Path
 import pytest
-from hangar.ops import registry
 
 REPO = Path(__file__).resolve().parents[1]
 SCRIPTS = REPO / "tests" / "team_tasks"
@@ -66,8 +65,8 @@ def run_task_script(task, root):
 
 @pytest.mark.parametrize("task", TEAM_TASKS)
 def test_team_task_needs_no_code_edit(task, git_clean_repo):
-    if task == "run_physics" and "sim.drop" not in registry():
-        pytest.skip("sim.drop not registered yet (U2.1)")
+    if task == "run_physics" and importlib.util.find_spec("mujoco") is None:
+        pytest.skip("mujoco not installed; fix: python -m pip install 'mujoco>=3'")
     run_task_script(task, git_clean_repo)
     changed = changed_files(git_clean_repo)
     assert not any(p.startswith("core/") for p in changed)
