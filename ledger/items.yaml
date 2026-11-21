@@ -2,7 +2,7 @@ schema: ledger/1
 items:
   - id: R1
     kind: ruling
-    text: 'A consistent file format for a plane ("schema"): if Tristan submits a plane to the system Dylan works in, it drops into the same bucket; CAD files go here, BOM goes here'
+    text: 'A consistent file format for a plane ("schema"): if Tristan submits a plane to the system Dillon works in, it drops into the same bucket; CAD files go here, BOM goes here'
     source: plan §1; A 11-11, 11-18
     owner: ''
     status: open
@@ -80,7 +80,7 @@ items:
     updated: '2026-11-20'
   - id: R7
     kind: ruling
-    text: "Stretch: every team task doable via CLI without editing code: sending designs, updating morphological chart, sending an idea, researching, consolidating, testing assembly, Dylan's tasks"
+    text: "Stretch: every team task doable via CLI without editing code: sending designs, updating morphological chart, sending an idea, researching, consolidating, testing assembly, Dillon's tasks"
     source: plan §1; A 11-18
     owner: ''
     status: open
@@ -106,8 +106,8 @@ items:
     updated: '2026-11-20'
   - id: R9
     kind: ruling
-    text: 'OpenCAE behind a CLI: can an agent run a full simulation + design iteration without editing or crawling code? then can Dylan?'
-    source: plan §1; A 11-18 (to Vibhav)
+    text: 'OpenCAE behind a CLI: can an agent run a full simulation + design iteration without editing or crawling code? then can Dillon?'
+    source: plan §1; A 11-18 (to Vaibhav)
     owner: ''
     status: open
     due: ''
@@ -171,7 +171,7 @@ items:
   - id: R14
     kind: ruling
     text: 'BOM: verify parts are real (Amazon blocks agents → use Claude in Chrome)'
-    source: plan §1; T 11-11 (Dylan)
+    source: plan §1; T 11-11 (Dillon)
     owner: ''
     status: open
     due: ''
@@ -308,7 +308,7 @@ items:
     updated: '2026-11-20'
   - id: R25
     kind: ruling
-    text: Multiple PRs on the same plane from different people/agents; Dylan picks which to merge
+    text: Multiple PRs on the same plane from different people/agents; Dillon picks which to merge
     source: plan §1; A 11-18
     owner: ''
     status: open

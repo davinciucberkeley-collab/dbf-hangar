@@ -18,7 +18,7 @@ wire_clearance_mm:
   value: 5.0
   rule: "A harness segment between consecutive route components must lie inside the union of their envelopes grown by this distance."
   source: pending
-  note: "D5: Dylan has not given a clearance; 5 mm is provisional."
+  note: "D5: Dillon has not given a clearance; 5 mm is provisional."
 transport_box_mm:
   value: [1250, 550, 450]
   rule: "Default transport box [length, width, height] when requirements.transport_box_mm is absent; each disassembly group's oriented bounding box must fit."

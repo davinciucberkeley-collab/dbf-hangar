@@ -1,6 +1,6 @@
 # DBF Hangar v1.0 Implementation Plan (CLI, Plane Design Language, one surface)
 
-Repo: [davinciucberkeley-collab/dbf-hangar](https://github.com/davinciucberkeley-collab/dbf-hangar). Owner of every unit: **Tristan**. Teammates (Dylan, James, Vibhav) are users and acceptance testers; Douglas is the advisor.
+Repo: [davinciucberkeley-collab/dbf-hangar](https://github.com/davinciucberkeley-collab/dbf-hangar). Owner of every unit: **Tristan**. Teammates (Dillon, James, Vaibhav) are users and acceptance testers; Douglas is the advisor.
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan unit by unit. Steps use checkbox (`- [ ]`) syntax for tracking. Every unit is one branch and one PR. Agents come only from `.claude/agents/` (see §5).
 
@@ -31,7 +31,7 @@ Repo: [davinciucberkeley-collab/dbf-hangar](https://github.com/davinciucberkeley
 
 ## Review Focus
 
-1. **A teammate's design that the importer has never seen** (e.g. Dylan's next CAD revision with a new part type): expected to load, migrate and get a scorecard with SKIPs naming what is missing, never a traceback. Pinned by `tests/test_ops_contract.py::test_unknown_component_type_gives_skip_not_crash` (U1.1).
+1. **A teammate's design that the importer has never seen** (e.g. Dillon's next CAD revision with a new part type): expected to load, migrate and get a scorecard with SKIPs naming what is missing, never a traceback. Pinned by `tests/test_ops_contract.py::test_unknown_component_type_gives_skip_not_crash` (U1.1).
 2. **Windows paths and line endings** in every op (`designs\concept-a`, CRLF YAML): expected identical results to Linux. Pinned by `tests/test_paths.py::test_backslash_and_crlf_roundtrip` (U1.4) and the Windows CI job.
 3. **`design.set` on a path that does not exist, or a value of the wrong type**: expected exit 2 with the schema path and the allowed type, file untouched. Pinned by `tests/test_design_edit.py::test_set_rejects_bad_path_and_type_without_writing` (U1.4).
 4. **An external tool missing** (OpenCAE not installed, DaVinci not connected, MuJoCo import fails on a laptop): expected SKIP with the fix command from `plane tools doctor`, and `accepted` stays false with a reason, never a silent PASS. Pinned by `tests/test_adapters.py::test_missing_tool_is_skip_with_fix` (U2.3).
@@ -45,20 +45,20 @@ Every requirement has an id. The ledger (U0.3) is seeded from this table; a unit
 
 | R | Who / when | Requirement (paraphrased from the transcript) | Unit(s) |
 |---|---|---|---|
-| R1 | A 11-11, 11-18 | A consistent file format for a plane ("schema"): if Tristan submits a plane to the system Dylan works in, it drops into the same bucket; CAD files go here, BOM goes here | U1.3 |
+| R1 | A 11-11, 11-18 | A consistent file format for a plane ("schema"): if Tristan submits a plane to the system Dillon works in, it drops into the same bucket; CAD files go here, BOM goes here | U1.3 |
 | R2 | A 11-11 | CLI **and** MCP so different agents interface with one app; `plane add …` instead of agents editing HTML per plane | U1.1, U1.2 |
 | R3 | A 11-18 | API → CLI on top → simple natural-language layer on top of that (skills) | U1.1, U1.2, U3.2 |
 | R4 | A 11-18 | Separate operations and data from code; don't edit code every time you run a simulation; saves tokens | U1.1, U1.4, U2.3 |
 | R5 | A 11-18 | Bring in new plane designs without changing design-software code ("put a window in, don't remove bricks") | U1.4 (CI rule), U2.1 |
 | R6 | A 11-18 | Lots of new things, **no new interfaces**; you have ~15, need ~3; one interface, different modes, one design language, one surface | U3.1 |
-| R7 | A 11-18 | Stretch: every team task doable via CLI without editing code: sending designs, updating morphological chart, sending an idea, researching, consolidating, testing assembly, Dylan's tasks | U1.4, U2.4, U3.4 |
+| R7 | A 11-18 | Stretch: every team task doable via CLI without editing code: sending designs, updating morphological chart, sending an idea, researching, consolidating, testing assembly, Dillon's tasks | U1.4, U2.4, U3.4 |
 | R8 | A 11-18 (to Tristan) | CLI lets Claude test a design, change one parameter, re-test, see how it evolves, iterate fast | U1.4 (`design.set`, `design.sweep`) |
-| R9 | A 11-18 (to Vibhav) | OpenCAE behind a CLI: can an agent run a full simulation + design iteration without editing or crawling code? then can Dylan? | U2.3, U3.4 |
+| R9 | A 11-18 (to Vaibhav) | OpenCAE behind a CLI: can an agent run a full simulation + design iteration without editing or crawling code? then can Dillon? | U2.3, U3.4 |
 | R10 | A 11-11 | Success conditions close to the real goal, hard enough Claude can't meet them unless it works: full 3D physics sim where parts can't pass through each other; mechanism works there or it doesn't; NASA standards; lift ratio | U2.1, U2.2 |
 | R11 | A 11-18 | Rigid-body physics (frictionless first) to check mechanisms: motor motions, flap movements, "if you pull this, does it pull that"; drop the drone in and drag it around | U2.1 (T6), U3.1 (Physics mode) |
 | R12 | A 11-11 | Gates: transport by car (the box), no exposed wires and rules for how wiring works | U1.3, U2.1 (T7) |
 | R13 | A 11-11 | Database of plane guidelines and standards every design is evaluated against; manufacturing methods; "does a tailsitter actually work?" evidence | U2.2 (builds on `knowledge/`, `standards/`) |
-| R14 | T 11-11 (Dylan) | BOM: verify parts are real (Amazon blocks agents → use Claude in Chrome) | U1.3 (`bom`), U2.4 (`bom.verify`) |
+| R14 | T 11-11 (Dillon) | BOM: verify parts are real (Amazon blocks agents → use Claude in Chrome) | U1.3 (`bom`), U2.4 (`bom.verify`) |
 | R15 | A 11-18 | Claude adds, rarely subtracts; fixes must consider add / subtract / modify / adjust and not add unless needed; weight is the constraint | U1.4 (change kind log), U3.2 (`design-iterate` skill), agent `design-engineer` |
 | R16 | A 11-18 | Iterative research at every step: "wing too heavy → research how others fixed it without adding parts"; recon + benchmarking | U3.2 (`recon` skill), agent `recon` |
 | R17 | A 11-18 | Hardest goal first: working, non-placeholder mechanisms before weight | §6 ordering, U2.1 T6 before T8 |
@@ -69,7 +69,7 @@ Every requirement has an id. The ledger (U0.3) is seeded from this table; a unit
 | R22 | A 11-18 | Plan before executing (scheme): max effort for planning, waves by dependency, units ≈ one PR each, one agent per unit; broken unit is fixed in place, not patched with a new unit; surface unknown decisions and a permissions prompt up front | §4–§6, U3.2 (`plan-scheme`) |
 | R23 | A 11-18 | Pointer files: AGENTS/CLAUDE.md point to rule files, not contain them; trim bloat (280 stale items) | U0.1, U4.1 |
 | R24 | A 11-18 | Team harness repo + install script so every teammate's Claude gets the same roles | U0.2 (`harness/install.py`) |
-| R25 | A 11-18 | Multiple PRs on the same plane from different people/agents; Dylan picks which to merge | U1.4 (`design.propose`), §4 |
+| R25 | A 11-18 | Multiple PRs on the same plane from different people/agents; Dillon picks which to merge | U1.4 (`design.propose`), §4 |
 | R26 | A 11-18 | Weekly updates: one artifact/page with each person's thing and link, sent before the meeting; drafted early in the week as a checklist; doc in Drive with links | U2.4 (`update.*`), U3.1 (Updates mode) |
 | R27 | A 11-18 | Before each meeting, list every task/idea from transcripts and compare with what repos have; beware "not done" vs "decided not to" | U0.3 (`ledger.ingest`, `ledger.check`) |
 | R28 | A 11-11 | One link for all the team's stuff; local copies push to the shared online version | U3.1 (Pages build), U4.1 |
@@ -280,11 +280,11 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D2 | Dec 1: who is the audience (Douglas only, Kosa, class?), live demo or recorded, length? | Douglas + Kosa, 10-min live demo + Slides deck, recorded backup | Douglas | 11-22 | decided: default (Tristan, 2026-11-20) |
 | D3 | DaVinci API: who has access, which account, is a Claude connector set up? | adapter ships as SKIP-with-reason; full DaVinci build moves to after Dec 1 | Douglas / Chris (Slack) | 11-23 | decided: default (Tristan, 2026-11-20) |
 | D4 | Harness in hangar (`harness/`) or its own repo? | in hangar; `harness/install.py` installs it on any teammate's machine | — | 11-21 | decided: default (Tristan, 2026-11-20) |
-| D5 | Transport box size and wiring clearance | box from DBF-Combined's constraint (K09-L box about 1.25 × 0.55 × 0.45 m) marked `source: team constraint`; clearance `pending` | Dylan | 11-24 | decided: default (Tristan, 2026-11-20) |
-| D6 | Hover T/W 1.5 vs 2.0, landing factor 3.0 vs STANAG 3.8 (both `pending`); concept A's claims use T/W ≥ 1.6 | one value per key, chosen from sources found in U2.2, recorded as a decision | Dylan | 11-25 | decided: default (Tristan, 2026-11-20) |
+| D5 | Transport box size and wiring clearance | box from DBF-Combined's constraint (K09-L box about 1.25 × 0.55 × 0.45 m) marked `source: team constraint`; clearance `pending` | Dillon | 11-24 | decided: default (Tristan, 2026-11-20) |
+| D6 | Hover T/W 1.5 vs 2.0, landing factor 3.0 vs STANAG 3.8 (both `pending`); concept A's claims use T/W ≥ 1.6 | one value per key, chosen from sources found in U2.2, recorded as a decision | Dillon | 11-25 | decided: default (Tristan, 2026-11-20) |
 | D7 | Does accepted require T6–T9 for v1.0, or report-only first? | T6 and T9 blocking; T7/T8 report-only (WARN) until 12-08 | — | 11-24 | decided: default (Tristan, 2026-11-20) |
 | D8 | Binary files: Git LFS in hangar, or meshes stay in DBF-Combined and hangar stores `{repo, commit, path, sha256}` references? | LFS for the meshes the gates need (concept A, about 130 STL); CAD sources referenced, not copied | — | 11-21 | decided: default (Tristan, 2026-11-20) |
-| D9 | Which design states are active? | concept A active; K09-L, C0 rev G, v0.3.1, tiltwing `retired` | Dylan | 11-22 | decided: default (Tristan, 2026-11-20) |
+| D9 | Which design states are active? | concept A active; K09-L, C0 rev G, v0.3.1, tiltwing `retired` | Dillon | 11-22 | decided: default (Tristan, 2026-11-20) |
 | D10 | Archive DBF-Combined and aircraft-platform (read-only) once hangar v1.0 is out? | yes, after 12-01, with a README pointer to hangar | team | 12-01 | open: decided when v1.0 is done |
 | D11 | Who turns an unknown component type into a SKIP instead of a T0.schema FAIL (Review Focus #1)? | U2.1 (gate registry); schema stays strict until then | Tristan | 11-21 | decided: U2.1 (Tristan, 2026-11-21) |
 | D12 | Does U1.3 migrate the committed designs (§7 U1.3 step 3)? | no: a designs-only PR after U1.3 migrates the designs whose results don't hash plane.yaml; concept-a stays at 0.4 until its FEA is re-run (fea.py hashes plane.yaml) | Tristan | 11-21 | decided: default (Tristan, 2026-11-21) |
@@ -323,7 +323,7 @@ Scheme rules on top (R22, R25):
 - **Unit = one PR.** If a unit's PR is rejected, the same unit is reopened and fixed; no "fix-for-the-fix" unit.
 - **Plan is the source of truth**, not the conductor's memory. Agents get the unit text from this file, not a paraphrase. Status changes are checkbox edits here + `plane ledger set`.
 - **Brief vs §7**: Where the brief and plan §7 differ, the brief governs; the tactician records the difference in Plan coverage.
-- **Design work goes through PRs too**: several agents/people may open `design.propose` PRs on the same design; Tristan merges (Dylan approves concept-a changes, R25).
+- **Design work goes through PRs too**: several agents/people may open `design.propose` PRs on the same design; Tristan merges (Dillon approves concept-a changes, R25).
 - **Hourly audit** while a wave runs: `auditor` (Haiku) runs the `get-it-together` skill and reports to the conductor (R21). Scheduled as a looping prompt / scheduled task during long runs.
 - **Permissions up front**: before a wave, the conductor posts one prompt listing every command and folder the wave needs, so no agent stalls on a permission check mid-run.
 
@@ -359,7 +359,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W4 Review, release, presentation | Sun 11-29 → Mon 11-30 | U4.1, U4.2 |
 | Present | **Tue 12-01** | demo + deck |
 
-All units: Tristan. Acceptance testers: Dylan (Studio, concept A), Vibhav (OpenCAE on Windows), James (harness install on his machine).
+All units: Tristan. Acceptance testers: Dillon (Studio, concept A), Vaibhav (OpenCAE on Windows), James (harness install on his machine).
 
 Ordering follows R17: T6 mechanisms lands before T8 sourcing; U3.4 (an agent iterating concept-a with no code edits) is the acceptance test of the whole plan.
 
@@ -388,10 +388,10 @@ Prepared by the conductor as a one-message task with exact commands; sent by Tri
 | When | Tester | Task (≤ 20 min) | Evidence |
 |---|---|---|---|
 | Sat 11-21 | James | `python harness/install.py --target <his repo>`; launch any non-roster agent and confirm it is blocked | screenshot in ledger |
-| Mon 11-23 | Dylan | `plane design set` one concept-A mass on a branch, `plane design validate`, `plane design propose` | PR link |
-| Tue 11-24 | Vibhav | `plane tools doctor` + `plane fea run designs/concept-a --part <one>` on Windows | output pasted in ledger |
+| Mon 11-23 | Dillon | `plane design set` one concept-A mass on a branch, `plane design validate`, `plane design propose` | PR link |
+| Tue 11-24 | Vaibhav | `plane tools doctor` + `plane fea run designs/concept-a --part <one>` on Windows | output pasted in ledger |
 | Wed 11-25 | all | `plane update add` own line; Tristan runs `plane update publish` | the link |
-| Fri 11-27 | Dylan | one iteration in Plane Studio, no terminal (U3.4 step 4) | time taken |
+| Fri 11-27 | Dillon | one iteration in Plane Studio, no terminal (U3.4 step 4) | time taken |
 
 ### 6c. Agent table for W0-early (launched 2026-11-20, before U0.4)
 
@@ -921,7 +921,7 @@ def test_scorecard_reports_fidelity(concept_a):
 - Also (D13, Tristan 2026-11-21): `fea.part_hash` hashes only the standards keys FEA reads (not the whole `design-standards.yaml`), lands before U2.2 edits standards; concept-a results are re-hashed once from unchanged inputs, with a test that editing an unrelated standards key leaves results fresh.
 
 **Interfaces:**
-- Produces: `class Adapter(Protocol): name: str; def available(self) -> tuple[bool, str]` (reason + fix command); `def run(self, design: Design, **params) -> OpResult`. `get_adapter(name) -> Adapter`. OpenCAE adapter prefers Vibhav's `opencae` CLI if on PATH (contract agreed with him in this unit: `opencae solve --deck <inp> --json`), else the current in-repo runner.
+- Produces: `class Adapter(Protocol): name: str; def available(self) -> tuple[bool, str]` (reason + fix command); `def run(self, design: Design, **params) -> OpResult`. `get_adapter(name) -> Adapter`. OpenCAE adapter prefers Vaibhav's `opencae` CLI if on PATH (contract agreed with him in this unit: `opencae solve --deck <inp> --json`), else the current in-repo runner.
 
 - [ ] **Step 1: Failing tests**
 
@@ -941,7 +941,7 @@ def test_fea_results_identical_through_adapter(cantilever_fixture):   # same 1.0
 
 - [ ] **Step 2: Run** → FAIL
 - [ ] **Step 3: Implement.** DaVinci: `available()` returns False with "D3 open: no API access configured" until D3 is answered; then `davinci.push` sends PDL + STEP files, `davinci.pull` brings a DaVinci build back as a `design.propose` PR.
-- [ ] **Step 4: Run** `pytest -q` → PASS; Vibhav runs `plane fea run designs/concept-a --all` on his machine and pastes the summary in the PR (R9 first half)
+- [ ] **Step 4: Run** `pytest -q` → PASS; Vaibhav runs `plane fea run designs/concept-a --all` on his machine and pastes the summary in the PR (R9 first half)
 - [ ] **Step 5: Commit** `git commit -m "adapters: one contract for OpenCAE, MuJoCo, AeroSandbox, DaVinci; tools doctor"`
 
 ### Unit U2.4: Team-ops commands (R7, R14, R26, R27, R31, R38)
@@ -995,7 +995,7 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 
 - [ ] **Step 2: Run** → FAIL
 - [ ] **Step 3: Implement**; the importer is the only code that knows DBF-Combined's layout.
-- [ ] **Step 4: Run** → PASS; `plane design validate designs/concept-a` scorecard committed as the new baseline; Dylan checks the BOM and claims against the Explorer (acceptance, 15 min)
+- [ ] **Step 4: Run** → PASS; `plane design validate designs/concept-a` scorecard committed as the new baseline; Dillon checks the BOM and claims against the Explorer (acceptance, 15 min)
 - [ ] **Step 5: Commit** (label `migration`) `git commit -m "import: concept A full (params, BOM, requirements, claims, interfaces); program constraints; decision log"`
 
 ### Unit U3.1: One surface — Studio with modes, same app on Pages [hard]
@@ -1049,8 +1049,8 @@ Not a code unit; it tests everything above.
 - [ ] **Step 1:** Conductor launches `design-engineer` (Sonnet) on concept-a with the goal: "reduce failing checks without adding mass; mechanisms first." Hooks active; `design-engineer` has Bash limited to `plane *` and no Edit on `core/`.
 - [ ] **Step 2:** It runs `plane design validate`, `plane sim mechanism`, `plane fea run`, `plane design set|sweep`, and opens one or more `plane design propose` PRs. `auditor` runs hourly.
 - [ ] **Step 3:** Verify mechanically: `git diff --name-only main...design/concept-a/* | grep -c '^core/'` → `0`; scorecard failures fewer than `baseline.json`.
-- [ ] **Step 4:** Acceptance: Dylan repeats one iteration himself in Plane Studio (no terminal), Vibhav repeats one with `plane fea` on Windows. Each records time taken in the ledger.
-- [ ] **Step 5:** Tristan merges or closes the PRs after Dylan's approval (R25). `plane ledger set R7 R9 done --evidence <PR urls>`.
+- [ ] **Step 4:** Acceptance: Dillon repeats one iteration himself in Plane Studio (no terminal), Vaibhav repeats one with `plane fea` on Windows. Each records time taken in the ledger.
+- [ ] **Step 5:** Tristan merges or closes the PRs after Dillon's approval (R25). `plane ledger set R7 R9 done --evidence <PR urls>`.
 
 ### Unit U3.5: Discipline skills, scorecard and procedures (from §1c; not on the core path)
 
