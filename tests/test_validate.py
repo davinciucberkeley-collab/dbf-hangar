@@ -4,7 +4,7 @@ from __future__ import annotations
 import pytest
 
 from hangar.checks import validate
-from hangar.design import FAIL, PASS, load_design
+from hangar.design import FAIL, PASS, WARN, load_design
 from hangar.mass import mass_properties
 
 from testutil import statuses
@@ -23,7 +23,11 @@ def test_example_accepted(example):
     assert sc.accepted
     by_tier = {t.tier: t.status for t in sc.tiers}
     for tier in (0, 1, 2, 3, 4, 5):
-        assert by_tier[tier] == PASS, f"tier {tier} is {by_tier[tier]}"
+        if by_tier[tier] == PASS:
+            continue
+        rows = next(t for t in sc.tiers if t.tier == tier).results
+        # report-only discipline rows (U3.6) may leave a tier WARN; any other non-PASS row still fails
+        assert by_tier[tier] == WARN and all(r.status == PASS or r.data.get("report_only") is True for r in rows),             f"tier {tier} is {by_tier[tier]}"
 
 
 def test_mass_equals_sum_of_components(example):
