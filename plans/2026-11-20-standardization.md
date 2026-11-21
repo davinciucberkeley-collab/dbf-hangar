@@ -111,13 +111,13 @@ Inventory taken 2026-11-20. "Lands as" is the only form a piece may take in hang
 
 DBF-Combined `redesign/TEAM.md` @ `a93f14d` lists **45** discipline roles (A1–J6; 39 with a `team/<id>/` folder). None becomes an agent: the 10 work-level roles stay (R18; Douglas 11-18). Each role's checklist was extracted by scouts into `plans/2026-11-20-standardization/discipline-extract/<id>.md` (1,935 check rows, each citing its source file and line), and every row was given exactly one destination under the fixed rules in `discipline-extract/_RULES.md`. Leadership and integration roles (A1 chief engineer, A2 systems, A4 configuration, J2 proof chain, J6 review board) land on what already exists: the conductor and advisor (decisions), the ledger (change requests, traceability), the claims graph and T9 (verification), and `standards/review-scorecard.md` (review rules).
 
-**Totals (rows):** gate 327 · standards 512 (501 distinct keys, 55 `pending`) · skill 89 · scorecard 60 · knowledge 101 · dropped 846 (mostly `k09l-instance`: a number about one K09-L part, whose general rule is captured once under another code).
+**Totals (rows, after the advisor's re-tag pass):** gate 259 · standards 376 (367 distinct keys, design-independent only) · skill 97 · scorecard 60 · knowledge 128 · dropped 1015 (k09l-instance 650, duplicate 271, covered 47, k09l-only 4, generated-output 38, out-of-scope 5); 1935 rows in all.
 
 **Where the rows land**
 - **Existing gates** take most gate rows (T1.interference, T1.interfaces, T2.fea_strength, T3.mass, T3.static_margin, T3.hover_tw, T7.*, T8.*, T9.claims): no new code, they become test fixtures and criteria text in U3.6.
 - **New gates (5, U3.6, report-only until D7's 12-08 date; advisor DF-A cut 7 to 5):** `T2.joint_rf` (every attachment with a `connection`: reserve factor = connection-type rating / computed joint load >= `joint_rf_min`; extends T2.joint_load), `T3.control_authority` (pitch, roll and yaw separately: hover control moment with a sagged pack / wind moment from `operations.yaml` >= `hover_ctrl_factor`; yaw usually binds), `T3.transition_margin` (VTOL only: transition speed margin over stall and entry thrust fraction <= 0.8 with a sagged pack; a non-VTOL design gets SKIP "not applicable", never PASS), `T3.endurance` (power computed from PDL, not a declared number; usable energy >= mission energy + reserve), `T7.electrical_rating` (wire gauge and disconnect rating >= peak current). Every gate names the PDL paths and `standards/` keys it reads; a pending threshold or a declared value without a calculation or source gives SKIP, as T9 does. Cut: `T7.thermal` and `T2.modal_separation` (no adapter produces their data) become `review-propulsion` / `review-structures` items plus T9 claims (U2.5 imports the E1-E3 temperature claims); `T2.load_case_coverage` drew no rows. Load cases become `standards/load-cases.yaml`, read by T2.fea_strength.
 - **Standards:** D19 limits import to keys a gate or skill reads, enforced by a test (every `standards/*.yaml` key is referenced by a gate or a skill), and only design-independent values (ratios, factors, process/material ratings, field conditions); a number sized for one K09-L part never becomes a standards default, not even as `pending` (DF-A re-tag pass, `_RULES.md` amendments). New files: `standards/load-cases.yaml`, `standards/operations.yaml` (wind/gust/flight-window limits, go/no-go). No `gate-thresholds.yaml`; other keys go to `design-standards.yaml` only if FEA does not read them (D13/D18).
-- **Skills (6, U3.5, ≤ 120 lines each):** `review-structures` (C1–C6, D1–D3, D5), `review-aero` (B1–B4, A3 mass and CG), `review-controls` (B3 stability, F3–F5 avionics, flight software, RC link), `review-propulsion` (E1–E3, F1–F2: motors, props, power, energy, thermal, harness), `review-manufacturing` (G1–G4, D6–D7), `review-test-safety` (H1–H3). `review-mass` and `review-interfaces` drew 1 and 0 rows and are merged/dropped (subtract). Read by `reviewer` and `design-engineer`.
+- **Skills (6, U3.5, ≤ 120 lines each):** `review-structures` (C1–C6, D1–D3, D5; modal separation), `review-aero` (B1–B4, A3 mass and CG), `review-controls` (B3 stability, F3–F5 avionics, flight software, RC link), `review-propulsion` (E1–E3, F1–F2: motors, props, power, energy, thermal, harness; thermal limits), `review-manufacturing` (G1–G4, D6–D7), `review-test-safety` (H1–H3). `review-mass` and `review-interfaces` drew 1 and 0 rows and are merged/dropped (subtract). Read by `reviewer` and `design-engineer`.
 - **Scorecard (U3.5):** two new sections in `standards/review-scorecard.md`: *Evidence and closure* (a fail closes only by a design change, a corrected model with a stated reason, or a deciding test; limits are never loosened; reviewer estimates are labelled; figures spot-checked against the claims graph) and *Discipline sign-off* (each relevant discipline skill read and its items answered).
 - **Knowledge (U3.5):** procedures, not checks: ground-test plan, build sequence, flight card, flight-test plan, transition procedure, battery handling, procurement lead times and smaller entries (19 topics, 101 rows), via `knowledge/` templates.
 - **Dropped (846):** K09-L part values (claims about the retired configuration, D9), inactive D4, generated output (J3 renders, J4 visual design → Studio/Pages), duplicates and rows already covered.
@@ -126,51 +126,51 @@ DBF-Combined `redesign/TEAM.md` @ `a93f14d` lists **45** discipline roles (A1–
 
 | Role | Name | Status | Rows | GATE | STD | SKILL | SCORECARD | KNOW | DROP | Main destinations |
 |---|---|---|---|---|---|---|---|---|---|---|
-| A1 | Chief engineer / integrator | active | 28 | 20 | 5 | 0 | 0 | 0 | 3 | `GATE:T3.static_margin` 7, `GATE:T3.mass` 4, `STD:connection-types` 3 |
-| A2 | Systems engineer | K09-L in part | 59 | 21 | 18 | 5 | 0 | 2 | 13 | `STD:operations` 8, `STD:load-cases` 4, `GATE:T3.control_authority` 3 |
-| A3 | Mass-properties engineer | active | 33 | 26 | 0 | 0 | 0 | 0 | 7 | `GATE:T3.static_margin` 11, `GATE:T3.mass` 5, `GATE:T3.control_authority` 4 |
-| A4 | Configuration / interface manager | K09-L in part | 32 | 19 | 0 | 0 | 1 | 0 | 12 | `GATE:T0.schema` 4, `GATE:T1.interference` 4, `GATE:T7.wiring` 3 |
-| A5 | CAD lead | active | 25 | 9 | 2 | 0 | 0 | 0 | 14 | `GATE:T3.static_margin` 5, `GATE:T0.schema` 2, `GATE:T9.claims` 2 |
-| B1 | Aero performance engineer | K09-L in part | 40 | 8 | 5 | 0 | 1 | 0 | 26 | `STD:design-standards` 4, `GATE:T3.transition_margin` 3, `GATE:T3.control_authority` 2 |
-| B2 | Wing aero engineer | K09-L in part | 45 | 17 | 3 | 3 | 4 | 0 | 18 | `GATE:T3.stall` 6, `SCORECARD:evidence-and-closure` 4, `GATE:T3.static_margin` 3 |
-| B3 | Stability and control engineer | K09-L-specific | 72 | 16 | 3 | 5 | 5 | 0 | 43 | `GATE:T3.control_authority` 6, `GATE:T3.transition_margin` 6, `SCORECARD:evidence-and-closure` 5 |
+| A1 | Chief engineer / integrator | active | 28 | 18 | 4 | 0 | 0 | 0 | 6 | `GATE:T3.static_margin` 7, `GATE:T3.mass` 4, `STD:design-standards` 2 |
+| A2 | Systems engineer | K09-L in part | 59 | 20 | 17 | 6 | 0 | 2 | 14 | `STD:operations` 8, `GATE:T3.control_authority` 3, `STD:design-standards` 3 |
+| A3 | Mass-properties engineer | active | 33 | 15 | 0 | 0 | 0 | 0 | 18 | `GATE:T3.static_margin` 6, `GATE:T3.mass` 4, `GATE:T9.claims` 2 |
+| A4 | Configuration / interface manager | K09-L in part | 32 | 17 | 0 | 0 | 1 | 0 | 14 | `GATE:T0.schema` 4, `GATE:T1.interference` 4, `GATE:T7.wiring` 3 |
+| A5 | CAD lead | active | 25 | 6 | 2 | 0 | 0 | 0 | 17 | `GATE:T3.static_margin` 2, `GATE:T0.schema` 2, `GATE:T9.claims` 2 |
+| B1 | Aero performance engineer | K09-L in part | 40 | 6 | 4 | 0 | 1 | 0 | 29 | `GATE:T3.transition_margin` 3, `STD:design-standards` 3, `GATE:T3.control_authority` 2 |
+| B2 | Wing aero engineer | K09-L in part | 45 | 3 | 3 | 3 | 4 | 0 | 32 | `SCORECARD:evidence-and-closure` 4, `SKILL:review-controls` 3, `STD:design-standards` 3 |
+| B3 | Stability and control engineer | K09-L-specific | 72 | 12 | 3 | 6 | 5 | 0 | 46 | `GATE:T3.transition_margin` 6, `SCORECARD:evidence-and-closure` 5, `GATE:T3.control_authority` 5 |
 | B4 | Rotor / propeller aero engineer | active | 48 | 3 | 10 | 1 | 1 | 0 | 33 | `STD:design-standards` 7, `STD:program` 3, `SCORECARD:evidence-and-closure` 1 |
-| C1 | Loads engineer | active | 23 | 2 | 12 | 0 | 1 | 0 | 8 | `STD:program` 6, `STD:load-cases` 4, `STD:operations` 1 |
+| C1 | Loads engineer | active | 23 | 2 | 10 | 0 | 1 | 0 | 10 | `STD:program` 4, `STD:load-cases` 4, `STD:operations` 1 |
 | C2 | Wing structures engineer | active | 57 | 2 | 12 | 0 | 1 | 0 | 42 | `STD:manufacturing` 9, `STD:program` 3, `GATE:T2.fea_strength` 1 |
-| C3 | Pod structures engineer | K09-L in part | 35 | 3 | 12 | 0 | 0 | 0 | 20 | `STD:manufacturing` 9, `STD:design-standards` 3, `GATE:T2.joint_rf` 1 |
-| C4 | Fin and motor-tube structures engineer | K09-L in part | 54 | 2 | 7 | 0 | 1 | 0 | 44 | `STD:manufacturing` 6, `SCORECARD:evidence-and-closure` 1, `STD:program` 1 |
-| C5 | Landing / impact engineer | K09-L in part | 79 | 2 | 23 | 2 | 1 | 3 | 48 | `STD:operations` 9, `STD:program` 7, `STD:design-standards` 6 |
-| C6 | Joints and fasteners engineer | active | 67 | 4 | 12 | 0 | 0 | 1 | 50 | `STD:connection-types` 7, `STD:manufacturing` 5, `GATE:T2.joint_rf` 1 |
-| D1 | Wing designer | active | 21 | 2 | 8 | 0 | 0 | 0 | 11 | `STD:manufacturing` 6, `STD:design-standards` 2, `GATE:T3.mass` 1 |
-| D2 | Pod designer | K09-L-specific | 38 | 7 | 2 | 0 | 0 | 4 | 25 | `KNOW:ground-test-plan` 4, `GATE:T1.interfaces` 1, `GATE:T3.static_margin` 1 |
+| C3 | Pod structures engineer | K09-L in part | 35 | 3 | 9 | 0 | 0 | 0 | 23 | `STD:manufacturing` 7, `STD:design-standards` 2, `GATE:T2.joint_rf` 1 |
+| C4 | Fin and motor-tube structures engineer | K09-L in part | 54 | 2 | 5 | 0 | 1 | 0 | 46 | `STD:manufacturing` 4, `SCORECARD:evidence-and-closure` 1, `STD:program` 1 |
+| C5 | Landing / impact engineer | K09-L in part | 79 | 2 | 16 | 2 | 1 | 3 | 55 | `STD:operations` 7, `STD:program` 6, `STD:design-standards` 2 |
+| C6 | Joints and fasteners engineer | active | 67 | 4 | 7 | 0 | 0 | 1 | 55 | `STD:connection-types` 7, `GATE:T2.joint_rf` 1, `GATE:T1.interference` 1 |
+| D1 | Wing designer | active | 21 | 2 | 6 | 0 | 0 | 0 | 13 | `STD:manufacturing` 4, `STD:design-standards` 2, `GATE:T3.mass` 1 |
+| D2 | Pod designer | K09-L-specific | 38 | 7 | 0 | 0 | 0 | 4 | 27 | `KNOW:ground-test-plan` 4, `GATE:T1.interfaces` 1, `GATE:T3.static_margin` 1 |
 | D3 | Fin and motor-tube designer | K09-L-specific | 23 | 6 | 0 | 0 | 0 | 5 | 12 | `KNOW:ground-test-plan` 4, `GATE:T2.joint_rf` 1, `GATE:T1.interference` 1 |
 | D4 | Tail designer | inactive | 0 | 0 | 0 | 0 | 0 | 0 | 0 | — |
-| D5 | Landing designer | K09-L-specific | 38 | 7 | 8 | 0 | 0 | 6 | 17 | `KNOW:ground-test-plan` 5, `STD:design-standards` 4, `STD:load-cases` 3 |
+| D5 | Landing designer | K09-L-specific | 38 | 7 | 6 | 0 | 0 | 6 | 19 | `KNOW:ground-test-plan` 5, `STD:design-standards` 3, `STD:load-cases` 2 |
 | D6 | Mechanisms designer | K09-L in part | 27 | 7 | 0 | 0 | 0 | 4 | 16 | `KNOW:ground-test-plan` 4, `GATE:T6.mechanism` 1, `GATE:T2.fea_strength` 1 |
-| D7 | Transport and packaging designer | active | 29 | 3 | 9 | 0 | 0 | 5 | 12 | `KNOW:ground-test-plan` 5, `STD:load-cases` 3, `STD:design-standards` 3 |
-| E1 | Propulsion engineer | K09-L in part | 52 | 10 | 3 | 0 | 0 | 3 | 36 | `KNOW:ground-test-plan` 3, `STD:design-standards` 2, `GATE:T7.electrical_rating` 1 |
-| E2 | Battery / energy engineer | active | 30 | 5 | 5 | 0 | 1 | 4 | 15 | `KNOW:ground-test-plan` 4, `STD:design-standards` 3, `STD:operations` 2 |
-| E3 | Thermal engineer | active | 38 | 6 | 16 | 0 | 0 | 1 | 15 | `STD:design-standards` 6, `STD:operations` 3, `STD:gate-thresholds` 3 |
-| F1 | Power distribution engineer | K09-L in part | 55 | 6 | 18 | 0 | 1 | 0 | 30 | `STD:design-standards` 12, `GATE:T7.electrical_rating` 4, `STD:gate-thresholds` 4 |
-| F2 | Harness engineer | active | 22 | 3 | 16 | 0 | 0 | 0 | 3 | `STD:design-standards` 13, `GATE:T1.interference` 2, `STD:gate-thresholds` 1 |
-| F3 | Avionics hardware engineer | K09-L in part | 38 | 3 | 16 | 0 | 0 | 0 | 19 | `STD:design-standards` 11, `STD:gate-thresholds` 4, `GATE:T1.interfaces` 1 |
-| F4 | Flight-control software engineer | active | 65 | 21 | 27 | 3 | 0 | 5 | 9 | `STD:design-standards` 17, `GATE:T3.control_authority` 9, `STD:operations` 5 |
-| F5 | RC link, telemetry and ground station engineer | active | 47 | 5 | 18 | 3 | 2 | 7 | 12 | `STD:gate-thresholds` 12, `STD:operations` 4, `GATE:T3.transition_margin` 3 |
-| G1 | Manufacturing engineer | active | 38 | 6 | 21 | 4 | 2 | 3 | 2 | `STD:manufacturing` 14, `STD:program` 6, `KNOW:build-sequence` 3 |
-| G2 | Composites and foam specialist | active | 46 | 2 | 9 | 5 | 2 | 15 | 13 | `KNOW:build-sequence` 11, `STD:manufacturing` 8, `SKILL:review-manufacturing` 5 |
-| G3 | 3D-printing specialist | active | 18 | 4 | 5 | 5 | 0 | 1 | 3 | `SKILL:review-manufacturing` 5, `STD:manufacturing` 3, `GATE:T8.bom` 1 |
-| G4 | Assembly sequence engineer | active | 46 | 6 | 15 | 10 | 4 | 2 | 9 | `STD:design-standards` 5, `STD:program` 4, `STD:manufacturing` 4 |
-| H1 | Ground test engineer | active | 162 | 10 | 97 | 11 | 0 | 7 | 37 | `STD:gate-thresholds` 35, `STD:design-standards` 25, `STD:connection-types` 19 |
-| H2 | Flight test engineer | active | 80 | 8 | 38 | 8 | 3 | 3 | 20 | `STD:operations` 18, `STD:gate-thresholds` 16, `SKILL:review-controls` 8 |
+| D7 | Transport and packaging designer | active | 29 | 3 | 4 | 0 | 0 | 5 | 17 | `KNOW:ground-test-plan` 5, `STD:design-standards` 2, `STD:load-cases` 1 |
+| E1 | Propulsion engineer | K09-L in part | 52 | 9 | 1 | 1 | 0 | 4 | 37 | `KNOW:ground-test-plan` 4, `STD:design-standards` 1, `GATE:T7.electrical_rating` 1 |
+| E2 | Battery / energy engineer | active | 30 | 4 | 4 | 1 | 1 | 4 | 16 | `KNOW:ground-test-plan` 4, `STD:design-standards` 2, `STD:operations` 2 |
+| E3 | Thermal engineer | active | 38 | 4 | 16 | 2 | 0 | 1 | 15 | `STD:design-standards` 9, `STD:operations` 3, `STD:load-cases` 2 |
+| F1 | Power distribution engineer | K09-L in part | 55 | 6 | 14 | 0 | 1 | 1 | 33 | `STD:design-standards` 14, `GATE:T7.electrical_rating` 4, `GATE:T7.wiring` 2 |
+| F2 | Harness engineer | active | 22 | 3 | 4 | 0 | 0 | 0 | 15 | `STD:design-standards` 4, `GATE:T1.interference` 2, `GATE:T7.wiring` 1 |
+| F3 | Avionics hardware engineer | K09-L in part | 38 | 3 | 9 | 0 | 0 | 2 | 24 | `STD:design-standards` 9, `KNOW:ground-test-plan` 2, `GATE:T1.interfaces` 1 |
+| F4 | Flight-control software engineer | active | 65 | 21 | 20 | 3 | 0 | 6 | 15 | `STD:design-standards` 12, `GATE:T3.control_authority` 9, `STD:operations` 7 |
+| F5 | RC link, telemetry and ground station engineer | active | 47 | 5 | 16 | 3 | 2 | 8 | 13 | `STD:operations` 9, `STD:design-standards` 7, `GATE:T3.transition_margin` 3 |
+| G1 | Manufacturing engineer | active | 38 | 6 | 7 | 4 | 2 | 3 | 16 | `STD:manufacturing` 6, `KNOW:build-sequence` 3, `SKILL:review-manufacturing` 3 |
+| G2 | Composites and foam specialist | active | 46 | 1 | 7 | 5 | 2 | 15 | 16 | `KNOW:build-sequence` 11, `STD:manufacturing` 6, `SKILL:review-manufacturing` 5 |
+| G3 | 3D-printing specialist | active | 18 | 2 | 4 | 5 | 0 | 1 | 6 | `SKILL:review-manufacturing` 5, `STD:manufacturing` 2, `GATE:T8.bom` 1 |
+| G4 | Assembly sequence engineer | active | 46 | 3 | 14 | 10 | 4 | 2 | 13 | `STD:program` 4, `STD:manufacturing` 4, `STD:design-standards` 4 |
+| H1 | Ground test engineer | active | 162 | 9 | 52 | 12 | 0 | 28 | 61 | `KNOW:ground-test-plan` 28, `STD:design-standards` 27, `STD:connection-types` 12 |
+| H2 | Flight test engineer | active | 80 | 6 | 38 | 8 | 3 | 3 | 22 | `STD:operations` 32, `SKILL:review-controls` 8, `STD:program` 3 |
 | H3 | Safety officer | active | 80 | 3 | 28 | 10 | 1 | 12 | 26 | `STD:operations` 20, `SKILL:review-test-safety` 9, `KNOW:battery-procedure` 5 |
-| I1 | Procurement / BOM engineer | active | 48 | 10 | 8 | 5 | 10 | 4 | 11 | `GATE:T8.budget` 9, `STD:program` 8, `SCORECARD:discipline-sign-off` 8 |
-| I2 | Schedule planner | active | 29 | 13 | 1 | 0 | 2 | 1 | 12 | `GATE:T8.program` 12, `SCORECARD:discipline-sign-off` 2, `STD:program` 1 |
-| J1 | Outside research analyst | active | 45 | 2 | 7 | 8 | 1 | 1 | 26 | `STD:design-standards` 4, `SKILL:review-controls` 4, `SKILL:review-aero` 3 |
+| I1 | Procurement / BOM engineer | active | 48 | 2 | 7 | 5 | 10 | 4 | 20 | `SCORECARD:discipline-sign-off` 8, `STD:program` 7, `KNOW:procurement-lead-times` 4 |
+| I2 | Schedule planner | active | 29 | 8 | 1 | 0 | 2 | 1 | 17 | `GATE:T8.program` 7, `SCORECARD:discipline-sign-off` 2, `STD:program` 1 |
+| J1 | Outside research analyst | active | 45 | 0 | 6 | 9 | 1 | 1 | 28 | `SKILL:review-controls` 4, `STD:design-standards` 3, `SKILL:review-aero` 3 |
 | J2 | Verification / proof-chain engineer | active | 22 | 14 | 0 | 0 | 0 | 0 | 8 | `GATE:T9.claims` 9, `GATE:T0.schema` 5 |
 | J3 | Technical illustrator | active | 24 | 1 | 0 | 0 | 0 | 0 | 23 | `GATE:T7.assembly` 1 |
 | J4 | Visual designer | active | 22 | 0 | 0 | 0 | 3 | 0 | 19 | `SCORECARD:evidence-and-closure` 3 |
 | J5 | Technical writer / documentation | active | 20 | 1 | 0 | 1 | 1 | 2 | 15 | `KNOW:build-sequence` 2, `SKILL:review-test-safety` 1, `SCORECARD:evidence-and-closure` 1 |
-| J6 | Design review board | active | 35 | 2 | 13 | 0 | 11 | 0 | 9 | `SCORECARD:evidence-and-closure` 7, `STD:gate-thresholds` 5, `STD:design-standards` 5 |
+| J6 | Design review board | active | 35 | 1 | 10 | 0 | 11 | 0 | 13 | `SCORECARD:evidence-and-closure` 7, `STD:design-standards` 7, `SCORECARD:discipline-sign-off` 4 |
 
 ## 2. Spec: what v1.0 is
 
