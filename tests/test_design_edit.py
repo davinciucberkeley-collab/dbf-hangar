@@ -459,3 +459,135 @@ def test_collection_pairs_are_atomic(tmp_concept_a):
                                      "attachments[E-MEC-02].articulation={type: bogus}"])
     assert r.ok is False
     assert _bytes(tmp_concept_a) == before
+
+
+# ---- design.set --kind remove (U3.6d) ----
+def _lines(text):
+    return text.replace("\r\n", "\n").splitlines()
+
+
+def _line_no(lines, needle):
+    return next(n for n, line in enumerate(lines) if needle in line)
+
+
+def _log(d):
+    return yaml.safe_load((d / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+
+
+def test_remove_flow_attachment_deletes_its_line_and_id_comments(tmp_concept_a):
+    text = _plane_text(tmp_concept_a)
+    out, gone = pdledit.remove_element(text, "attachments[E-MEC-HW-R1]")
+    old = _lines(text)
+    i = _line_no(old, "- {id: E-MEC-HW-R1,")
+    assert old[i - 2].strip().startswith("# E-MEC-HW-R1 CT-HW-SEATED")
+    assert old[i - 1].strip().startswith("# rating [derived]")
+    assert _lines(out) == old[:i - 2] + old[i + 1:]
+    assert {o[0] for o in _opcodes(text, out)} == {"delete"}
+    assert "E-MEC-HW-R1" not in out
+    assert "# E-MEC-HW-R2 CT-HW-SEATED" in out
+    assert gone["id"] == "E-MEC-HW-R1" and gone["parent"] == "mec-001-r"
+    ids = [a["id"] for a in yaml.safe_load(text)["attachments"]]
+    assert [a["id"] for a in yaml.safe_load(out)["attachments"]] == [x for x in ids if x != "E-MEC-HW-R1"]
+
+
+def test_remove_block_element_deletes_exactly_its_lines(tmp_example):
+    text = _plane_text(tmp_example)
+    old = _lines(text)
+    out, gone = pdledit.remove_element(text, "components[fin_l]")
+    i = _line_no(old, "  - id: fin_l")
+    assert old[i + 9] == "  - id: fin_r"
+    assert _lines(out) == old[:i] + old[i + 9:]
+    assert gone["id"] == "fin_l" and gone["mass_g"] == 15
+    last, _ = pdledit.remove_element(text, "components[battery]")     # last element: the blank line after it stays
+    j = _line_no(old, "  - id: battery")
+    assert old[j + 6] == "" and _lines(last) == old[:j] + old[j + 6:]
+
+
+def test_remove_keeps_a_comment_that_only_mentions_the_id(tmp_example):
+    text = _plane_text(tmp_example)
+    old = _lines(text)
+    i = _line_no(old, "- {id: wing-body,")
+    assert "wing-body" in old[i - 2] and not old[i - 2].lstrip().startswith("# wing-body")
+    out, _ = pdledit.remove_element(text, "attachments[wing-body]")
+    assert _lines(out) == old[:i] + old[i + 1:]
+    assert "# Ratings revised 2026-11-11" in out
+
+
+def test_remove_preserves_crlf(tmp_example, tmp_concept_a):
+    for d, key in ((tmp_example, "components[fin_l]"), (tmp_concept_a, "attachments[E-MEC-HW-R1]")):
+        lf = _plane_text(d).replace("\r\n", "\n")
+        crlf = lf.replace("\n", "\r\n")
+        out, _ = pdledit.remove_element(crlf, key)
+        assert "\n" not in out.replace("\r\n", "")
+        assert out.replace("\r\n", "\n") == pdledit.remove_element(lf, key)[0]
+    p = tmp_example / "plane.yaml"
+    raw = _plane_text(tmp_example).replace("\r\n", "\n").replace("\n", "\r\n").encode("utf-8")
+    p.write_bytes(raw)
+    r = call("design.set", path=str(tmp_example), kind="remove", why="t", key="components[fin_l]")
+    assert r.ok, r.messages
+    assert p.read_bytes() == pdledit.remove_element(raw.decode("utf-8"), "components[fin_l]")[0].encode("utf-8")
+    assert b"\n" not in p.read_bytes().replace(b"\r\n", b"")
+
+
+def test_remove_op_two_ids_logs_flow_strings_and_still_validates(tmp_concept_a):
+    import hangar.gates
+    before = _plane_text(tmp_concept_a)
+    log_file = tmp_concept_a / "CHANGELOG.yaml"
+    n_log = len(_log(tmp_concept_a) or []) if log_file.exists() else 0
+    r = call("design.set", path=str(tmp_concept_a), kind="remove", why="close the loop (U3.4 run 5)",
+             key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1]="])
+    assert r.ok, r.messages
+    after = _plane_text(tmp_concept_a)
+    ids = [a["id"] for a in yaml.safe_load(after)["attachments"]]
+    assert "E-MEC-HW-R1" not in ids and "E-MEC-HW-L1" not in ids and "E-MEC-HW-R2" in ids
+    assert {o[0] for o in _opcodes(before, after)} == {"delete"}
+    assert len(_lines(before)) - len(_lines(after)) == 6
+    log = _log(tmp_concept_a)
+    assert len(log) - n_log == 2
+    one, two = log[-2], log[-1]
+    assert one["key"] == "attachments[E-MEC-HW-R1]" and two["key"] == "attachments[E-MEC-HW-L1]"
+    assert one["old"] == ("{id: E-MEC-HW-R1, parent: mec-001-r, child: hwc-002-r, method: bolted, "
+                          "location: [140.405, 199.012, 4.423], rated_load_n: 931.5, rating_basis: derived}")
+    assert two["old"].startswith("{id: E-MEC-HW-L1, parent: mec-001-l,")
+    assert one["new"] is None and two["new"] is None
+    assert one["kind"] == "remove" and one["why"] == "close the loop (U3.4 run 5)"
+    card = hangar.gates.run_gates(design_mod.load_design(tmp_concept_a), only_tiers={0})
+    t0 = next(t for t in card.tiers if t.tier == 0)
+    assert {x.check_id: x.status for x in t0.results}["T0.schema"] != "FAIL"
+
+
+def _refused(text, key, needle):
+    with pytest.raises(OpInputError) as e:
+        pdledit.remove_element(text, key)
+    assert needle in str(e.value), str(e.value)
+
+
+def test_remove_refusals(tmp_concept_a):
+    text = _plane_text(tmp_concept_a)
+    _refused(text, "attachments[E-NOPE]", "no element with id")
+    _refused(text, "attachments[0]", "remove by index is not supported")
+    _refused(text, "attachments[E-MEC-HW-R1].location", "a nested path")
+    _refused(text, "attachments[E-MEC-HW-R1].location[0]", "remove by index is not supported")
+    _refused(text, "mechanisms[elevon-r].driven[E-MEC-03]", "a nested path")
+    _refused(text, "attachments", "like name[id]")
+    _refused(text, "flight.cl_max", "like name[id]")
+    _refused(text, "flight[x]", "needs a list")
+    _refused(text, "attachments[E-WNG-10]", "without rewriting other text")      # multi-line flow entry
+    _refused("attachments:\n  - {id: a, parent: x, child: y}\n", "attachments[a]", "without rewriting other text")  # would empty the list
+
+
+def test_remove_op_input_errors_write_nothing(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    for kw, needle in (
+            (dict(key="attachments[E-NOPE]"), "no element with id"),
+            (dict(key="attachments[E-MEC-HW-R1]", value="1"), "takes no --value"),
+            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1]=1"]), "takes no value"),
+            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1]"]), "--also needs KEY=VALUE"),
+            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-NOPE]="]), "no element with id"),
+            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1].location="]), "a nested path")):
+        r = call("design.set", path=str(tmp_concept_a), kind="remove", why="t", **kw)
+        assert r.ok is False and needle in " ".join(r.messages), (kw, r.messages)
+        assert _bytes(tmp_concept_a) == before
+    r = call("design.set", path=str(tmp_concept_a), kind="modify", why="t", key="flight.cl_max")
+    assert r.ok is False and "value is required" in " ".join(r.messages)
+    assert _bytes(tmp_concept_a) == before
