@@ -572,7 +572,7 @@ def test_seeded_with_requirements_R1_to_R40(repo_root):
   - CLI: `plane <group> <verb>` from `name="<group>.<verb>"`; `--json` prints `OpResult`; exit 0/1/2 per Global Constraints.
   - Ops moved in this unit: `design.list, design.get, design.validate, design.mass, design.export, design.new, ops.list`.
 
-- [ ] **Step 1: Write the failing tests**
+- [x] **Step 1: Write the failing tests**
 
 ```python
 def test_every_op_result_matches_schema():
@@ -593,10 +593,10 @@ def test_unknown_component_type_gives_skip_not_crash(tmp_design_with_type_wingle
     assert not r.ok and any("wingletz" in m for m in r.messages)
 ```
 
-- [ ] **Step 2: Run** `pytest tests/test_ops_contract.py -v` → FAIL
-- [ ] **Step 3: Implement the registry and click generation** (click `Group` per prefix, `Command` per op; `Literal` → `click.Choice`). `design.validate` wraps `checks.validate` unchanged.
-- [ ] **Step 4: Run** full `pytest -q` → PASS (existing CLI tests must still pass through aliases)
-- [ ] **Step 5: Commit** `git commit -m "ops: one registry and OpResult contract; CLI generated from it"`
+- [x] **Step 2: Run** `pytest tests/test_ops_contract.py -v` → FAIL
+- [x] **Step 3: Implement the registry and click generation** (click `Group` per prefix, `Command` per op; `Literal` → `click.Choice`). `design.validate` wraps `checks.validate` unchanged.
+- [x] **Step 4: Run** full `pytest -q` → PASS (existing CLI tests must still pass through aliases)
+- [x] **Step 5: Commit** `git commit -m "ops: one registry and OpResult contract; CLI generated from it"`
 
 ### Unit U1.2: MCP and Studio generated from the registry (subtraction)
 
