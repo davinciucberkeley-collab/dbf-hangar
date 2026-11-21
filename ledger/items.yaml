@@ -3485,3 +3485,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T45
+    kind: task
+    text: T6 mechanism gate samples every 5 deg from -lo, so a collision can pass or fail depending on the range end (concept-a elevon rod/horn overlap within +-3 deg passes at +-35, fails at +-36); sample both ends, zero and a finer step, and model or exempt rod-horn kinematic links
+    source: U3.4 run 5 report 2026-11-21
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T46
+    kind: task
+    text: 'plane tooling (U3.4 run 5): design set cannot append to or remove from a one-line flow list; design propose fails with a relative design path (git -C designs\concept-a) and takes the title positionally while skills/agents show --title'
+    source: U3.4 run 5 report 2026-11-21
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
