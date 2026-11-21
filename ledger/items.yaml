@@ -3507,3 +3507,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T47
+    kind: task
+    text: Tests pin the committed designs/concept-a as a fixture (15 tests in test_design_edit, test_gates, test_pdl, test_studio), so any concept-a design PR turns CI red; freeze copies under tests/fixtures/ and repoint the tests (test-only unit, must merge before any concept-a design PR)
+    source: 'reviews/2026-11-21-w3.md U3.4 PR #2 (W3-R2)'
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T48
+    kind: task
+    text: 'T6 mechanism gate: follower angle is computed from the declared ratio (tracking proves nothing); collisions sampled every 5 deg miss a 1 deg collision; linked pairs (rod-horn) collide spuriously because no link is modelled. Fix: geometric ratio check or none, 1 deg step plus range ends, exempt declared kinematic-link pairs'
+    source: 'reviews/2026-11-21-w3.md U3.4 PR #2 (W3-R2)'
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
