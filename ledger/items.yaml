@@ -3397,3 +3397,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T37
+    kind: task
+    text: 'T3.control_authority yaw is physically unsound: adds cant-torque magnitudes as if each motor could yaw either way (concept-a 1.10 vs 1.5 not supported either way); no prop reaction torque; yaw reuses pitch/roll wind moment. Advisor picks fix (zero net-thrust max moment / reaction torque field / yaw wind moment) before D7 flip'
+    source: reviews/2026-11-21-w3.md U3.6 (W3-R2)
+    owner: ''
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T38
+    kind: task
+    text: 'U3.6 follow-ups (non-blocking): T3.endurance drops hover phase when no motor gives upward thrust and can PASS on cruise alone; test_standards_referenced passes deadline and transport_box_mm on name collisions; T7 pack/connector rows cite wire_ampacity_a but judge electrical_rating_min_ratio; test_validate tolerance accepts any report-only row; U3.6c test_collection_pairs_are_atomic passes on base code (add schema-message assertion)'
+    source: reviews/2026-11-21-w3.md U3.6, U3.6c
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'

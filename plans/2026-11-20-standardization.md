@@ -1101,9 +1101,9 @@ Not a code unit; it tests everything above.
 - Also: the §1c rows coded to existing gates become test fixtures and criteria text for those gates (`tests/test_discipline_gates.py::test_existing_gate_rows_*`), no new code.
 - Rules: five gates (D20); every new gate is report-only (WARN) until D7's date; a gate a design can pass without the data it checks is a bug (§1c, advisor); no `design-standards.yaml` key that FEA reads
 
-- [ ] **Step 1: Failing tests**
-- [ ] **Step 2–4:** implement the five gates on the registry; run → PASS; `plane baseline check --all` shows only new WARN rows
-- [ ] **Step 5: Commit** `git commit -m "gates: five discipline gates (joint RF, control authority, transition, endurance, electrical rating)"`
+- [x] **Step 1: Failing tests**
+- [x] **Step 2–4:** implement the five gates on the registry; run → PASS; `plane baseline check --all` shows only new WARN rows
+- [x] **Step 5: Commit** `git commit -m "gates: five discipline gates (joint RF, control authority, transition, endurance, electrical rating)"`
 
 ### Unit U4.1: Whole-branch review, performance, release
 
