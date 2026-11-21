@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/davinciucberkeley-collab/dbf-hangar/schema/op-result.schema.json",
+  "title": "OpResult v1.0",
+  "type": "object",
+  "required": ["schema_version", "ok", "data", "messages", "changed_files", "skipped"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "ok": {"type": "boolean"},
+    "data": {"type": "object"},
+    "messages": {"type": "array", "items": {"type": "string"}},
+    "changed_files": {"type": "array", "items": {"type": "string"}},
+    "skipped": {"type": "array", "items": {"type": "string"}}
+  }
+}

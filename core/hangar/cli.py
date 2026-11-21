@@ -20,6 +20,7 @@ from .design import DESIGNS_DIR, FAIL, SCHEMA_PATH, SKIP, list_designs, load_des
 from .checks import validate
 from .export import export_glb, export_stl, export_json
 from .mass import mass_properties
+from . import ops
 
 ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 DEFAULT_TEMPLATE = "example-tailsitter-wing"
@@ -44,6 +45,11 @@ def _fail(msg: str, code: int = 2):
     sys.exit(code)
 
 
+def _alias_fail(result):
+    click.echo(f"plane: {result.messages[0]}", err=True)
+    sys.exit(result.exit_code)
+
+
 def _load(path: str):
     try:
         return load_design(path)
@@ -66,23 +72,28 @@ def cli():
               help="Write the scorecard to FILE instead of stdout.")
 def validate_cmd(path, max_tier, fmt, out_file):
     """Run the validation tiers on PATH and print the scorecard."""
-    design = _load(path)
-    card = validate(design, max_tier=5 if max_tier == "all" else int(max_tier))
-    text = card.to_markdown() if fmt == "md" else _dumps(card.to_dict()) + "\n"
+    result = ops.call("design.validate", path=path, tier=max_tier)
+    if result.data.get("error"):
+        _alias_fail(result)
+    text = result.data["markdown"] if fmt == "md" else \
+        _dumps({k: v for k, v in result.data.items() if k != "markdown"}) + "\n"
     if out_file:
         Path(out_file).parent.mkdir(parents=True, exist_ok=True)
         Path(out_file).write_text(text)
         click.echo(f"wrote {out_file}")
     else:
         click.echo(text, nl=False)
-    sys.exit(0 if card.clean and (card.accepted or card.partial) else 1)
+    sys.exit(0 if result.ok else 1)
 
 
 @cli.command("mass")
 @click.argument("path")
 def mass_cmd(path):
     """Print mass properties of PATH as JSON."""
-    click.echo(_dumps(mass_properties(_load(path))))
+    result = ops.call("design.mass", path=path)
+    if not result.ok:
+        _alias_fail(result)
+    click.echo(_dumps(result.data))
 
 
 @cli.command("export")
@@ -92,54 +103,22 @@ def mass_cmd(path):
               help="File path for glb/json/mjcf; directory for stl.")
 def export_cmd(path, fmt, out):
     """Export PATH to glb, stl or json."""
-    design = _load(path)
-    try:
-        if fmt == "stl":
-            written = export_stl(design, out)
-        elif fmt == "glb":
-            written = export_glb(design, out)
-        elif fmt == "mjcf":
-            from .sim import export_mjcf
-            written = export_mjcf(design, out)
-        else:
-            written = export_json(design, out)
-    except Exception as e:  # noqa: BLE001
-        _fail(f"export failed: {e}", code=1)
-    paths = written if isinstance(written, list) else [written]
-    for p in paths:
-        click.echo(str(p))
+    result = ops.call("design.export", path=path, format_=fmt, out=out)
+    if not result.ok:
+        _alias_fail(result)
+    for p in result.data["files"]:
+        click.echo(p)
 
 
 @cli.command("list")
 @click.option("--format", "fmt", type=click.Choice(["table", "json"]), default="table", show_default=True)
 def list_cmd(fmt):
     """List every design under designs/."""
-    rows = []
-    for p in list_designs():
-        try:
-            d = load_design(p).data
-        except Exception as e:  # noqa: BLE001
-            rows.append({"id": p.parent.name, "name": f"<error: {e}>", "status": "", "lift": "", "vtol_method": ""})
-            continue
-        morph = d.get("morphology") or {}
-        rows.append({
-            "id": str(d.get("id", p.parent.name)),
-            "name": str(d.get("name", "")),
-            "status": str(d.get("status", "")),
-            "lift": str(morph.get("lift", "")),
-            "vtol_method": str(morph.get("vtol_method", "")),
-        })
+    result = ops.call("design.list")
     if fmt == "json":
-        click.echo(_dumps(rows))
+        click.echo(_dumps(result.data["designs"]))
         return
-    if not rows:
-        click.echo("no designs found")
-        return
-    headers = ["id", "name", "status", "lift", "vtol_method"]
-    widths = {h: max(len(h), *(len(r[h]) for r in rows)) for h in headers}
-    click.echo("  ".join(h.ljust(widths[h]) for h in headers).rstrip())
-    for r in rows:
-        click.echo("  ".join(r[h].ljust(widths[h]) for h in headers).rstrip())
+    click.echo(ops.registry()["design.list"].render(result))
 
 
 @cli.command("new")
@@ -148,13 +127,10 @@ def list_cmd(fmt):
               help="Design id to copy from.")
 def new_cmd(new_id, template):
     """Create designs/NEW_ID/plane.yaml from a template design."""
-    if not ID_RE.match(new_id):
-        _fail(f"invalid id {new_id!r}: must match {ID_RE.pattern}")
-    try:
-        p = new_design(new_id, template)
-    except ValueError as e:
-        _fail(str(e))
-    click.echo(str(p))
+    result = ops.call("design.new", new_id=new_id, template=template)
+    if not result.ok:
+        _alias_fail(result)
+    click.echo(result.data["path"])
 
 
 def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
@@ -569,6 +545,88 @@ def progress_cmd(write, check, today):
         else:
             buf.write(text.encode("utf-8"))
             sys.stdout.flush()
+
+
+def _click_param(p: ops.ParamSpec) -> click.Parameter:
+    if p.type_name == "path":
+        ctype = click.Path()
+    elif p.type_name == "choice":
+        ctype = click.Choice(list(p.choices))
+    elif p.type_name == "int":
+        ctype = click.INT
+    elif p.type_name == "float":
+        ctype = click.FLOAT
+    else:
+        ctype = click.STRING
+    if p.kind == "argument":
+        if p.type_name == "list[str]":
+            return click.Argument([p.name], type=ctype, nargs=-1, required=False)
+        return click.Argument([p.name], type=ctype, required=True)
+    flag = f"--{p.cli_name}"
+    if p.type_name == "bool":
+        decl = [flag] if p.default is False else [f"{flag}/--no-{p.cli_name}"]
+        return click.Option([*decl, p.name], default=p.default, is_flag=True)
+    default = str(p.default) if isinstance(p.default, Path) else p.default
+    if p.multiple:
+        return click.Option([flag, p.name], type=ctype, multiple=True, required=p.required,
+                            default=tuple(default) if default else None)
+    return click.Option([flag, p.name], type=ctype, required=p.required, default=default,
+                        show_default=default is not None)
+
+
+def _default_text(result: ops.OpResult) -> str:
+    if result.messages:
+        return "\n".join(result.messages)
+    return json.dumps(result.data, indent=2, default=_jsonable)
+
+
+def _make_command(spec: ops.OpSpec) -> click.Command:
+    def callback(**kwargs):
+        as_json = kwargs.pop("json_")
+        result = ops._call_spec(spec, **kwargs)
+        if as_json:
+            click.echo(result.to_json())
+        elif result.data.get("error"):
+            for m in result.messages:
+                click.echo(f"plane: {m}", err=True)
+        else:
+            text = spec.render(result) if spec.render else _default_text(result)
+            click.echo(text.rstrip("\n"))
+        if result.exit_code != 0:
+            sys.exit(result.exit_code)
+
+    params = [_click_param(p) for p in spec.params]
+    params.append(click.Option(["--json", "json_"], is_flag=True, default=False,
+                               help="Print the OpResult as JSON."))
+    return click.Command(spec.verb, params=params, callback=callback, help=spec.summary)
+
+
+def _attach_ops(group: click.Group, specs: dict[str, ops.OpSpec]) -> None:
+    for spec in specs.values():
+        existing = group.commands.get(spec.group)
+        if existing is not None and getattr(existing, "_hangar_generated", False):
+            sub = existing
+        else:
+            if existing is None:
+                sub = click.Group(spec.group, help=f"{spec.group} operations.")
+            elif type(existing) is click.Command and not existing.params:
+                legacy_cb = existing.callback
+
+                @click.pass_context
+                def _run_legacy(ctx, _cb=legacy_cb):
+                    if ctx.invoked_subcommand is None:
+                        _cb()
+
+                sub = click.Group(spec.group, help=existing.help, invoke_without_command=True,
+                                  callback=_run_legacy)
+            else:
+                raise RuntimeError(f"op {spec.name!r} collides with existing command {spec.group!r}")
+            sub._hangar_generated = True
+            group.add_command(sub, spec.group)
+        sub.add_command(_make_command(spec), spec.verb)
+
+
+_attach_ops(cli, ops.registry())
 
 
 def main():
