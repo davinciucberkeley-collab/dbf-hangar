@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from datetime import datetime
 from pathlib import Path
@@ -198,7 +199,8 @@ def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> 
     if not (root / ".claude" / "agents" / f"{agent}.md").is_file():
         raise OpInputError(f"no such agent: {agent}")
     run_id = f"{task}-{model}-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
-    ws = prepare_workspace(t, root / ".sweeps" / "bench" / run_id, root, agent)
+    # Outside any git tree: the repo's .claude hooks must not load into the headless run.
+    ws = prepare_workspace(t, Path(tempfile.mkdtemp(prefix="planebench-")) / run_id, root, agent)
     cmd = build_command(claude, t, agent, model)
     started = time.monotonic()
     proc, timed_out = None, False

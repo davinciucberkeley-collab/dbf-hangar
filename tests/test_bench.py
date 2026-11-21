@@ -133,7 +133,8 @@ def test_run_command_line_and_capture(fake_repo, monkeypatch):
     for flag in ("--output-format", "--max-budget-usd", "--no-session-persistence"):
         assert flag in cmd
     assert "designs/flap-start" in seen["kw"]["input"]
-    assert Path(seen["kw"]["cwd"]).resolve().parent == (fake_repo / ".sweeps" / "bench").resolve()
+    cwd = Path(seen["kw"]["cwd"]).resolve()
+    assert fake_repo.resolve() not in cwd.parents and cwd != fake_repo.resolve()  # workspace is outside the repo tree
     record = fake_repo / "bench" / "results" / "runs" / f"{r.data['run_id']}.json"
     assert json.loads(record.read_text(encoding="utf-8"))["tokens"] == 1115
 
