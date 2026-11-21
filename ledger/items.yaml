@@ -889,3 +889,36 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-20'
+  - id: T15
+    kind: task
+    text: 'T7 integration: harness between two point masses PASSes unchecked (integration.py:41); transport group of point masses gives no row (:72); make both SKIP before the 12-08 blocking flip'
+    source: reviews/2026-11-21-w2.md U2.1
+    owner: Tristan
+    status: open
+    due: '2026-12-05'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: T16
+    kind: task
+    text: FEA hash omits the load-building code (fea/sim/geometry/mass.py) and the MuJoCo version; add them so a code change marks results stale
+    source: reviews/2026-11-21-w2.md U2.3a
+    owner: Tristan
+    status: open
+    due: '2026-11-30'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-20'
+  - id: D22
+    kind: decision
+    text: After D7's 12-08 flip, does `T8.program.budget` SKIP ("no BOM") block acceptance of designs without a BOM?
+    source: plan §3
+    owner: ''
+    status: decided
+    due: '2026-12-07'
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-20'

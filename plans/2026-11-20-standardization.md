@@ -297,6 +297,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D19 | §1c proposes 501 standards keys from the role checklists; how many become `standards/*.yaml` entries? | only keys a gate or a discipline skill reads, each with `source:` or `pending` (estimate ≤ 80); the rest stay in the extracts as evidence | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
 | D20 | Discipline gates: five (thermal and modal as skill items + T9 claims) or seven (those two SKIP-only)? | five, in U3.6, report-only until 12-08 (D7); cut first if W3 slips (§6a 0a) | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
 | D21 | May U3.6 add optional PDL fields the gates need (battery capacity, wire gauge, current ratings, control-surface data)? | yes: optional fields in a schema minor version, merged with a `migration:` commit line; concept-a's values set later with `plane design set` | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
+| D22 | After D7's 12-08 flip, does `T8.program.budget` SKIP ("no BOM") block acceptance of designs without a BOM? | no: the budget row stays report-only until a design has a `bom` block; then it blocks | Tristan | 12-07 | decided: default (standing rule, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -869,7 +870,7 @@ def test_concept_a_claims_import_roundtrip(dbf_combined_claims):   # 4 claims.*.
 **Interfaces:**
 - Produces: `@gate(id: str, tier: int)` registration; `run_gates(design, max_tier: int = 8) -> Scorecard` (Scorecard gains `fidelity: dict`); ops `gate.list`, `gate.explain(check_id)`, `sim.mechanism(path, mechanism_id)` (returns per-step follower angles for the Physics mode).
 
-- [ ] **Step 1: Failing tests**
+- [x] **Step 1: Failing tests**
 
 ```python
 def test_linked_flap_follows_servo(mech_good):     assert status(mech_good, "T6.mechanism.flap_l") == "PASS"
@@ -887,10 +888,10 @@ def test_scorecard_reports_fidelity(concept_a):
     f = run_gates(concept_a).fidelity; assert {"sourced_blocking", "blocking", "measured_mass_parts"} <= f.keys()
 ```
 
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement.** T6 builds on `sim.py`'s MJCF export: position actuator on the driver joint, equality constraints from `kinematic_link`, gravity 0, friction 0; read follower qpos each 1° step; contacts filtered to unattached pairs. D7 default: T7/T8 non-blocking (WARN) via `blocking: false` in `gates.yaml`.
-- [ ] **Step 4: Run** `pytest -q` → PASS; `plane design validate designs/concept-a --json` shows T6–T8 and the fidelity line
-- [ ] **Step 5: Commit** `git commit -m "gates: registry; T6 mechanisms (MuJoCo), T7 wiring/transport/assembly, T8 BOM; fidelity line"`
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement.** T6 builds on `sim.py`'s MJCF export: position actuator on the driver joint, equality constraints from `kinematic_link`, gravity 0, friction 0; read follower qpos each 1° step; contacts filtered to unattached pairs. D7 default: T7/T8 non-blocking (WARN) via `blocking: false` in `gates.yaml`.
+- [x] **Step 4: Run** `pytest -q` → PASS; `plane design validate designs/concept-a --json` shows T6–T8 and the fidelity line
+- [x] **Step 5: Commit** `git commit -m "gates: registry; T6 mechanisms (MuJoCo), T7 wiring/transport/assembly, T8 BOM; fidelity line"`
 
 ### Unit U2.2: Standards database — close the pending sources (R10, R13)
 

@@ -28,7 +28,7 @@
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U2.1 | Gate registry + T6 Mechanisms, T7 Integration, T8 Sourcing [hard] | 0/5 | not started | - |
+| U2.1 | Gate registry + T6 Mechanisms, T7 Integration, T8 Sourcing [hard] | 5/5 | done | ACCEPT |
 | U2.2 | Standards database — close the pending sources (R10, R13) | 0/6 | not started | - |
 | U2.3 | Tool adapters — OpenCAE, MuJoCo, AeroSandbox, DaVinci [hard] | 0/5 | not started | - |
 | U2.4 | Team-ops commands (R7, R14, R26, R27, R31, R38) | 0/5 | not started | - |
@@ -57,9 +57,9 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 35 | 5 | 0 | 0 | 0 | 40 |
-| task | 13 | 1 | 0 | 0 | 0 | 14 |
+| task | 15 | 1 | 0 | 0 | 0 | 16 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
-| decision | 1 | 0 | 0 | 0 | 20 | 21 |
+| decision | 1 | 0 | 0 | 0 | 21 | 22 |
 
 ## Overdue
 
