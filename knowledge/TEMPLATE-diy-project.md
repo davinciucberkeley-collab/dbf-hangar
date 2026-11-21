@@ -19,7 +19,7 @@ cost_source: stated | estimated-by-scout | unknown
 wingspan_mm: <number or "unknown">
 mass_g: <number or "unknown">
 outcome: flew-successfully | flew-with-issues | failed | not-flown | unknown
-outcome_evidence: <one line: what in the source shows the outcome>
+outcome_evidence: "<one line: what in the source shows the outcome>"
 verified: true | false   # true only if you opened the source and saw the facts yourself
 ---
 

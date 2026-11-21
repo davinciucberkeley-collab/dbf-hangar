@@ -122,6 +122,7 @@ def ingest_op(path: str, *, dry_run: bool = False) -> OpResult:
             skipped.append(f"duplicate of {existing[key]}: {entry['text']}")
         else:
             kept.append(entry)
+            existing[key] = f"{src.name} (earlier line)"
 
     if dry_run:
         return OpResult(True, {"added": [], "would_add": len(kept)}, skipped=skipped)
