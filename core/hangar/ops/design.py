@@ -9,12 +9,13 @@ from . import op, OpResult, OpInputError
 from ..design import FAIL, SKIP, list_designs, load_design
 from ..checks import validate
 from ..mass import mass_properties
+from .. import pdledit
 from ..export import export_glb, export_stl, export_json
 
 
 def _load(path: str):
     try:
-        return load_design(path)
+        return load_design(pdledit.resolve_design_path(path))
     except Exception as e:  # noqa: BLE001 - report any load failure cleanly
         raise OpInputError(f"cannot load {path}: {e}") from e
 
@@ -50,9 +51,12 @@ def list_op() -> OpResult:
     return OpResult(True, {"designs": rows})
 
 
-@op(name="design.get", summary="Print a design's plane.yaml.", render=lambda r: r.data["text"])
-def get_op(path: str) -> OpResult:
+@op(name="design.get", summary="Print a design's plane.yaml, or with --key one value from it.",
+    render=lambda r: r.data["text"] if "text" in r.data else json.dumps(r.data["value"], default=str))
+def get_op(path: str, *, key: str = "") -> OpResult:
     design = _load(path)
+    if key:
+        return OpResult(True, {"path": str(design.path), "key": key, "value": pdledit.get_value(design.data, key)})
     return OpResult(True, {"path": str(design.path), "text": Path(design.path).read_text(encoding="utf-8")})
 
 
