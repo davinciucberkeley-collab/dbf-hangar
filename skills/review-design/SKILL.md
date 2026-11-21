@@ -1,29 +1,35 @@
 ---
 name: review-design
-description: Use when asked to review a design, concept, PR or artifact; produces a scorecard against named standards instead of an open-ended opinion.
+description: Use when asked to review a design, PR or artifact against the scorecard.
 ---
 
-# Review against standards
+# Review a design
 
 ## Goal
-`reviews/<date>-<design-id>.md` in the format of `standards/review-scorecard.md`, ending in accepted / not accepted.
+`reviews/<date>-<design-id>.md` in the format of `standards/review-scorecard.md`, ending accepted or not accepted.
 
 ## Agents
-One Reviewer (Opus) per task, reused for every item in that task via SendMessage. Never spawn one reviewer per item.
+| Step | Role | Model |
+|---|---|---|
+| Every item of the review, one reviewer reused via SendMessage | reviewer | Opus |
+
+Never start one reviewer per item.
 
 ## Steps
-1. Run `plane validate designs/<id> --format md` (MCP: `design_validate`). Paste the scorecard as the "Automated" section unchanged.
-   In the CI "Known failures ADDED" list, confirm each entry is justified.
-   If it reports printed parts with no stress check or out-of-date ones (`T2.fea_strength` SKIP), run `plane fea run designs/<id> --all` (MCP: `fea_run`; the legacy form `plane fea designs/<id> --all` still works) first, commit `designs/<id>/fea/`, then validate again.
-2. For each judgment item, find the criterion in `standards/` (design-standards.yaml, manufacturing.yaml, agents.md). Score PASS / FAIL / N/A with a one-line reason and the criterion link.
-3. Judge only what validators can't: is the lineage recorded, does the README state the question, are joint ratings plausible for the stated method, is anything modelled too crudely to trust (e.g. static margin ignores the fuselage).
-4. Anything you'd like to judge that has no criterion → a "Non-blocking suggestion" proposing the criterion. Never block on an unwritten rule.
-5. Write the file and commit it on the design's branch.
+1. `plane design validate <path> --tier all`. Paste the scorecard unchanged as the Automated section.
+2. If a printed part has no stress check or an outdated one, run `plane fea run <path> --all`, commit `designs/<id>/fea/`, and validate again.
+3. `plane claim check <path>`. Paste the verdicts.
+4. For each judgment item, find its criterion with `plane standards show <key>` or `plane gate explain <check-id>`. Score PASS, FAIL or N/A with a one-line reason.
+5. Judge only what the validators cannot: lineage, the README question, joint plausibility, crude modelling.
+6. An item with no criterion is a Non-blocking suggestion, never a block.
+7. Discipline checks: read the discipline review skills that match the design's subsystems: `review-structures`, `review-aero`, `review-controls`, `review-propulsion`, `review-manufacturing`, `review-test-safety`. Skip any that does not exist yet and say so in the file.
+8. Write the file and commit it on the design's branch.
 
 ## Pass check
-- [ ] Every row cites a criterion that exists in `standards/`
-- [ ] Automated section is the unedited validator output
-- [ ] Verdict follows the rule in review-scorecard.md
+- Every row cites a criterion that exists in `standards/`.
+- The Automated section equals the validator output.
+- The verdict follows the rule in `standards/review-scorecard.md`.
 
 ## Stop rules
-- The validator crashes → report the crash; don't review by hand around it.
+- The validator crashes: report the crash. Do not review by hand around it.
+- A criterion you need does not exist: propose it under Non-blocking suggestions.

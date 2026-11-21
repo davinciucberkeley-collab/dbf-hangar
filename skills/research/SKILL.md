@@ -1,40 +1,33 @@
 ---
 name: research
-description: Use when asked to research DIY builds, papers, standards or concepts for the knowledge base; runs Haiku scouts against fixed templates. Recon mode targets gaps in the morphological chart.
+description: Use when asked to research builds, papers, standards or concepts for the knowledge base.
 ---
 
-# Research and recon
+# Research
 
 ## Goal
-New, template-conforming files in `knowledge/`, each with real, opened sources.
+New template-conforming entries under `knowledge/`, each with opened sources only.
 
 ## Agents
 | Step | Role | Model |
 |---|---|---|
-| Choose topics or gaps, write scout briefs | Tactician | Sonnet (or Conductor if briefs are trivial) |
-| Gather into template | Scout | Haiku, several in parallel, disjoint topics |
-| Spot-check sources | Reviewer | Opus (one) — sample 20% of entries |
+| Write scout briefs and pick gaps | tactician | Sonnet |
+| Fill templates, several scouts in parallel on disjoint topics | scout | Haiku |
+| Spot-check a sample of entries | reviewer | Opus |
 
-## Templates
-- DIY project → `knowledge/TEMPLATE-diy-project.md` → `knowledge/diy-projects/<id>.md`
-- Paper / standard / doc → `knowledge/TEMPLATE-source.md` → `knowledge/sources/<prefix>-<id>.md`
-- Concept evidence ("does X work?") → structure of `knowledge/concepts/tailsitter-evidence.md`
-
-## Modes
-**Survey:** "find N builds about <topic>". One scout per disjoint topic.
-
-**Recon (gap-driven):**
-1. List chart cells: `knowledge/morphological-chart.yaml` options × tags in `knowledge/diy-projects/*.md` and `designs/*/plane.yaml` morphology.
-2. Pick cells with zero internal designs and few external examples.
-3. Brief one scout per cell: "Find builds or papers combining <option A> + <option B>; if none exist, say so" — an empty result is a finding.
-4. Add unexplored combinations to `knowledge/concepts/unexplored.md` as candidates for `design-concept`.
-
-## Scout brief must include (builder-ready bar)
-Exact output path and template; queries to start from; "only URLs you opened"; "own words, ≤10 words quoted"; "unknown instead of guessing"; stop after ~20 searches and report shortfalls.
+## Steps
+1. `plane research new source <slug>` or `plane research new diy <slug>` creates the entry from its template.
+2. Brief the scout with the exact output path and template, the starting queries, and these rules: only URLs it opened, own words, `unknown` instead of guessing, stop and report shortfalls.
+3. `plane research check <path>` lists fields still empty. Repeat until it lists none.
+4. Gap-driven mode: `plane morph coverage` lists chart options with no design. Brief one scout per empty cell. An empty result is a finding.
+5. Add a source-backed option with `plane morph add-option <dimension> <id> "<name>" <source>`.
+6. Record candidate combinations with `plane idea add "<title>" "<body>" "<by>"`.
+7. For "how have others solved X", use the `recon` skill. It is the one for that question; do not duplicate it here.
 
 ## Pass check
-- [ ] Every new file parses (frontmatter) and fills every template field
-- [ ] Reviewer spot-check found no invented URLs or numbers
+- `plane research check <path>` lists nothing for every new file.
+- The reviewer's spot-check found no invented URL.
 
 ## Stop rules
-- A source is paywalled or blocked → record it with `verified: false`; don't paraphrase from memory.
+- A source is paywalled or blocked: record it with `verified: false`. Do not paraphrase from memory.
+- A field cannot be filled from opened sources: write `unknown` and report the shortfall.
