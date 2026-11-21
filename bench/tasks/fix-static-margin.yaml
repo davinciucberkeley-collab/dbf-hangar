@@ -1,0 +1,32 @@
+id: fix-static-margin
+start_design: designs/concept-a
+allowed: ["plane *"]
+prompt: |
+  You are working in a folder that contains one design, designs/concept-a. Its check T3.static_margin currently FAILS (about 16.8 percent of MAC, above the allowed band; read the band with `plane gate explain T3.static_margin`).
+  Goal: make T3.static_margin pass while every tier-1 check (T1.*) keeps passing and T3.mass keeps passing. The tier-2 drop-test failures that exist today may stay.
+  Check with `plane design validate designs/concept-a --tier 3` (about one minute per run, so run it only when you have a change to test).
+  Change data only with `plane design set designs/concept-a <key> --value <number> --why "<reason>" --kind subtract|modify|add`. A key addresses a component by id, for example `components[fin-001-l].mass_g` or `components[pwr-001].position[0]`. Try subtract and modify before add; choose add only with a written reason in --why.
+  Do not edit files any other way and do not touch anything outside designs/concept-a. Stop when T3.static_margin passes with no tier-1 failure, or after 10 validate runs.
+  Reply with one line: the new static margin.
+grader:
+  - label: T3.static_margin passes
+    op: design.validate
+    args:
+      path: "{design}"
+      tier: "3"
+    path: "tiers[tier=3].results[check_id=T3.static_margin].status"
+    expect: {eq: PASS}
+  - label: no tier-1 check fails
+    op: design.validate
+    args:
+      path: "{design}"
+      tier: "3"
+    path: "tiers[tier=1].status"
+    expect: {ne: FAIL}
+  - label: T3.mass passes
+    op: design.validate
+    args:
+      path: "{design}"
+      tier: "3"
+    path: "tiers[tier=3].results[check_id=T3.mass].status"
+    expect: {eq: PASS}
