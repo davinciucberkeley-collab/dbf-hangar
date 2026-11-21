@@ -517,7 +517,7 @@ items:
     updated: '2026-11-20'
   - id: D2
     kind: decision
-    text: 'Dec 1: who is the audience (Douglas only, Kosa, class?), live demo or recorded, length?'
+    text: 'Dec 2 meeting: who is the audience (Douglas only, Kosa, class?), live demo or recorded, length?'
     source: plan §3
     owner: ''
     status: decided

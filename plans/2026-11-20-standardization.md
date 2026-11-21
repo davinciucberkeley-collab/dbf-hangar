@@ -4,7 +4,7 @@ Repo: [davinciucberkeley-collab/dbf-hangar](https://github.com/davinciucberkeley
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan unit by unit. Steps use checkbox (`- [ ]`) syntax for tracking. Every unit is one branch and one PR. Agents come only from `.claude/agents/` (see §5).
 
-**Goal:** By Tuesday 2026-12-01, one new repo (`dbf-hangar`) holds what the team's other repos do, rebuilt to one standard, and every team task (new design, design change, analysis, research, morphological chart, BOM check, assembly test, weekly update) can be done by an agent or a teammate through one `plane` CLI on one shared design language, without editing code, and the result is visible at one link.
+**Goal:** By Wednesday 2026-12-02 (next team meeting; Tristan, 2026-11-21), one new repo (`dbf-hangar`) holds what the team's other repos do, rebuilt to one standard, and every team task (new design, design change, analysis, research, morphological chart, BOM check, assembly test, weekly update) can be done by an agent or a teammate through one `plane` CLI on one shared design language, without editing code, and the result is visible at one link.
 
 **Architecture:** One operations layer (`core/hangar/ops/`) is the API. The `plane` CLI, the MCP server and Plane Studio are generated from it, so there is one way to do each thing. Designs are data in the Plane Design Language (PDL v1.0, `schema/plane.schema.json`); analyses are gates and adapters that read PDL and never require code edits to accept a new plane. A team harness (`.claude/agents/`, hooks, ledger) makes the agent rules part of the system instead of a file agents forget.
 
@@ -14,7 +14,7 @@ Repo: [davinciucberkeley-collab/dbf-hangar](https://github.com/davinciucberkeley
 
 ## Global Constraints
 
-- Deadline: presentable v1.0 on **2026-12-01**. Feature freeze **2026-11-29 18:00 PT**; after it only fixes from review.
+- Deadline: presentable v1.0 on **2026-12-02** (moved from 12-01 by Tristan, 2026-11-21). Feature freeze **2026-11-30 18:00 PT** (shifted one day with the deadline); after it only fixes from review.
 - One schema, one CLI, one app. **No new interfaces** (advisor, 11-18): new capability lands as an op, a gate, an adapter or a Studio *mode*, never as a new app, page or script entry point.
 - **New designs never need code edits** (advisor, 11-18). CI enforces: a PR that changes `designs/**` may not change `core/**` (U1.4).
 - Thresholds live only in `standards/*.yaml`, each with `source:` or `source: pending` (existing CLAUDE.md rule, kept).
@@ -277,7 +277,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D | Question | Default if unanswered | Ask | By | Status |
 |---|---|---|---|---|---|
 | D1 | Name of the language: PDL? keep `plane.yaml`? | PDL, file stays `plane.yaml` | — | 11-21 | decided: default (Tristan, 2026-11-20) |
-| D2 | Dec 1: who is the audience (Douglas only, Kosa, class?), live demo or recorded, length? | Douglas + Kosa, 10-min live demo + Slides deck, recorded backup | Douglas | 11-22 | decided: default (Tristan, 2026-11-20) |
+| D2 | Dec 2 meeting: who is the audience (Douglas only, Kosa, class?), live demo or recorded, length? | Douglas + Kosa, 10-min live demo + Slides deck, recorded backup | Douglas | 11-22 | decided: default (Tristan, 2026-11-20) |
 | D3 | DaVinci API: who has access, which account, is a Claude connector set up? | adapter ships as SKIP-with-reason; full DaVinci build moves to after Dec 1 | Douglas / Chris (Slack) | 11-23 | decided: default (Tristan, 2026-11-20) |
 | D4 | Harness in hangar (`harness/`) or its own repo? | in hangar; `harness/install.py` installs it on any teammate's machine | — | 11-21 | decided: default (Tristan, 2026-11-20) |
 | D5 | Transport box size and wiring clearance | box from DBF-Combined's constraint (K09-L box about 1.25 × 0.55 × 0.45 m) marked `source: team constraint`; clearance `pending` | Dillon | 11-24 | decided: default (Tristan, 2026-11-20) |
@@ -355,9 +355,9 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W2 Gates, adapters, import, team ops | Mon 11-23 → Wed 11-25 | U2.1 [hard], U2.2, U2.3 [hard], U2.4, U2.5 [hard] |
 | — async check-in (no meeting) | Wed 11-25 | `plane update publish` → link in the Drive doc |
 | W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
-| Freeze | Sun 11-29 18:00 | — |
-| W4 Review, release, presentation | Sun 11-29 → Mon 11-30 | U4.1, U4.2 |
-| Present | **Tue 12-01** | demo + deck |
+| Freeze | Mon 11-30 18:00 | — |
+| W4 Review, release, presentation | Mon 11-30 → Tue 12-01 | U4.1, U4.2 |
+| Present | **Wed 12-02** | demo + deck |
 
 All units: Tristan. Acceptance testers: Dillon (Studio, concept A), Vaibhav (OpenCAE on Windows), James (harness install on his machine).
 
@@ -367,7 +367,7 @@ Ordering follows R17: T6 mechanisms lands before T8 sourcing; U3.4 (an agent ite
 
 ### 6a. Core path and cut order (scope check, 2026-11-20)
 
-The Dec 1 demo needs only the **core path**: U0.4 → U0.2/U0.3 → U1.1 → U1.3 → U1.4 → U1.5 → U2.5 → U3.4 (+ U4.1/U4.2). Everything else is in the cut order below, so a slip never threatens the demo. The conductor cuts from the top of this list as soon as a wave runs > 12 h late; a cut unit gets ledger status `dropped` with this section as `decided_in`.
+The Dec 2 demo needs only the **core path**: U0.4 → U0.2/U0.3 → U1.1 → U1.3 → U1.4 → U1.5 → U2.5 → U3.4 (+ U4.1/U4.2). Everything else is in the cut order below, so a slip never threatens the demo. The conductor cuts from the top of this list as soon as a wave runs > 12 h late; a cut unit gets ledger status `dropped` with this section as `decided_in`.
 
 | Cut order | Unit | What is lost if cut | Fallback for the demo |
 |---|---|---|---|
@@ -495,6 +495,12 @@ Fold DBF-Combined `redesign/TEAM.md` (45 roles listed, A1–J6; 39 role folders)
 | DF-T7…T9 | `scout` | Haiku | 15 extract files each + `_RULES.md` DF-A amendments | re-tagged `STD:`, no-limit `GATE:`, H1 rig-tolerance and removed-gate rows; recounted blocks | every row still has exactly one allowed code; counts sum to rows |
 | DF-A | `advisor` | Opus | §1c + amended U2.1/U2.2/U3.2/U3.5 text | recommendation | intent check: work-level roles, subtract before adding, gates a design can't pass without working |
 | DF-R | `reviewer` | Opus (fresh) | the plan diff | `reviews/2026-11-21-discipline-foldin.md` | "### Verdict: ACCEPT" |
+
+### 6h. Agent table for the R-id ledger audit (Tristan, 2026-11-21; no code changes)
+
+| Step | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| LA-R | `reviewer` | Opus (fresh) | every R-id in §1 whose units are all merged (22, excluding R29: deferred under D3), the merge commits, the requirement text and its transcript source | `reviews/2026-11-21-ledger-audit.md` | one verdict per R-id: DONE with the merge commit(s) as evidence, or OPEN with a one-line note on what is missing |
 
 ## 7. Units
 
@@ -1084,7 +1090,7 @@ Not a code unit; it tests everything above.
 - [ ] **Step 4:** Docs: `README.md` ≤ 80 lines pointing to `docs/pdl/`, `docs/cli.md` (generated from `ops list`), `standards/agents.md`. Tag `v1.0.0`; Pages deploys.
 - [ ] **Step 5:** verification-before-completion: paste `pytest -q`, `plane design validate --all`, `plane ledger report`, `plane tools doctor` outputs into `reviews/2026-11-30-v1.0.md`.
 
-### Unit U4.2: Dec 1 presentation package
+### Unit U4.2: Dec 2 presentation package
 
 - [ ] **Step 1:** Slides deck (Claude Slides artifact; download .pptx/PDF if needed): problem (15 interfaces, rules forgotten, code edits per design) → PDL → ops/CLI/MCP/Studio → gates T0–T8 → harness → PlaneBench results → what's next.
 - [ ] **Step 2:** Live demo script (8 min), each step one command or click: `plane design new` from a template → `plane design set` a wing mass → `plane design validate` → Studio Physics mode playing the flap mechanism → `plane design propose` → the PR → `plane update publish` → the one link. Recorded backup video.

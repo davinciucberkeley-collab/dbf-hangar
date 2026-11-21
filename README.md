@@ -2,7 +2,7 @@
 
 DBF Hangar keeps the team's aircraft designs in one format (PDL), one command-line tool (`plane`) and one app (`plane studio`). Every design is checked against the same standards in `standards/`.
 
-Status: v1.0 in progress, due 2026-12-01; live status in [PROGRESS.md](PROGRESS.md).
+Status: v1.0 in progress, due 2026-12-02; live status in [PROGRESS.md](PROGRESS.md).
 
 ## Quick start
 

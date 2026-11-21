@@ -150,5 +150,5 @@ def test_committed_progress_md_is_fresh_and_marked_generated():
 def test_roadmap_is_short_and_traceable():
     text = (REPO / "ROADMAP.md").read_text(encoding="utf-8")
     assert len(text.splitlines()) <= 60
-    for needle in ["2026-12-01", "W0", "W1", "W2", "W3", "W4", "D10", "plans/2026-11-20-standardization.md", "PROGRESS.md"]:
+    for needle in ["2026-12-02", "W0", "W1", "W2", "W3", "W4", "D10", "plans/2026-11-20-standardization.md", "PROGRESS.md"]:
         assert needle in text, needle

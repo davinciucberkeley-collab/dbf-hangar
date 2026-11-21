@@ -1,6 +1,6 @@
 # Roadmap
 
-Goal: hangar v1.0 is ready to demo on Tue 2026-12-01 (Present), with the core path below working end to end.
+Goal: hangar v1.0 is ready to demo on Wed 2026-12-02 (Present, next team meeting), with the core path below working end to end.
 
 ## Waves
 
@@ -9,9 +9,9 @@ Goal: hangar v1.0 is ready to demo on Tue 2026-12-01 (Present), with the core pa
 - **W2 Gates, adapters, import, team ops** (Mon 11-23 → Wed 11-25): gate registry with T6, T7, T8 (U2.1), standards database (U2.2), tool adapters (U2.3), team-ops commands (U2.4), import of concept A (U2.5).
 - **Async check-in** (Wed 11-25): `plane update publish`, link in the Drive doc. No meeting.
 - **W3 One surface, skills, proof** (Wed 11-25 → Sat 11-28; Thu 11-26 light): Studio with modes (U3.1), skills on the ops layer (U3.2), PlaneBench v0 (U3.3), proof that an agent iterates concept A with no code edits (U3.4).
-- **Freeze** (Sun 11-29 18:00).
-- **W4 Review, release, presentation** (Sun 11-29 → Mon 11-30): whole-branch review, performance, release (U4.1), presentation package (U4.2).
-- **Present** (Tue 12-01): demo and deck.
+- **Freeze** (Mon 11-30 18:00).
+- **W4 Review, release, presentation** (Mon 11-30 → Tue 12-01): whole-branch review, performance, release (U4.1), presentation package (U4.2).
+- **Present** (Wed 12-02): demo and deck.
 
 ## Core path and cut order
 
@@ -28,7 +28,7 @@ Cut from the top as soon as a wave runs more than 12 h late. A cut unit is marke
 
 ## Open decisions
 
-- **D10**: Archive DBF-Combined and aircraft-platform (read-only) once hangar v1.0 is out? Default: yes, after 12-01, with a README pointer to hangar. Date: 12-01.
+- **D10**: Archive DBF-Combined and aircraft-platform (read-only) once hangar v1.0 is out? Default: yes, on 12-05, with a README pointer to hangar. Date: 12-01.
 
 ## Where to look
 
