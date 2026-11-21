@@ -3386,3 +3386,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T36
+    kind: task
+    text: 'U3.4 Studio acceptance attempt 2 (Tristan, cold, no terminal): about 5 min; edited avn-001 mass_g 8->10, saved, validated, proposed; PR opened (https://github.com/davinciucberkeley-collab/dbf-hangar/pull/1) but Studio showed no PR link. U3.1b reopened for the missing link'
+    source: Tristan, chat 2026-11-21
+    owner: Tristan
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
