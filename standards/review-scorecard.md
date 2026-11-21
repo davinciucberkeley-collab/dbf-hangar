@@ -59,7 +59,7 @@ Rules for signing off a discipline skill item by item against the design.
 - Confirm that each item is owned, borrowed with the lender named or bought, release a cart only after its checks, and fail any new line that exceeds the pessimistic margin. [I1#29] [I1#44] [I1#48]
 - Keep a part on hold until the freeze named for it, sign off each freeze before its stage starts, and agree one figure with its named owners when the documents disagree. [G1#34] [G2#33] [G4#41] [G4#30]
 - Show an open decision as open with the test that will close it, show a figure not found in the repo as not found, and do not assume a workspace exists because the host has the capability; name it with its deadline. [J1#41] [I2#19] [I2#26]
-- Require an independent review before any fail counts as closed, and label a board re-check of a team value REVIEWER EST. [J6#1] [J6#5]
+- Require an independent review before any fail counts as closed, and label the reviewer re-check of a team value "reviewer estimate". [J6#1] [J6#5]
 - Give each order one verdict, Go, Go with conditions or No-go, and give each condition a latest date and an owner. [J6#11]
 - Compute a weighted concept score as the weighted sum of its scores divided by the top score, with weights that total the full weight. [J6#18]
 - Record a guideline with no limit as information only, and never let it fail a check. [F1#23]
