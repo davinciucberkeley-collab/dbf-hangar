@@ -3287,3 +3287,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T28
+    kind: task
+    text: "T9: 40 concept-a claims SKIP: calc function 'read_value' is not registered (U3.4 run 2026-11-21); blocks flutter/divergence claims that gate the elevon balance-mass change"
+    source: U3.4 design-engineer run 2026-11-21
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
