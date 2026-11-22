@@ -1080,11 +1080,11 @@ Content rules (from the advisor): `design-iterate` — before any fix list ≥ 1
 
 Not a code unit; it tests everything above.
 
-- [ ] **Step 1:** Conductor launches `design-engineer` (Sonnet) on concept-a with the goal: "reduce failing checks without adding mass; mechanisms first." Hooks active; `design-engineer` has Bash limited to `plane *` and no Edit on `core/`.
-- [ ] **Step 2:** It runs `plane design validate`, `plane sim mechanism`, `plane fea run`, `plane design set|sweep`, and opens one or more `plane design propose` PRs. `auditor` runs hourly.
-- [ ] **Step 3:** Verify mechanically: `git diff --name-only main...design/concept-a/* | grep -cE '^(core|standards|schema)/'` → `0`; compared with `baseline.json`, FAIL count not higher and FAIL+WARN count lower (T8 report-only and T6.link declared-exemption rows excluded, D26); `CHANGELOG.yaml` shows each change's kind and every `add` has a written reason; no rating or threshold changed. (Amended after two runs, advisor W3-X; approved by Tristan 2026-11-21.)
-- [ ] **Step 4:** Acceptance: Dillon repeats one iteration himself in Plane Studio (no terminal), Vaibhav repeats one with `plane fea` on Windows. Each records time taken in the ledger. *(Tristan, 2026-11-21: Tristan runs both checks himself to close W3; each is logged as "done by Tristan". Tristan does the Studio iteration cold, as an outside user who does not know the internals, so his run counts for R9 and Dillon need not repeat it; R25 approval of concept-a PRs is Tristan's until Dillon is available.)*
-- [ ] **Step 5:** Tristan merges or closes the PRs after Dillon's approval (R25). `plane ledger set R7 R9 done --evidence <PR urls>`.
+- [x] **Step 1:** Conductor launches `design-engineer` (Sonnet) on concept-a with the goal: "reduce failing checks without adding mass; mechanisms first." Hooks active; `design-engineer` has Bash limited to `plane *` and no Edit on `core/`.
+- [x] **Step 2:** It runs `plane design validate`, `plane sim mechanism`, `plane fea run`, `plane design set|sweep`, and opens one or more `plane design propose` PRs. `auditor` runs hourly.
+- [x] **Step 3:** Verify mechanically: `git diff --name-only main...design/concept-a/* | grep -cE '^(core|standards|schema)/'` → `0`; compared with `baseline.json`, FAIL count not higher and FAIL+WARN count lower (T8 report-only and T6.link declared-exemption rows excluded, D26); `CHANGELOG.yaml` shows each change's kind and every `add` has a written reason; no rating or threshold changed. (Amended after two runs, advisor W3-X; approved by Tristan 2026-11-21.)
+- [x] **Step 4:** Acceptance: Dillon repeats one iteration himself in Plane Studio (no terminal), Vaibhav repeats one with `plane fea` on Windows. Each records time taken in the ledger. *(Tristan, 2026-11-21: Tristan runs both checks himself to close W3; each is logged as "done by Tristan". Tristan does the Studio iteration cold, as an outside user who does not know the internals, so his run counts for R9 and Dillon need not repeat it; R25 approval of concept-a PRs is Tristan's until Dillon is available.)*
+- [x] **Step 5:** Tristan merges or closes the PRs after Dillon's approval (R25). `plane ledger set R7 R9 done --evidence <PR urls>`.
 
 ### Unit U3.5: Discipline skills, scorecard and procedures (from §1c; not on the core path)
 

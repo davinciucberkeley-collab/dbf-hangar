@@ -83,15 +83,15 @@ items:
     text: "Stretch: every team task doable via CLI without editing code: sending designs, updating morphological chart, sending an idea, researching, consolidating, testing assembly, Dillon's tasks"
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.4
       - U2.4
       - U3.4
-    evidence: ''
+    evidence: e2504d2
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R8
     kind: ruling
     text: CLI lets Claude test a design, change one parameter, re-test, see how it evolves, iterate fast
@@ -109,14 +109,14 @@ items:
     text: 'OpenCAE behind a CLI: can an agent run a full simulation + design iteration without editing or crawling code? then can Dillon?'
     source: plan §1; A 11-18 (to Vaibhav)
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U2.3
       - U3.4
-    evidence: ''
+    evidence: e2504d2
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R10
     kind: ruling
     text: "Success conditions close to the real goal, hard enough Claude can't meet them unless it works: full 3D physics sim where parts can't pass through each other; mechanism works there or it doesn't; NASA standards; lift ratio"
