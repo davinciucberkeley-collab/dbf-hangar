@@ -258,6 +258,9 @@ v1.0. A pull-this-moves-that mechanism between attachments.
 | `expect` | array of object |  |  |
 | `expect[].attachment` | string | yes |  |
 | `expect[].ratio` | number | yes |  |
+| `link` | object |  | v1.0. The linkage the schema does not otherwise model: the two attachments where it is pinned. driver_end is a kinematic_link attachment on the driver side (e.g. the pushrod on the servo arm); follower_end is an attachment on the side moved by the driven joint (e.g. the clevis pin in the horn). Their `location` points give the lever ratio checked by T6.ratio, and their parts are not counted as colliding with the driver-side linkage part (T6.link). |
+| `link.driver_end` | string | yes | Attachment id. |
+| `link.follower_end` | string | yes | Attachment id. |
 
 ### `transport`
 

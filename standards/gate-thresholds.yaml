@@ -4,15 +4,15 @@
 version: "0.1"
 mechanism_ratio_tol:
   value: 0.05
-  rule: "A follower must reach ratio x input within this fraction of ratio x input (or mechanism_abs_tol_deg, whichever is larger)."
+  rule: "A follower must reach ratio x input within this fraction of ratio x input (or mechanism_abs_tol_deg, whichever is larger). T6.ratio also accepts a declared ratio within this fraction of the ratio measured from mechanisms[].link."
   source: internal convention
 mechanism_abs_tol_deg:
   value: 0.5
-  rule: "Absolute tolerance floor, in degrees, for the follower angle check (small inputs)."
+  rule: "Absolute tolerance floor, in degrees, for the follower angle check (small inputs). T6.ratio uses it as a ratio floor: this many degrees divided by the largest absolute input of the mechanism."
   source: internal convention
 mechanism_contact_step_deg:
-  value: 5.0
-  rule: "Unattached-pair interference is checked every this many degrees of driver input (the driver itself is stepped 1 degree at a time)."
+  value: 1.0
+  rule: "Unattached-pair interference is checked at every multiple of this many degrees of driver input (absolute grid, so 0 is always on it), and always at both ends of the input range."
   source: internal convention
 wire_clearance_mm:
   value: 5.0
