@@ -154,3 +154,20 @@ def test_other_components_mesh_bytes_make_part_stale(tmp_path):
     with open(b.base_dir / c["geometry"]["mesh"]["file"], "ab") as fh:
         fh.write(b"\0")
     assert fea.part_hash(b, PART) != before
+
+
+def test_gate_only_propulsion_keys_leave_hash_unchanged(tmp_path):
+    def fn(d):
+        for c in d["components"]:
+            if c["type"] == "motor":
+                c["propulsion"]["max_current_a"] = 11.2
+                c["propulsion"]["prop_diameter_mm"] = 228.6
+    assert fea.part_hash(edit_plane(tmp_path, fn, "a"), PART) == \
+        fea.part_hash(edit_plane(tmp_path, lambda d: None, "b"), PART)
+
+
+def test_max_thrust_change_changes_hash(tmp_path):
+    def fn(d):
+        next(c for c in d["components"] if c["type"] == "motor")["propulsion"]["max_thrust_n"] += 1.0
+    assert fea.part_hash(edit_plane(tmp_path, fn, "a"), PART) != \
+        fea.part_hash(edit_plane(tmp_path, lambda d: None, "b"), PART)

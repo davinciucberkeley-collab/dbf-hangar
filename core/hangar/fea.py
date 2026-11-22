@@ -189,11 +189,25 @@ def standards_fingerprint() -> bytes:
 FEA_COMPONENT_KEYS = ("id", "type", "mass_g", "position", "rotation_deg", "cg_offset", "geometry", "cavities", "propulsion")
 
 
+# Propulsion keys of OTHER components that are hashed: sim.py (joint_load_cases) reads axis and max_thrust_n; role stays
+# only so the committed hashes stay valid. Gate-only keys (max_current_a, prop_diameter_mm) are left out; add a key here
+# when fea.py or sim.py starts reading another one.
+FEA_PROPULSION_KEYS = ("max_thrust_n", "axis", "role")
+
+
+def _other_entry(c: dict) -> dict:
+    """The load-relevant keys of a component other than the part being hashed."""
+    e = {k: c[k] for k in FEA_COMPONENT_KEYS if k in c}
+    if "propulsion" in e:
+        e["propulsion"] = {k: v for k, v in e["propulsion"].items() if k in FEA_PROPULSION_KEYS}
+    return e
+
+
 def part_inputs_fingerprint(design: Design, part_id: str) -> bytes:
     """Canonical bytes of the plane.yaml fields this part's result depends on: its own component entry, the load-relevant
     keys of every other component, all attachments (supports, load joints, welds), the root and the VTOL method."""
     data = design.data
-    comps = [c if c["id"] == part_id else {k: c[k] for k in FEA_COMPONENT_KEYS if k in c} for c in design.components]
+    comps = [c if c["id"] == part_id else _other_entry(c) for c in design.components]
     picked = {"root": data.get("root"), "vtol_method": (data.get("morphology") or {}).get("vtol_method"),
               "components": comps, "attachments": data.get("attachments", [])}
     return json.dumps(picked, sort_keys=True, separators=(",", ":"), default=str).encode("utf-8")
