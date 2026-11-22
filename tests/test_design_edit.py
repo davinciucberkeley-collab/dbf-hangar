@@ -166,6 +166,30 @@ def test_propose_runs_exact_git_and_gh_commands_without_network(tmp_example, tmp
     assert calls[-1] == ["git", "-C", str(tmp_path), "switch", "main"]      # back where we started
 
 
+def test_propose_resolves_a_relative_design_path(tmp_example, tmp_path, monkeypatch):
+    seen: list[tuple[list[str], str]] = []
+
+    def fake_run(argv, cwd):
+        seen.append((list(argv), cwd))
+        if "--show-toplevel" in argv:
+            return str(tmp_path) + "\n"
+        if "status" in argv:
+            return " M plane.yaml\n"
+        if "--abbrev-ref" in argv:
+            return "main\n"
+        if "create" in argv:
+            return "https://github.com/o/r/pull/8\n"
+        return ""
+
+    monkeypatch.setattr(edit, "_run", fake_run)
+    monkeypatch.setenv("HANGAR_GH", "gh-test")
+    monkeypatch.chdir(tmp_path)
+    r = call("design.propose", path="example-tailsitter-wing", title="Relative path")
+    assert r.ok, r.messages
+    assert seen[0][0] == ["git", "-C", str(tmp_example.resolve()), "rev-parse", "--show-toplevel"]
+    assert all(Path(cwd).is_absolute() for _, cwd in seen)
+
+
 def test_propose_refuses_when_nothing_changed(tmp_example, tmp_path, monkeypatch):
     def fake_run(argv, cwd):
         return str(tmp_path) + "\n" if "--show-toplevel" in argv else ""

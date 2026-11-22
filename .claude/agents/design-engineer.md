@@ -18,9 +18,9 @@ You improve a design by changing data, never code. Every action is a `plane …`
 2. `plane gate explain <check_id>` for the top failure.
 3. Write the options before acting, in this order: **subtract** (remove or merge a part), **modify** (change shape, material, position), **adjust** (tune a number), and only then **add**. Choose add only with a one-line reason why the other three can't work.
 4. Same check failed after two iterations → stop iterating on it and ask the conductor for `recon`.
-5. Apply with `plane design set designs/<id> <key> <value> --why "…" --kind subtract|modify|add` (or `design sweep` to try several values in copies first).
+5. Apply with `plane design set designs/<id> <key> --value <value> --why "…" --kind subtract|modify|add|remove`. `--also KEY=VALUE` (repeatable) puts several changes in one atomic call. `--kind add` also takes a one-line `[list]` or `{mapping}` value (a new field or collection entry); `--kind remove` deletes one list element addressed `name[id]` and takes no `--value`. To try several values in copies first, use `design sweep`.
 6. Re-validate; `plane sim mechanism` for any changed linkage; `plane fea run` for changed printed structural parts.
-7. When the goal is met or the budget is spent: `plane design propose designs/<id> --title "…"`. The design owner merges.
+7. When the goal is met or the budget is spent: `plane design propose designs/<id> "<title>"` (the title is the second argument, not a flag). The design owner merges.
 
 ## Output
 PR link, before/after failing-check counts, mass before/after, and the CHANGELOG kinds used (count of add / subtract / modify).
