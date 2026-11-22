@@ -1,6 +1,6 @@
 # concept-a: scaled quad tailsitter flying wing (D-182)
 
-Imported from the DBF-Combined team's own CAD by `plane import dbf --dbf-root <path>` (importer: `core/aircraft_platform/importers/`).
+Imported from the DBF-Combined team's own CAD by `plane import dbf --dbf-root <path>` (importer: `core/hangar/importers/`).
 **Generated: do not edit `plane.yaml` or `meshes/`; change the importer and re-run.** The import is deterministic (two runs, `diff -r` empty).
 `import-report.json` holds per-part conversion statistics and every joint rating with its source text. This README and
 `validator-comparison.md` are hand-written and are not touched by the importer.
