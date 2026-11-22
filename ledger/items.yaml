@@ -4035,3 +4035,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-22'
+  - id: T70
+    kind: task
+    text: tests/test_point_mass.py:42 and tests/test_round5.py:22 default to tier=5 after W4d-tiers, so full-run tests no longer run T7/T8; set both defaults to 9; optionally assert tier 9 absent at max_tier=5 in test_claims.py:236
+    source: reviews/2026-11-22-w4.md W4d-tiers
+    owner: conductor
+    status: open
+    due: '2026-11-30'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
