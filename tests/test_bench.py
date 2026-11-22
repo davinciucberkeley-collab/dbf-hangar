@@ -29,7 +29,7 @@ def fake_repo(tmp_path):
     """A small stand-in for the repo root: concept-a (no fea/), bench/ (tasks + fixtures), agents, dummy core/schema/standards."""
     root = tmp_path / "repo"
     (root / "designs").mkdir(parents=True)
-    shutil.copytree(REPO / "designs" / "concept-a", root / "designs" / "concept-a", ignore=shutil.ignore_patterns("fea"))
+    shutil.copytree(REPO / "tests" / "fixtures" / "concept-a-frozen", root / "designs" / "concept-a", ignore=shutil.ignore_patterns("fea"))
     shutil.copytree(REPO / "bench", root / "bench", ignore=shutil.ignore_patterns("results"))
     shutil.copytree(REPO / ".claude" / "agents", root / ".claude" / "agents")
     for top, name in (("core/hangar", "dummy.py"), ("schema", "s.json"), ("standards", "s.yaml")):
