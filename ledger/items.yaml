@@ -619,23 +619,24 @@ items:
     text: plane ledger ingest (moved from U0.3 to U2.4)
     source: plan U2.4; Tristan 2026-11-21
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-25'
     units: []
-    evidence: ''
+    evidence: 9d1ce6a
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T2
     kind: task
-    text: 'James: harness install test (plan 6b)'
+    text: 'James: harness install test (plan 6b) [triage 2026-11-21: James runs the harness install by 11-29; else CI install test is the evidence, tester run moves to v1.1 (D31)]'
     source: plan 6b
     owner: James
     status: open
-    due: '2026-11-21'
-    units: []
+    due: '2026-11-29'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: D11
     kind: decision
     text: 'Who turns an unknown component type into a SKIP instead of a T0.schema FAIL (Review Focus #1)?'
@@ -660,26 +661,28 @@ items:
     updated: '2026-11-20'
   - id: T3
     kind: task
-    text: 'ops registry: a module that registers some ops and then fails mid-import hits a duplicate-name ValueError on retry (advisor, U1.1 round 3)'
+    text: 'ops registry: a module that registers some ops and then fails mid-import hits a duplicate-name ValueError on retry (advisor, U1.1 round 3) [triage 2026-11-21: Fix: roll back _REGISTRY entries added during a failed load, or make the retry skip identical specs]'
     source: reviews/2026-11-21-w1.md U1.1
     owner: Tristan
     status: open
-    due: '2026-11-30'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T4
     kind: task
-    text: 'T9 lost the proofs/1 CHECKED/VERIFIED evidence signal: a claim resting on an unverified assumption or unsourced parameter still PASSes; restore in U3.1 Proofs mode and the 2.5 fidelity line'
+    text: 'T9 lost the proofs/1 CHECKED/VERIFIED evidence signal: a claim resting on an unverified assumption or unsourced parameter still PASSes; restore in U3.1 Proofs mode and the 2.5 fidelity line [triage 2026-11-21: U3.1 (merged 00f56ea) shipped without Proofs mode (plan 6a cut order 4 allows that)]'
     source: advisor W1-A2 (U1.5 brief)
     owner: Tristan
     status: open
-    due: '2026-11-28'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T5
     kind: task
     text: U1.5 design.set flow test (plan 7 U1.5) deferred until U1.4 merges design.set
@@ -718,56 +721,59 @@ items:
     text: "ops.call/_call_spec: make name/spec positional-only (def call(name, /, **params)) so a JSON key 'name' or 'spec' gives exit 2, not a 500; land before any op takes a 'name' parameter"
     source: reviews/2026-11-21-w1.md U1.2 note 5
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-23'
     units: []
-    evidence: ''
+    evidence: tests/test_positional_only.py
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T7
     kind: task
-    text: /api/op lets ops read/write any local path (old routes were confined to designs/); revisit path confinement in U3.1
+    text: '/api/op lets ops read/write any local path (old routes were confined to designs/); revisit path confinement in U3.1 [triage 2026-11-21: Still open]'
     source: reviews/2026-11-21-w1.md U1.2 note 6
     owner: Tristan
     status: open
-    due: '2026-11-27'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T8
     kind: task
     text: "design.set on a plain string containing ', ' (e.g. concept-a name) exits 1 instead of 2: pdledit token pattern stops at the comma; nothing written"
     source: reviews/2026-11-21-w1.md U1.4 note
     owner: Tristan
-    status: open
+    status: superseded
     due: '2026-11-25'
     units: []
     evidence: ''
-    decided_in: ''
-    updated: '2026-11-20'
+    decided_in: T34
+    updated: '2026-11-21'
   - id: T9
     kind: task
-    text: blender and sitl adapters ship as planned stubs (collide.py port, a_plant.py wrapper deferred; plan 6a cut order 5)
+    text: 'blender and sitl adapters ship as planned stubs (collide.py port, a_plant.py wrapper deferred; plan 6a cut order 5) [triage 2026-11-21: kept open, collide.py port still wanted; due moved off 11-29 (D36)]'
     source: advisor W2-A (U2.3 brief)
     owner: Tristan
     status: open
-    due: '2026-11-29'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T10
     kind: task
-    text: 'U2.1 follow-up: designs-only edit of example-tailsitter-wing to exercise T6-T8 (test_example_accepted changes then)'
+    text: 'U2.1 follow-up: designs-only edit of example-tailsitter-wing to exercise T6-T8 (test_example_accepted changes then) [triage 2026-11-21: Not done]'
     source: advisor W2-A (U2.1 brief)
     owner: Tristan
     status: open
-    due: '2026-11-27'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: D15
     kind: decision
     text: 'T6 mechanisms: MuJoCo simulation or analytic check?'
@@ -814,48 +820,50 @@ items:
     updated: '2026-11-20'
   - id: T11
     kind: task
-    text: 'CI speed follow-ups: mark test_baseline::test_every_fail_or_skip... (62 s) slow; skip validate for PROGRESS.md/ledger-only commits; cancel-in-progress only on std/** not main'
+    text: 'CI speed follow-ups: mark test_baseline::test_every_fail_or_skip... (62 s) slow; skip validate for PROGRESS.md/ledger-only commits; cancel-in-progress only on std/** not main [triage 2026-11-21: All three items not done]'
     source: reviews/2026-11-21-w1.md W1-P
     owner: Tristan
     status: open
-    due: '2026-11-24'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T12
     kind: task
-    text: Triage source conflicts recorded in discipline-extract Gaps (e.g. mass gate 2.6 vs 2.7 kg, thermal 40/50 vs 33/38 K, pack charge 4.20 vs 4.35 V); conflicting keys stay pending until decided
+    text: 'Triage source conflicts recorded in discipline-extract Gaps (e.g. mass gate 2.6 vs 2.7 kg, thermal 40/50 vs 33/38 K, pack charge 4.20 vs 4.35 V); conflicting keys stay pending until decided [triage 2026-11-21: conflicting keys stay pending; slides quote no mass-gate number (D32)]'
     source: plan 1c
     owner: Tristan
     status: open
-    due: '2026-11-26'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T13
     kind: task
     text: Build U3.5 discipline skills, scorecard sections and procedures from discipline-extract (after D19/D20)
     source: plan 1c, U3.5
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-28'
     units: []
-    evidence: ''
+    evidence: 3efac01
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T14
     kind: task
     text: Build U3.6 five discipline gates on the U2.1 registry (after D19/D20)
     source: plan 1c, U3.6
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-28'
     units: []
-    evidence: ''
+    evidence: cf41df9
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: D19
     kind: decision
     text: §1c proposes 367 standards keys (after the re-tag pass) from the role checklists; how many become `standards/*.yaml` entries?
@@ -891,26 +899,28 @@ items:
     updated: '2026-11-20'
   - id: T15
     kind: task
-    text: 'T7 integration: harness between two point masses PASSes unchecked (integration.py:41); transport group of point masses gives no row (:72); make both SKIP before the 12-08 blocking flip'
+    text: 'T7 integration: harness between two point masses PASSes unchecked (integration.py:41); transport group of point masses gives no row (:72); make both SKIP before the 12-08 blocking flip [triage 2026-11-21: Make both SKIP (not PASS, no silent continue) before the 12-08 blocking flip]'
     source: reviews/2026-11-21-w2.md U2.1
     owner: Tristan
     status: open
     due: '2026-12-05'
-    units: []
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T16
     kind: task
-    text: FEA hash omits the load-building code (fea/sim/geometry/mass.py) and the MuJoCo version; add them so a code change marks results stale
+    text: 'FEA hash omits the load-building code (fea/sim/geometry/mass.py) and the MuJoCo version; add them so a code change marks results stale [triage 2026-11-21: not on the demo path; promote only if a slide shows FEA results; real path is core/hangar/sim.py, geometry.py, mass.py]'
     source: reviews/2026-11-21-w2.md U2.3a
     owner: Tristan
     status: open
-    due: '2026-11-30'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: D22
     kind: decision
     text: After D7's 12-08 flip, does `T8.program.budget` SKIP ("no BOM") block acceptance of designs without a BOM?
@@ -924,15 +934,16 @@ items:
     updated: '2026-11-20'
   - id: T17
     kind: task
-    text: bom.py crashes on a non-mapping verified block or missing qty (should exit 2); ingest de-dup should key on kind+text, add a cross-kind test
+    text: 'bom.py crashes on a non-mapping verified block or missing qty (should exit 2); ingest de-dup should key on kind+text, add a cross-kind test [triage 2026-11-21: Guard both bom paths (exit 2 via OpInputError); key ingest de-dup on kind plus text; add the cross-kind test]'
     source: reviews/2026-11-21-w2.md U2.4b
     owner: Tristan
     status: open
-    due: '2026-11-27'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: D23
     kind: decision
     text: No unit owns `plane sim drop` (team task run_physics skips forever)
@@ -946,15 +957,16 @@ items:
     updated: '2026-11-20'
   - id: T18
     kind: task
-    text: cli._attach_ops cannot merge generated ops into a hand-written click Group (e.g. import); convert plane import dbf to an op or let _attach_ops merge into Groups
+    text: 'cli._attach_ops cannot merge generated ops into a hand-written click Group (e.g. import); convert plane import dbf to an op or let _attach_ops merge into Groups [triage 2026-11-21: Either convert plane import dbf into an op, or let _attach_ops merge generated ops into a hand-written Group]'
     source: U2.5b build stop 2026-11-21
     owner: Tristan
     status: open
-    due: '2026-11-30'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: D-01
     kind: decision
     text: Chord 0.30 → 0.32 m; cruise 15 → 16 m/s
@@ -3179,100 +3191,109 @@ items:
     updated: '2026-11-20'
   - id: T19
     kind: task
-    text: standards.pending ignores gate-thresholds.yaml (misses wire_clearance_mm, blocking 12-08); CT-M3-SHCS-INSERT should cite the PETG test; nyloc ratings use bolt proof load, overstating printed-plastic joints
+    text: 'standards.pending ignores gate-thresholds.yaml (misses wire_clearance_mm, blocking 12-08); CT-M3-SHCS-INSERT should cite the PETG test; nyloc ratings use bolt proof load, overstating printed-plastic joints [triage 2026-11-21: Make standards.pending read gate-thresholds.yaml; repoint CT-M3-SHCS-INSERT to the PETG test; rate printed-plastic nyloc joints by the weaker member, not bolt proof load]'
     source: reviews/2026-11-21-w2.md U2.2
     owner: Tristan
     status: open
     due: '2026-12-05'
-    units: []
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T20
     kind: task
-    text: 'sim.drop height override: sim._build reads drop_height_m from standards internally; factor a drop_test(design, height_m) out of tier2_sim (tier2 behaviour identical) so the op can take --height-m'
+    text: 'sim.drop height override: sim._build reads drop_height_m from standards internally; factor a drop_test(design, height_m) out of tier2_sim (tier2 behaviour identical) so the op can take --height-m [triage 2026-11-21: Factor drop_test(design, height_m) out of tier2_sim with identical tier2 behaviour; add --height-m to sim.drop]'
     source: W2-S build stop 2026-11-21
     owner: Tristan
     status: open
-    due: '2026-11-30'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T21
     kind: task
-    text: 'One exit-code rule for a missing external tool: U2.3b skip_result gives ok/exit 0, sim.drop gives exit 1 (same as FAIL); pick one (SKIP != PASS, != FAIL) across ops; ops/sim.py should use pdledit.resolve_design_path'
+    text: 'One exit-code rule for a missing external tool: U2.3b skip_result gives ok/exit 0, sim.drop gives exit 1 (same as FAIL); pick one (SKIP != PASS, != FAIL) across ops; ops/sim.py should use pdledit.resolve_design_path [triage 2026-11-21: rule: SKIP exits 0 with status SKIP (D37); ops/sim.py moves to resolve_design_path]'
     source: reviews/2026-11-21-w2.md W2-S
     owner: Tristan
     status: open
-    due: '2026-11-25'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T22
     kind: task
-    text: 'Flaky on Windows CI: test_studio.py::test_studio_api_end_to_end WinError 10053 (main 41a7efe); make the server shutdown robust'
+    text: 'Flaky on Windows CI: test_studio.py::test_studio_api_end_to_end WinError 10053 (main 41a7efe); make the server shutdown robust [triage 2026-11-21: Make the server shutdown robust (join the serve thread, ignore ConnectionAbortedError on Windows, or use a server fixture)]'
     source: reviews/2026-11-21-w2.md W2-S
     owner: Tristan
     status: open
-    due: '2026-11-25'
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T23
     kind: task
-    text: 'U2.3b polish: unused subprocess/sys imports and job.json written twice in fea.py; docs/mcp.md lists fea_run as hand-written; human SKIP output should start with SKIP:'
+    text: 'U2.3b polish: unused subprocess/sys imports and job.json written twice in fea.py; docs/mcp.md lists fea_run as hand-written; human SKIP output should start with SKIP: [triage 2026-11-21: Remove the two imports; write job.json once; move fea_run out of the hand-written list in docs/mcp.md; check the SKIP: prefix in the human output (not yet opened)]'
     source: reviews/2026-11-21-w2.md U2.3b
     owner: Tristan
     status: open
-    due: '2026-11-28'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T24
     kind: task
-    text: 'Make U2.5d a unit: concept-a re-import into PDL 1.0 (params, BOM, requirements, files, wiring/transport, mechanisms, assembly sequence) after an FEA re-run; closes R1, R12, R14, R17, R31 data gaps'
+    text: 'Make U2.5d a unit: concept-a re-import into PDL 1.0 (params, BOM, requirements, files, wiring/transport, mechanisms, assembly sequence) after an FEA re-run; closes R1, R12, R14, R17, R31 data gaps [triage 2026-11-21: v1.1 unit U2.5d written into plan 7 by 11-25; R1/R12/R14/R17/R31 shown as gaps on Dec 2 (D33); blocked by T53]'
     source: reviews/2026-11-21-ledger-audit.md
     owner: Tristan
     status: open
-    due: '2026-11-25'
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: T25
     kind: task
-    text: 'plane design validate table: Status column shows the tier status (t.status) instead of the row status (r.status), so passing rows in a failing tier read FAIL (core/hangar/design.py:114, since seed 6909134)'
+    text: 'plane design validate table: Status column shows the tier status (t.status) instead of the row status (r.status), so passing rows in a failing tier read FAIL (core/hangar/design.py:114, since seed 6909134) [triage 2026-11-21: One-line fix: use r.status in the Status column]'
     source: reviews/2026-11-21-w3.md U3.2 (W3-R1)
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T26
     kind: task
-    text: 'gate.explain resolves a check id by tier prefix only (core/hangar/ops/gates.py:42-43): plane gate explain T1.attachment_contact prints interference_max_mm3 instead of attach_tolerance_mm; U3.6 adds exact-id match for discipline ids only'
+    text: 'gate.explain resolves a check id by tier prefix only (core/hangar/ops/gates.py:42-43): plane gate explain T1.attachment_contact prints interference_max_mm3 instead of attach_tolerance_mm; U3.6 adds exact-id match for discipline ids only [triage 2026-11-21: Exact-id match for check ids is not in U3.6 scope; design-iterate and review-design depend on it]'
     source: reviews/2026-11-21-w3.md U3.2 (W3-R1)
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T27
     kind: task
-    text: auditor.md names plane ledger report --prompts --open, which does not exist
+    text: 'auditor.md names plane ledger report --prompts --open, which does not exist [triage 2026-11-21: One-line role-text fix (point to ledger/prompts.jsonl or drop the flags); the auditor runs hourly so it should land before the demo]'
     source: briefs/U3.2-skills.md decision 3
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3289,23 +3310,25 @@ items:
     updated: '2026-11-21'
   - id: T28
     kind: task
-    text: "T9: 40 concept-a claims SKIP: calc function 'read_value' is not registered (U3.4 run 2026-11-21); blocks flutter/divergence claims that gate the elevon balance-mass change"
+    text: "T9: 40 concept-a claims SKIP: calc function 'read_value' is not registered (U3.4 run 2026-11-21); blocks flutter/divergence claims that gate the elevon balance-mass change [triage 2026-11-21: 40 read_value claims stay SKIP and are named on the metrics slide as not recomputed (D34)]"
     source: U3.4 design-engineer run 2026-11-21
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T29
     kind: task
-    text: "plane tools doctor reports OpenCAE ok without checking the runner's imports: with python set to the CalculiX-only env 'opencae', fea run fails 'No module named numpy'. Doctor should import numpy and scipy with the configured python, and fea setup should refuse a python without them. (OpenCAE INSTALL_WINDOWS.md: Python env is qt_test; 'opencae' is the solver env.)"
+    text: "plane tools doctor reports OpenCAE ok without checking the runner's imports: with python set to the CalculiX-only env 'opencae', fea run fails 'No module named numpy'. Doctor should import numpy and scipy with the configured python, and fea setup should refuse a python without them. (OpenCAE INSTALL_WINDOWS.md: Python env is qt_test; 'opencae' is the solver env.) [triage 2026-11-21: Doctor must import numpy and scipy with the configured python, and fea setup must refuse a python without them]"
     source: Tristan task 1 (U3.4 step 4), 2026-11-21
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3322,12 +3345,13 @@ items:
     updated: '2026-11-21'
   - id: T31
     kind: task
-    text: 'cge-001 FEA NOT CHECKED: direct-STL route asked for 1.2 mm but produced 2.5 mm elements, too coarse for 1.2 mm walls. Needs a STEP source for cge-001 or a finer direct mesh; check whether the direct route honours size_max.'
+    text: 'cge-001 FEA NOT CHECKED: direct-STL route asked for 1.2 mm but produced 2.5 mm elements, too coarse for 1.2 mm walls. Needs a STEP source for cge-001 or a finer direct mesh; check whether the direct route honours size_max. [triage 2026-11-21: Needs a STEP source for cge-001 or a finer direct mesh; check that the direct route honours size_max (not verified)]'
     source: U3.4 Windows FEA check attempt 2, 2026-11-21
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3336,10 +3360,10 @@ items:
     text: 'U3.4 Studio acceptance attempt 1 (Tristan, cold, no terminal): edited pwr-001 mass_g 270->275 and re-ran checks in about 5 min; stuck: no Validate result or Propose action in Studio; Studio save re-emitted plane.yaml (E-WNG-10/11 flow mappings collapsed). Fix: U3.1b; attempt 2 after it merges'
     source: Tristan, chat 2026-11-21
     owner: Tristan
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: ad42d96
     decided_in: ''
     updated: '2026-11-21'
   - id: D25
@@ -3355,34 +3379,37 @@ items:
     updated: '2026-11-21'
   - id: T33
     kind: task
-    text: .claude/agents/design-engineer.md line 21 shows plane design set <key> <value> but value is --value; add --also and the --kind add flow-collection form (after U3.6c merges)
+    text: '.claude/agents/design-engineer.md line 21 shows plane design set <key> <value> but value is --value; add --also and the --kind add flow-collection form (after U3.6c merges) [triage 2026-11-21: Doc-only fix, precondition (U3.6c) met]'
     source: advisor W3-A on U3.6c
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T34
     kind: task
-    text: 'Studio: saving a string field (Name, Description) on concept-a fails with a raw ParserError from pdledit.patch_text; numbers save fine'
+    text: 'Studio: saving a string field (Name, Description) on concept-a fails with a raw ParserError from pdledit.patch_text; numbers save fine [triage 2026-11-21: Wrap the reparse so it raises OpInputError, and make Name and Description saveable (or show the error in Studio)]'
     source: reviews/2026-11-21-w3.md U3.1b (W3-R2)
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T35
     kind: task
-    text: "PlaneBench: Sonnet and Opus passed mass-cut-10 and fix-static-margin by editing mass_g alone (gaming); task prompts invite it; reword the caveat in bench/results/2026-11-21.md (reviewer wording) and never present 7/9 as 'agents can cut mass' (U4.2 slide); protect designs/ in the grader before the next round; bench.py write newline=\\n"
+    text: "PlaneBench: Sonnet and Opus passed mass-cut-10 and fix-static-margin by editing mass_g alone (gaming); task prompts invite it; reword the caveat in bench/results/2026-11-21.md (reviewer wording) and never present 7/9 as 'agents can cut mass' (U4.2 slide); protect designs/ in the grader before the next round; bench.py write newline=\\n [triage 2026-11-21: caveat and slide wording only (U4.2); grader protection and newline split to a v1.1 task]"
     source: reviews/2026-11-21-w3.md U3.3 Part B (W3-R2)
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.2
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3391,97 +3418,105 @@ items:
     text: 'U3.4 Studio acceptance attempt 2 (Tristan, cold, no terminal): about 5 min; edited avn-001 mass_g 8->10, saved, validated, proposed; PR opened (https://github.com/davinciucberkeley-collab/dbf-hangar/pull/1) but Studio showed no PR link. U3.1b reopened for the missing link'
     source: Tristan, chat 2026-11-21
     owner: Tristan
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: 8b51d63
     decided_in: ''
     updated: '2026-11-21'
   - id: T37
     kind: task
-    text: 'T3.control_authority yaw is physically unsound: adds cant-torque magnitudes as if each motor could yaw either way (concept-a 1.10 vs 1.5 not supported either way); no prop reaction torque; yaw reuses pitch/roll wind moment. Advisor picks fix (zero net-thrust max moment / reaction torque field / yaw wind moment) before D7 flip'
+    text: 'T3.control_authority yaw is physically unsound: adds cant-torque magnitudes as if each motor could yaw either way (concept-a 1.10 vs 1.5 not supported either way); no prop reaction torque; yaw reuses pitch/roll wind moment. Advisor picks fix (zero net-thrust max moment / reaction torque field / yaw wind moment) before D7 flip [triage 2026-11-21: Advisor picks the fix before the D7 flip (12-08)]'
     source: reviews/2026-11-21-w3.md U3.6 (W3-R2)
     owner: ''
     status: open
     due: '2026-12-08'
-    units: []
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T38
     kind: task
-    text: 'U3.6 follow-ups (non-blocking): T3.endurance drops hover phase when no motor gives upward thrust and can PASS on cruise alone; test_standards_referenced passes deadline and transport_box_mm on name collisions; T7 pack/connector rows cite wire_ampacity_a but judge electrical_rating_min_ratio; test_validate tolerance accepts any report-only row; U3.6c test_collection_pairs_are_atomic passes on base code (add schema-message assertion)'
+    text: 'U3.6 follow-ups (non-blocking): T3.endurance drops hover phase when no motor gives upward thrust and can PASS on cruise alone; test_standards_referenced passes deadline and transport_box_mm on name collisions; T7 pack/connector rows cite wire_ampacity_a but judge electrical_rating_min_ratio; test_validate tolerance accepts any report-only row; U3.6c test_collection_pairs_are_atomic passes on base code (add schema-message assertion) [triage 2026-11-21: Non-blocking bundle of six U3.6/U3.6c follow-ups]'
     source: reviews/2026-11-21-w3.md U3.6, U3.6c
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T39
     kind: task
-    text: 'Studio follow-ups (U3.1b r2 review): PR panel renders below the 599-row validation list (put PR panel first or collapse validation); add a Validate click before Propose in test_propose_link_survives_real_git_side_effects; style the toast dismiss .icon outside dialogs'
+    text: 'Studio follow-ups (U3.1b r2 review): PR panel renders below the 599-row validation list (put PR panel first or collapse validation); add a Validate click before Propose in test_propose_link_survives_real_git_side_effects; style the toast dismiss .icon outside dialogs [triage 2026-11-21: Three sub-items left: panel order (edit.js renderResults), Validate click in the propose test, .toast .icon style]'
     source: reviews/2026-11-21-w3.md U3.1b round 2 (W3-R2)
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T40
     kind: task
-    text: U2.2 Step 3a (knowledge import of DBF-Combined config-study, 43 concept cards) was ticked without a merge (W2-2b never ran); unticked by W3 audit; needs brief U2.2-2 and a builder, or a cut decision
+    text: 'U2.2 Step 3a (knowledge import of DBF-Combined config-study, 43 concept cards) was ticked without a merge (W2-2b never ran); unticked by W3 audit; needs brief U2.2-2 and a builder, or a cut decision [triage 2026-11-21: U2.2-2 brief ready (D27-D29); not demo-blocking (D35)]'
     source: W3-Au audit 2026-11-21
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T41
     kind: task
-    text: 'Process (W3 lesson): before a design-facing unit is briefed, run its plane commands on a tmp copy of the target design (dry run of the handoff); a tactician brief for such a unit must include that output. W3 U3.4 took 5 runs and 4 tool units because gaps surfaced one run at a time'
+    text: 'Process (W3 lesson): before a design-facing unit is briefed, run its plane commands on a tmp copy of the target design (dry run of the handoff); a tactician brief for such a unit must include that output. W3 U3.4 took 5 runs and 4 tool units because gaps surfaced one run at a time [triage 2026-11-21: apply as a W4 wave rule at W4 launch, then close]'
     source: Tristan, chat 2026-11-21 (keep what would have helped)
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-11-24'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T42
     kind: task
-    text: 'Process (W3 lesson): tacticians run every test they write against the base repo (red for the right reason) and grep the repo for every name, count and path the brief asserts; about 8 builder stops in W3 were brief-vs-repo mismatches'
+    text: 'Process (W3 lesson): tacticians run every test they write against the base repo (red for the right reason) and grep the repo for every name, count and path the brief asserts; about 8 builder stops in W3 were brief-vs-repo mismatches [triage 2026-11-21: apply as a W4 wave rule at W4 launch, then close]'
     source: Tristan, chat 2026-11-21
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-11-24'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T43
     kind: task
-    text: 'Process (W3 lesson): conductor launches the auditor every hour of a wave (skipped for 8 h in W3) and checks for agents left waiting on a background shell'
+    text: 'Process (W3 lesson): conductor launches the auditor every hour of a wave (skipped for 8 h in W3) and checks for agents left waiting on a background shell [triage 2026-11-21: apply as a W4 wave rule at W4 launch, then close]'
     source: Tristan, chat 2026-11-21
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-11-24'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T44
     kind: task
-    text: 'Speed (W3 lesson): plane design validate on concept-a takes minutes and a 3-value sweep over 2 min; U4.1 Step 2 performance pass (R33, target < 60 s) is a priority, measured before/after'
+    text: 'Speed (W3 lesson): plane design validate on concept-a takes minutes and a 3-value sweep over 2 min; U4.1 Step 2 performance pass (R33, target < 60 s) is a priority, measured before/after [triage 2026-11-21: Measure plane design validate designs/concept-a before and after, with one builder-plus unit if over 60 s]'
     source: Tristan, chat 2026-11-21
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3490,31 +3525,33 @@ items:
     text: T6 mechanism gate samples every 5 deg from -lo, so a collision can pass or fail depending on the range end (concept-a elevon rod/horn overlap within +-3 deg passes at +-35, fails at +-36); sample both ends, zero and a finer step, and model or exempt rod-horn kinematic links
     source: U3.4 run 5 report 2026-11-21
     owner: ''
-    status: open
+    status: superseded
     due: ''
     units: []
     evidence: ''
-    decided_in: ''
+    decided_in: T48
     updated: '2026-11-21'
   - id: T46
     kind: task
-    text: 'plane tooling (U3.4 run 5): design set cannot append to or remove from a one-line flow list; design propose fails with a relative design path (git -C designs\concept-a) and takes the title positionally while skills/agents show --title'
+    text: 'plane tooling (U3.4 run 5): design set cannot append to or remove from a one-line flow list; design propose fails with a relative design path (git -C designs\concept-a) and takes the title positionally while skills/agents show --title [triage 2026-11-21: propose relative path and --title fix only (U4.1); flow-list append/remove split to a v1.1 task]'
     source: U3.4 run 5 report 2026-11-21
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-30'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
   - id: T47
     kind: task
-    text: Tests pin the committed designs/concept-a as a fixture (15 tests in test_design_edit, test_gates, test_pdl, test_studio), so any concept-a design PR turns CI red; freeze copies under tests/fixtures/ and repoint the tests (test-only unit, must merge before any concept-a design PR)
+    text: 'Tests pin the committed designs/concept-a as a fixture (15 tests in test_design_edit, test_gates, test_pdl, test_studio), so any concept-a design PR turns CI red; freeze copies under tests/fixtures/ and repoint the tests (test-only unit, must merge before any concept-a design PR) [triage 2026-11-21: repoint the remaining concept-a pins to tests/fixtures/concept-a-frozen before the next concept-a design change]'
     source: 'reviews/2026-11-21-w3.md U3.4 PR #2 (W3-R2)'
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-11-25'
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3523,20 +3560,21 @@ items:
     text: 'T6 mechanism gate: follower angle is computed from the declared ratio (tracking proves nothing); collisions sampled every 5 deg miss a 1 deg collision; linked pairs (rod-horn) collide spuriously because no link is modelled. Fix: geometric ratio check or none, 1 deg step plus range ends, exempt declared kinematic-link pairs'
     source: 'reviews/2026-11-21-w3.md U3.4 PR #2 (W3-R2)'
     owner: ''
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: acc98b8
     decided_in: ''
     updated: '2026-11-21'
   - id: T49
     kind: task
-    text: "U3.6e follow-ups (non-blocking): T6 jam check still uses the declared ratio (a design can pass T6.mechanism at +-35 while the real linkage hits the elevon stop at about +-16; T6.ratio catches it); reconcile program.yaml#physics_pass wording with the T6.link 'not checked (pinned by declared link)' WARN; ratio check is small-angle only"
+    text: "U3.6e follow-ups (non-blocking): T6 jam check still uses the declared ratio (a design can pass T6.mechanism at +-35 while the real linkage hits the elevon stop at about +-16; T6.ratio catches it); reconcile program.yaml#physics_pass wording with the T6.link 'not checked (pinned by declared link)' WARN; ratio check is small-angle only [triage 2026-11-21: Non-blocking]"
     source: reviews/2026-11-21-w3.md U3.6e (W3-R2)
     owner: ''
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3553,12 +3591,13 @@ items:
     updated: '2026-11-21'
   - id: T50
     kind: task
-    text: 'plane design migrate writes one CHANGELOG entry for the schema migration (reviewer W3-R2, PR #3 suggestion 1)'
+    text: 'plane design migrate writes one CHANGELOG entry for the schema migration (reviewer W3-R2, PR #3 suggestion 1) [triage 2026-11-21: Reviewer suggestion (PR #3, suggestion 1)]'
     source: reviews/2026-11-21-w3.md U3.4 run 6
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3602,7 +3641,8 @@ items:
     owner: conductor
     status: open
     due: '2026-11-23'
-    units: []
+    units:
+      - U4.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3612,8 +3652,9 @@ items:
     source: triage 2026-11-21 (P131)
     owner: conductor
     status: open
-    due: ''
-    units: []
+    due: '2026-12-15'
+    units:
+      - v1.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
@@ -3626,5 +3667,118 @@ items:
     due: ''
     units: []
     evidence: ledger/prompts.jsonl P132
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T53
+    kind: task
+    text: "import_concept(DBF-Combined, 'A') fails: KeyError 'mesh' at importers/dbf_geometry.py:277 body_mesh _KIND[shape['kind']]; full re-import is broken (blocks T24 / U2.5d)"
+    source: FX-1 builder 2026-11-21
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units:
+      - v1.1
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T54
+    kind: task
+    text: "Bench grader protects designs/ from direct edits and bench.py writes newline=\n (split from T35; core/hangar/ops/bench.py:122,126,217,231)"
+    source: triage 2026-11-21 TR-R
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units:
+      - v1.1
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T55
+    kind: task
+    text: 'pdledit: append to and remove from one-line flow lists (split from T46)'
+    source: triage 2026-11-21 TR-R
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units:
+      - v1.1
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D31
+    kind: decision
+    text: 'T2: James harness-install run before Dec 2? Default: U4.1 until 11-29, else CI install test is the evidence, tester run moves to v1.1, slides make no teammate-machine claim'
+    source: triage 2026-11-21 (TR-R flag T2); standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plan §3 row D31; reviews triage TR-R
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D32
+    kind: decision
+    text: 'T12: mass gate 2.6 vs 2.7 kg and other conflicting standards keys? Default: v1.1, keys stay pending, slides quote no mass-gate number'
+    source: triage 2026-11-21 (TR-R flag T12); standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plan §3 row D32; reviews triage TR-R
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D33
+    kind: decision
+    text: 'T24: U2.5d concept-a re-import cannot land before the 11-30 freeze. Default: v1.1 unit written into plan 7 by 11-25; R1, R12, R14, R17, R31 shown as open gaps on Dec 2'
+    source: triage 2026-11-21 (TR-R flag T24); standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plan §3 row D33; reviews triage TR-R
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D34
+    kind: decision
+    text: 'T28: port the 40 read_value echo functions or mark them stored evidence? Default: v1.1; the 40 claims stay SKIP and are named on the metrics slide as not recomputed'
+    source: triage 2026-11-21 (TR-R flag T28); standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plan §3 row D34; reviews triage TR-R
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D35
+    kind: decision
+    text: 'T40: run the U2.2-2 knowledge import (brief ready) in v1.0? Default: v1.1 (not demo-blocking); launch earlier only if W4 has a free slot'
+    source: triage 2026-11-21 (TR-R flag T40); standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plan §3 row D35; reviews triage TR-R
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D36
+    kind: decision
+    text: 'T9: SITL/collide.py adapters open or dropped (plan 6a cut 5)? Default: open, v1.1'
+    source: triage 2026-11-21 (TR-R flag T9); standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plan §3 row D36; reviews triage TR-R
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D37
+    kind: decision
+    text: 'T21: exit code for SKIP across ops? Default: exit 0 with status SKIP in the OpResult and a SKIP prefix in human output (as adapters.skip_result); v1.1'
+    source: triage 2026-11-21 (TR-R flag T21); standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plan §3 row D37; reviews triage TR-R
     decided_in: ''
     updated: '2026-11-21'

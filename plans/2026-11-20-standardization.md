@@ -302,6 +302,13 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D27 | U2.2-2: add `knowledge/TEMPLATE-concept.md` for concept and research entries? | yes (no existing template fits) | Tristan | 11-22 | decided: default (standing rule, 2026-11-21) |
 | D28 | U2.2-2: import DBF-Combined `docs/research/` (23 files) now? | no: follow-up brief U2.2-3, home v1.1 | Tristan | 11-22 | decided: default (standing rule, 2026-11-21) |
 | D29 | U2.2-2: how entries link to morph-chart cells | fixed code-mapping table; L6, L8 approximate and flagged | Tristan | 11-22 | decided: default (standing rule, 2026-11-21) |
+| D31 | T2: James's harness-install run before Dec 2? | U4.1 until 11-29; else the CI install test is the evidence, the tester run moves to v1.1, and the slides make no teammate-machine claim | Tristan | 11-29 | decided: default (standing rule, 2026-11-21) |
+| D32 | T12: mass gate 2.6 vs 2.7 kg and the other conflicting standards keys | v1.1; keys stay `pending`; slides quote no mass-gate number | Tristan | 11-26 | decided: default (standing rule, 2026-11-21) |
+| D33 | T24: U2.5d concept-a re-import cannot land before the 11-30 freeze | v1.1 unit written into §7 by 11-25; R1, R12, R14, R17, R31 shown as open gaps on Dec 2 | Tristan | 11-25 | decided: default (standing rule, 2026-11-21) |
+| D34 | T28: port the 40 `read_value` echo functions or mark them stored evidence? | v1.1; the 40 claims stay SKIP and are named on the metrics slide as not recomputed | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
+| D35 | T40: run the U2.2-2 knowledge import in v1.0? | v1.1 (not demo-blocking); launched earlier only if W4 has a free slot | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
+| D36 | T9: SITL and collide.py adapters, open or dropped (§6a cut 5)? | open, v1.1 | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
+| D37 | T21: exit code for SKIP across ops | exit 0, status SKIP in the OpResult, SKIP prefix in human output; v1.1 | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
