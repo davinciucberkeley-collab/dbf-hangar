@@ -24,7 +24,8 @@ Branch `std/w4d-tiers`, worktree `C:/Users/trist/wt/w4d-tiers`, base = newest lo
 - `README.md` (line 43 only)
 - `docs/mcp.md` (line 13 only)
 - `.claude/agents/reviewer.md` (line 13 only)
-- `tests/test_validate.py` (append one test), `tests/test_gates.py` (line 213), `tests/test_review_regressions.py` (line 107), `tests/test_ops_contract.py` (line 83)
+- `tests/test_claims.py:233` `max_tier=5` -> `max_tier=9` (the test is 'tier 9 on full runs only'); `tests/test_baseline.py:18` default `max_tier: int = 5` -> `9` (otherwise hand-built cards become partial and are never accepted)
+- `tests/test_validate.py` (append one test), `tests/test_gates.py` (line 213), `tests/test_review_regressions.py` (line 106), `tests/test_ops_contract.py` (line 83)
 
 Never touch: `designs/**`, `standards/**`, `schema/**`, `PROGRESS.md`, the plan, or any other test unless Pass check 3 shows it red; then change only a literal `5` that means "everything" to `9` and list the file:line in your report. Never `git add -A`; add only changed paths.
 
@@ -44,7 +45,7 @@ Run by the tactician on `main` `7553ddd` (venv python, `-m ""`, `-n 4`): `tests/
 - Today `checks.py:1093` is `card = run_gates(design, 9 if max_tier >= 5 else max_tier)`; `design.py:75` `max_tier: int = 5`; `design.py:80` `partial` is `self.max_tier < 5`; `ops/design.py:65` `tier: Literal["0", "1", "2", "3", "4", "5", "all"] = "5"` and line 67 `validate(design, max_tier=5 if tier == "all" else int(tier))`; `cli.py:67` offers 0-5 and all, default `"5"`, help `Highest validation tier to run (all = 5).`
 - Callers relying on "default = everything": `cli.py:308` and `:371` (baseline update/check), `index.py:126`, `ops/edit.py:163`, `studio.py:262`, `mcp_server.py:102` all call `validate(design)` with no tier. `designs/*/baseline.json` hold no `max_tier`; their keys come from the rows of that default run. **Decision: the default stays "run every tier"; only its number changes from 5 to 9.** `validate(design)` returns the same rows as before, so no `baseline.json` key changes. Do not change what `validate(design)` (no argument) runs.
 - After this change `--tier N` for N in 0..8 is a partial run (tiers 0..N only, `partial` true, never `accepted`); `--tier 9` and `all` are the full run.
-- Tests with a literal 5 meaning "everything": `tests/test_gates.py:213` (`.max_tier == 5`), `tests/test_review_regressions.py:107` (`out["max_tier"] == 5` for `--tier all`), `tests/test_claims.py:233` (`validate(mini, max_tier=5)` expects tier 9 last), `tests/test_point_mass.py:42`, `tests/test_round5.py:238,365,375` (`tier=5`), `tests/test_baseline.py:18-19` (hand-built `Scorecard(..., max_tier=5)`). `tests/test_ops_contract.py:83` expects `tier="9"` to be a bad Literal; after this change `"9"` is valid, so use `"10"`.
+- Tests with a literal 5 meaning "everything": `tests/test_gates.py:213` (`.max_tier == 5`), `tests/test_review_regressions.py:106` (`out["max_tier"] == 5` for `--tier all`), `tests/test_claims.py:233` (`validate(mini, max_tier=5)` expects tier 9 last), `tests/test_point_mass.py:42`, `tests/test_round5.py:238,365,375` (`tier=5`), `tests/test_baseline.py:18-19` (hand-built `Scorecard(..., max_tier=5)`). `tests/test_ops_contract.py:83` expects `tier="9"` to be a bad Literal; after this change `"9"` is valid, so use `"10"`.
 
 ## Exact steps and outputs
 Work in `C:/Users/trist/wt/w4d-tiers`.
@@ -83,12 +84,13 @@ def test_tier_n_runs_zero_to_n_and_all_runs_every_tier(example):
     five = validate(d, max_tier=5)
     assert [t.tier for t in five.tiers] == [0, 1, 2, 3, 4, 5]
     assert five.partial is True and five.accepted is False
+    # T6 and T9 return None on the example (no mechanisms/articulations, no claims file); they run when applicable.
     full = validate(d)
     assert [t.tier for t in full.tiers] == [0, 1, 2, 3, 4, 5, 7, 8]
     assert full.max_tier == 9 and full.partial is False
     assert [t.tier for t in validate(d, max_tier=9).tiers] == [t.tier for t in full.tiers]
 ```
-Edit `tests/test_gates.py:213` `.max_tier == 5` to `.max_tier == 9`; `tests/test_review_regressions.py:107` `out["max_tier"] == 5` to `out["max_tier"] == 9`; `tests/test_ops_contract.py:83` `tier="9"` to `tier="10"`. Then run Pass check 3 and fix red tests per Where.
+Edit `tests/test_gates.py:213` `.max_tier == 5` to `.max_tier == 9`; `tests/test_review_regressions.py:106` `out["max_tier"] == 5` to `out["max_tier"] == 9`; `tests/test_ops_contract.py:83` `tier="9"` to `tier="10"`. Then run Pass check 3 and fix red tests per Where.
 
 ## Pass check
 From `C:/Users/trist/wt/w4d-tiers`:
@@ -98,7 +100,7 @@ From `C:/Users/trist/wt/w4d-tiers`:
 4. Baseline unchanged: `.venv/Scripts/plane.exe baseline check --all; echo $?` prints `0` as its last line and every design block reports `Regressions: 0.`; `git status --short designs` prints nothing.
 5. `.venv/Scripts/plane.exe design validate designs/example-tailsitter-wing --tier 5 --json | .venv/Scripts/python.exe -c "import sys,json; d=json.load(sys.stdin); print(d['max_tier'], d['partial'], [t['tier'] for t in d['tiers']])"` prints `5 True [0, 1, 2, 3, 4, 5]`; the same without `--tier` prints `9 False [0, 1, 2, 3, 4, 5, 7, 8]`.
 6. `git grep -n "all = 5\|T0 to T5\|tiers 0-5\|validate --all" -- core README.md docs .claude` prints nothing.
-7. `git diff --name-only main` lists only paths under Where; `git diff --name-only main | grep -c "^designs/"` prints `0`; `git ls-files --eol | grep -c "w/crlf"` prints `0`. After pushing: CI green by `headSha`.
+7. `git diff --name-only main` lists only paths under Where plus any file:line reported under the Where exception; `git diff --name-only main | grep -c "^designs/"` prints `0`; `git ls-files --eol | grep -c "w/crlf"` prints `0`. After pushing: CI green by `headSha`.
 
 ## Commit
 One commit: `fix(validate): --tier N runs tiers 0..N, all = 0-9; reviewer uses baseline check --all (B4, B5)`. Both trailers in one block, exactly:

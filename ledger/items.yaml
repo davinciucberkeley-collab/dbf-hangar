@@ -4013,3 +4013,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-22'
+  - id: T68
+    kind: task
+    text: 'tests/test_knowledge.py: add a copy check failing on any run of 10+ words shared between an entry and a file it cites (W4-RB proposal after U2.2-2 copied sentences)'
+    source: U2.2-2 review W4-RB 2026-11-22
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
