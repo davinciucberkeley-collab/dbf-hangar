@@ -111,7 +111,7 @@ class Scorecard:
                  "| Tier | Status | Check | Result | Criterion |", "|---|---|---|---|---|"]
         for t in self.tiers:
             for r in t.results:
-                lines.append(f"| {t.tier} {t.name} | {t.status} | {r.check_id} | {r.status}: {r.message} | {r.criterion} |")
+                lines.append(f"| {t.tier} {t.name} | {r.status} | {r.check_id} | {r.status}: {r.message} | {r.criterion} |")
         out = "\n".join(lines) + "\n"
         if self.fidelity:
             f = self.fidelity
