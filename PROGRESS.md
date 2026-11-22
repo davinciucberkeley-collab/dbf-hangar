@@ -4,6 +4,26 @@
 
 ## Units by wave
 
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
 ### W0 Seed, harness & ledger
 
 | unit | title | done/total | status | review |
@@ -12,6 +32,11 @@
 | U0.1 | Agent roster and pointer files | 5/5 | done | ACCEPT |
 | U0.2 | Hooks, output style, installer (delivered early as H1 + H2, §6c; this unit then only ports the hooks onto `plane ledger` once U0.3 lands) | 9/9 | done | ACCEPT |
 | U0.3 | Ledger (meeting → tasks → evidence) — builds on `harness/ledger.py` from H1: same `ledger/prompts.jsonl` format, `plane ledger` wraps it | 5/5 | done | ACCEPT |
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 
 ### W1 Ops layer & PDL
 
@@ -24,6 +49,11 @@
 | U1.5 | Claims graph in PDL + T9 Claims gate [hard] (from DBF-Combined `proofs/1`) | 5/5 | done | ACCEPT |
 | U1.6 | Interface graph and connection-type library (from DBF-Combined `dbf-interfaces/1`) | 3/3 | done | ACCEPT |
 
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
 ### W2 Gates, adapters, import, team ops
 
 | unit | title | done/total | status | review |
@@ -33,6 +63,16 @@
 | U2.3 | Tool adapters — OpenCAE, MuJoCo, AeroSandbox, DaVinci [hard] | 5/5 | done | ACCEPT |
 | U2.4 | Team-ops commands (R7, R14, R26, R27, R31, R38) | 5/5 | done | ACCEPT |
 | U2.5 | Import concept A, decisions and program constraints from DBF-Combined [hard] | 4/5 | in progress | ACCEPT |
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 
 ### W3 One surface, skills, proof
 
@@ -45,12 +85,67 @@
 | U3.5 | Discipline skills, scorecard and procedures (from §1c; not on the core path) | 3/3 | done | ACCEPT |
 | U3.6 | Discipline gates [hard] (from §1c; not on the core path) | 3/3 | done | ACCEPT |
 
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
 ### W4 Review, release, presentation
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.1 | Whole-branch review, performance, release | 1/5 | in progress | ACCEPT |
 | U4.2 | Dec 2 presentation package | 0/4 | not started | - |
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+
+### W4-TE
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 
 ## Ledger
 
