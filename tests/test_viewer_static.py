@@ -33,8 +33,12 @@ CDN = "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
 MODES = ["designs", "compare", "physics", "stress", "updates", "ledger"]
 
 
+class _Server(ThreadingHTTPServer):
+    request_queue_size = 64   # default 5 overflows under Chromium's parallel requests on Windows CI (T57)
+
+
 def _serve(handler):
-    httpd = ThreadingHTTPServer(("127.0.0.1", 0), handler)
+    httpd = _Server(("127.0.0.1", 0), handler)
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
     return httpd
 
@@ -345,3 +349,12 @@ def test_propose_link_survives_real_git_side_effects(browser, concept_a_studio, 
     assert page.locator(f'#toasts a[href="{URL}"]').count() == 1
     assert errors == []
     page.close()
+
+
+def test_test_servers_listen_with_a_large_backlog():
+    httpd = _serve(SimpleHTTPRequestHandler)
+    try:
+        assert httpd.request_queue_size >= 64
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
