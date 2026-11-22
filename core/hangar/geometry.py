@@ -1,7 +1,10 @@
 """Turn schema components into triangle meshes in the body frame (mm)."""
 from __future__ import annotations
 
+import json
 import math
+import os
+from pathlib import Path
 
 import numpy as np
 import trimesh
@@ -101,10 +104,47 @@ def _apply_cavities(meshes: list[trimesh.Trimesh], component: dict) -> list[trim
     return out
 
 
+_BASE_PARTS: dict[str, list[trimesh.Trimesh]] = {}
+_BASE_PARTS_MAX = 512
+
+
+def clear_parts_cache() -> None:
+    """Forget every cached untransformed part list (tests; a long-running server after editing meshes)."""
+    _BASE_PARTS.clear()
+
+
+def _base_key(component: dict, base_dir) -> str | None:
+    """Content key of a component's untransformed parts: geometry, cavities and, for a mesh, path + mtime + size.
+    None (do not cache) when the mesh file cannot be stat-ed: the uncached path then raises exactly as before."""
+    g = component["geometry"]
+    key = json.dumps([g, component.get("cavities")], sort_keys=True, default=str)
+    if "mesh" in g:
+        f = Path(base_dir or ".") / g["mesh"]["file"]
+        try:
+            st = f.stat()
+        except OSError:
+            return None
+        key += f"|{os.path.abspath(f)}|{st.st_mtime_ns}|{st.st_size}"
+    return key
+
+
+def _base_parts(component: dict, base_dir=None) -> list[trimesh.Trimesh]:
+    """Untransformed parts with cavities subtracted. Cached per content; the cached meshes are never handed out."""
+    key = _base_key(component, base_dir)
+    if key is None:
+        return _apply_cavities(_local_parts(component, base_dir), component)
+    parts = _BASE_PARTS.get(key)
+    if parts is None:
+        if len(_BASE_PARTS) >= _BASE_PARTS_MAX:
+            _BASE_PARTS.clear()
+        parts = _BASE_PARTS[key] = _apply_cavities(_local_parts(component, base_dir), component)
+    return parts
+
+
 def component_parts(component: dict, base_dir=None) -> list[trimesh.Trimesh]:
     """Watertight pieces (wings split per half) in the body frame, with cavities subtracted before the transform.
-    A point_mass component has no pieces (empty list)."""
-    parts = _apply_cavities(_local_parts(component, base_dir), component)
+    A point_mass component has no pieces (empty list). Every call returns fresh copies the caller may mutate."""
+    parts = _base_parts(component, base_dir)
     t = _transform(component)
     out = []
     for m in parts:
@@ -198,7 +238,6 @@ def posed_component_parts(design: Design, angles: dict[str, float] | None = None
         parts = component_parts(c, design.base_dir)
         t = tf[c["id"]]
         if not np.allclose(t, np.eye(4)):
-            parts = [p.copy() for p in parts]
             for p in parts:
                 p.apply_transform(t)
         out[c["id"]] = parts
