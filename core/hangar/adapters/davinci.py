@@ -4,7 +4,7 @@ from __future__ import annotations
 from ..ops import OpResult
 from . import skip_result
 
-_TEXT = "D3 open: no API access configured; fix: answer D3 (plans/2026-11-20-standardization.md), then configure access"
+_TEXT = "DaVinci API access not configured (D3 decided: skip until real calls after Dec 1); fix: configure access when that work starts"
 
 
 class DaVinci:
