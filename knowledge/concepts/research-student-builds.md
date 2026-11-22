@@ -15,7 +15,7 @@ A review of documented student VTOL builds, which finds that most of the listed 
 ## Key facts
 - Four documented student builds never completed a transition: a FAMU tilt-tricopter, a Purdue tailsitter, Santa Clara and UCI. [FINDINGS.md, main findings, first bullet]
 - Southampton replaced a tailsitter with a quadplane because the quadplane handled wind better. [FINDINGS.md, main findings, second bullet]
-- Both 2023 VFS-competition tailsitters crashed in wind, and one study puts landing tip-over at about 8.4 m/s. [FINDINGS.md, main findings, third bullet]
+- Both 2023 VFS tailsitter entries went down in wind, and a separate study places landing tip-over near 8.4 m/s. [FINDINGS.md, main findings, third bullet]
 - The 2023 winner was an eight-rotor lift-plus-cruise aircraft that won by being rebuildable within hours. [FINDINGS.md, main findings, fourth bullet]
 - Recorded costs are $782 (FAMU), $2,000 (Santa Clara) and under $1,000 against a goal (Mozzie); no source gave build hours. [FINDINGS.md, main findings, sixth bullet]
 
