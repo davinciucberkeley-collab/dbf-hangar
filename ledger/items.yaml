@@ -3815,3 +3815,69 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: D39
+    kind: decision
+    text: "W4c: test_concept_a_d21_on_disk asserts each discipline gate reads the D21 fields set (no 'missing' SKIP for them), not that concept-a passes; amended in a test-only unit before the data commit"
+    source: W4-TC report 2026-11-22; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/W4c-concept-a-d21.md
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D40
+    kind: decision
+    text: 'W4c: fix FEA hash G1 first (exclude gate-only propulsion keys max_current_a, prop_diameter_mm from FEA_COMPONENT_KEYS; FEA reads only axis and max_thrust_n) so the committed fea/*.json stay valid; no 28-part re-run'
+    source: W4-TC report 2026-11-22; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/W4c-concept-a-d21.md
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D41
+    kind: decision
+    text: 'W4c: hrn-bat exposed_ok stays unset (no source); the 14 AWG harness FAIL (36 A derated vs 44.8 A peak) is a real design finding, kept report-only and shown, not edited away'
+    source: W4-TC report 2026-11-22; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/W4c-concept-a-d21.md
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T58
+    kind: task
+    text: "G2: plane design set --value with ': ' inside a scalar is YAML-parsed as a mapping and rejected (exit 2); quote or treat --value as a string when the key's schema type is string"
+    source: W4-TC report 2026-11-22
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T59
+    kind: task
+    text: 'G3: no PDL field for servos and control surfaces (D21 control-surface data); schema minor version in v1.1'
+    source: W4-TC report 2026-11-22
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T60
+    kind: task
+    text: 'concept-a hrn-bat 14 AWG: 45 A x 0.8 derating = 36 A < 44.8 A peak pack current (T7.electrical_rating report-only FAIL); design team picks 12 AWG or lower peak'
+    source: W4-TC report 2026-11-22
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'

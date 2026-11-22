@@ -309,6 +309,9 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D35 | T40: run the U2.2-2 knowledge import in v1.0? | v1.1 (not demo-blocking); launched earlier only if W4 has a free slot | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
 | D36 | T9: SITL and collide.py adapters, open or dropped (§6a cut 5)? | open, v1.1 | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
 | D37 | T21: exit code for SKIP across ops | exit 0, status SKIP in the OpResult, SKIP prefix in human output; v1.1 | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
+| D39 | W4c: what does `test_concept_a_d21_on_disk` assert once concept-a has D21 data? | that each discipline gate reads the fields set (no "missing" SKIP), not that concept-a passes; test-only unit before the data commit | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
+| D40 | W4c: gate-only propulsion keys stale all 28 FEA results (G1) | fix the FEA hash keys first (FEA reads only axis and max_thrust_n); no re-run | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
+| D41 | W4c: hrn-bat `exposed_ok` and the 14 AWG harness FAIL | `exposed_ok` unset (no source); FAIL kept as a real finding (T60), report-only | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
