@@ -299,6 +299,9 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D21 | May U3.6 add optional PDL fields the gates need (battery capacity, wire gauge, current ratings, control-surface data)? | yes: optional fields in a schema minor version, merged with a `migration:` commit line; concept-a's values set later with `plane design set` | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
 | D22 | After D7's 12-08 flip, does `T8.program.budget` SKIP ("no BOM") block acceptance of designs without a BOM? | no: the budget row stays report-only until a design has a `bom` block; then it blocks | Tristan | 12-07 | decided: default (standing rule, 2026-11-21) |
 | D23 | No unit owns `plane sim drop` (team task run_physics skips forever) | W2-S: a small `ops/sim.py` with `sim.drop` wrapping the existing drop simulation (no `sim.py` edits), after U2.3b merges; unskips run_physics and fixes its skip text | conductor | 11-22 | decided: default (standing rule, 2026-11-21) |
+| D27 | U2.2-2: add `knowledge/TEMPLATE-concept.md` for concept and research entries? | yes (no existing template fits) | Tristan | 11-22 | decided: default (standing rule, 2026-11-21) |
+| D28 | U2.2-2: import DBF-Combined `docs/research/` (23 files) now? | no: follow-up brief U2.2-3, home v1.1 | Tristan | 11-22 | decided: default (standing rule, 2026-11-21) |
+| D29 | U2.2-2: how entries link to morph-chart cells | fixed code-mapping table; L6, L8 approximate and flagged | Tristan | 11-22 | decided: default (standing rule, 2026-11-21) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -530,6 +533,22 @@ Layers: **W3a** briefs for every unit in parallel, plus W3.0 (PROGRESS.md review
 | W3-X | `advisor` | Opus | a unit that failed review twice | recommendation | one dispatch |
 
 **Permissions for W3:** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`, `bench/`, `skills/`, `viewer/`, `knowledge/procedures/`, `standards/` (U3.6 new keys as `pending` only); commands `git worktree|branch|commit|push` on `std/*` and `design/*`, `python -m pytest`, `plane *`, `npx playwright` (U3.1 smoke), `claude -p` headless (U3.3, 9 bench runs), `gh pr create|view`, `gh run view`. No merges to `main` without a reviewer ACCEPT.
+
+### 6j. Agent table for the concept-a budget unit fix (Tristan, 2026-11-21)
+Root cause (conductor, checked): `params-A.json` stores `req.budget_usd` = 2000.0 USD, not k$; `importers/dbf.py::_n(x, 0)` strips trailing zeros from an integer string ("2000" → "2"). `_n(..., 0)` has one call site (budget). Designs and core stay in separate PRs.
+
+| Agent | Role | Model | Input | Output | Pass check |
+|---|---|---|---|---|---|
+| FX-1 | `builder` | Haiku | launch prompt (exact fix + tests) | branch `std/fx-importer-n0` | `_n(2000, 0) == "2000"`; re-import of concept A writes `budget_usd: 2000`; existing importer tests pass; CI green |
+| FX-2 | `design-engineer` | Sonnet | `plane design set designs/concept-a requirements.budget_usd --value 2000 --kind modify` | `design/concept-a/*` PR | validate `--tier all` before/after; baseline updated only if rows change; Dillon approves, Tristan merges |
+| FX-R | `reviewer` | Opus (fresh) | both PRs | `reviews/2026-11-21-fixes.md` | "### Verdict: ACCEPT" per PR |
+
+### 6k. Agent table for the ledger task triage (Tristan, 2026-11-21; no code, design or standards changes)
+| Agent | Role | Model | Input | Output | Pass check |
+|---|---|---|---|---|---|
+| TR-S1…S4 | `scout` | Haiku | one batch of about 12 open `kind: task` items each | evidence file in the session scratchpad: per task status proposal (done / superseded / dropped / open) with commit, PR or file evidence, duplicate pairs, W4-or-v1.1 home | every task in the batch has one proposal and cites only what was opened |
+| TR-R | `reviewer` | Opus (fresh) | every proposed "done" and "superseded" | confirm or reject each, one line | each confirmation names the code or file checked |
+Due dates and homes (`units`) are written by the conductor into `ledger/items.yaml` directly (`plane ledger set` sets status only; tool gap logged as a task). New scope calls go to §3 with a default.
 
 ## 7. Units
 

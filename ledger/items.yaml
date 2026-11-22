@@ -3562,3 +3562,58 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: D27
+    kind: decision
+    text: 'U2.2-2: add knowledge/TEMPLATE-concept.md (no existing template fits a concept or research summary)'
+    source: tactician W2-T2b; standing rule default 2026-11-21
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/U2.2-2-knowledge-import.md
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D28
+    kind: decision
+    text: 'U2.2-2: DBF-Combined docs/research/ (23 files) import deferred to a follow-up brief U2.2-3, home v1.1'
+    source: tactician W2-T2b; standing rule default 2026-11-21
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/U2.2-2-knowledge-import.md
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: D29
+    kind: decision
+    text: 'U2.2-2: entries link to hangar morph-chart cells via a fixed code-mapping table; L6 and L8 approximate, flagged in each entry'
+    source: tactician W2-T2b; standing rule default 2026-11-21
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/U2.2-2-knowledge-import.md
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T51
+    kind: task
+    text: 'concept-a requirements.budget_usd imported as 2 instead of 2000: importers/dbf.py _n(x, 0) strips trailing zeros from integer strings (source params-A.json stores 2000.0 USD); fix importer (FX-1) and design (FX-2)'
+    source: Tristan 2026-11-21 (P130); conductor root cause
+    owner: conductor
+    status: open
+    due: '2026-11-23'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T52
+    kind: task
+    text: plane ledger set cannot set due, units or a note on an open item; triage had to edit ledger/items.yaml directly
+    source: triage 2026-11-21 (P131)
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
