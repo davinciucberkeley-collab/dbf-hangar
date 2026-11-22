@@ -22,6 +22,12 @@ _SEL = re.compile(r"\[([^\[\]]+)\]")
 _TOKEN = re.compile(r"\"(?:[^\"\\\r\n]|\\.)*\"|'(?:[^'\r\n]|'')*'|[^\s,\[\]{}#\"'][^,\[\]{}#\r\n]*?(?=[ \t]*(?:[,\]}\r\n]|#|$))")
 
 
+# in a block mapping or list a plain scalar runs to the end of the line (before " #"); commas and brackets are text there
+_PLAIN_EOL = re.compile(r"[^\s,\[\]{}#\"'|>&*!%@`][^\r\n]*?(?=[ \t]+#|[ \t]*(?:\r|\n|\Z))")
+_BLOCK_HEAD = re.compile(r"[|>][+-]?[0-9]?[ \t]*(?:#[^\r\n]*)?(?=\r|\n|\Z)")
+_SPACES = re.compile(" *")
+
+
 def resolve_design_path(path) -> Path:
     """The one place a design path is normalised: backslashes become slashes; a folder means its plane.yaml."""
     p = Path(str(path).replace("\\", "/"))
@@ -155,15 +161,44 @@ def patch_text(text: str, key: str, new) -> str:
     line, col = parent.lc.value(ref) if how == "value" else parent.lc.item(ref)
     starts = [0] + [m.end() for m in re.finditer("\n", text)]
     pos = starts[line] + col
-    m = _TOKEN.match(text, pos)
-    if not m:
-        raise OpInputError(f"{key}: cannot find the value's text in the file")
-    patched = text[:pos] + render_scalar(new) + text[m.end():]
+    in_flow = bool(getattr(parent, "fa", None) and parent.fa.flow_style())
+    if not in_flow and _BLOCK_HEAD.match(text, pos):
+        end = _block_scalar_end(text, starts, line)      # a | or > text block: header and body lines become one quoted line
+    else:
+        m = _TOKEN.match(text, pos)
+        if m and not in_flow and m.group()[0] not in "\"'":
+            m = _PLAIN_EOL.match(text, pos)              # block context: the plain scalar runs to the end of the line
+        if not m:
+            raise OpInputError(f"{key}: cannot find the value's text in the file")
+        end = m.end()
+    patched = text[:pos] + render_scalar(new) + text[end:]
     expected = copy.deepcopy(yaml.safe_load(text))
     assign(expected, key, new)
-    if yaml.safe_load(patched) != expected:
+    try:
+        same = yaml.safe_load(patched) == expected
+    except yaml.YAMLError:
+        same = False
+    if not same:
         raise OpInputError(f"{key}: cannot change this value without rewriting other text; edit the file by hand")
     return patched
+
+
+def _block_scalar_end(text: str, starts: list[int], line: int) -> int:
+    """Offset of the end (before its newline) of the last body line of the | or > text block whose header is on `line`."""
+    indent = _SPACES.match(text, starts[line]).end() - starts[line]
+    last = line
+    for i in range(line + 1, len(starts)):
+        s = starts[i]
+        e = starts[i + 1] if i + 1 < len(starts) else len(text)
+        if not text[s:e].strip():
+            continue                                    # a blank line belongs to the block only if a body line follows
+        if _SPACES.match(text, s).end() - s <= indent:
+            break
+        last = i
+    end = starts[last + 1] if last + 1 < len(starts) else len(text)
+    while end > 0 and text[end - 1] in "\r\n":
+        end -= 1
+    return end
 
 
 def exists(data, key: str) -> bool:
