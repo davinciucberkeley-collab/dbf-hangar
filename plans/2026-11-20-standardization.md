@@ -589,6 +589,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-R1 | `reviewer` | Opus (fresh) | U4.1 Step 1: whole `main` since `f462468` against §1–§2 and `standards/review-scorecard.md` | `reviews/2026-11-22-whole-branch.md` | blocking items listed per unit (each reopens its unit) |
 | W4-AuS | `auditor` | Haiku | U4.1 Step 3 subtraction pass: files, commands, docs, ledger items used by no test, skill or op | list in its report | each item with evidence and delete/archive/keep |
 | W4-TD | `tactician` | Sonnet | U4.1 Steps 4–5 (docs, tag, verification record) after W4-R1 | `briefs/U4.1-docs-release.md` | builder-ready bar; R-a, R-b |
+| W4-D1 | `builder-plus` | Sonnet | `briefs/W4d-tiers.md` [hard] (approved by Tristan 2026-11-22) | branch `std/w4d-tiers` | brief's checks; CI green || W4-D2…D5 | `builder` | Haiku | `briefs/U4.1-docs.md` (after D1), `W4d-concept-a-readme.md`, `W4d-viewer-flake.md`, progress-test fix (inline brief) | branches `std/w4d-*` | brief's checks; CI green |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
