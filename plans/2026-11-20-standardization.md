@@ -1182,7 +1182,7 @@ Not a code unit; it tests everything above.
 - [x] **Step 2:** Performance (R33): measure `plane design validate designs/concept-a` (tiers 0–8, no FEA); if > 60 s, one `builder-plus` unit to cut it, measured before/after.
 - [x] **Step 3:** Subtraction pass: `auditor` lists files, commands, docs and ledger items not used by any test, skill or op; conductor deletes or archives; stale ledger items closed with `superseded` (R23).
 - [ ] **Step 4:** Docs: `README.md` ≤ 80 lines pointing to `docs/pdl/`, `docs/cli.md` (generated from `ops list`), `standards/agents.md`. Tag `v1.0.0`; Pages deploys.
-- [ ] **Step 5:** verification-before-completion: paste `pytest -q`, `plane baseline check --all`, `plane ledger report`, `plane tools doctor` outputs into `reviews/2026-11-30-v1.0.md`.
+- [x] **Step 5:** verification-before-completion: paste `pytest -q`, `plane baseline check --all`, `plane ledger report`, `plane tools doctor` outputs into `reviews/2026-11-30-v1.0.md`.
 
 ### Unit U4.2: Dec 2 presentation package
 
