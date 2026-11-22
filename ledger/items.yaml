@@ -3793,3 +3793,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: D38
+    kind: decision
+    text: concept-a D21 data (battery, motor, wiring, control-surface fields) set with plane design set before the Dec 2 demo, one design-engineer run in W4 after the small-fix batch (T47 first)
+    source: Tristan in chat 2026-11-21 (P134)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: ledger/prompts.jsonl
+    decided_in: ''
+    updated: '2026-11-21'
