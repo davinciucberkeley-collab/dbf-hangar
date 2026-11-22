@@ -1,0 +1,18 @@
+# Dec 2 deck outline (U4.2 Step 1): 12 slides, one line each (W4-TE, 2026-11-22)
+
+Format (13 slides; slide 8 can merge into 12 to reach 12): n. Title: content. Evidence: file. Arc: problem, PDL, ops/CLI/MCP/Studio, gates, harness, PlaneBench with caveat, what's next.
+
+1. Title: dbf-hangar v1.0, one design language and one app for the team. Evidence: `README.md`.
+2. Problem: about 15 interfaces to open, rules forgotten between sessions, a code edit per new design. Evidence: plan §1 (R6 "you have ~15, need ~3"); `plans/2026-11-20-standardization.md` rulings table.
+3. One design as data: Plane Design Language, `designs/<id>/plane.yaml` plus schema; designs change with `plane design set`, not code. Evidence: `schema/plane.schema.json`, `docs/pdl/reference.md`, `designs/concept-a/CHANGELOG.yaml`.
+4. One operation, three surfaces: `@op` registry, CLI, MCP and Studio from it; 51 ops registered, but M2 is a gap (4 hand-written MCP tools). Evidence: `plane ops list` output; `reviews/2026-11-22-whole-branch.md:49`; `tests/test_surfaces_in_sync.py`.
+5. Plane Studio: one app, six modes (Designs, Compare, Physics, Stress, Updates, Ledger), read-only on Pages. Evidence: `viewer/README.md`, `viewer/app.js:9`; Pages https://davinciucberkeley-collab.github.io/dbf-hangar/.
+6. Live demo: new, set, validate, Physics (elevon pair), propose, PR, publish, one link. Evidence: `plans/2026-11-20-standardization/u4.2/demo-script.md`.
+7. Gates T0 to T9: schema, geometry, physics, aero, manufacturing, standards, mechanisms, integration, sourcing, claims; each threshold has a source or `pending`. Evidence: `standards/*.yaml`; `plane standards pending` (1 blocking: `landing_load_factor`); whole-branch M4, M5.
+8. Gates in action on concept-a: PASS 531, WARN 9, SKIP 102, FAIL 4; the four FAILs shown, 134 of 635 blocking checks sourced, 0 measured masses. Evidence: `reviews/2026-11-22-whole-branch.md:7`; `plans/2026-11-20-standardization/u4.2/metrics.md` section C.
+9. Harness: 10 agent roles, hooks enforce role choice, prompt ledger, stop gate; 357 ledger items, `plane ledger report`, weekly `plane update publish`. Evidence: `.claude/agents/`, `ledger/items.yaml`, whole-branch M7, M8.
+10. Speed: iteration set then validate on concept-a 120.9 s to 56.9 s (quiet, warm; 78.9 s cold), results byte-identical; target 60 s met by about 3 s. Evidence: `reviews/2026-11-22-w4.md:94-108`.
+11. PlaneBench, with caveat: 9 runs, 7 passed; mass-cut-10 passes edited only `mass_g` numbers, fix-static-margin passes added mass without a real part change, Haiku declined to invent masses; add-working-flap 3 of 3 is the clean result. Do not read 7/9 as "agents can cut mass". Evidence: `bench/results/2026-11-21.md`; `reviews/2026-11-21-w3.md:487,593,615`; ledger T35, T54.
+12. Measured scoreboard and gaps: 8 of 9 §2.1 metrics pass, M2 is a gap; open gaps D32 (no mass-gate number), D33 (R1, R12, R14, R17, R31), D34 (40 claims not recomputed); concept-a findings T60, T63 to T66. Evidence: `plans/2026-11-20-standardization/u4.2/metrics.md`; `reviews/2026-11-22-concept-a-discipline.md`.
+13. What's next, v1.1 from the ledger: U2.5d concept-a re-import into PDL 1.0 (T24); port the 40 `read_value` claims (T28); bench grader protects `designs/` plus battery-mass gate (T54, T35); interactive drag physics and Knowledge mode (D43, D44); `bom/morph/idea list` and `davinci push/pull` (D45); surrogate models (R37); SITL and Blender adapters (T9); T6 jam check using real ratio (T49); control-authority yaw model (T37); needs a team decision: mass-gate 2.6 vs 2.7 kg (T12). Evidence: `ledger/items.yaml` items with unit v1.1; plan §3 rows D28-D45 and §8.
+
