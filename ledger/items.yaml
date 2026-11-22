@@ -3754,12 +3754,12 @@ items:
     text: 'T40: run the U2.2-2 knowledge import (brief ready) in v1.0? Default: v1.1 (not demo-blocking); launch earlier only if W4 has a free slot'
     source: triage 2026-11-21 (TR-R flag T40); standing rule default
     owner: Tristan
-    status: decided
+    status: superseded
     due: ''
     units: []
-    evidence: plan §3 row D35; reviews triage TR-R
-    decided_in: ''
-    updated: '2026-11-21'
+    evidence: ''
+    decided_in: D42
+    updated: '2026-11-22'
   - id: D36
     kind: decision
     text: 'T9: SITL/collide.py adapters open or dropped (plan 6a cut 5)? Default: open, v1.1'
@@ -3890,5 +3890,16 @@ items:
     due: '2026-12-15'
     units: []
     evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: D42
+    kind: decision
+    text: 'D35 overruled: run the U2.2-2 knowledge import now, alongside W4 (Tristan)'
+    source: Tristan in chat 2026-11-22 (P146)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: ledger/prompts.jsonl
     decided_in: ''
     updated: '2026-11-22'

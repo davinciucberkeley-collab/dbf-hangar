@@ -306,7 +306,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D32 | T12: mass gate 2.6 vs 2.7 kg and the other conflicting standards keys | v1.1; keys stay `pending`; slides quote no mass-gate number | Tristan | 11-26 | decided: default (standing rule, 2026-11-21) |
 | D33 | T24: U2.5d concept-a re-import cannot land before the 11-30 freeze | v1.1 unit written into §7 by 11-25; R1, R12, R14, R17, R31 shown as open gaps on Dec 2 | Tristan | 11-25 | decided: default (standing rule, 2026-11-21) |
 | D34 | T28: port the 40 `read_value` echo functions or mark them stored evidence? | v1.1; the 40 claims stay SKIP and are named on the metrics slide as not recomputed | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
-| D35 | T40: run the U2.2-2 knowledge import in v1.0? | v1.1 (not demo-blocking); launched earlier only if W4 has a free slot | Tristan | 11-24 | decided: default (standing rule, 2026-11-21) |
+| D35 | T40: run the U2.2-2 knowledge import in v1.0? | v1.1 (not demo-blocking); launched earlier only if W4 has a free slot | Tristan | 11-24 | overruled by Tristan 2026-11-22 (D42): run now |
 | D36 | T9: SITL and collide.py adapters, open or dropped (§6a cut 5)? | open, v1.1 | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
 | D37 | T21: exit code for SKIP across ops | exit 0, status SKIP in the OpResult, SKIP prefix in human output; v1.1 | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
 | D39 | W4c: what does `test_concept_a_d21_on_disk` assert once concept-a has D21 data? | that each discipline gate reads the fields set (no "missing" SKIP), not that concept-a passes; test-only unit before the data commit | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
@@ -580,6 +580,12 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-TC | `tactician` | Sonnet | D38, D21, U3.6 brief handoff (battery, motor, wiring, control-surface fields); DBF-Combined `params-A.json` and BOM as value sources; then D39, D40 | `briefs/W4c-concept-a-d21.md`, `briefs/W4c-pre-*.md`: the exact `plane design set` command list with source per value, dry-run on a tmp copy (R-a), expected gate changes | every command dry-run green on a tmp copy; no tool gap left unflagged |
 | W4-C0a, W4-C0b | `builder` | Haiku | `briefs/W4c-pre-fea-hash.md` (D40, G1), `briefs/W4c-pre-d21-test.md` (D39) | branches `std/w4c-fea-hash`, `std/w4c-d21-test` | brief's checks; CI green; merge before W4-C |
 | W4-C | `design-engineer` | Sonnet | `briefs/W4c-concept-a-d21.md` | commit on `main` (D30): `designs/concept-a` values + CHANGELOG + `fea/*.json` + `baseline.json` | brief's checks; `plane baseline check` exit 0; part ids `wng-004-l`, `avn-001` kept |
+| W4-K | `builder` | Haiku | `briefs/U2.2-2-knowledge-import.md` Part A, then Part B after the scouts (D42) | branch `std/u2.2b-knowledge` | brief pass checks 1 and 3; CI green |
+| W4-KS1…KS5 | `scout` | Haiku | same brief, Part S, one batch each (S1–S5) | `knowledge/concepts/<id>.md` in the u2.2b worktree | per-scout self-check in the brief |
+| W4-RB | `reviewer` | Opus (fresh) | U2.2-2 branch; later W4 track D fixes | `reviews/2026-11-22-w4.md` | "### Verdict: ACCEPT" |
+| W4-R1 | `reviewer` | Opus (fresh) | U4.1 Step 1: whole `main` since `f462468` against §1–§2 and `standards/review-scorecard.md` | `reviews/2026-11-22-whole-branch.md` | blocking items listed per unit (each reopens its unit) |
+| W4-AuS | `auditor` | Haiku | U4.1 Step 3 subtraction pass: files, commands, docs, ledger items used by no test, skill or op | list in its report | each item with evidence and delete/archive/keep |
+| W4-TD | `tactician` | Sonnet | U4.1 Steps 4–5 (docs, tag, verification record) after W4-R1 | `briefs/U4.1-docs-release.md` | builder-ready bar; R-a, R-b |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
