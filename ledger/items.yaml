@@ -3617,3 +3617,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: D30
+    kind: decision
+    text: During standardization, small fixes (core or design data) are pushed directly to main after a reviewer check, without a PR; applies to FX-1/FX-2
+    source: Tristan in chat 2026-11-21 (P132)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: ledger/prompts.jsonl P132
+    decided_in: ''
+    updated: '2026-11-21'

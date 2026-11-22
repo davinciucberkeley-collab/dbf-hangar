@@ -540,8 +540,8 @@ Root cause (conductor, checked): `params-A.json` stores `req.budget_usd` = 2000.
 | Agent | Role | Model | Input | Output | Pass check |
 |---|---|---|---|---|---|
 | FX-1 | `builder` | Haiku | launch prompt (exact fix + tests) | branch `std/fx-importer-n0` | `_n(2000, 0) == "2000"`; re-import of concept A writes `budget_usd: 2000`; existing importer tests pass; CI green |
-| FX-2 | `design-engineer` | Sonnet | `plane design set designs/concept-a requirements.budget_usd --value 2000 --kind modify` | `design/concept-a/*` PR | validate `--tier all` before/after; baseline updated only if rows change; Dillon approves, Tristan merges |
-| FX-R | `reviewer` | Opus (fresh) | both PRs | `reviews/2026-11-21-fixes.md` | "### Verdict: ACCEPT" per PR |
+| FX-2 | `design-engineer` | Sonnet | `plane design set designs/concept-a requirements.budget_usd --value 2000 --kind modify` | commit on `main` (D30: small fixes, no PR) | validate `--tier all` before/after; baseline updated only if rows change; reviewer check before push |
+| FX-R | `reviewer` | Opus (fresh) | both commits (D30) | `reviews/2026-11-21-fixes.md` | "### Verdict: ACCEPT" per PR |
 
 ### 6k. Agent table for the ledger task triage (Tristan, 2026-11-21; no code, design or standards changes)
 | Agent | Role | Model | Input | Output | Pass check |
