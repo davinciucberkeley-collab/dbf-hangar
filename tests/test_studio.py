@@ -128,7 +128,7 @@ def _serve_studio(sandbox):
 
 @pytest.mark.parametrize("eol", [b"\n", b"\r\n"], ids=["lf", "crlf"])
 def test_studio_set_changes_only_the_edited_line(sandbox, eol):
-    src = Path(design_mod.REPO_ROOT) / "designs" / "concept-a" / "plane.yaml"
+    src = Path(design_mod.REPO_ROOT) / "tests" / "fixtures" / "concept-a-frozen" / "plane.yaml"
     raw = src.read_bytes().replace(b"\r\n", b"\n")
     before = raw.replace(b"\n", eol)
     dst = sandbox / "concept-a" / "plane.yaml"
