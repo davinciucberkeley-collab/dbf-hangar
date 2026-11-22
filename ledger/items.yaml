@@ -3947,3 +3947,47 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-22'
+  - id: T63
+    kind: task
+    text: 'concept-a: 38 PETG parts assigned to jacobs-fdm, whose standard lists PLA only; confirm PETG at Jacobs (add with source to standards/manufacturing.yaml) or re-route to the team printer'
+    source: reviews/2026-11-22-concept-a-discipline.md
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: T64
+    kind: task
+    text: 'concept-a: CA (including foam-safe CA) declared on XPS fin fairings E-FIN-05..08 and 13..16; advisor decides accepted deviation or adhesive change'
+    source: reviews/2026-11-22-concept-a-discipline.md
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: T65
+    kind: task
+    text: 'concept-a: torsion-mode damping behind CL-A-VIB-GM and VIB-GM-SHIFT is unstated and unsourced (zeta 1 and 0.5 percent only in CALC-A-VIB-FC); source it or mark the claims proposed'
+    source: reviews/2026-11-22-concept-a-discipline.md
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: T66
+    kind: task
+    text: 'concept-a: FC power board and capacitor not modelled; RC receiver regional variant unstated; no Remote ID module (flights stay inside a FRIA)'
+    source: reviews/2026-11-22-concept-a-discipline.md
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
