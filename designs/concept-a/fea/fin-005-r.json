@@ -31,7 +31,7 @@
       "max_von_mises_mpa": 0.38,
       "safety_factor_at_ultimate": 33.12,
       "max_displacement_mm": 0.0033,
-      "nodes": 15593,
+      "nodes": 15511,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.024,
@@ -48,18 +48,18 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.181,
-      "max_von_mises_mpa": 0.181,
-      "safety_factor_at_ultimate": 69.6,
+      "max_von_mises_away_mpa": 0.182,
+      "max_von_mises_mpa": 0.182,
+      "safety_factor_at_ultimate": 69.11,
       "max_displacement_mm": 0.0033,
-      "nodes": 15593,
+      "nodes": 15511,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.168,
       "location_mm": [
-        69.03,
+        69.48,
         370.5,
-        -7.47
+        -6.1
       ],
       "project": ".studio/fea/concept-a/fin-005-r/concept-a-fin-005-r-thrust.ocae",
       "report": ".studio/fea/concept-a/fin-005-r/concept-a-fin-005-r-thrust_report.html",
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "6a1424fe8ae4b41d",
-  "generated": "2026-11-17T07:12:17+00:00",
+  "hash": "ca2c0d5c5ac061b5",
+  "generated": "2026-11-22T02:28:55+00:00",
   "opencae_version": "0.2.0"
 }
