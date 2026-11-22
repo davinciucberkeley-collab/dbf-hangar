@@ -4037,7 +4037,7 @@ items:
     updated: '2026-11-22'
   - id: T70
     kind: task
-    text: tests/test_point_mass.py:42 and tests/test_round5.py:22 default to tier=5 after W4d-tiers, so full-run tests no longer run T7/T8; set both defaults to 9; optionally assert tier 9 absent at max_tier=5 in test_claims.py:236
+    text: "tests/test_point_mass.py:42 and tests/test_round5.py:22 default to tier=5 after W4d-tiers, so full-run tests no longer run T7/T8; set both defaults to 9; optionally assert tier 9 absent at max_tier=5 in test_claims.py:236 Also: cli.py:68 --tier help says '(a partial run, never accepted)', which is wrong for 9; reword to 'N < 9 is partial, never accepted' and regenerate docs/cli.md."
     source: reviews/2026-11-22-w4.md W4d-tiers
     owner: conductor
     status: open
