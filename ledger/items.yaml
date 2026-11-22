@@ -3551,3 +3551,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T50
+    kind: task
+    text: 'plane design migrate writes one CHANGELOG entry for the schema migration (reviewer W3-R2, PR #3 suggestion 1)'
+    source: reviews/2026-11-21-w3.md U3.4 run 6
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
