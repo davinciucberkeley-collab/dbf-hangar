@@ -11,7 +11,7 @@ generated from `schema/plane.schema.json`; do not edit it by hand.
 
 The header names the design and its schema version:
 
-<!-- excerpt: designs/concept-a/plane.yaml -->
+<!-- excerpt: tests/fixtures/concept-a-frozen/plane.yaml -->
 ```yaml
 schema_version: "0.4"
 id: concept-a
@@ -22,7 +22,7 @@ status: designed
 
 The requirements block holds the numbers the checks compare against:
 
-<!-- excerpt: designs/concept-a/plane.yaml -->
+<!-- excerpt: tests/fixtures/concept-a-frozen/plane.yaml -->
 ```yaml
 requirements:
   mtow_g: 1470              # params-A.json req.mass_gate_kg 1.47 kg (A-P1 weigh-in gate)
@@ -33,7 +33,7 @@ requirements:
 
 A component has an id, a type, geometry, a position and a mass:
 
-<!-- excerpt: designs/concept-a/plane.yaml -->
+<!-- excerpt: tests/fixtures/concept-a-frozen/plane.yaml -->
 ```yaml
   - id: avn-001
     type: structure

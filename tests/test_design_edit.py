@@ -12,7 +12,7 @@ from hangar.ops import call
 from hangar.ops import edit
 
 EXAMPLE_DIR = design_mod.DESIGNS_DIR / "example-tailsitter-wing"
-CONCEPT_A_DIR = design_mod.DESIGNS_DIR / "concept-a"
+CONCEPT_A_DIR = design_mod.REPO_ROOT / "tests" / "fixtures" / "concept-a-frozen"
 
 
 @pytest.fixture

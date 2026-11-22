@@ -221,7 +221,7 @@ def test_articulations_without_mechanisms_get_pseudo_sweeps(tmp_path):
 
 @pytest.mark.slow
 def test_concept_a_pseudo_sweeps_match_articulations():
-    sw = mechanism_sweeps(load_design(design_mod.REPO_ROOT / "designs" / "concept-a" / "plane.yaml"))
+    sw = mechanism_sweeps(load_design(design_mod.REPO_ROOT / "tests" / "fixtures" / "concept-a-frozen" / "plane.yaml"))
     assert {m["id"] for m in sw["mechanisms"]} == {"sweep-E-WNG-10", "sweep-E-WNG-11"}
 
 

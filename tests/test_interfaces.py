@@ -13,7 +13,7 @@ from hangar.importers.dbf import account_interface_edges, read_interface_edges
 from hangar.ops import call, registry
 
 EXAMPLE = REPO_ROOT / "designs" / "example-tailsitter-wing" / "plane.yaml"
-CONCEPT_A = REPO_ROOT / "designs" / "concept-a"
+CONCEPT_A = REPO_ROOT / "tests" / "fixtures" / "concept-a-frozen"
 DBF = Path(os.environ.get("DBF_COMBINED", "C:/Users/trist/DBF-Combined"))
 SCHEMA = json.loads((REPO_ROOT / "schema" / "plane.schema.json").read_text(encoding="utf-8"))
 ROW = "T1.interfaces.connection_known"

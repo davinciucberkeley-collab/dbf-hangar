@@ -24,7 +24,7 @@ LEGACY_DIR = REPO_ROOT / "tests" / "fixtures" / "pdl-legacy"
 LEGACY_EXAMPLE = LEGACY_DIR / "example-tailsitter-wing.yaml"
 LEGACY_DESIGNS = [LEGACY_DIR / f"{i}.yaml" for i in
                   ["c0-a1", "c0-a2", "c0-a3", "c0-lift-cruise", "example-tailsitter-wing", "tiltwing-cakir"]]
-LEGACY_DESIGNS.append(REPO_ROOT / "designs" / "concept-a" / "plane.yaml")
+LEGACY_DESIGNS.append(REPO_ROOT / "tests" / "fixtures" / "concept-a-frozen" / "plane.yaml")
 LEGACY_IDS = [p.stem if p.parent == LEGACY_DIR else p.parent.name for p in LEGACY_DESIGNS]
 
 
