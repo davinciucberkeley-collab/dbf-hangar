@@ -472,6 +472,7 @@ Layers (from the briefs, 2026-11-21): **W2a** U2.3a (FEA hash, D13; first), U2.1
 | W2-1, W2-3, W2-5 | `builder-plus` | Sonnet | hard briefs | `std/u2.1-gates`, `std/u2.3-adapters`, `std/u2.5-import` | brief's targeted tests; CI green on both OSes |
 | W2-S1…S9 | `scout` | Haiku | `briefs/U2.2-standards.md` Part A (one source each) | `knowledge/sources/std-*.md` in the u2.2 worktree | each filled from sources actually opened; inline check passes |
 | W2-2, W2-4 | `builder` | Haiku | their briefs | `std/u2.2-standards`, `std/u2.4-team-ops` | same |
+| W2-T2b | `tactician` | Sonnet | §7 U2.2 step 3a (Tristan 2026-11-21) | `briefs/U2.2-2-knowledge-import.md` | builder-ready bar; paths and names grep-verified against main; scout/builder split stated |
 | W2-2b | `builder` | Haiku | brief U2.2-2 (to be written): §7 U2.2 step 3a, knowledge import of DBF-Combined `redesign/config-study/research/` | `std/u2.2b-knowledge` | brief's checks; CI green |
 | W2-R1, W2-R2 | `reviewer` | Opus (fresh, up to two) | units split between them | `reviews/2026-11-2x-w2.md` | "### Verdict: ACCEPT" per unit; merge order checked |
 | W2-Au | `auditor` | Haiku | session state | hourly report | ≤ 15 lines |
