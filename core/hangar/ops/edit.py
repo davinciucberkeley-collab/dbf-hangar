@@ -192,7 +192,7 @@ def _run(argv: list[str], cwd: str) -> str:
     mutates=True, render=lambda r: r.data["pr_url"])
 def propose_op(path: str, title: str) -> OpResult:
     plane = _plane(path)
-    ddir = str(plane.parent)
+    ddir = str(plane.parent.resolve())
     did = str(yaml.safe_load(_text(plane))["id"])
     if not title.strip():
         raise OpInputError("title must not be empty")
