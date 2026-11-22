@@ -3991,3 +3991,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-22'
+  - id: D45
+    kind: decision
+    text: '§2.4 amended to the registered ops: bom list, morph list, idea list and davinci push/pull are not in v1.0 (closest ops: bom.cost, bom.verify, morph.add-option, morph.coverage, idea.add); the missing verbs are v1.1'
+    source: W4-TD report 2026-11-22; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: T67
+    kind: task
+    text: 'v1.1: add ops bom.list, morph.list, idea.list and davinci push/pull (D45)'
+    source: D45
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'

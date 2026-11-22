@@ -231,16 +231,16 @@ Naming: the language is called **PDL** in docs; the file stays `plane.yaml` (dec
 | `tools` | `doctor` | what's installed |
 | `fea` | `plan, run` (adapter `opencae`) | stress check |
 | `sim` | `drop, mechanism` (adapter `mujoco`) | physics |
-| `bom` | `list, verify, cost` | real parts |
+| `bom` | `verify, cost` (`list`: v1.1, D45) | real parts |
 | `assembly` | `animate` | assembly test |
-| `morph` | `list, add-option, coverage` | morphological chart |
-| `idea` | `add, list` | send an idea |
+| `morph` | `add-option, coverage` (`list`: v1.1, D45) | morphological chart |
+| `idea` | `add` (`list`: v1.1, D45) | send an idea |
 | `research` | `new, check` | research into templates |
 | `ledger` | `add, ingest, set, check, report` | tasks from meetings |
 | `update` | `new, add, publish` | weekly update |
 | `bench` | `list, run, report` | PlaneBench |
 | `claim` | `list, explain, check` | why a number is believed |
-| `davinci` | `push, pull` | DaVinci build (D3) |
+| `davinci` | `push, pull`: v1.1 (D3, D45) | DaVinci build (D3) |
 | `ops` | `list` | agents discover what exists |
 
 ### 2.5 Gates (R10–R13, R17)
@@ -314,6 +314,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D41 | W4c: hrn-bat `exposed_ok` and the 14 AWG harness FAIL | `exposed_ok` unset (no source); FAIL kept as a real finding (T60), report-only | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
 | D43 | R11 "drag the drone around" (interactive physics in Studio) for v1.0? | no: v1.1; v1.0 covers R11 with analytic T6 and Physics mode; R11 reopened | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 | D44 | Studio Knowledge mode in v1.0? | no: v1.1; knowledge stays readable as files and on Pages | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
+| D45 | §2.4 lists `bom list`, `morph list`, `idea list`, `davinci push/pull`, which are not registered | amend §2.4 to the registered ops; the missing verbs are v1.1 | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -330,7 +331,7 @@ The superpowers pipeline, mapped to this repo:
 | test-driven-development | every step pair "write failing test → make it pass" below | builders |
 | systematic-debugging | a unit that fails review twice goes to **advisor**, not a third fix (R21) | conductor |
 | requesting-code-review | wave review with `standards/review-scorecard.md` | reviewer |
-| verification-before-completion | `pytest -q && plane design validate --all --json && plane ledger check` pasted in the PR | implementer |
+| verification-before-completion | `pytest -q && plane baseline check --all && plane ledger check` pasted in the PR | implementer |
 | finishing-a-development-branch | PR → wave review → merge to `main` by Tristan | Tristan |
 
 Scheme rules on top (R22, R25):
@@ -594,7 +595,7 @@ W4 wave rules (W3 lessons T41–T43):
 ## 7. Units
 
 Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPATH=$PWD/core` in worktrees; finish with
-`pytest -q` (all green), `plane design validate --all --json > /dev/null; echo $?` (0 or only known baseline failures), `plane ledger set <R-ids> done --evidence <PR url>`, commit, PR.
+`pytest -q` (all green), `plane baseline check --all; echo $?` (0: no regression against each design's baseline), `plane ledger set <R-ids> done --evidence <PR url>`, commit, PR.
 
 ### Unit U0.4: Seed hangar from aircraft-platform (runs first)
 
@@ -1177,7 +1178,7 @@ Not a code unit; it tests everything above.
 - [x] **Step 2:** Performance (R33): measure `plane design validate designs/concept-a` (tiers 0–8, no FEA); if > 60 s, one `builder-plus` unit to cut it, measured before/after.
 - [ ] **Step 3:** Subtraction pass: `auditor` lists files, commands, docs and ledger items not used by any test, skill or op; conductor deletes or archives; stale ledger items closed with `superseded` (R23).
 - [ ] **Step 4:** Docs: `README.md` ≤ 80 lines pointing to `docs/pdl/`, `docs/cli.md` (generated from `ops list`), `standards/agents.md`. Tag `v1.0.0`; Pages deploys.
-- [ ] **Step 5:** verification-before-completion: paste `pytest -q`, `plane design validate --all`, `plane ledger report`, `plane tools doctor` outputs into `reviews/2026-11-30-v1.0.md`.
+- [ ] **Step 5:** verification-before-completion: paste `pytest -q`, `plane baseline check --all`, `plane ledger report`, `plane tools doctor` outputs into `reviews/2026-11-30-v1.0.md`.
 
 ### Unit U4.2: Dec 2 presentation package
 
