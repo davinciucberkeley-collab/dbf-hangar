@@ -342,10 +342,44 @@ def _on_disk_has_battery() -> bool:
     return any(c["id"] == "pwr-001" and "battery" in c for c in data["components"])
 
 
+D21_LEAVES = ("capacity_mah", "cells_s", "max_discharge_c", "max_current_a", "prop_diameter_mm", "cruise_ld",
+              "cruise_ld_source", "transition_speed_mps", "transition_speed_source", "gauge_awg", "connection", "battery")
+
+
+def _d21_leaves_set(data: dict) -> set:
+    """Names of the D21 fields that the design file sets (components[].battery and its keys, propulsion, flight, harnesses, attachments)."""
+    out = set()
+    for c in data["components"]:
+        if "battery" in c:
+            out |= {"battery"} | set(c["battery"])
+        out |= set(c.get("propulsion", {}))
+    out |= set(data.get("flight", {}))
+    for h in data.get("wiring", {}).get("harnesses", []):
+        out |= set(h)
+    for a in data.get("attachments", []):
+        out |= set(a)
+    return out & set(D21_LEAVES)
+
+
+def _check_d21_fields_read(design: Design) -> set:
+    """D39: every discipline gate gave a row, and no SKIP row names a D21 field the design sets. No verdict is asserted."""
+    import re
+    leaves = _d21_leaves_set(design.data)
+    card = run(design, tiers={2, 3, 7})
+    for cid in IDS:
+        rs = rows(card, cid)
+        assert rs, f"{cid}: the gate gave no row"
+        for r in rs:
+            if r.status == SKIP:
+                named = sorted(k for k in leaves if re.search(rf"(?<!\w){k}(?!\w)", r.message))
+                assert not named, f"{cid}: SKIP names a field that is set {named}: {r.message}"
+    return leaves
+
+
 @pytest.mark.slow
 @pytest.mark.skipif(not _on_disk_has_battery(), reason="concept-a pwr-001 has no battery block yet (design PR)")
 def test_concept_a_d21_on_disk():
-    _check_concept_a(load_design(CONCEPT_A))
+    _check_d21_fields_read(load_design(CONCEPT_A))
 
 
 # ---- criteria and existing rows ----
