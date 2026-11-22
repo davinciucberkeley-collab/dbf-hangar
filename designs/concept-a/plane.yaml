@@ -24,7 +24,7 @@ requirements:
   mtow_g: 1470              # params-A.json req.mass_gate_kg 1.47 kg (A-P1 weigh-in gate)
   cruise_speed_mps: 17        # params-A.json mission.cruise_ms
   stall_speed_max_mps: 13.08    # params-A.json mission.cruise_ms 17 / req.cruise_ratio 1.3 (A-P6: 1.3 Vs < cruise)
-  budget_usd: 2           # params-A.json req.budget_usd
+  budget_usd: 2000           # params-A.json req.budget_usd
 flight:
   cl_max: 0.75            # params-A.json mission.clmax 0.75, EST in the source (measured stall will replace it)
   air_density_kgm3: 1.2   # params-A.json env.rho_kgm3 (MISSION.md s1)

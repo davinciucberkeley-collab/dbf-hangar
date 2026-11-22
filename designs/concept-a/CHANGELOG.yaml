@@ -160,3 +160,10 @@
     keeps the elevon inside its +-21 deg stops; rod link E-MEC-08 to E-MEC-PIN-L4
     is the pinned pair'
   kind: add
+- date: '2026-11-22T04:36:52Z'
+  key: requirements.budget_usd
+  old: 2
+  new: 2000
+  why: 'unit fix: importer number formatting dropped trailing zeros (params-A.json
+    req.budget_usd = 2000.0 USD); value was 2'
+  kind: modify
