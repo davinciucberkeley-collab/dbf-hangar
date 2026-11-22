@@ -3513,11 +3513,11 @@ items:
     text: 'Speed (W3 lesson): plane design validate on concept-a takes minutes and a 3-value sweep over 2 min; U4.1 Step 2 performance pass (R33, target < 60 s) is a priority, measured before/after [triage 2026-11-21: Measure plane design validate designs/concept-a before and after, with one builder-plus unit if over 60 s]'
     source: Tristan, chat 2026-11-21
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: afed52a
     decided_in: ''
     updated: '2026-11-21'
   - id: T45

@@ -49,7 +49,7 @@
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U4.1 | Whole-branch review, performance, release | 0/5 | not started | - |
+| U4.1 | Whole-branch review, performance, release | 1/5 | in progress | ACCEPT |
 | U4.2 | Dec 2 presentation package | 0/4 | not started | - |
 
 ## Ledger
@@ -57,7 +57,7 @@
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 14 | 24 | 1 | 1 | 0 | 40 |
-| task | 34 | 21 | 0 | 2 | 0 | 57 |
+| task | 33 | 22 | 0 | 2 | 0 | 57 |
 | idea | 0 | 0 | 0 | 0 | 0 | 0 |
 | decision | 15 | 0 | 0 | 3 | 222 | 240 |
 
