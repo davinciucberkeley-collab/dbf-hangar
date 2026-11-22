@@ -71,7 +71,7 @@ def test_get_adapter_unknown_name():
 def test_davinci_ships_as_skip_with_reason():
     ad = adapters.get_adapter("davinci")
     ok, why = ad.available()
-    assert not ok and "D3 open" in why
+    assert not ok and "not configured" in why
     design = load_design(CA + "/plane.yaml")
     for r in (ad.push(design), ad.pull()):
         assert r.skipped and why in r.messages[0]

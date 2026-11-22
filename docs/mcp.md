@@ -19,7 +19,6 @@ Every registry op is a tool; name = op name with `.` replaced by `_`; each retur
 ### Hand-written (until their op exists)
 
 - `save_design(design_id, yaml_text, overwrite=False)` - schema-check then write designs/<id>/plane.yaml.
-- `fea_run(path, part='', all=False)` - OpenCAE/CalculiX stress check of printed parts (slow). Without OpenCAE it returns a SKIP with the fix command; set it up once with `plane fea setup`. The CLI is `plane fea run <design> --part <id>`; the old form `plane fea <design> --part <id>` still works.
 - `list_structural_parts(design_id)` - printed structural parts and whether their stored stress result is current.
 - `get_schema()` - the plane.yaml JSON schema.
 - `get_standards()` - design standards plus the agent standard.

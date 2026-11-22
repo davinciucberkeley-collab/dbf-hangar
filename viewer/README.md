@@ -2,6 +2,8 @@
 
 Static site that displays every design in `designs/` with no per-design HTML. It only reads generated data.
 
+![Plane Studio, Designs mode](docs/screenshot.png)
+
 ```
 plane build-index --out viewer/data
 python3 -m http.server -d viewer      # http://localhost:8000
