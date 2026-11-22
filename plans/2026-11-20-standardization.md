@@ -315,6 +315,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D43 | R11 "drag the drone around" (interactive physics in Studio) for v1.0? | no: v1.1; v1.0 covers R11 with analytic T6 and Physics mode; R11 reopened | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 | D44 | Studio Knowledge mode in v1.0? | no: v1.1; knowledge stays readable as files and on Pages | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 | D45 | §2.4 lists `bom list`, `morph list`, `idea list`, `davinci push/pull`, which are not registered | amend §2.4 to the registered ops; the missing verbs are v1.1 | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
+| D46 | Dec 2 demo: live propose, which update week, which design, who records the backup | show PR #3; publish the 11-30 week merged before the demo; example template then concept-a for Physics; Tristan records the backup at the dry run; Studio launched 15 min early | Tristan | 11-30 | decided: default (standing rule, 2026-11-22) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
