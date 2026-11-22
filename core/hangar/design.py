@@ -1,6 +1,7 @@
 """Loading design files and the shared result types every check returns."""
 from __future__ import annotations
 
+import copy
 import json
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
@@ -131,8 +132,18 @@ def load_design(path: str | Path) -> Design:
     return Design(data=data, path=p.resolve())
 
 
+_STANDARDS_CACHE: dict[tuple, dict] = {}
+
+
 def load_standards() -> dict:
-    return yaml.safe_load(STANDARDS_PATH.read_text())
+    """design-standards.yaml, parsed once per file version (path + mtime + size); a deep copy every call."""
+    st = STANDARDS_PATH.stat()
+    key = (str(STANDARDS_PATH), st.st_mtime_ns, st.st_size)
+    data = _STANDARDS_CACHE.get(key)
+    if data is None:
+        _STANDARDS_CACHE.clear()
+        data = _STANDARDS_CACHE[key] = yaml.safe_load(STANDARDS_PATH.read_text())
+    return copy.deepcopy(data)
 
 
 def list_designs() -> list[Path]:
