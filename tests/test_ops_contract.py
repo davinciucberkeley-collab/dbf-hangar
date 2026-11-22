@@ -80,7 +80,7 @@ def test_call_unknown_param_is_input_error_not_exception():
 
 
 def test_call_bad_literal_value_is_input_error():
-    assert call("design.validate", path=str(EXAMPLE_DIR), tier="9").exit_code == 2
+    assert call("design.validate", path=str(EXAMPLE_DIR), tier="10").exit_code == 2
 
 
 def test_failed_check_is_exit_1(cli_runner, tmp_design_with_type_wingletz):

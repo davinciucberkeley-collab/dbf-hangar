@@ -10,7 +10,7 @@ Every registry op is a tool; name = op name with `.` replaced by `_`; each retur
 
 - `design_list()` - every design under designs/: id, name, status and morphology.
 - `design_get(path)` - the plane.yaml text, in `data.text`.
-- `design_validate(path, tier)` - scorecard across validation tiers 0-5 (`tier` is `"0"` to `"5"` or `"all"`).
+- `design_validate(path, tier)` - scorecard across the validation tiers (`tier` is `"0"` to `"9"`, which runs tiers 0 to N, or `"all"`, the default, which runs 0 to 9).
 - `design_mass(path)` - total mass, CG, inertia and per-component mass.
 - `design_export(path, format, out)` - write glb, stl, json or mjcf to `out`; returns the written files. This is a breaking change from `export_design`: `out` is now required, and the old tool wrote to `build/` itself.
 - `design_new(new_id, template)` - create a design from a template.

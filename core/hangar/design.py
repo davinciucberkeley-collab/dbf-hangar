@@ -72,12 +72,12 @@ class TierReport:
 class Scorecard:
     design_id: str
     tiers: list[TierReport]
-    max_tier: int = 5
+    max_tier: int = 9
     fidelity: dict = field(default_factory=dict)
 
     @property
     def partial(self) -> bool:
-        return self.max_tier < 5
+        return self.max_tier < 9
 
     @property
     def clean(self) -> bool:
@@ -86,7 +86,7 @@ class Scorecard:
 
     @property
     def accepted(self) -> bool:
-        """Full-run verdict only: a partial run (max_tier < 5) is never accepted."""
+        """Full-run verdict only: a partial run (max_tier < 9) is never accepted."""
         return not self.partial and all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
 
     def to_dict(self) -> dict:

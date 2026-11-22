@@ -230,7 +230,7 @@ def test_design_without_claims_yaml_has_no_tier9():
 
 
 def test_validate_adds_tier_9_on_full_runs_only(mini):
-    sc = validate(mini, max_tier=5)
+    sc = validate(mini, max_tier=9)
     assert sc.tiers[-1].tier == 9 and sc.tiers[-1].name == "claims"
     assert sc.accepted is False
     assert all(t.tier != 9 for t in validate(mini, max_tier=3).tiers)

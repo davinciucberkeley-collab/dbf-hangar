@@ -210,7 +210,7 @@ def test_sim_mechanism_op_returns_steps():
 def test_validate_wrapper_unchanged_for_legacy_tiers():
     c0 = validate(load_design(EXAMPLE), max_tier=0)
     assert len(c0.tiers) == 1 and c0.max_tier == 0 and c0.partial is True
-    assert validate(load_design(EXAMPLE)).max_tier == 5
+    assert validate(load_design(EXAMPLE)).max_tier == 9
 
 
 def test_program_budget_row_when_file_exists(monkeypatch, tmp_path):

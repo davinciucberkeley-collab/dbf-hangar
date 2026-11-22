@@ -15,7 +15,7 @@ from hangar.design import FAIL, PASS, SKIP, WARN, CheckResult, Scorecard, TierRe
 from hangar.design import DESIGNS_DIR
 
 
-def card(*results: CheckResult, design_id: str = "d", max_tier: int = 5) -> Scorecard:
+def card(*results: CheckResult, design_id: str = "d", max_tier: int = 9) -> Scorecard:
     return Scorecard(design_id, [TierReport(2, "physics", list(results))], max_tier)
 
 
