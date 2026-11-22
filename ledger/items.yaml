@@ -3540,3 +3540,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: D26
+    kind: decision
+    text: 'D25 amended: T6.link WARN rows (declared-link exemption reports, U3.6e) do not count toward the U3.4 FAIL+WARN total; run 6 traded 2 T6.undriven WARN for 2 T6.link WARN plus 4 T6 PASS'
+    source: Tristan in chat 2026-11-21 (option a, P127)
+    owner: Tristan
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
