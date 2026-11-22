@@ -3239,7 +3239,7 @@ items:
     updated: '2026-11-21'
   - id: T23
     kind: task
-    text: 'U2.3b polish: unused subprocess/sys imports and job.json written twice in fea.py; docs/mcp.md lists fea_run as hand-written; human SKIP output should start with SKIP: [triage 2026-11-21: Remove the two imports; write job.json once; move fea_run out of the hand-written list in docs/mcp.md; check the SKIP: prefix in the human output (not yet opened)]'
+    text: 'U2.3b polish: unused subprocess/sys imports and job.json written twice in fea.py; docs/mcp.md lists fea_run as hand-written; human SKIP output should start with SKIP: [triage 2026-11-21: Remove the two imports; write job.json once; move fea_run out of the hand-written list in docs/mcp.md; check the SKIP: prefix in the human output (not yet opened)] [2026-11-22: since T29 (e59f2c3) fea.py uses subprocess; remove `import sys` only]'
     source: reviews/2026-11-21-w2.md U2.3b
     owner: Tristan
     status: open
@@ -3290,11 +3290,11 @@ items:
     text: 'auditor.md names plane ledger report --prompts --open, which does not exist [triage 2026-11-21: One-line role-text fix (point to ledger/prompts.jsonl or drop the flags); the auditor runs hourly so it should land before the demo]'
     source: briefs/U3.2-skills.md decision 3
     owner: ''
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: 738b8f7
     decided_in: ''
     updated: '2026-11-21'
   - id: D24
@@ -3325,11 +3325,11 @@ items:
     text: "plane tools doctor reports OpenCAE ok without checking the runner's imports: with python set to the CalculiX-only env 'opencae', fea run fails 'No module named numpy'. Doctor should import numpy and scipy with the configured python, and fea setup should refuse a python without them. (OpenCAE INSTALL_WINDOWS.md: Python env is qt_test; 'opencae' is the solver env.) [triage 2026-11-21: Doctor must import numpy and scipy with the configured python, and fea setup must refuse a python without them]"
     source: Tristan task 1 (U3.4 step 4), 2026-11-21
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: e59f2c3
     decided_in: ''
     updated: '2026-11-21'
   - id: T30
@@ -3382,11 +3382,11 @@ items:
     text: '.claude/agents/design-engineer.md line 21 shows plane design set <key> <value> but value is --value; add --also and the --kind add flow-collection form (after U3.6c merges) [triage 2026-11-21: Doc-only fix, precondition (U3.6c) met]'
     source: advisor W3-A on U3.6c
     owner: ''
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: 70d91b5
     decided_in: ''
     updated: '2026-11-21'
   - id: T34
@@ -3536,11 +3536,11 @@ items:
     text: 'plane tooling (U3.4 run 5): design set cannot append to or remove from a one-line flow list; design propose fails with a relative design path (git -C designs\concept-a) and takes the title positionally while skills/agents show --title [triage 2026-11-21: propose relative path and --title fix only (U4.1); flow-list append/remove split to a v1.1 task]'
     source: U3.4 run 5 report 2026-11-21
     owner: ''
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: 70d91b5
     decided_in: ''
     updated: '2026-11-21'
   - id: T47
@@ -3548,11 +3548,11 @@ items:
     text: 'Tests pin the committed designs/concept-a as a fixture (15 tests in test_design_edit, test_gates, test_pdl, test_studio), so any concept-a design PR turns CI red; freeze copies under tests/fixtures/ and repoint the tests (test-only unit, must merge before any concept-a design PR) [triage 2026-11-21: repoint the remaining concept-a pins to tests/fixtures/concept-a-frozen before the next concept-a design change]'
     source: 'reviews/2026-11-21-w3.md U3.4 PR #2 (W3-R2)'
     owner: ''
-    status: open
+    status: done
     due: '2026-11-25'
     units:
       - U4.1
-    evidence: ''
+    evidence: 26daf3d
     decided_in: ''
     updated: '2026-11-21'
   - id: T48
