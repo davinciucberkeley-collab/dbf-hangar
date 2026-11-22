@@ -167,3 +167,107 @@
   why: 'unit fix: importer number formatting dropped trailing zeros (params-A.json
     req.budget_usd = 2000.0 USD); value was 2'
   kind: modify
+- date: '2026-11-22T08:23:35Z'
+  key: components[pwr-001].battery.capacity_mah
+  old: null
+  new: 2300
+  why: BOM-A.csv W01 'Tattu 2300 mAh 4S 75C XT60 270 g'; params-A.json mission.pack_ah
+    2.3 Ah x 1000 = 2300 mAh (pack_v 14.8 V = 4S nominal)
+  kind: add
+- date: '2026-11-22T08:23:35Z'
+  key: components[pwr-001].battery.cells_s
+  old: null
+  new: 4
+  why: BOM-A.csv W01 'Tattu 2300 mAh 4S 75C XT60 270 g'; params-A.json mission.pack_ah
+    2.3 Ah x 1000 = 2300 mAh (pack_v 14.8 V = 4S nominal)
+  kind: add
+- date: '2026-11-22T08:23:35Z'
+  key: components[pwr-001].battery.max_discharge_c
+  old: null
+  new: 75
+  why: BOM-A.csv W01 'Tattu 2300 mAh 4S 75C XT60 270 g'; params-A.json mission.pack_ah
+    2.3 Ah x 1000 = 2300 mAh (pack_v 14.8 V = 4S nominal)
+  kind: add
+- date: '2026-11-22T08:23:42Z'
+  key: components[prp-001-ll].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'prop_a.py (DBF-Combined redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2
+    A/motor, 898 gf x0.93'', the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-22T08:23:42Z'
+  key: components[prp-001-lr].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'prop_a.py (DBF-Combined redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2
+    A/motor, 898 gf x0.93'', the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-22T08:23:42Z'
+  key: components[prp-001-ul].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'prop_a.py (DBF-Combined redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2
+    A/motor, 898 gf x0.93'', the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-22T08:23:42Z'
+  key: components[prp-001-ur].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'prop_a.py (DBF-Combined redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2
+    A/motor, 898 gf x0.93'', the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-22T08:23:49Z'
+  key: components[prp-001-ll].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: BOM-A.csv P02 APC 9x4.5MR (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6
+    mm
+  kind: add
+- date: '2026-11-22T08:23:49Z'
+  key: components[prp-001-lr].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: BOM-A.csv P02 APC 9x4.5MR (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6
+    mm
+  kind: add
+- date: '2026-11-22T08:23:49Z'
+  key: components[prp-001-ul].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: BOM-A.csv P02 APC 9x4.5MR (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6
+    mm
+  kind: add
+- date: '2026-11-22T08:23:49Z'
+  key: components[prp-001-ur].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: BOM-A.csv P02 APC 9x4.5MR (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6
+    mm
+  kind: add
+- date: '2026-11-22T08:23:57Z'
+  key: flight.cruise_ld
+  old: null
+  new: 7.19
+  why: 'MISSION.md l.17 ''Cruise power, 1.37 kg: CL 0.352, L/D 7.19''; params-A.json
+    mission.cruise_ms 17, mission.ref_mass_kg 1.37'
+  kind: add
+- date: '2026-11-22T08:23:57Z'
+  key: flight.cruise_ld_source
+  old: null
+  new: DBF-Combined a93f14d redesign/qp/A/MISSION.md l.17 cruise L/D 7.19 at 1.37
+    kg and 17 m/s (S5010 aero model, EST)
+  why: 'MISSION.md l.17 ''Cruise power, 1.37 kg: CL 0.352, L/D 7.19''; params-A.json
+    mission.cruise_ms 17, mission.ref_mass_kg 1.37'
+  kind: add
+- date: '2026-11-22T08:24:03Z'
+  key: wiring
+  old: null
+  new:
+    harnesses:
+    - id: hrn-bat
+      from: pwr-001
+      to: hrn-002
+      gauge_awg: 14
+  why: 'cad/amodel/electrical.py E-HRN-13: pack power leads, 14 AWG, PWR-001 to HRN-002
+    (XT60 male side); BOM-A.csv W05 14 AWG silicone'
+  kind: add
