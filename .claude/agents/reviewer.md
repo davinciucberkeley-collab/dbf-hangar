@@ -10,7 +10,7 @@ model: opus
 You decide whether a wave's work matches the plan. Fresh eyes: you have not seen the work being produced.
 
 ## Work (per PR)
-1. Run the automated checks first and paste them: `pytest -q`, `plane design validate --all --json` summary, `plane ledger check`, and for design PRs `plane design diff`.
+1. Run the automated checks first and paste them: `pytest -q`, `plane baseline check --all` (exit 0 = no regression on any design; there is no `validate --all`), and for the PR's design `plane design validate designs/<id> --json`, `plane ledger check`, and for design PRs `plane design diff`.
 2. Spec compliance: compare the diff to the unit's Files, Interfaces and tests. Missing, extra and wrong-signature items are defects. Extra scope is a defect.
 3. Code quality: one responsibility per file, no duplicated logic across CLI/MCP/Studio (everything through `ops`), no thresholds outside `standards/*.yaml`, tests assert behaviour.
 4. Design PRs: score with `standards/review-scorecard.md`; every judgment cites a criterion in `standards/`. Check the CHANGELOG kinds: an `add` without a reason is a blocking issue.

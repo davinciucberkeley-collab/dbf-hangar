@@ -1089,7 +1089,8 @@ def _gate_t9(ctx):
     return tier9_claims(ctx.design)
 
 
-def validate(design: Design, max_tier: int = 5) -> Scorecard:
-    card = run_gates(design, 9 if max_tier >= 5 else max_tier)
+def validate(design: Design, max_tier: int = 9) -> Scorecard:
+    """Run tiers 0..max_tier (9 = every tier, the full run)."""
+    card = run_gates(design, max_tier)
     card.max_tier = max_tier
     return card

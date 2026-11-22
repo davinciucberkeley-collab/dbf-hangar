@@ -118,3 +118,15 @@ def test_markdown_status_column_is_the_row_status():
     tier = TierReport(2, "physics", [CheckResult("T2.a", "PASS", "fine"), CheckResult("T2.b", "FAIL", "too heavy")])
     rows = [line for line in Scorecard("d", [tier]).to_markdown().splitlines() if line.startswith("| 2 physics |")]
     assert [row.split(" | ")[1] for row in rows] == ["PASS", "FAIL"]
+
+
+def test_tier_n_runs_zero_to_n_and_all_runs_every_tier(example):
+    d = load_design(example)
+    five = validate(d, max_tier=5)
+    assert [t.tier for t in five.tiers] == [0, 1, 2, 3, 4, 5]
+    assert five.partial is True and five.accepted is False
+    # T6 and T9 return None on the example (no mechanisms/articulations, no claims file); they run when applicable.
+    full = validate(d)
+    assert [t.tier for t in full.tiers] == [0, 1, 2, 3, 4, 5, 7, 8]
+    assert full.max_tier == 9 and full.partial is False
+    assert [t.tier for t in validate(d, max_tier=9).tiers] == [t.tier for t in full.tiers]

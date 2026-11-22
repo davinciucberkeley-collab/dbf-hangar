@@ -64,8 +64,8 @@ def cli():
 
 @cli.command("validate")
 @click.argument("path")
-@click.option("--tier", "max_tier", type=click.Choice(["0", "1", "2", "3", "4", "5", "all"]), default="5",
-              show_default=True, help="Highest validation tier to run (all = 5).")
+@click.option("--tier", "max_tier", type=click.Choice(["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "all"]),
+              default="all", show_default=True, help="Run tiers 0 to N (a partial run, never accepted); all = 0 to 9.")
 @click.option("--format", "fmt", type=click.Choice(["md", "json"]), default="md", show_default=True)
 @click.option("--out", "out_file", type=click.Path(dir_okay=False), default=None,
               help="Write the scorecard to FILE instead of stdout.")

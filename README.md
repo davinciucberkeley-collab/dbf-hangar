@@ -40,7 +40,7 @@ python -m pytest -q -m "not slow" -n auto
 
 Replace `<id>` with a design folder name from `plane list`. Most commands take `--json` for machine-readable output.
 
-- **Validate a design:** `plane design validate designs/<id>` (runs T0 to T5 by default; `--tier all` runs every tier)
+- **Validate a design:** `plane design validate designs/<id>` (runs every tier T0-T9 by default; `--tier N` runs only T0 to TN and is never accepted)
 - **Change a value:** `plane design set designs/<id> requirements.mtow_g --value 950 --why "reason"`. The key is a dotted path into `plane.yaml`; `--kind add|subtract|modify` (default `modify`) is logged in `CHANGELOG.yaml`.
 - **Compare two designs:** `plane design diff designs/<id-a> designs/<id-b>`
 - **Sweep one value:** `plane design sweep designs/<id> requirements.mtow_g --values 900 --values 1000` (each value runs on a scratch copy; the source is not touched)
