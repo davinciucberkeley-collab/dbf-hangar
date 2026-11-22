@@ -3477,11 +3477,11 @@ items:
     text: 'Process (W3 lesson): before a design-facing unit is briefed, run its plane commands on a tmp copy of the target design (dry run of the handoff); a tactician brief for such a unit must include that output. W3 U3.4 took 5 runs and 4 tool units because gaps surfaced one run at a time [triage 2026-11-21: apply as a W4 wave rule at W4 launch, then close]'
     source: Tristan, chat 2026-11-21 (keep what would have helped)
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-24'
     units:
       - U4.1
-    evidence: ''
+    evidence: 94e58cf
     decided_in: ''
     updated: '2026-11-21'
   - id: T42
@@ -3489,11 +3489,11 @@ items:
     text: 'Process (W3 lesson): tacticians run every test they write against the base repo (red for the right reason) and grep the repo for every name, count and path the brief asserts; about 8 builder stops in W3 were brief-vs-repo mismatches [triage 2026-11-21: apply as a W4 wave rule at W4 launch, then close]'
     source: Tristan, chat 2026-11-21
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-24'
     units:
       - U4.1
-    evidence: ''
+    evidence: 94e58cf
     decided_in: ''
     updated: '2026-11-21'
   - id: T43
@@ -3501,11 +3501,11 @@ items:
     text: 'Process (W3 lesson): conductor launches the auditor every hour of a wave (skipped for 8 h in W3) and checks for agents left waiting on a background shell [triage 2026-11-21: apply as a W4 wave rule at W4 launch, then close]'
     source: Tristan, chat 2026-11-21
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-24'
     units:
       - U4.1
-    evidence: ''
+    evidence: 94e58cf
     decided_in: ''
     updated: '2026-11-21'
   - id: T44
