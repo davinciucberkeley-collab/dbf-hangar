@@ -3230,11 +3230,11 @@ items:
     text: 'Flaky on Windows CI: test_studio.py::test_studio_api_end_to_end WinError 10053 (main 41a7efe); make the server shutdown robust [triage 2026-11-21: Make the server shutdown robust (join the serve thread, ignore ConnectionAbortedError on Windows, or use a server fixture)]'
     source: reviews/2026-11-21-w2.md W2-S
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: f691b7c
     decided_in: ''
     updated: '2026-11-21'
   - id: T23
@@ -3802,5 +3802,16 @@ items:
     due: ''
     units: []
     evidence: ledger/prompts.jsonl
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T57
+    kind: task
+    text: 'Flaky on Windows CI: tests/test_viewer_static.py::test_every_mode_renders_without_console_errors[compare] net::ERR_CONNECTION_REFUSED (run 44993145329 attempt 1; re-run passed)'
+    source: W4a-T22 CI 2026-11-22
+    owner: conductor
+    status: open
+    due: '2026-11-30'
+    units: []
+    evidence: ''
     decided_in: ''
     updated: '2026-11-21'
