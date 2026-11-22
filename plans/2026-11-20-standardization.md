@@ -557,6 +557,26 @@ Root cause (conductor, checked): `params-A.json` stores `req.budget_usd` = 2000.
 | TR-R | `reviewer` | Opus (fresh) | every proposed "done" and "superseded" | confirm or reject each, one line | each confirmation names the code or file checked |
 Due dates and homes (`units`) are written by the conductor into `ledger/items.yaml` directly (`plane ledger set` sets status only; tool gap logged as a task). New scope calls go to §3 with a default.
 
+### 6l. Agent table for W4 (Tristan, 2026-11-21: "go A and B"; started early)
+Tracks: **A** small-fix batch (ledger tasks homed U4.1: T22, T25, T27, T29, T33, T34, T39, T46, T47), pushed to `main` after review (D30). **B** U4.1 Step 2 performance (T44). **C** concept-a D21 data (D38), after A's T47. **D** U4.1 Steps 1, 3–5. **E** U4.2. Rows for C–E are added before they launch.
+
+W4 wave rules (W3 lessons T41–T43):
+- R-a: a brief whose output a later agent uses on a design includes a dry run of that handoff on a tmp copy of the design (T41).
+- R-b: tacticians run the brief's tests against the base commit first (record red/green under Known failures) and grep-verify every quoted name and path (T42).
+- R-c: the conductor launches `auditor` every hour while any W4 agent runs (T43).
+
+| Agent | Role | Model | Input | Output | Pass check |
+|---|---|---|---|---|---|
+| W4-TA | `tactician` | Sonnet | ledger T22, T25, T27, T29, T33, T34, T39, T46, T47 (texts + triage notes) | `briefs/W4a-*.md`, one per fix or per shared file, each marked easy or [hard] | builder-ready bar; R-a, R-b applied |
+| W4-A1…An | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one W4a brief each | branch `std/w4a-<task>` | brief's checks; CI green by headSha |
+| W4-TB | `tactician` | Sonnet | U4.1 Step 2, T44: profile `plane design validate designs/concept-a` (tiers 0–8, no FEA) and `plane baseline check` per tier | `briefs/U4.1-perf.md` [hard], measured profile in the brief | timings measured, not estimated; Tristan reads the hard brief; `advisor` checks it |
+| W4-B | `builder-plus` | Sonnet | `briefs/U4.1-perf.md` | branch `std/u4.1-perf` | validate ≤ 60 s measured before/after; identical check results |
+| W4-RA | `reviewer` | Opus (fresh) | every track A and B branch | `reviews/2026-11-2x-w4.md` | "### Verdict: ACCEPT" per unit |
+| W4-Au | `auditor` | Haiku | session state | hourly report | ≤ 15 lines |
+| W4-X | `advisor` | Opus | hard brief check; a unit that failed review twice | recommendation | one dispatch |
+
+**Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
+
 ## 7. Units
 
 Conventions for every unit: worktree + branch `std/<unit-id>`; `export PYTHONPATH=$PWD/core` in worktrees; finish with
