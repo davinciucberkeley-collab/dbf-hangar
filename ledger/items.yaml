@@ -3801,9 +3801,9 @@ items:
     status: decided
     due: ''
     units: []
-    evidence: ledger/prompts.jsonl
+    evidence: 5d29ec8
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-22'
   - id: T57
     kind: task
     text: 'Flaky on Windows CI: tests/test_viewer_static.py::test_every_mode_renders_without_console_errors[compare] net::ERR_CONNECTION_REFUSED (run 44993145329 attempt 1; re-run passed)'
@@ -3881,3 +3881,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T61
+    kind: task
+    text: concept-a hrn-bat has no route, so T7.wiring measures a straight CG line (40 mm WARN is a data gap); add a route matching E-HRN-13 (tray notch, skin) and make the gate say 'route missing' when route is empty
+    source: reviews/2026-11-22-w4.md W4-C
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
