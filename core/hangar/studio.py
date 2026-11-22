@@ -364,6 +364,15 @@ def make_handler(studio: Studio):
                 ctype = "model/gltf-binary"
             self._send(200, p.read_bytes(), ctype)
 
+        def _drain_body(self) -> None:
+            """Read and drop a small request body, so closing the socket after a refusal cannot reset the client's send (Windows 10053/10054)."""
+            try:
+                n = int(self.headers.get("Content-Length") or 0)
+            except ValueError:
+                return
+            if 0 < n <= MAX_BODY:
+                self.rfile.read(n)
+
         def _body(self) -> dict:
             n = int(self.headers.get("Content-Length") or 0)
             if n > MAX_BODY:
@@ -413,6 +422,7 @@ def make_handler(studio: Studio):
         def do_POST(self):  # noqa: N802
             if self.headers.get("Origin") not in (None, f"http://127.0.0.1:{self.server.server_port}",
                                                   f"http://localhost:{self.server.server_port}"):
+                self._drain_body()
                 return self._err("cross-site request refused", 403)
             path = urlparse(self.path).path
             try:
