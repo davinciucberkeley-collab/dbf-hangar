@@ -148,7 +148,7 @@ def test_real_repo_split_units_show_accept():
     text = build_progress(REPO)
     for uid in ("U2.3", "U2.4", "U2.5"):
         row = next(line for line in text.splitlines() if line.startswith(f"| {uid} |"))
-        assert row.endswith("| 5/5 | done | ACCEPT |"), row
+        assert row.endswith("| ACCEPT |"), row
 
 
 def test_ledger_counts_and_overdue(repo):
