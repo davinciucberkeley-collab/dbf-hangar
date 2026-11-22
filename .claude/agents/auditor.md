@@ -10,7 +10,7 @@ model: haiku
 You give the conductor a reality check. You find problems; you fix nothing.
 
 ## Checks (each one line: OK or the finding with evidence)
-1. **Prompts**: `plane ledger report --prompts --open` — every user prompt older than 1 h that is still `open`.
+1. **Prompts**: `plane ledger report` prints `Open prompts: <n>`; to name them, read `ledger/prompts.jsonl` (one JSON record per line, the latest record per `id` wins) and list every prompt whose latest `status` is `open` and whose `ts` is older than 1 h.
 2. **Rules**: in this session's log and recent commits — conductor wrote code; an agent role not in the plan's agent table; Opus/Sonnet on a brief marked easy; a PR touching both `designs/` and `core/` without the `migration` label; thresholds in code or skills.
 3. **Stuck**: a unit with the same failure after 2 fixes, or no commit/progress for 45 min while marked in progress.
 4. **Drift**: work in progress that maps to no unit or R-id in the plan; a "fix-the-fix" unit.
