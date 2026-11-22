@@ -161,13 +161,13 @@ items:
     text: Database of plane guidelines and standards every design is evaluated against; manufacturing methods; "does a tailsitter actually work?" evidence
     source: plan §1; A 11-11
     owner: ''
-    status: done
+    status: open
     due: ''
     units:
       - U2.2
-    evidence: b4663d5
+    evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-21'
   - id: R14
     kind: ruling
     text: 'BOM: verify parts are real (Amazon blocks agents → use Claude in Chrome)'
