@@ -6,7 +6,7 @@
   "ultimate_factor": 1.5,
   "wall_mm": {
     "p5": 0.9,
-    "median": 4.9
+    "median": 5.0
   },
   "part_size_mm": 68.76,
   "supports": [
@@ -27,18 +27,18 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.022,
-      "max_von_mises_mpa": 1.022,
-      "safety_factor_at_ultimate": 12.33,
-      "max_displacement_mm": 0.0059,
-      "nodes": 19344,
+      "max_von_mises_away_mpa": 0.931,
+      "max_von_mises_mpa": 0.931,
+      "safety_factor_at_ultimate": 13.53,
+      "max_displacement_mm": 0.006,
+      "nodes": 19109,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.91,
-        -234.43,
-        -161.91
+        -81.92,
+        -234.31,
+        -161.72
       ],
       "project": ".studio/fea/concept-a/cge-003-ll/direct-landing",
       "report": null,
@@ -48,18 +48,18 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.439,
-      "max_von_mises_mpa": 1.439,
-      "safety_factor_at_ultimate": 8.76,
-      "max_displacement_mm": 0.0065,
-      "nodes": 19344,
+      "max_von_mises_away_mpa": 1.231,
+      "max_von_mises_mpa": 1.231,
+      "safety_factor_at_ultimate": 10.23,
+      "max_displacement_mm": 0.0064,
+      "nodes": 19109,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -82.12,
-        -230.8,
-        -158.08
+        -81.92,
+        -234.31,
+        -161.72
       ],
       "project": ".studio/fea/concept-a/cge-003-ll/direct-thrust",
       "report": null,
@@ -108,7 +108,7 @@
             -3.189
           ],
           "moment_nmm": [
-            0.0,
+            -0.0,
             1.65,
             1.03
           ],
@@ -124,7 +124,7 @@
   "status": "PASS",
   "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "0f201165cd48b81f",
-  "generated": "2026-11-17T07:07:12+00:00",
+  "hash": "72a589c37531ab27",
+  "generated": "2026-11-22T01:59:42+00:00",
   "opencae_version": "0.2.0"
 }

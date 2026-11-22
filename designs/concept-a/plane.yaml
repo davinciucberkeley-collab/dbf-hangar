@@ -3,7 +3,7 @@
 # Frame: the source's own (metres; x aft from the wing leading edge, y right, z up in cruise) scaled x1000 to mm;
 # the origin is the wing LE at the centre, not a nose datum. Read README.md for provenance and gaps.
 # Every number cites its source in a comment; anything the source does not give is marked "placeholder - not from source".
-schema_version: "0.4"
+schema_version: "1.0"
 id: concept-a
 name: Concept A, scaled quad tailsitter flying wing (D-182)
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "imported for aircraft-platform by `plane import dbf`"]
@@ -1486,7 +1486,7 @@ attachments:
   - {id: E-MEC-01, parent: wng-001, child: mec-001-r, method: glued, location: [140.505, 199.75, -6.3], rated_load_n: 181.2, rating_basis: derived}
   # E-MEC-02 CT-SERVO-SPLINE (MEC-001-R -> MEC-002-R): arm on the 23T output spline (V readymaderc 85975; the old 25T was an ES3352 copy)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area); method note: arm on a spline held by an M2 retaining screw: nearest enum is bolted
-  - {id: E-MEC-02, parent: mec-001-r, child: mec-002-r, method: bolted, location: [140.563, 195.69, 6.7], rated_load_n: 931.5, rating_basis: derived}
+  - {id: E-MEC-02, parent: mec-001-r, child: mec-002-r, method: bolted, location: [140.563, 195.69, 6.7], rated_load_n: 931.5, rating_basis: derived, articulation: {type: revolute, pivot: [140.5, 200.0, 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
   # E-MEC-03 CT-CLEVIS (MEC-002-R -> MEC-003-R): rod Z-bend in the arm tip hole (vertical pin)
   # rating [doc] redesign/qp/A/structures/qp5_checks.md s1 pushrod buckling, Pcr 73 N at the CAD rod length 52.5 mm (D-194)
   # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
@@ -1500,15 +1500,12 @@ attachments:
   # E-MEC-HW-R2 CT-HW-SEATED (HWC-002-R -> MEC-002-R): arm retaining screw (hardware of the spline joint)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
   - {id: E-MEC-HW-R2, parent: hwc-002-r, child: mec-002-r, method: bolted, location: [139.43, 200.153, 8.7], rated_load_n: 931.5, rating_basis: derived}
-  # E-MEC-HW-R1 CT-HW-SEATED (MEC-001-R -> HWC-002-R): arm retaining screw (hardware of the spline joint)
-  # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
-  - {id: E-MEC-HW-R1, parent: mec-001-r, child: hwc-002-r, method: bolted, location: [140.405, 199.012, 4.423], rated_load_n: 931.5, rating_basis: derived}
   # E-MEC-06 CT-EPOXY (WNG-001 -> MEC-001-L): servo in its pocket
   # rating [derived] contact area 2107 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
   - {id: E-MEC-06, parent: wng-001, child: mec-001-l, method: glued, location: [140.505, -200.25, -6.3], rated_load_n: 181.2, rating_basis: derived}
   # E-MEC-07 CT-SERVO-SPLINE (MEC-001-L -> MEC-002-L): arm on the 23T output spline (V readymaderc 85975; the old 25T was an ES3352 copy)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area); method note: arm on a spline held by an M2 retaining screw: nearest enum is bolted
-  - {id: E-MEC-07, parent: mec-001-l, child: mec-002-l, method: bolted, location: [140.342, -195.814, 6.7], rated_load_n: 931.5, rating_basis: derived}
+  - {id: E-MEC-07, parent: mec-001-l, child: mec-002-l, method: bolted, location: [140.342, -195.814, 6.7], rated_load_n: 931.5, rating_basis: derived, articulation: {type: revolute, pivot: [140.5, -200.0, 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
   # E-MEC-08 CT-CLEVIS (MEC-002-L -> MEC-003-L): rod Z-bend in the arm tip hole (vertical pin)
   # rating [doc] redesign/qp/A/structures/qp5_checks.md s1 pushrod buckling, Pcr 73 N at the CAD rod length 52.5 mm (D-194)
   # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
@@ -1522,9 +1519,6 @@ attachments:
   # E-MEC-HW-L2 CT-HW-SEATED (HWC-002-L -> MEC-002-L): arm retaining screw (hardware of the spline joint)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
   - {id: E-MEC-HW-L2, parent: hwc-002-l, child: mec-002-l, method: bolted, location: [139.43, -199.847, 8.7], rated_load_n: 931.5, rating_basis: derived}
-  # E-MEC-HW-L1 CT-HW-SEATED (MEC-001-L -> HWC-002-L): arm retaining screw (hardware of the spline joint)
-  # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
-  - {id: E-MEC-HW-L1, parent: mec-001-l, child: hwc-002-l, method: bolted, location: [140.405, -200.988, 4.423], rated_load_n: 931.5, rating_basis: derived}
   # E-GER-01 CT-EPOXY (FIN-001-R -> GER-001-UR): shoe cap on the tube end
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Foot shoe on the fin tube end (25 mm wrap, 16 mm OD)', 52 N, MS +21.41; rated = 52 N x K 2.1562 x (1 + MS 21.41)
   - {id: E-GER-01, parent: fin-001-r, child: ger-001-ur, method: glued, location: [286.974, 376.198, 174.417], rated_load_n: 2512.7, rating_basis: sourced}
@@ -1594,3 +1588,16 @@ attachments:
   # E-ASM-01 CT-TIE (WNG-001 -> HRD-001): hardware lump
   # rating [placeholder] placeholder - not from source: CT-TIE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 1.15 N, rounded up)
   - {id: E-ASM-01, parent: wng-001, child: hrd-001, method: zip-tie, location: [100, 0, 0], rated_load_n: 1.2, rating_basis: placeholder}
+mechanisms:
+  - id: elevon-r
+    driver: E-MEC-02
+    driven: [E-WNG-10]
+    input_range_deg: [-15, 15]
+    expect: [{attachment: E-WNG-10, ratio: -1.33}]
+    link: {driver_end: E-MEC-03, follower_end: E-MEC-PIN-R4}
+  - id: elevon-l
+    driver: E-MEC-07
+    driven: [E-WNG-11]
+    input_range_deg: [-15, 15]
+    expect: [{attachment: E-WNG-11, ratio: 1.33}]
+    link: {driver_end: E-MEC-08, follower_end: E-MEC-PIN-L4}

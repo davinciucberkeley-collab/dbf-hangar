@@ -5,7 +5,7 @@
   "allowable_mpa": 12.6,
   "ultimate_factor": 1.5,
   "wall_mm": {
-    "p5": 0.9,
+    "p5": 0.88,
     "median": 5.0
   },
   "part_size_mm": 68.56,
@@ -27,18 +27,18 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.813,
-      "max_von_mises_mpa": 0.813,
-      "safety_factor_at_ultimate": 15.51,
-      "max_displacement_mm": 0.0066,
-      "nodes": 18875,
+      "max_von_mises_away_mpa": 0.998,
+      "max_von_mises_mpa": 0.998,
+      "safety_factor_at_ultimate": 12.63,
+      "max_displacement_mm": 0.0068,
+      "nodes": 17948,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.26,
-        236.01,
-        -159.16
+        -81.52,
+        236.68,
+        -158.91
       ],
       "project": ".studio/fea/concept-a/cge-003-lr/direct-landing",
       "report": null,
@@ -48,18 +48,18 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.031,
-      "max_von_mises_mpa": 1.031,
-      "safety_factor_at_ultimate": 12.22,
-      "max_displacement_mm": 0.0068,
-      "nodes": 18875,
+      "max_von_mises_away_mpa": 1.168,
+      "max_von_mises_mpa": 1.168,
+      "safety_factor_at_ultimate": 10.78,
+      "max_displacement_mm": 0.0067,
+      "nodes": 17948,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.9,
-        235.05,
-        -159.38
+        -81.52,
+        236.68,
+        -158.91
       ],
       "project": ".studio/fea/concept-a/cge-003-lr/direct-thrust",
       "report": null,
@@ -108,7 +108,7 @@
             3.189
           ],
           "moment_nmm": [
-            0.0,
+            -0.0,
             -1.65,
             1.03
           ],
@@ -124,7 +124,7 @@
   "status": "PASS",
   "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "418a92a8af1efa7f",
-  "generated": "2026-11-17T07:08:03+00:00",
+  "hash": "cfb02f9022c0b1ca",
+  "generated": "2026-11-22T02:03:35+00:00",
   "opencae_version": "0.2.0"
 }

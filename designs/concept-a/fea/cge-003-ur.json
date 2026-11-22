@@ -5,8 +5,8 @@
   "allowable_mpa": 12.6,
   "ultimate_factor": 1.5,
   "wall_mm": {
-    "p5": 0.9,
-    "median": 4.9
+    "p5": 0.86,
+    "median": 5.0
   },
   "part_size_mm": 68.76,
   "supports": [
@@ -27,18 +27,18 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.984,
-      "max_von_mises_mpa": 1.984,
-      "safety_factor_at_ultimate": 6.35,
-      "max_displacement_mm": 0.0072,
-      "nodes": 18315,
+      "max_von_mises_away_mpa": 1.488,
+      "max_von_mises_mpa": 1.488,
+      "safety_factor_at_ultimate": 8.47,
+      "max_displacement_mm": 0.0073,
+      "nodes": 21334,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.54,
-        234.38,
-        162.25
+        -81.44,
+        233.51,
+        163.14
       ],
       "project": ".studio/fea/concept-a/cge-003-ur/direct-landing",
       "report": null,
@@ -48,18 +48,18 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.867,
-      "max_von_mises_mpa": 1.867,
-      "safety_factor_at_ultimate": 6.75,
-      "max_displacement_mm": 0.0064,
-      "nodes": 18315,
+      "max_von_mises_away_mpa": 1.31,
+      "max_von_mises_mpa": 1.31,
+      "safety_factor_at_ultimate": 9.62,
+      "max_displacement_mm": 0.0066,
+      "nodes": 21334,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.54,
-        234.38,
-        162.25
+        -81.44,
+        233.51,
+        163.14
       ],
       "project": ".studio/fea/concept-a/cge-003-ur/direct-thrust",
       "report": null,
@@ -124,7 +124,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "636b1ecdaff7ee4f",
-  "generated": "2026-11-17T07:09:43+00:00",
+  "hash": "96d0ee2623a28bb8",
+  "generated": "2026-11-22T02:13:37+00:00",
   "opencae_version": "0.2.0"
 }

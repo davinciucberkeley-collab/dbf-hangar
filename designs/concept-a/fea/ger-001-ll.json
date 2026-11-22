@@ -27,11 +27,11 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.113,
-      "max_von_mises_mpa": 0.113,
-      "safety_factor_at_ultimate": 111.09,
+      "max_von_mises_away_mpa": 0.115,
+      "max_von_mises_mpa": 0.115,
+      "safety_factor_at_ultimate": 109.74,
       "max_displacement_mm": 0.0006,
-      "nodes": 9169,
+      "nodes": 9190,
       "mesh_size_max_mm": 3.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.02,
@@ -52,7 +52,7 @@
       "max_von_mises_mpa": 0.0,
       "safety_factor_at_ultimate": 999.0,
       "max_displacement_mm": 0.0,
-      "nodes": 9169,
+      "nodes": 9190,
       "mesh_size_max_mm": 3.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.019,
@@ -77,7 +77,7 @@
         {
           "name": "E-GER-08 from ger-002-ll",
           "force_n": [
-            -9.471,
+            -9.47,
             0.0,
             0.11
           ],
@@ -102,12 +102,12 @@
           "name": "E-GER-08 from ger-002-ll",
           "force_n": [
             0.01,
-            -0.0,
+            0.0,
             0.0
           ],
           "moment_nmm": [
-            -0.0,
             0.0,
+            -0.0,
             -0.0
           ],
           "at_mm": [
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "2efb6d400496297c",
-  "generated": "2026-11-17T07:12:26+00:00",
+  "hash": "8e5688b35a226ef4",
+  "generated": "2026-11-22T02:29:52+00:00",
   "opencae_version": "0.2.0"
 }

@@ -1,0 +1,162 @@
+- date: '2026-11-22T01:30:18Z'
+  key: attachments[E-MEC-HW-R1]
+  old: '{id: E-MEC-HW-R1, parent: mec-001-r, child: hwc-002-r, method: bolted, location:
+    [140.405, 199.012, 4.423], rated_load_n: 931.5, rating_basis: derived}'
+  new: null
+  why: break closed loop mec-001 > hwc-002 > mec-002 so the servo arm can articulate
+    (advisor W3-X path b); screw still threads into the spline via E-MEC-HW-R2/L2
+  kind: remove
+- date: '2026-11-22T01:30:26Z'
+  key: attachments[E-MEC-HW-L1]
+  old: '{id: E-MEC-HW-L1, parent: mec-001-l, child: hwc-002-l, method: bolted, location:
+    [140.405, -200.988, 4.423], rated_load_n: 931.5, rating_basis: derived}'
+  new: null
+  why: break closed loop mec-001 > hwc-002 > mec-002 so the servo arm can articulate
+    (advisor W3-X path b); screw still threads into the spline via E-MEC-HW-R2/L2
+  kind: remove
+- date: '2026-11-22T01:30:33Z'
+  key: attachments[E-MEC-02].articulation
+  old: null
+  new:
+    type: revolute
+    pivot:
+    - 140.5
+    - 200.0
+    - 7.7
+    axis:
+    - 0
+    - 0
+    - 1
+    range_deg:
+    - -15
+    - 15
+  why: 'right elevon: servo arm E-MEC-02 articulates about the arm hub and screw centre
+    (x 140.5, y 200.0, z 7.7 from mesh bounds). Right arm lever about 12.0 mm and
+    right horn lever about 9.0 mm from the meshes, so ratio about 1.33; servo range
+    limited to +-15 deg so the elevon stays inside its +-21 deg stops'
+  kind: add
+- date: '2026-11-22T01:30:43Z'
+  key: attachments[E-MEC-07].articulation
+  old: null
+  new:
+    type: revolute
+    pivot:
+    - 140.5
+    - -200.0
+    - 7.7
+    axis:
+    - 0
+    - 0
+    - 1
+    range_deg:
+    - -15
+    - 15
+  why: 'left elevon: servo arm E-MEC-07 articulates about the left arm hub and screw
+    centre (x 140.5, y -200.0, z 7.7 from mesh bounds). Left arm lever about 12.0
+    mm and left horn lever about 9.0 mm from the meshes, so ratio about 1.33; servo
+    range limited to +-15 deg so the elevon stays inside its +-21 deg stops'
+  kind: add
+- date: '2026-11-22T01:32:35Z'
+  key: mechanisms[elevon-r].driver
+  old: null
+  new: E-MEC-02
+  why: 'right elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign negative: +z arm rotation on the right drives
+    the horn pin -x); servo range +-15 deg keeps the elevon inside its +-21 deg stops;
+    rod link E-MEC-03 to E-MEC-PIN-R4 is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:32:35Z'
+  key: mechanisms[elevon-r].driven
+  old: null
+  new:
+  - E-WNG-10
+  why: 'right elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign negative: +z arm rotation on the right drives
+    the horn pin -x); servo range +-15 deg keeps the elevon inside its +-21 deg stops;
+    rod link E-MEC-03 to E-MEC-PIN-R4 is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:33:01Z'
+  key: mechanisms[elevon-r].input_range_deg
+  old: null
+  new:
+  - -15
+  - 15
+  why: 'right elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign negative: +z arm rotation on the right drives
+    the horn pin -x); servo range +-15 deg keeps the elevon inside its +-21 deg stops;
+    rod link E-MEC-03 to E-MEC-PIN-R4 is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:33:11Z'
+  key: mechanisms[elevon-r].expect
+  old: null
+  new:
+  - attachment: E-WNG-10
+    ratio: -1.33
+  why: 'right elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign negative: +z arm rotation on the right drives
+    the horn pin -x); servo range +-15 deg keeps the elevon inside its +-21 deg stops;
+    rod link E-MEC-03 to E-MEC-PIN-R4 is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:33:21Z'
+  key: mechanisms[elevon-r].link
+  old: null
+  new:
+    driver_end: E-MEC-03
+    follower_end: E-MEC-PIN-R4
+  why: 'right elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign negative: +z arm rotation on the right drives
+    the horn pin -x); servo range +-15 deg keeps the elevon inside its +-21 deg stops;
+    rod link E-MEC-03 to E-MEC-PIN-R4 is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:33:38Z'
+  key: mechanisms[elevon-l].driver
+  old: null
+  new: E-MEC-07
+  why: 'left elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign positive, mirrored side); servo range +-15 deg
+    keeps the elevon inside its +-21 deg stops; rod link E-MEC-08 to E-MEC-PIN-L4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:33:38Z'
+  key: mechanisms[elevon-l].driven
+  old: null
+  new:
+  - E-WNG-11
+  why: 'left elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign positive, mirrored side); servo range +-15 deg
+    keeps the elevon inside its +-21 deg stops; rod link E-MEC-08 to E-MEC-PIN-L4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:34:00Z'
+  key: mechanisms[elevon-l].input_range_deg
+  old: null
+  new:
+  - -15
+  - 15
+  why: 'left elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign positive, mirrored side); servo range +-15 deg
+    keeps the elevon inside its +-21 deg stops; rod link E-MEC-08 to E-MEC-PIN-L4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:34:11Z'
+  key: mechanisms[elevon-l].expect
+  old: null
+  new:
+  - attachment: E-WNG-11
+    ratio: 1.33
+  why: 'left elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign positive, mirrored side); servo range +-15 deg
+    keeps the elevon inside its +-21 deg stops; rod link E-MEC-08 to E-MEC-PIN-L4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-22T01:34:20Z'
+  key: mechanisms[elevon-l].link
+  old: null
+  new:
+    driver_end: E-MEC-08
+    follower_end: E-MEC-PIN-L4
+  why: 'left elevon: arm lever about 12.0 mm and horn lever about 9.0 mm from the
+    meshes, so ratio about 1.33 (sign positive, mirrored side); servo range +-15 deg
+    keeps the elevon inside its +-21 deg stops; rod link E-MEC-08 to E-MEC-PIN-L4
+    is the pinned pair'
+  kind: add
