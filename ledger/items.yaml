@@ -3266,11 +3266,11 @@ items:
     text: 'plane design validate table: Status column shows the tier status (t.status) instead of the row status (r.status), so passing rows in a failing tier read FAIL (core/hangar/design.py:114, since seed 6909134) [triage 2026-11-21: One-line fix: use r.status in the Status column]'
     source: reviews/2026-11-21-w3.md U3.2 (W3-R1)
     owner: ''
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: 2ef6578
     decided_in: ''
     updated: '2026-11-21'
   - id: T26
