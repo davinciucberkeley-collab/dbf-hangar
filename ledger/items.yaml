@@ -3639,11 +3639,11 @@ items:
     text: 'concept-a requirements.budget_usd imported as 2 instead of 2000: importers/dbf.py _n(x, 0) strips trailing zeros from integer strings (source params-A.json stores 2000.0 USD); fix importer (FX-1) and design (FX-2)'
     source: Tristan 2026-11-21 (P130); conductor root cause
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-23'
     units:
       - U4.1
-    evidence: ''
+    evidence: f0a8963
     decided_in: ''
     updated: '2026-11-21'
   - id: T52
@@ -3780,5 +3780,16 @@ items:
     due: ''
     units: []
     evidence: plan §3 row D37; reviews triage TR-R
+    decided_in: ''
+    updated: '2026-11-21'
+  - id: T56
+    kind: task
+    text: 'tests/fixtures/concept-a-frozen/plane.yaml keeps budget_usd: 2 (frozen pre-fix copy); do not read it as the real value; refresh only with a deliberate fixture update'
+    source: reviews/2026-11-21-fixes.md FX-2 note 2
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
     decided_in: ''
     updated: '2026-11-21'
