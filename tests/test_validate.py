@@ -111,3 +111,10 @@ def test_scorecard_outputs(example):
     sc = validate(load_design(example))
     assert "Accepted" in sc.to_markdown()
     assert "tiers" in sc.to_dict()
+
+
+def test_markdown_status_column_is_the_row_status():
+    from hangar.design import CheckResult, Scorecard, TierReport
+    tier = TierReport(2, "physics", [CheckResult("T2.a", "PASS", "fine"), CheckResult("T2.b", "FAIL", "too heavy")])
+    rows = [line for line in Scorecard("d", [tier]).to_markdown().splitlines() if line.startswith("| 2 physics |")]
+    assert [row.split(" | ")[1] for row in rows] == ["PASS", "FAIL"]
