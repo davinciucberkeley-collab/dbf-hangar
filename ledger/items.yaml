@@ -135,14 +135,14 @@ items:
     text: 'Rigid-body physics (frictionless first) to check mechanisms: motor motions, flap movements, "if you pull this, does it pull that"; drop the drone in and drag it around'
     source: plan §1; A 11-18
     owner: ''
-    status: done
+    status: open
     due: ''
     units:
       - U2.1
       - U3.1
-    evidence: 00f56ea
+    evidence: ''
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-22'
   - id: R12
     kind: ruling
     text: 'Gates: transport by car (the box), no exposed wires and rules for how wiring works'
@@ -3302,12 +3302,12 @@ items:
     text: "U3.4 acceptance: Tristan runs Vaibhav's Windows FEA check and Dillon's no-terminal Studio iteration himself, logged as done by Tristan; Tristan does the Studio iteration cold as an outside user, so it counts for R9 (amended 2026-11-21); Tristan approves concept-a PRs (R25) until Dillon is available"
     source: Tristan, conductor session 2026-11-21
     owner: Tristan
-    status: open
+    status: decided
     due: ''
     units: []
-    evidence: ''
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-22'
   - id: T28
     kind: task
     text: "T9: 40 concept-a claims SKIP: calc function 'read_value' is not registered (U3.4 run 2026-11-21); blocks flutter/divergence claims that gate the elevon balance-mass change [triage 2026-11-21: 40 read_value claims stay SKIP and are named on the metrics slide as not recomputed (D34)]"
@@ -3371,12 +3371,12 @@ items:
     text: 'U3.4 Step 3 acceptance amended: FAIL not higher and FAIL+WARN lower than baseline.json (T8 report-only excluded), 0 core/standards/schema files, kinds logged, no rating or threshold change; next run declares elevon mechanisms (0 g) then at most 2 sim_rest sweeps'
     source: advisor W3-X; Tristan approval in chat 2026-11-21
     owner: Tristan
-    status: open
+    status: decided
     due: ''
     units: []
-    evidence: ''
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-22'
   - id: T33
     kind: task
     text: '.claude/agents/design-engineer.md line 21 shows plane design set <key> <value> but value is --value; add --also and the --kind add flow-collection form (after U3.6c merges) [triage 2026-11-21: Doc-only fix, precondition (U3.6c) met]'
@@ -3583,12 +3583,12 @@ items:
     text: 'D25 amended: T6.link WARN rows (declared-link exemption reports, U3.6e) do not count toward the U3.4 FAIL+WARN total; run 6 traded 2 T6.undriven WARN for 2 T6.link WARN plus 4 T6 PASS'
     source: Tristan in chat 2026-11-21 (option a, P127)
     owner: Tristan
-    status: open
+    status: decided
     due: ''
     units: []
-    evidence: ''
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-22'
   - id: T50
     kind: task
     text: 'plane design migrate writes one CHANGELOG entry for the schema migration (reviewer W3-R2, PR #3 suggestion 1) [triage 2026-11-21: Reviewer suggestion (PR #3, suggestion 1)]'
@@ -3901,5 +3901,49 @@ items:
     due: ''
     units: []
     evidence: ledger/prompts.jsonl
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: D43
+    kind: decision
+    text: R11 'drag the drone around' (interactive frictionless physics in Studio) is deferred to v1.1; v1.0 covers R11 with analytic T6 mechanisms and Physics mode; R11 reopened
+    source: reviews/2026-11-22-whole-branch.md B2; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-22-whole-branch.md
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: D44
+    kind: decision
+    text: Studio Knowledge mode is not in v1.0 (knowledge stays readable as files and on Pages); v1.1
+    source: reviews/2026-11-22-whole-branch.md B2; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-22-whole-branch.md
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: I1
+    kind: idea
+    text: Studio Build, BOM, Proofs and Morph modes in v1.0
+    source: plan §2.7; briefs/U3.1-studio.md:35,51
+    owner: Tristan
+    status: dropped
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: plan §6a row 4
+    updated: '2026-11-22'
+  - id: T62
+    kind: task
+    text: Dillon checks concept-a claims against the Explorer (U2.5 Step 4 acceptance, 15 min) and records who/when/result; the BOM half waits for U2.5d (D33)
+    source: reviews/2026-11-22-whole-branch.md B3
+    owner: Dillon
+    status: open
+    due: '2026-11-29'
+    units: []
+    evidence: ''
     decided_in: ''
     updated: '2026-11-22'

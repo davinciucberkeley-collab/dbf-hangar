@@ -312,6 +312,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D39 | W4c: what does `test_concept_a_d21_on_disk` assert once concept-a has D21 data? | that each discipline gate reads the fields set (no "missing" SKIP), not that concept-a passes; test-only unit before the data commit | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
 | D40 | W4c: gate-only propulsion keys stale all 28 FEA results (G1) | fix the FEA hash keys first (FEA reads only axis and max_thrust_n); no re-run | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
 | D41 | W4c: hrn-bat `exposed_ok` and the 14 AWG harness FAIL | `exposed_ok` unset (no source); FAIL kept as a real finding (T60), report-only | Tristan | 11-22 | decided: default (standing rule, 2026-11-22) |
+| D43 | R11 "drag the drone around" (interactive physics in Studio) for v1.0? | no: v1.1; v1.0 covers R11 with analytic T6 and Physics mode; R11 reopened | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
+| D44 | Studio Knowledge mode in v1.0? | no: v1.1; knowledge stays readable as files and on Pages | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
