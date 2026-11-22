@@ -574,6 +574,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-RA | `reviewer` | Opus (fresh) | every track A and B branch | `reviews/2026-11-2x-w4.md` | "### Verdict: ACCEPT" per unit |
 | W4-Au | `auditor` | Haiku | session state | hourly report | ≤ 15 lines |
 | W4-X | `advisor` | Opus | hard brief check; a unit that failed review twice | recommendation | one dispatch |
+| W4-TC | `tactician` | Sonnet | D38, D21, U3.6 brief handoff (battery, motor, wiring, control-surface fields); DBF-Combined `params-A.json` and BOM as value sources | `briefs/W4c-concept-a-d21.md`: the exact `plane design set` command list with source per value, dry-run on a tmp copy (R-a), expected gate changes | every command dry-run green on a tmp copy; no tool gap left unflagged |
+| W4-C | `design-engineer` | Sonnet | `briefs/W4c-concept-a-d21.md` | commit on `main` (D30): `designs/concept-a` values + CHANGELOG + `fea/*.json` + `baseline.json` | brief's checks; `plane baseline check` exit 0; part ids `wng-004-l`, `avn-001` kept |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
