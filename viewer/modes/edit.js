@@ -274,9 +274,9 @@ function prPanel(pr) {
 function renderResults(box, d) {
   const r = results[d.id] || {};
   const panels = [];
-  if (r.validate) panels.push(h('div', { class: 'studio-result', 'data-edit': true, 'data-testid': 'validate-result' }, validatePanel(r.validate)));
   const pr = r.pr ? h('div', { class: 'studio-result', tabindex: -1, 'data-edit': true, 'data-testid': 'pr-result' }, prPanel(r.pr)) : null;
   if (pr) panels.push(pr);
+  if (r.validate) panels.push(h('div', { class: 'studio-result', 'data-edit': true, 'data-testid': 'validate-result' }, validatePanel(r.validate)));
   box.querySelector('.studio-bar')?.after(...panels);
   if (r.focus) { delete r.focus; pr?.scrollIntoView({ block: 'center' }); pr?.focus(); }
 }

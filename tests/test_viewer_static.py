@@ -320,6 +320,9 @@ def test_propose_link_survives_real_git_side_effects(browser, concept_a_studio, 
     page.click('[data-testid="save"]')
     page.wait_for_selector("dialog.dlg", state="detached", timeout=30000)
     _wait_studio_idle(concept_a_studio)
+    page.wait_for_selector('[data-testid="btn-validate"]:not([disabled])', timeout=240000)
+    page.click('[data-testid="btn-validate"]')
+    page.wait_for_selector('[data-testid="validate-result"]', timeout=240000)
     page.wait_for_selector('[data-testid="btn-propose"]', timeout=60000)
 
     page.click('[data-testid="btn-propose"]')
@@ -329,6 +332,10 @@ def test_propose_link_survives_real_git_side_effects(browser, concept_a_studio, 
     expect(page.locator('[data-testid="pr-result"]')).to_be_in_viewport()
     assert page.get_attribute('a[data-testid="pr-link"]', "href") == URL
     assert page.locator(f'#toasts a[href="{URL}"]').count() == 1
+    # the PR panel sits above the long validation list
+    assert page.evaluate(
+        "() => !!(document.querySelector('[data-testid=pr-result]').compareDocumentPosition("
+        "document.querySelector('[data-testid=validate-result]')) & Node.DOCUMENT_POSITION_FOLLOWING)")
     page.wait_for_timeout(6000)  # longer than a normal toast lasts: a toast with a link must stay
 
     _wait_studio_idle(concept_a_studio)  # the revert triggers a re-check; the link must stay
