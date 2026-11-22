@@ -1090,7 +1090,7 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 
 - [x] **Step 2: Run** → FAIL
 - [x] **Step 3: Implement**; the importer is the only code that knows DBF-Combined's layout.
-- [x] **Step 4: Run** → PASS; `plane design validate designs/concept-a` scorecard committed as the new baseline; Dillon checks the BOM and claims against the Explorer (acceptance, 15 min)
+- [ ] **Step 4: Run** → PASS; `plane design validate designs/concept-a` scorecard committed as the new baseline; Dillon checks the BOM and claims against the Explorer (acceptance, 15 min) *(Reopened 2026-11-22, whole-branch review B3: no record of the claims check, T62; BOM part waits for U2.5d, D33.)*
 - [x] **Step 5: Commit** (label `migration`) `git commit -m "import: concept A full (params, BOM, requirements, claims, interfaces); program constraints; decision log"`
 
 ### Unit U3.1: One surface — Studio with modes, same app on Pages [hard]
