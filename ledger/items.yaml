@@ -3453,11 +3453,11 @@ items:
     text: 'Studio follow-ups (U3.1b r2 review): PR panel renders below the 599-row validation list (put PR panel first or collapse validation); add a Validate click before Propose in test_propose_link_survives_real_git_side_effects; style the toast dismiss .icon outside dialogs [triage 2026-11-21: Three sub-items left: panel order (edit.js renderResults), Validate click in the propose test, .toast .icon style]'
     source: reviews/2026-11-21-w3.md U3.1b round 2 (W3-R2)
     owner: ''
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: e1e6b8c
     decided_in: ''
     updated: '2026-11-21'
   - id: T40
