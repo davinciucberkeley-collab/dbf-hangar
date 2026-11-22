@@ -22,6 +22,7 @@ FIX = Path(__file__).parent / "fixtures"
 TODAY = datetime.date(2026, 11, 20)
 IDS = ("T2.joint_rf", "T3.control_authority", "T3.transition_margin", "T3.endurance", "T7.electrical_rating")
 CONCEPT_A = DESIGNS_DIR / "concept-a"
+CONCEPT_A_FROZEN = REPO_ROOT / "tests" / "fixtures" / "concept-a-frozen"
 
 CONCEPT_A_D21 = {
     "schema_version": "1.0",
@@ -379,7 +380,7 @@ def test_existing_gate_rows_fire_concept_a():
 # ---- design set on the new battery fields (moved from U3.6-2 test 8) ----
 def test_add_battery_pair_is_inserts_only(tmp_path):
     dst = tmp_path / "concept-a"
-    shutil.copytree(CONCEPT_A, dst, ignore=shutil.ignore_patterns("fea"))
+    shutil.copytree(CONCEPT_A_FROZEN, dst, ignore=shutil.ignore_patterns("fea"))
     plane = dst / "plane.yaml"
     old = plane.read_text(encoding="utf-8").splitlines()
     r = call("design.set", path=str(dst), key="components[pwr-001].battery.capacity_mah", value="2300",
