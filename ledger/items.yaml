@@ -3529,3 +3529,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-21'
+  - id: T49
+    kind: task
+    text: "U3.6e follow-ups (non-blocking): T6 jam check still uses the declared ratio (a design can pass T6.mechanism at +-35 while the real linkage hits the elevon stop at about +-16; T6.ratio catches it); reconcile program.yaml#physics_pass wording with the T6.link 'not checked (pinned by declared link)' WARN; ratio check is small-angle only"
+    source: reviews/2026-11-21-w3.md U3.6e (W3-R2)
+    owner: ''
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-21'
