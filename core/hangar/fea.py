@@ -76,7 +76,22 @@ def find_opencae(python: str | None = None, root: str | None = None) -> dict:
     return {"python": py, "root": rt, "found": found, "how": how}
 
 
+def runner_python_error(python: str) -> str:
+    """Empty when `python` can import numpy and scipy (OpenCAE's runner needs both); otherwise one line saying why not."""
+    try:
+        p = subprocess.run([str(python), "-c", "import numpy, scipy"], capture_output=True, text=True, timeout=120)
+    except (OSError, subprocess.SubprocessError) as e:
+        return f"cannot run {python}: {e}"
+    if p.returncode == 0:
+        return ""
+    lines = (p.stderr or p.stdout).strip().splitlines()
+    return f"{python} cannot import numpy and scipy ({lines[-1] if lines else 'import failed'})"
+
+
 def save_config(python: str, root: str) -> Path:
+    why = runner_python_error(python)
+    if why:
+        raise ValueError(why)
     CONFIG_FILE.write_text(json.dumps({"python": python, "root": root}, indent=2) + "\n")
     return CONFIG_FILE
 

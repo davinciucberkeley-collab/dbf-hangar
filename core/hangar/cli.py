@@ -204,7 +204,11 @@ def fea_cmd(path, parts, all_parts, plan_only, setup, opencae_python, opencae_ro
     if setup:
         if not oc["found"]:
             _fail(f"OpenCAE not found with python={oc['python']!r} root={oc['root']!r}")
-        click.echo(f"saved {fea.save_config(oc['python'], oc['root'])}")
+        try:
+            saved = fea.save_config(oc["python"], oc["root"])
+        except ValueError as e:
+            _fail(str(e))
+        click.echo(f"saved {saved}")
         if not path:
             return
     if not path:

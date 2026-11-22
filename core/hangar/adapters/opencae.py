@@ -21,6 +21,10 @@ class OpenCAE:
     def available(self) -> tuple[bool, str]:
         oc = fea.find_opencae()
         if oc["found"]:
+            why = fea.runner_python_error(oc["python"])
+            if why:
+                return False, (f"{why}; run: plane fea setup --opencae-python <python of the environment with numpy, "
+                               f"scipy and OpenCAE's libraries> --opencae-root {oc['root']}")
             detail = f"OpenCAE python={oc['python']} root={oc['root']} (found via {oc['how']})"
             exe = shutil.which("opencae")
             if exe:
