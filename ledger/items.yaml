@@ -3394,11 +3394,11 @@ items:
     text: 'Studio: saving a string field (Name, Description) on concept-a fails with a raw ParserError from pdledit.patch_text; numbers save fine [triage 2026-11-21: Wrap the reparse so it raises OpInputError, and make Name and Description saveable (or show the error in Studio)]'
     source: reviews/2026-11-21-w3.md U3.1b (W3-R2)
     owner: ''
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.1
-    evidence: ''
+    evidence: a7e2e88
     decided_in: ''
     updated: '2026-11-21'
   - id: T35
