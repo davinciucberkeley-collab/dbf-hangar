@@ -64,5 +64,8 @@ def setup_op(opencae_python: str = "", opencae_root: str = "") -> OpResult:
     oc = fea_core.find_opencae(opencae_python or None, opencae_root or None)
     if not oc["found"]:
         raise OpInputError(f"OpenCAE not found with python={oc['python']!r} root={oc['root']!r}")
-    p = fea_core.save_config(oc["python"], oc["root"])
+    try:
+        p = fea_core.save_config(oc["python"], oc["root"])
+    except ValueError as e:
+        raise OpInputError(str(e)) from e
     return OpResult(True, {"config": p.as_posix()}, [f"saved {p}"], changed_files=[p.as_posix()])
