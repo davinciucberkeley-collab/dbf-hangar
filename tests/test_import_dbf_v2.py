@@ -225,3 +225,21 @@ def test_scaled_mapping_resolves_and_flows(tmp_path, monkeypatch):
     plane.write_text(text.replace("mtow_g: 500", "mtow_g: 600"), encoding="utf-8")
     r = {c.id: c for c in load_claims(load_design(d)).recompute()}
     assert r["CL-PDL-REQ-LIM"].value == pytest.approx(1.2)
+
+
+def test_n_keeps_integer_zeros():
+    from hangar.importers.dbf import _n
+    assert _n(2000, 0) == "2000"
+    assert _n(10, 0) == "10"
+    assert _n(0, 0) == "0"
+    assert _n(2000.0, 1) == "2000"
+    assert _n(1.50, 2) == "1.5"
+
+
+@pytest.mark.skipif(not (DBF / "redesign/qp/A/params-A.json").exists(), reason="DBF-Combined clone not present")
+def test_concept_a_budget_line_is_2000():
+    from hangar.importers.dbf import _n
+    P = json.load(open(DBF / "redesign/qp/A/params-A.json", encoding="utf-8"))
+    v = P["req"]["budget_usd"]["value"]
+    assert v == 2000.0
+    assert _n(v, 0) == "2000"

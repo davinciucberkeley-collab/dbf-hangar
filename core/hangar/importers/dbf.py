@@ -221,7 +221,9 @@ def _n(x: float, nd: int = 4) -> str:
     r = round(float(x), nd)
     if r == 0:
         r = 0.0
-    s = f"{r:.{nd}f}".rstrip("0").rstrip(".")
+    s = f"{r:.{nd}f}"
+    if "." in s:
+        s = s.rstrip("0").rstrip(".")
     return s if s not in ("", "-0") else "0"
 
 
