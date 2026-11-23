@@ -1310,7 +1310,7 @@ Not a code unit; it tests everything above.
 **Scope:** T83 explain the remaining FAIL-only check ids; T86 T3 nested-import rollback and the mixed point-mass/mesh harness test; T88 move `PROP_CHAIN_MAX_INTERMEDIATE` to `standards/*.yaml` with a source or `pending`; T90 one shared `hangar/ids.py` `ID_RE` with fullmatch in mcp_server.py and morph.py, Studio message wording. T28 stays held until after Dec 2 (D52); T67 and the T4-T19 items come in a later batch.
 
 - [x] **Step 1: Briefs** (tactician W12-T): `briefs/U4.10-*.md` *(four easy briefs, landed in 285d9e4; order: T88+T90, then T83 before T86)*
-- [ ] **Step 2: Build** (W12-B, one per brief; at most 2 at once)
+- [x] **Step 2: Build** (W12-B, one per brief; at most 2 at once) *(t88 9c8375a, t90 018f74e, t83 e7efc5c, t86 4a1263f; all builder)*
 - [ ] **Step 3: Review** (reviewer W12-R); merge; T83, T86, T88, T90 done
 
 ### Unit U4.11: Recompute the 40 read_value claims (T28; D59 overrules D52)
