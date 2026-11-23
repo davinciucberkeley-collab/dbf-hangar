@@ -3674,11 +3674,11 @@ items:
     text: "import_concept(DBF-Combined, 'A') fails: KeyError 'mesh' at importers/dbf_geometry.py:277 body_mesh _KIND[shape['kind']]; full re-import is broken (blocks T24 / U2.5d)"
     source: FX-1 builder 2026-11-21
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: d421013
     decided_in: ''
     updated: '2026-11-22'
   - id: T54
