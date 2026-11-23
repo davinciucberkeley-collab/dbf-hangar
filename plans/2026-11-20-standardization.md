@@ -304,7 +304,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D29 | U2.2-2: how entries link to morph-chart cells | fixed code-mapping table; L6, L8 approximate and flagged | Tristan | 11-22 | decided: default (standing rule, 2026-11-21) |
 | D31 | T2: James's harness-install run before Dec 2? | U4.1 until 11-29; else the CI install test is the evidence, the tester run moves to v1.1, and the slides make no teammate-machine claim | Tristan | 11-29 | decided: default (standing rule, 2026-11-21) |
 | D32 | T12: mass gate 2.6 vs 2.7 kg and the other conflicting standards keys | v1.1; keys stay `pending`; slides quote no mass-gate number | Tristan | 11-26 | decided: default (standing rule, 2026-11-21) |
-| D33 | T24: U2.5d concept-a re-import cannot land before the 11-30 freeze | v1.1 unit written into §7 by 11-25; R1, R12, R14, R17, R31 shown as open gaps on Dec 2 | Tristan | 11-25 | decided: default (standing rule, 2026-11-21) |
+| D33 | T24: U2.5d concept-a re-import cannot land before the 11-30 freeze | v1.1 unit written into §7 by 11-25; R1, R12, R14, R17, R31 shown as open gaps on Dec 2 | Tristan | 11-25 | decided: default (standing rule, 2026-11-21) (2026-11-23: R31 later closed by T72, D53) |
 | D34 | T28: port the 40 `read_value` echo functions or mark them stored evidence? | v1.1; the 40 claims stay SKIP and are named on the metrics slide as not recomputed | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
 | D35 | T40: run the U2.2-2 knowledge import in v1.0? | v1.1 (not demo-blocking); launched earlier only if W4 has a free slot | Tristan | 11-24 | overruled by Tristan 2026-11-22 (D42): run now |
 | D36 | T9: SITL and collide.py adapters, open or dropped (§6a cut 5)? | open, v1.1 | Tristan | 11-27 | decided: default (standing rule, 2026-11-21) |
@@ -614,7 +614,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W5-R | `reviewer` | Opus (fresh) | every U4.3 branch | `reviews/2026-11-23-w5.md` | "### Verdict:" per branch |
 | W5-A | `auditor` | Haiku | hourly overnight audit | report | findings acted on |
 | W6-T | `tactician` | Sonnet | U4.4 briefs for T84, T85, T15, T21, T23, T3, T20 | `briefs/U4.4-*.md` | builder-ready bar; R-a, R-b |
-| W6-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.4 brief each | branch `std/u4.4-<task>` | brief checks; CI green |
+| W6-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.4 brief each | branch `std/u4.4-<task>` | brief checks; CI green; launched: W6-B1 = t21 (builder, Haiku), W6-B2 = t84 [hard] (builder-plus, Sonnet), W6-B3 = t3 (builder, Haiku) |
 | W6-R | `reviewer` | Opus (fresh) | every U4.4 branch | `reviews/2026-11-23-w6.md` | "### Verdict:" per branch |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -1132,7 +1132,7 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 **Interfaces:**
 - Consumes: `import_concept(dbf_root, concept="A", out_dir=None, log=print) -> Path` (`importers/dbf.py:239`), the `design.set` op (`ops/edit.py:38`), `claim.import-dbf` (`ops/import_dbf.py:16`), `fea.run` (`ops/fea.py:27`), `bom.cost` (`ops/bom.py:88`), `assembly.animate` (`ops/assembly.py:16`)
 - Produces: `dbf_blocks.bom_block(root: Path, concept: str, parts_csv: dict[str, dict], commit8: str) -> str`; `files_block(mesh_ids: list[str], commit8: str) -> str`; `wiring_block(edges: list[dict], wire_ids: set[str], commit8: str) -> str`; `transport_block(component_ids: list[str]) -> str`; `assembly_block(steps: list[dict], component_ids: list[str]) -> str`; `dbf_geometry._KIND["mesh"]`; `dbf._retention_n(edge: dict) -> float | None`. Each `*_block` returns YAML text for one top-level key (column 0, ends with a newline).
-- Closes: R1, R12, R14, R17, R31 (data gaps, criteria in Part D); ledger T24, T53; the BOM half of T62 becomes runnable.
+- Closes: R1, R12, R14, R17, R31 (data gaps, criteria in Part D); ledger T24, T53; the BOM half of T62 becomes runnable. *(R31 did not close here: animate failed at step 44, T72; closed by U4.3 T72, D53)*
 
 - [x] **Step 1: Failing tests** (core PR): `test_mesh_kind_volume_in_mm3`, `test_retention_n_ignores_non_numeric`, `test_conn_method_knows_pitot_tubing`, `test_bom_block_*` (3), `test_files_block_lists_every_mesh`, `test_wiring_block_*` (2), `test_transport_block_one_group`, `test_assembly_block_*` (3), `test_dump_exposes_assembly_steps` (skipif DBF clone missing)
 - [x] **Step 2: Run** → FAIL
