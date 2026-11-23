@@ -21,7 +21,7 @@ from .export import export_glb, export_stl, export_json
 from .mass import mass_properties
 from . import ops
 
-ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
+from .ids import ID_RE
 DEFAULT_TEMPLATE = "example-tailsitter-wing"
 
 

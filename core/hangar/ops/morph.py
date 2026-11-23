@@ -28,9 +28,9 @@ def _load_chart(root: Path) -> dict:
                                      "entry in knowledge/sources/).",
     mutates=True, render=lambda r: r.data["line"])
 def add_option(dimension: str, id: str, name: str, source: str) -> OpResult:
-    if not ID_RE.match(id):
+    if not ID_RE.fullmatch(id):
         raise OpInputError(f"option id {id!r} must match {ID_RE.pattern}")
-    if not ID_RE.match(source):
+    if not ID_RE.fullmatch(source):
         raise OpInputError(f"source {source!r} must match {ID_RE.pattern}")
     if not name.strip():
         raise OpInputError("name must not be empty")

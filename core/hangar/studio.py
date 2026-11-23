@@ -26,7 +26,7 @@ from urllib.parse import parse_qs, urlparse
 import yaml
 
 from . import __version__
-from .cli import ID_RE
+from .ids import ID_RE
 from .design import DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, list_designs, load_design
 from .index import design_entry, dumps, error_entry, index_extras
 from .ops import OpResult, call, registry
@@ -347,7 +347,7 @@ def confine_op_params(name: str, params: dict) -> str | None:
             return f"{name}: {key} is not available from Studio"
         if (name, key) in _ID_PARAMS:
             if not ID_RE.fullmatch(value):
-                return f"{name}: {key} {value!r} is outside designs/; Studio only takes a bare design id"
+                return f"{name}: {key} {value!r} must be a bare id (lowercase letters, digits, '-' and '_'); Studio takes no path for it"
             continue
         if key not in _DESIGN_PARAMS:
             continue
