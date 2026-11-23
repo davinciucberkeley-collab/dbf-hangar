@@ -732,13 +732,13 @@ items:
     text: '/api/op lets ops read/write any local path (old routes were confined to designs/); revisit path confinement in U3.1 [triage 2026-11-21: Still open]'
     source: reviews/2026-11-21-w1.md U1.2 note 6
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: ab0ad38
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T8
     kind: task
     text: "design.set on a plain string containing ', ' (e.g. concept-a name) exits 1 instead of 2: pdledit token pattern stops at the comma; nothing written"
@@ -4341,5 +4341,16 @@ items:
     due: ''
     units: []
     evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T89
+    kind: task
+    text: "bench.run 'agent' is not id-checked (ops/bench.py:199): '../../<dir>/x' copies any .md into the bench workspace and runs claude --agent with it; ID-check agent in the op or refuse bench.run from Studio; also ID_RE.match accepts a trailing newline (use fullmatch) and ID_RE is defined twice (cli.py:24, studio.py:39)"
+    source: W7-R re-review 2026-11-23
+    owner: conductor
+    status: open
+    due: '2026-12-05'
+    units: []
+    evidence: ''
     decided_in: ''
     updated: '2026-11-23'

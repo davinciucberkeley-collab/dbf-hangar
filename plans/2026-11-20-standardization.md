@@ -1259,8 +1259,8 @@ Not a code unit; it tests everything above.
 **Scope:** T7 (Studio `/api/op` path confinement to the repo's designs/ and tmp outputs) [hard], T86 and T87 (W6-R follow-ups), T83 (`gate explain` for FAIL-only ids; design-engineer doc line), T50 (`design migrate` writes a CHANGELOG entry), T54 (bench grader protects designs/; newline), T55 (pdledit flow-list append/remove). Core, tests, docs and agent docs only; no `designs/`, `standards/` or CI workflow change.
 
 - [x] **Step 1: Briefs** (tactician W7-T): `briefs/U4.5-<task>.md`, builder-ready (R-a, R-b) *(six briefs; T55 not briefed: flow-list key syntax undefined, needs Tristan; T54 newline half only; T86 four of six sub-items; T83 table holds T1.attachment_contact only)*
-- [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
-- [ ] **Step 3: Review** W7-R; merge; tasks set done with the merge commit
+- [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t54 c3bf979, t50 8dc23ca, t87 bf71e18, t83 34a715a, t86 2c57859, t7 cefea52)*
+- [x] **Step 3: Review** W7-R; merge; tasks set done with the merge commit *(six ACCEPT, T7 after one REOPEN (D54); reviews/2026-11-23-w7.md; last merge ab0ad38; T54 T83 T86 stay open for undone halves; T55 not briefed; T89 follow-up)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
