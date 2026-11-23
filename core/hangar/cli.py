@@ -590,8 +590,12 @@ def _log_invocation() -> None:
     """T54: when the bench grader sets PLANE_BENCH_LOG, append this command (argv and cwd) to that file as one JSON line before it runs."""
     path = os.environ.get(BENCH_LOG_ENV)
     if path:
-        with open(path, "a", encoding="utf-8", newline="\n") as f:
-            f.write(json.dumps({"argv": sys.argv[1:], "cwd": str(Path.cwd())}) + "\n")
+        try:
+            with open(path, "a", encoding="utf-8", newline="\n") as f:
+                f.write(json.dumps({"argv": sys.argv[1:], "cwd": str(Path.cwd())}) + "\n")
+        except OSError as e:      # T93: one line, not a traceback; the command does not run unlogged
+            click.echo(f"plane: cannot write {BENCH_LOG_ENV} {path}: {e.strerror or e}", err=True)
+            sys.exit(2)
 
 
 def main():

@@ -17,10 +17,16 @@ from typing import Literal
 import yaml
 
 from . import op, call, registry, OpResult, OpInputError
+from ..design import DESIGNS_DIR_ENV
 from ._paths import repo_root, rel
 
 PROTECTED = ("core", "schema", "standards")
 REPLAY_TIMEOUT_S = 600
+# T92: a logged command is replayed only when it is one of these (they write only below the design folders they are given,
+# or, for design new, below DESIGNS_DIR, which the grader points into the workspace); read-only commands are skipped;
+# any other command that can write (bench run, fea run, design export, ledger, update, import, baseline, ...) fails the run unexecuted.
+REPLAY_ALLOW = (("design", "set"), ("design", "copy"), ("design", "new"), ("new",))
+READ_ONLY_LEGACY = ("validate", "mass", "list")       # old top-level commands that only read
 NOT_COMPARED = ("fea", ".sweeps", "__pycache__")      # the folders prepare_workspace does not copy; designs_diff skips them too
 MODEL_ORDER = {"haiku": 0, "sonnet": 1, "opus": 2}
 TIMEOUT_S = 1200
@@ -130,20 +136,64 @@ def prepare_workspace(task: dict, dest, repo, agent: str = "design-engineer") ->
 
 
 def snapshot_design(task: dict, ws) -> Path:
-    """T54: copy the prepared workspace design (before the agent runs) to <ws parent>/snapshot/designs/<name>, outside the
-    workspace so the agent's commands cannot reach it; return <ws parent>/snapshot."""
+    """T54: copy the prepared workspace design (before the agent runs) to <ws parent>/snapshot/designs/<name>; return
+    <ws parent>/snapshot. It lies next to the workspace, so a command could name it: T92 pins it with tree_digest
+    (taken in memory right after this call, checked before the replay) and replay refuses any argument that names a path outside the workspace."""
     snap = Path(ws).parent / "snapshot"
     shutil.copytree(design_dir(ws, task), snap / "designs" / Path(task["start_design"]).name)
     return snap
 
 
-def replayable(argv: list[str]) -> bool:
-    """False only for a command known to be read-only (an op with mutates=False, matched on its first two words);
-    every other command, including an unknown one, is replayed."""
-    for spec in registry().values():
+def tree_digest(root) -> str:
+    """T92: sha256 over every file below `root` (relative path and content), so any added, removed or changed file changes it."""
+    root, h = Path(root), hashlib.sha256()
+    for p in sorted(root.rglob("*")):
+        if p.is_file():
+            h.update(p.relative_to(root).as_posix().encode("utf-8") + b"\0" + hashlib.sha256(p.read_bytes()).digest())
+    return h.hexdigest()
+
+
+def replay_kind(argv: list[str]) -> Literal["skip", "replay", "refuse"]:
+    """T92: "skip" for a command that cannot write (no words, an option such as --version, a group without a known verb,
+    an op with mutates=False matched on its first two words, validate/mass/list); "replay" for REPLAY_ALLOW;
+    "refuse" for everything else."""
+    if not argv or argv[0].startswith("-") or argv[0] in READ_ONLY_LEGACY:
+        return "skip"
+    if any(argv[:len(a)] == list(a) for a in REPLAY_ALLOW):
+        return "replay"
+    specs = registry().values()
+    for spec in specs:
         if argv[:2] == [spec.group, spec.verb]:
-            return spec.mutates
-    return True
+            return "refuse" if spec.mutates else "skip"
+    if any(argv[0] == spec.group for spec in specs):      # a registered group with a missing or unknown verb: click prints help or a usage error ...
+        from ..cli import cli, _FallbackGroup
+        return "refuse" if isinstance(cli.commands.get(argv[0]), _FallbackGroup) else "skip"      # ... except where the old command runs (plane fea PATH)
+    return "refuse"
+
+
+def _map_args(argv: list[str], cwd: str, ws: Path, fresh: Path) -> list[str]:
+    """T93/T92: an argument that names an existing path is resolved against the logged cwd; inside the workspace it becomes the
+    same path inside `fresh` (short names, case and ../ forms included, because the comparison is on resolved paths);
+    outside the workspace is a ValueError. Other arguments are kept."""
+    base, ws_r, out = Path(cwd), ws.resolve(), []
+    for a in argv:
+        if not a or a.startswith("-"):
+            out.append(a)
+            continue
+        try:
+            p = base / a
+            found = p.exists()
+            r = p.resolve() if found else None
+        except (OSError, ValueError):
+            found, r = False, None
+        if not found:
+            out.append(a)
+            continue
+        try:
+            out.append(str(fresh / r.relative_to(ws_r)))
+        except ValueError:
+            raise ValueError(f"`plane {' '.join(argv)}` names a path outside the workspace: {a}") from None
+    return out
 
 
 def _files(root: Path) -> dict[str, Path]:
@@ -173,31 +223,45 @@ def designs_diff(a, b) -> list[str]:
     return sorted(n for n in set(fa) | set(fb) if n not in fa or n not in fb or _content(fa[n]) != _content(fb[n]))
 
 
-def replay(ws, snapshot, log) -> list[str]:
-    """T54 (D56): run the logged plane commands that can write (see replayable) on a fresh copy of `snapshot` and compare
+def replay(ws, snapshot, log, digest=None) -> list[str]:
+    """T54 (D56): run the logged plane commands that replay_kind says to replay on a fresh copy of `snapshot` and compare
     its designs/ with ws/designs. Returns [] when they match, else one message. Exit codes of the replayed commands are
-    ignored: a command that failed for the agent fails the same way here."""
+    ignored: a command that failed for the agent fails the same way here. T92: with `digest` (tree_digest of the snapshot
+    taken before the agent ran) a changed snapshot is a message; a command replay_kind refuses, or one that names a path
+    outside the workspace, is a message and nothing is run."""
     ws, snapshot, log = Path(ws), Path(snapshot), Path(log)
     try:
         rows = [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines() if line.strip()] if log.is_file() else []
         entries = [(list(e["argv"]), str(e["cwd"])) for e in rows]
     except (ValueError, KeyError, TypeError, OSError):
         return ["the plane command log is unreadable; cannot replay"]
+    if digest is not None and tree_digest(snapshot) != digest:
+        return ["the pre-run snapshot changed during the run; cannot replay"]
     from ..cli import BENCH_LOG_ENV
     fresh = ws.parent / "replay"
+    todo = []
+    for argv, cwd in entries:                       # check every command before running any
+        kind = replay_kind(argv)
+        if kind == "refuse":
+            return [f"`plane {' '.join(argv)}` is not a command a bench run may use (allowed: read-only commands and "
+                    + ", ".join(" ".join(a) for a in REPLAY_ALLOW) + "); not replayed"]
+        if kind == "skip":
+            continue
+        try:
+            where = fresh / Path(cwd).resolve().relative_to(ws.resolve())
+        except ValueError:
+            return [f"`plane {' '.join(argv)}` ran in {cwd}, outside the workspace; not replayed"]
+        try:
+            todo.append((_map_args(argv, cwd, ws, fresh), where))
+        except ValueError as e:
+            return [str(e)]
     if fresh.exists():
         shutil.rmtree(fresh)
     shutil.copytree(snapshot / "designs", fresh / "designs")
     (fresh / "pyproject.toml").write_bytes(b"")
     env = {k: v for k, v in os.environ.items() if k != BENCH_LOG_ENV}
-    for argv, cwd in entries:
-        if not replayable(argv):
-            continue
-        argv = [a.replace(str(ws), str(fresh)).replace(ws.as_posix(), fresh.as_posix()) for a in argv]
-        try:
-            where = fresh / Path(cwd).resolve().relative_to(ws.resolve())
-        except ValueError:
-            where = fresh
+    env[DESIGNS_DIR_ENV] = str(fresh / "designs")
+    for argv, where in todo:
         try:
             subprocess.run([sys.executable, "-m", "hangar.cli", *argv], cwd=str(where if where.is_dir() else fresh), env=env,
                            capture_output=True, text=True, encoding="utf-8", timeout=REPLAY_TIMEOUT_S)
@@ -209,7 +273,7 @@ def replay(ws, snapshot, log) -> list[str]:
     return []
 
 
-def grade(task: dict, ws, repo, snapshot=None, log=None) -> dict:
+def grade(task: dict, ws, repo, snapshot=None, log=None, digest=None) -> dict:
     """Run every grader row through the ops. passed = every row ok and nothing protected changed
     (and, when `snapshot` and `log` are given, designs/ equals the replay of the logged plane commands on the snapshot);
     score = rows ok / rows, or 0.0 if anything protected changed or the replay differs."""
@@ -239,7 +303,7 @@ def grade(task: dict, ws, repo, snapshot=None, log=None) -> dict:
         if (ws / name).exists():
             messages.append(f"{name}/ exists in the workspace")
     if snapshot is not None:
-        messages += replay(ws, snapshot, log)
+        messages += replay(ws, snapshot, log, digest)
     n_ok = sum(1 for r in rows if r["ok"])
     passed = bool(rows) and n_ok == len(rows) and not messages
     score = round(n_ok / len(rows), 3) if rows and not messages else 0.0
@@ -292,7 +356,8 @@ def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> 
     ws = prepare_workspace(t, Path(tempfile.mkdtemp(prefix="planebench-")) / run_id, root, agent)
     from ..cli import BENCH_LOG_ENV
     snapshot, log = snapshot_design(t, ws), ws.parent / "plane-commands.jsonl"     # T54: both outside the workspace
-    env = {**env, BENCH_LOG_ENV: str(log)}
+    digest = tree_digest(snapshot)                                                   # T92: kept in memory, checked before the replay
+    env = {**env, BENCH_LOG_ENV: str(log), DESIGNS_DIR_ENV: str(ws / "designs")}     # T91: design new/copy write into the workspace
     cmd = build_command(claude, t, agent, model)
     started = time.monotonic()
     proc, timed_out = None, False
@@ -315,7 +380,7 @@ def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> 
         if not any(model in k.lower() for k in usage):
             return OpResult(False, {"error": "internal"}, [f"model mismatch: asked for {model}, claude used {sorted(usage) or 'nothing'}"])
         tokens, cost, final = _tokens(usage), float(out.get("total_cost_usd") or 0.0), str(out.get("result") or "")
-    g = grade(t, ws, root, snapshot, log)
+    g = grade(t, ws, root, snapshot, log, digest)
     data = {"task": task, "agent": agent, "model": model, "passed": g["passed"], "score": g["score"], "tokens": tokens,
             "minutes": minutes, "cost_usd": cost, "timed_out": timed_out, "run_id": run_id, "workspace": str(ws)}
     record = root / "bench" / "results" / "runs" / f"{run_id}.json"
