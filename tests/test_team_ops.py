@@ -77,6 +77,14 @@ def test_ledger_set_rejects_a_bad_due_exit2(root):  # T52
     assert r.exit_code == 2 and any("YYYY-MM-DD" in m for m in r.messages)
 
 
+def test_ledger_add_rejects_a_bad_due_exit2(root):  # T86
+    for bad in ("next week", "2026-13-45"):
+        r = call("ledger.add", kind="task", text="x", source="t", due=bad)
+        assert r.exit_code == 2 and any("YYYY-MM-DD" in m for m in r.messages), bad
+    r = call("ledger.add", kind="task", text="x", source="t", due="2026-12-01")
+    assert r.ok and r.data["id"] == "T1"
+
+
 def test_ledger_report_matches_method(root):
     call("ledger.add", kind="task", text="x", source="t")
     r = call("ledger.report", today="2026-11-20")

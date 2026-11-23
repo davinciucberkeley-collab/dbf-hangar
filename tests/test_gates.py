@@ -239,6 +239,29 @@ def test_gate_explain_exact_check_id_with_design():  # T26
     assert call("gate.explain", check_id="T3.control_authority", design=str(EXAMPLE)).data["criterion"] == "operations.yaml#hover_ctrl_factor"
 
 
+def test_gate_explain_explains_a_fail_only_check_id_on_a_passing_design():  # T83
+    from hangar.ops import call
+    r = call("gate.explain", check_id="T1.attachment_contact", design=str(EXAMPLE))
+    assert r.ok and r.data["exact"] is True and r.data["check_id"] == "T1.attachment_contact"
+    assert r.data["criterion"] == "design-standards.yaml#attach_tolerance_mm"
+    assert r.data["threshold"]["key"] == "attach_tolerance_mm"
+    assert call("gate.explain", check_id="T1.nope", design=str(EXAMPLE)).exit_code == 2   # unknown ids are still refused
+
+
+def test_fail_only_criteria_ids_are_emitted_only_as_fail_in_checks_py():  # T83 guard: the table cannot drift from checks.py
+    from hangar import checks
+    from hangar.ops.gates import FAIL_ONLY_CRITERIA
+    src = Path(checks.__file__).read_text(encoding="utf-8")
+    for cid, criterion in FAIL_ONLY_CRITERIA.items():
+        assert f'CheckResult("{cid}", FAIL' in src and f'CheckResult("{cid}", PASS' not in src
+        assert f'STD + "{criterion.split("#")[1]}"' in src
+
+
+def test_design_engineer_doc_explains_with_the_design():  # T83
+    text = (REPO_ROOT / ".claude" / "agents" / "design-engineer.md").read_text(encoding="utf-8")
+    assert "plane gate explain <check_id> --design designs/<id>" in text
+
+
 def test_sim_mechanism_op_returns_steps():
     from hangar.ops import call
     r = call("sim.mechanism", path=str(FIX / "mech-good.yaml"), mechanism_id="flap_l")

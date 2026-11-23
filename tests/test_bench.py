@@ -139,6 +139,16 @@ def test_run_command_line_and_capture(fake_repo, monkeypatch):
     assert json.loads(record.read_text(encoding="utf-8"))["tokens"] == 1115
 
 
+def test_every_bench_write_text_call_passes_newline_lf():  # T54: no CRLF in files bench.py writes on Windows
+    import ast
+    tree = ast.parse(Path(bench.__file__).read_text(encoding="utf-8"))
+    calls = [n for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "write_text"]
+    assert len(calls) == 4
+    for c in calls:
+        kw = {k.arg: k.value for k in c.keywords}
+        assert isinstance(kw.get("newline"), ast.Constant) and kw["newline"].value == "\n", f"line {c.lineno}"
+
+
 def test_run_rejects_wrong_model(fake_repo, monkeypatch):
     monkeypatch.chdir(fake_repo)
     _fake_claude(monkeypatch, {}, "claude-sonnet-5-5")

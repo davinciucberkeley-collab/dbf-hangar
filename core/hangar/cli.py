@@ -226,8 +226,9 @@ def fea_cmd(path, parts, all_parts, plan_only, setup, opencae_python, opencae_ro
             except ValueError as e:
                 click.echo(f"{pid}: {e}")
         return
-    if not oc["found"]:
-        _fail("OpenCAE not found: run plane fea --setup --opencae-python <python> --opencae-root <folder> once")
+    if not oc["found"]:  # D37: a missing external tool is a SKIP with exit 0, not a failure
+        click.echo("SKIP: OpenCAE not found: run plane fea --setup --opencae-python <python> --opencae-root <folder> once")
+        return
     worst = 0
     for pid in todo:
         try:
