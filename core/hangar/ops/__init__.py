@@ -154,7 +154,13 @@ def registry() -> dict[str, OpSpec]:
     if not _LOADED:
         for m in pkgutil.iter_modules(__path__):
             if not m.name.startswith("_"):
-                importlib.import_module(f"{__name__}.{m.name}")
+                before = set(_REGISTRY)
+                try:
+                    importlib.import_module(f"{__name__}.{m.name}")
+                except BaseException:
+                    for added in set(_REGISTRY) - before:  # a retry re-runs the module: drop what it registered before failing
+                        del _REGISTRY[added]
+                    raise
         _LOADED = True
     return dict(sorted(_REGISTRY.items()))
 
