@@ -3853,12 +3853,12 @@ items:
     text: "G2: plane design set --value with ': ' inside a scalar is YAML-parsed as a mapping and rejected (exit 2); quote or treat --value as a string when the key's schema type is string"
     source: W4-TC report 2026-11-22
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 11beb6f
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T59
     kind: task
     text: 'G3: no PDL field for servos and control surfaces (D21 control-surface data); schema minor version in v1.1'
