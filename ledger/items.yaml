@@ -4090,3 +4090,25 @@ items:
     evidence: ledger/prompts.jsonl
     decided_in: ''
     updated: '2026-11-22'
+  - id: T71
+    kind: task
+    text: 'concept-a re-import FEA: cge-001 FAIL (landing SF 0.37, thrust SF 0.44; was SKIP for coarse mesh, T31) and cge-006 FAIL (SF 0.83 / 0.72; was PASS); check the new mesh model vs the source, then design fix or corrected model'
+    source: U2.5d Part 3 report (W4-G3) 2026-11-22
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: T72
+    kind: task
+    text: "assembly animate fails on concept-a step 44 (mass proxies hrd-001, hrn-001 have no mesh: 'step 44 adds nothing drawable'); fold proxies into an earlier step or let animate skip non-drawable proxy steps; R31 stays open until fixed"
+    source: U2.5d Part 3 report (W4-G3) 2026-11-22
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-22'
