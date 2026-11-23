@@ -600,6 +600,10 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-F2 | `builder` | Haiku | ledger T69 (inline brief: restore concept ids in one knowledge entry; PROVENANCE research rows) | branch `std/w4f-t69` | test_knowledge passes; CI green |
 | W4-TF | `tactician` | Sonnet | D33, T24, T53, R1/R12/R14/R17/R31: U2.5d concept-a re-import (v1.1 unit) | `briefs/U2.5d-reimport.md` with a proposed §7 unit block | builder-ready bar; R-a, R-b; T53 reproduced or closed with evidence |
 | W4-RD | `reviewer` | Opus (fresh) | W4-F1, W4-F2 | review sections in `reviews/2026-11-22-w4.md` | "### Verdict:" |
+| W4-G1a | `builder` | Haiku | `briefs/U2.5d-reimport.md` Part 1a (importer finishes: mesh kind, load_n, pitot) (D49) | branch `std/u2.5d-1a` | Part 1a checks; CI green |
+| W4-G1b, W4-G3 | `builder-plus` | Sonnet | Part 1b (missing blocks) and Part 3a/3b (designs re-import, replay, FEA, baseline) [hard; Tristan reads, advisor checks] | `std/u2.5d-1b`, `design/concept-a/*` commit (D30) | brief checks |
+| W4-G3c | `design-engineer` | Sonnet | Part 3c gate triage after the re-import | tasks per new FAIL | brief checks |
+| W4-XG | `advisor` | Opus | U2.5d hard parts 1b and 3 | READY/NOT READY | one dispatch |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 

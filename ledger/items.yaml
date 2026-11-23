@@ -4079,3 +4079,14 @@ items:
     evidence: plans/2026-11-20-standardization/briefs/U2.5d-reimport.md
     decided_in: ''
     updated: '2026-11-22'
+  - id: D49
+    kind: decision
+    text: U2.5d starts now (before the 11-30 freeze where it lands in time; otherwise it continues in v1.1); overrides D33's timing
+    source: Tristan in chat 2026-11-22 (P160)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: ledger/prompts.jsonl
+    decided_in: ''
+    updated: '2026-11-22'
