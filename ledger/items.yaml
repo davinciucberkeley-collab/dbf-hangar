@@ -385,13 +385,13 @@ items:
     text: Animate every step of manufacturing assembly; if Claude can't animate it, something is broken (self-check)
     source: plan §1; A 11-11
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U2.4
-    evidence: 'open: assembly.animate exists (7fb3e9d) but no design has assembly.sequence; needs concept-a build steps (no unit owns this yet)'
+    evidence: 1563a97
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R32
     kind: ruling
     text: 'Benchmarks: could we make a plane benchmark?'
@@ -937,13 +937,13 @@ items:
     text: 'bom.py crashes on a non-mapping verified block or missing qty (should exit 2); ingest de-dup should key on kind+text, add a cross-kind test [triage 2026-11-21: Guard both bom paths (exit 2 via OpInputError); key ingest de-dup on kind plus text; add the cross-kind test]'
     source: reviews/2026-11-21-w2.md U2.4b
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: 283d44c
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: D23
     kind: decision
     text: No unit owns `plane sim drop` (team task run_physics skips forever)
@@ -3278,13 +3278,13 @@ items:
     text: 'gate.explain resolves a check id by tier prefix only (core/hangar/ops/gates.py:42-43): plane gate explain T1.attachment_contact prints interference_max_mm3 instead of attach_tolerance_mm; U3.6 adds exact-id match for discipline ids only [triage 2026-11-21: Exact-id match for check ids is not in U3.6 scope; design-iterate and review-design depend on it]'
     source: reviews/2026-11-21-w3.md U3.2 (W3-R1)
     owner: ''
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: bd528ea
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T27
     kind: task
     text: 'auditor.md names plane ledger report --prompts --open, which does not exist [triage 2026-11-21: One-line role-text fix (point to ledger/prompts.jsonl or drop the flags); the auditor runs hourly so it should land before the demo]'
@@ -3651,13 +3651,13 @@ items:
     text: plane ledger set cannot set due, units or a note on an open item; triage had to edit ledger/items.yaml directly
     source: triage 2026-11-21 (P131)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: b6f5b92
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: D30
     kind: decision
     text: During standardization, small fixes (core or design data) are pushed directly to main after a reviewer check, without a PR; applies to FX-1/FX-2
@@ -4106,12 +4106,12 @@ items:
     text: "assembly animate fails on concept-a step 44 (mass proxies hrd-001, hrn-001 have no mesh: 'step 44 adds nothing drawable'); fold proxies into an earlier step or let animate skip non-drawable proxy steps; R31 stays open until fixed"
     source: U2.5d Part 3 report (W4-G3) 2026-11-22
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 1563a97
     decided_in: ''
-    updated: '2026-11-22'
+    updated: '2026-11-23'
   - id: D50
     kind: decision
     text: T2.joint_rf counts a joint's own rated_load_n when its rating_basis is not placeholder (sourced and derived), else the library value; derived ratings count but are reported as pending in the verdict
@@ -4248,6 +4248,50 @@ items:
     kind: decision
     text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready'
     source: conductor under D51, 2026-11-23 (W5-T report)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T83
+    kind: task
+    text: 'gate explain: check ids that only appear on FAIL (e.g. T1.attachment_contact) still cannot be explained even with --design; .claude/agents/design-engineer.md:18 shows gate explain without --design (T26 follow-up)'
+    source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T84
+    kind: task
+    text: 'Flaky CI: tests/test_viewer_static.py::test_propose_link_survives_real_git_side_effects:350 404 console error (ubuntu runs 45165154819, 45167246241; windows main 45163693398)'
+    source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
+    owner: conductor
+    status: open
+    due: '2026-11-30'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T85
+    kind: task
+    text: "U4.3 small follow-ups: ledger set --due accepts 2026-13-45 (format-only check); bom cost crashes on non-numeric unit_cost_usd; sweep still parses ': ' values the old way; add an R31 guard test through assembly.animate"
+    source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D53
+    kind: decision
+    text: 'R31 closes with T72: animate covers every drawable step; a step adding only point-mass proxies is reported in skipped, not animated; a drawable part with no mesh still fails (W5-R flagged; Tristan may reopen)'
+    source: conductor under D51, 2026-11-23
     owner: Tristan
     status: decided
     due: ''
