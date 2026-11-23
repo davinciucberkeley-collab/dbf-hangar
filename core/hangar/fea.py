@@ -24,7 +24,6 @@ import json
 import os
 import shutil
 import subprocess
-import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
@@ -365,7 +364,6 @@ def run(design: Design, part_id: str, opencae: dict | None = None, keep_project:
         if keep_project:
             shutil.rmtree(proj_dir, ignore_errors=True)
             job["project_dir"] = str(proj_dir)
-        (work / "job.json").write_text(json.dumps(job))
         log(f"{part_id}: {len(job['supports'])} support(s), {sum(len(c['loads']) for c in job['cases'])} load(s); "
             f"running OpenCAE")
         from .adapters.opencae import OpenCAE
