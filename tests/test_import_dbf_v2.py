@@ -78,7 +78,7 @@ def test_reimport_is_stable(tmp_path):
 
 
 @pytest.mark.skipif(not (DBF / "redesign/qp/A/proofs").exists(), reason="DBF-Combined clone not present")
-def test_concept_a_claims_import_recomputes_53_and_leaves_40_proposed(tmp_path):
+def test_concept_a_claims_import_recomputes_all_93_read_value_echoes_included(tmp_path):
     p = import_claims(DBF, "A", tmp_path / "d", log=lambda m: None)
     folder = tmp_path / "concept-a"
     folder.mkdir()
@@ -109,10 +109,11 @@ def test_concept_a_claims_import_recomputes_53_and_leaves_40_proposed(tmp_path):
     proposed = {x.id for x in r if x.status == "PROPOSED"}
     read_value = {cid for cid, n in nodes.items()
                   if n["type"] == "claim" and nodes[n["calc"]].get("function") == "read_value"}
-    assert len(proposed) == 40
-    assert proposed == read_value
+    assert len(read_value) == 40
+    assert proposed == set()
     others = [x for x in r if x.status != "PROPOSED"]
-    assert len(others) == 53
+    assert len(others) == 93
+    assert {x.status for x in r if x.id in read_value} <= {"PASS", "STALE"}
     for x in others:
         if x.status == "STALE":
             assert mapped(x.id), f"STALE on a claim with no PDL_MAP parameter: {x.id} {x.value} {x.message}"
