@@ -595,6 +595,10 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-TE | `tactician` | Sonnet | §7 U4.2 Steps 1–3; `reviews/*.md` measured values; T35 bench caveat; D32–D34 gaps | `plans/2026-11-20-standardization/u4.2/{demo-script,metrics,deck-outline}.md` | every demo command dry-run on a tmp copy (R-a); every metric cites a review or command output |
 | W4-E | `tactician` | Sonnet | U4.2 Step 1 (Tristan 2026-11-22: "build the deck in the repo"): `u4.2/deck-outline.md`, `metrics.md`, `demo-script.md` | `docs/deck/index.html` (self-contained, opens offline, arrow-key navigation) | every number cites a file in the repo; no claim beyond `metrics.md`; caveats (T35, D32–D34) on their slides |
 | W4-RC | `reviewer` | Opus (fresh) | `docs/deck/index.html` against `u4.2/metrics.md`, `demo-script.md` and the cited repo files | review section in `reviews/2026-11-22-w4.md` | every slide number traced to its source; caveats present; "### Verdict:" |
+| W4-F1 | `builder` | Haiku | ledger T70 (inline brief: test tier defaults 9, cli.py `--tier` help, regenerate `docs/cli.md`) | branch `std/w4f-t70` | tests pass; `docs/cli.md` in sync; CI green |
+| W4-F2 | `builder` | Haiku | ledger T69 (inline brief: restore concept ids in one knowledge entry; PROVENANCE research rows) | branch `std/w4f-t69` | test_knowledge passes; CI green |
+| W4-TF | `tactician` | Sonnet | D33, T24, T53, R1/R12/R14/R17/R31: U2.5d concept-a re-import (v1.1 unit) | `briefs/U2.5d-reimport.md` with a proposed §7 unit block | builder-ready bar; R-a, R-b; T53 reproduced or closed with evidence |
+| W4-RD | `reviewer` | Opus (fresh) | W4-F1, W4-F2 | review sections in `reviews/2026-11-22-w4.md` | "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
