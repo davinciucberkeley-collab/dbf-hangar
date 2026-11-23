@@ -152,6 +152,13 @@ def test_fea_run_all_skips_every_eligible_part_when_missing(monkeypatch):
     assert call("fea.run", path=CA, all_=True).skipped == fea.eligible_parts(load_design(CA + "/plane.yaml"))
 
 
+def test_fea_run_skip_prints_skip_first_and_exits_0(monkeypatch):  # D37
+    monkeypatch.setattr(OpenCAE, "available", lambda self: (False, "OpenCAE not found; run: plane fea setup"))
+    res = CliRunner().invoke(cli, ["fea", "run", CA, "--all"])
+    assert res.exit_code == 0, res.output
+    assert res.output.startswith("SKIP: OpenCAE not found")
+
+
 def test_fea_plan_op_matches_engine():
     r = call("fea.plan", path=CA, part="cge-001")
     assert sorted(s["other"] for s in r.data["meta"]["supports"]) == ["cge-004", "cge-005-l", "cge-005-r"]

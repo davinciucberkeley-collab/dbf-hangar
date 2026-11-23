@@ -527,6 +527,8 @@ def _make_command(spec: ops.OpSpec) -> click.Command:
                 click.echo(f"plane: {m}", err=True)
         else:
             text = spec.render(result) if spec.render else _default_text(result)
+            if result.ok and result.data.get("status") == "SKIP":  # D37: a skipped op says so first
+                text = "SKIP: " + text
             click.echo(text.rstrip("\n"))
         if result.exit_code != 0:
             sys.exit(result.exit_code)
