@@ -147,7 +147,7 @@ def sweep_op(path: str, key: str, *, values: list[str]) -> OpResult:
     pdledit.get_value(before, key)
     pairs = []
     for raw in values:
-        t = pdledit.patch_text(text, key, pdledit.parse_scalar(raw))
+        t = pdledit.patch_text(text, key, pdledit.parse_set_value(raw))
         pdledit.check_schema(before, yaml.safe_load(t), key)
         pairs.append((raw, t))
     did = str(before.get("id", plane.parent.name))

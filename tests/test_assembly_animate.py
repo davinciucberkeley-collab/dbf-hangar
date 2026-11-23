@@ -104,3 +104,19 @@ def test_animate_still_fails_on_a_drawable_step_with_no_mesh(tmp_path):  # R31 s
     export_glb(load_design(REPO / "designs" / "example-tailsitter-wing"), glb)
     with pytest.raises(OpInputError, match="step 2 adds nothing drawable"):
         _animate_glb(glb.read_bytes(), [(1, ["center_body"]), (2, ["not_in_glb"])], [])
+
+
+def test_animate_op_fails_when_a_drawable_step_has_no_mesh(design, tmp_path, monkeypatch):  # R31 guard through the op (T85)
+    from hangar.ops import assembly as asm
+    real = asm.export_glb
+
+    def without_wing(d, out):  # a drawable part that export drops: its step has no glTF node
+        d.components[:] = [c for c in d.components if c["id"] != "wing"]
+        return real(d, out)
+
+    monkeypatch.setattr(asm, "export_glb", without_wing)
+    plane = design / "plane.yaml"
+    plane.write_bytes(plane.read_bytes() + "\nassembly:\n  sequence:\n    - {step: 1, add: [center_body]}\n    - {step: 2, add: [wing]}\n".encode("utf-8"))
+    r = call("assembly.animate", path=str(design), out=str(tmp_path / "a.glb"))
+    assert r.exit_code == 2
+    assert "step 2 adds nothing drawable" in " ".join(r.messages)

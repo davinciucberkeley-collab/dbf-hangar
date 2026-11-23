@@ -195,3 +195,10 @@ def test_ingest_dedupes_within_one_file(root):
     assert len(r.data["added"]) == 2
     assert len(r.skipped) == 1
     assert "order FOAM" in r.skipped[0]
+
+
+def test_bom_cost_non_numeric_unit_cost_is_an_input_error(root, bom_design):  # T85
+    p = root / "designs" / "ex" / "plane.yaml"
+    p.write_text(p.read_text(encoding="utf-8").replace("unit_cost_usd: 12.5", "unit_cost_usd: free"), encoding="utf-8")
+    r = call("bom.cost", path=bom_design)
+    assert r.exit_code == 2 and "motor-a" in " ".join(r.messages) and "unit_cost_usd" in " ".join(r.messages)

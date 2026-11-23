@@ -102,6 +102,8 @@ def cost_op(path: str) -> OpResult:
         if isinstance(it.get("qty"), bool) or not isinstance(it.get("qty"), (int, float)):
             raise OpInputError(f"bom item {it['id']}: qty is missing or not a number")
         if "unit_cost_usd" in it:
+            if isinstance(it["unit_cost_usd"], bool) or not isinstance(it["unit_cost_usd"], (int, float)):
+                raise OpInputError(f"bom item {it['id']}: unit_cost_usd is not a number")
             total += it["qty"] * it["unit_cost_usd"]
             costed += 1
         else:

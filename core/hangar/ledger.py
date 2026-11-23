@@ -167,8 +167,13 @@ class Ledger:
         """Set status (with its evidence rules). due, units and note are optional: None or empty leaves the field as it is;
         a note is appended to the text as ' [<note>]'."""
         n = self._index(item_id)
-        if due is not None and due != "" and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", due):
-            raise ValueError(f"due must be YYYY-MM-DD, got {due!r}")
+        if due is not None and due != "":
+            try:
+                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", due):
+                    raise ValueError(due)
+                date.fromisoformat(due)  # rejects 2026-13-45
+            except ValueError:
+                raise ValueError(f"due must be YYYY-MM-DD, got {due!r}") from None
         if status not in STATUSES:
             raise ValueError(f"status must be one of {', '.join(STATUSES)}, got {status!r}")
         item = self.items[n]
