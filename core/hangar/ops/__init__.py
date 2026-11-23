@@ -10,6 +10,7 @@ import inspect
 import json
 import pkgutil
 import re
+import sys
 import typing
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -158,8 +159,8 @@ def registry() -> dict[str, OpSpec]:
                 try:
                     importlib.import_module(f"{__name__}.{m.name}")
                 except BaseException:
-                    for added in set(_REGISTRY) - before:  # a retry re-runs this module: drop what it registered before failing
-                        if _REGISTRY[added].func.__module__ == f"{__name__}.{m.name}":   # not the ops of an ops module it imported: that import stays cached
+                    for added in set(_REGISTRY) - before:  # a retry re-runs the failed module(s): drop what they registered before failing
+                        if _REGISTRY[added].func.__module__ not in sys.modules:   # a module that stayed cached keeps its ops: it does not re-run
                             del _REGISTRY[added]
                     raise
         _LOADED = True

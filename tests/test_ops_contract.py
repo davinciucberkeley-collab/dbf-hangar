@@ -191,3 +191,39 @@ def test_registry_keeps_the_ops_of_a_module_that_a_failing_module_imported(tmp_p
             sys.modules.pop(mod, None)
         for attr in ("zz_a_outer", "zz_b_inner"):
             ops.__dict__.pop(attr, None)
+
+
+def test_registry_drops_the_op_of_an_imported_module_that_failed_after_registering(tmp_path, monkeypatch):  # T86 (W12-R blocker): inner import fails
+    import importlib
+    import sys
+    (tmp_path / "zz_d_bad.py").write_text(
+        "import os\n"
+        "from hangar.ops import op, OpResult\n"
+        "\n"
+        "\n"
+        "@op(name='zz.badinner', summary='registers, then its own import fails')\n"
+        "def bad_inner() -> OpResult:\n"
+        "    return OpResult(True, {})\n"
+        "\n"
+        "\n"
+        "if os.environ.get('ZZ_BAD_FAIL') == '1':\n"
+        "    raise RuntimeError('inner boom')\n", encoding="utf-8")
+    (tmp_path / "zz_c_outer.py").write_text(   # sorts first, so it loads first and imports the failing inner one
+        "from hangar.ops import zz_d_bad  # noqa: F401\n",
+        encoding="utf-8")
+    monkeypatch.setattr(ops, "__path__", [*ops.__path__, str(tmp_path)])
+    monkeypatch.setattr(ops, "_LOADED", False)
+    importlib.invalidate_caches()
+    try:
+        monkeypatch.setenv("ZZ_BAD_FAIL", "1")
+        with pytest.raises(RuntimeError, match="inner boom"):
+            ops.registry()
+        assert "zz.badinner" not in ops._REGISTRY, "the failed inner module's op is dropped: it is not cached and will re-run"
+        with pytest.raises(RuntimeError, match="inner boom"):   # the retry must reach the real error, not 'duplicate op name'
+            ops.registry()
+    finally:
+        ops._REGISTRY.pop("zz.badinner", None)
+        for mod in ("hangar.ops.zz_c_outer", "hangar.ops.zz_d_bad"):
+            sys.modules.pop(mod, None)
+        for attr in ("zz_c_outer", "zz_d_bad"):
+            ops.__dict__.pop(attr, None)
