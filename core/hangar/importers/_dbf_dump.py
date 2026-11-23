@@ -55,7 +55,10 @@ def main():
         commit = subprocess.run(["git", "-C", root, "rev-parse", "HEAD"], capture_output=True, text=True).stdout.strip()
     except Exception:  # noqa: BLE001
         commit = ""
+    import a_assembly_plan as ap
+    steps = [{"id": s[0], "caption": s[1], "parts": list(s[2])} for s in ap.STEPS if s[0] not in ap.BENCH]
     data = {
+        "assembly_steps": steps,
         "commit": commit, "comps": comps, "skipped": skipped, "proxies": proxies,
         "parts": m.PARTS, "edges": m.EDGES, "graph_edges": edges_graph, "joints": joints,
         "moving_groups": [{"edge": j.edge, "group": sorted(g)} for j, g in groups],
