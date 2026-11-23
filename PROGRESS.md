@@ -58,6 +58,7 @@
 |---|---|---|---|---|
 | U4.3 | Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision) | 3/3 | done | - |
 | U4.4 | Overnight core fixes, round 2 (D51) | 3/3 | done | - |
+| U4.5 | Overnight core fixes, round 3 (D51) | 0/3 | not started | - |
 
 ## Ledger
 
