@@ -11,7 +11,7 @@
   "part_size_mm": 123.01,
   "supports": [
     {
-      "joint": "E-AVN-08",
+      "joint": "E-AVN-14",
       "other": "avn-001",
       "how": "contact within 0.5 mm"
     }
@@ -46,7 +46,7 @@
   "status": "SKIP",
   "worst_case": null,
   "design": "concept-a",
-  "hash": "b567b55c8b915749",
-  "generated": "2026-11-22T01:48:58+00:00",
+  "hash": "8e18856d2021fabe",
+  "generated": "2026-11-23T06:44:46+00:00",
   "opencae_version": "0.2.0"
 }

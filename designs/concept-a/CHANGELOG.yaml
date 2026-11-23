@@ -271,3 +271,285 @@
   why: 'cad/amodel/electrical.py E-HRN-13: pack power leads, 14 AWG, PWR-001 to HRN-002
     (XT60 male side); BOM-A.csv W05 14 AWG silicone'
   kind: add
+- date: '2026-11-23T06:41:52Z'
+  key: attachments[E-MEC-HW-R1]
+  old: '{id: E-MEC-HW-R1, parent: mec-001-r, child: hwc-002-r, method: bolted, location:
+    [140.405, 199.012, 4.423], rated_load_n: 931.5, rating_basis: derived, connection:
+    CT-HW-SEATED}'
+  new: null
+  why: 'replay of 2026-11-22T01:30:18Z (U2.5d re-import): break closed loop mec-001
+    > hwc-002 > mec-002 so the servo arm can articulate (advisor W3-X path b); screw
+    still threads into the spline via E-MEC-HW-R2/L2'
+  kind: remove
+- date: '2026-11-23T06:41:55Z'
+  key: attachments[E-MEC-HW-L1]
+  old: '{id: E-MEC-HW-L1, parent: mec-001-l, child: hwc-002-l, method: bolted, location:
+    [140.405, -200.988, 4.423], rated_load_n: 931.5, rating_basis: derived, connection:
+    CT-HW-SEATED}'
+  new: null
+  why: 'replay of 2026-11-22T01:30:26Z (U2.5d re-import): break closed loop mec-001
+    > hwc-002 > mec-002 so the servo arm can articulate (advisor W3-X path b); screw
+    still threads into the spline via E-MEC-HW-R2/L2'
+  kind: remove
+- date: '2026-11-23T06:41:57Z'
+  key: attachments[E-MEC-02].articulation
+  old: null
+  new:
+    type: revolute
+    pivot:
+    - 140.5
+    - 200.0
+    - 7.7
+    axis:
+    - 0
+    - 0
+    - 1
+    range_deg:
+    - -15
+    - 15
+  why: 'replay of 2026-11-22T01:30:33Z (U2.5d re-import): right elevon: servo arm
+    E-MEC-02 articulates about the arm hub and screw centre (x 140.5, y 200.0, z 7.7
+    from mesh bounds). Right arm lever about 12.0 mm and right horn lever about 9.0
+    mm from the meshes, so ratio about 1.33; servo range limited to +-15 deg so the
+    elevon stays inside its +-21 deg stops'
+  kind: add
+- date: '2026-11-23T06:42:00Z'
+  key: attachments[E-MEC-07].articulation
+  old: null
+  new:
+    type: revolute
+    pivot:
+    - 140.5
+    - -200.0
+    - 7.7
+    axis:
+    - 0
+    - 0
+    - 1
+    range_deg:
+    - -15
+    - 15
+  why: 'replay of 2026-11-22T01:30:43Z (U2.5d re-import): left elevon: servo arm E-MEC-07
+    articulates about the left arm hub and screw centre (x 140.5, y -200.0, z 7.7
+    from mesh bounds). Left arm lever about 12.0 mm and left horn lever about 9.0
+    mm from the meshes, so ratio about 1.33; servo range limited to +-15 deg so the
+    elevon stays inside its +-21 deg stops'
+  kind: add
+- date: '2026-11-23T06:42:03Z'
+  key: mechanisms[elevon-r].driver
+  old: null
+  new: E-MEC-02
+  why: 'replay of 2026-11-22T01:32:35Z (U2.5d re-import): right elevon: arm lever
+    about 12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33
+    (sign negative: +z arm rotation on the right drives the horn pin -x); servo range
+    +-15 deg keeps the elevon inside its +-21 deg stops; rod link E-MEC-03 to E-MEC-PIN-R4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:03Z'
+  key: mechanisms[elevon-r].driven
+  old: null
+  new:
+  - E-WNG-10
+  why: 'replay of 2026-11-22T01:32:35Z (U2.5d re-import): right elevon: arm lever
+    about 12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33
+    (sign negative: +z arm rotation on the right drives the horn pin -x); servo range
+    +-15 deg keeps the elevon inside its +-21 deg stops; rod link E-MEC-03 to E-MEC-PIN-R4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:08Z'
+  key: mechanisms[elevon-r].input_range_deg
+  old: null
+  new:
+  - -15
+  - 15
+  why: 'replay of 2026-11-22T01:33:01Z (U2.5d re-import): right elevon: arm lever
+    about 12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33
+    (sign negative: +z arm rotation on the right drives the horn pin -x); servo range
+    +-15 deg keeps the elevon inside its +-21 deg stops; rod link E-MEC-03 to E-MEC-PIN-R4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:11Z'
+  key: mechanisms[elevon-r].expect
+  old: null
+  new:
+  - attachment: E-WNG-10
+    ratio: -1.33
+  why: 'replay of 2026-11-22T01:33:11Z (U2.5d re-import): right elevon: arm lever
+    about 12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33
+    (sign negative: +z arm rotation on the right drives the horn pin -x); servo range
+    +-15 deg keeps the elevon inside its +-21 deg stops; rod link E-MEC-03 to E-MEC-PIN-R4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:13Z'
+  key: mechanisms[elevon-r].link
+  old: null
+  new:
+    driver_end: E-MEC-03
+    follower_end: E-MEC-PIN-R4
+  why: 'replay of 2026-11-22T01:33:21Z (U2.5d re-import): right elevon: arm lever
+    about 12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33
+    (sign negative: +z arm rotation on the right drives the horn pin -x); servo range
+    +-15 deg keeps the elevon inside its +-21 deg stops; rod link E-MEC-03 to E-MEC-PIN-R4
+    is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:17Z'
+  key: mechanisms[elevon-l].driver
+  old: null
+  new: E-MEC-07
+  why: 'replay of 2026-11-22T01:33:38Z (U2.5d re-import): left elevon: arm lever about
+    12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33 (sign
+    positive, mirrored side); servo range +-15 deg keeps the elevon inside its +-21
+    deg stops; rod link E-MEC-08 to E-MEC-PIN-L4 is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:17Z'
+  key: mechanisms[elevon-l].driven
+  old: null
+  new:
+  - E-WNG-11
+  why: 'replay of 2026-11-22T01:33:38Z (U2.5d re-import): left elevon: arm lever about
+    12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33 (sign
+    positive, mirrored side); servo range +-15 deg keeps the elevon inside its +-21
+    deg stops; rod link E-MEC-08 to E-MEC-PIN-L4 is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:21Z'
+  key: mechanisms[elevon-l].input_range_deg
+  old: null
+  new:
+  - -15
+  - 15
+  why: 'replay of 2026-11-22T01:34:00Z (U2.5d re-import): left elevon: arm lever about
+    12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33 (sign
+    positive, mirrored side); servo range +-15 deg keeps the elevon inside its +-21
+    deg stops; rod link E-MEC-08 to E-MEC-PIN-L4 is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:24Z'
+  key: mechanisms[elevon-l].expect
+  old: null
+  new:
+  - attachment: E-WNG-11
+    ratio: 1.33
+  why: 'replay of 2026-11-22T01:34:11Z (U2.5d re-import): left elevon: arm lever about
+    12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33 (sign
+    positive, mirrored side); servo range +-15 deg keeps the elevon inside its +-21
+    deg stops; rod link E-MEC-08 to E-MEC-PIN-L4 is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:27Z'
+  key: mechanisms[elevon-l].link
+  old: null
+  new:
+    driver_end: E-MEC-08
+    follower_end: E-MEC-PIN-L4
+  why: 'replay of 2026-11-22T01:34:20Z (U2.5d re-import): left elevon: arm lever about
+    12.0 mm and horn lever about 9.0 mm from the meshes, so ratio about 1.33 (sign
+    positive, mirrored side); servo range +-15 deg keeps the elevon inside its +-21
+    deg stops; rod link E-MEC-08 to E-MEC-PIN-L4 is the pinned pair'
+  kind: add
+- date: '2026-11-23T06:42:31Z'
+  key: components[pwr-001].battery.capacity_mah
+  old: null
+  new: 2300
+  why: 'replay of 2026-11-22T08:23:35Z (U2.5d re-import): BOM-A.csv W01 ''Tattu 2300
+    mAh 4S 75C XT60 270 g''; params-A.json mission.pack_ah 2.3 Ah x 1000 = 2300 mAh
+    (pack_v 14.8 V = 4S nominal)'
+  kind: add
+- date: '2026-11-23T06:42:31Z'
+  key: components[pwr-001].battery.cells_s
+  old: null
+  new: 4
+  why: 'replay of 2026-11-22T08:23:35Z (U2.5d re-import): BOM-A.csv W01 ''Tattu 2300
+    mAh 4S 75C XT60 270 g''; params-A.json mission.pack_ah 2.3 Ah x 1000 = 2300 mAh
+    (pack_v 14.8 V = 4S nominal)'
+  kind: add
+- date: '2026-11-23T06:42:31Z'
+  key: components[pwr-001].battery.max_discharge_c
+  old: null
+  new: 75
+  why: 'replay of 2026-11-22T08:23:35Z (U2.5d re-import): BOM-A.csv W01 ''Tattu 2300
+    mAh 4S 75C XT60 270 g''; params-A.json mission.pack_ah 2.3 Ah x 1000 = 2300 mAh
+    (pack_v 14.8 V = 4S nominal)'
+  kind: add
+- date: '2026-11-23T06:42:38Z'
+  key: components[prp-001-ll].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'replay of 2026-11-22T08:23:42Z (U2.5d re-import): prop_a.py (DBF-Combined
+    redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2 A/motor, 898 gf x0.93'',
+    the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-23T06:42:38Z'
+  key: components[prp-001-lr].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'replay of 2026-11-22T08:23:42Z (U2.5d re-import): prop_a.py (DBF-Combined
+    redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2 A/motor, 898 gf x0.93'',
+    the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-23T06:42:38Z'
+  key: components[prp-001-ul].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'replay of 2026-11-22T08:23:42Z (U2.5d re-import): prop_a.py (DBF-Combined
+    redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2 A/motor, 898 gf x0.93'',
+    the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-23T06:42:38Z'
+  key: components[prp-001-ur].propulsion.max_current_a
+  old: null
+  new: 11.2
+  why: 'replay of 2026-11-22T08:23:42Z (U2.5d re-import): prop_a.py (DBF-Combined
+    redesign/qp/A) output ''fresh 16.8 V duty 0.90: 11.2 A/motor, 898 gf x0.93'',
+    the state that gives max_thrust_n 8.81 in plane.yaml'
+  kind: add
+- date: '2026-11-23T06:42:46Z'
+  key: components[prp-001-ll].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: 'replay of 2026-11-22T08:23:49Z (U2.5d re-import): BOM-A.csv P02 APC 9x4.5MR
+    (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6 mm'
+  kind: add
+- date: '2026-11-23T06:42:46Z'
+  key: components[prp-001-lr].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: 'replay of 2026-11-22T08:23:49Z (U2.5d re-import): BOM-A.csv P02 APC 9x4.5MR
+    (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6 mm'
+  kind: add
+- date: '2026-11-23T06:42:46Z'
+  key: components[prp-001-ul].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: 'replay of 2026-11-22T08:23:49Z (U2.5d re-import): BOM-A.csv P02 APC 9x4.5MR
+    (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6 mm'
+  kind: add
+- date: '2026-11-23T06:42:46Z'
+  key: components[prp-001-ur].propulsion.prop_diameter_mm
+  old: null
+  new: 228.6
+  why: 'replay of 2026-11-22T08:23:49Z (U2.5d re-import): BOM-A.csv P02 APC 9x4.5MR
+    (9 in); prop_a.py D = 9*0.0254 m = 0.2286 m = 228.6 mm'
+  kind: add
+- date: '2026-11-23T06:42:55Z'
+  key: flight.cruise_ld
+  old: null
+  new: 7.19
+  why: 'replay of 2026-11-22T08:23:57Z (U2.5d re-import): MISSION.md l.17 ''Cruise
+    power, 1.37 kg: CL 0.352, L/D 7.19''; params-A.json mission.cruise_ms 17, mission.ref_mass_kg
+    1.37'
+  kind: add
+- date: '2026-11-23T06:42:55Z'
+  key: flight.cruise_ld_source
+  old: null
+  new: DBF-Combined a93f14d redesign/qp/A/MISSION.md l.17 cruise L/D 7.19 at 1.37
+    kg and 17 m/s (S5010 aero model, EST)
+  why: 'replay of 2026-11-22T08:23:57Z (U2.5d re-import): MISSION.md l.17 ''Cruise
+    power, 1.37 kg: CL 0.352, L/D 7.19''; params-A.json mission.cruise_ms 17, mission.ref_mass_kg
+    1.37'
+  kind: add
+- date: '2026-11-23T06:42:59Z'
+  key: wiring.harnesses[hrn-bat].gauge_awg
+  old: null
+  new: 14
+  why: 'replay of 2026-11-22T08:24:03Z (U2.5d re-import): cad/amodel/electrical.py
+    E-HRN-13: pack power leads, 14 AWG, PWR-001 to HRN-002 (XT60 male side); BOM-A.csv
+    W05 14 AWG silicone'
+  kind: add

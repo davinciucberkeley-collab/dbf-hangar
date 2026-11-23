@@ -29,7 +29,7 @@
       "status": "PASS",
       "max_von_mises_away_mpa": 0.13,
       "max_von_mises_mpa": 0.13,
-      "safety_factor_at_ultimate": 97.19,
+      "safety_factor_at_ultimate": 96.87,
       "max_displacement_mm": 0.0006,
       "nodes": 9665,
       "mesh_size_max_mm": 3.0,
@@ -77,14 +77,14 @@
         {
           "name": "E-GER-04 from ger-002-ul",
           "force_n": [
-            -9.427,
-            0.0,
-            0.009
+            -9.458,
+            -0.0,
+            0.01
           ],
           "moment_nmm": [
-            0.0,
-            2.16,
-            0.0
+            -0.0,
+            2.17,
+            -0.0
           ],
           "at_mm": [
             322.5,
@@ -102,7 +102,7 @@
           "name": "E-GER-04 from ger-002-ul",
           "force_n": [
             0.01,
-            0.0,
+            -0.0,
             -0.0
           ],
           "moment_nmm": [
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "16d6af479a18c4c9",
-  "generated": "2026-11-22T02:31:53+00:00",
+  "hash": "7b954e7633db92aa",
+  "generated": "2026-11-23T07:04:31+00:00",
   "opencae_version": "0.2.0"
 }

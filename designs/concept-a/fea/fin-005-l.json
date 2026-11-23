@@ -27,10 +27,10 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.381,
-      "max_von_mises_mpa": 0.381,
-      "safety_factor_at_ultimate": 33.03,
-      "max_displacement_mm": 0.0033,
+      "max_von_mises_away_mpa": 0.427,
+      "max_von_mises_mpa": 0.427,
+      "safety_factor_at_ultimate": 29.54,
+      "max_displacement_mm": 0.0037,
       "nodes": 14912,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
@@ -48,9 +48,9 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.208,
-      "max_von_mises_mpa": 0.208,
-      "safety_factor_at_ultimate": 60.49,
+      "max_von_mises_away_mpa": 0.209,
+      "max_von_mises_mpa": 0.209,
+      "safety_factor_at_ultimate": 60.24,
       "max_displacement_mm": 0.0034,
       "nodes": 14912,
       "mesh_size_max_mm": 4.0,
@@ -77,14 +77,14 @@
         {
           "name": "E-FIN-11 from fin-002-l",
           "force_n": [
-            -42.74,
-            -0.01,
-            0.188
+            -47.785,
+            0.015,
+            -0.291
           ],
           "moment_nmm": [
-            -0.01,
-            -9.43,
-            -0.1
+            0.1,
+            -9.48,
+            0.12
           ],
           "at_mm": [
             66.251,
@@ -101,14 +101,14 @@
         {
           "name": "E-FIN-11 from fin-002-l",
           "force_n": [
-            1.974,
-            -0.044,
-            2.935
+            1.962,
+            -0.051,
+            2.943
           ],
           "moment_nmm": [
-            39.27,
-            155.35,
-            2.75
+            39.41,
+            155.56,
+            3.05
           ],
           "at_mm": [
             66.251,
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "1b71f30556d0d61c",
-  "generated": "2026-11-22T02:26:54+00:00",
+  "hash": "d2b1af2c9fa7c96c",
+  "generated": "2026-11-23T07:02:54+00:00",
   "opencae_version": "0.2.0"
 }

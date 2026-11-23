@@ -52,14 +52,32 @@
     },
     {
       "check_id": "T2.fea_strength",
-      "example": "cge-001 landing: not checked: the mesh (2.5 mm elements, direct-mesh) is too coarse for its 1.2 mm walls; needs a finer mesh or exact CAD (STEP)",
-      "key": "T2.fea_strength|cge-001 landing: not checked: the mesh (# mm elements, direct-mesh) is too coarse for its # mm walls; needs a finer mesh or exact CAD (STEP)|{\"component\":\"cge-001\"}",
-      "status": "SKIP"
+      "example": "cge-001 landing: 34.44 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.37; 34.44 MPa at the clamp edges)",
+      "key": "T2.fea_strength|cge-001 landing: # MPa peak away from the clamps vs # MPa allowable at 1.5x load (SF #; # MPa at the clamp edges)|{\"component\":\"cge-001\"}",
+      "status": "FAIL"
     },
     {
       "check_id": "T2.fea_strength",
-      "example": "cge-001 thrust: not checked: the mesh (2.5 mm elements, direct-mesh) is too coarse for its 1.2 mm walls; needs a finer mesh or exact CAD (STEP)",
-      "key": "T2.fea_strength|cge-001 thrust: not checked: the mesh (# mm elements, direct-mesh) is too coarse for its # mm walls; needs a finer mesh or exact CAD (STEP)|{\"component\":\"cge-001\"}",
+      "example": "cge-001 thrust: 28.59 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.44; 28.59 MPa at the clamp edges)",
+      "key": "T2.fea_strength|cge-001 thrust: # MPa peak away from the clamps vs # MPa allowable at 1.5x load (SF #; # MPa at the clamp edges)|{\"component\":\"cge-001\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.fea_strength",
+      "example": "cge-006 landing: 15.22 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.83; 15.22 MPa at the clamp edges)",
+      "key": "T2.fea_strength|cge-006 landing: # MPa peak away from the clamps vs # MPa allowable at 1.5x load (SF #; # MPa at the clamp edges)|{\"component\":\"cge-006\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.fea_strength",
+      "example": "cge-006 thrust: 17.45 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.72; 17.45 MPa at the clamp edges)",
+      "key": "T2.fea_strength|cge-006 thrust: # MPa peak away from the clamps vs # MPa allowable at 1.5x load (SF #; # MPa at the clamp edges)|{\"component\":\"cge-006\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.fea_strength",
+      "example": "cge-008 landing: not checked: the part moves 5.69 mm under load (over 2 % of its 130 mm size), so the model isn't held properly",
+      "key": "T2.fea_strength|cge-008 landing: not checked: the part moves # mm under load (over #% of its # mm size), so the model isn't held properly|{\"component\":\"cge-008\"}",
       "status": "SKIP"
     },
     {
@@ -82,26 +100,62 @@
     },
     {
       "check_id": "T2.joint_load",
-      "example": "E-AVN-04: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "E-AVN-04: carries 0.1 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|E-AVN-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-04\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.joint_load",
-      "example": "E-AVN-05: carries 0.6 N; rating is a placeholder, not checked",
+      "example": "E-AVN-05: carries 0.2 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|E-AVN-05: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-05\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.joint_load",
-      "example": "E-AVN-06: carries 0.1 N; rating is a placeholder, not checked",
+      "example": "E-AVN-06: carries 0.6 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|E-AVN-06: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-06\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.joint_load",
-      "example": "E-AVN-08: carries 0.4 N; rating is a placeholder, not checked",
+      "example": "E-AVN-08: carries 0.2 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|E-AVN-08: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-08\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-09: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-09: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-09\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-10: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-10\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-11: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-11\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-12: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-12: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-12\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-13: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-13: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-13\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-14: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-14: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-14\"}",
       "status": "SKIP"
     },
     {
@@ -130,7 +184,7 @@
     },
     {
       "check_id": "T2.joint_load",
-      "example": "E-HRN-20: carries 0.8 N; rating is a placeholder, not checked",
+      "example": "E-HRN-20: carries 1.0 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|E-HRN-20: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-20\"}",
       "status": "SKIP"
     },
@@ -184,13 +238,13 @@
     },
     {
       "check_id": "T2.joint_load",
-      "example": "E-WNG-10: carries 1.1 N; rating is a placeholder, not checked",
+      "example": "E-WNG-10: carries 1.0 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|E-WNG-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-10\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.joint_load",
-      "example": "E-WNG-11: carries 1.1 N; rating is a placeholder, not checked",
+      "example": "E-WNG-11: carries 1.0 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|E-WNG-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-11\"}",
       "status": "SKIP"
     },
@@ -220,7 +274,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-ASM-01: carries 2.0 N; rating is a placeholder, not checked",
+      "example": "E-ASM-01: carries 1.9 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-ASM-01: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-ASM-01\"}",
       "status": "SKIP"
     },
@@ -232,32 +286,68 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-AVN-03: carries 1.4 N; rating is a placeholder, not checked",
+      "example": "E-AVN-03: carries 1.3 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-AVN-03: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-03\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-AVN-04: carries 0.3 N; rating is a placeholder, not checked",
+      "example": "E-AVN-04: carries 0.2 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-AVN-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-04\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-AVN-05: carries 1.0 N; rating is a placeholder, not checked",
+      "example": "E-AVN-05: carries 0.4 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-AVN-05: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-05\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-AVN-06: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "E-AVN-06: carries 1.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-AVN-06: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-06\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-AVN-08: carries 0.8 N; rating is a placeholder, not checked",
+      "example": "E-AVN-08: carries 0.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-AVN-08: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-08\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-09: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-09: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-09\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-10: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-10\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-11: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-11\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-12: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-12: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-12\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-13: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-13: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-13\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-14: carries 5.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-14: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-14\"}",
       "status": "SKIP"
     },
     {
@@ -286,7 +376,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-HRN-20: carries 1.4 N; rating is a placeholder, not checked",
+      "example": "E-HRN-20: carries 1.8 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-HRN-20: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-20\"}",
       "status": "SKIP"
     },
@@ -298,15 +388,27 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-HRN-32: carries 14.3 N; rating is a placeholder, not checked",
+      "example": "E-HRN-32: carries 21.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-HRN-32: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-32\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-HRN-33: carries 14.7 N; rating is a placeholder, not checked",
+      "example": "E-HRN-33: carries 21.5 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-HRN-33: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-33\"}",
       "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-MEC-05: peak 1.2 N in drop test exceeds rating 0.7 N",
+      "key": "T2.sim_drop_loads|E-MEC-05: peak # N in drop test exceeds rating # N|{\"joint\":\"E-MEC-05\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-MEC-10: peak 1.3 N in drop test exceeds rating 0.7 N",
+      "key": "T2.sim_drop_loads|E-MEC-10: peak # N in drop test exceeds rating # N|{\"joint\":\"E-MEC-10\"}",
+      "status": "FAIL"
     },
     {
       "check_id": "T2.sim_drop_loads",
@@ -316,13 +418,13 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-PWR-01: carries 6.9 N; rating is a placeholder, not checked",
+      "example": "E-PWR-01: carries 6.5 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-PWR-01: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-01\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-PWR-02: carries 16.0 N; rating is a placeholder, not checked",
+      "example": "E-PWR-02: carries 16.2 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-PWR-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-02\"}",
       "status": "SKIP"
     },
@@ -334,31 +436,31 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-PWR-04: carries 6.5 N; rating is a placeholder, not checked",
+      "example": "E-PWR-04: carries 6.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-PWR-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-04\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-WNG-10: carries 1.8 N; rating is a placeholder, not checked",
+      "example": "E-WNG-10: carries 3.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-WNG-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-10\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-WNG-11: carries 1.8 N; rating is a placeholder, not checked",
+      "example": "E-WNG-11: carries 2.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-WNG-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-11\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-WNG-20: peak 2.2 N in drop test exceeds rating 1.4 N",
+      "example": "E-WNG-20: peak 1.8 N in drop test exceeds rating 1.4 N",
       "key": "T2.sim_drop_loads|E-WNG-20: peak # N in drop test exceeds rating # N|{\"joint\":\"E-WNG-20\"}",
       "status": "FAIL"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-WNG-21: peak 2.1 N in drop test exceeds rating 1.4 N",
+      "example": "E-WNG-21: peak 1.8 N in drop test exceeds rating 1.4 N",
       "key": "T2.sim_drop_loads|E-WNG-21: peak # N in drop test exceeds rating # N|{\"joint\":\"E-WNG-21\"}",
       "status": "FAIL"
     },
@@ -388,13 +490,13 @@
     },
     {
       "check_id": "T2.sim_rest",
-      "example": "tipped over after drop: landing axis 79 deg from vertical (limit 30), speed 0.020 m/s; tailsitter cannot stand on its landing gear",
+      "example": "tipped over after drop: landing axis 81 deg from vertical (limit 30), speed 0.010 m/s; tailsitter cannot stand on its landing gear",
       "key": "T2.sim_rest|tipped over after drop: landing axis # deg from vertical (limit #), speed # m/s; tailsitter cannot stand on its landing gear",
       "status": "FAIL"
     },
     {
       "check_id": "T3.static_margin",
-      "example": "16.8% MAC (NP x=59 mm, CG x=20 mm; target 5%-15%; fuselage effect not modelled) (mesh wing: chord measured at 41 stations)",
+      "example": "16.4% MAC (NP x=59 mm, CG x=21 mm; target 5%-15%; fuselage effect not modelled) (mesh wing: chord measured at 41 stations)",
       "key": "T3.static_margin|#% MAC (NP x=# mm, CG x=# mm; target #%#%; fuselage effect not modelled) (mesh wing: chord measured at # stations)|{\"band\":\"above\"}",
       "status": "FAIL"
     },

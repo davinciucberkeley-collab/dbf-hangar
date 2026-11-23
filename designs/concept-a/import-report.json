@@ -1,5 +1,5 @@
 {
- "attachments": 121,
+ "attachments": 144,
  "bridging_edges_not_emitted": [
   "E-WNG-6R",
   "E-WNG-6L",
@@ -8,9 +8,19 @@
   "E-MEC-09",
   "E-MEC-PIN-L3"
  ],
- "commit": "171ec426c800c5cf9265615f22ef4792e981be4a",
+ "commit": "a93f14da34cf1de20652a83de94cc8347e4efd04",
  "embed_ok": [],
  "fallback": [],
+ "interfaces": {
+  "attachments": 144,
+  "bridging": 6,
+  "declared_pending": 0,
+  "edges": 164,
+  "pending": 0,
+  "pending_ids": [],
+  "unknown_ids": [],
+  "wires": 14
+ },
  "parts": {
   "AVN-001": {
    "bodies": 1,
@@ -27,8 +37,8 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9886,
-   "triangles": 1548,
-   "volume_mm3": 3011.5
+   "triangles": 1522,
+   "volume_mm3": 3011.4
   },
   "AVN-003": {
    "bodies": 12,
@@ -54,17 +64,17 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9886,
-   "triangles": 330,
-   "volume_mm3": 700.9
+   "triangles": 288,
+   "volume_mm3": 945.0
   },
   "AVN-006": {
-   "bodies": 1,
+   "bodies": 4,
    "cuts": 0,
    "how": "rebuilt",
-   "mesh_to_source_volume_max": 0.9886,
+   "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9886,
-   "triangles": 192,
-   "volume_mm3": 679.4
+   "triangles": 400,
+   "volume_mm3": 1090.4
   },
   "AVN-007": {
    "bodies": 4,
@@ -84,86 +94,86 @@
    "triangles": 196,
    "volume_mm3": 7393.7
   },
-  "CGE-001": {
-   "bodies": 18,
-   "cuts": 20,
+  "AVN-009-S": {
+   "bodies": 1,
+   "cuts": 0,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
-   "mesh_to_source_volume_min": 0.9971,
-   "triangles": 6548,
-   "volume_mm3": 13225.4
+   "mesh_to_source_volume_min": 1.0,
+   "triangles": 2048,
+   "volume_mm3": 326.3
   },
-  "CGE-002-LL": {
+  "AVN-009-T": {
    "bodies": 1,
    "cuts": 0,
    "how": "rebuilt",
-   "mesh_to_source_volume_max": 0.9971,
-   "mesh_to_source_volume_min": 0.9971,
-   "triangles": 384,
-   "volume_mm3": 8442.4
+   "mesh_to_source_volume_max": 1.0,
+   "mesh_to_source_volume_min": 1.0,
+   "triangles": 2048,
+   "volume_mm3": 326.3
   },
-  "CGE-002-LR": {
+  "CGE-001": {
+   "bodies": 6,
+   "cuts": 24,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 1.0,
+   "mesh_to_source_volume_min": 1.0,
+   "triangles": 22874,
+   "volume_mm3": 13959.9
+  },
+  "CGE-002-A": {
    "bodies": 1,
-   "cuts": 0,
+   "cuts": 5,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 0.9971,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 384,
-   "volume_mm3": 8442.4
+   "triangles": 1536,
+   "volume_mm3": 18960.3
   },
-  "CGE-002-UL": {
+  "CGE-002-B": {
    "bodies": 1,
-   "cuts": 0,
+   "cuts": 5,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 0.9971,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 384,
-   "volume_mm3": 8442.4
-  },
-  "CGE-002-UR": {
-   "bodies": 1,
-   "cuts": 0,
-   "how": "rebuilt",
-   "mesh_to_source_volume_max": 0.9971,
-   "mesh_to_source_volume_min": 0.9971,
-   "triangles": 384,
-   "volume_mm3": 8442.4
+   "triangles": 1536,
+   "volume_mm3": 18960.3
   },
   "CGE-003-LL": {
-   "bodies": 4,
+   "bodies": 9,
    "cuts": 18,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 3542,
-   "volume_mm3": 9436.1
+   "triangles": 4630,
+   "volume_mm3": 9490.4
   },
   "CGE-003-LR": {
-   "bodies": 4,
+   "bodies": 9,
    "cuts": 18,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 3508,
-   "volume_mm3": 9436.2
+   "triangles": 4528,
+   "volume_mm3": 9490.5
   },
   "CGE-003-UL": {
-   "bodies": 4,
+   "bodies": 9,
    "cuts": 18,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 3508,
-   "volume_mm3": 9436.2
+   "triangles": 4510,
+   "volume_mm3": 9490.5
   },
   "CGE-003-UR": {
-   "bodies": 4,
+   "bodies": 9,
    "cuts": 18,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 3542,
-   "volume_mm3": 9436.1
+   "triangles": 4594,
+   "volume_mm3": 9490.4
   },
   "CGE-004": {
    "bodies": 1,
@@ -171,8 +181,8 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 0.9971,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 384,
-   "volume_mm3": 5306.7
+   "triangles": 480,
+   "volume_mm3": 5059.4
   },
   "CGE-005-L": {
    "bodies": 1,
@@ -198,8 +208,8 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9971,
-   "triangles": 572,
-   "volume_mm3": 8196.1
+   "triangles": 606,
+   "volume_mm3": 9491.4
   },
   "CGE-007-L": {
    "bodies": 2,
@@ -227,6 +237,87 @@
    "mesh_to_source_volume_min": 1.0,
    "triangles": 84,
    "volume_mm3": 23152.1
+  },
+  "CGE-009-LL": {
+   "bodies": 1,
+   "cuts": 1,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9971,
+   "mesh_to_source_volume_min": 0.9971,
+   "triangles": 588,
+   "volume_mm3": 500.7
+  },
+  "CGE-009-LR": {
+   "bodies": 1,
+   "cuts": 1,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9971,
+   "mesh_to_source_volume_min": 0.9971,
+   "triangles": 588,
+   "volume_mm3": 500.7
+  },
+  "CGE-009-UL": {
+   "bodies": 1,
+   "cuts": 1,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9971,
+   "mesh_to_source_volume_min": 0.9971,
+   "triangles": 588,
+   "volume_mm3": 500.7
+  },
+  "CGE-009-UR": {
+   "bodies": 1,
+   "cuts": 1,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9971,
+   "mesh_to_source_volume_min": 0.9971,
+   "triangles": 588,
+   "volume_mm3": 500.7
+  },
+  "CGE-010-C": {
+   "bodies": 1,
+   "cuts": 0,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9886,
+   "mesh_to_source_volume_min": 0.9886,
+   "triangles": 96,
+   "volume_mm3": 272.5
+  },
+  "CGE-010-LL": {
+   "bodies": 1,
+   "cuts": 0,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9886,
+   "mesh_to_source_volume_min": 0.9886,
+   "triangles": 96,
+   "volume_mm3": 111.8
+  },
+  "CGE-010-LR": {
+   "bodies": 1,
+   "cuts": 0,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9886,
+   "mesh_to_source_volume_min": 0.9886,
+   "triangles": 96,
+   "volume_mm3": 104.8
+  },
+  "CGE-010-UL": {
+   "bodies": 1,
+   "cuts": 0,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9886,
+   "mesh_to_source_volume_min": 0.9886,
+   "triangles": 96,
+   "volume_mm3": 104.8
+  },
+  "CGE-010-UR": {
+   "bodies": 1,
+   "cuts": 0,
+   "how": "rebuilt",
+   "mesh_to_source_volume_max": 0.9886,
+   "mesh_to_source_volume_min": 0.9886,
+   "triangles": 96,
+   "volume_mm3": 111.8
   },
   "FIN-001-L": {
    "bodies": 1,
@@ -423,8 +514,8 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 96,
-   "volume_mm3": 1424.2
+   "triangles": 76,
+   "volume_mm3": 1347.5
   },
   "HRN-003-R": {
    "bodies": 2,
@@ -432,44 +523,44 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 96,
-   "volume_mm3": 1424.2
+   "triangles": 76,
+   "volume_mm3": 1347.5
   },
   "HRN-004-LL": {
-   "bodies": 5,
-   "cuts": 2,
+   "bodies": 3,
+   "cuts": 12,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 186,
-   "volume_mm3": 526.7
+   "triangles": 392,
+   "volume_mm3": 976.1
   },
   "HRN-004-LR": {
-   "bodies": 5,
-   "cuts": 2,
+   "bodies": 3,
+   "cuts": 12,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 174,
-   "volume_mm3": 526.7
+   "triangles": 388,
+   "volume_mm3": 757.8
   },
   "HRN-004-UL": {
-   "bodies": 5,
-   "cuts": 2,
+   "bodies": 3,
+   "cuts": 12,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 192,
-   "volume_mm3": 515.6
+   "triangles": 406,
+   "volume_mm3": 585.4
   },
   "HRN-004-UR": {
-   "bodies": 5,
-   "cuts": 2,
+   "bodies": 3,
+   "cuts": 12,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 176,
-   "volume_mm3": 515.6
+   "triangles": 426,
+   "volume_mm3": 803.8
   },
   "HWC-001": {
    "bodies": 8,
@@ -675,8 +766,8 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 0.9886,
-   "triangles": 2290,
-   "volume_mm3": 5630.5
+   "triangles": 2286,
+   "volume_mm3": 5631.5
   },
   "PRP-004-LL": {
    "bodies": 5,
@@ -766,7 +857,7 @@
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
    "triangles": 80,
-   "volume_mm3": 9968.0
+   "volume_mm3": 10224.0
   },
   "PWR-003": {
    "bodies": 1,
@@ -779,12 +870,12 @@
   },
   "WNG-001": {
    "bodies": 1,
-   "cuts": 83,
+   "cuts": 95,
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 3418,
-   "volume_mm3": 2600446.9
+   "triangles": 3488,
+   "volume_mm3": 2585742.6
   },
   "WNG-002": {
    "bodies": 1,
@@ -864,8 +955,8 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 44,
-   "volume_mm3": 1588.2
+   "triangles": 60,
+   "volume_mm3": 1340.9
   },
   "WNG-007-R": {
    "bodies": 3,
@@ -873,8 +964,8 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 44,
-   "volume_mm3": 1588.2
+   "triangles": 60,
+   "volume_mm3": 1340.9
   },
   "WNG-008-LL": {
    "bodies": 8,
@@ -882,17 +973,17 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 864,
-   "volume_mm3": 2980.7
+   "triangles": 862,
+   "volume_mm3": 2952.2
   },
   "WNG-008-LU": {
    "bodies": 8,
    "cuts": 0,
    "how": "rebuilt",
-   "mesh_to_source_volume_max": 1.0047,
+   "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 914,
-   "volume_mm3": 3022.4
+   "triangles": 884,
+   "volume_mm3": 2970.3
   },
   "WNG-008-RL": {
    "bodies": 8,
@@ -900,17 +991,17 @@
    "how": "rebuilt",
    "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 864,
-   "volume_mm3": 2980.7
+   "triangles": 862,
+   "volume_mm3": 2952.2
   },
   "WNG-008-RU": {
    "bodies": 8,
    "cuts": 0,
    "how": "rebuilt",
-   "mesh_to_source_volume_max": 1.0047,
+   "mesh_to_source_volume_max": 1.0,
    "mesh_to_source_volume_min": 1.0,
-   "triangles": 914,
-   "volume_mm3": 3022.4
+   "triangles": 884,
+   "volume_mm3": 2970.3
   },
   "WNG-009-L": {
    "bodies": 3,
@@ -987,71 +1078,119 @@
    "source": "placeholder - not from source: CT-GEL-PAD has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.75 N, rounded up)"
   },
   "E-AVN-04": {
-   "child": "AVN-003",
+   "child": "AVN-005",
    "edge": "E-AVN-04",
+   "kind": "placeholder",
+   "parent": "WNG-001",
+   "rated_load_n": 0.2,
+   "source": "placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.13 N, rounded up)"
+  },
+  "E-AVN-05": {
+   "child": "AVN-003",
+   "edge": "E-AVN-05",
    "kind": "placeholder",
    "parent": "AVN-001",
    "rated_load_n": 0.3,
    "source": "placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.20 N, rounded up)"
   },
-  "E-AVN-05": {
+  "E-AVN-06": {
    "child": "AVN-004",
-   "edge": "E-AVN-05",
+   "edge": "E-AVN-06",
    "kind": "placeholder",
    "parent": "AVN-001",
    "rated_load_n": 0.6,
    "source": "placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.60 N, rounded up)"
-  },
-  "E-AVN-06": {
-   "child": "AVN-005",
-   "edge": "E-AVN-06",
-   "kind": "placeholder",
-   "parent": "AVN-001",
-   "rated_load_n": 0.2,
-   "source": "placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.13 N, rounded up)"
   },
   "E-AVN-07": {
    "child": "AVN-006",
    "edge": "E-AVN-07",
    "kind": "derived",
    "parent": "WNG-001",
-   "rated_load_n": 33.6,
-   "source": "contact area 391 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)"
+   "rated_load_n": 7.1,
+   "source": "contact area 83 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)"
   },
   "E-AVN-08": {
-   "child": "AVN-008",
+   "child": "AVN-006",
    "edge": "E-AVN-08",
+   "kind": "placeholder",
+   "parent": "AVN-009-T",
+   "rated_load_n": 0.3,
+   "source": "placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.22 N, rounded up)"
+  },
+  "E-AVN-09": {
+   "child": "AVN-005",
+   "edge": "E-AVN-09",
+   "kind": "placeholder",
+   "parent": "AVN-009-T",
+   "rated_load_n": 0.2,
+   "source": "placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.13 N, rounded up)"
+  },
+  "E-AVN-10": {
+   "child": "AVN-009-T",
+   "edge": "E-AVN-10",
+   "kind": "placeholder",
+   "parent": "WNG-001",
+   "rated_load_n": 0.1,
+   "source": "placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.02 N, rounded up)"
+  },
+  "E-AVN-11": {
+   "child": "AVN-006",
+   "edge": "E-AVN-11",
+   "kind": "placeholder",
+   "parent": "AVN-009-S",
+   "rated_load_n": 0.3,
+   "source": "placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.22 N, rounded up)"
+  },
+  "E-AVN-12": {
+   "child": "AVN-005",
+   "edge": "E-AVN-12",
+   "kind": "placeholder",
+   "parent": "AVN-009-S",
+   "rated_load_n": 0.2,
+   "source": "placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.13 N, rounded up)"
+  },
+  "E-AVN-13": {
+   "child": "AVN-009-S",
+   "edge": "E-AVN-13",
+   "kind": "placeholder",
+   "parent": "WNG-001",
+   "rated_load_n": 0.1,
+   "source": "placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.02 N, rounded up)"
+  },
+  "E-AVN-14": {
+   "child": "AVN-008",
+   "edge": "E-AVN-14",
    "kind": "placeholder",
    "parent": "AVN-001",
    "rated_load_n": 0.5,
    "source": "placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.42 N, rounded up)"
   },
-  "E-AVN-09": {
+  "E-AVN-15": {
    "child": "AVN-002",
-   "edge": "E-AVN-09",
+   "edge": "E-AVN-15",
    "kind": "derived",
    "parent": "HWC-001",
    "rated_load_n": 3726.0,
    "source": "4 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)"
   },
-  "E-AVN-10": {
+  "E-AVN-16": {
    "child": "HWC-001",
-   "edge": "E-AVN-10",
+   "edge": "E-AVN-16",
    "kind": "derived",
    "parent": "HWC-003",
    "rated_load_n": 3726.0,
    "source": "4 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)"
   },
-  "E-AVN-11": {
+  "E-AVN-17": {
    "child": "HWC-003",
-   "edge": "E-AVN-11",
+   "edge": "E-AVN-17",
    "kind": "derived",
    "parent": "AVN-001",
    "rated_load_n": 3726.0,
    "source": "4 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)"
   },
   "E-CGE-01": {
-   "child": "CGE-002-UR",
+   "child": "CGE-002-A",
    "edge": "E-CGE-01",
    "kind": "doc",
    "parent": "CGE-001",
@@ -1059,31 +1198,31 @@
    "source": "redesign/qp/A/structures/iter2_margins.md 'Arm 12x10 in socket, 25 mm, strike couple', 296 N, MS +0.48; rated = 296 N x K 2.1562 x (1 + MS 0.48)"
   },
   "E-CGE-02": {
-   "child": "CGE-003-UR",
+   "child": "CGE-002-B",
    "edge": "E-CGE-02",
    "kind": "derived",
-   "parent": "CGE-002-UR",
-   "rated_load_n": 1931.3,
-   "source": "contact area 966 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "parent": "CGE-001",
+   "rated_load_n": 1532.7,
+   "source": "contact area 766 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-CGE-03": {
-   "child": "CGE-002-UL",
+   "child": "CGE-003-UR",
    "edge": "E-CGE-03",
    "kind": "doc",
-   "parent": "CGE-001",
+   "parent": "CGE-002-A",
    "rated_load_n": 944.6,
    "source": "redesign/qp/A/structures/iter2_margins.md 'Arm 12x10 in socket, 25 mm, strike couple', 296 N, MS +0.48; rated = 296 N x K 2.1562 x (1 + MS 0.48)"
   },
   "E-CGE-04": {
-   "child": "CGE-003-UL",
+   "child": "CGE-002-A",
    "edge": "E-CGE-04",
    "kind": "derived",
-   "parent": "CGE-002-UL",
-   "rated_load_n": 1937.9,
-   "source": "contact area 969 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "parent": "CGE-009-UR",
+   "rated_load_n": 1064.1,
+   "source": "contact area 532 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-CGE-05": {
-   "child": "CGE-002-LR",
+   "child": "CGE-009-UR",
    "edge": "E-CGE-05",
    "kind": "doc",
    "parent": "CGE-001",
@@ -1091,15 +1230,15 @@
    "source": "redesign/qp/A/structures/iter2_margins.md 'Arm 12x10 in socket, 25 mm, strike couple', 296 N, MS +0.48; rated = 296 N x K 2.1562 x (1 + MS 0.48)"
   },
   "E-CGE-06": {
-   "child": "CGE-003-LR",
+   "child": "CGE-002-A",
    "edge": "E-CGE-06",
    "kind": "derived",
-   "parent": "CGE-002-LR",
-   "rated_load_n": 1922.2,
-   "source": "contact area 961 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "parent": "CGE-010-UR",
+   "rated_load_n": 44.5,
+   "source": "contact area 22 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-CGE-07": {
-   "child": "CGE-002-LL",
+   "child": "CGE-010-UR",
    "edge": "E-CGE-07",
    "kind": "doc",
    "parent": "CGE-001",
@@ -1107,92 +1246,228 @@
    "source": "redesign/qp/A/structures/iter2_margins.md 'Arm 12x10 in socket, 25 mm, strike couple', 296 N, MS +0.48; rated = 296 N x K 2.1562 x (1 + MS 0.48)"
   },
   "E-CGE-08": {
-   "child": "CGE-003-LL",
+   "child": "CGE-003-UL",
    "edge": "E-CGE-08",
    "kind": "derived",
-   "parent": "CGE-002-LL",
-   "rated_load_n": 1930.7,
-   "source": "contact area 965 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "parent": "CGE-002-B",
+   "rated_load_n": 1855.9,
+   "source": "contact area 928 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-CGE-09": {
-   "child": "CGE-001",
+   "child": "CGE-002-B",
    "edge": "E-CGE-09",
    "kind": "doc",
-   "parent": "CGE-004",
+   "parent": "CGE-009-UL",
    "rated_load_n": 940.5,
    "source": "redesign/qp/A/structures/iter2_margins.md 'Bridge 12x10 in hub, strike couple', 188 N, MS +1.32; rated = 188 N x K 2.1562 x (1 + MS 1.32)"
   },
   "E-CGE-10": {
-   "child": "CGE-004",
+   "child": "CGE-009-UL",
    "edge": "E-CGE-10",
    "kind": "derived",
-   "parent": "CGE-006",
-   "rated_load_n": 1891.3,
-   "source": "contact area 946 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "parent": "CGE-001",
+   "rated_load_n": 1185.8,
+   "source": "contact area 593 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-CGE-11": {
-   "child": "CGE-006",
+   "child": "CGE-002-B",
    "edge": "E-CGE-11",
    "kind": "derived",
-   "parent": "WNG-002",
-   "rated_load_n": 1176.5,
-   "source": "contact area 588 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "parent": "CGE-010-UL",
+   "rated_load_n": 44.8,
+   "source": "contact area 22 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-CGE-12": {
-   "child": "CGE-001",
+   "child": "CGE-010-UL",
    "edge": "E-CGE-12",
+   "kind": "derived",
+   "parent": "CGE-001",
+   "rated_load_n": 80.3,
+   "source": "contact area 40 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-13": {
+   "child": "CGE-003-LR",
+   "edge": "E-CGE-13",
+   "kind": "doc",
+   "parent": "CGE-002-B",
+   "rated_load_n": 376.9,
+   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+  },
+  "E-CGE-14": {
+   "child": "CGE-002-B",
+   "edge": "E-CGE-14",
+   "kind": "doc",
+   "parent": "CGE-009-LR",
+   "rated_load_n": 376.9,
+   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+  },
+  "E-CGE-15": {
+   "child": "CGE-009-LR",
+   "edge": "E-CGE-15",
+   "kind": "derived",
+   "parent": "CGE-001",
+   "rated_load_n": 1185.9,
+   "source": "contact area 593 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-16": {
+   "child": "CGE-002-B",
+   "edge": "E-CGE-16",
+   "kind": "doc",
+   "parent": "CGE-010-LR",
+   "rated_load_n": 376.9,
+   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+  },
+  "E-CGE-17": {
+   "child": "CGE-010-LR",
+   "edge": "E-CGE-17",
+   "kind": "doc",
+   "parent": "CGE-001",
+   "rated_load_n": 376.9,
+   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+  },
+  "E-CGE-18": {
+   "child": "CGE-003-LL",
+   "edge": "E-CGE-18",
+   "kind": "doc",
+   "parent": "CGE-002-A",
+   "rated_load_n": 1200.0,
+   "source": "redesign/qp/A/structures/structures_run.md L225 'Pack tray to hub (PETG, 600 mm2 bond)': BOND_TAU 2.0 MPa x 600 mm2"
+  },
+  "E-CGE-19": {
+   "child": "CGE-002-A",
+   "edge": "E-CGE-19",
+   "kind": "derived",
+   "parent": "CGE-009-LL",
+   "rated_load_n": 1065.1,
+   "source": "contact area 533 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-20": {
+   "child": "CGE-009-LL",
+   "edge": "E-CGE-20",
+   "kind": "derived",
+   "parent": "CGE-001",
+   "rated_load_n": 1191.1,
+   "source": "contact area 596 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-21": {
+   "child": "CGE-002-A",
+   "edge": "E-CGE-21",
+   "kind": "derived",
+   "parent": "CGE-010-LL",
+   "rated_load_n": 44.5,
+   "source": "contact area 22 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-22": {
+   "child": "CGE-010-LL",
+   "edge": "E-CGE-22",
+   "kind": "derived",
+   "parent": "CGE-001",
+   "rated_load_n": 98.6,
+   "source": "contact area 49 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-23": {
+   "child": "CGE-002-A",
+   "edge": "E-CGE-23",
+   "kind": "derived",
+   "parent": "CGE-010-C",
+   "rated_load_n": 45.1,
+   "source": "contact area 23 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-24": {
+   "child": "CGE-002-B",
+   "edge": "E-CGE-24",
+   "kind": "derived",
+   "parent": "CGE-010-C",
+   "rated_load_n": 44.1,
+   "source": "contact area 22 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-25": {
+   "child": "CGE-010-C",
+   "edge": "E-CGE-25",
+   "kind": "derived",
+   "parent": "CGE-001",
+   "rated_load_n": 130.8,
+   "source": "contact area 65 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-26": {
+   "child": "CGE-001",
+   "edge": "E-CGE-26",
+   "kind": "derived",
+   "parent": "CGE-004",
+   "rated_load_n": 977.0,
+   "source": "contact area 489 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-27": {
+   "child": "CGE-004",
+   "edge": "E-CGE-27",
+   "kind": "derived",
+   "parent": "CGE-006",
+   "rated_load_n": 2492.3,
+   "source": "contact area 1246 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-28": {
+   "child": "CGE-006",
+   "edge": "E-CGE-28",
+   "kind": "derived",
+   "parent": "WNG-002",
+   "rated_load_n": 1186.9,
+   "source": "contact area 593 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+  },
+  "E-CGE-29": {
+   "child": "CGE-001",
+   "edge": "E-CGE-29",
    "kind": "derived",
    "parent": "CGE-005-R",
    "rated_load_n": 1294.1,
    "source": "contact area 647 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
-  "E-CGE-13": {
+  "E-CGE-30": {
    "child": "CGE-005-R",
-   "edge": "E-CGE-13",
-   "kind": "doc",
+   "edge": "E-CGE-30",
+   "kind": "derived",
    "parent": "CGE-007-R",
-   "rated_load_n": 376.9,
-   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+   "rated_load_n": 556.4,
+   "source": "contact area 278 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
-  "E-CGE-14": {
+  "E-CGE-31": {
    "child": "CGE-007-R",
-   "edge": "E-CGE-14",
-   "kind": "doc",
+   "edge": "E-CGE-31",
+   "kind": "derived",
    "parent": "WNG-002",
-   "rated_load_n": 376.9,
-   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+   "rated_load_n": 636.8,
+   "source": "contact area 318 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
-  "E-CGE-15": {
+  "E-CGE-32": {
    "child": "CGE-001",
-   "edge": "E-CGE-15",
+   "edge": "E-CGE-32",
    "kind": "derived",
    "parent": "CGE-005-L",
    "rated_load_n": 1265.8,
    "source": "contact area 633 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
-  "E-CGE-16": {
+  "E-CGE-33": {
    "child": "CGE-005-L",
-   "edge": "E-CGE-16",
-   "kind": "doc",
+   "edge": "E-CGE-33",
+   "kind": "derived",
    "parent": "CGE-007-L",
-   "rated_load_n": 376.9,
-   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+   "rated_load_n": 547.3,
+   "source": "contact area 274 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
-  "E-CGE-17": {
+  "E-CGE-34": {
    "child": "CGE-007-L",
-   "edge": "E-CGE-17",
-   "kind": "doc",
+   "edge": "E-CGE-34",
+   "kind": "derived",
    "parent": "WNG-002",
-   "rated_load_n": 376.9,
-   "source": "redesign/qp/A/structures/iter2_margins.md 'V strut saddles (6x4.5, 20 mm)', 19 N, MS +8.20; rated = 19 N x K 2.1562 x (1 + MS 8.2)"
+   "rated_load_n": 629.9,
+   "source": "contact area 315 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
-  "E-CGE-18": {
+  "E-CGE-35": {
    "child": "CGE-001",
-   "edge": "E-CGE-18",
-   "kind": "doc",
+   "edge": "E-CGE-35",
+   "kind": "derived",
    "parent": "CGE-008",
-   "rated_load_n": 1200.0,
-   "source": "redesign/qp/A/structures/structures_run.md L225 'Pack tray to hub (PETG, 600 mm2 bond)': BOND_TAU 2.0 MPa x 600 mm2"
+   "rated_load_n": 113.2,
+   "source": "contact area 57 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-FIN-01": {
    "child": "FIN-001-R",
@@ -1391,8 +1666,8 @@
    "edge": "E-HRN-20",
    "kind": "placeholder",
    "parent": "WNG-001",
-   "rated_load_n": 0.9,
-   "source": "placeholder - not from source: CT-TIE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.81 N, rounded up)"
+   "rated_load_n": 1.0,
+   "source": "placeholder - not from source: CT-TIE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.99 N, rounded up)"
   },
   "E-HRN-21": {
    "child": "HRN-002",
@@ -1407,16 +1682,16 @@
    "edge": "E-HRN-30",
    "kind": "derived",
    "parent": "HRN-003-R",
-   "rated_load_n": 1290.6,
-   "source": "contact area 645 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 1311.7,
+   "source": "contact area 656 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-31": {
    "child": "CGE-008",
    "edge": "E-HRN-31",
    "kind": "derived",
    "parent": "HRN-003-L",
-   "rated_load_n": 1311.3,
-   "source": "contact area 656 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 1297.2,
+   "source": "contact area 649 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-32": {
    "child": "HRN-003-R",
@@ -1439,64 +1714,64 @@
    "edge": "E-HRN-40",
    "kind": "derived",
    "parent": "HRN-004-UR",
-   "rated_load_n": 61.7,
-   "source": "contact area 31 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 49.0,
+   "source": "contact area 25 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-41": {
    "child": "CGE-001",
    "edge": "E-HRN-41",
    "kind": "derived",
    "parent": "HRN-004-UL",
-   "rated_load_n": 61.7,
-   "source": "contact area 31 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 47.9,
+   "source": "contact area 24 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-42": {
    "child": "CGE-001",
    "edge": "E-HRN-42",
    "kind": "derived",
    "parent": "HRN-004-LR",
-   "rated_load_n": 60.0,
-   "source": "contact area 30 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 52.1,
+   "source": "contact area 26 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-43": {
    "child": "CGE-001",
    "edge": "E-HRN-43",
    "kind": "derived",
    "parent": "HRN-004-LL",
-   "rated_load_n": 59.8,
-   "source": "contact area 30 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 51.9,
+   "source": "contact area 26 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-50": {
    "child": "HRN-004-UR",
    "edge": "E-HRN-50",
    "kind": "derived",
    "parent": "HRN-003-R",
-   "rated_load_n": 52.2,
-   "source": "contact area 26 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 21.1,
+   "source": "contact area 11 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-51": {
    "child": "HRN-004-UL",
    "edge": "E-HRN-51",
    "kind": "derived",
    "parent": "HRN-003-L",
-   "rated_load_n": 53.1,
-   "source": "contact area 27 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 25.1,
+   "source": "contact area 13 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-52": {
    "child": "HRN-004-LR",
    "edge": "E-HRN-52",
    "kind": "derived",
    "parent": "HRN-003-R",
-   "rated_load_n": 47.5,
-   "source": "contact area 24 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 37.4,
+   "source": "contact area 19 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-HRN-53": {
    "child": "HRN-004-LL",
    "edge": "E-HRN-53",
    "kind": "derived",
    "parent": "HRN-003-L",
-   "rated_load_n": 47.5,
-   "source": "contact area 24 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
+   "rated_load_n": 33.7,
+   "source": "contact area 17 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)"
   },
   "E-MEC-01": {
    "child": "MEC-001-R",
@@ -1831,16 +2106,16 @@
    "edge": "E-WNG-10",
    "kind": "placeholder",
    "parent": "WNG-001",
-   "rated_load_n": 1.1,
-   "source": "placeholder - not from source: CT-TAPE-HINGE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 1.07 N, rounded up)"
+   "rated_load_n": 1.0,
+   "source": "placeholder - not from source: CT-TAPE-HINGE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.95 N, rounded up)"
   },
   "E-WNG-11": {
    "child": "WNG-006-L",
    "edge": "E-WNG-11",
    "kind": "placeholder",
    "parent": "WNG-001",
-   "rated_load_n": 1.1,
-   "source": "placeholder - not from source: CT-TAPE-HINGE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 1.07 N, rounded up)"
+   "rated_load_n": 1.0,
+   "source": "placeholder - not from source: CT-TAPE-HINGE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.95 N, rounded up)"
   },
   "E-WNG-20": {
    "child": "WNG-007-R",

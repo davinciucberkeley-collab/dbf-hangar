@@ -11,7 +11,7 @@
   "part_size_mm": 129.92,
   "supports": [
     {
-      "joint": "E-CGE-18",
+      "joint": "E-CGE-35",
       "other": "cge-001",
       "how": "contact within 0.5 mm"
     }
@@ -46,40 +46,28 @@
   "cases": [
     {
       "name": "landing",
-      "status": "PASS",
-      "max_von_mises_away_mpa": 1.366,
-      "max_von_mises_mpa": 1.366,
-      "safety_factor_at_ultimate": 9.22,
-      "max_displacement_mm": 0.1048,
-      "nodes": 45201,
-      "mesh_size_max_mm": 2.0,
-      "equilibrium_ok": true,
-      "load_share_on_clamped_faces": 0.009,
-      "location_mm": [
-        19.5,
-        -52.52,
-        18.0
-      ],
-      "project": ".studio/fea/concept-a/cge-008/concept-a-cge-008-landing.ocae",
-      "report": ".studio/fea/concept-a/cge-008/concept-a-cge-008-landing_report.html",
-      "route": "opencae-cad",
-      "material_from": "OpenCAE material database"
+      "status": "SKIP",
+      "message": "not checked: the part moves 5.69 mm under load (over 2 % of its 130 mm size), so the model isn't held properly",
+      "not_checked": true,
+      "max_von_mises_mpa": 22.276,
+      "max_displacement_mm": 5.6865,
+      "project": ".studio/fea/concept-a/cge-008/concept-a-cge-008-landing.ocae"
     },
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.485,
-      "max_von_mises_mpa": 0.485,
-      "safety_factor_at_ultimate": 25.97,
-      "max_displacement_mm": 0.0198,
+      "max_von_mises_away_mpa": 6.05,
+      "max_von_mises_mpa": 6.05,
+      "safety_factor_at_ultimate": 2.08,
+      "max_displacement_mm": 1.9248,
       "nodes": 45201,
       "mesh_size_max_mm": 2.0,
       "equilibrium_ok": true,
-      "load_share_on_clamped_faces": 0.008,
+      "load_share_on_clamped_faces": 0.003,
       "location_mm": [
-        19.5,
-        -53.51,
-        18.0
+        -41.2,
+        -54.5,
+        8.0
       ],
       "project": ".studio/fea/concept-a/cge-008/concept-a-cge-008-thrust.ocae",
       "report": ".studio/fea/concept-a/cge-008/concept-a-cge-008-thrust_report.html",
@@ -97,32 +85,32 @@
         {
           "name": "E-PWR-01 from pwr-002",
           "force_n": [
-            10.307,
-            0.53,
-            1.39
+            9.687,
+            0.365,
+            1.587
           ],
           "moment_nmm": [
-            -2.43,
-            -3.24,
-            13.12
+            -4.21,
+            18.64,
+            10.29
           ],
           "at_mm": [
             -17.5,
             0.0,
-            16.0
+            14.0
           ]
         },
         {
           "name": "E-PWR-02 from pwr-001",
           "force_n": [
-            23.691,
-            0.087,
-            3.734
+            24.207,
+            -0.132,
+            1.924
           ],
           "moment_nmm": [
-            -12.05,
-            -68.88,
-            45.17
+            -15.34,
+            -12.4,
+            32.25
           ],
           "at_mm": [
             -8.493,
@@ -133,14 +121,14 @@
         {
           "name": "E-PWR-03 from pwr-003",
           "force_n": [
-            0.408,
-            0.004,
-            0.049
+            0.423,
+            -0.004,
+            0.044
           ],
           "moment_nmm": [
-            -0.12,
+            -0.14,
             -0.01,
-            -0.21
+            -0.22
           ],
           "at_mm": [
             -10.0,
@@ -151,14 +139,14 @@
         {
           "name": "E-HRN-30 from hrn-003-r",
           "force_n": [
-            -13.919,
-            14.699,
-            -10.251
+            -9.242,
+            28.764,
+            -9.433
           ],
           "moment_nmm": [
-            11.33,
-            12.42,
-            -7.53
+            -15.6,
+            14.25,
+            -3.87
           ],
           "at_mm": [
             -11.09,
@@ -169,14 +157,14 @@
         {
           "name": "E-HRN-31 from hrn-003-l",
           "force_n": [
-            -14.784,
-            -14.161,
-            -11.142
+            -9.088,
+            -27.296,
+            -11.635
           ],
           "moment_nmm": [
-            -7.38,
-            10.23,
-            5.98
+            13.11,
+            16.95,
+            4.54
           ],
           "at_mm": [
             -11.09,
@@ -193,31 +181,31 @@
         {
           "name": "E-PWR-01 from pwr-002",
           "force_n": [
-            1.372,
+            1.368,
             0.001,
-            0.008
+            0.01
           ],
           "moment_nmm": [
             0.0,
-            -6.41,
+            -8.1,
             0.83
           ],
           "at_mm": [
             -17.5,
             0.0,
-            16.0
+            14.0
           ]
         },
         {
           "name": "E-PWR-02 from pwr-001",
           "force_n": [
-            2.682,
+            2.686,
             -0.001,
-            -0.008
+            -0.01
           ],
           "moment_nmm": [
-            0.0,
-            -3.21,
+            -0.0,
+            -4.05,
             0.41
           ],
           "at_mm": [
@@ -234,7 +222,7 @@
             0.0
           ],
           "moment_nmm": [
-            0.0,
+            -0.0,
             -0.0,
             0.0
           ],
@@ -247,14 +235,14 @@
         {
           "name": "E-HRN-30 from hrn-003-r",
           "force_n": [
-            2.772,
-            -0.276,
-            -1.448
+            2.734,
+            -0.218,
+            -1.586
           ],
           "moment_nmm": [
-            223.81,
-            -4.09,
-            47.73
+            223.26,
+            3.88,
+            61.16
           ],
           "at_mm": [
             -11.09,
@@ -265,14 +253,14 @@
         {
           "name": "E-HRN-31 from hrn-003-l",
           "force_n": [
-            2.582,
-            0.573,
-            1.964
+            2.57,
+            0.637,
+            2.091
           ],
           "moment_nmm": [
-            220.86,
-            87.99,
-            -33.78
+            218.72,
+            79.56,
+            -45.05
           ],
           "at_mm": [
             -11.09,
@@ -283,10 +271,10 @@
       ]
     }
   ],
-  "status": "PASS",
-  "worst_case": "landing",
+  "status": "NOT CHECKED",
+  "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "be23e62a041a3df0",
-  "generated": "2026-11-22T02:21:16+00:00",
+  "hash": "a47a995f8d646972",
+  "generated": "2026-11-23T07:01:09+00:00",
   "opencae_version": "0.2.0"
 }

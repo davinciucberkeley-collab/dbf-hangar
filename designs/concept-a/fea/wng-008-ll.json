@@ -6,9 +6,9 @@
   "ultimate_factor": 1.5,
   "wall_mm": {
     "p5": 0.4,
-    "median": 0.59
+    "median": 0.58
   },
-  "part_size_mm": 124.08,
+  "part_size_mm": 123.8,
   "supports": [
     {
       "joint": "E-WNG-31L",
@@ -29,9 +29,7 @@
       "message": "no load reaches this part in this case (or only clamped faces)"
     }
   ],
-  "notes": [
-    "left out 2 small separate piece(s) of the part (35.1, 35.1 mm3)"
-  ],
+  "notes": [],
   "error": null,
   "load_cases": [
     {
@@ -48,7 +46,7 @@
   "status": "SKIP",
   "worst_case": null,
   "design": "concept-a",
-  "hash": "458d2cd401fec242",
-  "generated": "2026-11-22T02:36:21+00:00",
+  "hash": "644ef812d915b2a8",
+  "generated": "2026-11-23T07:05:31+00:00",
   "opencae_version": "0.2.0"
 }

@@ -5,10 +5,10 @@
   "allowable_mpa": 12.6,
   "ultimate_factor": 1.5,
   "wall_mm": {
-    "p5": 0.37,
+    "p5": 0.29,
     "median": 0.57
   },
-  "part_size_mm": 124.91,
+  "part_size_mm": 124.54,
   "supports": [
     {
       "joint": "E-WNG-30L",
@@ -29,9 +29,7 @@
       "message": "no load reaches this part in this case (or only clamped faces)"
     }
   ],
-  "notes": [
-    "left out 4 small separate piece(s) of the part (9.9, 9.9, 0.0, 0.0 mm3)"
-  ],
+  "notes": [],
   "error": null,
   "load_cases": [
     {
@@ -48,7 +46,7 @@
   "status": "SKIP",
   "worst_case": null,
   "design": "concept-a",
-  "hash": "321513bd6b95fd4e",
-  "generated": "2026-11-22T02:37:14+00:00",
+  "hash": "8d9075655f10f3c3",
+  "generated": "2026-11-23T07:05:43+00:00",
   "opencae_version": "0.2.0"
 }

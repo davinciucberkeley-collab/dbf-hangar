@@ -5,14 +5,14 @@
   "allowable_mpa": 12.6,
   "ultimate_factor": 1.5,
   "wall_mm": {
-    "p5": 0.88,
+    "p5": 0.9,
     "median": 5.0
   },
   "part_size_mm": 68.56,
   "supports": [
     {
-      "joint": "E-CGE-06",
-      "other": "cge-002-lr",
+      "joint": "E-CGE-13",
+      "other": "cge-002-b",
       "how": "contact within 0.5 mm"
     }
   ],
@@ -27,18 +27,18 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.998,
-      "max_von_mises_mpa": 0.998,
-      "safety_factor_at_ultimate": 12.63,
-      "max_displacement_mm": 0.0068,
-      "nodes": 17948,
+      "max_von_mises_away_mpa": 0.631,
+      "max_von_mises_mpa": 0.631,
+      "safety_factor_at_ultimate": 19.96,
+      "max_displacement_mm": 0.0033,
+      "nodes": 21268,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.52,
-        236.68,
-        -158.91
+        -71.25,
+        227.64,
+        -162.72
       ],
       "project": ".studio/fea/concept-a/cge-003-lr/direct-landing",
       "report": null,
@@ -48,18 +48,18 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 1.168,
-      "max_von_mises_mpa": 1.168,
-      "safety_factor_at_ultimate": 10.78,
-      "max_displacement_mm": 0.0067,
-      "nodes": 17948,
+      "max_von_mises_away_mpa": 0.703,
+      "max_von_mises_mpa": 0.703,
+      "safety_factor_at_ultimate": 17.92,
+      "max_displacement_mm": 0.0043,
+      "nodes": 21268,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        -81.52,
-        236.68,
-        -158.91
+        -69.57,
+        233.92,
+        -162.89
       ],
       "project": ".studio/fea/concept-a/cge-003-lr/direct-thrust",
       "report": null,
@@ -68,7 +68,7 @@
     }
   ],
   "notes": [
-    "left out 4 small separate piece(s) of the part (0.0, 0.0, 0.0, 0.0 mm3)"
+    "left out 11 small separate piece(s) of the part (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 mm3)"
   ],
   "error": null,
   "load_cases": [
@@ -79,17 +79,17 @@
         {
           "name": "E-PRP-05 from prp-001-lr",
           "force_n": [
-            -8.648,
-            7.901,
-            -1.86
+            7.663,
+            -3.006,
+            0.398
           ],
           "moment_nmm": [
-            -0.19,
-            16.21,
-            -19.71
+            -0.83,
+            -57.03,
+            -22.96
           ],
           "at_mm": [
-            -98.86,
+            -86.36,
             232.119,
             -149.98
           ]
@@ -108,12 +108,12 @@
             3.189
           ],
           "moment_nmm": [
-            -0.0,
+            0.0,
             -1.65,
             1.03
           ],
           "at_mm": [
-            -98.86,
+            -86.36,
             232.119,
             -149.98
           ]
@@ -124,7 +124,7 @@
   "status": "PASS",
   "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "cfb02f9022c0b1ca",
-  "generated": "2026-11-22T02:03:35+00:00",
+  "hash": "f2f96c994b598912",
+  "generated": "2026-11-23T06:54:13+00:00",
   "opencae_version": "0.2.0"
 }
