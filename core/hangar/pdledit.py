@@ -94,6 +94,14 @@ def parse_scalar(raw: str):
     return v
 
 
+def parse_set_value(raw: str):
+    """Value for design.set --kind modify/subtract: a plain text containing ': ' (or ending in ':') is the string itself, not a YAML mapping (T58); everything else as parse_scalar."""
+    s = raw.strip()
+    if (": " in s or s.endswith(":")) and s[:1] not in ("[", "{", '"', "'"):
+        return s
+    return parse_scalar(raw)
+
+
 def _no_empty(v, raw: str) -> None:
     if isinstance(v, (list, dict)):
         if not v:

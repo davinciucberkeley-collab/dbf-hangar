@@ -615,3 +615,25 @@ def test_remove_op_input_errors_write_nothing(tmp_concept_a):
     r = call("design.set", path=str(tmp_concept_a), kind="modify", why="t", key="flight.cl_max")
     assert r.ok is False and "value is required" in " ".join(r.messages)
     assert _bytes(tmp_concept_a) == before
+
+
+def test_set_value_with_colon_space_is_a_string(tmp_example):  # T58
+    r = call("design.set", path=str(tmp_example), key="components[prop_l].description", value="Disc: 10x4.5 prop", why="label")
+    assert r.ok, r.messages
+    data = yaml.safe_load((tmp_example / "plane.yaml").read_text(encoding="utf-8"))
+    assert [c for c in data["components"] if c["id"] == "prop_l"][0]["description"] == "Disc: 10x4.5 prop"
+
+
+def test_parse_set_value_keeps_other_scalars_and_the_add_path(tmp_example):  # T58
+    from hangar.ops.edit import OpInputError
+    assert pdledit.parse_set_value("Pack: 3S") == "Pack: 3S"
+    assert pdledit.parse_set_value("x:") == "x:"
+    assert pdledit.parse_set_value('"a: b"') == "a: b"
+    assert pdledit.parse_set_value("41.5") == 41.5
+    assert pdledit.parse_set_value("true") is True
+    with pytest.raises(OpInputError, match="mapping or list"):
+        pdledit.parse_set_value("[1, 2]")
+    with pytest.raises(OpInputError, match="give one scalar"):
+        pdledit.parse_value("a: b")       # the add path is unchanged
+    r = call("design.set", path=str(tmp_example), key="components[battery].mass_g", value="heavy: 250", why="x")
+    assert r.exit_code == 2 and "number" in " ".join(r.messages)

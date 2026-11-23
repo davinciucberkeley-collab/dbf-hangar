@@ -66,7 +66,7 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
             working, gone = pdledit.remove_element(working, k)
             entries.append({"date": stamp, "key": k, "old": pdledit.render_flow(gone), "new": None, "why": why, "kind": kind})
             continue
-        new = pdledit.parse_value(raw) if kind == "add" else pdledit.parse_scalar(raw)
+        new = pdledit.parse_value(raw) if kind == "add" else pdledit.parse_set_value(raw)
         data = yaml.safe_load(working)
         if pdledit.exists(data, k):
             if isinstance(new, (list, dict)):
