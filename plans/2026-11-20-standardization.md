@@ -1247,8 +1247,8 @@ Not a code unit; it tests everything above.
 **Scope:** T84 (flaky `test_propose_link_survives_real_git_side_effects` 404), T85 (U4.3 small follow-ups), T15 (T7 point-mass rows SKIP, not PASS), T21 (one exit-code rule for a missing tool, D37), T23 (fea.py/mcp.md polish), T3 (ops registry retry after a failed import), T20 (`sim drop --height-m`). Core, tests and docs only; no `designs/`, no `standards/` change, no CI workflow change. Not in scope: T11 (workflow), T16 (FEA hash change would stale concept-a results), T83 (agent file).
 
 - [x] **Step 1: Briefs** (tactician W6-T; all seven, T84 [hard]; T20 after T21): `briefs/U4.4-<task>.md`, builder-ready (R-a, R-b)
-- [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
-- [ ] **Step 3: Review** W6-R; merge; tasks set done with the merge commit
+- [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t84 2e16152, t21 0f3efc8, t3 ff3d60a, t23 eb780b9, t85 0f4fde5, t15 8cc6e53, t20 1645724)*
+- [x] **Step 3: Review** W6-R; merge; tasks set done with the merge commit *(all seven ACCEPT, reviews/2026-11-23-w6.md; last merge d563766; follow-ups T86, T87)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

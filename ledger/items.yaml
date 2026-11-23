@@ -3206,13 +3206,13 @@ items:
     text: 'sim.drop height override: sim._build reads drop_height_m from standards internally; factor a drop_test(design, height_m) out of tier2_sim (tier2 behaviour identical) so the op can take --height-m [triage 2026-11-21: Factor drop_test(design, height_m) out of tier2_sim with identical tier2 behaviour; add --height-m to sim.drop]'
     source: W2-S build stop 2026-11-21
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: d563766
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T21
     kind: task
     text: 'One exit-code rule for a missing external tool: U2.3b skip_result gives ok/exit 0, sim.drop gives exit 1 (same as FAIL); pick one (SKIP != PASS, != FAIL) across ops; ops/sim.py should use pdledit.resolve_design_path [triage 2026-11-21: rule: SKIP exits 0 with status SKIP (D37); ops/sim.py moves to resolve_design_path]'
@@ -4303,6 +4303,17 @@ items:
     kind: task
     text: "W6-R follow-ups (non-blocking): studio results glob '{did}-*.*' can delete another design whose id starts with '<did>-'; legacy plane fea (cli.py:192/230) exits 1 on missing OpenCAE (outside D37); T3 rollback could drop ops of a nested ops import; ledger add/ingest accept any due text; tests for a mixed point-mass/mesh harness and for from-imports in the T23 unused-import check"
     source: W6-R review 2026-11-23 (reviews/2026-11-23-w6.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T87
+    kind: task
+    text: 'T20 follow-ups: sim drop rows at an override height still cite design-standards drop_height_m and do not state the height in the human output; --height-m help does not say 0 means the standards height'
+    source: W6-R review 2026-11-23
     owner: conductor
     status: open
     due: '2026-12-15'
