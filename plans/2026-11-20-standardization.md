@@ -1302,7 +1302,7 @@ Not a code unit; it tests everything above.
 **Scope:** T37: advisor W11-A picks the `T3.control_authority` yaw fix (D58), tactician briefs it, builder-plus builds it (core and tests only). T60: design-engineer W11-G sets concept-a `hrn-bat` to 12 AWG with `plane design set` (designs only, D57) and reports the gates before and after. Separate branches; the T60 branch touches no `core/`.
 
 - [x] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md` *(pick: `briefs/U4.9-t37-advice.md`, D58; brief f234a51, hard; baseline unchanged)*
-- [ ] **Step 2:** Build T37 (W11-B); T60 design change (W11-G)
+- [x] **Step 2:** Build T37 (W11-B); T60 design change (W11-G) *(t37 b3049cd builder-plus, baseline unchanged; t60 07969fd 10 AWG, D57 amended)*
 - [ ] **Step 3: Review** (reviewer W11-R); merge; T37, T60 done
 
 ### Unit U4.10: v1.1 cleanup, first batch (T83, T86, T88, T90; P175)
