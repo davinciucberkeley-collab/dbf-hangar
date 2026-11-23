@@ -25,6 +25,7 @@ import numpy as np
 import trimesh
 
 from ..design import REPO_ROOT, load_standards
+from . import dbf_blocks as blk
 from . import dbf_geometry as geo
 from . import dbf_ratings as rt
 
@@ -377,7 +378,15 @@ def import_concept(dbf_root, concept: str = "A", out_dir=None, log=print) -> Pat
     # ---- plane.yaml
     text, rating_rows = _write_yaml(data, PARTS, ids, comps, proxies, meshes, cg, parts_csv, params, att_rows, elevon, groups, bridging,
                                     std, out)
-    (out / "plane.yaml").write_text(text)
+    commit8 = data["commit"][:8]
+    text += blk.files_block(sorted(meshes), commit8)
+    text += blk.bom_block(root, concept, parts_csv, commit8)
+    text += blk.wiring_block(data["edges"], wire_edges, commit8)
+    text += blk.transport_block([i.lower() for i in ids])
+    text += blk.assembly_block(data["assembly_steps"], [i.lower() for i in ids])
+    text += "notes: " + json.dumps(f"CAD source (python, read only): DBF-Combined@{commit8} redesign/qp/A/cad; BOM: redesign/qp/A/BOM-A.csv; "
+                                   "imported by plane import dbf") + "\n"
+    (out / "plane.yaml").write_bytes(text.encode("utf-8"))
     report["attachments"] = len(att_rows)
     report["bridging_edges_not_emitted"] = [e["id"] for e in bridging]
     report["wire_edges_not_emitted"] = sorted(wire_edges)
@@ -470,6 +479,8 @@ def _write_yaml(data, PARTS, ids, comps, proxies, meshes, cg, parts_csv, params,
     add(f"  cruise_speed_mps: {_n(cruise, 1)}        # params-A.json mission.cruise_ms")
     add(f"  stall_speed_max_mps: {_n(cruise / ratio, 2)}    # params-A.json mission.cruise_ms 17 / req.cruise_ratio 1.3 (A-P6: 1.3 Vs < cruise)")
     add(f"  budget_usd: {_n(P['req']['budget_usd']['value'], 0)}           # params-A.json req.budget_usd")
+    bx = P["req"]["box_limit_m"]
+    add(f"  transport_box_mm: {_vec([float(x) * 1000 for x in (bx['value'] if isinstance(bx, dict) else bx)], 0)}   # params-A.json req.box_limit_m")
     add("flight:")
     add(f"  cl_max: {_n(P['mission']['clmax']['value'], 2)}            # params-A.json mission.clmax 0.75, EST in the source (measured stall will replace it)")
     add(f"  air_density_kgm3: {_n(P['env']['rho_kgm3']['value'], 2)}   # params-A.json env.rho_kgm3 (MISSION.md s1)")
