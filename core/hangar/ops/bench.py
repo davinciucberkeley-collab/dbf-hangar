@@ -188,6 +188,10 @@ def list_op() -> OpResult:
     mutates=True,
     render=lambda r: json.dumps({k: r.data[k] for k in ("task", "agent", "model", "passed", "score", "tokens", "minutes")}))
 def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> OpResult:
+    from ..cli import ID_RE
+    for label, value in (("task", task), ("agent", agent)):   # T89: both name a file under the repo; only a bare id may
+        if not ID_RE.fullmatch(value):
+            raise OpInputError(f"{label} {value!r} must be a bare id matching {ID_RE.pattern}")
     root = repo_root()
     t = load_task(root, task)
     claude = shutil.which("claude")

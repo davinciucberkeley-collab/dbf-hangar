@@ -26,6 +26,7 @@ from urllib.parse import parse_qs, urlparse
 import yaml
 
 from . import __version__
+from .cli import ID_RE
 from .design import DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, list_designs, load_design
 from .index import design_entry, dumps, error_entry, index_extras
 from .ops import OpResult, call, registry
@@ -36,7 +37,6 @@ STUDIO_DIR = REPO_ROOT / ".studio"
 DATA_DIR = STUDIO_DIR / "data"
 CACHE_FILE = STUDIO_DIR / "cache.json"
 BACKUP_DIR = STUDIO_DIR / "backups"
-ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
 MAX_BODY = 20 * 1024 * 1024
 
 
@@ -316,7 +316,7 @@ def _zip(folder: Path) -> bytes:
 
 
 def _check_id(did: str) -> str:
-    if not isinstance(did, str) or not ID_RE.match(did):
+    if not isinstance(did, str) or not ID_RE.fullmatch(did):
         raise ValueError(f"invalid design id {did!r}")
     return did
 
@@ -327,7 +327,7 @@ _REFUSED_KEYS = ("out",)                                # D54: Studio never writ
 _REFUSED_PARAMS = {("ledger.ingest", "path"), ("claim.import-dbf", "dbf_root"), ("ledger.import-dbf", "dbf_root"),
                    ("ledger.import-dbf", "ledger"), ("ledger.seed", "plan"),
                    ("fea.setup", "opencae_python"), ("fea.setup", "opencae_root")}   # not used by Studio via /api/op
-_ID_PARAMS = {("design.new", "template")}               # must be a bare design id
+_ID_PARAMS = {("design.new", "template"), ("bench.run", "agent"), ("bench.run", "task")}   # must be a bare id
 
 
 def _inside(p: Path, roots: list[Path]) -> bool:
@@ -346,7 +346,7 @@ def confine_op_params(name: str, params: dict) -> str | None:
         if key in _REFUSED_KEYS or (name, key) in _REFUSED_PARAMS:
             return f"{name}: {key} is not available from Studio"
         if (name, key) in _ID_PARAMS:
-            if not ID_RE.match(value):
+            if not ID_RE.fullmatch(value):
                 return f"{name}: {key} {value!r} is outside designs/; Studio only takes a bare design id"
             continue
         if key not in _DESIGN_PARAMS:

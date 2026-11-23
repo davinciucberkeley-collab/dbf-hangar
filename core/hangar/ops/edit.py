@@ -117,7 +117,7 @@ def diff_op(a: str, b: str) -> OpResult:
     mutates=True, render=lambda r: r.data["path"])
 def copy_op(src: str, new_id: str) -> OpResult:
     from ..cli import ID_RE
-    if not ID_RE.match(new_id):
+    if not ID_RE.fullmatch(new_id):
         raise OpInputError(f"bad id {new_id!r}")
     src_dir = _plane(src).parent
     dst = Path(design_mod.DESIGNS_DIR) / new_id
