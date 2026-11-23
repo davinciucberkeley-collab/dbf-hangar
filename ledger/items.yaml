@@ -3944,7 +3944,7 @@ items:
     status: done
     due: '2026-11-29'
     units: []
-    evidence: Tristan 2026-11-23 (P181)
+    evidence: c81c61b
     decided_in: ''
     updated: '2026-11-23'
   - id: T63
@@ -4260,10 +4260,10 @@ items:
     text: 'gate explain: check ids that only appear on FAIL (e.g. T1.attachment_contact) still cannot be explained even with --design; .claude/agents/design-engineer.md:18 shows gate explain without --design (T26 follow-up) [T1.attachment_contact explainable since faa0791 (W7-R); other FAIL-only ids (T1.attachment_overlap, T1.attachment_location, T0.unique_ids, other T0) remain]'
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 8c720eb
     decided_in: ''
     updated: '2026-11-23'
   - id: T84
@@ -4326,10 +4326,10 @@ items:
     text: core/hangar/checks.py:322 PROP_CHAIN_MAX_INTERMEDIATE = 2 is a threshold in code; move it to standards/*.yaml with a source or pending (audit 6)
     source: W5-A audit 6, 2026-11-23
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 34d21b2
     decided_in: ''
     updated: '2026-11-23'
   - id: D54
@@ -4512,6 +4512,17 @@ items:
     kind: task
     text: 'W11-R non-blocking (T37): yaw SKIP text should say when hover_ctrl_factor is pending; add a data key for the control moment (tests read it from the message); with T95 propose a criterion for untrimmed yaw at equal thrust'
     source: W11-R review 2026-11-23 (reviews/2026-11-23-w11.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T100
+    kind: task
+    text: "W12-R follow-ups (U4.10): T83 guard scans only checks.py (ids from gates/*.py not covered); scorecard lacks manufacturing.yaml without '#' as a criterion form; T1.motor_has_prop still cites embed_max_fraction_of_child; ops/research.py:25 SLUG_RE.match trailing-newline hole; after U4.8 switch bench.py, design.py, edit.py to import ID_RE from hangar.ids"
+    source: W12-R review 2026-11-23 (reviews/2026-11-23-w12.md)
     owner: conductor
     status: open
     due: '2026-12-15'
