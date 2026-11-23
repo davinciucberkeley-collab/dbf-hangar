@@ -131,7 +131,7 @@ def browser():
 
 def collect(page):
     errors = []
-    page.on("console", lambda m: errors.append(m.text) if m.type == "error" else None)
+    page.on("console", lambda m: errors.append(f"{m.text} {m.location.get('url', '')}".strip()) if m.type == "error" else None)
     page.on("pageerror", lambda e: errors.append(str(e)))
     return errors
 
