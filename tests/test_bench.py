@@ -235,12 +235,22 @@ def test_main_logs_argv_and_cwd_only_when_bench_log_is_set(tmp_path, monkeypatch
     assert b"\r" not in log.read_bytes()
 
 
-def test_replayable_skips_known_read_only_ops_only():
-    assert bench.replayable(["design", "mass", "designs/x"]) is False
-    assert bench.replayable(["design", "get", "designs/x", "--key", "id"]) is False
-    assert bench.replayable(["design", "set", "designs/x", "k", "--value", "1", "--why", "w"]) is True
-    assert bench.replayable(["no-such-command", "x"]) is True
-    assert bench.replayable([]) is True
+def test_replay_kind_skips_read_only_replays_the_allow_list_and_refuses_the_rest():
+    for argv in (["design", "mass", "designs/x"], ["design", "get", "designs/x", "--key", "id"], ["validate", "designs/x"],
+                 ["mass", "designs/x"], ["list"], ["--version"], [], ["design"], ["design", "bogus"], ["fea", "plan", "designs/x"],
+                 ["--help"], ["validate", "designs/x", "--tier", "3"]):
+        assert bench.replay_kind(argv) == "skip", argv
+    for argv in (["design", "set", "designs/x", "k", "--value", "1", "--why", "w"], ["design", "copy", "designs/x", "y"],
+                 ["design", "new", "y"], ["new", "y"]):
+        assert bench.replay_kind(argv) == "replay", argv
+    for argv in (["bench", "run", "--task", "t", "--agent", "a", "--model", "haiku"], ["fea", "run", "designs/x"], ["fea", "designs/x", "--all"],
+                 ["design", "export", "designs/x", "--format", "stl", "--out", "/tmp/o"], ["ledger", "set", "T1"], ["import", "dbf"],
+                 ["baseline", "update", "designs/x"], ["studio"], ["no-such-command", "x"],
+                 ["--", "design", "export", "designs/x", "--out", "f"], ["design", "--", "export", "designs/x", "--out", "f"],
+                 ["--foo", "design", "set", "designs/x", "k", "--value", "1", "--why", "w"], ["--", "design", "mass", "designs/x"],
+                 ["design", "--", "mass", "designs/x"], ["--version", "design", "export", "designs/x"],
+                 ["validate", "designs/x", "--out", "f"], ["validate", "designs/x", "--out=f"]):
+        assert bench.replay_kind(argv) == "refuse", argv
 
 
 def test_designs_diff_ignores_changelog_dates_and_nothing_else(tmp_path):
@@ -332,3 +342,110 @@ def test_run_replays_the_agent_commands_and_fails_a_direct_edit(direct_edit, fak
         assert any("differs from a replay" in m for m in record["messages"]), record["messages"]
     else:
         assert r.data["passed"] is True and r.data["score"] == 1.0 and record["messages"] == []
+
+
+# ---- U4.8 (T91, T92, T93): designs dir in the workspace, pinned snapshot, replay allow-list, path mapping, unwritable log ----
+def _log_rows(log, *rows):
+    log.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8", newline="\n")
+
+
+def test_design_dir_env_redirects_designs_dir_only_when_set(tmp_path):
+    code = "from hangar.design import DESIGNS_DIR, REPO_ROOT; print(DESIGNS_DIR == REPO_ROOT / 'designs', DESIGNS_DIR)"
+    plain = {k: v for k, v in os.environ.items() if k != "PLANE_DESIGNS_DIR"}
+    r = REAL_RUN([sys.executable, "-c", code], env=plain, capture_output=True, text=True, timeout=120)
+    assert r.stdout.split()[0] == "True", r
+    r = REAL_RUN([sys.executable, "-c", code], env={**plain, "PLANE_DESIGNS_DIR": str(tmp_path)}, capture_output=True, text=True, timeout=120)
+    assert r.stdout.split()[0] == "False" and Path(r.stdout.split(" ", 1)[1].strip()) == tmp_path, r
+
+
+def test_design_new_in_a_bench_run_and_its_replay_stay_inside_the_workspace(fake_repo, tmp_path):
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    real = REPO / "designs" / "u48-bench-new"
+    env = {**_logged_env(log), "PLANE_DESIGNS_DIR": str(ws / "designs")}
+    try:
+        _plane(ws, env, "design", "new", "u48-bench-new", "--template", "concept-a")
+        assert (ws / "designs" / "u48-bench-new" / "plane.yaml").is_file()
+        assert not real.exists()
+        g = bench.grade(task, ws, fake_repo, snap, log, bench.tree_digest(snap))
+        assert g["messages"] == [], g                  # the replay reproduced the new design (the mass row itself still fails: nothing was cut)
+        assert not real.exists()
+        assert (ws.parent / "replay" / "designs" / "u48-bench-new" / "plane.yaml").is_file()
+    finally:
+        if real.exists():
+            shutil.rmtree(real)
+
+
+def test_tree_digest_changes_with_any_file_change(tmp_path):
+    (tmp_path / "d" / "x").mkdir(parents=True)
+    (tmp_path / "d" / "x" / "plane.yaml").write_bytes(b"id: x\n")
+    d0 = bench.tree_digest(tmp_path / "d")
+    assert bench.tree_digest(tmp_path / "d") == d0
+    (tmp_path / "d" / "x" / "plane.yaml").write_bytes(b"id: y\n")
+    d1 = bench.tree_digest(tmp_path / "d")
+    (tmp_path / "d" / "extra").write_bytes(b"")
+    assert len({d0, d1, bench.tree_digest(tmp_path / "d")}) == 3
+
+
+def test_replay_fails_when_the_snapshot_changed_during_the_run(fake_repo, tmp_path):
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    digest = bench.tree_digest(snap)
+    assert bench.replay(ws, snap, log, digest) == []
+    p = snap / "designs" / "concept-a" / "plane.yaml"
+    p.write_bytes(p.read_bytes() + b"# tampered\n")
+    assert bench.replay(ws, snap, log, digest) == ["the pre-run snapshot changed during the run; cannot replay"]
+    g = bench.grade(task, ws, fake_repo, snap, log, digest)
+    assert g["passed"] is False and g["score"] == 0.0 and any("snapshot changed" in m for m in g["messages"]), g
+
+
+def test_replay_refuses_a_command_off_the_allow_list_and_runs_nothing(fake_repo, tmp_path, monkeypatch):
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    _log_rows(log, {"argv": ["design", "set", "designs/concept-a", "status", "--value", "x", "--why", "w"], "cwd": str(ws)},
+              {"argv": ["bench", "run", "--task", "mass-cut-10", "--agent", "design-engineer", "--model", "haiku"], "cwd": str(ws)})
+    def boom(*a, **k):
+        raise AssertionError("a command was started")
+    monkeypatch.setattr(bench.subprocess, "run", boom)
+    msgs = bench.replay(ws, snap, log)
+    assert len(msgs) == 1 and "bench run" in msgs[0] and "not a command a bench run may use" in msgs[0], msgs
+
+
+def test_replay_refuses_a_path_outside_the_workspace_and_runs_nothing(fake_repo, tmp_path, monkeypatch):
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    def boom(*a, **k):
+        raise AssertionError("a command was started")
+    monkeypatch.setattr(bench.subprocess, "run", boom)
+    for target in (str(snap / "designs" / "concept-a"), "../snapshot/designs/concept-a", str(fake_repo / "designs" / "concept-a")):
+        _log_rows(log, {"argv": ["design", "set", target, "status", "--value", "x", "--why", "w"], "cwd": str(ws)})
+        msgs = bench.replay(ws, snap, log)
+        assert len(msgs) == 1 and "outside the workspace" in msgs[0], (target, msgs)
+    _log_rows(log, {"argv": ["design", "set", "designs/concept-a", "status", "--value", "x", "--why", "w"], "cwd": str(tmp_path)})
+    msgs = bench.replay(ws, snap, log)
+    assert len(msgs) == 1 and "outside the workspace" in msgs[0], msgs
+
+
+def test_replay_maps_a_workspace_path_written_as_dot_dot_run_id(fake_repo, tmp_path):
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    _plane(ws, _logged_env(log), "design", "set", f"../{ws.name}/designs/concept-a", "components[pwr-001].mass_g",
+           "--value", "140", "--why", "smaller pack")
+    before = bench.tree_digest(ws / "designs")
+    assert bench.replay(ws, snap, log) == []
+    assert bench.tree_digest(ws / "designs") == before                 # the replay wrote into replay/, not into the graded workspace
+    assert b"mass_g: 140" in (ws.parent / "replay" / "designs" / "concept-a" / "plane.yaml").read_bytes()
+
+
+def test_main_unwritable_bench_log_is_one_line_and_exit_2(tmp_path, monkeypatch, capsys):
+    from hangar import cli as cli_mod
+    monkeypatch.setattr(sys, "argv", ["plane", "--version"])
+    monkeypatch.setenv("PLANE_BENCH_LOG", str(tmp_path))               # a folder: cannot be opened for append
+    with pytest.raises(SystemExit) as e:
+        cli_mod.main()
+    err = capsys.readouterr().err
+    assert e.value.code == 2 and err.startswith("plane: cannot write PLANE_BENCH_LOG") and "Traceback" not in err and err.count("\n") == 1, err
+
+
+def test_run_points_designs_dir_at_the_workspace(fake_repo, monkeypatch):
+    monkeypatch.chdir(fake_repo)
+    seen = {}
+    _agent_fake(monkeypatch, seen, False)
+    r = call("bench.run", task="mass-cut-10", agent="design-engineer", model="haiku")
+    assert r.ok and r.data["passed"] is True, r.messages
+    assert Path(seen["env"]["PLANE_DESIGNS_DIR"]) == seen["cwd"] / "designs"

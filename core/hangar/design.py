@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import copy
 import json
+import os
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any
@@ -12,7 +13,8 @@ import yaml
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = REPO_ROOT / "schema" / "plane.schema.json"
 STANDARDS_PATH = REPO_ROOT / "standards" / "design-standards.yaml"
-DESIGNS_DIR = REPO_ROOT / "designs"
+DESIGNS_DIR_ENV = "PLANE_DESIGNS_DIR"      # U4.8 (T91): the bench grader points this at the run's workspace designs/ folder
+DESIGNS_DIR = Path(os.environ[DESIGNS_DIR_ENV]) if os.environ.get(DESIGNS_DIR_ENV) else REPO_ROOT / "designs"
 
 PASS, FAIL, WARN, SKIP = "PASS", "FAIL", "WARN", "SKIP"
 
