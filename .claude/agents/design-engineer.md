@@ -15,7 +15,7 @@ You improve a design by changing data, never code. Every action is a `plane …`
 
 ## Loop (one change per iteration)
 1. `plane design validate designs/<id> --json` → list failing checks, hardest first: T6 mechanisms → T1 geometry → T2 physics → T3 aero → T7/T8.
-2. `plane gate explain <check_id>` for the top failure.
+2. `plane gate explain <check_id> --design designs/<id>` for the top failure (with `--design`, an exact id such as `T1.attachment_contact` gets its own criterion).
 3. Write the options before acting, in this order: **subtract** (remove or merge a part), **modify** (change shape, material, position), **adjust** (tune a number), and only then **add**. Choose add only with a one-line reason why the other three can't work.
 4. Same check failed after two iterations → stop iterating on it and ask the conductor for `recon`.
 5. Apply with `plane design set designs/<id> <key> --value <value> --why "…" --kind subtract|modify|add|remove`. `--also KEY=VALUE` (repeatable) puts several changes in one atomic call. `--kind add` also takes a one-line `[list]` or `{mapping}` value (a new field or collection entry); `--kind remove` deletes one list element addressed `name[id]` and takes no `--value`. To try several values in copies first, use `design sweep`.

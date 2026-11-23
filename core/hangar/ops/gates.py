@@ -8,6 +8,10 @@ from ..design import load_design
 from .. import pdledit
 
 
+# Check ids a run emits only when they FAIL, so a passing design cannot show them: their criterion, from checks.py (T83).
+FAIL_ONLY_CRITERIA = {"T1.attachment_contact": "design-standards.yaml#attach_tolerance_mm"}
+
+
 def _rows() -> list[dict]:
     from ..gates import _import_gates, load_discipline_table, load_gate_table
     _import_gates()
@@ -52,10 +56,13 @@ def explain(check_id: str, design: str = "") -> OpResult:
         from ..gates import run_gates
         card = run_gates(_load(design))
         results = [r for t in card.tiers for r in t.results if r.check_id == check_id]
-        if not results:
+        if not results and check_id in FAIL_ONLY_CRITERIA:
+            criteria = [FAIL_ONLY_CRITERIA[check_id]]
+        elif not results:
             emitted = sorted({r.check_id for t in card.tiers for r in t.results if r.check_id.startswith(f"T{m.group(1)}.")})
             raise OpInputError(f"check id {check_id!r} is not emitted by a run on {design}; T{m.group(1)} ids emitted: {', '.join(emitted)}")
-        criteria = list(dict.fromkeys(r.criterion for r in results if r.criterion))
+        else:
+            criteria = list(dict.fromkeys(r.criterion for r in results if r.criterion))
         checks = [{"criterion": c, "threshold": resolve_threshold(c)} for c in criteria]
         if checks:
             return OpResult(ok=True, data={**row, "criterion": checks[0]["criterion"], "threshold": checks[0]["threshold"],
