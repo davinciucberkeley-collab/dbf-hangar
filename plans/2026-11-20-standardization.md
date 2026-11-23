@@ -316,6 +316,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D44 | Studio Knowledge mode in v1.0? | no: v1.1; knowledge stays readable as files and on Pages | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 | D45 | §2.4 lists `bom list`, `morph list`, `idea list`, `davinci push/pull`, which are not registered | amend §2.4 to the registered ops; the missing verbs are v1.1 | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 | D46 | Dec 2 demo: live propose, which update week, which design, who records the backup | show PR #3; publish the 11-30 week merged before the demo; example template then concept-a for Physics; Tristan records the backup at the dry run; Studio launched 15 min early | Tristan | 11-30 | decided: default (standing rule, 2026-11-22) |
+| D48 | U2.5d schema gaps (BOM description, CAD .py), spares in qty, R12/R14 closure with remaining FAILs and unverified lines, CHANGELOG replay | keep part_number/notes; qty with spares; close R12/R14 as data gaps, the rest become tasks; append the replay (history kept) | Tristan | 11-25 | decided: default (standing rule, 2026-11-22) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1103,6 +1104,25 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 - [x] **Step 3: Implement**; the importer is the only code that knows DBF-Combined's layout.
 - [ ] **Step 4: Run** → PASS; `plane design validate designs/concept-a` scorecard committed as the new baseline; Dillon checks the BOM and claims against the Explorer (acceptance, 15 min) *(Reopened 2026-11-22, whole-branch review B3: no record of the claims check, T62; BOM part waits for U2.5d, D33.)*
 - [x] **Step 5: Commit** (label `migration`) `git commit -m "import: concept A full (params, BOM, requirements, claims, interfaces); program constraints; decision log"`
+
+### Unit U2.5d: Re-import concept A (DBF-Combined a93f14d) into PDL 1.0 and keep every change since the first import [hard]
+
+**Files:**
+- Modify: `core/hangar/importers/dbf_geometry.py` (kind `mesh`), `core/hangar/importers/dbf.py` (`_retention_n`, `CONN_METHOD["CT-PITOT-TUBING"]`, `requirements.transport_box_mm`, append the new blocks), `core/hangar/importers/_dbf_dump.py` (`assembly_steps`)
+- Create: `core/hangar/importers/dbf_blocks.py` (`bom_block`, `files_block`, `wiring_block`, `transport_block`, `assembly_block`), `tests/test_import_dbf_reimport.py` (core PR), `tests/test_concept_a_reimport.py` (designs PR, reads the live design)
+- Modify (designs PR, no `core/`): `designs/concept-a/{plane.yaml, meshes/, import-report.json, fea/, baseline.json, CHANGELOG.yaml (appended), README.md}`; `designs/concept-a/claims.yaml` only if regeneration differs
+- Test: `tests/test_import_dbf_reimport.py`, `tests/test_concept_a_reimport.py`; existing `tests/test_import_dbf_v2.py` stays green
+
+**Interfaces:**
+- Consumes: `import_concept(dbf_root, concept="A", out_dir=None, log=print) -> Path` (`importers/dbf.py:239`), the `design.set` op (`ops/edit.py:38`), `claim.import-dbf` (`ops/import_dbf.py:16`), `fea.run` (`ops/fea.py:27`), `bom.cost` (`ops/bom.py:88`), `assembly.animate` (`ops/assembly.py:16`)
+- Produces: `dbf_blocks.bom_block(root: Path, concept: str, parts_csv: dict[str, dict], commit8: str) -> str`; `files_block(mesh_ids: list[str], commit8: str) -> str`; `wiring_block(edges: list[dict], wire_ids: set[str], commit8: str) -> str`; `transport_block(component_ids: list[str]) -> str`; `assembly_block(steps: list[dict], component_ids: list[str]) -> str`; `dbf_geometry._KIND["mesh"]`; `dbf._retention_n(edge: dict) -> float | None`. Each `*_block` returns YAML text for one top-level key (column 0, ends with a newline).
+- Closes: R1, R12, R14, R17, R31 (data gaps, criteria in Part D); ledger T24, T53; the BOM half of T62 becomes runnable.
+
+- [ ] **Step 1: Failing tests** (core PR): `test_mesh_kind_volume_in_mm3`, `test_retention_n_ignores_non_numeric`, `test_conn_method_knows_pitot_tubing`, `test_bom_block_*` (3), `test_files_block_lists_every_mesh`, `test_wiring_block_*` (2), `test_transport_block_one_group`, `test_assembly_block_*` (3), `test_dump_exposes_assembly_steps` (skipif DBF clone missing)
+- [ ] **Step 2: Run** → FAIL
+- [ ] **Step 3: Implement** parts 1a and 1b of `briefs/U2.5d-reimport.md`; dry-run the whole importer into a tmp folder (never `designs/`); core PR merged
+- [ ] **Step 4: Designs PR** (part 3 of the brief): re-import into `designs/concept-a/`, replay `CHANGELOG.yaml`, regenerate claims, re-run FEA (hashes change), refresh baseline
+- [ ] **Step 5: Run** `plane design validate designs/concept-a`, `plane baseline check --all` (exit 0), `plane progress --write`; Dillon runs the BOM half of T62 against the Explorer
 
 ### Unit U3.1: One surface — Studio with modes, same app on Pages [hard]
 

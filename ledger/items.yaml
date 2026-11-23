@@ -3680,7 +3680,7 @@ items:
       - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-22'
   - id: T54
     kind: task
     text: "Bench grader protects designs/ from direct edits and bench.py writes newline=\n (split from T35; core/hangar/ops/bench.py:122,126,217,231)"
@@ -4066,5 +4066,16 @@ items:
     due: ''
     units: []
     evidence: ledger/prompts.jsonl
+    decided_in: ''
+    updated: '2026-11-22'
+  - id: D48
+    kind: decision
+    text: 'U2.5d defaults: BOM item text in part_number (no description field); CAD .py scripts named in notes only; BOM qty includes spares (1323.39); R12 and R14 close as data gaps with FAIL rows and 16 unverified lines becoming tasks; the CHANGELOG replay appends (history kept)'
+    source: briefs/U2.5d-reimport.md decisions 1-6; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/U2.5d-reimport.md
     decided_in: ''
     updated: '2026-11-22'
