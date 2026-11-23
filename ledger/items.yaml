@@ -3809,12 +3809,12 @@ items:
     text: 'Flaky on Windows CI: tests/test_viewer_static.py::test_every_mode_renders_without_console_errors[compare] net::ERR_CONNECTION_REFUSED (run 44993145329 attempt 1; re-run passed)'
     source: W4a-T22 CI 2026-11-22
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-30'
     units: []
-    evidence: ''
+    evidence: 9cc794f
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: D39
     kind: decision
     text: "W4c: test_concept_a_d21_on_disk asserts each discipline gate reads the D21 fields set (no 'missing' SKIP for them), not that concept-a passes; amended in a test-only unit before the data commit"
@@ -4242,5 +4242,16 @@ items:
     due: '2026-12-08'
     units: []
     evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D52
+    kind: decision
+    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready'
+    source: conductor under D51, 2026-11-23 (W5-T report)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-23'

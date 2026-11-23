@@ -319,6 +319,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D48 | U2.5d schema gaps (BOM description, CAD .py), spares in qty, R12/R14 closure with remaining FAILs and unverified lines, CHANGELOG replay | keep part_number/notes; qty with spares; close R12/R14 as data gaps, the rest become tasks; append the replay (history kept) | Tristan | 11-25 | decided: default (standing rule, 2026-11-22) |
 | D50 | Should `T2.joint_rf` use per-joint ratings, including derived ones (estimated bond strength)? | yes: joint rating when not placeholder, else library; derived ratings reported as pending | Tristan | 11-24 | decided: default (standing rule, 2026-11-23) |
 | D51 | Who approves briefs and decisions overnight 2026-11-23? | the conductor; U2.5d-pre-gates approved as written | Tristan | 11-23 | decided (Tristan, P165, 2026-11-23) |
+| D52 | U4.3: build T28 (register `read_value`, 40 claims SKIP→PASS) tonight? | no: D34 stands (v1.1); brief `U4.3-t28.md` kept ready; deck line 140 stays true | Tristan | 11-23 | decided (conductor under D51, 2026-11-23) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1233,7 +1234,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** T72 (assembly animate skips non-drawable proxy steps; closes R31), T52 (`plane ledger set` sets due, units, note), T58 (`design set --value` with ": "), T17 (bom.py exits 2 on bad input; ingest de-dup), T26 (`gate explain` exact check id), T28 (`read_value` calc registered), T68 (knowledge copy check). Core and tests only: no `designs/`, no `standards/` threshold change. One branch per task `std/u4.3-<task>`, merged to main after review (D30, D47).
 
-- [ ] **Step 1: Briefs** (tactician W5-T): `plans/2026-11-20-standardization/briefs/U4.3-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
+- [x] **Step 1: Briefs** (tactician W5-T; T28 held, D52; T57 needs none, closed): `plans/2026-11-20-standardization/briefs/U4.3-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
 - [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
 - [ ] **Step 3: Review** W5-R; merge; tasks set done with the merge commit; R31 done if T72 merges. (T57 added after audit 2 if the flake recurred.)
 
