@@ -283,3 +283,20 @@ def test_recheck_keeps_the_previous_versions_files_for_one_more_generation(sandb
     v3 = files()
     assert not any((studio.DATA_DIR / f).exists() for f in v1), "two versions back is deleted"
     assert all((studio.DATA_DIR / f).is_file() for f in v2 | v3)
+
+
+def test_recheck_leaves_another_designs_files_alone_when_its_id_starts_with_this_ones(sandbox):  # T86
+    did = "example-tailsitter-wing"
+    s = studio.Studio()
+    _wait_studio_idle(s)
+    other = [studio.DATA_DIR / f"{did}-big-0123456789ab.glb", studio.DATA_DIR / f"{did}-big-0123456789ab.scorecard.json"]
+    for f in other:
+        f.write_text("x", encoding="utf-8")
+    plane = sandbox / did / "plane.yaml"
+    plane.write_text(plane.read_text(encoding="utf-8") + "\n# edit 1\n", encoding="utf-8")
+    s.scan()
+    _wait_studio_idle(s)
+    plane.write_text(plane.read_text(encoding="utf-8") + "# edit 2\n", encoding="utf-8")
+    s.scan()
+    _wait_studio_idle(s)
+    assert all(f.is_file() for f in other)

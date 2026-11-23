@@ -159,6 +159,13 @@ def test_fea_run_skip_prints_skip_first_and_exits_0(monkeypatch):  # D37
     assert res.output.startswith("SKIP: OpenCAE not found")
 
 
+def test_legacy_plane_fea_without_opencae_skips_with_exit_0(monkeypatch):  # T86, D37
+    monkeypatch.setattr(fea, "find_opencae", lambda *a, **k: {"python": "", "root": "", "found": False, "how": "test"})
+    res = CliRunner().invoke(cli, ["fea", CA, "--part", "cge-001"])
+    assert res.exit_code == 0, res.output
+    assert res.output.startswith("SKIP: OpenCAE not found")
+
+
 def test_fea_plan_op_matches_engine():
     r = call("fea.plan", path=CA, part="cge-001")
     assert sorted(s["other"] for s in r.data["meta"]["supports"]) == ["cge-004", "cge-005-l", "cge-005-r"]
@@ -206,5 +213,14 @@ def test_fea_module_has_no_unused_imports():  # T23
     from pathlib import Path
     tree = ast.parse(Path(fea.__file__).read_text(encoding="utf-8"))
     imported = {(a.asname or a.name).split(".")[0] for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}
+    used = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
+    assert imported - used == set()
+
+
+def test_fea_module_has_no_unused_from_imports():  # T86 guard: the T23 check above only saw plain imports
+    import ast
+    from pathlib import Path
+    tree = ast.parse(Path(fea.__file__).read_text(encoding="utf-8"))
+    imported = {a.asname or a.name for n in ast.walk(tree) if isinstance(n, ast.ImportFrom) and n.module != "__future__" for a in n.names}
     used = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
     assert imported - used == set()
