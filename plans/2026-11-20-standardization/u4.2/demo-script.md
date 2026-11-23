@@ -44,7 +44,7 @@ Step 9 uses the 11-30 week (D46). Dry run used the existing week 2026-11-16; a n
 
 ## Timing summary (measured, scratch clone)
 new 8.9 s, set 5.7 s, validate 9.4 s (11.7 s on a second copy), propose 10.1 s, publish 3.0 s. About 40 s of command waiting; the rest is narration.
-Concept-a full validate (not in the live script, too slow): 83 s wall, exit 1, PASS 531, WARN 9, FAIL 4, SKIP 102.
+Concept-a full validate (not in the live script, too slow): 83 s wall (earlier tree), exit 1; current main, all result rows: PASS 693, WARN 146, FAIL 10, SKIP 73.
 
 ## Recorded backup video (decision for Tristan)
 Not recorded. Decided (D46): Tristan records it at the 11-30 dry run (one take of steps 2-10, target 6 min, saved outside the repo).

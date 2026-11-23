@@ -13,7 +13,7 @@ Sources: WB = `reviews/2026-11-22-whole-branch.md` (reviewer W4-R1, main at dea6
 | M6 | What a design can describe | geometry, joints, mass, flight | PDL 1.0 blocks exist; concept-a lacks bom, files, transport and assembly data | PASS (concept-a incomplete, see gap D33) | WB:54 |
 | M7 | Agent rules enforced | advisory | roster plus hooks; 10 agent roles in `.claude/agents/` | PASS | WB:55; ran `ls .claude/agents` = 10 |
 | M8 | Before-meeting status | memory | `plane ledger report` and `plane update publish` both work | PASS | WB:56; ran: ledger 359 items, 66 open, 0 overdue, 0 open prompts (live `plane ledger report`, 2026-11-22); publish 3.0 s |
-| M9 | Iteration loop (set, then validate, no FEA) | edit YAML by hand | concept-a: 56.9 s quiet warm, 78.9 s cold, 113.5 s loaded machine; ran 83 s cold on a fresh clone (exit 1, 4 known FAILs). Template demo design: `design set` 5.7 s plus validate 9.4 s. Margin on the 60 s target is about 3 s warm | PASS (thin) | W4:94-108 (3 quiet runs each, median 120.9 s before, 56.9 s after, results byte-identical); WB:56, WB:7; ran 83 s |
+| M9 | Iteration loop (set, then validate, no FEA) | edit YAML by hand | concept-a: 56.9 s quiet warm, 78.9 s cold, 113.5 s loaded machine; ran 83 s cold on a fresh clone (exit 1; on main 2026-11-23 the same command shows 10 FAIL rows). Template demo design: `design set` 5.7 s plus validate 9.4 s. Margin on the 60 s target is about 3 s warm | PASS (thin) | W4:94-108 (3 quiet runs each, median 120.9 s before, 56.9 s after, results byte-identical); WB:56, WB:7; ran 83 s |
 | | §7 ticks have merge and review records | n/a | all except U2.5 Step 4 (no record that Dillon's BOM/claims check against the Explorer happened) | FAIL | WB:57, WB:15 |
 
 Count: 9 metrics: 8 PASS (M3 and M9 with caveats, M6 with data gaps), 1 GAP (M2). Plus one process FAIL (the tick-record row). Whole-branch verdict at dea6f2a: REJECT; items B1 to B6 were not re-verified by W4-TE except B6, closed by `reviews/2026-11-22-concept-a-discipline.md` ACCEPT.
@@ -22,17 +22,23 @@ Count: 9 metrics: 8 PASS (M3 and M9 with caveats, M6 with data gaps), 1 GAP (M2)
 | Value | Number | Source |
 |---|---|---|
 | pytest at dea6f2a | 663 passed, 2 skipped, 1 failed (`tests/test_seed.py:9`, PATH) | WB:6 (full-suite CI run 45072187659) |
-| concept-a `--tier all` | PASS 531, SKIP 102, WARN 9, FAIL 4 (WB:7 prints the order PASS, SKIP, WARN, FAIL); fidelity 134 of 635 blocking checks sourced; 0 measured masses | WB:7; ran: 531 / 102 / 9 / 4, same numbers, `Fidelity: 134 of 635` |
+| concept-a `--tier all` | PASS 693, SKIP 73, WARN 146, FAIL 10 (all result rows, ran on main 5c229e7 after T28); fidelity 134 of 714 blocking checks sourced; 0 measured masses | ran 2026-11-23: 693 / 73 / 146 / 10, `Fidelity: 134 of 714` (WB:7 earlier tree: 531 / 102 / 9 / 4, 134 of 635) |
 | Perf change | median 120.9 s to 56.9 s wall (CPU 129.0 to 66.1 s); frozen fixture 51.2 to 42.2 s | W4:98-102 |
 | `plane tools doctor` | exit 0 at dea6f2a; opencae, aerosandbox, davinci missing, blender and sitl planned | WB:8 |
 | Ledger | 359 items: 66 open, 52 done, 232 decided | live `plane ledger report`, 2026-11-22 |
 
-## C. The four known concept-a FAILs (state them; do not hide)
-All from `plane design validate designs/concept-a --tier all` (WB:7; ran 2026-11-22, exit 1):
-1. `T2.sim_drop_loads` E-WNG-20: peak 2.2 N vs rating 1.4 N.
-2. `T2.sim_drop_loads` E-WNG-21: peak 2.1 N vs rating 1.4 N.
-3. `T2.sim_rest`: tipped over after drop, landing axis 79 deg from vertical (limit 30).
-4. `T3.static_margin`: 16.8% MAC (target 5-15%); the model NP is 59 mm vs claim CL-A-SM 40.7 mm (`reviews/2026-11-22-concept-a-discipline.md:93`, claims.yaml:2181).
+## C. The ten known concept-a FAILs (state them; do not hide)
+All from `plane design validate designs/concept-a --json` (ran 2026-11-23 on main 5c229e7, exit 1; WB:7 earlier tree listed four):
+1. `T2.sim_drop_loads` E-WNG-20: peak 1.8 N in drop test exceeds rating 1.4 N
+2. `T2.sim_drop_loads` E-WNG-21: peak 1.8 N in drop test exceeds rating 1.4 N
+3. `T2.sim_drop_loads` E-MEC-05: peak 1.2 N in drop test exceeds rating 0.7 N
+4. `T2.sim_drop_loads` E-MEC-10: peak 1.3 N in drop test exceeds rating 0.7 N
+5. `T2.sim_rest` tipped over after drop: landing axis 81 deg from vertical (limit 30), speed 0.010 m/s; tailsitter cannot stand on its landing gear
+6. `T2.fea_strength` cge-001 landing: 34.44 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.37; 34.44 MPa at the clamp edges)
+7. `T2.fea_strength` cge-001 thrust: 28.59 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.44; 28.59 MPa at the clamp edges)
+8. `T2.fea_strength` cge-006 landing: 15.22 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.83; 15.22 MPa at the clamp edges)
+9. `T2.fea_strength` cge-006 thrust: 17.45 MPa peak away from the clamps vs 12.6 MPa allowable at 1.5x load (SF 0.72; 17.45 MPa at the clamp edges)
+10. `T3.static_margin` 16.4% MAC (NP x=59 mm, CG x=21 mm; target 5%-15%; fuselage effect not modelled) (mesh wing: chord measured at 41 stations)
 Concept-a validated accepted: no. These sit behind pending thresholds and open model questions (T37), not behind a gate being skipped.
 
 ## D. Honest gaps (each is a named slide line, not a footnote)
@@ -40,7 +46,7 @@ Concept-a validated accepted: no. These sit behind pending thresholds and open m
 |---|---|---|---|
 | D32 / T12 | No mass-gate number: 2.6 vs 2.7 kg standards conflict unresolved; keys stay `pending`; v1.1 | "No mass-gate number is quoted" | plan §3 row D32; ledger D32 |
 | D33 / T24 | R1, R12, R14, R17, R31 are open gaps: concept-a re-import into PDL 1.0 (U2.5d) cannot land before the 11-30 freeze; v1.1. Ledger today: R1 open (concept-a still 0.4 in the ledger note; WB says it is schema 1.0 now, stale evidence), R12 open, R14 open, R17 open (WB:21 says probably met by PR #3 elevon mechanisms), R31 open | "Five requirements open until the concept-a re-import" | WB:21, WB:44; ledger R1, R12, R14, R17, R31 |
-| D34 / T28 | 40 concept-a claims SKIP because `read_value` echo functions are not ported; "not recomputed"; v1.1 | "40 claims not recomputed" | ledger D34, T28 |
+| D34 / T28 | Closed by D59 and D60: `read_value` registered; concept-a T9 is 93 PASS, 0 SKIP, 0 FAIL (was 53 PASS, 40 SKIP): 53 recomputed, 40 stored results read from source and checked against limits (analyses not re-run) | "93 PASS: 53 recomputed, 40 read from source and checked against limits" | ledger D34, T28, D59, D60 |
 | T35 | PlaneBench 7 of 9 passes were reached by editing `mass_g` numbers only (mass-cut-10: Sonnet and Opus); fix-static-margin passes added mass without a real part change; Haiku's 0 on mass-cut-10 was declining to invent masses. Grader does not yet protect `designs/` (T54, v1.1) | Never "agents can cut mass"; never rank Haiku last on mass-cut-10 | `reviews/2026-11-21-w3.md:487`, `:593`, `:615`; `bench/results/2026-11-21.md`; ledger T35, T54 |
 | R11 | "Drag the drone around" (interactive physics) not built; Physics mode replays analytic T6 sweeps | "Physics mode replays the mechanism sweep" | WB:14, WB:38; D43 |
 | R29 | DaVinci full build superseded (D3); adapter is SKIP-with-reason | omit or "planned" | WB:46 |
