@@ -99,6 +99,14 @@ def test_ingest_duplicate_text_skipped(root):
     assert len(r.skipped) == 2
 
 
+def test_ingest_same_text_in_another_kind_is_kept(root):  # T17
+    call("ledger.ingest", path=str(_inbox(root, [{"kind": "task", "text": "Order foam", "source": "s"}])))
+    r = call("ledger.ingest", path=str(_inbox(root, [{"kind": "idea", "text": "Order foam", "source": "s"},
+                                                      {"kind": "task", "text": " order FOAM ", "source": "s"}], name="b.yaml")))
+    assert len(r.data["added"]) == 1 and len(r.skipped) == 1
+    assert ledger.Ledger(root / "ledger" / "items.yaml").get(r.data["added"][0]).kind == "idea"
+
+
 def test_cli_ingest_invalid_exit2(root):
     runner = CliRunner()
     r = runner.invoke(cli.cli, ["ledger", "ingest", str(_inbox(root, [{"kind": "x"}]))])

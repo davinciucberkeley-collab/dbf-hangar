@@ -159,6 +159,22 @@ def test_bom_verify_errors(bom_design):
     assert call("bom.cost", path="designs/missing").exit_code == 2
 
 
+def test_bom_cost_missing_qty_exit2(root):  # T17
+    p = root / "designs" / "ex" / "plane.yaml"
+    p.write_bytes(p.read_bytes() + b"\nbom:\n  items:\n    - {id: motor-a, unit_cost_usd: 12.5}\n")
+    r = call("bom.cost", path="designs/ex")
+    assert r.exit_code == 2 and any("motor-a" in m and "qty" in m for m in r.messages)
+
+
+def test_bom_verify_non_mapping_verified_exit2(root):  # T17
+    p = root / "designs" / "ex" / "plane.yaml"
+    p.write_bytes(p.read_bytes() + b"\nbom:\n  items:\n    - id: motor-a\n      qty: 1\n      verified: yes\n")
+    before = p.read_bytes()
+    r = call("bom.verify", path="designs/ex", item="motor-a", method="browser", evidence="e", by="ana")
+    assert r.exit_code == 2 and any("verified must be a mapping" in m for m in r.messages)
+    assert p.read_bytes() == before
+
+
 def test_templates_frontmatter_parses():
     for template in sorted((REPO / "knowledge").glob("TEMPLATE-*.md")):
         lines = template.read_text(encoding="utf-8").splitlines()
