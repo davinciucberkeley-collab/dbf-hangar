@@ -4392,10 +4392,10 @@ items:
     text: 'bench: ops that write under design.DESIGNS_DIR (e.g. design new) write to the real repo during a bench run and its replay; DESIGNS_DIR comes from the package location, not the workspace (W9-T finding, U4.7-t54)'
     source: W9-T 2026-11-23 (briefs/U4.7-t54.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 58df639
     decided_in: ''
     updated: '2026-11-23'
   - id: T92
@@ -4403,10 +4403,10 @@ items:
     text: 'W9-R major follow-ups (U4.7 T54): pin the bench snapshot (in-memory hash in run_op or a separate mkdtemp; bench.py:133 docstring overstates) and check in one real run whether shell redirection is allowed under Bash(plane *); replay only an allow-list of ops (a logged bench run / fea run / paths outside ws are replayed unconfined; related T91)'
     source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 58df639
     decided_in: ''
     updated: '2026-11-23'
   - id: T93
@@ -4414,10 +4414,10 @@ items:
     text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62 [edit items merged ea7c0f5 (W10-R); bench items reopened with std/u4.8-bench]"
     source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ea7c0f5
+    evidence: 58df639
     decided_in: ''
     updated: '2026-11-23'
   - id: D57
@@ -4523,6 +4523,17 @@ items:
     kind: task
     text: "W12-R follow-ups (U4.10): T83 guard scans only checks.py (ids from gates/*.py not covered); scorecard lacks manufacturing.yaml without '#' as a criterion form; T1.motor_has_prop still cites embed_max_fraction_of_child; ops/research.py:25 SLUG_RE.match trailing-newline hole; after U4.8 switch bench.py, design.py, edit.py to import ID_RE from hangar.ids"
     source: W12-R review 2026-11-23 (reviews/2026-11-23-w12.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T101
+    kind: task
+    text: 'W10-R non-blocking (U4.8 bench): _map_args maps option values and the key too (a --why/--value text naming an existing path fails a legit run); PLANE_BENCH_LOG not digest-pinned; SWEEP_ROOT still writes into the real repo; one paid bench run to probe shell redirection under Bash(plane *); tree_digest ignores empty folders (docstring)'
+    source: W10-R review 2026-11-23 (reviews/2026-11-23-w10.md)
     owner: conductor
     status: open
     due: '2026-12-15'

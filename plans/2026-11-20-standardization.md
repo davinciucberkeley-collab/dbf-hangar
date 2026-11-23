@@ -1295,7 +1295,7 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1: Briefs** (tactician W10-T): `briefs/U4.8-*.md` *(d207730: U4.8-bench hard, U4.8-edit easy; no shared files)*
 - [x] **Step 2: Build** (W10-B, one per brief; at most 2 at once) *(bench c703281 builder-plus; edit dd0d83f builder)*
-- [ ] **Step 3: Review** (reviewer W10-R); merge; T91, T92, T93 done
+- [x] **Step 3: Review** (reviewer W10-R); merge; T91, T92, T93 done *(edit ACCEPT merged ea7c0f5; bench REOPEN once (-- before verb, validate --out), ACCEPT on re-review, merged 58df639; follow-ups T101)*
 
 ### Unit U4.9: Yaw authority fix and concept-a battery harness (T37, T60; D57, D58)
 
