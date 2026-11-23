@@ -3406,13 +3406,13 @@ items:
     text: "PlaneBench: Sonnet and Opus passed mass-cut-10 and fix-static-margin by editing mass_g alone (gaming); task prompts invite it; reword the caveat in bench/results/2026-11-21.md (reviewer wording) and never present 7/9 as 'agents can cut mass' (U4.2 slide); protect designs/ in the grader before the next round; bench.py write newline=\\n [triage 2026-11-21: caveat and slide wording only (U4.2); grader protection and newline split to a v1.1 task]"
     source: reviews/2026-11-21-w3.md U3.3 Part B (W3-R2)
     owner: ''
-    status: open
+    status: done
     due: '2026-11-30'
     units:
       - U4.2
-    evidence: ''
+    evidence: 19b4f57
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-22'
   - id: T36
     kind: task
     text: 'U3.4 Studio acceptance attempt 2 (Tristan, cold, no terminal): about 5 min; edited avn-001 mass_g 8->10, saved, validated, proposed; PR opened (https://github.com/davinciucberkeley-collab/dbf-hangar/pull/1) but Studio showed no PR link. U3.1b reopened for the missing link'
