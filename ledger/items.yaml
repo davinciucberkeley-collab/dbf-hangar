@@ -4321,3 +4321,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: T88
+    kind: task
+    text: core/hangar/checks.py:322 PROP_CHAIN_MAX_INTERMEDIATE = 2 is a threshold in code; move it to standards/*.yaml with a source or pending (audit 6)
+    source: W5-A audit 6, 2026-11-23
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'

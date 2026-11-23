@@ -617,7 +617,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W6-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.4 brief each | branch `std/u4.4-<task>` | brief checks; CI green; launched: W6-B1 = t21 (builder, Haiku), W6-B2 = t84 [hard] (builder-plus, Sonnet), W6-B3 = t3 (builder, Haiku) |
 | W6-R | `reviewer` | Opus (fresh) | every U4.4 branch | `reviews/2026-11-23-w6.md` | "### Verdict:" per branch |
 | W7-T | `tactician` | Sonnet | U4.5 briefs for T7, T86, T87, T83, T50, T54, T55 | `briefs/U4.5-*.md` | builder-ready bar; R-a, R-b |
-| W7-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.5 brief each | branch `std/u4.5-<task>` | brief checks; CI green |
+| W7-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.5 brief each | branch `std/u4.5-<task>` | brief checks; CI green; launched: t7 [hard] builder-plus Sonnet; t54, t50, t83, t87, t86 builder Haiku; t55 not briefed |
 | W7-R | `reviewer` | Opus (fresh) | every U4.5 branch | `reviews/2026-11-23-w7.md` | "### Verdict:" per branch |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
