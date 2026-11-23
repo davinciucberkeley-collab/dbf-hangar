@@ -19,7 +19,7 @@ from test_concept_a_rules import linked_design
 MFG = {"method": "hand-cut"}
 
 
-def _run(data: dict, tier: int = 5):
+def _run(data: dict, tier: int = 9):
     return validate(Design(data=data, path=None), max_tier=tier)
 
 
