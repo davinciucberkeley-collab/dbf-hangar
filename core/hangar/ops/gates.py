@@ -8,8 +8,19 @@ from ..design import load_design
 from .. import pdledit
 
 
-# Check ids a run emits only when they FAIL, so a passing design cannot show them: their criterion, from checks.py (T83).
-FAIL_ONLY_CRITERIA = {"T1.attachment_contact": "design-standards.yaml#attach_tolerance_mm"}
+# Check ids a run emits only when they FAIL, so a passing design cannot show them: every criterion checks.py gives
+# the id, the first one is the primary (T83). tests/test_gates.py keeps this table in step with checks.py.
+SCHEMA_CRIT = "schema/plane.schema.json"
+FAIL_ONLY_CRITERIA = {
+    "T0.version": [SCHEMA_CRIT],
+    "T0.unique_ids": [SCHEMA_CRIT],
+    "T0.attachment_refs": [SCHEMA_CRIT],
+    "T0.root": [SCHEMA_CRIT],
+    "T1.attachment_contact": ["design-standards.yaml#attach_tolerance_mm"],
+    "T1.attachment_overlap": ["design-standards.yaml#embed_max_fraction_of_child", "design-standards.yaml#glued_overlap_max_fraction"],
+    "T1.attachment_location": ["design-standards.yaml#attach_tolerance_mm", SCHEMA_CRIT],
+    "T4.machine": ["manufacturing.yaml"],
+}
 
 
 def _rows() -> list[dict]:
@@ -57,7 +68,7 @@ def explain(check_id: str, design: str = "") -> OpResult:
         card = run_gates(_load(design))
         results = [r for t in card.tiers for r in t.results if r.check_id == check_id]
         if not results and check_id in FAIL_ONLY_CRITERIA:
-            criteria = [FAIL_ONLY_CRITERIA[check_id]]
+            criteria = list(FAIL_ONLY_CRITERIA[check_id])
         elif not results:
             emitted = sorted({r.check_id for t in card.tiers for r in t.results if r.check_id.startswith(f"T{m.group(1)}.")})
             raise OpInputError(f"check id {check_id!r} is not emitted by a run on {design}; T{m.group(1)} ids emitted: {', '.join(emitted)}")

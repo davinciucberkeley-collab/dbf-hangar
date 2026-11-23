@@ -63,15 +63,15 @@
 | U4.7 | List-entry edits and bench grader replay (T55, T54; D55, D56) | 3/3 | done | - |
 | U4.8 | Bench grader hardening (T91, T92, T93; P175) | 2/3 | in progress | - |
 | U4.9 | Yaw authority fix and concept-a battery harness (T37, T60; D57, D58) | 2/3 | in progress | - |
-| U4.10 | v1.1 cleanup, first batch (T83, T86, T88, T90; P175) | 1/3 | in progress | - |
-| U4.11 | Recompute the 40 read_value claims (T28; D59 overrules D52) | 0/3 | not started | - |
+| U4.10 | v1.1 cleanup, first batch (T83, T86, T88, T90; P175) | 2/3 | in progress | - |
+| U4.11 | Recompute the 40 read_value claims (T28; D59 overrules D52) | 1/3 | in progress | - |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 44 | 50 | 0 | 2 | 0 | 96 |
+| task | 45 | 53 | 0 | 2 | 0 | 100 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 245 | 261 |
 

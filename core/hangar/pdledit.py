@@ -469,8 +469,10 @@ def _edit_list(text: str, key: str, item, adding: bool) -> tuple[str, list, list
         if not lines[line][col + 1:close].strip():
             edited = lines[line][:col + 1] + render_scalar(item) + lines[line][close:]
         else:
-            head = lines[line][:close].rstrip()
-            edited = head + (" " if head.endswith(",") else ", ") + render_scalar(item) + lines[line][close:]
+            inside = lines[line][col + 1:close]
+            tail = inside[len(inside.rstrip()):]               # the spaces before ']' stay where they were
+            head = lines[line][:close - len(tail)]
+            edited = head + (" " if head.endswith(",") else ", ") + render_scalar(item) + tail + lines[line][close:]
     else:
         hits = [i for i, x in enumerate(old) if x == item and type(x) is type(item)]
         if not hits:
