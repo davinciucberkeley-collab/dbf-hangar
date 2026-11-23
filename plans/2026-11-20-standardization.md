@@ -326,6 +326,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D56 | T54: how does the bench grader stop direct edits to `designs/`? | replay: snapshot the design before the run, log every `plane` command, replay the log on a fresh copy; a `designs/` result that differs fails the run | Tristan | 11-23 | decided (Tristan, P169, 2026-11-23) |
 | D57 | T60: 12 AWG or a lower peak current for concept-a hrn-bat? | 10 AWG (fix the design, not the threshold; amended from 12 AWG, which gives 55 A x 0.8 = 44.0 A < 44.8 A peak, W11-G; 10 AWG matches DBF-Combined D-64 pack leads); Dillon informed through T60 | Tristan | 11-23 | decided (conductor default, Tristan P175, 2026-11-23; amended same day) |
 | D58 | T37: which yaw fix for T3.control_authority? | the advisor's pick (W11-A): fix (a), per-axis max moment at fixed total thrust (linprog), cant only; yaw below 1.5 is SKIP (would_be FAIL) because reaction torque is not modelled; fix (b) deferred to v1.1 (T95); concept-a pinwheel cant to the design team (T96) | Tristan | 11-23 | decided (conductor default per T37 triage, P175) |
+| D59 | Build T28 (`read_value`, 40 concept-a claims) before Dec 2? | yes, overrules D52: build now; the deck and metrics lines saying "not recomputed" are updated with the measured result | Tristan | 11-23 | decided (Tristan, P182, 2026-11-23) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -629,6 +630,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W10-T, W10-B, W10-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.8 (T91, T92, T93) | `briefs/U4.8-*.md`, branches `std/u4.8-*`, `reviews/2026-11-23-w10.md` | builder-ready bar; brief checks; "### Verdict:" |
 | W11-A, W11-T, W11-B, W11-G, W11-R | `advisor`, `tactician`, `builder-plus`, `design-engineer`, `reviewer` | Opus, Sonnet, Sonnet, Sonnet, Opus (fresh) | U4.9 (T37, T60) | advisor pick in `briefs/U4.9-t37.md`; branches `std/u4.9-t37`, `std/u4.9-t60`; `reviews/2026-11-23-w11.md` | advisor names one fix; gates before/after; "### Verdict:" |
 | W12-T, W12-B, W12-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.10 (T83, T86, T88, T90) | `briefs/U4.10-*.md`, branches `std/u4.10-*`, `reviews/2026-11-23-w12.md` | builder-ready bar; brief checks; "### Verdict:" |
+| W13-T, W13-B, W13-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.11 (T28; D59) | `briefs/U4.11-t28.md` (refresh of `U4.3-t28.md`), branches `std/u4.11-t28` (core), `std/u4.11-t28-docs` (deck/metrics/claims data), `reviews/2026-11-23-w13.md` | builder-ready bar; claim counts before/after; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1292,24 +1294,32 @@ Not a code unit; it tests everything above.
 **Scope:** T91 ops that write under `DESIGNS_DIR` write into the run's workspace, not the repo; T92 pin the pre-run snapshot (hash in memory or separate temp dir) and replay only an allow-list of ops; T93 the minor W9-R items (workspace path mapping, unwritable log path, `--append` spacing, `--remove` of a mapping, `pass` at edit.py:62). Core and tests only.
 
 - [x] **Step 1: Briefs** (tactician W10-T): `briefs/U4.8-*.md` *(d207730: U4.8-bench hard, U4.8-edit easy; no shared files)*
-- [ ] **Step 2: Build** (W10-B, one per brief; at most 2 at once)
+- [x] **Step 2: Build** (W10-B, one per brief; at most 2 at once) *(bench c703281 builder-plus; edit dd0d83f builder)*
 - [ ] **Step 3: Review** (reviewer W10-R); merge; T91, T92, T93 done
 
 ### Unit U4.9: Yaw authority fix and concept-a battery harness (T37, T60; D57, D58)
 
 **Scope:** T37: advisor W11-A picks the `T3.control_authority` yaw fix (D58), tactician briefs it, builder-plus builds it (core and tests only). T60: design-engineer W11-G sets concept-a `hrn-bat` to 12 AWG with `plane design set` (designs only, D57) and reports the gates before and after. Separate branches; the T60 branch touches no `core/`.
 
-- [ ] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md` *(pick done: `briefs/U4.9-t37-advice.md`, D58)*
-- [ ] **Step 2:** Build T37 (W11-B); T60 design change (W11-G)
+- [x] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md` *(pick: `briefs/U4.9-t37-advice.md`, D58; brief f234a51, hard; baseline unchanged)*
+- [x] **Step 2:** Build T37 (W11-B); T60 design change (W11-G) *(t37 b3049cd builder-plus, baseline unchanged; t60 07969fd 10 AWG, D57 amended)*
 - [ ] **Step 3: Review** (reviewer W11-R); merge; T37, T60 done
 
 ### Unit U4.10: v1.1 cleanup, first batch (T83, T86, T88, T90; P175)
 
 **Scope:** T83 explain the remaining FAIL-only check ids; T86 T3 nested-import rollback and the mixed point-mass/mesh harness test; T88 move `PROP_CHAIN_MAX_INTERMEDIATE` to `standards/*.yaml` with a source or `pending`; T90 one shared `hangar/ids.py` `ID_RE` with fullmatch in mcp_server.py and morph.py, Studio message wording. T28 stays held until after Dec 2 (D52); T67 and the T4-T19 items come in a later batch.
 
-- [ ] **Step 1: Briefs** (tactician W12-T): `briefs/U4.10-*.md`
-- [ ] **Step 2: Build** (W12-B, one per brief; at most 2 at once)
+- [x] **Step 1: Briefs** (tactician W12-T): `briefs/U4.10-*.md` *(four easy briefs, landed in 285d9e4; order: T88+T90, then T83 before T86)*
+- [x] **Step 2: Build** (W12-B, one per brief; at most 2 at once) *(t88 9c8375a, t90 018f74e, t83 e7efc5c, t86 4a1263f; all builder)*
 - [ ] **Step 3: Review** (reviewer W12-R); merge; T83, T86, T88, T90 done
+
+### Unit U4.11: Recompute the 40 read_value claims (T28; D59 overrules D52)
+
+**Scope:** register `read_value` (brief `U4.3-t28.md`, refreshed on current main), core and tests only; then, on a separate branch, refresh concept-a claim statuses through the CLI if they are stored in `designs/` and update the deck (`docs/deck/index.html`) and `u4.2/metrics.md`/`deck-outline.md` lines that say the claims are not recomputed, with the measured PASS/FAIL counts.
+
+- [x] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
+- [ ] **Step 2: Build** (W13-B): core branch, then the docs/designs branch
+- [ ] **Step 3: Review** (reviewer W13-R); merge; T28 done
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

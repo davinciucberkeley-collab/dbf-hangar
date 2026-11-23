@@ -4246,7 +4246,7 @@ items:
     updated: '2026-11-23'
   - id: D52
     kind: decision
-    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready'
+    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready [overruled by D59 (Tristan, P182)]'
     source: conductor under D51, 2026-11-23 (W5-T report)
     owner: Tristan
     status: decided
@@ -4411,13 +4411,13 @@ items:
     updated: '2026-11-23'
   - id: T93
     kind: task
-    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62"
+    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62 [edit items merged ea7c0f5 (W10-R); bench items reopened with std/u4.8-bench]"
     source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
     status: open
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: ea7c0f5
     decided_in: ''
     updated: '2026-11-23'
   - id: D57
@@ -4471,6 +4471,28 @@ items:
     owner: Dillon
     status: open
     due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D59
+    kind: decision
+    text: "T28 built now (overrules D52): register read_value so the 40 concept-a read_value claims recompute; the Dec 2 deck and metrics lines that say 'not recomputed' are updated with the measured result"
+    source: Tristan, P182, 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T97
+    kind: task
+    text: 'Deck and metrics quote stale validate totals (PASS 531, SKIP 102, WARN 9, FAIL 4; fidelity 134 of 635) from an earlier tree: docs/deck/index.html:85, u4.2/metrics.md:16,25, demo-script.md:47; re-measure on main after U4.11 part 1 and update in the U4.11 docs branch'
+    source: W13-T 2026-11-23 (briefs/U4.11-t28.md flag)
+    owner: conductor
+    status: open
+    due: '2026-11-30'
     units: []
     evidence: ''
     decided_in: ''
