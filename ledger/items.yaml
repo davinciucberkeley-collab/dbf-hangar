@@ -134,7 +134,7 @@ items:
     kind: ruling
     text: 'Rigid-body physics (frictionless first) to check mechanisms: motor motions, flap movements, "if you pull this, does it pull that"; drop the drone in and drag it around'
     source: plan §1; A 11-18
-    owner: ''
+    owner: Tristan
     status: open
     due: ''
     units:
@@ -310,14 +310,14 @@ items:
     kind: ruling
     text: Multiple PRs on the same plane from different people/agents; Dillon picks which to merge
     source: plan §1; A 11-18
-    owner: ''
+    owner: Tristan
     status: open
     due: ''
     units:
       - U1.4
     evidence: "open: design.propose exists (b483b22) but only ran mocked; needs a live propose round with Dillon's pick (U3.4 step 5)"
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R26
     kind: ruling
     text: "Weekly updates: one artifact/page with each person's thing and link, sent before the meeting; drafted early in the week as a checklist; doc in Drive with links"
@@ -480,7 +480,7 @@ items:
     kind: ruling
     text: One new repo, `dbf-hangar`, that adapts what the other repos have so everything fits the advisor's vision; Tristan owns all of it
     source: plan §1; T 11-20 (Tristan)
-    owner: ''
+    owner: Tristan
     status: open
     due: ''
     units:
@@ -490,12 +490,12 @@ items:
       - U2.5
     evidence: 'open: hangar adapts the sources (4f8f2b2, 33e6655, b43daf0, 654888d) but U2.5d, U2.2-2, U3.1 Explorer features and blender/sitl adapters have not landed'
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R40
     kind: ruling
     text: At least one person threads the side quests into the main quest; one software tool everyone works on, not four personal ones; integrate before adding
     source: plan §1; A 11-11
-    owner: ''
+    owner: Tristan
     status: open
     due: ''
     units:
@@ -503,7 +503,7 @@ items:
       - U2.5
     evidence: 'open: integration started (same commits as R39); one tool everyone works on needs U3.1 and the U3.4 acceptance'
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: D1
     kind: decision
     text: 'Name of the language: PDL? keep `plane.yaml`?'
@@ -3039,123 +3039,123 @@ items:
     kind: decision
     text: 'Cruise speed: 18 or 20 m/s parameter file. Decision needed: confirm 18 m/s or revert to 20 m/s.'
     source: DECISIONS.md#D2
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-3
     kind: decision
     text: 'MTOW, wing area and chord (and R2 sign-off) (`docs/DESIGN-BASIS.md` R2). Decision needed: accept the 11-02 sizing (follows D1, D2, D4) and sign off R2.'
     source: DECISIONS.md#D3
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-4
     kind: decision
     text: 'Payload and ballast (R12) Decision needed: confirm "no payload, no ballast" or restore a payload/ballast allowance (it changes MTOW, CG and'
     source: DECISIONS.md#D4
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-5
     kind: decision
     text: 'Battery disconnect plug (R20): XT90S or Amass AS150U — **SAFETY** transition current exceeds its continuous rating. Decision needed: pick the plug, buy matching battery leads'
     source: DECISIONS.md#D5
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-6
     kind: decision
     text: 'Lift ESCs: LANRC or SoloGood Decision needed: which ESC to buy; check DShot/BLHeli support against `docs/research/electrical-architecture.md` risk R-A.'
     source: DECISIONS.md#D6
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-7
     kind: decision
     text: 'Airspeed sensor: RMRC MS4525DO or Holybro MS5525DSO Decision needed: pick the sensor; keep `ARSPD_TYPE` and the I2C wiring consistent with it.'
     source: DECISIONS.md#D7
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-8
     kind: decision
     text: 'GPS: RMRC SAM-M10Q-5883 or HGLRC M100-5883 Decision needed: pick one; it changes the vendor orders (ReadyMadeRC consolidation in `docs/research/bom-savings.md`).'
     source: DECISIONS.md#D8
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-9
     kind: decision
     text: 'Spare X4110S motor Decision needed: buy the spare or keep the cash.'
     source: DECISIONS.md#D9
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-10
     kind: decision
     text: 'Committed spend and reserve Follows D5–D9. Decision needed: after D5–D9, regenerate one BOM and feed it to `inventory/` and the Google Sheet.'
     source: DECISIONS.md#D10
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-11
     kind: decision
     text: 'Thermal design ambient (R21) Decision needed: accept the 25 °C flight restriction (an operating limit for April flights) or design for a hotter day.'
     source: DECISIONS.md#D11
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-12
     kind: decision
     text: 'Nautical Wings prop spec sheet (before it is sent) Decision needed: update the design point (after D1–D3) before the spec goes to the sponsor. The message itself is'
     source: DECISIONS.md#D12
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: DD-13
     kind: decision
     text: 'Which CAD model is the build reference Decision needed: confirm SOLIDWORKS rev G as the build reference and whether the Fusion model is migrated or frozen.'
@@ -3182,13 +3182,13 @@ items:
     kind: decision
     text: 'Canonical published links and old repositories Decision needed: which Pages URL is canonical, and whether DBF-VTOL, DillonVTOL and TiltWing are archived'
     source: DECISIONS.md#D15
-    owner: ''
+    owner: Dillon
     status: open
     due: ''
     units: []
     evidence: ''
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: T19
     kind: task
     text: 'standards.pending ignores gate-thresholds.yaml (misses wire_clearance_mm, blocking 12-08); CT-M3-SHCS-INSERT should cite the PETG test; nyloc ratings use bolt proof load, overstating printed-plastic joints [triage 2026-11-21: Make standards.pending read gate-thresholds.yaml; repoint CT-M3-SHCS-INSERT to the PETG test; rate printed-plastic nyloc joints by the weaker member, not bolt proof load]'
@@ -3312,14 +3312,14 @@ items:
     kind: task
     text: "T9: 40 concept-a claims SKIP: calc function 'read_value' is not registered (U3.4 run 2026-11-21); blocks flutter/divergence claims that gate the elevon balance-mass change [triage 2026-11-21: 40 read_value claims stay SKIP and are named on the metrics slide as not recomputed (D34)]"
     source: U3.4 design-engineer run 2026-11-21
-    owner: ''
+    owner: conductor
     status: open
     due: '2026-12-15'
     units:
       - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T29
     kind: task
     text: "plane tools doctor reports OpenCAE ok without checking the runner's imports: with python set to the CalculiX-only env 'opencae', fea run fails 'No module named numpy'. Doctor should import numpy and scipy with the configured python, and fea setup should refuse a python without them. (OpenCAE INSTALL_WINDOWS.md: Python env is qt_test; 'opencae' is the solver env.) [triage 2026-11-21: Doctor must import numpy and scipy with the configured python, and fea setup must refuse a python without them]"
@@ -3428,26 +3428,26 @@ items:
     kind: task
     text: 'T3.control_authority yaw is physically unsound: adds cant-torque magnitudes as if each motor could yaw either way (concept-a 1.10 vs 1.5 not supported either way); no prop reaction torque; yaw reuses pitch/roll wind moment. Advisor picks fix (zero net-thrust max moment / reaction torque field / yaw wind moment) before D7 flip [triage 2026-11-21: Advisor picks the fix before the D7 flip (12-08)]'
     source: reviews/2026-11-21-w3.md U3.6 (W3-R2)
-    owner: ''
+    owner: conductor
     status: open
     due: '2026-12-08'
     units:
       - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T38
     kind: task
     text: 'U3.6 follow-ups (non-blocking): T3.endurance drops hover phase when no motor gives upward thrust and can PASS on cruise alone; test_standards_referenced passes deadline and transport_box_mm on name collisions; T7 pack/connector rows cite wire_ampacity_a but judge electrical_rating_min_ratio; test_validate tolerance accepts any report-only row; U3.6c test_collection_pairs_are_atomic passes on base code (add schema-message assertion) [triage 2026-11-21: Non-blocking bundle of six U3.6/U3.6c follow-ups]'
     source: reviews/2026-11-21-w3.md U3.6, U3.6c
-    owner: ''
+    owner: conductor
     status: open
     due: '2026-12-15'
     units:
       - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T39
     kind: task
     text: 'Studio follow-ups (U3.1b r2 review): PR panel renders below the 599-row validation list (put PR panel first or collapse validation); add a Validate click before Propose in test_propose_link_survives_real_git_side_effects; style the toast dismiss .icon outside dialogs [triage 2026-11-21: Three sub-items left: panel order (edit.js renderResults), Validate click in the propose test, .toast .icon style]'
@@ -3570,14 +3570,14 @@ items:
     kind: task
     text: "U3.6e follow-ups (non-blocking): T6 jam check still uses the declared ratio (a design can pass T6.mechanism at +-35 while the real linkage hits the elevon stop at about +-16; T6.ratio catches it); reconcile program.yaml#physics_pass wording with the T6.link 'not checked (pinned by declared link)' WARN; ratio check is small-angle only [triage 2026-11-21: Non-blocking]"
     source: reviews/2026-11-21-w3.md U3.6e (W3-R2)
-    owner: ''
+    owner: conductor
     status: open
     due: '2026-12-15'
     units:
       - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: D26
     kind: decision
     text: 'D25 amended: T6.link WARN rows (declared-link exemption reports, U3.6e) do not count toward the U3.4 FAIL+WARN total; run 6 traded 2 T6.undriven WARN for 2 T6.link WARN plus 4 T6 PASS'
