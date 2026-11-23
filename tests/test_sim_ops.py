@@ -94,6 +94,35 @@ def test_sim_drop_height_m_flag_on_the_cli(monkeypatch):  # T20
     assert json.loads(res.output)["data"]["height_m"] == 0.2
 
 
+def _row(r, check_id):
+    return next(c for c in r.data["checks"] if c["check_id"] == check_id)
+
+
+def test_sim_drop_rows_at_an_override_height_do_not_cite_the_standards_height(monkeypatch):  # T87
+    pytest.importorskip("mujoco")
+    monkeypatch.chdir(REPO)
+    low = call("sim.drop", path=EXAMPLE, height_m=0.2)
+    assert _row(low, "T2.sim_stable")["criterion"].startswith("--height-m override")
+    std = call("sim.drop", path=EXAMPLE)
+    assert _row(std, "T2.sim_stable")["criterion"] == "design-standards.yaml#drop_height_m"   # guard: the standards run is unchanged
+    assert _row(low, "T2.sim_rest")["criterion"] == _row(std, "T2.sim_rest")["criterion"]
+
+
+def test_sim_drop_human_output_states_the_height_first(monkeypatch):  # T87
+    pytest.importorskip("mujoco")
+    monkeypatch.chdir(REPO)
+    res = CliRunner().invoke(cli, ["sim", "drop", EXAMPLE, "--height-m", "0.2"])
+    assert res.exit_code == 0, res.output
+    assert res.output.splitlines()[0] == "drop height 0.2 m (--height-m override)"
+    res = CliRunner().invoke(cli, ["sim", "drop", EXAMPLE])
+    first = f"drop height {float(load_standards()['sim']['drop_height_m']['value']):g} m (standards drop_height_m)"
+    assert res.output.splitlines()[0] == first
+
+
+def test_sim_drop_summary_says_zero_means_the_standards_height():  # T87
+    assert "0, the default, means the standards height" in registry()["sim.drop"].summary
+
+
 def test_sim_drop_negative_height_is_an_input_error(monkeypatch):  # T20
     monkeypatch.chdir(REPO)
     r = call("sim.drop", path=EXAMPLE, height_m=-1.0)
