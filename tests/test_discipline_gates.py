@@ -90,6 +90,7 @@ def statuses(card, check_id):
 def connect(design: Design, ct: str = "CT-M3-SHCS-INSERT") -> Design:
     for a in design.data["attachments"]:
         a["connection"] = ct
+        a["rating_basis"] = "placeholder"  # the joint's own rated_load_n is not a capacity, so T2.joint_rf reads the library (D50)
     return design
 
 
@@ -126,6 +127,50 @@ def test_joint_rf_skip_cases():
     assert [r.status for r in rs] == [SKIP] and "attachments[].connection" in rs[0].message
     rs = rows(run(connect(vtol(), "CT-PLUG-IN"), tiers={2}), "T2.joint_rf")
     assert rs and all(r.status == SKIP and "CT-PLUG-IN has no rated_load_n" in r.message for r in rs)
+
+
+def _rf_rows(basis, rated, ct="CT-M3-SHCS-INSERT"):
+    d = connect(vtol(), ct)
+    for a in d.data["attachments"]:
+        a["rated_load_n"] = rated
+        if basis is None:
+            a.pop("rating_basis")
+        else:
+            a["rating_basis"] = basis
+    return rows(run(d, tiers={2}), "T2.joint_rf")
+
+
+def test_joint_rf_uses_the_joints_own_rating():  # D50; the library rating of CT-M3-SHCS-INSERT is 1167 N
+    rs = _rf_rows("sourced", 0.01)
+    assert len(rs) == 8 and all(r.status == FAIL and r.data["rating_source"] == "joint" and "joint value" in r.message for r in rs)
+    rs = _rf_rows("sourced", 100000)
+    assert len(rs) == 8 and all(r.status == PASS and r.data["rating_source"] == "joint" for r in rs)
+    rs = _rf_rows(None, 0.01)  # no rating_basis stated: the number is still the joint's own
+    assert len(rs) == 8 and all(r.status == FAIL and r.data["rating_source"] == "joint" for r in rs)
+
+
+def test_joint_rf_placeholder_rating_falls_back_to_the_library():
+    rs = _rf_rows("placeholder", 0.01)
+    assert len(rs) == 8 and all(r.status == PASS and r.data["rating_source"] == "library" for r in rs)
+    rs = _rf_rows("placeholder", 0.01, "CT-PLUG-IN")  # the library has no rating either
+    assert len(rs) == 8 and all(r.status == SKIP and "pending" in r.message for r in rs)
+
+
+def test_joint_rf_derived_rating_is_reported_as_pending():
+    for rated, would_be in ((0.01, FAIL), (100000, PASS)):
+        rs = _rf_rows("derived", rated)
+        assert len(rs) == 8
+        for r in rs:
+            assert r.status == SKIP and "pending" in r.message and "derived" in r.message
+            assert r.data["would_be"] == would_be and r.data["rating_source"] == "joint"
+
+
+def test_joint_own_rating_helper():
+    from hangar.checks import joint_own_rating
+    assert joint_own_rating({"rated_load_n": 5, "rating_basis": "placeholder"}) == (None, "placeholder")
+    assert joint_own_rating({"rated_load_n": 5, "rating_basis": "derived"}) == (5, "derived")
+    assert joint_own_rating({"rated_load_n": 5}) == (5, None)
+    assert joint_own_rating({}) == (None, None)
 
 
 # ---- T3.control_authority ----
@@ -354,16 +399,35 @@ def _d21_leaves_set(data: dict) -> set:
             out |= {"battery"} | set(c["battery"])
         out |= set(c.get("propulsion", {}))
     out |= set(data.get("flight", {}))
-    for h in data.get("wiring", {}).get("harnesses", []):
-        out |= set(h)
+    harnesses = data.get("wiring", {}).get("harnesses", [])
+    if harnesses:  # a harness field counts as set only when every harness sets it: a SKIP may name it for the one that does not
+        out |= set.intersection(*(set(h) for h in harnesses))
     for a in data.get("attachments", []):
         out |= set(a)
     return out & set(D21_LEAVES)
 
 
+def _names(field: str, message: str) -> bool:
+    """True when `message` names `field` as a word. A file name such as connection-types.yaml does not name `connection`."""
+    import re
+    return re.search(rf"(?<![\w-]){field}(?![\w-])", message) is not None
+
+
+def test_d39_detector_names_fields_not_file_names():
+    assert not _names("connection", "E-WNG-02: CT-EPOXY has no rated_load_n in standards/connection-types.yaml")
+    assert _names("connection", "x: connection CT-FOO not in standards/connection-types.yaml")
+    assert _names("gauge_awg", "e-hrn-01: wiring.harnesses[].gauge_awg missing")
+
+
+def test_d39_harness_field_counts_as_set_only_when_every_harness_sets_it():
+    data = {"components": [], "attachments": [], "flight": {}, "wiring": {"harnesses": [{"id": "a", "gauge_awg": 14}, {"id": "b"}]}}
+    assert "gauge_awg" not in _d21_leaves_set(data)
+    data["wiring"]["harnesses"][1]["gauge_awg"] = 12
+    assert "gauge_awg" in _d21_leaves_set(data)
+
+
 def _check_d21_fields_read(design: Design) -> set:
     """D39: every discipline gate gave a row, and no SKIP row names a D21 field the design sets. No verdict is asserted."""
-    import re
     leaves = _d21_leaves_set(design.data)
     card = run(design, tiers={2, 3, 7})
     for cid in IDS:
@@ -371,7 +435,7 @@ def _check_d21_fields_read(design: Design) -> set:
         assert rs, f"{cid}: the gate gave no row"
         for r in rs:
             if r.status == SKIP:
-                named = sorted(k for k in leaves if re.search(rf"(?<!\w){k}(?!\w)", r.message))
+                named = sorted(k for k in leaves if _names(k, r.message))
                 assert not named, f"{cid}: SKIP names a field that is set {named}: {r.message}"
     return leaves
 

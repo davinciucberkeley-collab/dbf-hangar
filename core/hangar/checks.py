@@ -674,14 +674,22 @@ def _subtree_mass(design: Design, parent: str, child: str) -> float:
     return sum(design.component(i)["mass_g"] for i in seen)
 
 
+def joint_own_rating(a: dict) -> tuple[float | None, str | None]:
+    """(rated_load_n, rating_basis) a joint states for itself. A placeholder rating is not a capacity: it comes back as (None, "placeholder")."""
+    basis = a.get("rating_basis")
+    if basis == "placeholder":
+        return None, basis
+    return a.get("rated_load_n"), basis
+
+
 def tier2_physics(design: Design, std: dict, mp: dict) -> TierReport:
     res: list[CheckResult] = []
     n = std["structure"]["landing_load_factor"]["value"] * std["structure"].get("ultimate_factor", {}).get("value", 1.0)
     for a in design.data.get("attachments", []):
         label = a.get("id") or f"{a['parent']}->{a['child']}"
         load = _subtree_mass(design, a["parent"], a["child"]) / 1000 * G * n
-        rated = a.get("rated_load_n")
-        if a.get("rating_basis") == "placeholder":
+        rated, basis = joint_own_rating(a)
+        if basis == "placeholder":
             res.append(CheckResult("T2.joint_load", SKIP,
                                    f"{label}: carries {load:.1f} N; rating is a placeholder, not checked",
                                    STD + "landing_load_factor", {"load_n": round(load, 2), "joint": label}))

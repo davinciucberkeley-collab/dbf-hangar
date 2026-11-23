@@ -16,10 +16,10 @@ from hangar import adapters
 from hangar.adapters.opencae import OpenCAE
 from hangar.checks import validate
 from hangar.cli import cli
-from hangar.design import DESIGNS_DIR, load_design
+from hangar.design import REPO_ROOT, load_design
 from hangar.ops import call, registry
 
-CA = str(DESIGNS_DIR / "concept-a")
+CA = str(REPO_ROOT / "tests" / "fixtures" / "concept-a-frozen")
 FOUND = {"python": "py", "root": "R", "found": True, "how": "test"}
 
 
