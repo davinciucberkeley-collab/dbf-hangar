@@ -11,6 +11,7 @@ blender_mesh.py: body_object, _despike, subtract; redesign/fusion/fusionkit.py: 
           the largest radius is <= 4 mm), ring vertex at angle t: i_axis += r cos t, j_axis += r sin t, r = 0 is an apex;
   loft    closed loops on parallel planes joined by ruled quads, capped; smooth = open Catmull-Rom (3 points per segment)
           through each loop first, loops of different length resampled by arc length to the longest.
+  mesh    verts/tris as stored (metres), scaled x1000 (fusionkit kind 'mesh').
 
 A component is the union of its bodies minus its cuts (each cut carries its own local-to-world matrix), then moved by
 the component matrix. The source stores metres; everything here is scaled to millimetres first.
@@ -269,7 +270,16 @@ def _loft(s: dict) -> trimesh.Trimesh:
     return _clean(trimesh.Trimesh(np.asarray(verts), np.asarray(faces), process=False))
 
 
-_KIND = {"prism": _prism, "revolve": _revolve, "loft": _loft}
+def _mesh(s: dict) -> trimesh.Trimesh:
+    """kind 'mesh' (fusionkit.Shape, the printed hub, D-207): a closed outward-wound triangle mesh, component-local metres -> mm."""
+    verts = np.asarray(s["verts"], dtype=float).reshape(-1, 3) * 1000.0
+    tris = np.asarray(s["tris"], dtype=int).reshape(-1, 3)
+    if len(tris) == 0:
+        raise GeometryError("mesh body without triangles")
+    return _clean(trimesh.Trimesh(verts, tris, process=False))
+
+
+_KIND = {"prism": _prism, "revolve": _revolve, "loft": _loft, "mesh": _mesh}
 
 
 def body_mesh(shape: dict) -> trimesh.Trimesh:

@@ -107,6 +107,7 @@ CONN_METHOD = {
     "CT-STRAP-VELCRO": ("clamp", "hook-and-loop strap round the pack: nearest enum is clamp"),
     "CT-TIE": ("zip-tie", ""),
     "CT-SERVO-SPLINE": ("bolted", "arm on a spline held by an M2 retaining screw: nearest enum is bolted"),
+    "CT-PITOT-TUBING": ("press-fit", "push-on silicone tubing on a barb: nearest enum is press-fit"),
 }
 
 
@@ -424,6 +425,12 @@ def account_interface_edges(interface_edges: dict, attachment_ids, bridging_ids,
 
 
 # ----------------------------------------------------------------------------- yaml
+def _retention_n(e: dict) -> float | None:
+    """EDGES retention.load_n as a positive number, else None (the source writes 'none (pneumatic)' on the push-on tubing lines, amodel/electrical.py:638)."""
+    v = (e.get("retention") or {}).get("load_n")
+    return float(v) if isinstance(v, (int, float)) and not isinstance(v, bool) and v > 0 else None
+
+
 def _write_yaml(data, PARTS, ids, comps, proxies, meshes, cg, parts_csv, params, att_rows, elevon, groups, bridging, std, out):
     from ..checks import _subtree_mass
     from ..design import Design
@@ -542,8 +549,8 @@ def _write_yaml(data, PARTS, ids, comps, proxies, meshes, cg, parts_csv, params,
         if val is None:
             demand = _subtree_mass(stub, parent.lower(), child.lower()) / 1000 * G * n_fac
             val = math.ceil(demand * 10) / 10
-            js = e.get("retention", {}).get("load_n")
-            if js:
+            js = _retention_n(e)
+            if js is not None:
                 val = max(val, js)
                 srcv += f"; retention.load_n {js} N in EDGES"
             srcv += f" ({n_fac:g} x g x subtree mass = {demand:.2f} N, rounded up)"
