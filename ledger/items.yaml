@@ -3594,13 +3594,13 @@ items:
     text: 'plane design migrate writes one CHANGELOG entry for the schema migration (reviewer W3-R2, PR #3 suggestion 1) [triage 2026-11-21: Reviewer suggestion (PR #3, suggestion 1)]'
     source: reviews/2026-11-21-w3.md U3.4 run 6
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: '2216434'
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: D27
     kind: decision
     text: 'U2.2-2: add knowledge/TEMPLATE-concept.md (no existing template fits a concept or research summary)'
@@ -4257,7 +4257,7 @@ items:
     updated: '2026-11-23'
   - id: T83
     kind: task
-    text: 'gate explain: check ids that only appear on FAIL (e.g. T1.attachment_contact) still cannot be explained even with --design; .claude/agents/design-engineer.md:18 shows gate explain without --design (T26 follow-up)'
+    text: 'gate explain: check ids that only appear on FAIL (e.g. T1.attachment_contact) still cannot be explained even with --design; .claude/agents/design-engineer.md:18 shows gate explain without --design (T26 follow-up) [T1.attachment_contact explainable since faa0791 (W7-R); other FAIL-only ids (T1.attachment_overlap, T1.attachment_location, T0.unique_ids, other T0) remain]'
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
     status: open
@@ -4301,7 +4301,7 @@ items:
     updated: '2026-11-23'
   - id: T86
     kind: task
-    text: "W6-R follow-ups (non-blocking): studio results glob '{did}-*.*' can delete another design whose id starts with '<did>-'; legacy plane fea (cli.py:192/230) exits 1 on missing OpenCAE (outside D37); T3 rollback could drop ops of a nested ops import; ledger add/ingest accept any due text; tests for a mixed point-mass/mesh harness and for from-imports in the T23 unused-import check"
+    text: "W6-R follow-ups (non-blocking): studio results glob '{did}-*.*' can delete another design whose id starts with '<did>-'; legacy plane fea (cli.py:192/230) exits 1 on missing OpenCAE (outside D37); T3 rollback could drop ops of a nested ops import; ledger add/ingest accept any due text; tests for a mixed point-mass/mesh harness and for from-imports in the T23 unused-import check [four sub-items merged 671b9d5 (W7-R); open: T3 nested-import rollback, mixed point-mass/mesh harness test]"
     source: W6-R review 2026-11-23 (reviews/2026-11-23-w6.md)
     owner: conductor
     status: open
@@ -4315,10 +4315,10 @@ items:
     text: 'T20 follow-ups: sim drop rows at an override height still cite design-standards drop_height_m and do not state the height in the human output; --height-m help does not say 0 means the standards height'
     source: W6-R review 2026-11-23
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e71f67e
     decided_in: ''
     updated: '2026-11-23'
   - id: T88
@@ -4330,5 +4330,16 @@ items:
     due: '2026-12-15'
     units: []
     evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D54
+    kind: decision
+    text: "U4.5 T7: Studio /api/op refuses the 'out' parameter and fea.setup's executable path outright (no Studio client sends them; /api/fea-setup stays the Studio route); design.new template must be a bare id; ledger.seed plan refused (W7-R REOPEN questions A and B)"
+    source: conductor under D51, 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-23'
