@@ -1267,7 +1267,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** T89 only: `bench.run` checks `agent` (and `task` if it names a file) against the id rule in the op, so CLI, MCP and Studio are all covered; `ID_RE` defined once and matched exactly (fullmatch). Core and tests only.
 
-- [ ] **Step 1: Brief** (tactician W8-T): `briefs/U4.6-t89.md`
+- [x] **Step 1: Brief** (tactician W8-T): `briefs/U4.6-t89.md` *(easy; mcp_server.py _ID_RE and morph.py ID_RE left out of scope)*
 - [ ] **Step 2: Build** (builder W8-B)
 - [ ] **Step 3: Review** (reviewer W8-R); merge; T89 done
 
