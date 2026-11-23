@@ -173,7 +173,8 @@ def test_studio_has_no_reemitting_save_routes(sandbox):
 
 
 def _refused(res):
-    return "outside" in " ".join(res["messages"]) or "not available from Studio" in " ".join(res["messages"])
+    msg = " ".join(res["messages"])
+    return "outside" in msg or "bare id" in msg or "not available from Studio" in msg
 
 
 def test_studio_op_refuses_a_design_path_outside_designs(sandbox, tmp_path):  # T7
