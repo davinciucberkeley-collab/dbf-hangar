@@ -4057,3 +4057,14 @@ items:
     evidence: plans/2026-11-20-standardization/u4.2/demo-script.md
     decided_in: ''
     updated: '2026-11-22'
+  - id: D47
+    kind: decision
+    text: 'The repo keeps only main: every std/* or design/* branch is deleted on GitHub and locally as soon as it merges or is abandoned'
+    source: Tristan in chat 2026-11-22 (P158)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: ledger/prompts.jsonl
+    decided_in: ''
+    updated: '2026-11-22'
