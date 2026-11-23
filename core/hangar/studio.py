@@ -167,8 +167,10 @@ class Studio:
         except Exception as e:  # noqa: BLE001
             entry = error_entry(did, f"{type(e).__name__}: {e}")
             msg = entry["error"]
-        for old in DATA_DIR.glob(f"{did}-*.*"):  # drop results for older versions of this design
-            if not old.name.startswith(fid + "."):
+        prev = (self.cache.get(did) or {}).get("hash")
+        keep = (fid + ".", f"{did}-{prev}.") if prev else (fid + ".",)
+        for old in DATA_DIR.glob(f"{did}-*.*"):  # drop results two versions back; the previous version stays for a page still showing it (T84)
+            if not old.name.startswith(keep):
                 old.unlink(missing_ok=True)
         with self.lock:
             entry["pending"] = False

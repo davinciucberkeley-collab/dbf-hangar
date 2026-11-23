@@ -247,3 +247,39 @@ def test_build_index_writes_v2_and_sweep_files(sandbox, tmp_path):
     by_id = {e["id"]: e for e in index["designs"]}
     assert all("mechanisms" in e and "fea" in e for e in by_id.values())
     assert by_id["example-tailsitter-wing"]["mechanisms"] is None
+
+
+def _wait_studio_idle(s, timeout=120):
+    t0 = time.time()
+    while time.time() - t0 < timeout:
+        if not s.state()["busy"]:
+            return
+        time.sleep(0.1)
+    raise AssertionError("studio jobs did not finish")
+
+
+def test_recheck_keeps_the_previous_versions_files_for_one_more_generation(sandbox):  # T84
+    # A page that fetched the index just before a re-check finished still asks for the previous version's glb,
+    # scorecard and mass: they must not 404 (flaky console error in test_propose_link_survives_real_git_side_effects).
+    did = "example-tailsitter-wing"
+    s = studio.Studio()
+    _wait_studio_idle(s)
+
+    def files():
+        e = s.entries[did]
+        return {e["glb"], e["scorecard"], e["mass"]}
+
+    v1 = files()
+    plane = sandbox / did / "plane.yaml"
+    plane.write_text(plane.read_text(encoding="utf-8") + "\n# edit 1\n", encoding="utf-8")
+    s.scan()
+    _wait_studio_idle(s)
+    v2 = files()
+    assert v1.isdisjoint(v2)
+    assert all((studio.DATA_DIR / f).is_file() for f in v1 | v2), "previous version's files must survive one re-check"
+    plane.write_text(plane.read_text(encoding="utf-8") + "# edit 2\n", encoding="utf-8")
+    s.scan()
+    _wait_studio_idle(s)
+    v3 = files()
+    assert not any((studio.DATA_DIR / f).exists() for f in v1), "two versions back is deleted"
+    assert all((studio.DATA_DIR / f).is_file() for f in v2 | v3)
