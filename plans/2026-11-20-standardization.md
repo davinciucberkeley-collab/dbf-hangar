@@ -1129,8 +1129,8 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 - [x] **Step 2: Run** → FAIL
 - [x] **Step 3: Implement** parts 1a and 1b of `briefs/U2.5d-reimport.md`; dry-run the whole importer into a tmp folder (never `designs/`); core PR merged *(merged d421013; ACCEPT 614a820)*
 - [x] **Step 3b: Pre-gates fix in place** (D50, D51; brief `briefs/U2.5d-pre-gates.md`, branch `std/u2.5d-pre-gates`): `T2.joint_rf` per-joint rating, D39 detector, test pins to `tests/fixtures/concept-a-frozen`; merged before Step 4. Fixes CI on the Step 4 branch, no new unit (R22). *(merged 41e6689; W4-RD ACCEPT)*
-- [ ] **Step 4: Designs PR** (part 3 of the brief): re-import into `designs/concept-a/`, replay `CHANGELOG.yaml`, regenerate claims, re-run FEA (hashes change), refresh baseline
-- [ ] **Step 5: Run** `plane design validate designs/concept-a`, `plane baseline check --all` (exit 0), `plane progress --write`; Dillon runs the BOM half of T62 against the Explorer
+- [x] **Step 4: Designs PR** (part 3 of the brief): re-import into `designs/concept-a/`, replay `CHANGELOG.yaml`, regenerate claims, re-run FEA (hashes change), refresh baseline *(merged d24b6df; W4-RD ACCEPT; 3c findings T73-T82)*
+- [ ] **Step 5: Run** `plane design validate designs/concept-a`, `plane baseline check --all` (exit 0), `plane progress --write`; Dillon runs the BOM half of T62 against the Explorer *(validate and baseline check --all exit 0 done in 3c and CI 45157339285; open only for Dillon's BOM half of T62)*
 
 ### Unit U3.1: One surface — Studio with modes, same app on Pages [hard]
 

@@ -5,13 +5,13 @@ items:
     text: 'A consistent file format for a plane ("schema"): if Tristan submits a plane to the system Dillon works in, it drops into the same bucket; CAD files go here, BOM goes here'
     source: plan §1; A 11-11, 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.3
-    evidence: 'open: PDL 1.0 exists (dfcbf16) but concept-a is still 0.4 without files/bom; needs U2.5d'
+    evidence: d24b6df
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R2
     kind: ruling
     text: CLI **and** MCP so different agents interface with one app; `plane add …` instead of agents editing HTML per plane
@@ -148,14 +148,14 @@ items:
     text: 'Gates: transport by car (the box), no exposed wires and rules for how wiring works'
     source: plan §1; A 11-11
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.3
       - U2.1
-    evidence: 'open: T7 gates exist (c82b07b) but report-only (D7), wire_clearance_mm pending, no design has wiring/transport; needs U2.5d data and the D7 flip'
+    evidence: d24b6df
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R13
     kind: ruling
     text: Database of plane guidelines and standards every design is evaluated against; manufacturing methods; "does a tailsitter actually work?" evidence
@@ -173,14 +173,14 @@ items:
     text: 'BOM: verify parts are real (Amazon blocks agents → use Claude in Chrome)'
     source: plan §1; T 11-11 (Dillon)
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U1.3
       - U2.4
-    evidence: 'open: bom.verify and T8 exist (9d1ce6a, c82b07b) but no committed design has a BOM; needs concept-a BOM import (U2.5d)'
+    evidence: d24b6df
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R15
     kind: ruling
     text: Claude adds, rarely subtracts; fixes must consider add / subtract / modify / adjust and not add unless needed; weight is the constraint
@@ -211,13 +211,13 @@ items:
     text: 'Hardest goal first: working, non-placeholder mechanisms before weight'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U2.1
-    evidence: 'open: ordering kept (c82b07b) but no design has real mechanisms; needs concept-a mechanisms (U2.5d) and U3.4 iteration'
+    evidence: d24b6df
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R18
     kind: ruling
     text: Agent roles by **type and level** of work, not domain; Haiku builds, Sonnet for hard; tactician Sonnet (hard → Opus); advisor Opus; one conductor decides; batch of ~10 units → fresh Opus reviewer
@@ -3254,13 +3254,13 @@ items:
     text: 'Make U2.5d a unit: concept-a re-import into PDL 1.0 (params, BOM, requirements, files, wiring/transport, mechanisms, assembly sequence) after an FEA re-run; closes R1, R12, R14, R17, R31 data gaps [triage 2026-11-21: v1.1 unit U2.5d written into plan 7 by 11-25; R1/R12/R14/R17/R31 shown as gaps on Dec 2 (D33); blocked by T53]'
     source: reviews/2026-11-21-ledger-audit.md
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: d24b6df
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T25
     kind: task
     text: 'plane design validate table: Status column shows the tier status (t.status) instead of the row status (r.status), so passing rows in a failing tier read FAIL (core/hangar/design.py:114, since seed 6909134) [triage 2026-11-21: One-line fix: use r.status in the Status column]'
