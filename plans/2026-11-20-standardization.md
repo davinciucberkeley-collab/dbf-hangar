@@ -1311,7 +1311,7 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1: Briefs** (tactician W12-T): `briefs/U4.10-*.md` *(four easy briefs, landed in 285d9e4; order: T88+T90, then T83 before T86)*
 - [x] **Step 2: Build** (W12-B, one per brief; at most 2 at once) *(t88 9c8375a, t90 018f74e, t83 e7efc5c, t86 4a1263f; all builder)*
-- [ ] **Step 3: Review** (reviewer W12-R); merge; T83, T86, T88, T90 done
+- [x] **Step 3: Review** (reviewer W12-R); merge; T83, T86, T88, T90 done *(T83, T88 ACCEPT merged 8c720eb, 34d21b2; T86, T90 REOPEN once, ACCEPT on re-review, merged 7741d29, a4894dc; follow-ups T100, T102)*
 
 ### Unit U4.11: Recompute the 40 read_value claims (T28; D59 overrules D52)
 

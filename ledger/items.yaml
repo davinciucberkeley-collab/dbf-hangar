@@ -4304,10 +4304,10 @@ items:
     text: "W6-R follow-ups (non-blocking): studio results glob '{did}-*.*' can delete another design whose id starts with '<did>-'; legacy plane fea (cli.py:192/230) exits 1 on missing OpenCAE (outside D37); T3 rollback could drop ops of a nested ops import; ledger add/ingest accept any due text; tests for a mixed point-mass/mesh harness and for from-imports in the T23 unused-import check [four sub-items merged 671b9d5 (W7-R); open: T3 nested-import rollback, mixed point-mass/mesh harness test]"
     source: W6-R review 2026-11-23 (reviews/2026-11-23-w6.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 7741d29
     decided_in: ''
     updated: '2026-11-23'
   - id: T87
@@ -4359,10 +4359,10 @@ items:
     text: "ID follow-ups (W8-R): mcp_server.py:27/31 own _ID_RE with .match (save_design accepts 'x\\n'): import the shared ID_RE and fullmatch; morph.py:31/33 same trailing-newline issue; Studio refusal message for bench.run agent/task says 'design id'; move ID_RE to a small hangar/ids.py"
     source: W8-R review 2026-11-23
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: a4894dc
     decided_in: ''
     updated: '2026-11-23'
   - id: D55
@@ -4534,6 +4534,17 @@ items:
     kind: task
     text: 'W10-R non-blocking (U4.8 bench): _map_args maps option values and the key too (a --why/--value text naming an existing path fails a legit run); PLANE_BENCH_LOG not digest-pinned; SWEEP_ROOT still writes into the real repo; one paid bench run to probe shell redirection under Bash(plane *); tree_digest ignores empty folders (docstring)'
     source: W10-R review 2026-11-23 (reviews/2026-11-23-w10.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T102
+    kind: task
+    text: 'W12-R non-blocking (T86): the failed-inner-module test should add a third call with the fault cleared (recovery covered only by a probe); comment that the rollback relies on Python dropping a failed module from sys.modules'
+    source: W12-R re-review 2026-11-23 (reviews/2026-11-23-w12.md)
     owner: conductor
     status: open
     due: '2026-12-15'
