@@ -5,7 +5,12 @@ def sum_values(**terms):
     return {"total": sum(terms.values())}
 
 
-CALCS = {"sum_values": sum_values}
+def read_value(v):
+    """Echo: a stored result read from its source (sitl/cad_mass.json and the like), not recomputed. The claim compares the value, as given, with its limit."""
+    return {"v": v}
+
+
+CALCS = {"sum_values": sum_values, "read_value": read_value}
 from .concept_a import CALCS as _CONCEPT_A  # noqa: E402
 
 CALCS.update(_CONCEPT_A)
