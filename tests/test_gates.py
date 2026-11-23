@@ -72,6 +72,36 @@ def test_exposed_wire_fails_unless_reasoned():
     assert status(base(), "T7.wiring.esc_to_motor_l", tiers={7}) == PASS
 
 
+def _as_point_masses(d, *ids):
+    for c in d.data["components"]:
+        if c["id"] in ids:
+            c["geometry"] = {"point_mass": {}}
+    return d
+
+
+def test_harness_between_point_masses_is_skip_not_pass():  # T15
+    d = _as_point_masses(base(), "esc", "far_pod")
+    d.data["wiring"]["harnesses"].append({"id": "pm_pm", "from": "esc", "to": "far_pod"})
+    r = result(run(d, only_tiers={7}, strict=True), "T7.wiring.pm_pm")
+    assert r.status == SKIP
+    assert "point mass" in r.message
+    assert status(d, "T7.wiring.esc_to_motor_l", tiers={7}) == PASS
+
+
+def test_harness_from_a_point_mass_to_a_mesh_is_still_checked():  # T15
+    d = _as_point_masses(base(), "esc")
+    d.data["wiring"]["harnesses"].append({"id": "pm_body", "from": "esc", "to": "body"})
+    assert status(d, "T7.wiring.pm_body", tiers={7}) == PASS
+
+
+def test_transport_group_of_only_point_masses_is_skip():  # T15
+    d = _as_point_masses(base(), "esc")
+    d.data["transport"]["disassembly"].append({"group": "pm_only", "component_ids": ["esc"]})
+    r = result(run(d, only_tiers={7}, strict=True), "T7.transport.pm_only")
+    assert r.status == SKIP
+    assert "point mass" in r.message
+
+
 def test_transport_group_too_big_fails():
     wing_too_long = base()
     wing_too_long.data["components"][1]["geometry"]["lifting_surface"]["span"] = 1400

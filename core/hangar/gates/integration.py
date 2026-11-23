@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..design import FAIL, PASS, CheckResult, TierReport
+from ..design import FAIL, PASS, SKIP, CheckResult, TierReport
 from . import gate, load_gate_thresholds
 
 SCHEMA = "schema/plane.schema.json"
@@ -35,15 +35,23 @@ def _wiring(design, clr: float) -> list[CheckResult]:
             res.append(CheckResult(cid, FAIL, f"harness {h['id']}: unknown component {unknown[0]}", WIRE_CRIT, data))
             continue
         worst = None
+        unchecked = 0
         for ca, cb in zip(seq, seq[1:]):
             (pa, a), (pb, b) = info(ca), info(cb)
+            if not (pa + pb):  # both ends are point masses: no envelope to test against
+                unchecked += 1
+                continue
             for s in np.linspace(0.0, 1.0, SAMPLES):
-                dist = _point_distance(pa + pb, a + (b - a) * s) if pa + pb else 0.0
+                dist = _point_distance(pa + pb, a + (b - a) * s)
                 if dist > clr and (worst is None or dist > worst[0]):
                     worst = (dist, ca, cb)
-        if worst is None:
-            res.append(CheckResult(cid, PASS, f"harness {h['id']}: all {len(seq) - 1} segments lie inside the envelopes (+{clr:g} mm)",
-                                   WIRE_CRIT, data))
+        if unchecked == len(seq) - 1:
+            res.append(CheckResult(cid, SKIP, f"harness {h['id']}: not checked, every segment runs between point masses "
+                                   "(no envelope to test)", WIRE_CRIT, data))
+        elif worst is None:
+            note = f"; {unchecked} segment(s) between point masses not checked" if unchecked else ""
+            res.append(CheckResult(cid, PASS, f"harness {h['id']}: all {len(seq) - 1 - unchecked} checked segments lie inside the "
+                                   f"envelopes (+{clr:g} mm){note}", WIRE_CRIT, data))
         elif h.get("exposed_ok"):
             res.append(CheckResult(cid, PASS, f"harness {h['id']}: exposed segment accepted: {h['exposed_ok']['reason']}",
                                    WIRE_CRIT, data))
@@ -68,6 +76,9 @@ def _transport(design) -> list[CheckResult]:
             continue
         parts = [p for x in g["component_ids"] for p in component_parts(comps[x], design.base_dir)]
         if not parts:
+            res.append(CheckResult(f"T7.transport.{g['group']}", SKIP,
+                                   f"group {g['group']}: not checked, every component is a point mass (no geometry to fit)",
+                                   BOX_CRIT, data))
             continue
         ext = [round(e) for e in _obb_extents(parts)]
         fits = _fits(_obb_extents(parts), box, False)
