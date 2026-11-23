@@ -4411,13 +4411,13 @@ items:
     updated: '2026-11-23'
   - id: T93
     kind: task
-    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62"
+    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62 [edit items merged ea7c0f5 (W10-R); bench items reopened with std/u4.8-bench]"
     source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
     status: open
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: ea7c0f5
     decided_in: ''
     updated: '2026-11-23'
   - id: D57
