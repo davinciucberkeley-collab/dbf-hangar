@@ -593,6 +593,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-D1 | `builder-plus` | Sonnet | `briefs/W4d-tiers.md` [hard] (approved by Tristan 2026-11-22) | branch `std/w4d-tiers` | brief's checks; CI green |
 | W4-D2…D5 | `builder` | Haiku | `briefs/U4.1-docs.md` (after D1), `W4d-concept-a-readme.md`, `W4d-viewer-flake.md`, progress-test fix (inline brief) | branches `std/w4d-*` | brief's checks; CI green |
 | W4-TE | `tactician` | Sonnet | §7 U4.2 Steps 1–3; `reviews/*.md` measured values; T35 bench caveat; D32–D34 gaps | `plans/2026-11-20-standardization/u4.2/{demo-script,metrics,deck-outline}.md` | every demo command dry-run on a tmp copy (R-a); every metric cites a review or command output |
+| W4-E | `tactician` | Sonnet | U4.2 Step 1 (Tristan 2026-11-22: "build the deck in the repo"): `u4.2/deck-outline.md`, `metrics.md`, `demo-script.md` | `docs/deck/index.html` (self-contained, opens offline, arrow-key navigation) | every number cites a file in the repo; no claim beyond `metrics.md`; caveats (T35, D32–D34) on their slides |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
