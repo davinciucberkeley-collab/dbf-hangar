@@ -50,7 +50,7 @@
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.1 | Whole-branch review, performance, release | 5/5 | done | ACCEPT |
-| U4.2 | Dec 2 presentation package | 0/4 | not started | - |
+| U4.2 | Dec 2 presentation package | 2/4 | in progress | ACCEPT |
 
 ## Ledger
 

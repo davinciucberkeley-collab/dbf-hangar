@@ -12,7 +12,7 @@ Sources: WB = `reviews/2026-11-22-whole-branch.md` (reviewer W4-R1, main at dea6
 | M5 | Blocking thresholds `source: pending` | 2 | 1: `landing_load_factor` (named, under D6) | PASS | WB:52, WB:9; ran `plane standards pending` first line `BLOCK landing_load_factor` |
 | M6 | What a design can describe | geometry, joints, mass, flight | PDL 1.0 blocks exist; concept-a lacks bom, files, transport and assembly data | PASS (concept-a incomplete, see gap D33) | WB:54 |
 | M7 | Agent rules enforced | advisory | roster plus hooks; 10 agent roles in `.claude/agents/` | PASS | WB:55; ran `ls .claude/agents` = 10 |
-| M8 | Before-meeting status | memory | `plane ledger report` and `plane update publish` both work | PASS | WB:56; ran: ledger 357 items, 68 open, 0 overdue, 0 open prompts; publish 3.0 s |
+| M8 | Before-meeting status | memory | `plane ledger report` and `plane update publish` both work | PASS | WB:56; ran: ledger 359 items, 66 open, 0 overdue, 0 open prompts (live `plane ledger report`, 2026-11-22); publish 3.0 s |
 | M9 | Iteration loop (set, then validate, no FEA) | edit YAML by hand | concept-a: 56.9 s quiet warm, 78.9 s cold, 113.5 s loaded machine; ran 83 s cold on a fresh clone (exit 1, 4 known FAILs). Template demo design: `design set` 5.7 s plus validate 9.4 s. Margin on the 60 s target is about 3 s warm | PASS (thin) | W4:94-108 (3 quiet runs each, median 120.9 s before, 56.9 s after, results byte-identical); WB:56, WB:7; ran 83 s |
 | | §7 ticks have merge and review records | n/a | all except U2.5 Step 4 (no record that Dillon's BOM/claims check against the Explorer happened) | FAIL | WB:57, WB:15 |
 
@@ -25,7 +25,7 @@ Count: 9 metrics: 8 PASS (M3 and M9 with caveats, M6 with data gaps), 1 GAP (M2)
 | concept-a `--tier all` | PASS 531, SKIP 102, WARN 9, FAIL 4 (WB:7 prints the order PASS, SKIP, WARN, FAIL); fidelity 134 of 635 blocking checks sourced; 0 measured masses | WB:7; ran: 531 / 102 / 9 / 4, same numbers, `Fidelity: 134 of 635` |
 | Perf change | median 120.9 s to 56.9 s wall (CPU 129.0 to 66.1 s); frozen fixture 51.2 to 42.2 s | W4:98-102 |
 | `plane tools doctor` | exit 0 at dea6f2a; opencae, aerosandbox, davinci missing, blender and sitl planned | WB:8 |
-| Ledger | 357 items: 68 open, 49 done, 231 decided | ran `plane ledger report` |
+| Ledger | 359 items: 66 open, 52 done, 232 decided | live `plane ledger report`, 2026-11-22 |
 
 ## C. The four known concept-a FAILs (state them; do not hide)
 All from `plane design validate designs/concept-a --tier all` (WB:7; ran 2026-11-22, exit 1):

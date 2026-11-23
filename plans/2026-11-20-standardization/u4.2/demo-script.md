@@ -18,12 +18,12 @@ Run plane with: `export PYTHONPATH=<repo>/core; C:/ProgramData/miniforge3/python
 | 4 | 2:15-3:15 | `plane design validate designs/demo-wing` | scorecard table, `**Accepted:** no`, exit 1; 62 PASS, 7 WARN, 1 FAIL: `T3.static_margin FAIL: 15.5% MAC (... target 5%-15%)`; last line `Fidelity: 5 of 61 blocking checks use sourced thresholds; 0 components have measured mass.` | 9.4 s | `plane design validate designs/demo-wing --tier 1` (a few seconds) or recorded video |
 | 5 | 3:15-3:45 | Fix it live: `plane design set designs/demo-wing "components[wing].mass_g" --value 170 --why "demo: back inside the static-margin band"`, then `plane design validate designs/demo-wing` | `150 -> 170`; validate `**Accepted:** yes`, exit 0, `T3.static_margin PASS: 14.5% MAC` (160 g still FAILs at 15.0%) | 5.7 s + 9.4 s | skip; the story works with step 4 alone |
 | 6 | 3:45-5:15 | Studio Physics (click path below): design `concept-a`, mechanism `elevon-r`, then `elevon-l`, press Play | slider runs 0 to 30 (31 steps), input -15 to +15 deg; follower `E-WNG-10` reads -19.95 deg at +15 (ratio -1.33); `elevon-l` gives +19.95 for `E-WNG-11` | 1.5 min | drag the slider by hand; else recorded video |
-| 7 | 5:15-6:15 | `plane design propose designs/demo-wing "Lighter wing foam"` | one line: the PR URL; branch `design/demo-wing/lighter-wing-foam`, one commit `design(demo-wing): Lighter wing foam` touching only `designs/demo-wing/{CHANGELOG.yaml,plane.yaml}` with the owner trailer; working tree back on main | 10.1 s (stubbed gh) | open PR #3 (merged e2504d2, concept-a elevons) and say "this is what propose makes"; or `plane design propose --help` |
+| 7 | 5:15-6:15 | Decided (D46): no live propose. Open PR #3 (merged e2504d2, concept-a elevons) and say "this is what `plane design propose` makes" | PR page, designs/ only | 0:30 | `plane design propose --help` |
 | 8 | 6:15-6:45 | Click the PR link: files changed (designs/ only, no core/) and CI | GitHub PR page | 0:30 | show PR #3 |
-| 9 | 6:45-7:30 | `plane update publish 2026-11-16` | prints `https://davinciucberkeley-collab.github.io/dbf-hangar/updates/2026-11-16/`, exit 0 | 3.0 s | open the URL directly (HTTP 200 checked 2026-11-22) |
+| 9 | 6:45-7:30 | `plane update publish 2026-11-30` (D46: the 11-30 week; its `updates/` entry must be merged to main first, else the URL is HTTP 404, Issue 4) | prints `https://davinciucberkeley-collab.github.io/dbf-hangar/updates/2026-11-30/`, exit 0 | 3.0 s | open the URL directly after merge; fallback: week 2026-11-16 (HTTP 200 checked 2026-11-22) |
 | 10 | 7:30-8:00 | Open the one link `https://davinciucberkeley-collab.github.io/dbf-hangar/` | HTTP 200 (checked 2026-11-22); same app, read-only | 0:30 | recorded video |
 
-Step 9 uses the existing week 2026-11-16. A new week (`update new 2026-12-07`, then `update add 2026-12-07 <person> <link> <changed>`, then `update publish 2026-12-07`) works (4.7 s, then 3 s), but the printed URL returns HTTP 404 until the week's `updates/` file is merged to main and the Pages workflow has run (Issue 4). Use a new week only if Tristan merges the entry before the room.
+Step 9 uses the 11-30 week (D46). Dry run used the existing week 2026-11-16; a new week (`update new`, `update add`, `update publish`) works (4.7 s, then 3 s) but its URL returns 404 until the `updates/` file is merged to main and the Pages workflow has run (Issue 4).
 
 ## Studio click path and launch
 - Launch: `plane studio` (default port 8765, opens the browser; `--no-browser` and `--port N` exist). The Studio index has `"studio": true`, which adds the edit panel.
@@ -47,7 +47,7 @@ new 8.9 s, set 5.7 s, validate 9.4 s (11.7 s on a second copy), propose 10.1 s, 
 Concept-a full validate (not in the live script, too slow): 83 s wall, exit 1, PASS 531, WARN 9, FAIL 4, SKIP 102.
 
 ## Recorded backup video (decision for Tristan)
-Not recorded. Suggest one take of steps 2-10 on the demo laptop after the Mon 11-30 dry run, target 6 min, saved outside the repo.
+Not recorded. Decided (D46): Tristan records it at the 11-30 dry run (one take of steps 2-10, target 6 min, saved outside the repo).
 
 ## Cleanup after the demo
-`git switch main` (propose already does). The branch exists locally and on origin; if a real PR was opened, close it and run `git push origin --delete design/demo-wing/lighter-wing-foam`.
+No live propose (D46), so no demo branch or PR to close. `git switch main` if one was tried; remove `designs/demo-wing`.

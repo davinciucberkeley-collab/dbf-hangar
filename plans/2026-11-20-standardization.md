@@ -1188,9 +1188,9 @@ Not a code unit; it tests everything above.
 
 ### Unit U4.2: Dec 2 presentation package
 
-- [ ] **Step 1:** Slides deck (Claude Slides artifact; download .pptx/PDF if needed): problem (15 interfaces, rules forgotten, code edits per design) → PDL → ops/CLI/MCP/Studio → gates T0–T8 → harness → PlaneBench results → what's next.
+- [x] **Step 1:** Slides deck (Claude Slides artifact; download .pptx/PDF if needed): problem (15 interfaces, rules forgotten, code edits per design) → PDL → ops/CLI/MCP/Studio → gates T0–T8 → harness → PlaneBench results → what's next.
 - [ ] **Step 2:** Live demo script (8 min), each step one command or click: `plane design new` from a template → `plane design set` a wing mass → `plane design validate` → Studio Physics mode playing the flap mechanism → `plane design propose` → the PR → `plane update publish` → the one link. Recorded backup video.
-- [ ] **Step 3:** Metrics slide filled from §2.1 with measured values (not targets).
+- [x] **Step 3:** Metrics slide filled from §2.1 with measured values (not targets).
 - [ ] **Step 4:** Dry run Mon 11-30 evening; fix only what the dry run breaks.
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
