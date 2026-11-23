@@ -4365,3 +4365,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D55
+    kind: decision
+    text: 'T55: pdledit list-entry edits use flags: plane design set <path> --append X / --remove X (remove matches by value)'
+    source: Tristan, P169, 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D56
+    kind: decision
+    text: "T54: bench grader replays the run's logged plane commands on a fresh copy of the pre-run design; a designs/ result that differs fails the run"
+    source: Tristan, P169, 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'

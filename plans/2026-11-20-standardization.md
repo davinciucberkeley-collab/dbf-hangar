@@ -322,6 +322,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D52 | U4.3: build T28 (register `read_value`, 40 claims SKIP→PASS) tonight? | no: D34 stands (v1.1); brief `U4.3-t28.md` kept ready; deck line 140 stays true | Tristan | 11-23 | decided (conductor under D51, 2026-11-23) |
 | D53 | R31 after T72: is a step that adds only point-mass proxies allowed to be skipped? | yes: reported in `skipped`; a drawable part with no mesh still fails; R31 done (1563a97) | Tristan | 11-23 | decided (conductor under D51, 2026-11-23; W5-R flag) |
 | D54 | T7: may Studio /api/op pass `out` paths and fea.setup executables? | no: refused outright (no Studio client sends them; /api/fea-setup is the Studio route); `design.new` template is a bare id; `ledger.seed` plan refused | Tristan | 11-23 | decided (conductor under D51, 2026-11-23; W7-R questions A, B) |
+| D55 | T55: how is one entry of a one-line list appended or removed? | flags: `plane design set <path> --append X` / `--remove X`; remove matches by value | Tristan | 11-23 | decided (Tristan, P169, 2026-11-23) |
+| D56 | T54: how does the bench grader stop direct edits to `designs/`? | replay: snapshot the design before the run, log every `plane` command, replay the log on a fresh copy; a `designs/` result that differs fails the run | Tristan | 11-23 | decided (Tristan, P169, 2026-11-23) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -621,6 +623,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W7-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.5 brief each | branch `std/u4.5-<task>` | brief checks; CI green; launched: t7 [hard] builder-plus Sonnet; t54, t50, t83, t87, t86 builder Haiku; t55 not briefed |
 | W7-R | `reviewer` | Opus (fresh) | every U4.5 branch | `reviews/2026-11-23-w7.md` | "### Verdict:" per branch |
 | W8-T, W8-B, W8-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.6 (T89) | `briefs/U4.6-t89.md`, branch `std/u4.6-t89`, `reviews/2026-11-23-w8.md` | builder-ready bar; brief checks; "### Verdict:" |
+| W9-T, W9-B, W9-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.7 (T55, T54 grader) | `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md`, branches `std/u4.7-t55`, `std/u4.7-t54`, `reviews/2026-11-23-w9.md` | builder-ready bar; brief checks; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1270,6 +1273,14 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Brief** (tactician W8-T): `briefs/U4.6-t89.md` *(easy; mcp_server.py _ID_RE and morph.py ID_RE left out of scope)*
 - [x] **Step 2: Build** (builder W8-B) *(e3f4eda)*
 - [x] **Step 3: Review** (reviewer W8-R); merge; T89 done *(ACCEPT, reviews/2026-11-23-w8.md; merged 798fc37; follow-up T90)*
+
+### Unit U4.7: List-entry edits and bench grader replay (T55, T54; D55, D56)
+
+**Scope:** T55: `plane design set <path> --append X` / `--remove X` on one-line flow lists (D55). T54 grader half: the bench grader snapshots the design, logs every `plane` command of the run, replays the log on a fresh copy and fails the run when `designs/` differs (D56). Core and tests only.
+
+- [ ] **Step 1: Briefs** (tactician W9-T): `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md`
+- [ ] **Step 2: Build** (W9-B, one per brief)
+- [ ] **Step 3: Review** (reviewer W9-R); merge; T55, T54 done
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
