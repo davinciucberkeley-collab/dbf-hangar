@@ -119,11 +119,11 @@ def prepare_workspace(task: dict, dest, repo, agent: str = "design-engineer") ->
     if dest.exists():
         raise OpInputError(f"{dest} already exists")
     shutil.copytree(src, design_dir(dest, task), ignore=shutil.ignore_patterns("fea", ".sweeps", "__pycache__"))
-    (dest / "pyproject.toml").write_text("", encoding="utf-8")
+    (dest / "pyproject.toml").write_text("", encoding="utf-8", newline="\n")
     agents = dest / ".claude" / "agents"
     agents.mkdir(parents=True)
     shutil.copy(repo / ".claude" / "agents" / f"{agent}.md", agents / f"{agent}.md")
-    (dest / ".bench-protected.json").write_text(json.dumps(fingerprint(repo)), encoding="utf-8")
+    (dest / ".bench-protected.json").write_text(json.dumps(fingerprint(repo)), encoding="utf-8", newline="\n")
     return dest
 
 
@@ -214,7 +214,7 @@ def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> 
     logs = root / ".logs" / "bench"
     logs.mkdir(parents=True, exist_ok=True)
     if proc is not None:
-        (logs / f"{run_id}.log").write_text(f"exit {proc.returncode}\n--- stdout\n{proc.stdout}\n--- stderr\n{proc.stderr}\n", encoding="utf-8")
+        (logs / f"{run_id}.log").write_text(f"exit {proc.returncode}\n--- stdout\n{proc.stdout}\n--- stderr\n{proc.stderr}\n", encoding="utf-8", newline="\n")
         try:
             out = json.loads(proc.stdout)
         except ValueError:
@@ -229,7 +229,7 @@ def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> 
     record = root / "bench" / "results" / "runs" / f"{run_id}.json"
     record.parent.mkdir(parents=True, exist_ok=True)
     record.write_text(json.dumps({**data, "date": datetime.now().strftime("%Y-%m-%d"), "rows": g["rows"],
-                                  "messages": g["messages"], "final_text": final[:2000]}, indent=2), encoding="utf-8")
+                                  "messages": g["messages"], "final_text": final[:2000]}, indent=2), encoding="utf-8", newline="\n")
     return OpResult(True, data, changed_files=[rel(root, record)])
 
 
