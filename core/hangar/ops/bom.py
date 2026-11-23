@@ -46,6 +46,8 @@ def verify_op(path: str, item: str, method: Literal["browser", "datasheet", "in-
     if index is None:
         raise OpInputError(f"no bom item {item!r}")
     existing = items[index].get("verified")
+    if existing is not None and not isinstance(existing, dict):
+        raise OpInputError(f"{item}: verified must be a mapping (by, date, method, evidence); edit by hand")
     if existing is not None:
         raise OpInputError(f"{item} already verified by {existing.get('by')} on {existing.get('date')}; edit by hand")
 
@@ -94,7 +96,11 @@ def cost_op(path: str) -> OpResult:
     costed = 0
     missing_cost = []
     unverified = []
-    for it in items:
+    for n, it in enumerate(items):
+        if not isinstance(it, dict) or "id" not in it:
+            raise OpInputError(f"bom.items[{n}]: must be a mapping with an id")
+        if isinstance(it.get("qty"), bool) or not isinstance(it.get("qty"), (int, float)):
+            raise OpInputError(f"bom item {it['id']}: qty is missing or not a number")
         if "unit_cost_usd" in it:
             total += it["qty"] * it["unit_cost_usd"]
             costed += 1

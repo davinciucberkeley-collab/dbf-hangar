@@ -113,11 +113,11 @@ def ingest_op(path: str, *, dry_run: bool = False) -> OpResult:
     root, ledger = _ledger()
     existing = {}
     for item in ledger.items:
-        existing.setdefault(item.text.strip().casefold(), item.id)
+        existing.setdefault((item.kind, item.text.strip().casefold()), item.id)
     kept = []
     skipped = []
     for entry in doc["items"]:
-        key = entry["text"].strip().casefold()
+        key = (entry["kind"], entry["text"].strip().casefold())
         if key in existing:
             skipped.append(f"duplicate of {existing[key]}: {entry['text']}")
         else:
