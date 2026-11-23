@@ -620,6 +620,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W7-T | `tactician` | Sonnet | U4.5 briefs for T7, T86, T87, T83, T50, T54, T55 | `briefs/U4.5-*.md` | builder-ready bar; R-a, R-b |
 | W7-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.5 brief each | branch `std/u4.5-<task>` | brief checks; CI green; launched: t7 [hard] builder-plus Sonnet; t54, t50, t83, t87, t86 builder Haiku; t55 not briefed |
 | W7-R | `reviewer` | Opus (fresh) | every U4.5 branch | `reviews/2026-11-23-w7.md` | "### Verdict:" per branch |
+| W8-T, W8-B, W8-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.6 (T89) | `briefs/U4.6-t89.md`, branch `std/u4.6-t89`, `reviews/2026-11-23-w8.md` | builder-ready bar; brief checks; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1261,6 +1262,14 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Briefs** (tactician W7-T): `briefs/U4.5-<task>.md`, builder-ready (R-a, R-b) *(six briefs; T55 not briefed: flow-list key syntax undefined, needs Tristan; T54 newline half only; T86 four of six sub-items; T83 table holds T1.attachment_contact only)*
 - [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t54 c3bf979, t50 8dc23ca, t87 bf71e18, t83 34a715a, t86 2c57859, t7 cefea52)*
 - [x] **Step 3: Review** W7-R; merge; tasks set done with the merge commit *(six ACCEPT, T7 after one REOPEN (D54); reviews/2026-11-23-w7.md; last merge ab0ad38; T54 T83 T86 stay open for undone halves; T55 not briefed; T89 follow-up)*
+
+### Unit U4.6: bench.run agent id check (T89, from the W7-R T7 re-review; D51)
+
+**Scope:** T89 only: `bench.run` checks `agent` (and `task` if it names a file) against the id rule in the op, so CLI, MCP and Studio are all covered; `ID_RE` defined once and matched exactly (fullmatch). Core and tests only.
+
+- [ ] **Step 1: Brief** (tactician W8-T): `briefs/U4.6-t89.md`
+- [ ] **Step 2: Build** (builder W8-B)
+- [ ] **Step 3: Review** (reviewer W8-R); merge; T89 done
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
