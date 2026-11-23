@@ -115,3 +115,35 @@ def test_call_none_for_required_param_is_input_error(tmp_path):
     assert call("design.new", new_id=None).exit_code == 2
     assert call("design.export", path=str(EXAMPLE_DIR), format_=None, out=str(tmp_path / "x.json")).exit_code == 2
     assert not (tmp_path / "x.json").exists()
+
+
+def test_registry_retries_after_a_module_fails_mid_import(tmp_path, monkeypatch):  # T3
+    import importlib
+    import sys
+    (tmp_path / "zz_flaky.py").write_text(
+        "import os\n"
+        "from hangar.ops import op, OpResult\n"
+        "\n"
+        "\n"
+        "@op(name='zz.flaky', summary='registers, then the module fails')\n"
+        "def flaky() -> OpResult:\n"
+        "    return OpResult(True, {})\n"
+        "\n"
+        "\n"
+        "if os.environ.get('ZZ_FLAKY_FAIL') == '1':\n"
+        "    raise RuntimeError('boom')\n", encoding="utf-8")
+    monkeypatch.setattr(ops, "__path__", [*ops.__path__, str(tmp_path)])
+    monkeypatch.setattr(ops, "_LOADED", False)
+    importlib.invalidate_caches()
+    try:
+        monkeypatch.setenv("ZZ_FLAKY_FAIL", "1")
+        with pytest.raises(RuntimeError, match="boom"):
+            ops.registry()
+        assert "zz.flaky" not in ops._REGISTRY, "a failed import must not leave its ops behind"
+        monkeypatch.setenv("ZZ_FLAKY_FAIL", "0")
+        reg = ops.registry()
+        assert "zz.flaky" in reg
+        assert "design.get" in reg, "ops of modules that imported fine before the failure stay registered"
+    finally:
+        ops._REGISTRY.pop("zz.flaky", None)
+        sys.modules.pop("hangar.ops.zz_flaky", None)
