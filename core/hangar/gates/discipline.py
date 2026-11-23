@@ -4,6 +4,7 @@ from __future__ import annotations
 import math
 
 import numpy as np
+from scipy.optimize import linprog
 
 from ..design import FAIL, PASS, SKIP, CheckResult
 from . import discipline_check
@@ -95,6 +96,18 @@ def _rho(design) -> float:
     return design.data.get("flight", {}).get("air_density_kgm3", RHO_DEFAULT)
 
 
+def _axis_moment(c, a, dt_lo, dt_hi) -> float:
+    """T37 (D58): the largest moment about one axis both ways that the motors give with the net upward thrust held (sum a_i dT_i = 0,
+    dT_i in [dt_lo_i, dt_hi_i]); returns min(M(+), M(-)), or 0.0 when the solver finds no feasible allocation."""
+    best = []
+    for sign in (1.0, -1.0):
+        res = linprog(-sign * np.asarray(c, dtype=float), A_eq=[list(a)], b_eq=[0.0], bounds=list(zip(dt_lo, dt_hi)), method="highs")
+        if res.status != 0:
+            return 0.0
+        best.append(-float(res.fun))
+    return max(0.0, min(best))
+
+
 def _active(h: dict) -> list[dict]:
     """Lift motors that have an upward thrust component at hover."""
     return [m for m, _ in h["lift"] if h["f"][m["id"]] > 1e-9]
@@ -182,8 +195,7 @@ def control_authority(ctx, rep) -> list[CheckResult]:
         p = np.mean([np.asarray(pt.center_mass, dtype=float) for pt in parts], axis=0)
         u = h["tf"][m["id"]][:3, :3] @ np.array(m["propulsion"]["axis"], dtype=float)
         u = u / np.linalg.norm(u)
-        dT = min(h["Tmax"][m["id"]] - T, T)
-        taus.append((np.cross((p - cg) / 1000, u), dT))
+        taus.append((np.cross((p - cg) / 1000, u), float(np.dot(u, up)), -T, h["Tmax"][m["id"]] - T))
     h0 = np.array([0.0, 1.0, 0.0]) - np.dot([0.0, 1.0, 0.0], up) * up
     if np.linalg.norm(h0) < 1e-6:
         h0 = np.array([0.0, 0.0, 1.0])
@@ -201,13 +213,23 @@ def control_authority(ctx, rep) -> list[CheckResult]:
     lever = max(abs(float(np.dot((lo + hi) / 2 - cg, up))), lever_frac * ext_up) / 1000
     m_wind = 0.5 * _rho(design) * v_wind ** 2 * cd * area * lever
     res = []
+    trim_yaw = T * sum(float(np.dot(tau, up)) for tau, _, _, _ in taus)
     for name, e in axes.items():
-        m_axis = sum(abs(float(np.dot(tau, e))) * dT for tau, dT in taus)
+        m_axis = _axis_moment([float(np.dot(tau, e)) for tau, _, _, _ in taus], [a for _, a, _, _ in taus],
+                              [lo_ for _, _, lo_, _ in taus], [hi_ for _, _, _, hi_ in taus])
         r = m_axis / m_wind if m_wind > 0 else math.inf
         msg = (f"{name}: control moment {m_axis:.3f} N*m, wind moment {m_wind:.3f} N*m, ratio {r:.2f} vs min {factor} "
-               "(sagged pack, differential thrust, cant geometry only)" + _prov(note))
-        res.append(_judge(cid, PASS if r >= factor else FAIL, msg, f"{OPS}#hover_ctrl_factor", pending,
-                          {"axis": name}, crit))
+               "(sagged pack, differential thrust at constant total upward thrust, cant geometry only)")
+        data = {"axis": name}
+        if name == "yaw":
+            data["trim_yaw_nm"] = round(trim_yaw, 3)
+            msg += f"; yaw moment at equal hover thrust {trim_yaw:.3f} N*m (not judged); yaw wind moment uses the pitch/roll model (conservative)"
+        msg += _prov(note)
+        if name == "yaw" and r < factor:
+            res.append(_skip(cid, msg + "; not judged: yaw from prop reaction torque is not modelled (PDL has no spin/torque field)",
+                             crit, {**data, "would_be": FAIL}))
+        else:
+            res.append(_judge(cid, PASS if r >= factor else FAIL, msg, f"{OPS}#hover_ctrl_factor", pending, data, crit))
     return res
 
 

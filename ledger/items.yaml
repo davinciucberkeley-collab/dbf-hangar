@@ -478,30 +478,30 @@ items:
     updated: '2026-11-20'
   - id: R39
     kind: ruling
-    text: One new repo, `dbf-hangar`, that adapts what the other repos have so everything fits the advisor's vision; Tristan owns all of it
+    text: One new repo, `dbf-hangar`, that adapts what the other repos have so everything fits the advisor's vision; Tristan owns all of it [last unit U2.5 closed by T62 (Tristan 2026-11-23)]
     source: plan §1; T 11-20 (Tristan)
     owner: Tristan
-    status: open
+    status: done
     due: ''
     units:
       - U0.4
       - U1.5
       - U1.6
       - U2.5
-    evidence: 'open: hangar adapts the sources (4f8f2b2, 33e6655, b43daf0, 654888d) but U2.5d, U2.2-2, U3.1 Explorer features and blender/sitl adapters have not landed'
+    evidence: d24b6df
     decided_in: ''
     updated: '2026-11-23'
   - id: R40
     kind: ruling
-    text: At least one person threads the side quests into the main quest; one software tool everyone works on, not four personal ones; integrate before adding
+    text: At least one person threads the side quests into the main quest; one software tool everyone works on, not four personal ones; integrate before adding [last unit U2.5 closed by T62 (Tristan 2026-11-23)]
     source: plan §1; A 11-11
     owner: Tristan
-    status: open
+    status: done
     due: ''
     units:
       - U0.4
       - U2.5
-    evidence: 'open: integration started (same commits as R39); one tool everyone works on needs U3.1 and the U3.4 acceptance'
+    evidence: d24b6df
     decided_in: ''
     updated: '2026-11-23'
   - id: D1
@@ -3429,11 +3429,11 @@ items:
     text: 'T3.control_authority yaw is physically unsound: adds cant-torque magnitudes as if each motor could yaw either way (concept-a 1.10 vs 1.5 not supported either way); no prop reaction torque; yaw reuses pitch/roll wind moment. Advisor picks fix (zero net-thrust max moment / reaction torque field / yaw wind moment) before D7 flip [triage 2026-11-21: Advisor picks the fix before the D7 flip (12-08)]'
     source: reviews/2026-11-21-w3.md U3.6 (W3-R2)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units:
       - v1.1
-    evidence: ''
+    evidence: 2c41f6f
     decided_in: ''
     updated: '2026-11-23'
   - id: T38
@@ -3938,15 +3938,15 @@ items:
     updated: '2026-11-22'
   - id: T62
     kind: task
-    text: Dillon checks concept-a claims against the Explorer (U2.5 Step 4 acceptance, 15 min) and records who/when/result; the BOM half waits for U2.5d (D33)
+    text: 'Dillon checks concept-a claims against the Explorer (U2.5 Step 4 acceptance, 15 min) and records who/when/result; the BOM half waits for U2.5d (D33) [done by Tristan 2026-11-23: claims match; BOM matches except P01/M01 spares (T94)]'
     source: reviews/2026-11-22-whole-branch.md B3
     owner: Dillon
-    status: open
+    status: done
     due: '2026-11-29'
     units: []
-    evidence: ''
+    evidence: Tristan 2026-11-23 (P181)
     decided_in: ''
-    updated: '2026-11-22'
+    updated: '2026-11-23'
   - id: T63
     kind: task
     text: 'concept-a: 38 PETG parts assigned to jacobs-fdm, whose standard lists PLA only; confirm PETG at Jacobs (add with source to standards/manufacturing.yaml) or re-route to the team printer'
@@ -4246,7 +4246,7 @@ items:
     updated: '2026-11-23'
   - id: D52
     kind: decision
-    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready'
+    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready [overruled by D59 (Tristan, P182)]'
     source: conductor under D51, 2026-11-23 (W5-T report)
     owner: Tristan
     status: decided
@@ -4411,13 +4411,13 @@ items:
     updated: '2026-11-23'
   - id: T93
     kind: task
-    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62"
+    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62 [edit items merged ea7c0f5 (W10-R); bench items reopened with std/u4.8-bench]"
     source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
     status: open
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: ea7c0f5
     decided_in: ''
     updated: '2026-11-23'
   - id: D57
@@ -4433,7 +4433,7 @@ items:
     updated: '2026-11-23'
   - id: D58
     kind: decision
-    text: 'T37: the advisor picks the T3.control_authority yaw fix (zero-net-thrust max moment / reaction torque field / yaw wind moment); its pick is the default'
+    text: 'T37: the advisor picks the T3.control_authority yaw fix (zero-net-thrust max moment / reaction torque field / yaw wind moment); its pick is the default [advisor pick: fix (a) cant-only LP allocation at fixed total thrust; yaw SKIP (would_be FAIL) below 1.5 since reaction torque is not modelled; (b) deferred T95]'
     source: conductor default per T37 triage, Tristan P175 2026-11-23
     owner: Tristan
     status: decided
@@ -4449,6 +4449,72 @@ items:
     owner: conductor
     status: open
     due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T95
+    kind: task
+    text: 'v1.1: prop reaction torque in PDL (optional propulsion.spin cw/ccw and propulsion.torque_per_thrust_m with _source; schema 1.0 -> 1.1 minor) so T3.control_authority yaw can be judged without cant (D58 fix b, deferred; concept-a source DBF-Combined sitl/a_plant.py KQ 0.0204 m)'
+    source: W11-A advice 2026-11-23 (briefs/U4.9-t37-advice.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T96
+    kind: task
+    text: 'concept-a: all four motor cants turn the same way (pinwheel, from CAD amodel/common.py motor_R), but SITL a_plant.py and CALC-A-YAW assume cant alternates with spin; as drawn hover leaves ~1.06 N*m untrimmed yaw, more than reaction torque (~0.27 N*m) can trim. Either CAD/plane.yaml or the build is wrong; design team decides'
+    source: W11-A advice 2026-11-23 (briefs/U4.9-t37-advice.md)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D59
+    kind: decision
+    text: "T28 built now (overrules D52): register read_value so the 40 concept-a read_value claims recompute; the Dec 2 deck and metrics lines that say 'not recomputed' are updated with the measured result"
+    source: Tristan, P182, 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T97
+    kind: task
+    text: 'Deck and metrics quote stale validate totals (PASS 531, SKIP 102, WARN 9, FAIL 4; fidelity 134 of 635) from an earlier tree: docs/deck/index.html:85, u4.2/metrics.md:16,25, demo-script.md:47; re-measure on main after U4.11 part 1 and update in the U4.11 docs branch'
+    source: W13-T 2026-11-23 (briefs/U4.11-t28.md flag)
+    owner: conductor
+    status: open
+    due: '2026-11-30'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T98
+    kind: task
+    text: 'concept-a 14 AWG leftovers after T60: hrn-002 description, BOM W05 part number and the BOM line near plane.yaml:2317 still say 14 AWG pack leads; e-hrn-12 (ESC tail, same 44.8 A peak) has no gauge_awg so T7 does not check it (would be 36 A < 44.8 A at 14 AWG). Reconcile via plane design set (W11-R)'
+    source: W11-R review 2026-11-23 (reviews/2026-11-23-w11.md)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T99
+    kind: task
+    text: 'W11-R non-blocking (T37): yaw SKIP text should say when hover_ctrl_factor is pending; add a data key for the control moment (tests read it from the message); with T95 propose a criterion for untrimmed yaw at equal thrust'
+    source: W11-R review 2026-11-23 (reviews/2026-11-23-w11.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
     units: []
     evidence: ''
     decided_in: ''

@@ -783,3 +783,24 @@ def test_remove_leaves_the_other_entries_exactly_as_written(tmp_example):
         p.write_bytes(raw.replace(AUTHORS_ONE.encode(), f"authors: {body}".encode()))
         assert _list_op(tmp_example, "authors", remove=rm).ok
         assert p.read_bytes() == raw.replace(AUTHORS_ONE.encode(), f"authors: {want}".encode()), (body, rm)
+
+
+# ---- U4.8 (T93): --append keeps the spaces before ']'; --remove refuses a mapping or list like --append ----
+def test_append_keeps_the_spaces_before_the_closing_bracket(tmp_example):
+    p = tmp_example / "plane.yaml"
+    raw = p.read_bytes()
+    for body, add, want in (("[ only ]", "y", "[ only, y ]"),
+                            ("[a,  b ]", "c", "[a,  b, c ]"),
+                            ("[a, b,  ]", "c", "[a, b, c  ]"),
+                            ("[a, b]", "c", "[a, b, c]")):
+        p.write_bytes(raw.replace(AUTHORS_ONE.encode(), f"authors: {body}".encode()))
+        assert _list_op(tmp_example, "authors", append=add).ok
+        assert p.read_bytes() == raw.replace(AUTHORS_ONE.encode(), f"authors: {want}".encode()), (body, add)
+
+
+def test_remove_refuses_a_mapping_or_list_like_append(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    for raw in ("{a: 1}", "[a]"):
+        r = _list_op(tmp_concept_a, "authors", remove=raw)
+        assert r.ok is False and r.exit_code == 2 and "mapping or list" in " ".join(r.messages), (raw, r.messages)
+    assert _bytes(tmp_concept_a) == before
