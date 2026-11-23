@@ -257,20 +257,33 @@ def test_gate_explain_exact_check_id_with_design():  # T26
 
 def test_gate_explain_explains_a_fail_only_check_id_on_a_passing_design():  # T83
     from hangar.ops import call
+    from hangar.ops.gates import FAIL_ONLY_CRITERIA
     r = call("gate.explain", check_id="T1.attachment_contact", design=str(EXAMPLE))
     assert r.ok and r.data["exact"] is True and r.data["check_id"] == "T1.attachment_contact"
     assert r.data["criterion"] == "design-standards.yaml#attach_tolerance_mm"
     assert r.data["threshold"]["key"] == "attach_tolerance_mm"
+    for cid, criteria in FAIL_ONLY_CRITERIA.items():   # every id a run emits only on FAIL, on a design that passes
+        r = call("gate.explain", check_id=cid, design=str(EXAMPLE))
+        assert r.ok and r.data["exact"] is True and r.data["check_id"] == cid, (cid, r.messages)
+        assert [c["criterion"] for c in r.data["checks"]] == list(criteria), cid
+        assert r.data["criterion"] == criteria[0], cid
+    r = call("gate.explain", check_id="T0.root", design=str(EXAMPLE))
+    assert r.data["threshold"] is None   # a schema rule has no number behind it
+    assert call("gate.explain", check_id="T1.attachment_overlap", design=str(EXAMPLE)).data["checks"][1]["threshold"]["key"] == "glued_overlap_max_fraction"
     assert call("gate.explain", check_id="T1.nope", design=str(EXAMPLE)).exit_code == 2   # unknown ids are still refused
 
 
-def test_fail_only_criteria_ids_are_emitted_only_as_fail_in_checks_py():  # T83 guard: the table cannot drift from checks.py
+def test_fail_only_criteria_table_matches_checks_py():  # T83 guard: the table cannot drift from checks.py
     from hangar import checks
     from hangar.ops.gates import FAIL_ONLY_CRITERIA
     src = Path(checks.__file__).read_text(encoding="utf-8")
-    for cid, criterion in FAIL_ONLY_CRITERIA.items():
-        assert f'CheckResult("{cid}", FAIL' in src and f'CheckResult("{cid}", PASS' not in src
-        assert f'STD + "{criterion.split("#")[1]}"' in src
+    statuses = {}
+    for m in re.finditer(r'CheckResult\(\s*"(T\d+\.[A-Za-z_0-9.]+)",\s*([^,]+?),', src):
+        statuses.setdefault(m.group(1), set()).add(m.group(2).strip())
+    assert {cid for cid, s in statuses.items() if s == {"FAIL"}} == set(FAIL_ONLY_CRITERIA)   # no FAIL-only id left out, none listed that can pass
+    for criteria in FAIL_ONLY_CRITERIA.values():
+        for criterion in criteria:
+            assert (f'STD + "{criterion.split("#")[1]}"' if "#" in criterion else f'"{criterion}"') in src, criterion
 
 
 def test_design_engineer_doc_explains_with_the_design():  # T83

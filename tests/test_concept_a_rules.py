@@ -85,6 +85,38 @@ def test_motor_through_two_intermediates_passes():
     assert statuses(sc, "T1.motor_has_prop") == [PASS]
 
 
+def _chain_limit(monkeypatch, n):
+    """Run gates with design-standards.yaml#prop_chain_max_intermediate_parts set to n."""
+    from hangar import gates
+    real = gates.load_standards
+
+    def patched():
+        std = real()
+        std["geometry"]["prop_chain_max_intermediate_parts"]["value"] = n
+        return std
+    monkeypatch.setattr(gates, "load_standards", patched)
+
+
+def test_prop_chain_limit_is_a_sourced_standards_value():  # T88
+    from hangar import checks
+    from hangar.design import load_standards
+    entry = load_standards()["geometry"]["prop_chain_max_intermediate_parts"]
+    assert entry["value"] == 2 and str(entry["source"]).strip() and entry["rule"].strip()
+    assert not hasattr(checks, "PROP_CHAIN_MAX_INTERMEDIATE")   # no threshold left in code
+
+
+def test_prop_chain_limit_is_read_from_the_standards_file(monkeypatch):  # T88: raising the value lets a longer chain pass
+    _chain_limit(monkeypatch, 3)
+    assert statuses(run(motor_design(extra_chain=("spacer-a", "spacer-b"))), "T1.motor_has_prop") == [PASS]   # 3 intermediates
+
+
+def test_prop_chain_limit_lowered_in_the_standards_file_fails_and_names_the_value(monkeypatch):  # T88
+    _chain_limit(monkeypatch, 1)
+    sc = run(motor_design(extra_chain=("spacer-a",)))   # adapter + 1 spacer = 2 intermediates
+    rows = [r for t in sc.tiers for r in t.results if r.check_id == "T1.motor_has_prop"]
+    assert [r.status for r in rows] == [FAIL] and "up to 1 bolted" in rows[0].message
+
+
 # ---------------------------------------------------------------- T1.kinematic_link (B6c)
 
 def linked_design(kinematic: bool, version: str = "0.4") -> dict:

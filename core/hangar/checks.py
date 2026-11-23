@@ -319,12 +319,11 @@ def _articulation_checks(design: Design, std: dict, meshes: dict) -> list[CheckR
 
 PROP_CHAIN_METHODS = ("bolted", "press-fit")   # joints an adapter may use between motor and propeller
 PROP_CHAIN_TYPES = ("other", "structure")      # component types an adapter may be
-PROP_CHAIN_MAX_INTERMEDIATE = 2
 
 
-def _motor_prop_path(design: Design, motor: str, atts: list[dict]) -> list[str] | None:
+def _motor_prop_path(design: Design, motor: str, atts: list[dict], max_intermediate: int) -> list[str] | None:
     """Component ids from `motor` to a propeller: a direct attachment (any method), or a chain through at most
-    PROP_CHAIN_MAX_INTERMEDIATE parts of type other/structure where every joint is bolted or press-fit.
+    `max_intermediate` parts (standards prop_chain_max_intermediate_parts) of type other/structure where every joint is bolted or press-fit.
     None if there is no such path. Breadth-first, so the shortest chain is reported."""
     nbrs = defaultdict(list)
     for a in atts:
@@ -342,7 +341,7 @@ def _motor_prop_path(design: Design, motor: str, atts: list[dict]) -> list[str] 
                     return new_path
                 continue
             if (design.component(nxt)["type"] in PROP_CHAIN_TYPES and method in PROP_CHAIN_METHODS
-                    and len(new_path) - 1 <= PROP_CHAIN_MAX_INTERMEDIATE):
+                    and len(new_path) - 1 <= max_intermediate):
                 queue.append((new_path, new_methods))
     return None
 
@@ -358,6 +357,7 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
     tol = g["attach_tolerance_mm"]["value"]
     max_int = g["interference_max_mm3"]["value"]
     max_frac = g["glued_overlap_max_fraction"]["value"]
+    chain_max = g["prop_chain_max_intermediate_parts"]["value"]
     embed_frac = g["embed_max_fraction_of_child"]["value"]
     contain_min = g["containment_min_fraction"]["value"]
     res: list[CheckResult] = []
@@ -440,11 +440,11 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
     for comp in design.components:
         if "propulsion" not in comp:
             continue
-        path = _motor_prop_path(design, comp["id"], atts)
+        path = _motor_prop_path(design, comp["id"], atts, chain_max)
         if path is None:
             res.append(CheckResult("T1.motor_has_prop", FAIL,
                                    f"{comp['id']}: has a propulsion block but no propeller attached directly or through "
-                                   f"up to {PROP_CHAIN_MAX_INTERMEDIATE} bolted or press-fit other/structure parts",
+                                   f"up to {chain_max} bolted or press-fit other/structure parts",
                                    STD + "embed_max_fraction_of_child", {"component": comp["id"]}))
         elif len(path) == 2:
             res.append(CheckResult("T1.motor_has_prop", PASS, f"{comp['id']}: drives an attached propeller",

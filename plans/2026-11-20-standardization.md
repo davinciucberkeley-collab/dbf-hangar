@@ -1299,7 +1299,7 @@ Not a code unit; it tests everything above.
 
 ### Unit U4.9: Yaw authority fix and concept-a battery harness (T37, T60; D57, D58)
 
-**Scope:** T37: advisor W11-A picks the `T3.control_authority` yaw fix (D58), tactician briefs it, builder-plus builds it (core and tests only). T60: design-engineer W11-G sets concept-a `hrn-bat` to 12 AWG with `plane design set` (designs only, D57) and reports the gates before and after. Separate branches; the T60 branch touches no `core/`.
+**Scope:** T37: advisor W11-A picks the `T3.control_authority` yaw fix (D58), tactician briefs it, builder-plus builds it (core and tests only). T60: design-engineer W11-G sets concept-a `hrn-bat` to 10 AWG with `plane design set` (designs only, D57) and reports the gates before and after. Separate branches; the T60 branch touches no `core/`.
 
 - [x] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md` *(pick: `briefs/U4.9-t37-advice.md`, D58; brief f234a51, hard; baseline unchanged)*
 - [x] **Step 2:** Build T37 (W11-B); T60 design change (W11-G) *(t37 b3049cd builder-plus, baseline unchanged; t60 07969fd 10 AWG, D57 amended)*
@@ -1310,14 +1310,14 @@ Not a code unit; it tests everything above.
 **Scope:** T83 explain the remaining FAIL-only check ids; T86 T3 nested-import rollback and the mixed point-mass/mesh harness test; T88 move `PROP_CHAIN_MAX_INTERMEDIATE` to `standards/*.yaml` with a source or `pending`; T90 one shared `hangar/ids.py` `ID_RE` with fullmatch in mcp_server.py and morph.py, Studio message wording. T28 stays held until after Dec 2 (D52); T67 and the T4-T19 items come in a later batch.
 
 - [x] **Step 1: Briefs** (tactician W12-T): `briefs/U4.10-*.md` *(four easy briefs, landed in 285d9e4; order: T88+T90, then T83 before T86)*
-- [ ] **Step 2: Build** (W12-B, one per brief; at most 2 at once)
+- [x] **Step 2: Build** (W12-B, one per brief; at most 2 at once) *(t88 9c8375a, t90 018f74e, t83 e7efc5c, t86 4a1263f; all builder)*
 - [ ] **Step 3: Review** (reviewer W12-R); merge; T83, T86, T88, T90 done
 
 ### Unit U4.11: Recompute the 40 read_value claims (T28; D59 overrules D52)
 
 **Scope:** register `read_value` (brief `U4.3-t28.md`, refreshed on current main), core and tests only; then, on a separate branch, refresh concept-a claim statuses through the CLI if they are stored in `designs/` and update the deck (`docs/deck/index.html`) and `u4.2/metrics.md`/`deck-outline.md` lines that say the claims are not recomputed, with the measured PASS/FAIL counts.
 
-- [ ] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps
+- [x] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
 - [ ] **Step 2: Build** (W13-B): core branch, then the docs/designs branch
 - [ ] **Step 3: Review** (reviewer W13-R); merge; T28 done
 
