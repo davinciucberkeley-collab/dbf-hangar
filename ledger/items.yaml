@@ -4123,3 +4123,14 @@ items:
     evidence: plans/2026-11-20-standardization/briefs/U2.5d-reimport.md
     decided_in: ''
     updated: '2026-11-22'
+  - id: D51
+    kind: decision
+    text: 'Overnight 2026-11-23: Tristan delegates every approval and decision to the conductor for ~10 h; U2.5d-pre-gates brief approved as written (T7 skips non-electrical connectors)'
+    source: Tristan P165 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
