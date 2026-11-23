@@ -10,6 +10,7 @@ import numpy as np
 from .. import pdledit
 from ..design import load_design
 from ..export import export_glb
+from ..geometry import is_point_mass
 from . import op, OpResult, OpInputError
 
 
@@ -29,9 +30,17 @@ def animate_op(path: str, out: str) -> OpResult:
         for cid in add:
             if cid not in ids:
                 raise OpInputError(f"step {number}: unknown component {cid}")
+    proxies = {c.get("id") for c in (design.components or []) if is_point_mass(c)}
+    skipped: list[str] = []
+    drawn = []
+    for number, add in steps:
+        if add and all(cid in proxies for cid in add):  # only mass proxies: nothing to draw
+            skipped.append(f"step {number}: adds only point-mass proxies ({', '.join(add)}); not animated")
+        else:
+            drawn.append((number, add))
+    steps = drawn
     export_glb(design, out)
     glb = Path(out).read_bytes()
-    skipped: list[str] = []
     new = _animate_glb(glb, steps, skipped)
     Path(out).write_bytes(new)
     return OpResult(True, {"path": out, "steps": len(steps), "animations": [f"step-{n}" for n, _ in steps]},
