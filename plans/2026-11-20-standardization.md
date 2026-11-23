@@ -1278,7 +1278,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** T55: `plane design set <path> --append X` / `--remove X` on one-line flow lists (D55). T54 grader half: the bench grader snapshots the design, logs every `plane` command of the run, replays the log on a fresh copy and fails the run when `designs/` differs (D56). Core and tests only.
 
-- [ ] **Step 1: Briefs** (tactician W9-T): `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md`
+- [x] **Step 1: Briefs** (tactician W9-T): `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md` *(7aaeecc; t55 easy, t54 hard)*
 - [ ] **Step 2: Build** (W9-B, one per brief)
 - [ ] **Step 3: Review** (reviewer W9-R); merge; T55, T54 done
 

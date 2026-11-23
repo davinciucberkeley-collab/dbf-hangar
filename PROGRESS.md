@@ -60,14 +60,14 @@
 | U4.4 | Overnight core fixes, round 2 (D51) | 3/3 | done | - |
 | U4.5 | Overnight core fixes, round 3 (D51) | 3/3 | done | - |
 | U4.6 | bench.run agent id check (T89, from the W7-R T7 re-review; D51) | 3/3 | done | - |
-| U4.7 | List-entry edits and bench grader replay (T55, T54; D55, D56) | 0/3 | not started | - |
+| U4.7 | List-entry edits and bench grader replay (T55, T54; D55, D56) | 1/3 | in progress | - |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 4 | 34 | 1 | 1 | 0 | 40 |
-| task | 41 | 47 | 0 | 2 | 0 | 90 |
+| task | 42 | 47 | 0 | 2 | 0 | 91 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 242 | 258 |
 
