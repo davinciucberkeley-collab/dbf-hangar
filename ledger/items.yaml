@@ -4420,3 +4420,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D57
+    kind: decision
+    text: 'T60: concept-a hrn-bat goes to 12 AWG (fix the design, not the threshold); Dillon informed via T60 evidence'
+    source: conductor default, Tristan P175 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D58
+    kind: decision
+    text: 'T37: the advisor picks the T3.control_authority yaw fix (zero-net-thrust max moment / reaction torque field / yaw wind moment); its pick is the default'
+    source: conductor default per T37 triage, Tristan P175 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'

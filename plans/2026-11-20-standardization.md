@@ -324,6 +324,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D54 | T7: may Studio /api/op pass `out` paths and fea.setup executables? | no: refused outright (no Studio client sends them; /api/fea-setup is the Studio route); `design.new` template is a bare id; `ledger.seed` plan refused | Tristan | 11-23 | decided (conductor under D51, 2026-11-23; W7-R questions A, B) |
 | D55 | T55: how is one entry of a one-line list appended or removed? | flags: `plane design set <path> --append X` / `--remove X`; remove matches by value | Tristan | 11-23 | decided (Tristan, P169, 2026-11-23) |
 | D56 | T54: how does the bench grader stop direct edits to `designs/`? | replay: snapshot the design before the run, log every `plane` command, replay the log on a fresh copy; a `designs/` result that differs fails the run | Tristan | 11-23 | decided (Tristan, P169, 2026-11-23) |
+| D57 | T60: 12 AWG or a lower peak current for concept-a hrn-bat? | 12 AWG (fix the design, not the threshold); Dillon informed through T60 | Tristan | 11-23 | decided (conductor default, Tristan P175, 2026-11-23) |
+| D58 | T37: which yaw fix for T3.control_authority? | the advisor's pick (W11-A) | Tristan | 11-23 | decided (conductor default per T37 triage, P175) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -624,6 +626,9 @@ W4 wave rules (W3 lessons T41–T43):
 | W7-R | `reviewer` | Opus (fresh) | every U4.5 branch | `reviews/2026-11-23-w7.md` | "### Verdict:" per branch |
 | W8-T, W8-B, W8-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.6 (T89) | `briefs/U4.6-t89.md`, branch `std/u4.6-t89`, `reviews/2026-11-23-w8.md` | builder-ready bar; brief checks; "### Verdict:" |
 | W9-T, W9-B, W9-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.7 (T55, T54 grader) | `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md`, branches `std/u4.7-t55`, `std/u4.7-t54`, `reviews/2026-11-23-w9.md` | builder-ready bar; brief checks; "### Verdict:" |
+| W10-T, W10-B, W10-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.8 (T91, T92, T93) | `briefs/U4.8-*.md`, branches `std/u4.8-*`, `reviews/2026-11-23-w10.md` | builder-ready bar; brief checks; "### Verdict:" |
+| W11-A, W11-T, W11-B, W11-G, W11-R | `advisor`, `tactician`, `builder-plus`, `design-engineer`, `reviewer` | Opus, Sonnet, Sonnet, Sonnet, Opus (fresh) | U4.9 (T37, T60) | advisor pick in `briefs/U4.9-t37.md`; branches `std/u4.9-t37`, `std/u4.9-t60`; `reviews/2026-11-23-w11.md` | advisor names one fix; gates before/after; "### Verdict:" |
+| W12-T, W12-B, W12-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.10 (T83, T86, T88, T90) | `briefs/U4.10-*.md`, branches `std/u4.10-*`, `reviews/2026-11-23-w12.md` | builder-ready bar; brief checks; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1281,6 +1286,30 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Briefs** (tactician W9-T): `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md` *(7aaeecc; t55 easy, t54 hard)*
 - [x] **Step 2: Build** (W9-B, one per brief) *(t55 0215d10 builder; t54 27ae9ea builder-plus)*
 - [x] **Step 3: Review** (reviewer W9-R); merge; T55, T54 done *(both ACCEPT, reviews/2026-11-23-w9.md; merged 99fc961, 41aa2a8; follow-ups T92, T93)*
+
+### Unit U4.8: Bench grader hardening (T91, T92, T93; P175)
+
+**Scope:** T91 ops that write under `DESIGNS_DIR` write into the run's workspace, not the repo; T92 pin the pre-run snapshot (hash in memory or separate temp dir) and replay only an allow-list of ops; T93 the minor W9-R items (workspace path mapping, unwritable log path, `--append` spacing, `--remove` of a mapping, `pass` at edit.py:62). Core and tests only.
+
+- [ ] **Step 1: Briefs** (tactician W10-T): `briefs/U4.8-*.md`
+- [ ] **Step 2: Build** (W10-B, one per brief; at most 2 at once)
+- [ ] **Step 3: Review** (reviewer W10-R); merge; T91, T92, T93 done
+
+### Unit U4.9: Yaw authority fix and concept-a battery harness (T37, T60; D57, D58)
+
+**Scope:** T37: advisor W11-A picks the `T3.control_authority` yaw fix (D58), tactician briefs it, builder-plus builds it (core and tests only). T60: design-engineer W11-G sets concept-a `hrn-bat` to 12 AWG with `plane design set` (designs only, D57) and reports the gates before and after. Separate branches; the T60 branch touches no `core/`.
+
+- [ ] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md`
+- [ ] **Step 2:** Build T37 (W11-B); T60 design change (W11-G)
+- [ ] **Step 3: Review** (reviewer W11-R); merge; T37, T60 done
+
+### Unit U4.10: v1.1 cleanup, first batch (T83, T86, T88, T90; P175)
+
+**Scope:** T83 explain the remaining FAIL-only check ids; T86 T3 nested-import rollback and the mixed point-mass/mesh harness test; T88 move `PROP_CHAIN_MAX_INTERMEDIATE` to `standards/*.yaml` with a source or `pending`; T90 one shared `hangar/ids.py` `ID_RE` with fullmatch in mcp_server.py and morph.py, Studio message wording. T28 stays held until after Dec 2 (D52); T67 and the T4-T19 items come in a later batch.
+
+- [ ] **Step 1: Briefs** (tactician W12-T): `briefs/U4.10-*.md`
+- [ ] **Step 2: Build** (W12-B, one per brief; at most 2 at once)
+- [ ] **Step 3: Review** (reviewer W12-R); merge; T83, T86, T88, T90 done
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
