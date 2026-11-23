@@ -172,6 +172,68 @@ def test_studio_has_no_reemitting_save_routes(sandbox):
     assert not hasattr(studio.Studio, "write_yaml")
 
 
+def _refused(res):
+    return "outside" in " ".join(res["messages"]) or "not available from Studio" in " ".join(res["messages"])
+
+
+def test_studio_op_refuses_a_design_path_outside_designs(sandbox, tmp_path):  # T7
+    (tmp_path / "outside").mkdir()
+    shutil.copy(EXAMPLE / "plane.yaml", tmp_path / "outside" / "plane.yaml")
+    httpd, base = _serve_studio(sandbox)
+    try:
+        for path in (str(EXAMPLE), str(sandbox / ".." / "outside"), str(tmp_path / "outside" / "plane.yaml")):
+            code, res = _call(base, "/api/op/design.get", {"path": path})
+            assert code == 400 and res["ok"] is False and _refused(res), (path, code, res)
+        code, res = _call(base, "/api/op/design.diff", {"a": str(sandbox / "example-tailsitter-wing"), "b": str(EXAMPLE)})
+        assert code == 400 and _refused(res), res
+        assert _call(base, "/api/op/design.get", {"path": str(sandbox / "example-tailsitter-wing")})[0] == 200
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+def test_studio_op_confines_output_paths_to_studio_dir_or_temp(sandbox, tmp_path, monkeypatch):  # T7
+    fake_tmp = tmp_path / "faketmp"
+    fake_tmp.mkdir()
+    monkeypatch.setattr(studio.tempfile, "gettempdir", lambda: str(fake_tmp))
+    (tmp_path / "elsewhere").mkdir()
+    src = str(sandbox / "example-tailsitter-wing")
+    httpd, base = _serve_studio(sandbox)
+    try:
+        code, res = _call(base, "/api/op/design.export", {"path": src, "format": "json", "out": str(tmp_path / "elsewhere" / "x.json")})
+        assert code == 400 and _refused(res), res
+        assert not (tmp_path / "elsewhere" / "x.json").exists()
+        code, res = _call(base, "/api/op/design.export", {"path": src, "format": "json", "out": str(fake_tmp / "x.json")})
+        assert code == 200 and res["ok"], res
+        assert (fake_tmp / "x.json").is_file()
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+def test_studio_op_refuses_ops_that_read_or_write_arbitrary_paths(sandbox, tmp_path):  # T7
+    httpd, base = _serve_studio(sandbox)
+    try:
+        for op_name, body in (("ledger.ingest", {"path": str(tmp_path / "inbox.yaml")}),
+                              ("claim.import-dbf", {"dbf_root": str(tmp_path), "concept": "A", "out": str(tmp_path / "c.yaml")}),
+                              ("ledger.import-dbf", {"dbf_root": str(tmp_path), "ledger": str(tmp_path / "l.yaml")})):
+            code, res = _call(base, "/api/op/" + op_name, body)
+            assert code == 400 and "not available from Studio" in " ".join(res["messages"]), (op_name, res)
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+def test_confine_op_params_allows_designs_and_empty_values(sandbox):  # T7 guard: what Studio legitimately sends stays allowed
+    plane = str(sandbox / "example-tailsitter-wing")
+    assert studio.confine_op_params("design.set", {"path": plane, "key": "k", "value": "1", "why": "w"}) is None
+    assert studio.confine_op_params("design.set", {"path": plane.replace("/", "\\")}) is None
+    assert studio.confine_op_params("design.validate", {"path": plane + "/plane.yaml"}) is None
+    assert studio.confine_op_params("design.new", {"new_id": "x", "template": "example-tailsitter-wing"}) is None
+    assert studio.confine_op_params("gate.explain", {"check_id": "T1.attachment", "design": ""}) is None
+    assert studio.confine_op_params("design.get", {"path": 5}) is None
+
+
 PUBLIC_KEYS = {"id", "kind", "status", "owner", "summary", "due", "decided_in"}
 
 
