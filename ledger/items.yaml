@@ -3313,11 +3313,11 @@ items:
     text: "T9: 40 concept-a claims SKIP: calc function 'read_value' is not registered (U3.4 run 2026-11-21); blocks flutter/divergence claims that gate the elevon balance-mass change [triage 2026-11-21: 40 read_value claims stay SKIP and are named on the metrics slide as not recomputed (D34)]"
     source: U3.4 design-engineer run 2026-11-21
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: b8b03cc
     decided_in: ''
     updated: '2026-11-23'
   - id: T29
@@ -4545,6 +4545,28 @@ items:
     kind: task
     text: 'W12-R non-blocking (T86): the failed-inner-module test should add a third call with the fault cleared (recovery covered only by a probe); comment that the rollback relies on Python dropping a failed module from sys.modules'
     source: W12-R re-review 2026-11-23 (reviews/2026-11-23-w12.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D60
+    kind: decision
+    text: read_value claims keep status PASS (no new READ status in v1.0); every place that reports them says 53 recomputed + 40 stored results read from source and checked against limits (pass on paper, analyses not re-run). A distinct READ status is v1.1 (T103)
+    source: conductor default on W13-R follow-up 1, 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T103
+    kind: task
+    text: "v1.1: distinct claim status (READ, or a read marker) for stored-result claims so plane claim list does not show them like recomputed PASS; link the 40 read_value inputs to design-computed values where possible (e.g. CG) so STALE can fire; fix test texts tests/test_calcs_concept_a.py:87 and test name tests/test_import_dbf_v2.py:81 that say 'recompute' (W13-R)"
+    source: W13-R review 2026-11-23 (reviews/2026-11-23-w13.md)
     owner: conductor
     status: open
     due: '2026-12-15'

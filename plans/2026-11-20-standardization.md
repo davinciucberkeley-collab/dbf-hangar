@@ -327,6 +327,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D57 | T60: 12 AWG or a lower peak current for concept-a hrn-bat? | 10 AWG (fix the design, not the threshold; amended from 12 AWG, which gives 55 A x 0.8 = 44.0 A < 44.8 A peak, W11-G; 10 AWG matches DBF-Combined D-64 pack leads); Dillon informed through T60 | Tristan | 11-23 | decided (conductor default, Tristan P175, 2026-11-23; amended same day) |
 | D58 | T37: which yaw fix for T3.control_authority? | the advisor's pick (W11-A): fix (a), per-axis max moment at fixed total thrust (linprog), cant only; yaw below 1.5 is SKIP (would_be FAIL) because reaction torque is not modelled; fix (b) deferred to v1.1 (T95); concept-a pinwheel cant to the design team (T96) | Tristan | 11-23 | decided (conductor default per T37 triage, P175) |
 | D59 | Build T28 (`read_value`, 40 concept-a claims) before Dec 2? | yes, overrules D52: build now; the deck and metrics lines saying "not recomputed" are updated with the measured result | Tristan | 11-23 | decided (Tristan, P182, 2026-11-23) |
+| D60 | T28: PASS or a separate status for the 40 read_value (stored-result) claims? | PASS kept for v1.0; every report and the deck say 53 recomputed + 40 read from source and checked against limits (analyses not re-run); a READ status is v1.1 (T103) | Tristan | 11-23 | decided (conductor default on W13-R follow-up, 2026-11-23) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1318,7 +1319,7 @@ Not a code unit; it tests everything above.
 **Scope:** register `read_value` (brief `U4.3-t28.md`, refreshed on current main), core and tests only; then, on a separate branch, refresh concept-a claim statuses through the CLI if they are stored in `designs/` and update the deck (`docs/deck/index.html`) and `u4.2/metrics.md`/`deck-outline.md` lines that say the claims are not recomputed, with the measured PASS/FAIL counts.
 
 - [x] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
-- [ ] **Step 2: Build** (W13-B): core branch, then the docs/designs branch
+- [ ] **Step 2: Build** (W13-B): core branch, then the docs/designs branch *(core e03fc2b, W13-R ACCEPT, merged b8b03cc, T28 done; docs branch waits for the brief's part-2 wording fix (W13-R: read values are not recomputed, D60))*
 - [ ] **Step 3: Review** (reviewer W13-R); merge; T28 done
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
