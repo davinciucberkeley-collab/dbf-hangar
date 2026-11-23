@@ -1280,7 +1280,7 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1: Briefs** (tactician W9-T): `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md` *(7aaeecc; t55 easy, t54 hard)*
 - [x] **Step 2: Build** (W9-B, one per brief) *(t55 0215d10 builder; t54 27ae9ea builder-plus)*
-- [ ] **Step 3: Review** (reviewer W9-R); merge; T55, T54 done
+- [x] **Step 3: Review** (reviewer W9-R); merge; T55, T54 done *(both ACCEPT, reviews/2026-11-23-w9.md; merged 99fc961, 41aa2a8; follow-ups T92, T93)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

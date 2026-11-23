@@ -3686,11 +3686,11 @@ items:
     text: "Bench grader protects designs/ from direct edits and bench.py writes newline=\n (split from T35; core/hangar/ops/bench.py:122,126,217,231) [newline half merged 126b0b4 (W7-R); open: grader protecting designs/ needs a grader-design decision]"
     source: triage 2026-11-21 TR-R
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: 41aa2a8
     decided_in: ''
     updated: '2026-11-23'
   - id: T55
@@ -3698,13 +3698,13 @@ items:
     text: 'pdledit: append to and remove from one-line flow lists (split from T46)'
     source: triage 2026-11-21 TR-R
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: 99fc961
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: D31
     kind: decision
     text: 'T2: James harness-install run before Dec 2? Default: U4.1 until 11-29, else CI install test is the evidence, tester run moves to v1.1, slides make no teammate-machine claim'
@@ -4391,6 +4391,28 @@ items:
     kind: task
     text: 'bench: ops that write under design.DESIGNS_DIR (e.g. design new) write to the real repo during a bench run and its replay; DESIGNS_DIR comes from the package location, not the workspace (W9-T finding, U4.7-t54)'
     source: W9-T 2026-11-23 (briefs/U4.7-t54.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T92
+    kind: task
+    text: 'W9-R major follow-ups (U4.7 T54): pin the bench snapshot (in-memory hash in run_op or a separate mkdtemp; bench.py:133 docstring overstates) and check in one real run whether shell redirection is allowed under Bash(plane *); replay only an allow-list of ops (a logged bench run / fea run / paths outside ws are replayed unconfined; related T91)'
+    source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T93
+    kind: task
+    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62"
+    source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
     status: open
     due: '2026-12-15'
