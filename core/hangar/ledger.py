@@ -31,6 +31,16 @@ _UNIT_RE = re.compile(r"U\d+\.\d+")
 _RESOLVER = Resolver()
 
 
+def _check_due(due: str) -> None:
+    """due is empty or a real YYYY-MM-DD date; ValueError otherwise."""
+    try:
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", due):
+            raise ValueError(due)
+        date.fromisoformat(due)  # rejects 2026-13-45
+    except ValueError:
+        raise ValueError(f"due must be YYYY-MM-DD, got {due!r}") from None
+
+
 def _today() -> str:
     return date.today().isoformat()
 
@@ -152,6 +162,8 @@ class Ledger:
     def add(self, kind, text, source, owner="", item_id=None, due="") -> str:
         if kind not in KINDS:
             raise ValueError(f"kind must be one of {', '.join(KINDS)}, got {kind!r}")
+        if due:
+            _check_due(due)
         if item_id is None:
             prefix = PREFIX[kind]
             nums = [int(i.id[len(prefix):]) for i in self.items
@@ -168,12 +180,7 @@ class Ledger:
         a note is appended to the text as ' [<note>]'."""
         n = self._index(item_id)
         if due is not None and due != "":
-            try:
-                if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", due):
-                    raise ValueError(due)
-                date.fromisoformat(due)  # rejects 2026-13-45
-            except ValueError:
-                raise ValueError(f"due must be YYYY-MM-DD, got {due!r}") from None
+            _check_due(due)
         if status not in STATUSES:
             raise ValueError(f"status must be one of {', '.join(STATUSES)}, got {status!r}")
         item = self.items[n]

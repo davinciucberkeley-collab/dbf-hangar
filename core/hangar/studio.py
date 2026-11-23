@@ -169,8 +169,9 @@ class Studio:
             msg = entry["error"]
         prev = (self.cache.get(did) or {}).get("hash")
         keep = (fid + ".", f"{did}-{prev}.") if prev else (fid + ".",)
+        mine = re.compile(re.escape(did) + r"-[0-9a-f]{12}\..*")   # exactly <did>-<12 hex>.<ext>: never another design's id that starts with "<did>-" (T86)
         for old in DATA_DIR.glob(f"{did}-*.*"):  # drop results two versions back; the previous version stays for a page still showing it (T84)
-            if not old.name.startswith(keep):
+            if mine.fullmatch(old.name) and not old.name.startswith(keep):
                 old.unlink(missing_ok=True)
         with self.lock:
             entry["pending"] = False
