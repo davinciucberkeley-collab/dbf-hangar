@@ -4018,12 +4018,12 @@ items:
     text: 'tests/test_knowledge.py: add a copy check failing on any run of 10+ words shared between an entry and a file it cites (W4-RB proposal after U2.2-2 copied sentences)'
     source: U2.2-2 review W4-RB 2026-11-22
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: ce05c70
     decided_in: ''
-    updated: '2026-11-22'
+    updated: '2026-11-23'
   - id: T69
     kind: task
     text: 'knowledge: restore the concept ids K01, K19, K06, K09 in judging-build-and-transport.md carbon-tube bullet; PROVENANCE research rows say two files are recovered summaries, all four are'
