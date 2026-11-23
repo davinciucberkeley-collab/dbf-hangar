@@ -59,13 +59,12 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
     if not why.strip():
         raise OpInputError("why must not be empty")
     list_edit = _list_edit_args(append, remove, value, also, kind)
-    if list_edit is not None:
-        pass
-    elif kind == "remove":
-        if value is not None:
-            raise OpInputError("--kind remove takes no --value")
-    elif value is None:
-        raise OpInputError("value is required unless --kind remove")
+    if list_edit is None:
+        if kind == "remove":
+            if value is not None:
+                raise OpInputError("--kind remove takes no --value")
+        elif value is None:
+            raise OpInputError("value is required unless --kind remove")
     pairs = [(key, value)]
     for item in also or []:
         k, sep, v = item.partition("=")
