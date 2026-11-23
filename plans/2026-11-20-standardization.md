@@ -317,6 +317,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D45 | §2.4 lists `bom list`, `morph list`, `idea list`, `davinci push/pull`, which are not registered | amend §2.4 to the registered ops; the missing verbs are v1.1 | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 | D46 | Dec 2 demo: live propose, which update week, which design, who records the backup | show PR #3; publish the 11-30 week merged before the demo; example template then concept-a for Physics; Tristan records the backup at the dry run; Studio launched 15 min early | Tristan | 11-30 | decided: default (standing rule, 2026-11-22) |
 | D48 | U2.5d schema gaps (BOM description, CAD .py), spares in qty, R12/R14 closure with remaining FAILs and unverified lines, CHANGELOG replay | keep part_number/notes; qty with spares; close R12/R14 as data gaps, the rest become tasks; append the replay (history kept) | Tristan | 11-25 | decided: default (standing rule, 2026-11-22) |
+| D50 | Should `T2.joint_rf` use per-joint ratings, including derived ones (estimated bond strength)? | yes: joint rating when not placeholder, else library; derived ratings reported as pending | Tristan | 11-24 | decided: default (standing rule, 2026-11-23) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -604,6 +605,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-G1b, W4-G3 | `builder-plus` | Sonnet | Part 1b (missing blocks) and Part 3a/3b (designs re-import, replay, FEA, baseline) [hard; Tristan reads, advisor checks] | `std/u2.5d-core` (1b, after 1a), `std/u2.5d-designs` (3) | brief checks |
 | W4-G3c | `design-engineer` | Sonnet | Part 3c gate triage after the re-import | tasks per new FAIL | brief checks |
 | W4-XG | `advisor` | Opus | U2.5d hard parts 1b and 3 | READY/NOT READY | one dispatch |
+| W4-TG, W4-G0 | `tactician` then `builder-plus` | Sonnet | U2.5d pre-gates fix (advisor 2026-11-23): `discipline.py` joint_rf per-joint rating (D50), D39 regex, repoint test_fea / test_adapters / concept_a_studio pins to the frozen fixture [hard] | `briefs/U2.5d-pre-gates.md`, branch `std/u2.5d-pre-gates`, merged before the designs branch | brief checks; pytest green on main and on the a619fa5 tree |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 

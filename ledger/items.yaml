@@ -4112,3 +4112,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-22'
+  - id: D50
+    kind: decision
+    text: T2.joint_rf counts a joint's own rated_load_n when its rating_basis is not placeholder (sourced and derived), else the library value; derived ratings count but are reported as pending in the verdict
+    source: advisor 2026-11-23 on U2.5d CI failures; standing rule default
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/U2.5d-reimport.md
+    decided_in: ''
+    updated: '2026-11-22'
