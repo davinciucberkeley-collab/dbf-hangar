@@ -664,13 +664,13 @@ items:
     text: 'ops registry: a module that registers some ops and then fails mid-import hits a duplicate-name ValueError on retry (advisor, U1.1 round 3) [triage 2026-11-21: Fix: roll back _REGISTRY entries added during a failed load, or make the retry skip identical specs]'
     source: reviews/2026-11-21-w1.md U1.1
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: 5a84f1b
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T4
     kind: task
     text: 'T9 lost the proofs/1 CHECKED/VERIFIED evidence signal: a claim resting on an unverified assumption or unsourced parameter still PASSes; restore in U3.1 Proofs mode and the 2.5 fidelity line [triage 2026-11-21: U3.1 (merged 00f56ea) shipped without Proofs mode (plan 6a cut order 4 allows that)]'
@@ -902,13 +902,13 @@ items:
     text: 'T7 integration: harness between two point masses PASSes unchecked (integration.py:41); transport group of point masses gives no row (:72); make both SKIP before the 12-08 blocking flip [triage 2026-11-21: Make both SKIP (not PASS, no silent continue) before the 12-08 blocking flip]'
     source: reviews/2026-11-21-w2.md U2.1
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-05'
     units:
       - v1.1
-    evidence: ''
+    evidence: cc03227
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T16
     kind: task
     text: 'FEA hash omits the load-building code (fea/sim/geometry/mass.py) and the MuJoCo version; add them so a code change marks results stale [triage 2026-11-21: not on the demo path; promote only if a slide shows FEA results; real path is core/hangar/sim.py, geometry.py, mass.py]'
@@ -3218,13 +3218,13 @@ items:
     text: 'One exit-code rule for a missing external tool: U2.3b skip_result gives ok/exit 0, sim.drop gives exit 1 (same as FAIL); pick one (SKIP != PASS, != FAIL) across ops; ops/sim.py should use pdledit.resolve_design_path [triage 2026-11-21: rule: SKIP exits 0 with status SKIP (D37); ops/sim.py moves to resolve_design_path]'
     source: reviews/2026-11-21-w2.md W2-S
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: '66e3544'
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T22
     kind: task
     text: 'Flaky on Windows CI: test_studio.py::test_studio_api_end_to_end WinError 10053 (main 41a7efe); make the server shutdown robust [triage 2026-11-21: Make the server shutdown robust (join the serve thread, ignore ConnectionAbortedError on Windows, or use a server fixture)]'
@@ -3242,13 +3242,13 @@ items:
     text: 'U2.3b polish: unused subprocess/sys imports and job.json written twice in fea.py; docs/mcp.md lists fea_run as hand-written; human SKIP output should start with SKIP: [triage 2026-11-21: Remove the two imports; write job.json once; move fea_run out of the hand-written list in docs/mcp.md; check the SKIP: prefix in the human output (not yet opened)] [2026-11-22: since T29 (e59f2c3) fea.py uses subprocess; remove `import sys` only]'
     source: reviews/2026-11-21-w2.md U2.3b
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: bc84d53
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T24
     kind: task
     text: 'Make U2.5d a unit: concept-a re-import into PDL 1.0 (params, BOM, requirements, files, wiring/transport, mechanisms, assembly sequence) after an FEA re-run; closes R1, R12, R14, R17, R31 data gaps [triage 2026-11-21: v1.1 unit U2.5d written into plan 7 by 11-25; R1/R12/R14/R17/R31 shown as gaps on Dec 2 (D33); blocked by T53]'
@@ -4271,10 +4271,10 @@ items:
     text: 'Flaky CI: tests/test_viewer_static.py::test_propose_link_survives_real_git_side_effects:350 404 console error (ubuntu runs 45165154819, 45167246241; windows main 45163693398)'
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-30'
     units: []
-    evidence: ''
+    evidence: 770cc4c
     decided_in: ''
     updated: '2026-11-23'
   - id: T85
@@ -4282,10 +4282,10 @@ items:
     text: "U4.3 small follow-ups: ledger set --due accepts 2026-13-45 (format-only check); bom cost crashes on non-numeric unit_cost_usd; sweep still parses ': ' values the old way; add an R31 guard test through assembly.animate"
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: '0e35374'
     decided_in: ''
     updated: '2026-11-23'
   - id: D53
@@ -4297,5 +4297,16 @@ items:
     due: ''
     units: []
     evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T86
+    kind: task
+    text: "W6-R follow-ups (non-blocking): studio results glob '{did}-*.*' can delete another design whose id starts with '<did>-'; legacy plane fea (cli.py:192/230) exits 1 on missing OpenCAE (outside D37); T3 rollback could drop ops of a nested ops import; ledger add/ingest accept any due text; tests for a mixed point-mass/mesh harness and for from-imports in the T23 unused-import check"
+    source: W6-R review 2026-11-23 (reviews/2026-11-23-w6.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
     decided_in: ''
     updated: '2026-11-23'
