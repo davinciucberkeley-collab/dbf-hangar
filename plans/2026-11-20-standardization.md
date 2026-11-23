@@ -1291,7 +1291,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** T91 ops that write under `DESIGNS_DIR` write into the run's workspace, not the repo; T92 pin the pre-run snapshot (hash in memory or separate temp dir) and replay only an allow-list of ops; T93 the minor W9-R items (workspace path mapping, unwritable log path, `--append` spacing, `--remove` of a mapping, `pass` at edit.py:62). Core and tests only.
 
-- [ ] **Step 1: Briefs** (tactician W10-T): `briefs/U4.8-*.md`
+- [x] **Step 1: Briefs** (tactician W10-T): `briefs/U4.8-*.md` *(d207730: U4.8-bench hard, U4.8-edit easy; no shared files)*
 - [ ] **Step 2: Build** (W10-B, one per brief; at most 2 at once)
 - [ ] **Step 3: Review** (reviewer W10-R); merge; T91, T92, T93 done
 
