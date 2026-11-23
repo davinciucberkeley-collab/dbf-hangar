@@ -607,6 +607,10 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-G3c | `design-engineer` | Sonnet | Part 3c gate triage after the re-import | tasks per new FAIL | brief checks |
 | W4-XG | `advisor` | Opus | U2.5d hard parts 1b and 3 | READY/NOT READY | one dispatch |
 | W4-TG, W4-G0 | `tactician` then `builder-plus` | Sonnet | U2.5d pre-gates fix (advisor 2026-11-23): `discipline.py` joint_rf per-joint rating (D50), D39 regex, repoint test_fea / test_adapters / concept_a_studio pins to the frozen fixture [hard] | `briefs/U2.5d-pre-gates.md`, branch `std/u2.5d-pre-gates`, merged before the designs branch | brief checks; pytest green on main and on the a619fa5 tree |
+| W5-T | `tactician` | Sonnet | U4.3 briefs for T72, T52, T58, T17, T26, T28, T68 | `briefs/U4.3-*.md` | builder-ready bar; R-a, R-b |
+| W5-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.3 brief each | branch `std/u4.3-<task>` | brief checks; CI green |
+| W5-R | `reviewer` | Opus (fresh) | every U4.3 branch | `reviews/2026-11-23-w5.md` | "### Verdict:" per branch |
+| W5-A | `auditor` | Haiku | hourly overnight audit | report | findings acted on |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1224,6 +1228,14 @@ Not a code unit; it tests everything above.
 - [ ] **Step 2:** Live demo script (8 min), each step one command or click: `plane design new` from a template → `plane design set` a wing mass → `plane design validate` → Studio Physics mode playing the flap mechanism → `plane design propose` → the PR → `plane update publish` → the one link. Recorded backup video.
 - [x] **Step 3:** Metrics slide filled from §2.1 with measured values (not targets).
 - [ ] **Step 4:** Dry run Mon 11-30 evening; fix only what the dry run breaks.
+
+### Unit U4.3: Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision)
+
+**Scope:** T72 (assembly animate skips non-drawable proxy steps; closes R31), T52 (`plane ledger set` sets due, units, note), T58 (`design set --value` with ": "), T17 (bom.py exits 2 on bad input; ingest de-dup), T26 (`gate explain` exact check id), T28 (`read_value` calc registered), T68 (knowledge copy check). Core and tests only: no `designs/`, no `standards/` threshold change. One branch per task `std/u4.3-<task>`, merged to main after review (D30, D47).
+
+- [ ] **Step 1: Briefs** (tactician W5-T): `plans/2026-11-20-standardization/briefs/U4.3-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
+- [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
+- [ ] **Step 3: Review** W5-R; merge; tasks set done with the merge commit; R31 done if T72 merges
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

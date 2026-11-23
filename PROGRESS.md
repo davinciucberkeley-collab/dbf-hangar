@@ -52,6 +52,12 @@
 | U4.1 | Whole-branch review, performance, release | 5/5 | done | ACCEPT |
 | U4.2 | Dec 2 presentation package | 2/4 | in progress | ACCEPT |
 
+### Unscheduled
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U4.3 | Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision) | 0/3 | not started | - |
+
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
