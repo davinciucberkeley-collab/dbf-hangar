@@ -203,3 +203,9 @@ def test_update_publish_errors(root):
 def test_viewer_updates_is_gitignored():
     assert subprocess.run(["git", "check-ignore", "-q", "viewer/updates/2026-11-23/index.html"],
                           cwd=REPO).returncode == 0
+
+
+def test_ledger_set_rejects_an_impossible_due_date_exit2(root):  # T85
+    call("ledger.add", kind="task", text="x", source="t")
+    r = call("ledger.set", item_id="T1", status="open", due="2026-13-45")
+    assert r.exit_code == 2 and any("YYYY-MM-DD" in m for m in r.messages)

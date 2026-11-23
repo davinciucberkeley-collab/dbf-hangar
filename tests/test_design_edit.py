@@ -637,3 +637,12 @@ def test_parse_set_value_keeps_other_scalars_and_the_add_path(tmp_example):  # T
         pdledit.parse_value("a: b")       # the add path is unchanged
     r = call("design.set", path=str(tmp_example), key="components[battery].mass_g", value="heavy: 250", why="x")
     assert r.exit_code == 2 and "number" in " ".join(r.messages)
+
+
+def test_sweep_value_with_colon_space_is_a_string(tmp_example, tmp_path, monkeypatch):  # T85
+    monkeypatch.setattr(edit, "SWEEP_ROOT", tmp_path / "sweeps")
+    r = call("design.sweep", path=str(tmp_example), key="components[prop_l].description", values=["Disc: 10x4.5 prop"])
+    assert r.ok, r.messages
+    assert r.data["rows"][0]["value"] == "Disc: 10x4.5 prop"
+    data = yaml.safe_load((tmp_path / "sweeps" / "example-tailsitter-wing" / "1" / "plane.yaml").read_text(encoding="utf-8"))
+    assert [c for c in data["components"] if c["id"] == "prop_l"][0]["description"] == "Disc: 10x4.5 prop"
