@@ -1,8 +1,11 @@
 """Knowledge import of DBF-Combined config-study (U2.2 step 3a): entries follow TEMPLATE-concept.md."""
 from __future__ import annotations
 
+import os
 import re
+from pathlib import Path
 
+import pytest
 import yaml
 
 from hangar.design import REPO_ROOT
@@ -16,6 +19,8 @@ CONCEPT_IDS = ([f"k{n:02d}" for n in range(1, 26)] + [f"b{n:02d}" for n in range
 RESEARCH_IDS = ["research-components-cost", "research-existing-vtol", "research-flight-control", "research-student-builds"]
 JUDGING_IDS = ["judging-build-and-transport", "judging-flight-risk", "judging-mission-and-learning"]
 SOURCE_ROOT = "redesign/config-study/"
+DBF = Path(os.environ.get("DBF_COMBINED", "C:/Users/trist/DBF-Combined"))   # local clone; absent in CI
+COPY_RUN = 10          # words in a row shared with a cited file that count as copied (T68)
 
 
 def _entries():
@@ -99,3 +104,32 @@ def test_concepts_with_a_card_cite_it():
         fm, _ = _split(CONCEPTS / f"{cid}.md")
         assert f"{SOURCE_ROOT}cards/{cid.upper()}/CARD.md" in fm["source_files"], cid
         assert any(f.endswith("judging/flight-risk.md") for f in fm["source_files"]), cid
+
+
+def shared_run(entry: str, cited: str, n: int = COPY_RUN):
+    """First run of n or more consecutive words (lower-cased, punctuation ignored) that both texts contain, else None."""
+    we, wc = re.findall(r"\w+", entry.lower()), re.findall(r"\w+", cited.lower())
+    grams = {tuple(we[i:i + n]) for i in range(len(we) - n + 1)}
+    for i in range(len(wc) - n + 1):
+        if tuple(wc[i:i + n]) in grams:
+            return " ".join(wc[i:i + n])
+    return None
+
+
+def test_shared_run_finds_ten_shared_words_and_ignores_nine():
+    cited = "The quick brown fox jumps over the lazy dog, again and again."
+    assert shared_run("intro: quick brown fox jumps over the lazy dog again and more", cited) == "quick brown fox jumps over the lazy dog again and"
+    assert shared_run("quick brown fox jumps over the lazy dog again", cited) is None      # 9 words
+    assert shared_run("Quick, BROWN fox -- jumps over the lazy dog; again and", cited) == "quick brown fox jumps over the lazy dog again and"
+    assert shared_run("", cited) is None and shared_run(cited, "") is None
+
+
+@pytest.mark.skipif(not (DBF / "redesign" / "config-study").is_dir(), reason="DBF-Combined clone not present")
+def test_no_entry_copies_ten_words_from_a_file_it_cites():
+    for p in _entries():
+        fm, body = _split(p)
+        for f in fm["source_files"]:
+            src = DBF / f
+            if src.is_file():
+                run = shared_run(body, src.read_text(encoding="utf-8", errors="replace"))
+                assert run is None, f"{p.name} copies from {f}: {run!r}"
