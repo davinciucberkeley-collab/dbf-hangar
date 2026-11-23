@@ -219,6 +219,42 @@ def test_migrate_op_write_changes_only_version_line_and_keeps_crlf(tmp_path):
     assert r2.ok and r2.data["written"] is False and r2.data["notes"] == ["already 1.0"]
 
 
+def test_migrate_write_appends_one_changelog_entry_and_keeps_the_old_ones(tmp_path):  # T50
+    d = _copy_legacy_example(tmp_path)
+    log = d / "CHANGELOG.yaml"
+    log.write_bytes(b"- date: '2026-11-01T00:00:00Z'\r\n  key: mass_g\r\n  old: 1\r\n  new: 2\r\n  why: earlier\r\n  kind: modify\r\n")
+    r = call("design.migrate", path=str(d), write=True)
+    assert r.ok and str(log) in r.changed_files and r.data["changelog"] == str(log)
+    raw = log.read_bytes()
+    assert raw.count(b"\n") == raw.count(b"\r\n"), "CRLF design: every CHANGELOG line ends CRLF"
+    entries = yaml.safe_load(raw.decode("utf-8"))
+    assert len(entries) == 2 and entries[0]["why"] == "earlier"
+    last = entries[1]
+    assert (last["key"], last["old"], last["new"], last["kind"]) == ("schema_version", "0.1", "1.0", "modify")
+    assert "migrate" in last["why"] and last["date"].endswith("Z")
+    again = call("design.migrate", path=str(d), write=True)
+    assert again.ok and again.data["written"] is False
+    assert len(yaml.safe_load(log.read_text(encoding="utf-8"))) == 2, "already-migrated: no second entry"
+
+
+def test_migrate_write_creates_the_changelog_and_a_dry_run_does_not(tmp_path):  # T50
+    d = _copy_legacy_example(tmp_path, crlf=False)
+    assert call("design.migrate", path=str(d)).ok
+    assert not (d / "CHANGELOG.yaml").exists()
+    assert call("design.migrate", path=str(d), write=True).ok
+    (entry,) = yaml.safe_load((d / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+    assert entry["key"] == "schema_version" and entry["old"] == "0.1" and entry["new"] == "1.0"
+
+
+def test_migrate_write_with_a_broken_changelog_writes_nothing(tmp_path):  # T50
+    d = _copy_legacy_example(tmp_path, crlf=False)
+    (d / "CHANGELOG.yaml").write_text("key: not a list\n", encoding="utf-8")
+    before = (d / "plane.yaml").read_bytes()
+    r = call("design.migrate", path=str(d), write=True)
+    assert r.exit_code == 2 and "CHANGELOG.yaml" in " ".join(r.messages)
+    assert (d / "plane.yaml").read_bytes() == before
+
+
 @pytest.mark.parametrize("src", DESIGNS, ids=IDS)
 def test_migrate_op_write_on_copy_of_every_committed_design(tmp_path, src):
     dst = tmp_path / src.parent.name

@@ -1,6 +1,7 @@
 """PDL operations: generate the reference doc, migrate a design file to the latest version."""
 from __future__ import annotations
 
+from datetime import datetime, timezone
 from pathlib import Path
 
 import yaml
@@ -50,6 +51,24 @@ def design_migrate(path: str, *, write: bool = False) -> OpResult:
                         messages=[f"{r.check_id}: {r.message}" for r in rep.results if r.status != "PASS"])
     if not write:
         return OpResult(ok=True, data=info, messages=notes)
+    log = p.with_name("CHANGELOG.yaml")      # T50: one CHANGELOG entry, in the same layout design set writes
+    eol = "\r\n" if "\r\n" in raw else "\n"
+    log_text = log.read_bytes().decode("utf-8") if log.exists() else ""
+    if log_text.strip() == "[]":
+        log_text = ""
+    entry = {"date": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"), "key": "schema_version", "old": old,
+             "new": LATEST, "why": f"migrate to PDL {LATEST} (plane design migrate)", "kind": "modify"}
+    if log_text and not log_text.endswith("\n"):
+        log_text += eol
+    combined = log_text + yaml.safe_dump([entry], sort_keys=False, allow_unicode=True).replace("\n", eol)
+    try:
+        parsed = yaml.safe_load(combined)
+    except yaml.YAMLError:
+        parsed = None
+    if not isinstance(parsed, list) or parsed[-1] != entry:
+        raise OpInputError("CHANGELOG.yaml is not a YAML list; fix it by hand")   # nothing has been written yet
     p.write_bytes(bump_version_text(raw).encode("utf-8"))
+    log.write_bytes(combined.encode("utf-8"))
     info["written"] = True
-    return OpResult(ok=True, data=info, messages=notes, changed_files=[str(p)])
+    info["changelog"] = str(log)
+    return OpResult(ok=True, data=info, messages=notes, changed_files=[str(p), str(log)])
