@@ -41,6 +41,10 @@ geometry:
     value: 0.05
     rule: "All distributed point masses together at most this fraction."
     source: internal convention
+  prop_chain_max_intermediate_parts:
+    value: 2
+    rule: "A motor with a propulsion block may drive its propeller through at most this many other/structure parts (adapters, spacers) joined by bolted or press-fit joints; a direct attachment of any method needs none (T1.motor_has_prop)."
+    source: internal convention
 
 structure:
   landing_load_factor:
