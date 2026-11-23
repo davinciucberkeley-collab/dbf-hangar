@@ -76,3 +76,31 @@ def test_animate_unknown_component_exit2(design, tmp_path):
 def test_animate_bad_design_path_exit2(tmp_path):
     r = call("assembly.animate", path=str(tmp_path / "missing"), out=str(tmp_path / "a.glb"))
     assert r.exit_code == 2
+
+
+def _with_proxy(design, sequence):
+    import yaml
+    p = design / "plane.yaml"
+    d = yaml.safe_load(p.read_text(encoding="utf-8"))
+    d["components"].append({"id": "hw_proxy", "type": "other", "geometry": {"point_mass": {}}, "position": [0, 0, 0],
+                            "mass_g": 5, "manufacturing": {"method": "purchased", "part_number": "x"}})
+    d["assembly"] = {"sequence": sequence}
+    p.write_text(yaml.safe_dump(d, sort_keys=False), encoding="utf-8")
+    return design
+
+
+def test_animate_skips_a_step_that_adds_only_point_mass_proxies(design, tmp_path):  # T72
+    _with_proxy(design, [{"step": 1, "add": ["center_body"]}, {"step": 2, "add": ["hw_proxy"]}, {"step": 3, "add": ["wing"]}])
+    r = call("assembly.animate", path=str(design), out=str(tmp_path / "a.glb"))
+    assert r.ok, r.messages
+    assert r.data["animations"] == ["step-1", "step-3"]
+    assert any("step 2" in m and "hw_proxy" in m for m in r.skipped)
+
+
+def test_animate_still_fails_on_a_drawable_step_with_no_mesh(tmp_path):  # R31 self-check
+    from hangar.ops import OpInputError
+    from hangar.ops.assembly import _animate_glb
+    glb = tmp_path / "plain.glb"
+    export_glb(load_design(REPO / "designs" / "example-tailsitter-wing"), glb)
+    with pytest.raises(OpInputError, match="step 2 adds nothing drawable"):
+        _animate_glb(glb.read_bytes(), [(1, ["center_body"]), (2, ["not_in_glb"])], [])
