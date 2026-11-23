@@ -4134,3 +4134,113 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-23'
+  - id: T73
+    kind: task
+    text: 'concept-a drop test: E-MEC-05 1.2 N and E-MEC-10 1.3 N peak vs 0.7 N rating (T2.sim_drop_loads FAIL, new after re-import); fix the mount, change the part or source the rating'
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T74
+    kind: task
+    text: 'concept-a drop test: E-WNG-20 1.8 N and E-WNG-21 1.8 N vs 1.4 N rating (T2.sim_drop_loads FAIL, pre-existing)'
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T75
+    kind: task
+    text: 'concept-a T2.sim_rest FAIL: tailsitter tips 81 deg on its gear; widen the gear footprint or lower the CG'
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T76
+    kind: task
+    text: concept-a T3.static_margin FAIL 16.4% MAC (CG x=21 mm); move CG or confirm the target band
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T77
+    kind: task
+    text: concept-a harnesses e-hrn-01 and e-hrn-14 have no gauge_awg (T7.electrical_rating WARN); set gauge from DBF-Combined or pick one
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T78
+    kind: task
+    text: 'concept-a: 13 E-HRN harnesses leave their envelopes by 8-197 mm (T7.wiring WARN; worst e-hrn-11 197, e-hrn-05 152, e-hrn-04 148, e-hrn-02 144, e-hrn-03 141); add routes, no exposed_ok (hrn-bat is T6x route task)'
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T79
+    kind: task
+    text: 'concept-a BOM: 16 lines not verified (b03 b04 g02-g05 r01 r05 r06 r09 r11-r14 w06 w09); run bom.verify against vendor pages (T8.bom.verified WARN)'
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T80
+    kind: task
+    text: concept-a packed airframe OBB [438, 478, 900] mm exceeds transport box [1200, 500, 400] by 38 mm (T7.transport.packed-airframe WARN); repack or split
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T81
+    kind: task
+    text: 'concept-a assembly: wng-010-r/l added at step 14 touching nothing assembled (T7.assembly.touch WARN); reorder the steps from DBF-Combined or add the missing attachment'
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T82
+    kind: task
+    text: 'standards/connection-types.yaml: CT-TAPE-FOAM, CT-TAPE-HINGE, CT-EPOXY, CT-GEL-PAD, CT-STRAP-VELCRO have no rated_load_n, and 63 concept-a joints carry derived ratings pending a sourced value (107 T2.joint_rf WARN, report-only to 12-08); source ratings with citations'
+    source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
+    owner: James
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
