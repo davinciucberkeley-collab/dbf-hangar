@@ -1317,7 +1317,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** register `read_value` (brief `U4.3-t28.md`, refreshed on current main), core and tests only; then, on a separate branch, refresh concept-a claim statuses through the CLI if they are stored in `designs/` and update the deck (`docs/deck/index.html`) and `u4.2/metrics.md`/`deck-outline.md` lines that say the claims are not recomputed, with the measured PASS/FAIL counts.
 
-- [ ] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps
+- [x] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
 - [ ] **Step 2: Build** (W13-B): core branch, then the docs/designs branch
 - [ ] **Step 3: Review** (reviewer W13-R); merge; T28 done
 
