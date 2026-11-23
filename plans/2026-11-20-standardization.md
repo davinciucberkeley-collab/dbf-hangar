@@ -1246,7 +1246,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** T84 (flaky `test_propose_link_survives_real_git_side_effects` 404), T85 (U4.3 small follow-ups), T15 (T7 point-mass rows SKIP, not PASS), T21 (one exit-code rule for a missing tool, D37), T23 (fea.py/mcp.md polish), T3 (ops registry retry after a failed import), T20 (`sim drop --height-m`). Core, tests and docs only; no `designs/`, no `standards/` change, no CI workflow change. Not in scope: T11 (workflow), T16 (FEA hash change would stale concept-a results), T83 (agent file).
 
-- [ ] **Step 1: Briefs** (tactician W6-T): `briefs/U4.4-<task>.md`, builder-ready (R-a, R-b)
+- [x] **Step 1: Briefs** (tactician W6-T; all seven, T84 [hard]; T20 after T21): `briefs/U4.4-<task>.md`, builder-ready (R-a, R-b)
 - [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
 - [ ] **Step 3: Review** W6-R; merge; tasks set done with the merge commit
 
