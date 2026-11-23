@@ -51,13 +51,14 @@ def add_op(kind: Literal["ruling", "task", "idea", "decision"], text: str, *, so
     return OpResult(True, {"id": item_id}, changed_files=[rel(root, ledger.path)])
 
 
-@op(name="ledger.set", summary="Set an item's status. done and decided need evidence; dropped and superseded need decided_in.",
+@op(name="ledger.set", summary="Set an item's status. done and decided need evidence; dropped and superseded need decided_in. Optional --due, --units (comma-separated, replaces the list) and --note (appended to the text).",
     mutates=True, render=lambda r: f"{r.data['id']} {r.data['status']}")
 def set_op(item_id: str, status: Literal["open", "done", "dropped", "superseded", "decided"], *,
-           evidence: str = "", decided_in: str = "") -> OpResult:
+           evidence: str = "", decided_in: str = "", due: str = "", units: str = "", note: str = "") -> OpResult:
     root, ledger = _ledger()
+    unit_list = [u.strip() for u in units.split(",") if u.strip()]
     with _input_errors():
-        ledger.set(item_id, status, evidence=evidence, decided_in=decided_in)
+        ledger.set(item_id, status, evidence=evidence, decided_in=decided_in, due=due, units=unit_list, note=note)
     return OpResult(True, {"id": item_id, "status": status}, changed_files=[rel(root, ledger.path)])
 
 

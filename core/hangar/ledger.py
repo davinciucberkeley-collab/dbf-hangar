@@ -163,8 +163,12 @@ class Ledger:
         self._commit(self.items + [item])
         return item_id
 
-    def set(self, item_id, status, evidence="", decided_in="") -> None:
+    def set(self, item_id, status, evidence="", decided_in="", *, due=None, units=None, note="") -> None:
+        """Set status (with its evidence rules). due, units and note are optional: None or empty leaves the field as it is;
+        a note is appended to the text as ' [<note>]'."""
         n = self._index(item_id)
+        if due is not None and due != "" and not re.fullmatch(r"\d{4}-\d{2}-\d{2}", due):
+            raise ValueError(f"due must be YYYY-MM-DD, got {due!r}")
         if status not in STATUSES:
             raise ValueError(f"status must be one of {', '.join(STATUSES)}, got {status!r}")
         item = self.items[n]
@@ -174,6 +178,12 @@ class Ledger:
             raise ValueError(f"{status} needs decided_in")
         kept = decided_in if status in ("dropped", "superseded") else ""
         new = replace(item, status=status, evidence=evidence, decided_in=kept, updated=_today())
+        if due:
+            new = replace(new, due=due)
+        if units:
+            new = replace(new, units=[str(u) for u in units])
+        if note.strip():
+            new = replace(new, text=f"{item.text} [{note.strip()}]")
         items = list(self.items)
         items[n] = new
         self._commit(items)
