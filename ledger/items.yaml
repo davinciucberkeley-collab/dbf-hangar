@@ -4422,7 +4422,7 @@ items:
     updated: '2026-11-23'
   - id: D57
     kind: decision
-    text: 'T60: concept-a hrn-bat goes to 12 AWG (fix the design, not the threshold); Dillon informed via T60 evidence'
+    text: 'T60: concept-a hrn-bat goes to 12 AWG (fix the design, not the threshold); Dillon informed via T60 evidence [amended: 10 AWG (12 AWG gives 44.0 A < 44.8 A peak, W11-G; 10 AWG 60 A matches DBF-Combined D-64 pack leads)]'
     source: conductor default, Tristan P175 2026-11-23
     owner: Tristan
     status: decided
