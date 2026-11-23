@@ -1,6 +1,7 @@
 """U1.4: design.set/get/diff/copy/sweep/propose."""
 from __future__ import annotations
 
+import json
 import shutil
 from pathlib import Path
 
@@ -646,3 +647,139 @@ def test_sweep_value_with_colon_space_is_a_string(tmp_example, tmp_path, monkeyp
     assert r.data["rows"][0]["value"] == "Disc: 10x4.5 prop"
     data = yaml.safe_load((tmp_path / "sweeps" / "example-tailsitter-wing" / "1" / "plane.yaml").read_text(encoding="utf-8"))
     assert [c for c in data["components"] if c["id"] == "prop_l"][0]["description"] == "Disc: 10x4.5 prop"
+
+
+# ---- design.set --append / --remove on one-line [list] values (T55, D55) ----
+AUTHORS_ONE = "authors: [platform bootstrap]"
+AUTHORS_CA = '"UC Berkeley DBF capstone team (source repo dbf-combined)"'
+AUTHOR_BT = "imported for aircraft-platform by `plane import dbf`"
+
+
+def _list_op(d, key, **kw):
+    return call("design.set", path=str(d), key=key, why="t", **kw)
+
+
+def _changed_lines(before: str, after: str) -> tuple[str, str]:
+    ops = [o for o in difflib.SequenceMatcher(None, before.splitlines(), after.splitlines(), autojunk=False).get_opcodes() if o[0] != "equal"]
+    assert len(ops) == 1 and ops[0][0] == "replace" and ops[0][2] - ops[0][1] == 1 and ops[0][4] - ops[0][3] == 1, ops
+    return before.splitlines()[ops[0][1]], after.splitlines()[ops[0][3]]
+
+
+def test_append_adds_one_entry_to_a_one_line_list_and_logs(tmp_example):
+    p = tmp_example / "plane.yaml"
+    before = p.read_bytes()
+    r = _list_op(tmp_example, "authors", append="second author")
+    assert r.ok, r.messages
+    assert p.read_bytes() == before.replace(AUTHORS_ONE.encode(), b'authors: [platform bootstrap, "second author"]')
+    log = yaml.safe_load((tmp_example / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+    assert log[-1]["key"] == "authors" and log[-1]["kind"] == "modify" and log[-1]["why"] == "t"
+    assert log[-1]["old"] == ["platform bootstrap"] and log[-1]["new"] == ["platform bootstrap", "second author"]
+    assert r.data["changed"] is True and r.data["new"] == ["platform bootstrap", "second author"]
+
+
+def test_append_to_an_empty_list_and_remove_back_to_empty(tmp_example):
+    p = tmp_example / "plane.yaml"
+    before = p.read_bytes()
+    assert b"  derived_from: []" in before
+    assert _list_op(tmp_example, "lineage.derived_from", append="abc-1").ok
+    assert p.read_bytes() == before.replace(b"  derived_from: []", b"  derived_from: [abc-1]")
+    assert _list_op(tmp_example, "lineage.derived_from", remove="abc-1").ok
+    assert p.read_bytes() == before
+
+
+def test_remove_deletes_the_entry_matched_by_value_and_changes_one_line(tmp_concept_a):
+    p = tmp_concept_a / "plane.yaml"
+    before = p.read_text(encoding="utf-8")
+    r = _list_op(tmp_concept_a, "authors", remove=AUTHOR_BT)
+    assert r.ok, r.messages
+    old_line, new_line = _changed_lines(before, p.read_text(encoding="utf-8"))
+    assert old_line.startswith("authors: [") and new_line == f"authors: [{AUTHORS_CA}]"
+    log = yaml.safe_load((tmp_concept_a / "CHANGELOG.yaml").read_text(encoding="utf-8"))
+    assert log[-1]["old"][1] == AUTHOR_BT and log[-1]["new"] == [log[-1]["old"][0]] and log[-1]["kind"] == "modify"
+
+
+def test_remove_takes_the_first_match_only(tmp_example):
+    p = tmp_example / "plane.yaml"
+    p.write_bytes(p.read_bytes().replace(AUTHORS_ONE.encode(), b"authors: [x, y, x]"))
+    assert _list_op(tmp_example, "authors", remove="x").ok
+    assert yaml.safe_load(p.read_text(encoding="utf-8"))["authors"] == ["y", "x"]
+    assert "authors: [y, x]" in p.read_text(encoding="utf-8")
+
+
+def test_remove_matches_value_and_type(tmp_example):
+    p = tmp_example / "plane.yaml"
+    p.write_bytes(p.read_bytes().replace(AUTHORS_ONE.encode(), b'authors: ["1", y]'))
+    before = _bytes(tmp_example)
+    r = _list_op(tmp_example, "authors", remove="1")          # 1 is the number; the list holds the text "1"
+    assert r.ok is False and r.exit_code == 2 and "is not in the list" in " ".join(r.messages)
+    assert _bytes(tmp_example) == before
+    assert _list_op(tmp_example, "authors", remove='"1"').ok  # a quoted value is the text
+    assert yaml.safe_load(p.read_text(encoding="utf-8"))["authors"] == ["y"]
+
+
+def test_list_flag_refusals_exit_2_and_write_nothing(tmp_concept_a):
+    before = _bytes(tmp_concept_a)
+    for key, kw, needle in (
+            ("authors", dict(remove="nobody"), "is not in the list"),
+            ("status", dict(append="x"), "is not a list"),
+            ("components", dict(append="x"), "one-line"),
+            ("components[hwc-002-l]", dict(append="x"), "name the list by its key"),
+            ("nope", dict(append="x"), "no key"),
+            ("authors", dict(append="a", remove="b"), "not both"),
+            ("authors", dict(append="a", value="b"), "takes no --value"),
+            ("authors", dict(append="a", kind="add"), "takes no --value, --also or --kind"),
+            ("authors", dict(remove="a", also=["status=x"]), "takes no --value, --also or --kind"),
+            ("authors", dict(append="  "), "non-empty"),
+            ("authors", dict(append="{a: 1}"), "mapping or list"),
+            ("authors", dict(append="5"), "authors")):          # a number in a list of strings: the schema check names the key
+        r = _list_op(tmp_concept_a, key, **kw)
+        assert r.ok is False and r.exit_code == 2 and needle in " ".join(r.messages), (key, kw, r.messages)
+        assert _bytes(tmp_concept_a) == before
+
+
+def test_list_flags_preserve_crlf(tmp_example):
+    p = tmp_example / "plane.yaml"
+    raw = p.read_bytes().replace(b"\r\n", b"\n").replace(b"\n", b"\r\n")
+    p.write_bytes(raw)
+    assert _list_op(tmp_example, "authors", append="second author").ok
+    assert p.read_bytes() == raw.replace(AUTHORS_ONE.encode(), b'authors: [platform bootstrap, "second author"]')
+    assert _list_op(tmp_example, "authors", remove="second author").ok
+    assert p.read_bytes() == raw
+    log = (tmp_example / "CHANGELOG.yaml").read_bytes()
+    assert log.count(b"\n") == log.count(b"\r\n") > 0
+
+
+def test_append_item_and_remove_item_return_text_old_and_new(tmp_example):
+    text = (tmp_example / "plane.yaml").read_bytes().decode("utf-8")
+    out, old, new = pdledit.append_item(text, "authors", "b")
+    assert old == ["platform bootstrap"] and new == ["platform bootstrap", "b"]
+    out2, old2, new2 = pdledit.remove_item(out, "authors", "platform bootstrap")
+    assert old2 == new and new2 == ["b"] and "authors: [b]" in out2
+    with pytest.raises(OpInputError, match="is not in the list"):
+        pdledit.remove_item(text, "authors", "zzz")
+
+
+def test_list_flags_through_the_cli(tmp_example):
+    from click.testing import CliRunner
+    from hangar.cli import cli
+    base = ["design", "set", str(tmp_example), "authors", "--why", "t", "--json"]
+    res = CliRunner().invoke(cli, base + ["--append", "second author"])
+    assert res.exit_code == 0, res.output
+    assert yaml.safe_load((tmp_example / "plane.yaml").read_text(encoding="utf-8"))["authors"] == ["platform bootstrap", "second author"]
+    res = CliRunner().invoke(cli, base + ["--remove", "second author"])
+    assert res.exit_code == 0, res.output
+    assert yaml.safe_load((tmp_example / "plane.yaml").read_text(encoding="utf-8"))["authors"] == ["platform bootstrap"]
+    res = CliRunner().invoke(cli, base + ["--remove", "nobody"])
+    assert res.exit_code == 2 and "is not in the list" in json.loads(res.output)["messages"][0]
+
+
+def test_remove_leaves_the_other_entries_exactly_as_written(tmp_example):
+    p = tmp_example / "plane.yaml"
+    raw = p.read_bytes()
+    for body, rm, want in (("['single q',   \"dbl\", plain one]", "dbl", "['single q',   plain one]"),
+                           ("[a,  b, c]", "a", "[b, c]"),
+                           ("[a,  b, c]", "c", "[a,  b]"),
+                           ("[ only ]", "only", "[]")):
+        p.write_bytes(raw.replace(AUTHORS_ONE.encode(), f"authors: {body}".encode()))
+        assert _list_op(tmp_example, "authors", remove=rm).ok
+        assert p.read_bytes() == raw.replace(AUTHORS_ONE.encode(), f"authors: {want}".encode()), (body, rm)

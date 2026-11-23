@@ -442,6 +442,84 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
     return (out.replace("\n", "\r\n") if crlf else out), element
 
 
+def _one_line_list(lines: list[str], root, key: str):
+    """(list node, line index, column of '[', column of the matching ']') of the one-line [list] that `key` names; else OpInputError."""
+    value, parent, how, ref = walk(root, key)
+    if how != "value":
+        raise OpInputError(f"{key}: name the list by its key, not by an element")
+    if not isinstance(value, list):
+        raise OpInputError(f"{key}: is not a list; --append and --remove need a list")
+    line, col = parent.lc.value(ref)
+    close = _close_brace(lines[line], col) if lines[line][col:col + 1] == "[" else -1
+    if close < 0:
+        raise OpInputError(f"{key}: is not a one-line [list]; --append and --remove edit one-line lists only; edit the file by hand")
+    return value, line, col, close
+
+
+def _edit_list(text: str, key: str, item, adding: bool) -> tuple[str, list, list]:
+    crlf = "\r\n" in text
+    t = text.replace("\r\n", "\n")
+    hand = f"{key}: cannot change this list without rewriting other text; edit the file by hand"
+    data = yaml.safe_load(t)
+    old = copy.deepcopy(get_value(data, key))             # raises the "no key" errors
+    lines = t.split("\n")
+    node, line, col, close = _one_line_list(lines, yamlio.load(t), key)
+    if adding:
+        new = old + [item]
+        if not lines[line][col + 1:close].strip():
+            edited = lines[line][:col + 1] + render_scalar(item) + lines[line][close:]
+        else:
+            head = lines[line][:close].rstrip()
+            edited = head + (" " if head.endswith(",") else ", ") + render_scalar(item) + lines[line][close:]
+    else:
+        hits = [i for i, x in enumerate(old) if x == item and type(x) is type(item)]
+        if not hits:
+            raise OpInputError(f"{key}: {item!r} is not in the list (have: {old!r})")
+        i = hits[0]                                       # the first match only
+        new = old[:i] + old[i + 1:]
+        cols = []
+        for k in range(len(node)):
+            if node.lc.item(k)[0] != line:
+                raise OpInputError(hand)
+            cols.append(node.lc.item(k)[1])
+        m = _TOKEN.match(lines[line], cols[i])
+        if not m:
+            raise OpInputError(hand)
+        start, end = cols[i], m.end()
+        if len(old) == 1:
+            start, end = col + 1, close                    # [] : the whole inside goes
+        elif i + 1 < len(old):
+            end = cols[i + 1]                              # the entry and the separator before the next one
+        else:
+            start = lines[line].rfind(",", 0, start)       # the last entry and the separator before it
+        edited = lines[line][:start] + lines[line][end:]
+    lines[line] = edited
+    out = "\n".join(lines)
+    expected = copy.deepcopy(data)
+    assign(expected, key, new)
+    try:
+        same = yaml.safe_load(out) == expected
+    except yaml.YAMLError:
+        same = False
+    if not same:
+        raise OpInputError(hand)
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+        if tag == "equal" or (tag == "replace" and i2 - i1 == 1 and j2 - j1 == 1 and i1 == line):
+            continue
+        raise OpInputError(hand)
+    return (out.replace("\n", "\r\n") if crlf else out), old, new
+
+
+def append_item(text: str, key: str, item) -> tuple[str, list, list]:
+    """Return (patched text, old list, new list): scalar `item` added at the end of the one-line [list] at `key`; only that line changes."""
+    return _edit_list(text, key, item, True)
+
+
+def remove_item(text: str, key: str, item) -> tuple[str, list, list]:
+    """Return (patched text, old list, new list): the first entry equal to `item` (same value and type) removed from the one-line [list] at `key`; only that line changes."""
+    return _edit_list(text, key, item, False)
+
+
 def _errors(data) -> dict:
     v = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
     return {(tuple(map(str, e.absolute_path)), e.message): e for e in v.iter_errors(data)}

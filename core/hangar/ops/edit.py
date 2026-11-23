@@ -35,15 +35,33 @@ def _text(p: Path) -> str:
     return p.read_bytes().decode("utf-8")     # never read_text: it would turn CRLF into LF
 
 
-@op(name="design.set", summary="Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove) and log them in CHANGELOG.yaml.",
+def _list_edit_args(append, remove, value, also, kind):
+    """None when neither --append nor --remove is given; else (adding, item) with the item read as one scalar."""
+    if append is None and remove is None:
+        return None
+    if append is not None and remove is not None:
+        raise OpInputError("give --append or --remove, not both")
+    flag, raw = ("--append", append) if append is not None else ("--remove", remove)
+    if value is not None or also or kind != "modify":
+        raise OpInputError(f"{flag} takes no --value, --also or --kind")
+    if not raw.strip():
+        raise OpInputError(f"{flag} needs a non-empty value")
+    return append is not None, pdledit.parse_set_value(raw)
+
+
+@op(name="design.set", summary="Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml.",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def set_op(path: str, key: str, *, value: str = None, why: str,
-           kind: Literal["add", "subtract", "modify", "remove"] = "modify", also: list[str] = None) -> OpResult:
+           kind: Literal["add", "subtract", "modify", "remove"] = "modify", also: list[str] = None,
+           append: str = None, remove: str = None) -> OpResult:
     plane = _plane(path)
     text = _text(plane)
     if not why.strip():
         raise OpInputError("why must not be empty")
-    if kind == "remove":
+    list_edit = _list_edit_args(append, remove, value, also, kind)
+    if list_edit is not None:
+        pass
+    elif kind == "remove":
         if value is not None:
             raise OpInputError("--kind remove takes no --value")
     elif value is None:
@@ -62,6 +80,11 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
     working, entries = text, []
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     for k, raw in pairs:
+        if list_edit is not None:
+            adding, item = list_edit
+            working, old, new = (pdledit.append_item if adding else pdledit.remove_item)(working, k, item)
+            entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": "modify"})
+            continue
         if kind == "remove":
             working, gone = pdledit.remove_element(working, k)
             entries.append({"date": stamp, "key": k, "old": pdledit.render_flow(gone), "new": None, "why": why, "kind": kind})
