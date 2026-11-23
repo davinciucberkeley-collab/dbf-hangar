@@ -192,23 +192,47 @@ def test_studio_op_refuses_a_design_path_outside_designs(sandbox, tmp_path):  # 
         httpd.server_close()
 
 
-def test_studio_op_confines_output_paths_to_studio_dir_or_temp(sandbox, tmp_path, monkeypatch):  # T7
-    fake_tmp = tmp_path / "faketmp"
-    fake_tmp.mkdir()
-    monkeypatch.setattr(studio.tempfile, "gettempdir", lambda: str(fake_tmp))
-    (tmp_path / "elsewhere").mkdir()
+def test_studio_op_refuses_out_and_non_id_templates(sandbox, tmp_path):  # T7 / D54
     src = str(sandbox / "example-tailsitter-wing")
     httpd, base = _serve_studio(sandbox)
     try:
-        code, res = _call(base, "/api/op/design.export", {"path": src, "format": "json", "out": str(tmp_path / "elsewhere" / "x.json")})
-        assert code == 400 and _refused(res), res
-        assert not (tmp_path / "elsewhere" / "x.json").exists()
-        code, res = _call(base, "/api/op/design.export", {"path": src, "format": "json", "out": str(fake_tmp / "x.json")})
-        assert code == 200 and res["ok"], res
-        assert (fake_tmp / "x.json").is_file()
+        for out in (str(tmp_path / "x.json"), str(sandbox.parent / ".studio" / "x.json")):
+            code, res = _call(base, "/api/op/design.export", {"path": src, "format": "json", "out": out})
+            assert code == 400 and "not available from Studio" in " ".join(res["messages"]), res
+            assert not Path(out).exists()
+        for tpl in (src, "../example-tailsitter-wing", "C:/x/y"):
+            code, res = _call(base, "/api/op/design.new", {"new_id": "zz", "template": tpl})
+            assert code == 400 and _refused(res), (tpl, res)
+        assert not (sandbox / "zz").exists()
+        code, res = _call(base, "/api/op/ledger.seed", {"plan": str(tmp_path / "plan.md")})
+        assert code == 400 and "not available from Studio" in " ".join(res["messages"]), res
+        code, res = _call(base, "/api/op/fea.setup", {"opencae_python": str(tmp_path / "py.exe")})
+        assert code == 400 and "not available from Studio" in " ".join(res["messages"]), res
     finally:
         httpd.shutdown()
         httpd.server_close()
+
+
+def test_confine_op_params_refuses_unc_and_network_paths(sandbox, monkeypatch):  # T7 / D54
+    resolved = []
+    real = Path.resolve
+    monkeypatch.setattr(Path, "resolve", lambda self, *a, **k: (resolved.append(str(self)), real(self, *a, **k))[1])
+    for p in ("//host/share/designs/x", r"\\host\share\x","//127.0.0.1/c$/x"):
+        assert studio.confine_op_params("design.get", {"path": p}) is not None, p
+    assert resolved == [], resolved   # refused before resolving, so no network lookup
+
+
+def test_every_path_like_op_param_is_confined_or_refused(sandbox):  # T7 / D54: a new op cannot add an open path
+    from hangar.ops import registry
+    likes = {"path", "src", "a", "b", "design", "out", "template", "plan", "dbf_root", "ledger"}
+    seen = 0
+    for name, spec in registry().items():
+        for prm in spec.params:
+            pl = prm.name.lower()
+            if pl in likes or any(w in pl for w in ("python", "exe", "root", "file", "dir")):
+                seen += 1
+                assert studio.confine_op_params(name, {prm.name: "/outside-everything/zzz"}) is not None, (name, prm.name)
+    assert seen > 10
 
 
 def test_studio_op_refuses_ops_that_read_or_write_arbitrary_paths(sandbox, tmp_path):  # T7

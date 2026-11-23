@@ -321,11 +321,13 @@ def _check_id(did: str) -> str:
     return did
 
 
-# T7: what a Studio client may point an op at. The CLI and MCP take any path; only this HTTP surface is confined.
+# T7/D54: what a Studio client may point an op at. The CLI and MCP take any path; only this HTTP surface is confined.
 _DESIGN_PARAMS = ("path", "src", "a", "b", "design")   # op parameters that name a design (a folder or its plane.yaml)
-_OUT_PARAMS = ("out",)                                  # op parameters that name a file to write
-_REFUSED_PARAMS = {("ledger.ingest", "path"), ("claim.import-dbf", "dbf_root"),
-                   ("ledger.import-dbf", "dbf_root"), ("ledger.import-dbf", "ledger")}   # not used by Studio at all
+_REFUSED_KEYS = ("out",)                                # D54: Studio never writes a caller-named file through /api/op
+_REFUSED_PARAMS = {("ledger.ingest", "path"), ("claim.import-dbf", "dbf_root"), ("ledger.import-dbf", "dbf_root"),
+                   ("ledger.import-dbf", "ledger"), ("ledger.seed", "plan"),
+                   ("fea.setup", "opencae_python"), ("fea.setup", "opencae_root")}   # not used by Studio via /api/op
+_ID_PARAMS = {("design.new", "template")}               # must be a bare design id
 
 
 def _inside(p: Path, roots: list[Path]) -> bool:
@@ -336,25 +338,28 @@ def _inside(p: Path, roots: list[Path]) -> bool:
 def confine_op_params(name: str, params: dict) -> str | None:
     """Why Studio refuses these op parameters (keys are ParamSpec names), or None when they are allowed.
 
-    Design paths must lie inside designs/; output paths inside .studio/ or the system temp folder. Empty and
-    non-string values are left to the op to report."""
+    Design paths must lie inside designs/; ids must be bare ids; file-writing and arbitrary-path parameters are
+    refused. Empty and non-string values are left to the op to report."""
     for key, value in params.items():
         if not isinstance(value, str) or not value:
             continue
-        if (name, key) in _REFUSED_PARAMS:
+        if key in _REFUSED_KEYS or (name, key) in _REFUSED_PARAMS:
             return f"{name}: {key} is not available from Studio"
-        if key in _DESIGN_PARAMS:
-            roots, where = [DESIGNS_DIR], "designs/"
-        elif key in _OUT_PARAMS:
-            roots, where = [STUDIO_DIR, Path(tempfile.gettempdir())], ".studio/ or the temp folder"
-        else:
+        if (name, key) in _ID_PARAMS:
+            if not ID_RE.match(value):
+                return f"{name}: {key} {value!r} is outside designs/; Studio only takes a bare design id"
             continue
+        if key not in _DESIGN_PARAMS:
+            continue
+        norm = value.replace("\\", "/")
+        if norm.startswith("//"):
+            return f"{name}: {key} {value!r} is outside designs/; Studio only reaches paths there"
         try:
-            ok = _inside(Path(value.replace("\\", "/")), roots)
+            ok = _inside(Path(norm), [DESIGNS_DIR])
         except (OSError, ValueError):
             ok = False
         if not ok:
-            return f"{name}: {key} {value!r} is outside {where}; Studio only reaches paths there"
+            return f"{name}: {key} {value!r} is outside designs/; Studio only reaches paths there"
     return None
 
 
