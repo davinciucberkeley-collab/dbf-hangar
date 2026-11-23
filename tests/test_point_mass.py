@@ -39,7 +39,7 @@ def pm_design(pm_position=(0, 0, 0), version="0.4", attach=True) -> dict:
     return data
 
 
-def run(data, tier=5):
+def run(data, tier=9):
     return validate(Design(data=data, path=None), max_tier=tier)
 
 
