@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import inspect
 import json
-import re
 from pathlib import Path
 from typing import Callable, Literal
 
@@ -18,17 +17,16 @@ except ImportError:  # mcp 1.x
     from mcp.server.fastmcp import FastMCP
 
 from .checks import validate
+from .ids import ID_RE
 from .design import Design, DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, load_design
 from .ops import registry, _call_spec
 from .surfaces import map_params, public_name
 
 mcp = FastMCP("dbf-hangar")
 
-_ID_RE = re.compile(r"^[a-z0-9][a-z0-9_-]*$")
-
 
 def _design_path(design_id: str, must_exist: bool = True) -> Path:
-    if not isinstance(design_id, str) or not _ID_RE.match(design_id):
+    if not isinstance(design_id, str) or not ID_RE.fullmatch(design_id):
         raise ValueError(f"invalid design id {design_id!r}: use lowercase letters, digits, '-' and '_' "
                          "and start with a letter or digit")
     path = DESIGNS_DIR / design_id / "plane.yaml"
