@@ -325,7 +325,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D55 | T55: how is one entry of a one-line list appended or removed? | flags: `plane design set <path> --append X` / `--remove X`; remove matches by value | Tristan | 11-23 | decided (Tristan, P169, 2026-11-23) |
 | D56 | T54: how does the bench grader stop direct edits to `designs/`? | replay: snapshot the design before the run, log every `plane` command, replay the log on a fresh copy; a `designs/` result that differs fails the run | Tristan | 11-23 | decided (Tristan, P169, 2026-11-23) |
 | D57 | T60: 12 AWG or a lower peak current for concept-a hrn-bat? | 10 AWG (fix the design, not the threshold; amended from 12 AWG, which gives 55 A x 0.8 = 44.0 A < 44.8 A peak, W11-G; 10 AWG matches DBF-Combined D-64 pack leads); Dillon informed through T60 | Tristan | 11-23 | decided (conductor default, Tristan P175, 2026-11-23; amended same day) |
-| D58 | T37: which yaw fix for T3.control_authority? | the advisor's pick (W11-A) | Tristan | 11-23 | decided (conductor default per T37 triage, P175) |
+| D58 | T37: which yaw fix for T3.control_authority? | the advisor's pick (W11-A): fix (a), per-axis max moment at fixed total thrust (linprog), cant only; yaw below 1.5 is SKIP (would_be FAIL) because reaction torque is not modelled; fix (b) deferred to v1.1 (T95); concept-a pinwheel cant to the design team (T96) | Tristan | 11-23 | decided (conductor default per T37 triage, P175) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1299,7 +1299,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** T37: advisor W11-A picks the `T3.control_authority` yaw fix (D58), tactician briefs it, builder-plus builds it (core and tests only). T60: design-engineer W11-G sets concept-a `hrn-bat` to 12 AWG with `plane design set` (designs only, D57) and reports the gates before and after. Separate branches; the T60 branch touches no `core/`.
 
-- [ ] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md`
+- [ ] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md` *(pick done: `briefs/U4.9-t37-advice.md`, D58)*
 - [ ] **Step 2:** Build T37 (W11-B); T60 design change (W11-G)
 - [ ] **Step 3: Review** (reviewer W11-R); merge; T37, T60 done
 

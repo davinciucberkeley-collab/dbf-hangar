@@ -4433,7 +4433,7 @@ items:
     updated: '2026-11-23'
   - id: D58
     kind: decision
-    text: 'T37: the advisor picks the T3.control_authority yaw fix (zero-net-thrust max moment / reaction torque field / yaw wind moment); its pick is the default'
+    text: 'T37: the advisor picks the T3.control_authority yaw fix (zero-net-thrust max moment / reaction torque field / yaw wind moment); its pick is the default [advisor pick: fix (a) cant-only LP allocation at fixed total thrust; yaw SKIP (would_be FAIL) below 1.5 since reaction torque is not modelled; (b) deferred T95]'
     source: conductor default per T37 triage, Tristan P175 2026-11-23
     owner: Tristan
     status: decided
@@ -4447,6 +4447,28 @@ items:
     text: "concept-a BOM qty double-counts spares: importers/dbf_blocks.py:27 sets qty = qty + spares, but BOM-A.csv qty already includes the spare (P01 '4 + 1 spare' qty 5; M01 '2 elevons + 1 spare' qty 3), so plane.yaml has P01 6 and M01 4 and lines total $1323.39 instead of $1262.50 (+$60.89). Fix the importer (core) and set P01/M01 qty with plane design set (designs, separate branch)"
     source: conductor T62 prep 2026-11-23 (BOM-A.csv @ a93f14da vs designs/concept-a)
     owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T95
+    kind: task
+    text: 'v1.1: prop reaction torque in PDL (optional propulsion.spin cw/ccw and propulsion.torque_per_thrust_m with _source; schema 1.0 -> 1.1 minor) so T3.control_authority yaw can be judged without cant (D58 fix b, deferred; concept-a source DBF-Combined sitl/a_plant.py KQ 0.0204 m)'
+    source: W11-A advice 2026-11-23 (briefs/U4.9-t37-advice.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T96
+    kind: task
+    text: 'concept-a: all four motor cants turn the same way (pinwheel, from CAD amodel/common.py motor_R), but SITL a_plant.py and CALC-A-YAW assume cant alternates with spin; as drawn hover leaves ~1.06 N*m untrimmed yaw, more than reaction torque (~0.27 N*m) can trim. Either CAD/plane.yaml or the build is wrong; design team decides'
+    source: W11-A advice 2026-11-23 (briefs/U4.9-t37-advice.md)
+    owner: Dillon
     status: open
     due: '2026-12-08'
     units: []
