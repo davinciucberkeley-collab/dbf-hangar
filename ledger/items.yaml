@@ -3683,7 +3683,7 @@ items:
     updated: '2026-11-22'
   - id: T54
     kind: task
-    text: "Bench grader protects designs/ from direct edits and bench.py writes newline=\n (split from T35; core/hangar/ops/bench.py:122,126,217,231)"
+    text: "Bench grader protects designs/ from direct edits and bench.py writes newline=\n (split from T35; core/hangar/ops/bench.py:122,126,217,231) [newline half merged 126b0b4 (W7-R); open: grader protecting designs/ needs a grader-design decision]"
     source: triage 2026-11-21 TR-R
     owner: conductor
     status: open
@@ -3692,7 +3692,7 @@ items:
       - v1.1
     evidence: ''
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T55
     kind: task
     text: 'pdledit: append to and remove from one-line flow lists (split from T46)'
