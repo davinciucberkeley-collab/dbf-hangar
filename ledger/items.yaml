@@ -478,30 +478,30 @@ items:
     updated: '2026-11-20'
   - id: R39
     kind: ruling
-    text: One new repo, `dbf-hangar`, that adapts what the other repos have so everything fits the advisor's vision; Tristan owns all of it
+    text: One new repo, `dbf-hangar`, that adapts what the other repos have so everything fits the advisor's vision; Tristan owns all of it [last unit U2.5 closed by T62 (Tristan 2026-11-23)]
     source: plan §1; T 11-20 (Tristan)
     owner: Tristan
-    status: open
+    status: done
     due: ''
     units:
       - U0.4
       - U1.5
       - U1.6
       - U2.5
-    evidence: 'open: hangar adapts the sources (4f8f2b2, 33e6655, b43daf0, 654888d) but U2.5d, U2.2-2, U3.1 Explorer features and blender/sitl adapters have not landed'
+    evidence: d24b6df
     decided_in: ''
     updated: '2026-11-23'
   - id: R40
     kind: ruling
-    text: At least one person threads the side quests into the main quest; one software tool everyone works on, not four personal ones; integrate before adding
+    text: At least one person threads the side quests into the main quest; one software tool everyone works on, not four personal ones; integrate before adding [last unit U2.5 closed by T62 (Tristan 2026-11-23)]
     source: plan §1; A 11-11
     owner: Tristan
-    status: open
+    status: done
     due: ''
     units:
       - U0.4
       - U2.5
-    evidence: 'open: integration started (same commits as R39); one tool everyone works on needs U3.1 and the U3.4 acceptance'
+    evidence: d24b6df
     decided_in: ''
     updated: '2026-11-23'
   - id: D1
@@ -3938,15 +3938,15 @@ items:
     updated: '2026-11-22'
   - id: T62
     kind: task
-    text: Dillon checks concept-a claims against the Explorer (U2.5 Step 4 acceptance, 15 min) and records who/when/result; the BOM half waits for U2.5d (D33)
+    text: 'Dillon checks concept-a claims against the Explorer (U2.5 Step 4 acceptance, 15 min) and records who/when/result; the BOM half waits for U2.5d (D33) [done by Tristan 2026-11-23: claims match; BOM matches except P01/M01 spares (T94)]'
     source: reviews/2026-11-22-whole-branch.md B3
     owner: Dillon
-    status: open
+    status: done
     due: '2026-11-29'
     units: []
-    evidence: ''
+    evidence: Tristan 2026-11-23 (P181)
     decided_in: ''
-    updated: '2026-11-22'
+    updated: '2026-11-23'
   - id: T63
     kind: task
     text: 'concept-a: 38 PETG parts assigned to jacobs-fdm, whose standard lists PLA only; confirm PETG at Jacobs (add with source to standards/manufacturing.yaml) or re-route to the team printer'
