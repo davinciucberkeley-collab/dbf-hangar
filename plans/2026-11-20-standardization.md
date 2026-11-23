@@ -45,7 +45,7 @@ Every requirement has an id. The ledger (U0.3) is seeded from this table; a unit
 
 | R | Who / when | Requirement (paraphrased from the transcript) | Unit(s) |
 |---|---|---|---|
-| R1 | A 11-11, 11-18 | A consistent file format for a plane ("schema"): if Tristan submits a plane to the system Dillon works in, it drops into the same bucket; CAD files go here, BOM goes here | U1.3 |
+| R1 | A 11-11, 11-18 | A consistent file format for a plane ("schema"): if Tristan submits a plane to the system Dillon works in, it drops into the same bucket; CAD files go here, BOM goes here | U1.3, U2.5d (data, d24b6df) |
 | R2 | A 11-11 | CLI **and** MCP so different agents interface with one app; `plane add …` instead of agents editing HTML per plane | U1.1, U1.2 |
 | R3 | A 11-18 | API → CLI on top → simple natural-language layer on top of that (skills) | U1.1, U1.2, U3.2 |
 | R4 | A 11-18 | Separate operations and data from code; don't edit code every time you run a simulation; saves tokens | U1.1, U1.4, U2.3 |
@@ -56,12 +56,12 @@ Every requirement has an id. The ledger (U0.3) is seeded from this table; a unit
 | R9 | A 11-18 (to Vaibhav) | OpenCAE behind a CLI: can an agent run a full simulation + design iteration without editing or crawling code? then can Dillon? | U2.3, U3.4 |
 | R10 | A 11-11 | Success conditions close to the real goal, hard enough Claude can't meet them unless it works: full 3D physics sim where parts can't pass through each other; mechanism works there or it doesn't; NASA standards; lift ratio | U2.1, U2.2 |
 | R11 | A 11-18 | Rigid-body physics (frictionless first) to check mechanisms: motor motions, flap movements, "if you pull this, does it pull that"; drop the drone in and drag it around | U2.1 (T6), U3.1 (Physics mode) |
-| R12 | A 11-11 | Gates: transport by car (the box), no exposed wires and rules for how wiring works | U1.3, U2.1 (T7) |
+| R12 | A 11-11 | Gates: transport by car (the box), no exposed wires and rules for how wiring works | U1.3, U2.1 (T7), U2.5d (data, d24b6df) |
 | R13 | A 11-11 | Database of plane guidelines and standards every design is evaluated against; manufacturing methods; "does a tailsitter actually work?" evidence | U2.2 (builds on `knowledge/`, `standards/`) |
-| R14 | T 11-11 (Dillon) | BOM: verify parts are real (Amazon blocks agents → use Claude in Chrome) | U1.3 (`bom`), U2.4 (`bom.verify`) |
+| R14 | T 11-11 (Dillon) | BOM: verify parts are real (Amazon blocks agents → use Claude in Chrome) | U1.3 (`bom`), U2.4 (`bom.verify`), U2.5d (data, d24b6df) |
 | R15 | A 11-18 | Claude adds, rarely subtracts; fixes must consider add / subtract / modify / adjust and not add unless needed; weight is the constraint | U1.4 (change kind log), U3.2 (`design-iterate` skill), agent `design-engineer` |
 | R16 | A 11-18 | Iterative research at every step: "wing too heavy → research how others fixed it without adding parts"; recon + benchmarking | U3.2 (`recon` skill), agent `recon` |
-| R17 | A 11-18 | Hardest goal first: working, non-placeholder mechanisms before weight | §6 ordering, U2.1 T6 before T8 |
+| R17 | A 11-18 | Hardest goal first: working, non-placeholder mechanisms before weight | §6 ordering, U2.1 T6 before T8, U2.5d (data, d24b6df) |
 | R18 | A 11-18 | Agent roles by **type and level** of work, not domain; Haiku builds, Sonnet for hard; tactician Sonnet (hard → Opus); advisor Opus; one conductor decides; batch of ~10 units → fresh Opus reviewer | U0.1, §5 |
 | R19 | A 11-18 | Embed rules in the system: hook on agent launch asking "did you follow the rules", role must be picked; roles + output styles in Claude Code; hooks and looping prompts | U0.1, U0.2 |
 | R20 | A 11-18 | Every prompt logged; agent may not stop until each prompt is marked addressed; compaction re-loads the task file; tasks in files, not memory | U0.2, U0.3 |
@@ -1235,7 +1235,7 @@ Not a code unit; it tests everything above.
 
 - [ ] **Step 1: Briefs** (tactician W5-T): `plans/2026-11-20-standardization/briefs/U4.3-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
 - [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
-- [ ] **Step 3: Review** W5-R; merge; tasks set done with the merge commit; R31 done if T72 merges
+- [ ] **Step 3: Review** W5-R; merge; tasks set done with the merge commit; R31 done if T72 merges. (T57 added after audit 2 if the flake recurred.)
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
