@@ -172,6 +172,92 @@ def test_studio_has_no_reemitting_save_routes(sandbox):
     assert not hasattr(studio.Studio, "write_yaml")
 
 
+def _refused(res):
+    return "outside" in " ".join(res["messages"]) or "not available from Studio" in " ".join(res["messages"])
+
+
+def test_studio_op_refuses_a_design_path_outside_designs(sandbox, tmp_path):  # T7
+    (tmp_path / "outside").mkdir()
+    shutil.copy(EXAMPLE / "plane.yaml", tmp_path / "outside" / "plane.yaml")
+    httpd, base = _serve_studio(sandbox)
+    try:
+        for path in (str(EXAMPLE), str(sandbox / ".." / "outside"), str(tmp_path / "outside" / "plane.yaml")):
+            code, res = _call(base, "/api/op/design.get", {"path": path})
+            assert code == 400 and res["ok"] is False and _refused(res), (path, code, res)
+        code, res = _call(base, "/api/op/design.diff", {"a": str(sandbox / "example-tailsitter-wing"), "b": str(EXAMPLE)})
+        assert code == 400 and _refused(res), res
+        assert _call(base, "/api/op/design.get", {"path": str(sandbox / "example-tailsitter-wing")})[0] == 200
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+def test_studio_op_refuses_out_and_non_id_templates(sandbox, tmp_path):  # T7 / D54
+    src = str(sandbox / "example-tailsitter-wing")
+    httpd, base = _serve_studio(sandbox)
+    try:
+        for out in (str(tmp_path / "x.json"), str(sandbox.parent / ".studio" / "x.json")):
+            code, res = _call(base, "/api/op/design.export", {"path": src, "format": "json", "out": out})
+            assert code == 400 and "not available from Studio" in " ".join(res["messages"]), res
+            assert not Path(out).exists()
+        for tpl in (src, "../example-tailsitter-wing", "C:/x/y"):
+            code, res = _call(base, "/api/op/design.new", {"new_id": "zz", "template": tpl})
+            assert code == 400 and _refused(res), (tpl, res)
+        assert not (sandbox / "zz").exists()
+        code, res = _call(base, "/api/op/ledger.seed", {"plan": str(tmp_path / "plan.md")})
+        assert code == 400 and "not available from Studio" in " ".join(res["messages"]), res
+        code, res = _call(base, "/api/op/fea.setup", {"opencae_python": str(tmp_path / "py.exe")})
+        assert code == 400 and "not available from Studio" in " ".join(res["messages"]), res
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+def test_confine_op_params_refuses_unc_and_network_paths(sandbox, monkeypatch):  # T7 / D54
+    resolved = []
+    real = Path.resolve
+    monkeypatch.setattr(Path, "resolve", lambda self, *a, **k: (resolved.append(str(self)), real(self, *a, **k))[1])
+    for p in ("//host/share/designs/x", r"\\host\share\x","//127.0.0.1/c$/x"):
+        assert studio.confine_op_params("design.get", {"path": p}) is not None, p
+    assert resolved == [], resolved   # refused before resolving, so no network lookup
+
+
+def test_every_path_like_op_param_is_confined_or_refused(sandbox):  # T7 / D54: a new op cannot add an open path
+    from hangar.ops import registry
+    likes = {"path", "src", "a", "b", "design", "out", "template", "plan", "dbf_root", "ledger"}
+    seen = 0
+    for name, spec in registry().items():
+        for prm in spec.params:
+            pl = prm.name.lower()
+            if pl in likes or any(w in pl for w in ("python", "exe", "root", "file", "dir")):
+                seen += 1
+                assert studio.confine_op_params(name, {prm.name: "/outside-everything/zzz"}) is not None, (name, prm.name)
+    assert seen > 10
+
+
+def test_studio_op_refuses_ops_that_read_or_write_arbitrary_paths(sandbox, tmp_path):  # T7
+    httpd, base = _serve_studio(sandbox)
+    try:
+        for op_name, body in (("ledger.ingest", {"path": str(tmp_path / "inbox.yaml")}),
+                              ("claim.import-dbf", {"dbf_root": str(tmp_path), "concept": "A", "out": str(tmp_path / "c.yaml")}),
+                              ("ledger.import-dbf", {"dbf_root": str(tmp_path), "ledger": str(tmp_path / "l.yaml")})):
+            code, res = _call(base, "/api/op/" + op_name, body)
+            assert code == 400 and "not available from Studio" in " ".join(res["messages"]), (op_name, res)
+    finally:
+        httpd.shutdown()
+        httpd.server_close()
+
+
+def test_confine_op_params_allows_designs_and_empty_values(sandbox):  # T7 guard: what Studio legitimately sends stays allowed
+    plane = str(sandbox / "example-tailsitter-wing")
+    assert studio.confine_op_params("design.set", {"path": plane, "key": "k", "value": "1", "why": "w"}) is None
+    assert studio.confine_op_params("design.set", {"path": plane.replace("/", "\\")}) is None
+    assert studio.confine_op_params("design.validate", {"path": plane + "/plane.yaml"}) is None
+    assert studio.confine_op_params("design.new", {"new_id": "x", "template": "example-tailsitter-wing"}) is None
+    assert studio.confine_op_params("gate.explain", {"check_id": "T1.attachment", "design": ""}) is None
+    assert studio.confine_op_params("design.get", {"path": 5}) is None
+
+
 PUBLIC_KEYS = {"id", "kind", "status", "owner", "summary", "due", "decided_in"}
 
 

@@ -100,8 +100,8 @@ def test_mcp_tool_returns_same_op_result_as_call(tool, op, kw):
     assert _mcp().GENERATED[tool](**kw) == json.loads(call(op, **kw).to_json())
 
 
-def test_bad_input_is_input_error_on_call_mcp_and_studio(studio_base):
-    bad = str(EXAMPLE) + "-missing"
+def test_bad_input_is_input_error_on_call_mcp_and_studio(studio_base, sandbox):
+    bad = str(sandbox / "example-tailsitter-wing-missing")  # missing, but inside the designs dir Studio serves (T7)
     a = call("design.mass", path=bad)
     assert a.exit_code == 2 and a.data["error"] == "input"
     m = _mcp().GENERATED["design_mass"](path=bad)
@@ -181,5 +181,5 @@ def test_design_export_takes_public_name_format(studio_base, sandbox, tmp_path):
     assert m["ok"] is True
     assert (tmp_path / "m.json").is_file()
     code, s = _post(studio_base, "/api/op/design.export", {"path": src, "format": "json", "out": str(tmp_path / "s.json")})
-    assert code == 200 and s["ok"] is True
-    assert (tmp_path / "s.json").read_bytes() == (tmp_path / "m.json").read_bytes()
+    assert code == 400 and s["ok"] is False and s["data"]["error"] == "input"   # D54: Studio refuses `out`
+    assert not (tmp_path / "s.json").exists()
