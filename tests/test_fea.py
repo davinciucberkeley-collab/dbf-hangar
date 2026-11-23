@@ -12,9 +12,10 @@ import pytest
 import trimesh
 
 from hangar import fea
-from hangar.design import DESIGNS_DIR, load_design
+from hangar.design import REPO_ROOT, load_design
 
-CONCEPT_A = DESIGNS_DIR / "concept-a" / "plane.yaml"
+CONCEPT_A_DIR = REPO_ROOT / "tests" / "fixtures" / "concept-a-frozen"
+CONCEPT_A = CONCEPT_A_DIR / "plane.yaml"
 
 pytestmark = pytest.mark.slow
 
@@ -121,7 +122,7 @@ def test_coarse_mesh_or_loose_model_is_not_checked():
 
 
 def test_scorecard_rows_and_staleness(tmp_path, monkeypatch):
-    src = DESIGNS_DIR / "concept-a"
+    src = CONCEPT_A_DIR
     dst = tmp_path / "concept-a"
     shutil.copytree(src, dst, ignore=shutil.ignore_patterns("fea"))
     d = load_design(dst / "plane.yaml")

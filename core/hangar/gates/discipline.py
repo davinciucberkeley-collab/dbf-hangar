@@ -103,7 +103,7 @@ def _active(h: dict) -> list[dict]:
 # ---------------------------------------------------------------- T2.joint_rf
 @discipline_check("T2.joint_rf", 2)
 def joint_rf(ctx, rep) -> list[CheckResult]:
-    from ..checks import _subtree_mass
+    from ..checks import _subtree_mass, joint_own_rating
     cid, crit = "T2.joint_rf", f"{LOADS}#joint_rf_min"
     design = ctx.design
     try:
@@ -125,15 +125,23 @@ def joint_rf(ctx, rep) -> list[CheckResult]:
             continue
         if t.get("structural", True) is False:
             continue
-        if "rated_load_n" not in t:
-            res.append(_skip(cid, f"{label}: {t['id']} has no rated_load_n in standards/connection-types.yaml",
+        own, basis = joint_own_rating(a)
+        rated = own if own is not None else t.get("rated_load_n")
+        if rated is None:
+            res.append(_skip(cid, f"{label}: {t['id']} has no rated_load_n in standards/connection-types.yaml and the joint states none (pending a sourced rating)",
                              crit, {"joint": label}))
             continue
         load = _subtree_mass(design, a["parent"], a["child"]) / 1000 * _g() * n
-        rf = t["rated_load_n"] / load
-        msg = f"{label}: RF {rf:.2f} (rating {t['rated_load_n']} N / load {load:.1f} N at {n}g) vs min {rf_min}"
-        res.append(_judge(cid, PASS if rf >= rf_min else FAIL, msg, f"{LOADS}#joint_rf_min", pending,
-                          {"joint": label, "rf": round(rf, 3)}, crit))
+        rf = rated / load
+        where = "joint" if own is not None else "library"
+        msg = f"{label}: RF {rf:.2f} (rating {rated} N, {where} value / load {load:.1f} N at {n}g) vs min {rf_min}"
+        status = PASS if rf >= rf_min else FAIL
+        data = {"joint": label, "rf": round(rf, 3), "rating_source": where}
+        if own is not None and basis == "derived" and not pending:
+            res.append(_skip(cid, f"{msg}; not judged: the joint's rating is derived, pending a sourced value", crit,
+                             {**data, "would_be": status}))
+        else:
+            res.append(_judge(cid, status, msg, f"{LOADS}#joint_rf_min", pending, data, crit))
     if not res:
         res.append(_skip(cid, "no structural attachment declares a connection (attachments[].connection)",
                          crit, {"parts": []}))
@@ -356,8 +364,10 @@ def electrical_rating(ctx, rep) -> list[CheckResult]:
             if t is None:
                 res.append(_skip(cid, f"{label}: connection {a['connection']} not in standards/connection-types.yaml",
                                  crit, {"parts": parts}))
+            elif t.get("kind") != "electrical":
+                continue  # a strap or tape is not a disconnect
             elif "rated_current_a" not in t:
-                res.append(_skip(cid, f"{label}: {t['id']} has no rated_current_a in standards/connection-types.yaml",
+                res.append(_skip(cid, f"{label}: {t['id']} has no rated_current_a in standards/connection-types.yaml (pending a sourced value)",
                                  crit, {"parts": parts}))
             else:
                 res.append(compare(f"disconnect {label}", t["rated_current_a"], parts, f"{t['id']} rating"))

@@ -317,6 +317,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D45 | §2.4 lists `bom list`, `morph list`, `idea list`, `davinci push/pull`, which are not registered | amend §2.4 to the registered ops; the missing verbs are v1.1 | Tristan | 11-24 | decided: default (standing rule, 2026-11-22) |
 | D46 | Dec 2 demo: live propose, which update week, which design, who records the backup | show PR #3; publish the 11-30 week merged before the demo; example template then concept-a for Physics; Tristan records the backup at the dry run; Studio launched 15 min early | Tristan | 11-30 | decided: default (standing rule, 2026-11-22) |
 | D48 | U2.5d schema gaps (BOM description, CAD .py), spares in qty, R12/R14 closure with remaining FAILs and unverified lines, CHANGELOG replay | keep part_number/notes; qty with spares; close R12/R14 as data gaps, the rest become tasks; append the replay (history kept) | Tristan | 11-25 | decided: default (standing rule, 2026-11-22) |
+| D50 | Should `T2.joint_rf` use per-joint ratings, including derived ones (estimated bond strength)? | yes: joint rating when not placeholder, else library; derived ratings reported as pending | Tristan | 11-24 | decided: default (standing rule, 2026-11-23) |
+| D51 | Who approves briefs and decisions overnight 2026-11-23? | the conductor; U2.5d-pre-gates approved as written | Tristan | 11-23 | decided (Tristan, P165, 2026-11-23) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -604,6 +606,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W4-G1b, W4-G3 | `builder-plus` | Sonnet | Part 1b (missing blocks) and Part 3a/3b (designs re-import, replay, FEA, baseline) [hard; Tristan reads, advisor checks] | `std/u2.5d-core` (1b, after 1a), `std/u2.5d-designs` (3) | brief checks |
 | W4-G3c | `design-engineer` | Sonnet | Part 3c gate triage after the re-import | tasks per new FAIL | brief checks |
 | W4-XG | `advisor` | Opus | U2.5d hard parts 1b and 3 | READY/NOT READY | one dispatch |
+| W4-TG, W4-G0 | `tactician` then `builder-plus` | Sonnet | U2.5d pre-gates fix (advisor 2026-11-23): `discipline.py` joint_rf per-joint rating (D50), D39 regex, repoint test_fea / test_adapters / concept_a_studio pins to the frozen fixture [hard] | `briefs/U2.5d-pre-gates.md`, branch `std/u2.5d-pre-gates`, merged before the designs branch | brief checks; pytest green on main and on the a619fa5 tree |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1122,9 +1125,10 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 - Produces: `dbf_blocks.bom_block(root: Path, concept: str, parts_csv: dict[str, dict], commit8: str) -> str`; `files_block(mesh_ids: list[str], commit8: str) -> str`; `wiring_block(edges: list[dict], wire_ids: set[str], commit8: str) -> str`; `transport_block(component_ids: list[str]) -> str`; `assembly_block(steps: list[dict], component_ids: list[str]) -> str`; `dbf_geometry._KIND["mesh"]`; `dbf._retention_n(edge: dict) -> float | None`. Each `*_block` returns YAML text for one top-level key (column 0, ends with a newline).
 - Closes: R1, R12, R14, R17, R31 (data gaps, criteria in Part D); ledger T24, T53; the BOM half of T62 becomes runnable.
 
-- [ ] **Step 1: Failing tests** (core PR): `test_mesh_kind_volume_in_mm3`, `test_retention_n_ignores_non_numeric`, `test_conn_method_knows_pitot_tubing`, `test_bom_block_*` (3), `test_files_block_lists_every_mesh`, `test_wiring_block_*` (2), `test_transport_block_one_group`, `test_assembly_block_*` (3), `test_dump_exposes_assembly_steps` (skipif DBF clone missing)
-- [ ] **Step 2: Run** → FAIL
-- [ ] **Step 3: Implement** parts 1a and 1b of `briefs/U2.5d-reimport.md`; dry-run the whole importer into a tmp folder (never `designs/`); core PR merged
+- [x] **Step 1: Failing tests** (core PR): `test_mesh_kind_volume_in_mm3`, `test_retention_n_ignores_non_numeric`, `test_conn_method_knows_pitot_tubing`, `test_bom_block_*` (3), `test_files_block_lists_every_mesh`, `test_wiring_block_*` (2), `test_transport_block_one_group`, `test_assembly_block_*` (3), `test_dump_exposes_assembly_steps` (skipif DBF clone missing)
+- [x] **Step 2: Run** → FAIL
+- [x] **Step 3: Implement** parts 1a and 1b of `briefs/U2.5d-reimport.md`; dry-run the whole importer into a tmp folder (never `designs/`); core PR merged *(merged d421013; ACCEPT 614a820)*
+- [x] **Step 3b: Pre-gates fix in place** (D50, D51; brief `briefs/U2.5d-pre-gates.md`, branch `std/u2.5d-pre-gates`): `T2.joint_rf` per-joint rating, D39 detector, test pins to `tests/fixtures/concept-a-frozen`; merged before Step 4. Fixes CI on the Step 4 branch, no new unit (R22). *(merged 41e6689; W4-RD ACCEPT)*
 - [ ] **Step 4: Designs PR** (part 3 of the brief): re-import into `designs/concept-a/`, replay `CHANGELOG.yaml`, regenerate claims, re-run FEA (hashes change), refresh baseline
 - [ ] **Step 5: Run** `plane design validate designs/concept-a`, `plane baseline check --all` (exit 0), `plane progress --write`; Dillon runs the BOM half of T62 against the Explorer
 

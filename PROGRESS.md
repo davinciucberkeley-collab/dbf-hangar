@@ -32,7 +32,7 @@
 | U2.2 | Standards database — close the pending sources (R10, R13) | 6/6 | done | ACCEPT |
 | U2.3 | Tool adapters — OpenCAE, MuJoCo, AeroSandbox, DaVinci [hard] | 5/5 | done | ACCEPT |
 | U2.4 | Team-ops commands (R7, R14, R26, R27, R31, R38) | 5/5 | done | ACCEPT |
-| U2.5 | Import concept A, decisions and program constraints from DBF-Combined [hard] | 4/10 | in progress | ACCEPT |
+| U2.5 | Import concept A, decisions and program constraints from DBF-Combined [hard] | 8/11 | in progress | ACCEPT |
 
 ### W3 One surface, skills, proof
 
@@ -56,10 +56,10 @@
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
-| ruling | 10 | 28 | 1 | 1 | 0 | 40 |
-| task | 40 | 28 | 0 | 2 | 0 | 70 |
+| ruling | 9 | 29 | 1 | 1 | 0 | 40 |
+| task | 42 | 28 | 0 | 2 | 0 | 72 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 235 | 251 |
+| decision | 12 | 0 | 0 | 4 | 237 | 253 |
 
 ## Overdue
 
