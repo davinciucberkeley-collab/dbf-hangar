@@ -1303,7 +1303,7 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md` *(pick: `briefs/U4.9-t37-advice.md`, D58; brief f234a51, hard; baseline unchanged)*
 - [x] **Step 2:** Build T37 (W11-B); T60 design change (W11-G) *(t37 b3049cd builder-plus, baseline unchanged; t60 07969fd 10 AWG, D57 amended)*
-- [ ] **Step 3: Review** (reviewer W11-R); merge; T37, T60 done
+- [x] **Step 3: Review** (reviewer W11-R); merge; T37, T60 done *(T37 ACCEPT merged 2c41f6f; T60 REOPEN once (reimport test pinned 14 AWG), ACCEPT on re-review, merged 7c3b87a; follow-ups T98, T99)*
 
 ### Unit U4.10: v1.1 cleanup, first batch (T83, T86, T88, T90; P175)
 

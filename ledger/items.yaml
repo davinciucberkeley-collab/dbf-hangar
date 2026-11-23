@@ -3875,12 +3875,12 @@ items:
     text: 'concept-a hrn-bat 14 AWG: 45 A x 0.8 derating = 36 A < 44.8 A peak pack current (T7.electrical_rating report-only FAIL); design team picks 12 AWG or lower peak'
     source: W4-TC report 2026-11-22
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: 7c3b87a
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T61
     kind: task
     text: concept-a hrn-bat has no route, so T7.wiring measures a straight CG line (40 mm WARN is a data gap); add a route matching E-HRN-13 (tray notch, skin) and make the gate say 'route missing' when route is empty
