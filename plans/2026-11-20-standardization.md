@@ -613,6 +613,9 @@ W4 wave rules (W3 lessons T41–T43):
 | W5-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.3 brief each | branch `std/u4.3-<task>` | brief checks; CI green |
 | W5-R | `reviewer` | Opus (fresh) | every U4.3 branch | `reviews/2026-11-23-w5.md` | "### Verdict:" per branch |
 | W5-A | `auditor` | Haiku | hourly overnight audit | report | findings acted on |
+| W6-T | `tactician` | Sonnet | U4.4 briefs for T84, T85, T15, T21, T23, T3, T20 | `briefs/U4.4-*.md` | builder-ready bar; R-a, R-b |
+| W6-B1…B7 | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one U4.4 brief each | branch `std/u4.4-<task>` | brief checks; CI green |
+| W6-R | `reviewer` | Opus (fresh) | every U4.4 branch | `reviews/2026-11-23-w6.md` | "### Verdict:" per branch |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1238,6 +1241,14 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Briefs** (tactician W5-T; T28 held, D52; T57 needs none, closed): `plans/2026-11-20-standardization/briefs/U4.3-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
 - [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t72 7c9e406, t58 48a15f8, t68 1f47011, t17 f4443ce, t52 ca0fedb, t26 c1fb8f7)*
 - [x] **Step 3: Review** W5-R; merge; tasks set done with the merge commit; R31 done if T72 merges. (T57 added after audit 2 if the flake recurred.) *(all six ACCEPT, reviews/2026-11-23-w5.md; merged; last 11beb6f; follow-ups T83-T85)*
+
+### Unit U4.4: Overnight core fixes, round 2 (D51)
+
+**Scope:** T84 (flaky `test_propose_link_survives_real_git_side_effects` 404), T85 (U4.3 small follow-ups), T15 (T7 point-mass rows SKIP, not PASS), T21 (one exit-code rule for a missing tool, D37), T23 (fea.py/mcp.md polish), T3 (ops registry retry after a failed import), T20 (`sim drop --height-m`). Core, tests and docs only; no `designs/`, no `standards/` change, no CI workflow change. Not in scope: T11 (workflow), T16 (FEA hash change would stale concept-a results), T83 (agent file).
+
+- [ ] **Step 1: Briefs** (tactician W6-T): `briefs/U4.4-<task>.md`, builder-ready (R-a, R-b)
+- [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
+- [ ] **Step 3: Review** W6-R; merge; tasks set done with the merge commit
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
