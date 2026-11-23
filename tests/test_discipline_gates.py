@@ -190,6 +190,54 @@ def test_control_authority_skips_non_vtol():
     assert [r.status for r in rs] == [SKIP] and "not applicable" in rs[0].message
 
 
+def _moment(r) -> float:
+    import re
+    return float(re.search(r"control moment (-?[0-9.]+) N\*m", r.message).group(1))
+
+
+def _axis_row(design, axis):
+    return next(r for r in rows(run(design, tiers={3}), "T3.control_authority") if r.data["axis"] == axis)
+
+
+def _pinwheel(d: Design, cant_deg: float = 30.0) -> Design:
+    """Cant follows the sign of each motor's z, so every motor's cant torque about the up axis has the same sign (a pinwheel)."""
+    c = math.radians(cant_deg)
+    for comp in d.data["components"]:
+        if comp["type"] == "motor":
+            s = c if comp["position"][2] > 0 else -c
+            comp["propulsion"]["axis"] = [-math.cos(s), math.sin(s), 0]
+    return d
+
+
+def test_control_authority_pinwheel_cant_yaw_is_not_judged_and_never_passes():  # T37 (D58)
+    row = _axis_row(_pinwheel(vtol()), "yaw")
+    assert row.status == SKIP and row.data["would_be"] == FAIL and row.status != PASS
+    assert "prop reaction torque is not modelled" in row.message and "conservative" in row.message
+    assert abs(row.data["trim_yaw_nm"]) > 0.5       # equal thrust leaves an untrimmed yaw moment
+    assert _moment(row) < 0.2 * abs(row.data["trim_yaw_nm"])     # the old sum of magnitudes gave a large number here
+    assert {_axis_row(_pinwheel(vtol()), a).status for a in ("pitch", "roll")} <= {PASS, FAIL}
+
+
+def test_control_authority_equal_pitch_lever_gives_zero_pitch_moment():  # T37 (D58)
+    d = vtol(cant_deg=0.0)
+    d.data["components"] = [c for c in d.data["components"] if c["id"] not in ("motor_3", "motor_4")]   # both left at the same height
+    d.data["attachments"] = [a for a in d.data["attachments"] if a["id"] not in ("motor-3-wing", "motor-4-wing")]
+    assert _moment(_axis_row(d, "pitch")) == 0.0
+
+
+def test_control_authority_alternating_cant_still_passes_yaw():  # T37 (D58): the vtol fixture alternates its cant
+    row = _axis_row(vtol(), "yaw")
+    assert row.status == PASS and abs(row.data["trim_yaw_nm"]) < 1e-6
+
+
+@pytest.mark.slow
+def test_control_authority_concept_a_yaw_trim():  # T37 (D58): the drawn cant is a uniform pinwheel
+    row = _axis_row(load_design(CONCEPT_A), "yaw")
+    assert row.status == SKIP and row.data["would_be"] == FAIL
+    assert row.data["trim_yaw_nm"] == pytest.approx(-1.06, abs=0.02)
+    assert _moment(row) == pytest.approx(0.014, abs=0.005)
+
+
 # ---- T3.transition_margin ----
 def _stall(design) -> float:
     return rows(run(design, tiers={3}), "T3.stall")[0].data["stall_mps"]
