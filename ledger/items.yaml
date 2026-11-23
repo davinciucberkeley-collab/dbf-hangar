@@ -286,14 +286,14 @@ items:
     text: 'Pointer files: AGENTS/CLAUDE.md point to rule files, not contain them; trim bloat (280 stale items)'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U0.1
       - U4.1
-    evidence: ''
+    evidence: 55fedae
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-22'
   - id: R24
     kind: ruling
     text: Team harness repo + install script so every teammate's Claude gets the same roles
@@ -348,14 +348,14 @@ items:
     text: One link for all the team's stuff; local copies push to the shared online version
     source: plan §1; A 11-11
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U3.1
       - U4.1
-    evidence: ''
+    evidence: 55fedae
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-22'
   - id: R29
     kind: ruling
     text: Connect DaVinci API to Claude; do a full build in DaVinci
@@ -409,13 +409,13 @@ items:
     text: 'Agents are good at making things faster: e.g. renderer 10 min → 3 min'
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units:
       - U4.1
-    evidence: ''
+    evidence: 55fedae
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-22'
   - id: R34
     kind: ruling
     text: Use superpowers when building software like OpenCAE

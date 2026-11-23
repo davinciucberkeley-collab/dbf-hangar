@@ -49,14 +49,14 @@
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U4.1 | Whole-branch review, performance, release | 4/5 | in progress | ACCEPT |
+| U4.1 | Whole-branch review, performance, release | 5/5 | done | ACCEPT |
 | U4.2 | Dec 2 presentation package | 0/4 | not started | - |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
-| ruling | 13 | 25 | 1 | 1 | 0 | 40 |
+| ruling | 10 | 28 | 1 | 1 | 0 | 40 |
 | task | 44 | 24 | 0 | 2 | 0 | 70 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 232 | 248 |
