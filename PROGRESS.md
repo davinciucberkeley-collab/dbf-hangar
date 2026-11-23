@@ -64,6 +64,7 @@
 | U4.8 | Bench grader hardening (T91, T92, T93; P175) | 1/3 | in progress | - |
 | U4.9 | Yaw authority fix and concept-a battery harness (T37, T60; D57, D58) | 0/3 | not started | - |
 | U4.10 | v1.1 cleanup, first batch (T83, T86, T88, T90; P175) | 0/3 | not started | - |
+| U4.11 | Recompute the 40 read_value claims (T28; D59 overrules D52) | 0/3 | not started | - |
 
 ## Ledger
 
@@ -72,7 +73,7 @@
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
 | task | 44 | 50 | 0 | 2 | 0 | 96 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 244 | 260 |
+| decision | 12 | 0 | 0 | 4 | 245 | 261 |
 
 ## Overdue
 

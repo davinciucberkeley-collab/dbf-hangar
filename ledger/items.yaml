@@ -4246,7 +4246,7 @@ items:
     updated: '2026-11-23'
   - id: D52
     kind: decision
-    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready'
+    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready [overruled by D59 (Tristan, P182)]'
     source: conductor under D51, 2026-11-23 (W5-T report)
     owner: Tristan
     status: decided
@@ -4473,5 +4473,16 @@ items:
     due: '2026-12-08'
     units: []
     evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D59
+    kind: decision
+    text: "T28 built now (overrules D52): register read_value so the 40 concept-a read_value claims recompute; the Dec 2 deck and metrics lines that say 'not recomputed' are updated with the measured result"
+    source: Tristan, P182, 2026-11-23
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-23'
