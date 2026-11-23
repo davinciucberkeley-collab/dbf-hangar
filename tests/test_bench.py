@@ -237,14 +237,19 @@ def test_main_logs_argv_and_cwd_only_when_bench_log_is_set(tmp_path, monkeypatch
 
 def test_replay_kind_skips_read_only_replays_the_allow_list_and_refuses_the_rest():
     for argv in (["design", "mass", "designs/x"], ["design", "get", "designs/x", "--key", "id"], ["validate", "designs/x"],
-                 ["mass", "designs/x"], ["list"], ["--version"], [], ["design"], ["design", "bogus"], ["fea", "plan", "designs/x"]):
+                 ["mass", "designs/x"], ["list"], ["--version"], [], ["design"], ["design", "bogus"], ["fea", "plan", "designs/x"],
+                 ["--help"], ["validate", "designs/x", "--tier", "3"]):
         assert bench.replay_kind(argv) == "skip", argv
     for argv in (["design", "set", "designs/x", "k", "--value", "1", "--why", "w"], ["design", "copy", "designs/x", "y"],
                  ["design", "new", "y"], ["new", "y"]):
         assert bench.replay_kind(argv) == "replay", argv
     for argv in (["bench", "run", "--task", "t", "--agent", "a", "--model", "haiku"], ["fea", "run", "designs/x"], ["fea", "designs/x", "--all"],
                  ["design", "export", "designs/x", "--format", "stl", "--out", "/tmp/o"], ["ledger", "set", "T1"], ["import", "dbf"],
-                 ["baseline", "update", "designs/x"], ["studio"], ["no-such-command", "x"]):
+                 ["baseline", "update", "designs/x"], ["studio"], ["no-such-command", "x"],
+                 ["--", "design", "export", "designs/x", "--out", "f"], ["design", "--", "export", "designs/x", "--out", "f"],
+                 ["--foo", "design", "set", "designs/x", "k", "--value", "1", "--why", "w"], ["--", "design", "mass", "designs/x"],
+                 ["design", "--", "mass", "designs/x"], ["--version", "design", "export", "designs/x"],
+                 ["validate", "designs/x", "--out", "f"], ["validate", "designs/x", "--out=f"]):
         assert bench.replay_kind(argv) == "refuse", argv
 
 

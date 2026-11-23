@@ -157,10 +157,16 @@ def replay_kind(argv: list[str]) -> Literal["skip", "replay", "refuse"]:
     """T92: "skip" for a command that cannot write (no words, an option such as --version, a group without a known verb,
     an op with mutates=False matched on its first two words, validate/mass/list); "replay" for REPLAY_ALLOW;
     "refuse" for everything else."""
-    if not argv or argv[0].startswith("-") or argv[0] in READ_ONLY_LEGACY:
+    if not argv:
         return "skip"
+    if argv[0].startswith("-"):      # click takes `plane -- design export ...` and `plane --foo design set ...`: only a lone --version/--help is read-only
+        return "skip" if argv in (["--version"], ["--help"]) else "refuse"
+    if argv[0] in READ_ONLY_LEGACY:
+        return "refuse" if any(a == "--out" or a.startswith("--out=") for a in argv[1:]) else "skip"      # validate --out FILE writes FILE
     if any(argv[:len(a)] == list(a) for a in REPLAY_ALLOW):
         return "replay"
+    if len(argv) > 1 and argv[1].startswith("-"):      # `plane design -- export ...`: an option or -- between group and verb is never read-only
+        return "refuse"
     specs = registry().values()
     for spec in specs:
         if argv[:2] == [spec.group, spec.verb]:
