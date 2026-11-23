@@ -106,7 +106,7 @@ def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out:
 @op(name="design.new", summary="Create a design from a template.", mutates=True, render=lambda r: r.data["path"])
 def new_op(new_id: str, *, template: str = "example-tailsitter-wing") -> OpResult:
     from ..cli import new_design, ID_RE
-    if not ID_RE.match(new_id):
+    if not ID_RE.fullmatch(new_id):
         raise OpInputError(f"invalid id {new_id!r}: must match {ID_RE.pattern}")
     try:
         p = new_design(new_id, template)

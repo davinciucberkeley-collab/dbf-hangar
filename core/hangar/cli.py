@@ -134,7 +134,7 @@ def new_cmd(new_id, template):
 
 def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
     """Copy designs/TEMPLATE (plane.yaml plus mesh files) to designs/NEW_ID; return the new plane.yaml."""
-    if not ID_RE.match(new_id):
+    if not ID_RE.fullmatch(new_id):
         raise ValueError(f"invalid id {new_id!r}: use lowercase letters, digits, - and _")
     target_dir = DESIGNS_DIR / new_id
     if target_dir.exists():
@@ -274,7 +274,7 @@ def import_dbf_cmd(dbf_root, concept, new_id, out):
     """Rebuild a DBF-Combined concept as a platform design (plane.yaml + meshes/)."""
     from .importers.dbf import import_concept
     new_id = new_id or f"concept-{concept.lower()}"
-    if not ID_RE.match(new_id):
+    if not ID_RE.fullmatch(new_id):
         _fail(f"invalid id {new_id!r}: use lowercase letters, digits, - and _")
     out = out or str(DESIGNS_DIR / new_id)
     p = Path(import_concept(dbf_root, concept=concept, out_dir=out, log=lambda m: click.echo(m, err=True)))

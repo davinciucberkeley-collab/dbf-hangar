@@ -224,7 +224,7 @@ def test_confine_op_params_refuses_unc_and_network_paths(sandbox, monkeypatch): 
 
 def test_every_path_like_op_param_is_confined_or_refused(sandbox):  # T7 / D54: a new op cannot add an open path
     from hangar.ops import registry
-    likes = {"path", "src", "a", "b", "design", "out", "template", "plan", "dbf_root", "ledger"}
+    likes = {"path", "src", "a", "b", "design", "out", "template", "plan", "dbf_root", "ledger", "agent", "task"}
     seen = 0
     for name, spec in registry().items():
         for prm in spec.params:
@@ -233,6 +233,21 @@ def test_every_path_like_op_param_is_confined_or_refused(sandbox):  # T7 / D54: 
                 seen += 1
                 assert studio.confine_op_params(name, {prm.name: "/outside-everything/zzz"}) is not None, (name, prm.name)
     assert seen > 10
+
+
+def test_studio_gate_takes_only_bare_ids_for_bench_run_and_design_new():  # T89: agent/task name files; a trailing newline is not an id
+    for key in ("agent", "task"):
+        for bad in ("../../x", "a/b", "design-engineer\n", "C:/x"):
+            assert studio.confine_op_params("bench.run", {key: bad}) is not None, (key, bad)
+        assert studio.confine_op_params("bench.run", {key: "design-engineer"}) is None
+    assert studio.confine_op_params("design.new", {"template": "ok\n"}) is not None
+
+
+def test_id_re_is_defined_once_and_matches_exactly():  # T89
+    assert studio.ID_RE is cli.ID_RE
+    assert cli.ID_RE.fullmatch("ok\n") is None and cli.ID_RE.fullmatch("ok-1_a") is not None
+    for rel in ("cli.py", "studio.py", "ops/design.py", "ops/edit.py", "ops/bench.py"):   # every user of the shared ID_RE matches exactly
+        assert "ID_RE.match(" not in (Path(studio.__file__).parent / rel).read_text(encoding="utf-8"), rel
 
 
 def test_studio_op_refuses_ops_that_read_or_write_arbitrary_paths(sandbox, tmp_path):  # T7

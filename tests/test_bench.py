@@ -157,6 +157,19 @@ def test_run_rejects_wrong_model(fake_repo, monkeypatch):
     assert not (fake_repo / "bench" / "results" / "runs").exists()
 
 
+@pytest.mark.parametrize("key,bad", [("agent", "../../planted"), ("agent", "design-engineer\n"), ("agent", "a/b"),
+                                      ("task", "../tasks/add-working-flap"), ("task", "add-working-flap\n")])
+def test_run_rejects_non_id_agent_and_task(key, bad, fake_repo, monkeypatch):  # T89: exit 2 inside the op, before any file is read
+    monkeypatch.chdir(fake_repo)
+    seen = {}
+    _fake_claude(monkeypatch, seen, "claude-haiku-5-5")
+    shutil.copy(fake_repo / ".claude" / "agents" / "design-engineer.md", fake_repo / "planted.md")  # what '../../planted' would reach
+    args = {"task": "add-working-flap", "agent": "design-engineer", "model": "haiku", key: bad}
+    r = call("bench.run", **args)
+    assert r.exit_code == 2 and r.data["error"] == "input" and "bare id" in " ".join(r.messages), r.messages
+    assert "cmd" not in seen and not (fake_repo / "bench" / "results" / "runs").exists()
+
+
 def test_report_table(tmp_path, monkeypatch):
     (tmp_path / "pyproject.toml").write_text("", encoding="utf-8")
     runs = tmp_path / "bench" / "results" / "runs"
