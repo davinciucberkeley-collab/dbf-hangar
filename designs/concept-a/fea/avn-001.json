@@ -28,27 +28,22 @@
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-AVN-04",
+      "joint": "E-AVN-05",
       "other": "avn-003",
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-AVN-05",
+      "joint": "E-AVN-06",
       "other": "avn-004",
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-AVN-06",
-      "other": "avn-005",
-      "how": "contact within 0.5 mm"
-    },
-    {
-      "joint": "E-AVN-08",
+      "joint": "E-AVN-14",
       "other": "avn-008",
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-AVN-11",
+      "joint": "E-AVN-17",
       "other": "hwc-003",
       "how": "contact within 0.5 mm"
     }
@@ -57,14 +52,14 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 2.762,
-      "max_von_mises_mpa": 2.776,
-      "safety_factor_at_ultimate": 4.56,
-      "max_displacement_mm": 0.0007,
+      "max_von_mises_away_mpa": 2.535,
+      "max_von_mises_mpa": 2.541,
+      "safety_factor_at_ultimate": 4.97,
+      "max_displacement_mm": 0.0006,
       "nodes": 41608,
       "mesh_size_max_mm": 2.35,
       "equilibrium_ok": true,
-      "load_share_on_clamped_faces": 0.123,
+      "load_share_on_clamped_faces": 0.12,
       "location_mm": [
         48.92,
         9.86,
@@ -107,32 +102,32 @@
         {
           "name": "E-PRP-09 from prp-003",
           "force_n": [
-            2.151,
-            0.014,
-            0.462
+            2.206,
+            0.002,
+            0.255
           ],
           "moment_nmm": [
-            0.06,
-            0.54,
-            -0.05
+            -0.1,
+            0.61,
+            -0.1
           ],
           "at_mm": [
-            99.423,
-            0.193,
-            16.714
+            99.422,
+            0.196,
+            16.716
           ]
         },
         {
           "name": "E-AVN-02 from avn-007",
           "force_n": [
-            2.129,
-            0.042,
-            0.253
+            2.098,
+            -0.007,
+            0.345
           ],
           "moment_nmm": [
-            -0.21,
-            20.76,
-            -0.35
+            -0.03,
+            19.66,
+            -0.08
           ],
           "at_mm": [
             60.0,
@@ -141,15 +136,15 @@
           ]
         },
         {
-          "name": "E-AVN-04 from avn-003",
+          "name": "E-AVN-05 from avn-003",
           "force_n": [
-            0.501,
-            0.004,
-            0.095
+            0.535,
+            0.002,
+            0.045
           ],
           "moment_nmm": [
-            0.05,
-            -0.98,
+            -0.05,
+            -0.33,
             -0.0
           ],
           "at_mm": [
@@ -159,16 +154,16 @@
           ]
         },
         {
-          "name": "E-AVN-05 from avn-004",
+          "name": "E-AVN-06 from avn-004",
           "force_n": [
-            1.445,
-            0.019,
-            0.442
+            1.461,
+            -0.011,
+            0.381
           ],
           "moment_nmm": [
-            0.01,
-            0.17,
-            -0.01
+            -0.03,
+            0.24,
+            -0.03
           ],
           "at_mm": [
             57.5,
@@ -177,34 +172,16 @@
           ]
         },
         {
-          "name": "E-AVN-06 from avn-005",
+          "name": "E-AVN-14 from avn-008",
           "force_n": [
-            0.315,
-            0.004,
-            0.106
+            -6.05,
+            0.532,
+            -5.997
           ],
           "moment_nmm": [
-            0.0,
-            0.01,
-            -0.0
-          ],
-          "at_mm": [
-            52.795,
-            -44.737,
-            16.495
-          ]
-        },
-        {
-          "name": "E-AVN-08 from avn-008",
-          "force_n": [
-            1.086,
-            0.013,
-            0.297
-          ],
-          "moment_nmm": [
-            0.17,
-            2.34,
-            -0.05
+            -16.27,
+            22.89,
+            24.29
           ],
           "at_mm": [
             73.189,
@@ -213,16 +190,16 @@
           ]
         },
         {
-          "name": "E-AVN-11 from hwc-003",
+          "name": "E-AVN-17 from hwc-003",
           "force_n": [
-            0.548,
-            0.011,
-            0.135
+            0.551,
+            -0.002,
+            0.168
           ],
           "moment_nmm": [
-            -0.06,
-            6.55,
-            -0.12
+            -0.01,
+            6.25,
+            -0.03
           ],
           "at_mm": [
             60.0,
@@ -241,17 +218,17 @@
           "force_n": [
             0.294,
             0.0,
-            0.0
+            -0.0
           ],
           "moment_nmm": [
             -0.0,
             0.0,
-            -0.0
+            0.0
           ],
           "at_mm": [
-            99.423,
-            0.193,
-            16.714
+            99.422,
+            0.196,
+            16.716
           ]
         },
         {
@@ -273,15 +250,15 @@
           ]
         },
         {
-          "name": "E-AVN-04 from avn-003",
+          "name": "E-AVN-05 from avn-003",
           "force_n": [
             0.068,
             -0.0,
             0.0
           ],
           "moment_nmm": [
-            0.0,
             -0.0,
+            0.0,
             -0.0
           ],
           "at_mm": [
@@ -291,16 +268,16 @@
           ]
         },
         {
-          "name": "E-AVN-05 from avn-004",
+          "name": "E-AVN-06 from avn-004",
           "force_n": [
             0.199,
             0.0,
             0.0
           ],
           "moment_nmm": [
-            -0.0,
             0.0,
-            0.0
+            -0.0,
+            -0.0
           ],
           "at_mm": [
             57.5,
@@ -309,25 +286,7 @@
           ]
         },
         {
-          "name": "E-AVN-06 from avn-005",
-          "force_n": [
-            0.044,
-            -0.0,
-            0.0
-          ],
-          "moment_nmm": [
-            -0.0,
-            0.0,
-            -0.0
-          ],
-          "at_mm": [
-            52.795,
-            -44.737,
-            16.495
-          ]
-        },
-        {
-          "name": "E-AVN-08 from avn-008",
+          "name": "E-AVN-14 from avn-008",
           "force_n": [
             0.141,
             -0.0,
@@ -336,7 +295,7 @@
           "moment_nmm": [
             0.0,
             -0.0,
-            -0.0
+            0.0
           ],
           "at_mm": [
             73.189,
@@ -345,7 +304,7 @@
           ]
         },
         {
-          "name": "E-AVN-11 from hwc-003",
+          "name": "E-AVN-17 from hwc-003",
           "force_n": [
             0.134,
             -0.0,
@@ -368,7 +327,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "023fd68c4cef9c28",
-  "generated": "2026-11-22T01:48:51+00:00",
+  "hash": "04f5455ef231aeb8",
+  "generated": "2026-11-23T06:44:40+00:00",
   "opencae_version": "0.2.0"
 }

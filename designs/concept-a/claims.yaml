@@ -1,4 +1,4 @@
-# Concept A claims, imported by hangar.importers.dbf_claims from DBF-Combined @ a93f14d.
+# Concept A claims, imported by hangar.importers.dbf_claims from DBF-Combined @ a93f14da.
 # GENERATED: edit the importer or the source claims, not this file. Parameters are constants read from params-A.json;
 # calculations are registered functions in core/hangar/calcs (D14).
 schema: claims/1

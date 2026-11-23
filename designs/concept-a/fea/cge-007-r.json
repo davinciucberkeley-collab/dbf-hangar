@@ -11,14 +11,14 @@
   "part_size_mm": 53.16,
   "supports": [
     {
-      "joint": "E-CGE-14",
+      "joint": "E-CGE-31",
       "other": "wng-002",
       "how": "contact within 0.5 mm"
     }
   ],
   "load_joints": [
     {
-      "joint": "E-CGE-13",
+      "joint": "E-CGE-30",
       "other": "cge-005-r",
       "how": "contact within 0.5 mm"
     }
@@ -27,18 +27,18 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.426,
-      "max_von_mises_mpa": 0.426,
-      "safety_factor_at_ultimate": 29.59,
-      "max_displacement_mm": 0.0074,
+      "max_von_mises_away_mpa": 0.304,
+      "max_von_mises_mpa": 0.304,
+      "safety_factor_at_ultimate": 41.46,
+      "max_displacement_mm": 0.0049,
       "nodes": 5836,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
       "load_share_on_clamped_faces": 0.0,
       "location_mm": [
-        49.9,
+        51.26,
         300.0,
-        -0.89
+        -4.67
       ],
       "project": ".studio/fea/concept-a/cge-007-r/concept-a-cge-007-r-landing.ocae",
       "report": ".studio/fea/concept-a/cge-007-r/concept-a-cge-007-r-landing_report.html",
@@ -48,10 +48,10 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 11.571,
-      "max_von_mises_mpa": 11.571,
-      "safety_factor_at_ultimate": 1.09,
-      "max_displacement_mm": 0.1787,
+      "max_von_mises_away_mpa": 11.711,
+      "max_von_mises_mpa": 11.711,
+      "safety_factor_at_ultimate": 1.08,
+      "max_displacement_mm": 0.183,
       "nodes": 5836,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
@@ -75,16 +75,16 @@
       "about": "tier-2 drop test, each joint at the instant of its largest force (an envelope), force and moment, x 1.5 ultimate factor",
       "loads": [
         {
-          "name": "E-CGE-13 from cge-005-r",
+          "name": "E-CGE-30 from cge-005-r",
           "force_n": [
-            -0.783,
-            -2.556,
-            0.01
+            -2.611,
+            -6.452,
+            0.032
           ],
           "moment_nmm": [
-            11.41,
-            -4.92,
-            1.59
+            -4.08,
+            14.28,
+            -1.42
           ],
           "at_mm": [
             -7.5,
@@ -99,16 +99,16 @@
       "about": "hover at full thrust held at the root: every motor at max_thrust_n plus gravity, joint forces and moments from a static solve, x 1.5 ultimate factor",
       "loads": [
         {
-          "name": "E-CGE-13 from cge-005-r",
+          "name": "E-CGE-30 from cge-005-r",
           "force_n": [
-            -1.75,
-            -2.037,
-            3.512
+            -1.667,
+            -1.929,
+            3.56
           ],
           "moment_nmm": [
-            -430.12,
-            -27.9,
-            8.73
+            -427.59,
+            -15.0,
+            13.42
           ],
           "at_mm": [
             -7.5,
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "thrust",
   "design": "concept-a",
-  "hash": "b621809c70daab95",
-  "generated": "2026-11-22T02:17:34+00:00",
+  "hash": "27c5bb31739af1c6",
+  "generated": "2026-11-23T06:59:45+00:00",
   "opencae_version": "0.2.0"
 }

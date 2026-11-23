@@ -5,23 +5,23 @@
   "allowable_mpa": 12.6,
   "ultimate_factor": 1.5,
   "wall_mm": {
-    "p5": 0.76,
-    "median": 1.2
+    "p5": 0.79,
+    "median": 1.51
   },
-  "part_size_mm": 143.83,
+  "part_size_mm": 121.49,
   "supports": [
     {
-      "joint": "E-CGE-09",
+      "joint": "E-CGE-26",
       "other": "cge-004",
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-CGE-12",
+      "joint": "E-CGE-29",
       "other": "cge-005-r",
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-CGE-15",
+      "joint": "E-CGE-32",
       "other": "cge-005-l",
       "how": "contact within 0.5 mm"
     }
@@ -29,26 +29,61 @@
   "load_joints": [
     {
       "joint": "E-CGE-01",
-      "other": "cge-002-ur",
+      "other": "cge-002-a",
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-CGE-03",
-      "other": "cge-002-ul",
+      "joint": "E-CGE-02",
+      "other": "cge-002-b",
       "how": "contact within 0.5 mm"
     },
     {
       "joint": "E-CGE-05",
-      "other": "cge-002-lr",
+      "other": "cge-009-ur",
       "how": "contact within 0.5 mm"
     },
     {
       "joint": "E-CGE-07",
-      "other": "cge-002-ll",
+      "other": "cge-010-ur",
       "how": "contact within 0.5 mm"
     },
     {
-      "joint": "E-CGE-18",
+      "joint": "E-CGE-10",
+      "other": "cge-009-ul",
+      "how": "contact within 0.5 mm"
+    },
+    {
+      "joint": "E-CGE-12",
+      "other": "cge-010-ul",
+      "how": "contact within 0.5 mm"
+    },
+    {
+      "joint": "E-CGE-15",
+      "other": "cge-009-lr",
+      "how": "contact within 0.5 mm"
+    },
+    {
+      "joint": "E-CGE-17",
+      "other": "cge-010-lr",
+      "how": "contact within 0.5 mm"
+    },
+    {
+      "joint": "E-CGE-20",
+      "other": "cge-009-ll",
+      "how": "contact within 0.5 mm"
+    },
+    {
+      "joint": "E-CGE-22",
+      "other": "cge-010-ll",
+      "how": "contact within 0.5 mm"
+    },
+    {
+      "joint": "E-CGE-25",
+      "other": "cge-010-c",
+      "how": "contact within 0.5 mm"
+    },
+    {
+      "joint": "E-CGE-35",
       "other": "cge-008",
       "how": "contact within 0.5 mm"
     },
@@ -76,26 +111,48 @@
   "cases": [
     {
       "name": "landing",
-      "status": "SKIP",
-      "message": "not checked: the mesh (2.5 mm elements, direct-mesh) is too coarse for its 1.2 mm walls; needs a finer mesh or exact CAD (STEP)",
-      "not_checked": true,
-      "max_von_mises_mpa": 139.898,
-      "max_displacement_mm": 52.0732,
-      "project": ".studio/fea/concept-a/cge-001/direct-landing"
+      "status": "FAIL",
+      "max_von_mises_away_mpa": 34.439,
+      "max_von_mises_mpa": 34.439,
+      "safety_factor_at_ultimate": 0.37,
+      "max_displacement_mm": 0.2067,
+      "nodes": 82911,
+      "mesh_size_max_mm": 1.51,
+      "equilibrium_ok": true,
+      "load_share_on_clamped_faces": 1.129,
+      "location_mm": [
+        -46.2,
+        -10.0,
+        3.72
+      ],
+      "project": ".studio/fea/concept-a/cge-001/direct-landing",
+      "report": null,
+      "route": "direct-mesh",
+      "material_from": "OpenCAE material database"
     },
     {
       "name": "thrust",
-      "status": "SKIP",
-      "message": "not checked: the mesh (2.5 mm elements, direct-mesh) is too coarse for its 1.2 mm walls; needs a finer mesh or exact CAD (STEP)",
-      "not_checked": true,
-      "max_von_mises_mpa": 209.715,
-      "max_displacement_mm": 182.9646,
-      "project": ".studio/fea/concept-a/cge-001/direct-thrust"
+      "status": "FAIL",
+      "max_von_mises_away_mpa": 28.592,
+      "max_von_mises_mpa": 28.592,
+      "safety_factor_at_ultimate": 0.44,
+      "max_displacement_mm": 0.1723,
+      "nodes": 82911,
+      "mesh_size_max_mm": 1.51,
+      "equilibrium_ok": true,
+      "load_share_on_clamped_faces": 0.228,
+      "location_mm": [
+        -61.38,
+        -12.45,
+        16.88
+      ],
+      "project": ".studio/fea/concept-a/cge-001/direct-thrust",
+      "report": null,
+      "route": "direct-mesh",
+      "material_from": "OpenCAE material database"
     }
   ],
-  "notes": [
-    "left out 2 small separate piece(s) of the part (149.8, 149.8 mm3)"
-  ],
+  "notes": [],
   "error": null,
   "load_cases": [
     {
@@ -103,165 +160,291 @@
       "about": "tier-2 drop test, each joint at the instant of its largest force (an envelope), force and moment, x 1.5 ultimate factor",
       "loads": [
         {
-          "name": "E-CGE-01 from cge-002-ur",
+          "name": "E-CGE-01 from cge-002-a",
           "force_n": [
-            7.383,
-            5.803,
-            2.574
+            19.294,
+            -1.362,
+            -0.038
           ],
           "moment_nmm": [
-            231.49,
-            163.95,
-            -31.55
+            -102.75,
+            93.9,
+            1.42
           ],
           "at_mm": [
-            -75.0,
-            126.9,
-            86.826
+            -75.5,
+            0.0,
+            0.0
           ]
         },
         {
-          "name": "E-CGE-03 from cge-002-ul",
+          "name": "E-CGE-02 from cge-002-b",
           "force_n": [
-            7.78,
-            -5.987,
-            2.554
+            18.131,
+            1.343,
+            1.465
           ],
           "moment_nmm": [
-            -245.4,
-            145.83,
-            6.25
+            -6.78,
+            -72.02,
+            -24.78
           ],
           "at_mm": [
-            -75.0,
-            -126.9,
-            86.826
+            -62.5,
+            0.0,
+            0.0
           ]
         },
         {
-          "name": "E-CGE-05 from cge-002-lr",
+          "name": "E-CGE-05 from cge-009-ur",
           "force_n": [
-            10.428,
-            4.989,
-            -5.028
+            -0.392,
+            0.149,
+            -0.005
           ],
           "moment_nmm": [
-            258.54,
-            -166.51,
-            -19.25
+            0.51,
+            0.41,
+            -0.41
           ],
           "at_mm": [
-            -75.0,
-            126.9,
-            -86.826
+            -75.5,
+            14.974,
+            9.991
           ]
         },
         {
-          "name": "E-CGE-07 from cge-002-ll",
+          "name": "E-CGE-07 from cge-010-ur",
           "force_n": [
-            10.568,
-            -4.781,
-            -4.648
+            0.053,
+            -0.043,
+            -0.032
           ],
           "moment_nmm": [
-            -247.89,
-            -191.89,
-            8.52
+            0.1,
+            0.08,
+            -0.03
           ],
           "at_mm": [
-            -75.0,
-            -126.9,
-            -86.826
+            -76.0,
+            6.602,
+            4.517
           ]
         },
         {
-          "name": "E-CGE-18 from cge-008",
+          "name": "E-CGE-10 from cge-009-ul",
           "force_n": [
-            -28.847,
-            -0.648,
-            -16.52
+            0.39,
+            0.013,
+            -0.03
           ],
           "moment_nmm": [
-            12.18,
-            661.65,
-            18.87
+            0.29,
+            -0.14,
+            -0.46
           ],
           "at_mm": [
-            -72.416,
+            -62.5,
+            -14.974,
+            9.991
+          ]
+        },
+        {
+          "name": "E-CGE-12 from cge-010-ul",
+          "force_n": [
+            0.064,
+            -0.001,
+            0.001
+          ],
+          "moment_nmm": [
+            0.03,
+            0.0,
+            -0.05
+          ],
+          "at_mm": [
+            -62.5,
+            -6.602,
+            4.517
+          ]
+        },
+        {
+          "name": "E-CGE-15 from cge-009-lr",
+          "force_n": [
+            -0.408,
+            0.034,
+            0.019
+          ],
+          "moment_nmm": [
+            0.29,
+            -0.14,
+            -0.46
+          ],
+          "at_mm": [
+            -62.5,
+            14.974,
+            -9.991
+          ]
+        },
+        {
+          "name": "E-CGE-17 from cge-010-lr",
+          "force_n": [
+            -0.067,
+            0.006,
+            0.003
+          ],
+          "moment_nmm": [
+            0.03,
+            0.0,
+            -0.05
+          ],
+          "at_mm": [
+            -62.5,
+            6.602,
+            -4.517
+          ]
+        },
+        {
+          "name": "E-CGE-20 from cge-009-ll",
+          "force_n": [
+            0.355,
+            0.007,
+            0.167
+          ],
+          "moment_nmm": [
+            0.38,
+            0.32,
+            -0.41
+          ],
+          "at_mm": [
+            -75.5,
+            -14.974,
+            -9.991
+          ]
+        },
+        {
+          "name": "E-CGE-22 from cge-010-ll",
+          "force_n": [
+            0.063,
+            0.0,
+            0.031
+          ],
+          "moment_nmm": [
+            0.05,
+            0.01,
+            -0.05
+          ],
+          "at_mm": [
+            -76.0,
+            -6.602,
+            -4.517
+          ]
+        },
+        {
+          "name": "E-CGE-25 from cge-010-c",
+          "force_n": [
+            0.486,
+            0.042,
+            0.043
+          ],
+          "moment_nmm": [
+            0.01,
+            -0.01,
+            -0.03
+          ],
+          "at_mm": [
+            -64.5,
             -0.0,
-            0.258
+            0.0
+          ]
+        },
+        {
+          "name": "E-CGE-35 from cge-008",
+          "force_n": [
+            -32.756,
+            2.082,
+            -4.795
+          ],
+          "moment_nmm": [
+            -79.05,
+            125.23,
+            -12.3
+          ],
+          "at_mm": [
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-40 from hrn-004-ur",
           "force_n": [
-            -0.688,
-            -0.977,
-            -0.364
+            -1.571,
+            -3.567,
+            -2.78
           ],
           "moment_nmm": [
-            0.41,
-            0.61,
-            6.38
+            4.49,
+            19.25,
+            26.67
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-41 from hrn-004-ul",
           "force_n": [
-            -0.505,
-            0.735,
-            -0.205
+            -2.241,
+            2.93,
+            -3.149
           ],
           "moment_nmm": [
-            -0.39,
-            0.38,
-            -5.93
+            -2.94,
+            7.88,
+            -12.62
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-42 from hrn-004-lr",
           "force_n": [
-            -4.002,
-            -5.527,
-            2.677
+            -3.853,
+            -4.394,
+            3.615
           ],
           "moment_nmm": [
-            -6.31,
-            6.87,
-            1.27
+            -2.56,
+            7.11,
+            -5.21
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-43 from hrn-004-ll",
           "force_n": [
-            -3.704,
-            5.041,
-            2.498
+            -2.906,
+            4.166,
+            3.267
           ],
           "moment_nmm": [
-            6.42,
-            6.99,
-            -1.59
+            4.2,
+            12.96,
+            10.52
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         }
       ]
@@ -271,174 +454,300 @@
       "about": "hover at full thrust held at the root: every motor at max_thrust_n plus gravity, joint forces and moments from a static solve, x 1.5 ultimate factor",
       "loads": [
         {
-          "name": "E-CGE-01 from cge-002-ur",
+          "name": "E-CGE-01 from cge-002-a",
           "force_n": [
-            -11.15,
-            -2.182,
-            3.189
-          ],
-          "moment_nmm": [
-            -473.31,
-            776.14,
-            -1153.79
-          ],
-          "at_mm": [
-            -75.0,
-            126.9,
-            86.826
-          ]
-        },
-        {
-          "name": "E-CGE-03 from cge-002-ul",
-          "force_n": [
-            -11.15,
-            -2.182,
-            -3.189
-          ],
-          "moment_nmm": [
-            -473.31,
-            794.34,
-            1141.53
-          ],
-          "at_mm": [
-            -75.0,
-            -126.9,
-            86.826
-          ]
-        },
-        {
-          "name": "E-CGE-05 from cge-002-lr",
-          "force_n": [
-            -11.15,
-            2.182,
-            3.189
-          ],
-          "moment_nmm": [
-            -473.31,
-            -794.34,
-            -1141.53
-          ],
-          "at_mm": [
-            -75.0,
-            126.9,
-            -86.826
-          ]
-        },
-        {
-          "name": "E-CGE-07 from cge-002-ll",
-          "force_n": [
-            -11.15,
-            2.182,
-            -3.189
-          ],
-          "moment_nmm": [
-            -473.31,
-            -776.14,
-            1153.79
-          ],
-          "at_mm": [
-            -75.0,
-            -126.9,
-            -86.826
-          ]
-        },
-        {
-          "name": "E-CGE-18 from cge-008",
-          "force_n": [
-            9.516,
-            0.298,
-            0.516
-          ],
-          "moment_nmm": [
-            448.38,
-            -32.23,
-            -8.36
-          ],
-          "at_mm": [
-            -72.416,
+            -6.745,
             -0.0,
-            0.258
+            0.0
+          ],
+          "moment_nmm": [
+            -633.27,
+            -0.0,
+            0.0
+          ],
+          "at_mm": [
+            -75.5,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "E-CGE-02 from cge-002-b",
+          "force_n": [
+            -6.745,
+            0.0,
+            -0.0
+          ],
+          "moment_nmm": [
+            -633.27,
+            -0.0,
+            -0.0
+          ],
+          "at_mm": [
+            -62.5,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "E-CGE-05 from cge-009-ur",
+          "force_n": [
+            -3.26,
+            -0.613,
+            0.918
+          ],
+          "moment_nmm": [
+            -306.7,
+            -16.35,
+            24.51
+          ],
+          "at_mm": [
+            -75.5,
+            14.974,
+            9.991
+          ]
+        },
+        {
+          "name": "E-CGE-07 from cge-010-ur",
+          "force_n": [
+            -3.35,
+            -0.283,
+            0.416
+          ],
+          "moment_nmm": [
+            -314.62,
+            -7.47,
+            11.14
+          ],
+          "at_mm": [
+            -76.0,
+            6.602,
+            4.517
+          ]
+        },
+        {
+          "name": "E-CGE-10 from cge-009-ul",
+          "force_n": [
+            -3.26,
+            -0.613,
+            -0.918
+          ],
+          "moment_nmm": [
+            -306.7,
+            -16.35,
+            -24.51
+          ],
+          "at_mm": [
+            -62.5,
+            -14.974,
+            9.991
+          ]
+        },
+        {
+          "name": "E-CGE-12 from cge-010-ul",
+          "force_n": [
+            -3.35,
+            -0.284,
+            -0.416
+          ],
+          "moment_nmm": [
+            -314.62,
+            -7.57,
+            -11.07
+          ],
+          "at_mm": [
+            -62.5,
+            -6.602,
+            4.517
+          ]
+        },
+        {
+          "name": "E-CGE-15 from cge-009-lr",
+          "force_n": [
+            -3.26,
+            0.613,
+            0.918
+          ],
+          "moment_nmm": [
+            -306.7,
+            16.35,
+            24.51
+          ],
+          "at_mm": [
+            -62.5,
+            14.974,
+            -9.991
+          ]
+        },
+        {
+          "name": "E-CGE-17 from cge-010-lr",
+          "force_n": [
+            -3.35,
+            0.284,
+            0.416
+          ],
+          "moment_nmm": [
+            -314.62,
+            7.57,
+            11.07
+          ],
+          "at_mm": [
+            -62.5,
+            6.602,
+            -4.517
+          ]
+        },
+        {
+          "name": "E-CGE-20 from cge-009-ll",
+          "force_n": [
+            -3.26,
+            0.613,
+            -0.918
+          ],
+          "moment_nmm": [
+            -306.7,
+            16.35,
+            -24.51
+          ],
+          "at_mm": [
+            -75.5,
+            -14.974,
+            -9.991
+          ]
+        },
+        {
+          "name": "E-CGE-22 from cge-010-ll",
+          "force_n": [
+            -3.35,
+            0.283,
+            -0.416
+          ],
+          "moment_nmm": [
+            -314.62,
+            7.47,
+            -11.14
+          ],
+          "at_mm": [
+            -76.0,
+            -6.602,
+            -4.517
+          ]
+        },
+        {
+          "name": "E-CGE-25 from cge-010-c",
+          "force_n": [
+            -4.495,
+            0.0,
+            -0.0
+          ],
+          "moment_nmm": [
+            -422.17,
+            -0.0,
+            -0.0
+          ],
+          "at_mm": [
+            -64.5,
+            -0.0,
+            0.0
+          ]
+        },
+        {
+          "name": "E-CGE-35 from cge-008",
+          "force_n": [
+            9.466,
+            0.42,
+            0.505
+          ],
+          "moment_nmm": [
+            447.45,
+            -49.47,
+            -10.48
+          ],
+          "at_mm": [
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-40 from hrn-004-ur",
           "force_n": [
-            5.967,
-            1.134,
-            -1.485
+            5.97,
+            1.485,
+            -1.299
           ],
           "moment_nmm": [
-            357.29,
-            -71.49,
-            64.12
+            357.25,
+            -86.01,
+            53.66
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-41 from hrn-004-ul",
           "force_n": [
-            5.924,
-            0.422,
-            1.377
+            5.912,
+            0.74,
+            1.32
           ],
           "moment_nmm": [
-            349.69,
-            -5.96,
-            -75.55
+            348.36,
+            -33.7,
+            -68.86
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-42 from hrn-004-lr",
           "force_n": [
-            5.899,
-            -0.302,
-            -1.919
+            5.889,
+            -0.653,
+            -1.761
           ],
           "moment_nmm": [
-            358.12,
-            -4.0,
-            85.17
+            353.75,
+            10.61,
+            74.45
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         },
         {
           "name": "E-HRN-43 from hrn-004-ll",
           "force_n": [
-            6.045,
-            -1.095,
-            1.423
+            6.052,
+            -1.464,
+            1.168
           ],
           "moment_nmm": [
-            354.96,
-            65.32,
-            -78.66
+            352.77,
+            68.56,
+            -62.72
           ],
           "at_mm": [
-            -72.416,
-            -0.0,
-            0.258
+            -65.06,
+            -0.001,
+            -1.121
           ]
         }
       ]
     }
   ],
-  "status": "NOT CHECKED",
-  "worst_case": null,
+  "status": "FAIL",
+  "worst_case": "landing",
   "design": "concept-a",
-  "hash": "344556b634653330",
-  "generated": "2026-11-22T01:56:30+00:00",
+  "hash": "6bc788eaa00149b8",
+  "generated": "2026-11-23T06:48:54+00:00",
   "opencae_version": "0.2.0"
 }

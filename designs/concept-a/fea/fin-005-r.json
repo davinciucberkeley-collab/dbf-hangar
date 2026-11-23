@@ -27,10 +27,10 @@
     {
       "name": "landing",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.38,
-      "max_von_mises_mpa": 0.38,
-      "safety_factor_at_ultimate": 33.12,
-      "max_displacement_mm": 0.0033,
+      "max_von_mises_away_mpa": 0.424,
+      "max_von_mises_mpa": 0.424,
+      "safety_factor_at_ultimate": 29.7,
+      "max_displacement_mm": 0.0037,
       "nodes": 15511,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
@@ -48,14 +48,14 @@
     {
       "name": "thrust",
       "status": "PASS",
-      "max_von_mises_away_mpa": 0.182,
-      "max_von_mises_mpa": 0.182,
-      "safety_factor_at_ultimate": 69.11,
+      "max_von_mises_away_mpa": 0.183,
+      "max_von_mises_mpa": 0.183,
+      "safety_factor_at_ultimate": 68.69,
       "max_displacement_mm": 0.0033,
       "nodes": 15511,
       "mesh_size_max_mm": 4.0,
       "equilibrium_ok": true,
-      "load_share_on_clamped_faces": 0.168,
+      "load_share_on_clamped_faces": 0.169,
       "location_mm": [
         69.48,
         370.5,
@@ -77,14 +77,14 @@
         {
           "name": "E-FIN-03 from fin-002-r",
           "force_n": [
-            -42.828,
-            -0.049,
-            -0.021
+            -47.705,
+            0.032,
+            -0.057
           ],
           "moment_nmm": [
-            -0.06,
-            -8.94,
-            -0.1
+            0.15,
+            -10.2,
+            0.12
           ],
           "at_mm": [
             66.251,
@@ -101,14 +101,14 @@
         {
           "name": "E-FIN-03 from fin-002-r",
           "force_n": [
-            1.829,
-            -0.044,
-            -2.761
+            1.803,
+            -0.051,
+            -2.777
           ],
           "moment_nmm": [
-            39.27,
-            -141.86,
-            2.75
+            39.41,
+            -142.8,
+            3.05
           ],
           "at_mm": [
             66.251,
@@ -122,7 +122,7 @@
   "status": "PASS",
   "worst_case": "landing",
   "design": "concept-a",
-  "hash": "ca2c0d5c5ac061b5",
-  "generated": "2026-11-22T02:28:55+00:00",
+  "hash": "99ab80b317a46d10",
+  "generated": "2026-11-23T07:03:33+00:00",
   "opencae_version": "0.2.0"
 }
