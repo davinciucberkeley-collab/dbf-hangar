@@ -8,9 +8,11 @@ from ..design import load_design, load_standards
 from ..sim import drop_test
 
 MUJOCO_FIX = "python -m pip install 'mujoco>=3'"
+HEIGHT_CRITERION = "design-standards.yaml#drop_height_m"
+OVERRIDE_CRITERION = "--height-m override (the standards value is " + HEIGHT_CRITERION + ")"
 
 
-@op(name="sim.drop", summary="Drop-test the design in MuJoCo (joint peak loads, rest, stability) at the standards drop height, or at --height-m.")
+@op(name="sim.drop", summary="Drop-test the design in MuJoCo (joint peak loads, rest, stability) at the standards drop height, or at --height-m (0, the default, means the standards height).")
 def drop(path: str, height_m: float = 0.0) -> OpResult:
     if height_m < 0:
         raise OpInputError("--height-m must not be negative (0 = the standards drop height)")
@@ -25,9 +27,12 @@ def drop(path: str, height_m: float = 0.0) -> OpResult:
     std = load_standards()
     used_h = height_m if height_m > 0 else float(std["sim"]["drop_height_m"]["value"])
     results = drop_test(design, used_h, std=std)
+    override = height_m > 0
     checks = [{"check_id": r.check_id, "status": r.status, "message": r.message,
-               "criterion": r.criterion, "data": r.data} for r in results]
-    messages = [f"{r.check_id} {r.status}: {r.message}" for r in results]
+               "criterion": OVERRIDE_CRITERION if override and r.criterion == HEIGHT_CRITERION else r.criterion,
+               "data": r.data} for r in results]
+    messages = [f"drop height {used_h:g} m ({'--height-m override' if override else 'standards drop_height_m'})"]
+    messages += [f"{r.check_id} {r.status}: {r.message}" for r in results]
 
     if any(r.check_id == "T2.sim" and r.status == "SKIP" for r in results):  # D37: a missing tool is ok, status SKIP, exit 0
         skip = skip_result("mujoco", f"mujoco not installed; dynamic simulation skipped; fix: {MUJOCO_FIX}", "sim.drop")

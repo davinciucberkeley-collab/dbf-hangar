@@ -535,7 +535,7 @@ Writes files.
 
 ### `plane sim drop`
 
-Drop-test the design in MuJoCo (joint peak loads, rest, stability) at the standards drop height, or at --height-m.
+Drop-test the design in MuJoCo (joint peak loads, rest, stability) at the standards drop height, or at --height-m (0, the default, means the standards height).
 
 ```
 plane sim drop <path> [--height-m <float>]
