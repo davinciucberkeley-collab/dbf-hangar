@@ -332,13 +332,14 @@ Writes files.
 
 ### `plane gate explain`
 
-Explain one check id: its gate, whether it blocks, and the threshold behind it.
+Explain one check id: its gate, whether it blocks, and the threshold behind it. With --design, an exact check id (e.g. T1.attachment) is looked up in a run on that design and explained by its own criterion.
 
 ```
-plane gate explain <check-id>
+plane gate explain <check-id> [--design <str>]
 ```
 
 - `<check-id>`: str, required
+- `--design`: str, optional
 
 ### `plane gate list`
 
