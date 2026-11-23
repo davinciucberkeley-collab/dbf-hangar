@@ -172,3 +172,32 @@ def test_plane_fea_group_and_legacy_alias():
     assert r.exit_code == 0 and "cge-004" in r.output
     r = CliRunner().invoke(cli, ["fea", "run", CA, "--part", "nope", "--json"])
     assert r.exit_code == 2
+
+
+def test_fea_run_writes_no_job_json_of_its_own(monkeypatch, tmp_path):  # T23: the adapter's solve_job writes job.json once
+    from pathlib import Path
+    dst = _copy_ca(tmp_path)
+    monkeypatch.setattr(fea, "find_opencae", lambda *a, **k: dict(FOUND))
+    monkeypatch.setattr(OpenCAE, "available", lambda self: (True, "fake"))
+    fake = {"error": None, "opencae_version": "fake", "cases": [{
+        "case": "landing", "max_von_mises_away_mpa": 2.0, "max_von_mises_mpa": 3.0, "max_displacement_mm": 0.01,
+        "nodes": 100, "mesh_size_max_mm": 1.0, "equilibrium_ok": True, "load_on_clamped_faces_n": [0, 0, 0],
+        "applied_force_n": [0, 0, 10], "max_von_mises_away_location": [0, 0, 0]}]}
+    seen = {}
+
+    def solve(self, job, oc=None, log=print):
+        seen["job_json_next_to_stl"] = (Path(job["stl"]).parent / "job.json").exists()
+        return fake
+
+    monkeypatch.setattr(OpenCAE, "solve_job", solve)
+    assert call("fea.run", path=str(dst), part="ger-001-ll").ok
+    assert seen == {"job_json_next_to_stl": False}
+
+
+def test_fea_module_has_no_unused_imports():  # T23
+    import ast
+    from pathlib import Path
+    tree = ast.parse(Path(fea.__file__).read_text(encoding="utf-8"))
+    imported = {(a.asname or a.name).split(".")[0] for n in ast.walk(tree) if isinstance(n, ast.Import) for a in n.names}
+    used = {n.id for n in ast.walk(tree) if isinstance(n, ast.Name)}
+    assert imported - used == set()
