@@ -181,5 +181,5 @@ def test_design_export_takes_public_name_format(studio_base, sandbox, tmp_path):
     assert m["ok"] is True
     assert (tmp_path / "m.json").is_file()
     code, s = _post(studio_base, "/api/op/design.export", {"path": src, "format": "json", "out": str(tmp_path / "s.json")})
-    assert code == 200 and s["ok"] is True
-    assert (tmp_path / "s.json").read_bytes() == (tmp_path / "m.json").read_bytes()
+    assert code == 400 and s["ok"] is False and s["data"]["error"] == "input"   # D54: Studio refuses `out`
+    assert not (tmp_path / "s.json").exists()
