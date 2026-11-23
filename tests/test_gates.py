@@ -94,6 +94,22 @@ def test_harness_from_a_point_mass_to_a_mesh_is_still_checked():  # T15
     assert status(d, "T7.wiring.pm_body", tiers={7}) == PASS
 
 
+def test_harness_with_a_point_mass_segment_and_a_checked_segment_passes_and_says_so():  # T86 (W6-R: mixed harness)
+    d = _as_point_masses(base(), "esc", "battery")
+    d.data["wiring"]["harnesses"].append({"id": "mixed", "from": "esc", "route": ["battery"], "to": "body"})   # esc-battery: point mass to point mass; battery-body: checked
+    r = result(run(d, only_tiers={7}, strict=True), "T7.wiring.mixed")
+    assert r.status == PASS
+    assert "all 1 checked segments" in r.message and "1 segment(s) between point masses not checked" in r.message
+
+
+def test_harness_with_a_point_mass_segment_still_fails_on_its_checked_segment():  # T86 (W6-R: a point-mass segment must not hide a bad one)
+    d = _as_point_masses(base(), "esc", "battery")
+    d.data["wiring"]["harnesses"].append({"id": "mixed_far", "from": "esc", "route": ["battery"], "to": "far_pod"})   # battery-far_pod leaves every envelope
+    r = result(run(d, only_tiers={7}, strict=True), "T7.wiring.mixed_far")
+    assert r.status == FAIL
+    assert "segment battery to far_pod" in r.message
+
+
 def test_transport_group_of_only_point_masses_is_skip():  # T15
     d = _as_point_masses(base(), "esc")
     d.data["transport"]["disassembly"].append({"group": "pm_only", "component_ids": ["esc"]})

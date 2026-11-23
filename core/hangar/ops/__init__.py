@@ -158,8 +158,9 @@ def registry() -> dict[str, OpSpec]:
                 try:
                     importlib.import_module(f"{__name__}.{m.name}")
                 except BaseException:
-                    for added in set(_REGISTRY) - before:  # a retry re-runs the module: drop what it registered before failing
-                        del _REGISTRY[added]
+                    for added in set(_REGISTRY) - before:  # a retry re-runs this module: drop what it registered before failing
+                        if _REGISTRY[added].func.__module__ == f"{__name__}.{m.name}":   # not the ops of an ops module it imported: that import stays cached
+                            del _REGISTRY[added]
                     raise
         _LOADED = True
     return dict(sorted(_REGISTRY.items()))

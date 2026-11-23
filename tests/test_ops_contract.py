@@ -147,3 +147,47 @@ def test_registry_retries_after_a_module_fails_mid_import(tmp_path, monkeypatch)
     finally:
         ops._REGISTRY.pop("zz.flaky", None)
         sys.modules.pop("hangar.ops.zz_flaky", None)
+
+
+def test_registry_keeps_the_ops_of_a_module_that_a_failing_module_imported(tmp_path, monkeypatch):  # T86: nested ops import
+    import importlib
+    import sys
+    (tmp_path / "zz_b_inner.py").write_text(
+        "from hangar.ops import op, OpResult\n"
+        "\n"
+        "\n"
+        "@op(name='zz.inner', summary='registered by the inner module, which stays cached')\n"
+        "def inner() -> OpResult:\n"
+        "    return OpResult(True, {})\n", encoding="utf-8")
+    (tmp_path / "zz_a_outer.py").write_text(   # sorts first, so the registry loads it first and it imports the inner one
+        "import os\n"
+        "from hangar.ops import op, OpResult\n"
+        "from hangar.ops import zz_b_inner  # noqa: F401\n"
+        "\n"
+        "\n"
+        "@op(name='zz.outer', summary='registers, then the module fails')\n"
+        "def outer() -> OpResult:\n"
+        "    return OpResult(True, {})\n"
+        "\n"
+        "\n"
+        "if os.environ.get('ZZ_OUTER_FAIL') == '1':\n"
+        "    raise RuntimeError('boom')\n", encoding="utf-8")
+    monkeypatch.setattr(ops, "__path__", [*ops.__path__, str(tmp_path)])
+    monkeypatch.setattr(ops, "_LOADED", False)
+    importlib.invalidate_caches()
+    try:
+        monkeypatch.setenv("ZZ_OUTER_FAIL", "1")
+        with pytest.raises(RuntimeError, match="boom"):
+            ops.registry()
+        assert "zz.outer" not in ops._REGISTRY, "the failed module's own op is dropped"
+        assert "zz.inner" in ops._REGISTRY, "the op of the module it imported stays: that import is cached and never re-runs"
+        monkeypatch.setenv("ZZ_OUTER_FAIL", "0")
+        reg = ops.registry()
+        assert "zz.outer" in reg and "zz.inner" in reg
+    finally:
+        for name in ("zz.outer", "zz.inner"):
+            ops._REGISTRY.pop(name, None)
+        for mod in ("hangar.ops.zz_a_outer", "hangar.ops.zz_b_inner"):
+            sys.modules.pop(mod, None)
+        for attr in ("zz_a_outer", "zz_b_inner"):
+            ops.__dict__.pop(attr, None)
