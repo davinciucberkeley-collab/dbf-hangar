@@ -2711,7 +2711,7 @@ wiring:
   - id: hrn-bat
     from: pwr-001
     to: hrn-002
-    gauge_awg: 14
+    gauge_awg: 10
   - id: e-hrn-14
     from: pwr-001
     to: hrn-002

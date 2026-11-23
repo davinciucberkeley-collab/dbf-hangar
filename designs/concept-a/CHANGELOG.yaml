@@ -553,3 +553,10 @@
     E-HRN-13: pack power leads, 14 AWG, PWR-001 to HRN-002 (XT60 male side); BOM-A.csv
     W05 14 AWG silicone'
   kind: add
+- date: '2026-11-23T22:02:12Z'
+  key: wiring.harnesses[hrn-bat].gauge_awg
+  old: 14
+  new: 10
+  why: 'T60, D57: 14 AWG 36 A derated < 44.8 A peak; 10 AWG 60 A matches D-64 pack
+    leads'
+  kind: modify
