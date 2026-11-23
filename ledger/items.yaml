@@ -4348,8 +4348,19 @@ items:
     text: "bench.run 'agent' is not id-checked (ops/bench.py:199): '../../<dir>/x' copies any .md into the bench workspace and runs claude --agent with it; ID-check agent in the op or refuse bench.run from Studio; also ID_RE.match accepts a trailing newline (use fullmatch) and ID_RE is defined twice (cli.py:24, studio.py:39)"
     source: W7-R re-review 2026-11-23
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-05'
+    units: []
+    evidence: 798fc37
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T90
+    kind: task
+    text: "ID follow-ups (W8-R): mcp_server.py:27/31 own _ID_RE with .match (save_design accepts 'x\\n'): import the shared ID_RE and fullmatch; morph.py:31/33 same trailing-newline issue; Studio refusal message for bench.run agent/task says 'design id'; move ID_RE to a small hangar/ids.py"
+    source: W8-R review 2026-11-23
+    owner: conductor
+    status: open
+    due: '2026-12-15'
     units: []
     evidence: ''
     decided_in: ''

@@ -59,14 +59,14 @@
 | U4.3 | Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision) | 3/3 | done | - |
 | U4.4 | Overnight core fixes, round 2 (D51) | 3/3 | done | - |
 | U4.5 | Overnight core fixes, round 3 (D51) | 3/3 | done | - |
-| U4.6 | bench.run agent id check (T89, from the W7-R T7 re-review; D51) | 1/3 | in progress | - |
+| U4.6 | bench.run agent id check (T89, from the W7-R T7 re-review; D51) | 3/3 | done | - |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 4 | 34 | 1 | 1 | 0 | 40 |
-| task | 41 | 46 | 0 | 2 | 0 | 89 |
+| task | 41 | 47 | 0 | 2 | 0 | 90 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 240 | 256 |
 
