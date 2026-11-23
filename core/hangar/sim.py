@@ -57,11 +57,12 @@ def _component_inertia(mass_kg: float, parts, cg_mm: np.ndarray) -> np.ndarray:
     return v @ np.diag(w) @ v.T
 
 
-def _build(design: Design):
-    """Returns (xml, info) where info maps attachment ids to equality names."""
+def _build(design: Design, height_m: float | None = None):
+    """Returns (xml, info) where info maps attachment ids to equality names. height_m: release height in metres
+    (default: the standards drop height)."""
     r, quat, up_body = _landing_rotation(design)
     from .design import load_standards
-    std_h = float(load_standards()["sim"]["drop_height_m"]["value"])
+    std_h = float(height_m) if height_m is not None else float(load_standards()["sim"]["drop_height_m"]["value"])
 
     comps = []
     for c in design.components:
@@ -143,7 +144,11 @@ def export_mjcf(design: Design, out_path) -> Path:
     return out
 
 
-def tier2_sim(design: Design, std: dict, mp: dict) -> list[CheckResult]:
+def drop_test(design: Design, height_m: float | None = None, *, std: dict | None = None) -> list[CheckResult]:
+    """The MuJoCo drop test. height_m: release height in metres (default: the standards drop height); std: the standards."""
+    if std is None:
+        from .design import load_standards
+        std = load_standards()
     try:
         import mujoco
     except ImportError:
@@ -155,7 +160,7 @@ def tier2_sim(design: Design, std: dict, mp: dict) -> list[CheckResult]:
     tip_max = float(cfg["tip_angle_max_deg"]["value"])
 
     try:
-        xml, info = _build(design)
+        xml, info = _build(design, height_m)
         model = mujoco.MjModel.from_xml_string(xml)
     except Exception as e:  # noqa: BLE001
         msg = f"could not build simulation model: {e}"
@@ -250,6 +255,10 @@ def tier2_sim(design: Design, std: dict, mp: dict) -> list[CheckResult]:
     else:
         res.append(CheckResult("T2.sim_stable", PASS, f"{n_steps} steps, no NaN or solver warnings", STD + "drop_height_m"))
     return res
+
+
+def tier2_sim(design: Design, std: dict, mp: dict) -> list[CheckResult]:
+    return drop_test(design, std=std)
 
 
 # ---------------------------------------------------------------- joint load cases for the structural check (fea.py)
