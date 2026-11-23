@@ -16,10 +16,12 @@ from typing import Literal
 
 import yaml
 
-from . import op, call, OpResult, OpInputError
+from . import op, call, registry, OpResult, OpInputError
 from ._paths import repo_root, rel
 
 PROTECTED = ("core", "schema", "standards")
+REPLAY_TIMEOUT_S = 600
+NOT_COMPARED = ("fea", ".sweeps", "__pycache__")      # the folders prepare_workspace does not copy; designs_diff skips them too
 MODEL_ORDER = {"haiku": 0, "sonnet": 1, "opus": 2}
 TIMEOUT_S = 1200
 BUDGET_USD = "4.00"
@@ -127,9 +129,90 @@ def prepare_workspace(task: dict, dest, repo, agent: str = "design-engineer") ->
     return dest
 
 
-def grade(task: dict, ws, repo) -> dict:
-    """Run every grader row through the ops. passed = every row ok and nothing protected changed;
-    score = rows ok / rows, or 0.0 if anything protected changed."""
+def snapshot_design(task: dict, ws) -> Path:
+    """T54: copy the prepared workspace design (before the agent runs) to <ws parent>/snapshot/designs/<name>, outside the
+    workspace so the agent's commands cannot reach it; return <ws parent>/snapshot."""
+    snap = Path(ws).parent / "snapshot"
+    shutil.copytree(design_dir(ws, task), snap / "designs" / Path(task["start_design"]).name)
+    return snap
+
+
+def replayable(argv: list[str]) -> bool:
+    """False only for a command known to be read-only (an op with mutates=False, matched on its first two words);
+    every other command, including an unknown one, is replayed."""
+    for spec in registry().values():
+        if argv[:2] == [spec.group, spec.verb]:
+            return spec.mutates
+    return True
+
+
+def _files(root: Path) -> dict[str, Path]:
+    out = {}
+    for p in sorted(root.rglob("*")):
+        parts = p.relative_to(root).parts
+        if p.is_file() and not any(x in NOT_COMPARED for x in parts):
+            out["/".join(parts)] = p
+    return out
+
+
+def _content(p: Path):
+    data = p.read_bytes()
+    if p.name == "CHANGELOG.yaml":         # design.set stamps each entry with the time it ran: compare the entries without their date
+        try:
+            rows = yaml.safe_load(data)
+        except yaml.YAMLError:
+            return data
+        if isinstance(rows, list):
+            return [{k: v for k, v in r.items() if k != "date"} if isinstance(r, dict) else r for r in rows]
+    return data
+
+
+def designs_diff(a, b) -> list[str]:
+    """Sorted relative paths of files that exist on one side only or differ in content (CHANGELOG.yaml: ignoring each entry's date)."""
+    fa, fb = _files(Path(a)), _files(Path(b))
+    return sorted(n for n in set(fa) | set(fb) if n not in fa or n not in fb or _content(fa[n]) != _content(fb[n]))
+
+
+def replay(ws, snapshot, log) -> list[str]:
+    """T54 (D56): run the logged plane commands that can write (see replayable) on a fresh copy of `snapshot` and compare
+    its designs/ with ws/designs. Returns [] when they match, else one message. Exit codes of the replayed commands are
+    ignored: a command that failed for the agent fails the same way here."""
+    ws, snapshot, log = Path(ws), Path(snapshot), Path(log)
+    try:
+        rows = [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines() if line.strip()] if log.is_file() else []
+        entries = [(list(e["argv"]), str(e["cwd"])) for e in rows]
+    except (ValueError, KeyError, TypeError, OSError):
+        return ["the plane command log is unreadable; cannot replay"]
+    from ..cli import BENCH_LOG_ENV
+    fresh = ws.parent / "replay"
+    if fresh.exists():
+        shutil.rmtree(fresh)
+    shutil.copytree(snapshot / "designs", fresh / "designs")
+    (fresh / "pyproject.toml").write_bytes(b"")
+    env = {k: v for k, v in os.environ.items() if k != BENCH_LOG_ENV}
+    for argv, cwd in entries:
+        if not replayable(argv):
+            continue
+        argv = [a.replace(str(ws), str(fresh)).replace(ws.as_posix(), fresh.as_posix()) for a in argv]
+        try:
+            where = fresh / Path(cwd).resolve().relative_to(ws.resolve())
+        except ValueError:
+            where = fresh
+        try:
+            subprocess.run([sys.executable, "-m", "hangar.cli", *argv], cwd=str(where if where.is_dir() else fresh), env=env,
+                           capture_output=True, text=True, encoding="utf-8", timeout=REPLAY_TIMEOUT_S)
+        except subprocess.TimeoutExpired:
+            return [f"replay of `plane {' '.join(argv)}` timed out"]
+    diff = designs_diff(ws / "designs", fresh / "designs")
+    if diff:
+        return ["designs/ differs from a replay of the logged plane commands: " + ", ".join(diff[:10]) + (" ..." if len(diff) > 10 else "")]
+    return []
+
+
+def grade(task: dict, ws, repo, snapshot=None, log=None) -> dict:
+    """Run every grader row through the ops. passed = every row ok and nothing protected changed
+    (and, when `snapshot` and `log` are given, designs/ equals the replay of the logged plane commands on the snapshot);
+    score = rows ok / rows, or 0.0 if anything protected changed or the replay differs."""
     ws, repo = Path(ws), Path(repo)
     design = design_dir(ws, task).as_posix()
     rows, cache = [], {}
@@ -155,6 +238,8 @@ def grade(task: dict, ws, repo) -> dict:
     for name in PROTECTED:
         if (ws / name).exists():
             messages.append(f"{name}/ exists in the workspace")
+    if snapshot is not None:
+        messages += replay(ws, snapshot, log)
     n_ok = sum(1 for r in rows if r["ok"])
     passed = bool(rows) and n_ok == len(rows) and not messages
     score = round(n_ok / len(rows), 3) if rows and not messages else 0.0
@@ -205,6 +290,9 @@ def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> 
     run_id = f"{task}-{model}-{datetime.now().strftime('%Y%m%d-%H%M%S')}"
     # Outside any git tree: the repo's .claude hooks must not load into the headless run.
     ws = prepare_workspace(t, Path(tempfile.mkdtemp(prefix="planebench-")) / run_id, root, agent)
+    from ..cli import BENCH_LOG_ENV
+    snapshot, log = snapshot_design(t, ws), ws.parent / "plane-commands.jsonl"     # T54: both outside the workspace
+    env = {**env, BENCH_LOG_ENV: str(log)}
     cmd = build_command(claude, t, agent, model)
     started = time.monotonic()
     proc, timed_out = None, False
@@ -227,7 +315,7 @@ def run_op(task: str, agent: str, model: Literal["haiku", "sonnet", "opus"]) -> 
         if not any(model in k.lower() for k in usage):
             return OpResult(False, {"error": "internal"}, [f"model mismatch: asked for {model}, claude used {sorted(usage) or 'nothing'}"])
         tokens, cost, final = _tokens(usage), float(out.get("total_cost_usd") or 0.0), str(out.get("result") or "")
-    g = grade(t, ws, root)
+    g = grade(t, ws, root, snapshot, log)
     data = {"task": task, "agent": agent, "model": model, "passed": g["passed"], "score": g["score"], "tokens": tokens,
             "minutes": minutes, "cost_usd": cost, "timed_out": timed_out, "run_id": run_id, "workspace": str(ws)}
     record = root / "bench" / "results" / "runs" / f"{run_id}.json"

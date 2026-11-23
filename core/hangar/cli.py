@@ -583,7 +583,19 @@ def _attach_ops(group: click.Group, specs: dict[str, ops.OpSpec]) -> None:
 _attach_ops(cli, ops.registry())
 
 
+BENCH_LOG_ENV = "PLANE_BENCH_LOG"
+
+
+def _log_invocation() -> None:
+    """T54: when the bench grader sets PLANE_BENCH_LOG, append this command (argv and cwd) to that file as one JSON line before it runs."""
+    path = os.environ.get(BENCH_LOG_ENV)
+    if path:
+        with open(path, "a", encoding="utf-8", newline="\n") as f:
+            f.write(json.dumps({"argv": sys.argv[1:], "cwd": str(Path.cwd())}) + "\n")
+
+
 def main():
+    _log_invocation()
     cli()
 
 
