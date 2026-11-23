@@ -5,6 +5,10 @@ from pathlib import Path
 
 import pytest
 
+from click.testing import CliRunner
+
+from hangar import pdledit
+from hangar.cli import cli
 from hangar.ops import call, registry
 
 REPO = Path(__file__).resolve().parents[1]
@@ -32,11 +36,31 @@ def test_sim_drop_without_mujoco_gives_skip_with_fix(monkeypatch):
     monkeypatch.setitem(__import__("sys").modules, "mujoco", None)  # makes `import mujoco` raise ImportError
     monkeypatch.chdir(REPO)
     r = call("sim.drop", path=EXAMPLE)
-    assert r.ok is False
-    assert r.exit_code == 1
+    assert r.ok is True  # D37: a missing tool is SKIP, not FAIL
+    assert r.exit_code == 0
+    assert r.data["status"] == "SKIP"
+    assert r.skipped == ["sim.drop"]
     text = "\n".join(r.messages)
     assert "mujoco not installed" in text
     assert FIX in text
+
+
+def test_sim_drop_without_mujoco_prints_skip_first_and_exits_0(monkeypatch):  # D37
+    monkeypatch.setitem(__import__("sys").modules, "mujoco", None)
+    monkeypatch.chdir(REPO)
+    res = CliRunner().invoke(cli, ["sim", "drop", EXAMPLE])
+    assert res.exit_code == 0, res.output
+    assert res.output.startswith("SKIP: mujoco not installed")
+
+
+def test_sim_drop_resolves_the_design_path_through_pdledit(monkeypatch):  # T21
+    monkeypatch.setitem(__import__("sys").modules, "mujoco", None)
+    monkeypatch.chdir(REPO)
+    seen = []
+    real = pdledit.resolve_design_path
+    monkeypatch.setattr(pdledit, "resolve_design_path", lambda p: seen.append(str(p)) or real(p))
+    call("sim.drop", path=EXAMPLE)
+    assert seen == [EXAMPLE]
 
 
 def test_sim_drop_bad_path_is_input_error(monkeypatch):
