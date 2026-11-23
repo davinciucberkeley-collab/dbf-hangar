@@ -440,10 +440,10 @@ Writes files.
 
 ### `plane ledger set`
 
-Set an item's status. done and decided need evidence; dropped and superseded need decided_in.
+Set an item's status. done and decided need evidence; dropped and superseded need decided_in. Optional --due, --units (comma-separated, replaces the list) and --note (appended to the text).
 
 ```
-plane ledger set <item-id> <status> [--evidence <str>] [--decided-in <str>]
+plane ledger set <item-id> <status> [--evidence <str>] [--decided-in <str>] [--due <str>] [--units <str>] [--note <str>]
 ```
 
 Writes files.
@@ -452,6 +452,9 @@ Writes files.
 - `<status>`: choice, one of open, done, dropped, superseded, decided, required
 - `--evidence`: str, optional
 - `--decided-in`: str, optional
+- `--due`: str, optional
+- `--units`: str, optional
+- `--note`: str, optional
 
 ## morph
 
