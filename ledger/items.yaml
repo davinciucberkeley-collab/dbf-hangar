@@ -141,8 +141,8 @@ items:
       - U2.1
       - U3.1
     evidence: ''
-    decided_in: ''
-    updated: '2026-11-22'
+    decided_in: 'D43 (open: interactive drag deferred to v1.1)'
+    updated: '2026-11-23'
   - id: R12
     kind: ruling
     text: 'Gates: transport by car (the box), no exposed wires and rules for how wiring works'
@@ -421,12 +421,12 @@ items:
     text: Use superpowers when building software like OpenCAE
     source: plan §1; A 11-18
     owner: ''
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
-    updated: '2026-11-20'
+    updated: '2026-11-23'
   - id: R35
     kind: ruling
     text: Standardize `standards/agents.md` for everyone, with hooks to enforce it
