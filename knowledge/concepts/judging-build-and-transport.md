@@ -14,7 +14,7 @@ The question here is whether students can build, carry, fix and keep flying each
 
 ## Key facts
 - No scratch card prices its transport box, which the reviews put at about $20 to $60 each. [build-and-transport.md §5 item 1]
-- Carbon tubes are the part most often on long lead: four concepts source them overseas, and K01 and K19 carry no spare. [build-and-transport.md §5 item 2]
+- Carbon tubes are the part most often on long lead: four concepts (K01, K19, K06 and K09) source them overseas, and K01 and K19 carry no spare. [build-and-transport.md §5 item 2]
 - The flight controller is backordered on five of the seven cards. [build-and-transport.md §5 item 3]
 - Maker Passes are in no bill of materials, and the cost is unverified for spring 2027. [build-and-transport.md §5 item 4]
 - The field needs a flight request at least 7 business days ahead, so even a one-day repair takes roughly 1.5 weeks before the aircraft flies again. [build-and-transport.md §1 and §5 item 5]
