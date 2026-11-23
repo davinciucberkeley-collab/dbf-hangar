@@ -197,6 +197,18 @@ def test_gate_ops():
     assert call("gate.explain", check_id="Q1.x").exit_code == 2
 
 
+def test_gate_explain_exact_check_id_with_design():  # T26
+    from hangar.ops import call
+    assert call("gate.explain", check_id="T1.attachment").data["threshold"]["key"] == "interference_max_mm3"   # tier-level answer, unchanged
+    r = call("gate.explain", check_id="T1.attachment", design=str(EXAMPLE))
+    assert r.ok and r.data["exact"] is True and r.data["check_id"] == "T1.attachment"
+    assert r.data["criterion"] == "design-standards.yaml#attach_tolerance_mm"
+    assert r.data["threshold"]["key"] == "attach_tolerance_mm"
+    bad = call("gate.explain", check_id="T1.nope", design=str(EXAMPLE))
+    assert bad.exit_code == 2 and "T1.attachment" in " ".join(bad.messages)
+    assert call("gate.explain", check_id="T3.control_authority", design=str(EXAMPLE)).data["criterion"] == "operations.yaml#hover_ctrl_factor"
+
+
 def test_sim_mechanism_op_returns_steps():
     from hangar.ops import call
     r = call("sim.mechanism", path=str(FIX / "mech-good.yaml"), mechanism_id="flap_l")

@@ -37,17 +37,29 @@ def _render_explain(r: OpResult) -> str:
     return "\n".join(lines)
 
 
-@op(name="gate.explain", summary="Explain one check id: its gate, whether it blocks, and the threshold behind it.",
+@op(name="gate.explain", summary="Explain one check id: its gate, whether it blocks, and the threshold behind it. With --design, an exact check id (e.g. T1.attachment) is looked up in a run on that design and explained by its own criterion.",
     render=_render_explain)
-def explain(check_id: str) -> OpResult:
+def explain(check_id: str, design: str = "") -> OpResult:
     from ..gates.fidelity import resolve_threshold
     rows = _rows()
     m = re.match(r"^T(\d+)", check_id)
     row = next((g for g in rows if g["id"] == check_id), None)
-    if row is None:
-        row = next((g for g in rows if m and g["tier"] == int(m.group(1))), None)
+    if row is None and m:
+        row = next((g for g in rows if g["tier"] == int(m.group(1))), None)
     if row is None:
         raise OpInputError(f"unknown check id {check_id!r}; gate ids: {', '.join(g['id'] for g in rows)}")
+    if design and not any(g["id"] == check_id for g in rows):
+        from ..gates import run_gates
+        card = run_gates(_load(design))
+        results = [r for t in card.tiers for r in t.results if r.check_id == check_id]
+        if not results:
+            emitted = sorted({r.check_id for t in card.tiers for r in t.results if r.check_id.startswith(f"T{m.group(1)}.")})
+            raise OpInputError(f"check id {check_id!r} is not emitted by a run on {design}; T{m.group(1)} ids emitted: {', '.join(emitted)}")
+        criteria = list(dict.fromkeys(r.criterion for r in results if r.criterion))
+        checks = [{"criterion": c, "threshold": resolve_threshold(c)} for c in criteria]
+        if checks:
+            return OpResult(ok=True, data={**row, "criterion": checks[0]["criterion"], "threshold": checks[0]["threshold"],
+                                           "check_id": check_id, "exact": True, "checks": checks})
     return OpResult(ok=True, data={**row, "threshold": resolve_threshold(row["criterion"])})
 
 
