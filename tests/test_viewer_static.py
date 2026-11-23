@@ -104,7 +104,7 @@ def studio_base(tmp_path, monkeypatch):
 
 @pytest.fixture
 def concept_a_studio(tmp_path, monkeypatch):
-    httpd, base = _start_studio(tmp_path, monkeypatch, lambda d: shutil.copytree(REPO / "designs" / "concept-a", d / "concept-a"))
+    httpd, base = _start_studio(tmp_path, monkeypatch, lambda d: shutil.copytree(REPO / "tests" / "fixtures" / "concept-a-frozen", d / "concept-a"))
     yield base
     httpd.shutdown()
     httpd.server_close()
