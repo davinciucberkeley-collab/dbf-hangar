@@ -1232,10 +1232,10 @@ Not a code unit; it tests everything above.
 
 ### Unit U4.3: Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision)
 
-**Scope:** T72 (assembly animate skips non-drawable proxy steps; closes R31), T52 (`plane ledger set` sets due, units, note), T58 (`design set --value` with ": "), T17 (bom.py exits 2 on bad input; ingest de-dup), T26 (`gate explain` exact check id), T28 (`read_value` calc registered), T68 (knowledge copy check). Core and tests only: no `designs/`, no `standards/` threshold change. One branch per task `std/u4.3-<task>`, merged to main after review (D30, D47).
+**Scope:** T72 (assembly animate skips non-drawable proxy steps; closes R31), T52 (`plane ledger set` sets due, units, note), T58 (`design set --value` with ": "), T17 (bom.py exits 2 on bad input; ingest de-dup), T26 (`gate explain` exact check id), T28 (held for v1.1, D52), T68 (knowledge copy check). Core and tests only: no `designs/`, no `standards/` threshold change. One branch per task `std/u4.3-<task>`, merged to main after review (D30, D47).
 
 - [x] **Step 1: Briefs** (tactician W5-T; T28 held, D52; T57 needs none, closed): `plans/2026-11-20-standardization/briefs/U4.3-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
-- [ ] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory)
+- [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t72 7c9e406, t58 48a15f8, t68 1f47011, t17 f4443ce, t52 ca0fedb, t26 c1fb8f7)*
 - [ ] **Step 3: Review** W5-R; merge; tasks set done with the merge commit; R31 done if T72 merges. (T57 added after audit 2 if the flake recurred.)
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)

@@ -56,7 +56,7 @@
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U4.3 | Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision) | 1/3 | in progress | - |
+| U4.3 | Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision) | 2/3 | in progress | - |
 
 ## Ledger
 
