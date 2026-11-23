@@ -236,10 +236,10 @@ Writes files.
 
 ### `plane design set`
 
-Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove) and log them in CHANGELOG.yaml.
+Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml.
 
 ```
-plane design set <path> <key> [--value <str>] --why <str> [--kind <choice>] [--also <list[str]>]
+plane design set <path> <key> [--value <str>] --why <str> [--kind <choice>] [--also <list[str]>] [--append <str>] [--remove <str>]
 ```
 
 Writes files.
@@ -250,6 +250,8 @@ Writes files.
 - `--why`: str, required
 - `--kind`: choice, one of add, subtract, modify, remove, optional
 - `--also`: list[str], repeatable, optional
+- `--append`: str, optional
+- `--remove`: str, optional
 
 ### `plane design sweep`
 

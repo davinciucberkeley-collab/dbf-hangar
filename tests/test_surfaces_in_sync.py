@@ -183,3 +183,15 @@ def test_design_export_takes_public_name_format(studio_base, sandbox, tmp_path):
     code, s = _post(studio_base, "/api/op/design.export", {"path": src, "format": "json", "out": str(tmp_path / "s.json")})
     assert code == 400 and s["ok"] is False and s["data"]["error"] == "input"   # D54: Studio refuses `out`
     assert not (tmp_path / "s.json").exists()
+
+
+def test_list_flags_work_through_studio_and_mcp(studio_base, sandbox):  # T55: --append / --remove live in the op, so every surface has them
+    import yaml
+    plane = sandbox / "example-tailsitter-wing" / "plane.yaml"
+    code, body = _post(studio_base, "/api/op/design.set", {"path": str(plane.parent), "key": "authors", "append": "second author", "why": "t"})
+    assert code == 200 and body["ok"] is True and body["data"]["new"] == ["platform bootstrap", "second author"]
+    m = _mcp().GENERATED["design_set"](path=str(plane.parent), key="authors", remove="second author", why="t")
+    assert m["ok"] is True and m["data"]["new"] == ["platform bootstrap"]
+    assert yaml.safe_load(plane.read_text(encoding="utf-8"))["authors"] == ["platform bootstrap"]
+    code, body = _post(studio_base, "/api/op/design.set", {"path": str(plane.parent), "key": "authors", "remove": "nobody", "why": "t"})
+    assert code == 400 and "is not in the list" in " ".join(body["messages"])
