@@ -31,13 +31,17 @@ jobs:
           cache: pip
           cache-dependency-path: pyproject.toml
       - run: pip install -e ".[mcp,dev]"
+      - name: Playwright version
+        id: pw
+        shell: bash
+        run: echo "v=$(python -c 'import importlib.metadata as m; print(m.version("playwright"))')" >> "$GITHUB_OUTPUT"
       - name: Browser path
         shell: bash
         run: echo "PLAYWRIGHT_BROWSERS_PATH=$RUNNER_TEMP/pw-browsers" >> "$GITHUB_ENV"
       - uses: actions/cache@v4
         with:
           path: ${{ runner.temp }}/pw-browsers
-          key: pw-${{ runner.os }}-${{ hashFiles('pyproject.toml') }}
+          key: pw-${{ runner.os }}-${{ steps.pw.outputs.v }}
       - name: Browser for viewer smoke test
         shell: bash
         run: |

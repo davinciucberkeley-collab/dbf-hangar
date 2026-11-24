@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 from typing import Callable
+import warnings
 
 import pytest
 
@@ -57,20 +58,27 @@ def _share_concept_a_geometry():
     mp.undo()
 
 
-_HEAVY = (  # slowest tests, most expensive first (W20-T measurement); dealt one per shard in turn so no shard gets them all
+_HEAVY = (  # slowest tests, most expensive first (W20-T measurement); dealt one per shard in turn so no shard gets them all (reordered for the windows shard times, T115)
     "tests/test_baseline.py::test_every_fail_or_skip_names_its_subject_or_is_design_level",
     "tests/test_adapters.py::test_missing_tool_is_skip_with_fix",
-    "tests/test_gates.py::test_program_constraints_apply_to_every_active_design[concept-a]",
-    "tests/test_gates.py::test_tiers_0_5_unchanged_for_committed_designs[concept-a]",
-    "tests/test_adapters.py::test_plane_fea_group_and_legacy_alias",
-    "tests/test_adapters.py::test_fea_plan_op_matches_engine",
-    "tests/test_discipline_gates.py::test_existing_gate_rows_fire_concept_a",
     "tests/test_bench.py::test_grader_passes_on_known_good_solution[fix-static-margin]",
-    "tests/test_fea.py::test_hub_is_held_by_bridge_and_struts_not_by_wiring",
     "tests/test_pdl.py::test_every_committed_design_migrates_to_1_1_with_same_verdict[concept-a]",
+    "tests/test_adapters.py::test_plane_fea_group_and_legacy_alias",
     "tests/test_bench.py::test_grader_fails_on_start_design[fix-static-margin]",
+    "tests/test_gates.py::test_tiers_0_5_unchanged_for_committed_designs[concept-a]",
+    "tests/test_adapters.py::test_fea_plan_op_matches_engine",
+    "tests/test_fea.py::test_hub_is_held_by_bridge_and_struts_not_by_wiring",
+    "tests/test_discipline_gates.py::test_existing_gate_rows_fire_concept_a",
+    "tests/test_gates.py::test_program_constraints_apply_to_every_active_design[concept-a]",
     "tests/test_bench.py::test_grade_replay_passes_when_only_plane_changed_the_design",
 )
+
+
+def missing_heavy(nodeids, heavy=_HEAVY) -> list[str]:
+    """_HEAVY ids whose test file was collected but whose id was not (renamed or removed): they would silently fall back to round-robin."""
+    ids = set(nodeids)
+    files = {n.split("::", 1)[0] for n in ids}
+    return [h for h in heavy if h.split("::", 1)[0] in files and h not in ids]
 
 
 def pytest_addoption(parser):
@@ -83,7 +91,9 @@ def pytest_collection_modifyitems(config, items):
         return
     index, count = (int(x) for x in spec.split("/"))
     assert 1 <= index <= count, f"--shard {spec}: need 1 <= I <= N"
-    # a _HEAVY id absent from the collection (renamed later) is silently skipped
+    gone = missing_heavy([it.nodeid for it in items])
+    if gone:
+        warnings.warn(f"--shard: _HEAVY ids not collected (renamed?): {gone}", stacklevel=1)
     heavy = {nid: h for h, nid in enumerate(_HEAVY)}
     mine = {it.nodeid for it in items if it.nodeid in heavy and heavy[it.nodeid] % count == index - 1}
     rest = sorted(it.nodeid for it in items if it.nodeid not in heavy)

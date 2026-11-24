@@ -20,6 +20,6 @@ jobs:
       - name: PROGRESS.md is current
         shell: bash
         run: plane progress --check
-      - name: Ledger and progress tests
+      - name: Ledger, progress and pending-decision tests
         shell: bash
-        run: pytest -q -n 0 -m "" tests/test_ledger.py tests/test_progress.py
+        run: pytest -q -n 0 -m "" tests/test_ledger.py tests/test_progress.py tests/test_standards.py::test_no_blocking_threshold_is_pending_without_a_decision
