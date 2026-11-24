@@ -334,7 +334,7 @@ Read this to choose a role. The full standard is [agents.md](../standards/agents
 
 Ask Claude: "use the design-engineer to ..." or "use the recon to compare 3 approaches". The main session starts the role.
 
-A session may launch only the roles in the agent table of the newest plan. Tristan maintains that table. The read-only built-in subagents `Explore`, `Plan` and `claude-code-guide` are always allowed. Other built-ins that can write files (for example `general-purpose`) are not in the table, so the roster gate refuses them.
+A session may launch only the roles in the agent table of the newest plan. Tristan maintains that table. The read-only built-in subagents `Explore`, `Plan` and `claude-code-guide` are allowed unless a project or user agent file redefines the name (D69). Every other built-in is refused, for example `general-purpose` and `claude`, because they are not in the table.
 
 | Role | Model | What it does |
 |---|---|---|
@@ -684,7 +684,7 @@ plane ledger add task "Run drop test on my-test" --source "team guide check" --o
 | `plane progress --check` fails | Run `plane progress --write` and commit. |
 | `plane tools doctor` says OpenCAE is missing | Install OpenCAE (FEA person only). Everyone else can ignore it. |
 | The Stop hook blocks the session | Answer or defer the open prompt. |
-| The agent gate blocks a launch | Use a role from the plan's agent table, and give a builder a builder-ready brief. For `Agent "<role>" is not in the active plan's agent table (plans/2026-11-20-standardization.md). Add it to the table first.`, ask Tristan. The read-only built-ins `Explore`, `Plan` and `claude-code-guide` are always allowed; other built-ins such as `general-purpose` are refused. |
+| The agent gate blocks a launch | Use a role from the plan's agent table, and give a builder a builder-ready brief. For `Agent "<role>" is not in the active plan's agent table (plans/2026-11-20-standardization.md). Add it to the table first.`, ask Tristan. The read-only built-ins `Explore`, `Plan` and `claude-code-guide` are allowed unless a project or user agent file redefines the name (D69); every other built-in, such as `general-purpose` or `claude`, is refused. |
 | `git push` is denied | You are not a collaborator yet (O1). Ask Tristan. |
 | Desktop shows no `dbf-hangar` tools | Fully quit and reopen Desktop. Check the config path and the doubled backslashes. Read the logs below. Tell Tristan which tools are missing. |
 
