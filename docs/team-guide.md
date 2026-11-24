@@ -21,7 +21,7 @@ These rules are not final. Tristan confirms or edits them (decisions D63 and D64
 - O1 Access: Tristan asks the org owner to add the three of you as collaborators with write access. Until then you cannot push or open a PR.
 - O2 No pushes to `main`: every change from you is a pull request (PR). The "push straight to `main`" rule (D30) is for Tristan and the conductor only.
 - O3 Merging: Tristan merges everything, with a plain merge commit. Dillon must approve design PRs. James's review on test and standards PRs is advice only. Tristan is asked to turn on branch protection (CI must pass, one review) so nobody can push `main` by accident.
-- O4 Work comes from ledger tasks: Tristan gives you a task with your name on it. Put its id in your branch and PR text. You do not edit `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`. Tristan closes the task.
+- O4 Work comes from ledger tasks: Tristan gives you a task with your name on it. Put its id in your branch and PR text. You do not edit `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`. Tristan closes the task. Your task is your unit of work: you never need a plan unit.
 - O5 Agents: you do not run the `conductor`. Use `design-engineer`, `recon`, `scout` and plain Claude. For a builder, give it exact output, exact inputs, a pass check and a stop rule, or ask Tristan for a brief. `tactician` and `reviewer` are Tristan's; he may allow them for James if he confirms it.
 - O6 Hooks: keep them on. If the Stop hook gets in the way, tell Claude to set `HANGAR_ALLOW_STOP=1`. Nobody edits `.claude/` or `harness/` on a topic branch (James may on a harness branch).
 - O7 Branch names: `std/<topic>` for tests, standards, knowledge, harness and gates; `design/<id>/<slug>` for design changes. You may use `std/<person>-<topic>`.
@@ -334,7 +334,7 @@ Read this to choose a role. The full standard is [agents.md](../standards/agents
 
 Ask Claude: "use the design-engineer to ..." or "use the recon to compare 3 approaches". The main session starts the role.
 
-A session may launch only the roles in the agent table of the newest plan. Tristan maintains that table. Claude Code's built-in subagents (for example `Explore` or `general-purpose`) are not in it, so the roster gate refuses them.
+A session may launch only the roles in the agent table of the newest plan. Tristan maintains that table. The read-only built-in subagents `Explore`, `Plan` and `claude-code-guide` are always allowed. Other built-ins that can write files (for example `general-purpose`) are not in the table, so the roster gate refuses them.
 
 | Role | Model | What it does |
 |---|---|---|
@@ -349,7 +349,7 @@ A session may launch only the roles in the agent table of the newest plan. Trist
 | `reviewer` | Opus | Fresh for each wave. Scores against `standards/review-scorecard.md`. Tristan's (O5). |
 | `auditor` | Haiku | Read-only hourly check for open prompts, broken rules, stale ledger items. |
 
-For you (O5): `design-engineer`, `recon`, `scout`, and plain sessions. A builder only with a builder-ready prompt.
+For you (O5): `design-engineer`, `recon`, `scout`, and plain sessions. A builder only with a builder-ready prompt. The read-only built-ins `Explore`, `Plan` and `claude-code-guide` need no table row.
 
 The agent gate refuses a launch when:
 
@@ -359,7 +359,7 @@ The agent gate refuses a launch when:
 
 Haiku builds, hard work goes one tier up, and a unit that fails review twice goes to `advisor`.
 
-The plan is `plans/2026-11-20-standardization.md`. [PROGRESS.md](../PROGRESS.md) is generated from it. Do not edit either. See also [ROADMAP.md](../ROADMAP.md) and [CLAUDE.md](../CLAUDE.md).
+The plan is `plans/2026-11-20-standardization.md`. Finished units are archived in `plans/2026-11-20-standardization/archive.md`. [PROGRESS.md](../PROGRESS.md) is generated from both. Do not edit any of them. See also [ROADMAP.md](../ROADMAP.md) and [CLAUDE.md](../CLAUDE.md).
 
 ## 10. Branches, review and merge
 
@@ -398,7 +398,7 @@ Nobody but Tristan edits `plans/`, `reviews/`, `ledger/`, `PROGRESS.md`, `.githu
 6. Review and merge: open a PR from your branch to `main`. Design PRs need Dillon's OK (R25). Tests, standards, gate and core PRs need Tristan's. Only Tristan merges (O3).
 7. After the merge, delete the branch on GitHub and on your machine (D47).
 8. Commits are small and have one topic. Message format: `<area>: <what> (<ledger id if any>)`. Every commit ends with Tristan's trailer `Co-authored-by: Tristan Hottier <185231225+TristanHottier@users.noreply.github.com>`, plus any agent line (O8).
-9. Work comes from ledger tasks (O4). Your branch and PR text name the ledger id. You do not edit the ledger. Tell Tristan, who closes the item with evidence.
+9. Work comes from ledger tasks (O4). Your branch and PR text name the ledger id. You do not edit the ledger. Tell Tristan, who closes the item with evidence. A small text or docs fix (under about 20 lines) or a data-only design change takes the light path in [agents.md](../standards/agents.md): one builder, one reviewer glance, no brief, no tactician. Anything touching gates, the bench, security or schema takes the full path.
 
 ## 11. Ledger and weekly update
 
@@ -684,7 +684,7 @@ plane ledger add task "Run drop test on my-test" --source "team guide check" --o
 | `plane progress --check` fails | Run `plane progress --write` and commit. |
 | `plane tools doctor` says OpenCAE is missing | Install OpenCAE (FEA person only). Everyone else can ignore it. |
 | The Stop hook blocks the session | Answer or defer the open prompt. |
-| The agent gate blocks a launch | Use a role from the plan's agent table, and give a builder a builder-ready brief. For `Agent "<role>" is not in the active plan's agent table (plans/2026-11-20-standardization.md). Add it to the table first.`, ask Tristan. Built-in subagents such as `Explore` are refused too. |
+| The agent gate blocks a launch | Use a role from the plan's agent table, and give a builder a builder-ready brief. For `Agent "<role>" is not in the active plan's agent table (plans/2026-11-20-standardization.md). Add it to the table first.`, ask Tristan. The read-only built-ins `Explore`, `Plan` and `claude-code-guide` are always allowed; other built-ins such as `general-purpose` are refused. |
 | `git push` is denied | You are not a collaborator yet (O1). Ask Tristan. |
 | Desktop shows no `dbf-hangar` tools | Fully quit and reopen Desktop. Check the config path and the doubled backslashes. Read the logs below. Tell Tristan which tools are missing. |
 
