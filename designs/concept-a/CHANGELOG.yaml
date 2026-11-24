@@ -560,3 +560,15 @@
   why: 'T60, D57: 14 AWG 36 A derated < 44.8 A peak; 10 AWG 60 A matches D-64 pack
     leads'
   kind: modify
+- date: '2026-11-24T00:52:36Z'
+  key: bom.items[p01].qty
+  old: 6
+  new: 5
+  why: 'T94: BOM-A.csv qty already includes the spare'
+  kind: modify
+- date: '2026-11-24T00:52:45Z'
+  key: bom.items[m01].qty
+  old: 4
+  new: 3
+  why: 'T94: BOM-A.csv qty already includes the spare'
+  kind: modify
