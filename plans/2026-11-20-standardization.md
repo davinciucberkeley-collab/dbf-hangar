@@ -846,8 +846,9 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** `knowledge/TEMPLATE-reference-aircraft.md`: the fields any real aircraft needs to become a PDL design (span, length, height, wing area, sweep, dihedral, wing position, fuselage stations, engine count/positions, tail layout, prop diameter and blades, gear) plus RC-scale guidance (scale factor, target weight, power); recon benchmarks how scale-RC builders do it; scouts fill it for A400M and Cessna 172 as tests, sources opened.
 
-- [ ] **Step 1: Research** (recon W29-X, scouts W29-S)
+- [x] **Step 1: Research** (recon W29-X, scouts W29-S) *(template + method std/u4.33-recon f16bbae; A400M e11d841 (area -3.0%, height +1.9%); C172 c7ca127 (area -0.2%, span -0.3%); measured from Commons three-views)*
 - [ ] **Step 2: Review** (W29-R)
+- [ ] **Step 3: Measuring tool** in the repo (the recon's scratchpad scripts are not durable): `plane reference measure` reads a three-view PNG/SVG and returns scaled extents per view; brief (tactician W29-T), build (W29-B), review (W29-R)
 
 ### Unit U4.34: Any-aircraft rehearsal (D77, D78)
 
