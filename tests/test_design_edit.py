@@ -123,7 +123,8 @@ def test_sweep_never_touches_source(tmp_example, tmp_path, monkeypatch):
     assert isinstance(rows[0]["failures"], list) and rows[0]["mass_g"] > 0
     assert (tmp_example / "plane.yaml").read_bytes() == before
     assert not (tmp_example / "CHANGELOG.yaml").exists()
-    assert (tmp_path / "sweeps" / "example-tailsitter-wing" / "1" / "plane.yaml").is_file()
+    assert (Path(r.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
+    assert Path(r.data["sweep_dir"]).parent == tmp_path / "sweeps" / "example-tailsitter-wing"
 
 
 def test_sweep_writes_next_to_the_designs_dir_when_plane_designs_dir_is_set(tmp_example, tmp_path, monkeypatch):  # T101
@@ -131,9 +132,9 @@ def test_sweep_writes_next_to_the_designs_dir_when_plane_designs_dir_is_set(tmp_
     monkeypatch.setenv("PLANE_DESIGNS_DIR", str(tmp_path / "ws" / "designs"))
     r = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["100"])
     assert r.ok, r.messages
-    assert (tmp_path / "ws" / ".sweeps" / "example-tailsitter-wing" / "1" / "plane.yaml").is_file()
+    assert (Path(r.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
     assert not (tmp_path / "real-repo-sweeps").exists()
-    assert r.data["sweep_dir"] == str(tmp_path / "ws" / ".sweeps" / "example-tailsitter-wing")
+    assert Path(r.data["sweep_dir"]).parent == tmp_path / "ws" / ".sweeps" / "example-tailsitter-wing"
 
 
 def test_sweep_bad_value_exits_2_and_creates_nothing(tmp_example, tmp_path, monkeypatch):
@@ -655,7 +656,7 @@ def test_sweep_value_with_colon_space_is_a_string(tmp_example, tmp_path, monkeyp
     r = call("design.sweep", path=str(tmp_example), key="components[prop_l].description", values=["Disc: 10x4.5 prop"])
     assert r.ok, r.messages
     assert r.data["rows"][0]["value"] == "Disc: 10x4.5 prop"
-    data = yaml.safe_load((tmp_path / "sweeps" / "example-tailsitter-wing" / "1" / "plane.yaml").read_text(encoding="utf-8"))
+    data = yaml.safe_load((Path(r.data["sweep_dir"]) / "1" / "plane.yaml").read_text(encoding="utf-8"))
     assert [c for c in data["components"] if c["id"] == "prop_l"][0]["description"] == "Disc: 10x4.5 prop"
 
 
@@ -814,3 +815,27 @@ def test_remove_refuses_a_mapping_or_list_like_append(tmp_concept_a):
         r = _list_op(tmp_concept_a, "authors", remove=raw)
         assert r.ok is False and r.exit_code == 2 and "mapping or list" in " ".join(r.messages), (raw, r.messages)
     assert _bytes(tmp_concept_a) == before
+
+
+def test_two_sweeps_of_one_design_do_not_share_a_folder(tmp_example, tmp_path, monkeypatch):
+    monkeypatch.setattr(edit, "SWEEP_ROOT", tmp_path / ".sweeps")
+    a = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["100"])
+    b = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["140"])
+    assert a.ok and b.ok
+    assert a.data["sweep_dir"] != b.data["sweep_dir"]
+    assert (Path(a.data["sweep_dir"]) / "1" / "plane.yaml").is_file()      # the first run is still there
+    assert (Path(b.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
+
+
+def test_sweep_prunes_only_runs_older_than_a_day(tmp_example, tmp_path, monkeypatch):
+    import os
+    import time
+    monkeypatch.setattr(edit, "SWEEP_ROOT", tmp_path / ".sweeps")
+    base = tmp_path / ".sweeps" / "example-tailsitter-wing"
+    old, young = base / "old-run", base / "young-run"
+    for d in (old, young):
+        d.mkdir(parents=True)
+    t = time.time() - 3 * 86400
+    os.utime(old, (t, t))
+    r = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["100"])
+    assert r.ok and not old.exists() and young.exists()
