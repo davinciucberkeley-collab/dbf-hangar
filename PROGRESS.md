@@ -93,8 +93,8 @@
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 0/3 | not started | - |
-| U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 0/3 | not started | - |
+| U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 1/3 | in progress | - |
+| U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 1/3 | in progress | - |
 
 ### W4.7 Presentation
 
