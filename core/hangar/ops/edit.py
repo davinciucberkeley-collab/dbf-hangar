@@ -112,6 +112,10 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
             pdledit.get_value(data, k)      # raises the "no key" error
         entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": kind})
     pdledit.check_schema(before, yaml.safe_load(working), key)
+    from ..geom.resolve import regeneration_report      # PDL 1.2: refuses the edit (nothing written) when a generated part fails
+    regen = regeneration_report(text, working, plane)
+    if regen is not None and regen["components"]:
+        entries[0]["regenerated"] = sorted(regen["components"])
     log = plane.with_name("CHANGELOG.yaml")
     eol = "\r\n" if "\r\n" in text else "\n"
     log_text = _text(log) if log.exists() else ""
@@ -127,9 +131,16 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
     plane.write_bytes(working.encode("utf-8"))
     log.write_bytes(combined.encode("utf-8"))
     msgs = [f"{e['key']}: {e['old']!r} -> {e['new']!r}" for e in entries]
-    return OpResult(True, {"key": key, "old": entries[0]["old"], "new": entries[0]["new"], "kind": kind, "changed": True,
-                           "changes": [{"key": e["key"], "old": e["old"], "new": e["new"]} for e in entries]},
-                    msgs, changed_files=[str(plane), str(log)])
+    out = {"key": key, "old": entries[0]["old"], "new": entries[0]["new"], "kind": kind, "changed": True,
+           "changes": [{"key": e["key"], "old": e["old"], "new": e["new"]} for e in entries]}
+    if regen is not None and regen["components"]:
+        (m0, m1), (c0, c1) = regen["mass_g"], regen["cg_mm"]
+        fmt_cg = lambda c: " ".join(f"{x:.2f}" for x in c) if c else "n/a"
+        msgs.append(f"regenerated {', '.join(sorted(regen['components']))}: mass "
+                    f"{'n/a' if m0 is None else f'{m0:.1f}'} -> {'n/a' if m1 is None else f'{m1:.1f}'} g, "
+                    f"CG {fmt_cg(c0)} -> {fmt_cg(c1)} mm")
+        out["regenerated"] = regen
+    return OpResult(True, out, msgs, changed_files=[str(plane), str(log)])
 
 
 @op(name="design.diff", summary="List the keys whose values differ between two designs.",

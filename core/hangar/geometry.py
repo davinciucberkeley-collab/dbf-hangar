@@ -82,6 +82,9 @@ def _local_parts(component: dict, base_dir=None) -> list[trimesh.Trimesh]:
         return [trimesh.load(Path(base_dir or ".") / g["mesh"]["file"], force="mesh")]
     if "box" in g or "cylinder" in g:
         return [_primitive(g)]
+    if "generator" in g:
+        from .geom.registry import build_component
+        return build_component(component, base_dir or ".")
     raise ValueError(f"{component['id']}: unknown geometry")
 
 
@@ -125,6 +128,15 @@ def _base_key(component: dict, base_dir) -> str | None:
         except OSError:
             return None
         key += f"|{os.path.abspath(f)}|{st.st_mtime_ns}|{st.st_size}"
+    if "generator" in g:
+        from .geom.registry import component_files
+        for rel in component_files(component):
+            f = Path(base_dir or ".") / rel
+            try:
+                st = f.stat()
+            except OSError:
+                return None
+            key += f"|{os.path.abspath(f)}|{st.st_mtime_ns}|{st.st_size}"
     return key
 
 

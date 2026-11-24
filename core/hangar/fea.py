@@ -222,6 +222,8 @@ def part_hash(design: Design, part_id: str) -> str:
         mf = ((c.get("geometry") or {}).get("mesh") or {}).get("file")
         if mf and (design.base_dir / mf).is_file():
             files.add(design.base_dir / mf)
+        elif "generator" in (c.get("geometry") or {}):
+            h.update(json.dumps([c["geometry"], c.get("mass_model"), c["position"]], sort_keys=True, default=str).encode())
     for f in sorted(files):
         h.update(f.read_bytes())
     h.update(standards_fingerprint())

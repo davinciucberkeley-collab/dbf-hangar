@@ -23,6 +23,8 @@ PASS, FAIL, WARN, SKIP = "PASS", "FAIL", "WARN", "SKIP"
 class Design:
     data: dict[str, Any]
     path: Path | None = None
+    raw: dict | None = None            # PDL 1.2: the unresolved data ("$name" references, no generated mass_g); None otherwise
+    resolve_errors: dict = field(default_factory=dict)   # PDL 1.2: {component id: why its generated geometry/mass failed}
 
     @property
     def id(self) -> str:
@@ -131,7 +133,14 @@ def load_design(path: str | Path) -> Design:
     data = json.loads(text) if p.suffix == ".json" else yaml.safe_load(text)
     if not isinstance(data, dict):
         raise ValueError(f"{p}: top level must be a mapping")
-    return Design(data=data, path=p.resolve())
+    design = Design(data=data, path=p.resolve())
+    comps = data.get("components") or []
+    if "parameters" in data or any(isinstance(c, dict) and ("mass_model" in c or "generator" in (c.get("geometry") or {}))
+                                   for c in comps):
+        from hangar.geom.resolve import resolve_design_data   # inside: hangar.geom imports hangar.design
+        design.raw = data
+        design.data, design.resolve_errors = resolve_design_data(data, design.base_dir)
+    return design
 
 
 _STANDARDS_CACHE: dict[tuple, dict] = {}
