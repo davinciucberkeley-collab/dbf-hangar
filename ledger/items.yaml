@@ -4794,3 +4794,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D69
+    kind: decision
+    text: "Teammate full-path changes (gates, bench, security, schema): the teammate builds on their branch with their own session and tests, opens a PR, and Tristan runs a fresh reviewer agent on the PR before merging; no plan unit needed. Light path for data-only design changes is CI green + Dillon's approval, no reviewer agent, touching no code, hook, workflow, schema or threshold. Agent gate: built-in names allowed only when no project or user agent file redefines them; plugin and --agents overrides are an accepted leftover risk"
+    source: conductor default on W22-R blockers, 2026-11-25 (reviews/2026-11-25-w22.md)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-25-w22.md
+    decided_in: ''
+    updated: '2026-11-23'
