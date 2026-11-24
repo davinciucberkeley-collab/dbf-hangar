@@ -5,10 +5,10 @@ vendor: RMRC
 part_number: APC 9x4.5MR 4-pack
 url: https://www.readymaderc.com/products/details/86771-apc-multirotor-9x4-5-2-blade-4-pack-with-adapter-rings
 mass_g: 11.06
-dimensions_mm: [24.1, 228.9, 228.9]
+dimensions_mm: [13.8, 228.9, 228.9]
 cad_status: representative-envelope
-cad_source: swept disc of an APC 9x4.5MR (9 in = 228.6 mm nominal) from the oriented bounding box of designs/concept-a/meshes/prp-002-ll.stl
+cad_source: swept disc of an APC 9x4.5MR (9 in = 228.6 mm nominal) from the oriented bounding box of designs/concept-a/meshes/prp-002-ll.stl; envelope depth along the motor axis corrected to 13.8 mm (conductor: 13.3-13.75 mm; 24.1 mm was the blade chord in the disc plane)
 verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
 geometry:
   generator: tube
-  params: {axis: x, length: 24.1, outer_d: 228.9}
+  params: {axis: x, length: 13.8, outer_d: 228.9}
