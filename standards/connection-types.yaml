@@ -1,7 +1,7 @@
 # Shared connection-type library for PDL attachments[].connection (T1.interfaces.connection_known).
 # Adapted from DBF-Combined redesign/interfaces/connection_types.json @ a93f14d (44 types, ids kept).
 # rating_basis: sourced | derived | placeholder (same meaning as attachment.rating_basis). source: a citation, or `pending`.
-# The source file gives no ratings and no sources, so every type is placeholder / pending until a research pass fills it in.
+# Types with rating_basis sourced have a value or stress from an opened source (U4.19); the rest stay placeholder / pending with the reason on the source line.
 # structural: false marks a type that locates a part but never carries its flight load; omitted means true.
 version: '0.1'
 wire_ampacity_a:
@@ -64,14 +64,16 @@ connection_types:
   kind: mechanical
   method: bonded
   spec: epoxy bond (30 min laminating epoxy), surfaces scuffed
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-adhesives-tapes-2 (Pawlak, Epoxyworks Spring 2003, species table (epoxyworks.com/epoxys-adhesion-to-wood/))'
+  note: "6.85 MPa, tensile pull-off (PATTI) on wood, WEST SYSTEM 105/206 (spec names a 30 min laminating epoxy; product match not checked), lowest species (Narra, Padauk); failure in wood; two specimens per species, not conclusive; lap shear not found; per area, no rated_load_n until a joint area is known"
 - id: CT-CA
   kind: mechanical
   method: bonded
   spec: cyanoacrylate bond (foam-safe CA where foam)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-adhesives-tapes-2 (Permabond 240 TDS Rev 6, 13 Sep 2025, p.1 "Typical Performance of Cured Adhesive")'
+  note: "> 5 MPa (N/mm2), ISO 4587 shear to polycarbonate, substrate failure, lower bound; typical, strength varies with surface prep and gap; no balsa or foam value found; per area, no rated_load_n until a joint area is known"
 - id: CT-TUBE-CLAMP
   kind: mechanical
   method: clamped
@@ -128,6 +130,7 @@ connection_types:
   spec: double-sided foam tape (3M VHB-class) + one cable tie as secondary retention
   rating_basis: sourced
   source: 'std-ct-adhesives-tapes (3M VHB Tapes Technical Data, Nov 2005, p. 4 and p. 5, 4910 family rows)'
+  note: "480 kPa, dynamic overlap shear to stainless steel (ASTM D1002), 4941 and 4910 rows, metal only; std-ct-adhesives-tapes-2, 3M VHB Tapes Technical Data June 2011 p.4 (scout copy; source line dated Nov 2005); typical, not for specification; peel to ABS or PC not found; per area, no rated_load_n until a joint area is known"
 - id: CT-TAPE-TIE
   kind: mechanical
   method: taped
@@ -139,7 +142,7 @@ connection_types:
   method: taped
   spec: adhesive vibration-isolation gel pads (Zeal class, 5 mm) on a scuffed face, no screws; secondary tie or strap with slack
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source: no load, adhesion or shear value for a 5 mm gel pad (std-ct-adhesives-tapes-2)
 - id: CT-LABEL
   kind: mechanical
   method: taped
@@ -160,25 +163,26 @@ connection_types:
   spec: silicone tubing pushed on the pitot and sensor barbs, total and static lines (pneumatic)
   structural: false
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source: no pull-off, retention or tensile force at any size (std-ct-straps-hinges-thermal-2)
 - id: CT-TAPE-HINGE
   kind: kinematic
   method: hinged
   spec: tape hinge (top surface), control surface
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-ct-adhesives-tapes-2 (3M Performance Plus Duct Tape 8979 TDS, Aug 2019, p.1 "Typical Performance Characteristics" (assets.rs-online.com copy))'
+  note: "64 N/cm, tensile (ASTM D3759), typical, not for specification; per width, no rated_load_n until a tape width is known"
 - id: CT-PIN-HINGE
   kind: kinematic
   method: hinged
   spec: pin hinge, printed knuckles + steel pin
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source: only a dowel-pin stress, no per-pin load (std-ct-straps-hinges-thermal-2)
 - id: CT-CLEVIS
   kind: kinematic
   method: hinged
   spec: steel pushrod end (Z-bend or clevis) in a horn or arm hole
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source: no readable diameter-versus-strength table (std-ct-straps-hinges-thermal-2)
 # rated_current_a: continuous A (std-ct-electrical); omitted = no opened source
 - id: CT-XT60
   kind: electrical
