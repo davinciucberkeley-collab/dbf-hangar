@@ -1,0 +1,158 @@
+diff --git a/tests/test_concept_a_param.py b/tests/test_concept_a_param.py
+index 6ba6855..3358b5c 100644
+--- a/tests/test_concept_a_param.py
++++ b/tests/test_concept_a_param.py
+@@ -71,6 +71,12 @@ def test_generated_wing_core_matches_outline(pd):
+            if r.check_id == "T1.interference" and "wng-001" in r.message
+            and not any(k in r.message for k in ("pose ", "sweep ", "range "))]
+     assert bad == []
++    # attachment rows name the joint (E-WNG-..), not the part: no neutral-pose overlap row for a joint of wng-001 (the two pose-down rows are the baselined residue)
++    joints = {a.get("id") or f"{a['parent']}->{a['child']}" for a in pd.data["attachments"] if "wng-001" in (a["parent"], a["child"])}
++    assert len(joints) >= 5
++    neutral = [r.message for r in _rows(validate(pd, max_tier=1))
++               if r.check_id == "T1.attachment_overlap" and r.message.split(":")[0] in joints]
++    assert neutral == []
+ 
+ 
+ def test_nominal_masses(pd, ad):
+diff --git a/tests/test_knowledge.py b/tests/test_knowledge.py
+index 644d813..301a939 100644
+--- a/tests/test_knowledge.py
++++ b/tests/test_knowledge.py
+@@ -3,6 +3,7 @@ from __future__ import annotations
+ 
+ import os
+ import re
++import subprocess
+ from pathlib import Path
+ 
+ import pytest
+@@ -133,3 +134,66 @@ def test_no_entry_copies_ten_words_from_a_file_it_cites():
+             if src.is_file():
+                 run = shared_run(body, src.read_text(encoding="utf-8", errors="replace"))
+                 assert run is None, f"{p.name} copies from {f}: {run!r}"
++
++
++# ---- T110 (U4.27): the 23 docs/research entries get the same structure and copy checks as the config-study entries ----
++RESEARCH = REPO_ROOT / "knowledge" / "research"
++RESEARCH_STEMS = ["aerodynamics", "airframe-materials", "avionics-autopilot", "benchmarks", "bom-savings", "budget-airframe",
++                  "budget-avionics", "budget-energy-test", "budget-lift", "configurations", "electrical-architecture", "firmware",
++                  "hardware-schedule", "hardware-spec", "lift-propulsion", "nautical-wings-props", "propulsion-margin-data",
++                  "pusher-battery-servo", "review-formats", "stall-margin", "team-crosscheck", "thermal", "tolerance-analysis"]
++RESEARCH_SOURCE_COMMIT = "a93f14da"      # DBF-Combined commit the entries were written from (docs/research/ is not checked out there)
++
++
++def _research_entries():
++    return sorted(RESEARCH.glob("*.md"))
++
++
++def test_research_import_has_exactly_the_23_entries():
++    assert [p.stem for p in _research_entries()] == sorted(f"docs-research-{s}" for s in RESEARCH_STEMS)
++
++
++def test_every_research_entry_has_its_template_fields_and_sections():
++    for p in _research_entries():
++        fm, body = _split(p)
++        stem = p.stem.removeprefix("docs-research-")
++        assert list(fm) == KEYS, p.name
++        assert fm["id"] == p.stem and fm["kind"] == "research", p.name
++        assert fm["source_repo"] == "DBF-Combined @ a93f14d" and fm["verified"] is False, p.name
++        assert fm["source_files"] == [f"docs/research/{stem}.md"], p.name
++        assert isinstance(fm["title"], str) and fm["title"].strip() and not fm["title"].startswith("<"), p.name
++        found = _sections(body)
++        for s in SECTIONS:
++            assert found.get(s) and not found[s].startswith("<"), f"{p.name}: section {s} empty or placeholder"
++        assert "<svg" not in body and "```" not in body, f"{p.name}: copied block"
++
++
++def test_every_research_morph_cell_exists_in_the_chart():
++    cells = _cells()
++    for p in _research_entries():
++        fm, _ = _split(p)
++        assert isinstance(fm["morph_cells"], list), p.name          # [] is allowed: purchasing, fit and review files fit no cell
++        assert set(fm["morph_cells"]) <= cells, f"{p.name}: unknown cell in {fm['morph_cells']}"
++
++
++def test_every_research_source_file_is_listed_in_provenance():
++    prov = (REPO_ROOT / "PROVENANCE.md").read_text(encoding="utf-8")
++    for p in _research_entries():
++        fm, _ = _split(p)
++        assert f"| knowledge/research/{p.name} | DBF-Combined @ a93f14d : {fm['source_files'][0]} |" in prov, p.name
++
++
++def _dbf_git(*args):
++    return subprocess.run(["git", "-C", str(DBF), *args], capture_output=True, text=True, encoding="utf-8", errors="replace")
++
++
++@pytest.mark.skipif(not (DBF / ".git").exists() or _dbf_git("cat-file", "-e", RESEARCH_SOURCE_COMMIT).returncode != 0,
++                    reason="DBF-Combined clone with commit a93f14d not present")
++def test_no_research_entry_copies_ten_words_from_its_source():
++    for p in _research_entries():
++        fm, body = _split(p)
++        for f in fm["source_files"]:
++            r = _dbf_git("show", f"{RESEARCH_SOURCE_COMMIT}:{f}")
++            assert r.returncode == 0, f"{p.name}: git show {f} failed: {r.stderr}"
++            run = shared_run(body, r.stdout)
++            assert run is None, f"{p.name} copies from {f}: {run!r}"
+diff --git a/tests/test_pdl.py b/tests/test_pdl.py
+index 7fd177b..898a660 100644
+--- a/tests/test_pdl.py
++++ b/tests/test_pdl.py
+@@ -348,7 +348,9 @@ def test_reaction_torque_fields_need_schema_version_1_1():
+ def test_reaction_torque_fields_reject_bad_values(field, bad):
+     data = _spin_data("1.1")
+     next(c for c in data["components"] if c["type"] == "motor")["propulsion"][field] = bad
+-    assert tier0_schema(Design(data, EXAMPLE)).status == "FAIL"
++    res = tier0_schema(Design(data, EXAMPLE))
++    assert res.status == "FAIL"
++    assert any(r.check_id == "T0.schema" and r.status == "FAIL" and f"propulsion/{field}:" in r.message for r in res.results)   # T108: the FAIL is about this field
+ 
+ 
+ def test_migrate_op_moves_a_1_0_design_to_1_1_and_logs_it(tmp_path):
+diff --git a/tests/test_pdl12.py b/tests/test_pdl12.py
+index a72d1ca..7420bd3 100644
+--- a/tests/test_pdl12.py
++++ b/tests/test_pdl12.py
+@@ -129,18 +129,22 @@ def test_tier0_reference_and_generator_failures(mut, check, needle):
+     assert any(needle in m for m in hits), hits
+ 
+ 
++GENERATOR_DESIGNS = {"concept-a-param"}      # the only committed design that uses generators (U4.22); every other folder is an old design
++
++
+ def test_old_designs_untouched():
+     folders = sorted(p.parent for p in DESIGNS_DIR.glob("*/plane.yaml")) + [FIXTURES / "concept-a-frozen"]
+-    assert len(folders) >= 8
++    skipped = [f for f in folders if f.name in GENERATOR_DESIGNS]      # skipped by name, never by what load_design detects (T123)
++    assert {f.name for f in skipped} == GENERATOR_DESIGNS
+     checked = 0
+     for f in folders:
+-        d = load_design(f)
+-        if d.raw is not None:           # a design that uses generators is not an old design
++        if f in skipped:
+             continue
+         checked += 1
++        d = load_design(f)
+         assert d.raw is None and d.resolve_errors == {}, f
+         assert not any(r.check_id in ("T0.parameters", "T0.generator") for r in tier0_schema(d).results), f
+-    assert checked >= 7
++    assert checked == len(folders) - len(skipped) and checked >= 8
+ 
+ 
+ def test_design_set_parameter_regenerates(tmp_path):
+diff --git a/tests/test_team_ops.py b/tests/test_team_ops.py
+index 3bb4da3..74eb998 100644
+--- a/tests/test_team_ops.py
++++ b/tests/test_team_ops.py
+@@ -228,3 +228,11 @@ def test_idea_list_empty_then_lists_added_ideas(root):
+     assert len(r.data["ideas"]) == 1
+     assert row["title"] == "Use foam" and row["by"] == "alex" and row["path"].startswith("knowledge/ideas/")
+     assert row["date"] == row["path"].split("/")[-1][:10]
++
++
++def test_idea_list_reads_front_matter_of_a_crlf_file(root):  # T108: a CRLF file (Windows editor) must not fall back to file name and stem
++    f = root / "knowledge" / "ideas" / "2026-11-20-crlf-idea.md"
++    f.parent.mkdir(parents=True)
++    f.write_bytes(b'---\r\ntitle: "Use foam"\r\nby: "alex"\r\ndate: "2026-11-21"\r\n---\r\n\r\nCheap.\r\n')
++    row = call("idea.list").data["ideas"][0]
++    assert (row["title"], row["by"], row["date"]) == ("Use foam", "alex", "2026-11-21")

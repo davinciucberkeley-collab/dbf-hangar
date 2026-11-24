@@ -4494,9 +4494,9 @@ items:
     status: done
     due: '2026-11-30'
     units: []
-    evidence: 57a3a40
+    evidence: 6f3bc00
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: T98
     kind: task
     text: 'concept-a 14 AWG leftovers after T60: hrn-002 description, BOM W05 part number and the BOM line near plane.yaml:2317 still say 14 AWG pack leads; e-hrn-12 (ESC tail, same 44.8 A peak) has no gauge_awg so T7 does not check it (would be 36 A < 44.8 A at 14 AWG). Reconcile via plane design set (W11-R)'
@@ -4634,23 +4634,23 @@ items:
     text: 'W17-R non-blocking (U4.15): test_reaction_torque_fields_reject_bad_values passes without the change (assert the message names the field); _reaction treats 0 as missing (schema forbids 0, harmless); claim check note counts only PASS read rows (a FAIL/STALE read claim is not in the note); idea.list reads only LF front matter'
     source: W17-R review 2026-11-24 (reviews/2026-11-24-w17.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e632358
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: T109
     kind: task
     text: 'W14-R non-blocking (T84): drain queued Studio jobs when _serve_studio tears down (leaked workers still load the windows runner); delete unused BACKUP_DIR (studio.py:39)'
     source: W14-R review 2026-11-24 (reviews/2026-11-24-w14.md, T84 step 4)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 3ba95df
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D62
     kind: decision
     text: 'Run the remaining knowledge import now: DBF-Combined docs/research/ (23 files, deferred by D28 to U2.2-3) becomes U4.16; the D35/D42 config-study import already ran (dc8902a, 50 entries)'
@@ -4667,12 +4667,12 @@ items:
     text: 'tests/test_knowledge.py covers only knowledge/concepts/ (exactly 50 config-study entries, sources under redesign/config-study/): widen the copy check and structure checks to knowledge/research/ and docs/research/ sources after U4.16 merges (W18-T)'
     source: W18-T 2026-11-24 (briefs/U2.2-3-research-import.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e632358
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D63
     kind: decision
     text: 'Team workflow defaults for the team guide (W19-T O1-O11): teammates added as write collaborators (no forks); teammates never push to main, every teammate change is a PR (D30 stays Tristan/conductor only); Tristan merges, Dillon approves design PRs (R25), James advises on test/standards PRs, merge commits, branch protection requiring CI recommended; each teammate task is a ledger task they cite, teammates never edit plans/, ledger/, reviews/, PROGRESS.md; teammates do not run the conductor flow (design-engineer, recon, scout, plain sessions); hooks stay on, HANGAR_ALLOW_STOP=1 escape; branches std/<topic> for core/tests/standards/knowledge and design/<id>/<slug> for designs (never bare design/<id>); teammates keep their git author plus the repo-owner trailer; concept-a changes only via design set + PR, no re-import without telling Dillon; Python 3.12 recommended; weekly update entries per branch, only Tristan adds ledger items [O12: std/gate-<name> branches may touch core/hangar/gates/, checks.py, standards/, knowledge/, tests/; baseline.json in a second designs-only commit; new gates start report-only. O13: Desktop chat setup optional, set up once with Tristan; Code tab counts as full setup after three first-run checks (amendment 1, 05e114d)]'
@@ -4788,12 +4788,12 @@ items:
     text: "W20-R follow-ups (U4.18): add tests/test_standards.py::test_no_blocking_threshold_is_pending_without_a_decision to the progress.yml step so ledger-only commits keep that check (D65 'none that drop coverage'); rebalance _HEAVY with the windows shard times (shard 2 235 s vs 86-100 s); pin or key the playwright cache on the installed version; a renamed heavy test silently falls back to round-robin; measure progress.yml on the first ledger-only push"
     source: W20-R review 2026-11-25 (reviews/2026-11-25-w20.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: bdbfbd2
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D69
     kind: decision
     text: "Teammate full-path changes (gates, bench, security, schema): the teammate builds on their branch with their own session and tests, opens a PR, and Tristan runs a fresh reviewer agent on the PR before merging; no plan unit needed. Light path for data-only design changes is CI green + Dillon's approval, no reviewer agent, touching no code, hook, workflow, schema or threshold. Agent gate: built-in names allowed only when no project or user agent file redefines them; plugin and --agents overrides are an accepted leftover risk [amended by Tristan P203 (W22-A advice): built-ins Explore, Plan, claude-code-guide pass the launch gate by exact name; Write, Edit and NotebookEdit are refused inside any agent with those names (hook reads agent_type); no agent-file scan; an overriding agent of that name may still use Bash under the session's rules]"
@@ -4873,7 +4873,7 @@ items:
     updated: '2026-11-23'
   - id: T121
     kind: task
-    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)]"
+    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)] [U4.25 parked on std/u4.25-pockets (D71): pose-aware pockets remove all 14 swept-pose FAIL rows, but concept-a-param tier-1 validate rises ~35 s -> ~62 s (budget 60.2 s); merge after Dec 2 with a relaxed budget or a faster boolean]"
     source: W23-B3 2026-11-23 (U4.22 Part B)
     owner: conductor
     status: open
@@ -4909,10 +4909,10 @@ items:
     text: 'W23-R non-blocking (U4.22): test_old_designs_untouched should skip concept-a-param by name or require >= 8 old folders; wing-core test should assert no neutral-pose attachment-overlap row names wng-001; concept-a-param baseline was recorded without fea/, so running plane fea on it brings the 4 cge stress FAILs back'
     source: W23-R review 2026-11-23 (reviews/2026-11-23-w23.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e632358
     decided_in: ''
     updated: '2026-11-24'
   - id: D72
@@ -4924,5 +4924,27 @@ items:
     due: ''
     units: []
     evidence: reviews/2026-11-24-w24.md
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T124
+    kind: task
+    text: 'v1.1: plane CLI start-up ~4.4 s warm; hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx (1.48 s); lazy-import trimesh in checks.py, geometry.py and others (5+ modules) behind a measured before/after'
+    source: W25-T 2026-11-24 (python -X importtime)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: D73
+    kind: decision
+    text: "U4.25 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match"
+    source: Tristan, P214, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-24'

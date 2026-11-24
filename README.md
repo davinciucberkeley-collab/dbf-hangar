@@ -41,7 +41,7 @@ python -m pytest -q -m "not slow" -n auto
 Replace `<id>` with a design folder name from `plane list`. Most commands take `--json` for machine-readable output.
 
 - **Validate a design:** `plane design validate designs/<id>` (runs every tier T0-T9 by default; `--tier N` with N < 9 is a partial run, never accepted; 9 or `all` is the full run)
-- **Change a value:** `plane design set designs/<id> requirements.mtow_g --value 950 --why "reason"`. The key is a dotted path into `plane.yaml`; `--kind add|subtract|modify` (default `modify`) is logged in `CHANGELOG.yaml`.
+- **Change a value:** `plane design set designs/<id> requirements.mtow_g --value 950 --why "reason"`. The key is a dotted path into `plane.yaml`; `--kind add|subtract|modify|remove` (default `modify`) is logged in `CHANGELOG.yaml`.
 - **Propose a change as a PR:** `plane design propose designs/<id> "Short title"` (commits on a new branch, pushes it and opens a PR against main)
 - **Open Studio:** `plane studio` (local app; `--port`, `--no-browser`)
 - **Every other command:** [docs/cli.md](docs/cli.md) (generated from `plane ops list`: every operation with its arguments, plus the CLI-only commands)

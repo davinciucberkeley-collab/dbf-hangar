@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 import re
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -133,3 +134,66 @@ def test_no_entry_copies_ten_words_from_a_file_it_cites():
             if src.is_file():
                 run = shared_run(body, src.read_text(encoding="utf-8", errors="replace"))
                 assert run is None, f"{p.name} copies from {f}: {run!r}"
+
+
+# ---- T110 (U4.27): the 23 docs/research entries get the same structure and copy checks as the config-study entries ----
+RESEARCH = REPO_ROOT / "knowledge" / "research"
+RESEARCH_STEMS = ["aerodynamics", "airframe-materials", "avionics-autopilot", "benchmarks", "bom-savings", "budget-airframe",
+                  "budget-avionics", "budget-energy-test", "budget-lift", "configurations", "electrical-architecture", "firmware",
+                  "hardware-schedule", "hardware-spec", "lift-propulsion", "nautical-wings-props", "propulsion-margin-data",
+                  "pusher-battery-servo", "review-formats", "stall-margin", "team-crosscheck", "thermal", "tolerance-analysis"]
+RESEARCH_SOURCE_COMMIT = "a93f14da"      # DBF-Combined commit the entries were written from (docs/research/ is not checked out there)
+
+
+def _research_entries():
+    return sorted(RESEARCH.glob("*.md"))
+
+
+def test_research_import_has_exactly_the_23_entries():
+    assert [p.stem for p in _research_entries()] == sorted(f"docs-research-{s}" for s in RESEARCH_STEMS)
+
+
+def test_every_research_entry_has_its_template_fields_and_sections():
+    for p in _research_entries():
+        fm, body = _split(p)
+        stem = p.stem.removeprefix("docs-research-")
+        assert list(fm) == KEYS, p.name
+        assert fm["id"] == p.stem and fm["kind"] == "research", p.name
+        assert fm["source_repo"] == "DBF-Combined @ a93f14d" and fm["verified"] is False, p.name
+        assert fm["source_files"] == [f"docs/research/{stem}.md"], p.name
+        assert isinstance(fm["title"], str) and fm["title"].strip() and not fm["title"].startswith("<"), p.name
+        found = _sections(body)
+        for s in SECTIONS:
+            assert found.get(s) and not found[s].startswith("<"), f"{p.name}: section {s} empty or placeholder"
+        assert "<svg" not in body and "```" not in body, f"{p.name}: copied block"
+
+
+def test_every_research_morph_cell_exists_in_the_chart():
+    cells = _cells()
+    for p in _research_entries():
+        fm, _ = _split(p)
+        assert isinstance(fm["morph_cells"], list), p.name          # [] is allowed: purchasing, fit and review files fit no cell
+        assert set(fm["morph_cells"]) <= cells, f"{p.name}: unknown cell in {fm['morph_cells']}"
+
+
+def test_every_research_source_file_is_listed_in_provenance():
+    prov = (REPO_ROOT / "PROVENANCE.md").read_text(encoding="utf-8")
+    for p in _research_entries():
+        fm, _ = _split(p)
+        assert f"| knowledge/research/{p.name} | DBF-Combined @ a93f14d : {fm['source_files'][0]} |" in prov, p.name
+
+
+def _dbf_git(*args):
+    return subprocess.run(["git", "-C", str(DBF), *args], capture_output=True, text=True, encoding="utf-8", errors="replace")
+
+
+@pytest.mark.skipif(not (DBF / ".git").exists() or _dbf_git("cat-file", "-e", RESEARCH_SOURCE_COMMIT).returncode != 0,
+                    reason="DBF-Combined clone with commit a93f14d not present")
+def test_no_research_entry_copies_ten_words_from_its_source():
+    for p in _research_entries():
+        fm, body = _split(p)
+        for f in fm["source_files"]:
+            r = _dbf_git("show", f"{RESEARCH_SOURCE_COMMIT}:{f}")
+            assert r.returncode == 0, f"{p.name}: git show {f} failed: {r.stderr}"
+            run = shared_run(body, r.stdout)
+            assert run is None, f"{p.name} copies from {f}: {run!r}"

@@ -1,0 +1,83 @@
+diff --git a/core/hangar/ops/claims.py b/core/hangar/ops/claims.py
+index 5f03fe2..b48b1b7 100644
+--- a/core/hangar/ops/claims.py
++++ b/core/hangar/ops/claims.py
+@@ -94,6 +94,9 @@ def check_op(path: str) -> OpResult:
+         n_pass = sum(1 for r in rows if r["status"] == "PASS")
+         msgs.append(f"note: {n_pass - n_read} PASS recomputed, {n_read} PASS read from source "
+                     "(stored results checked against their limits, analyses not re-run)")
++    bad_read = [r["id"] for r in rows if r["read"] and r["status"] in ("FAIL", "STALE")]
++    if bad_read:
++        msgs.append("note: stored-result claims not passing (FAIL or STALE): " + ", ".join(bad_read))
+     return OpResult(ok=report.status in ("PASS", "WARN"),
+                     data={"status": report.status, "claims": rows, "uncovered_requirements": uncovered,
+                           "warnings": graph.warnings},
+diff --git a/core/hangar/studio.py b/core/hangar/studio.py
+index f8ec6c0..4cd614e 100644
+--- a/core/hangar/studio.py
++++ b/core/hangar/studio.py
+@@ -36,7 +36,6 @@ VIEWER_DIR = REPO_ROOT / "viewer"
+ STUDIO_DIR = REPO_ROOT / ".studio"
+ DATA_DIR = STUDIO_DIR / "data"
+ CACHE_FILE = STUDIO_DIR / "cache.json"
+-BACKUP_DIR = STUDIO_DIR / "backups"
+ MAX_BODY = 20 * 1024 * 1024
+ 
+ 
+diff --git a/tests/test_studio.py b/tests/test_studio.py
+index c9cbaa6..52b7d47 100644
+--- a/tests/test_studio.py
++++ b/tests/test_studio.py
+@@ -2,6 +2,7 @@
+ from __future__ import annotations
+ 
+ import json
++import queue
+ import shutil
+ import threading
+ import time
+@@ -34,7 +35,6 @@ def sandbox(tmp_path, monkeypatch):
+     monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
+     monkeypatch.setattr(studio, "DATA_DIR", tmp_path / ".studio" / "data")
+     monkeypatch.setattr(studio, "CACHE_FILE", tmp_path / ".studio" / "cache.json")
+-    monkeypatch.setattr(studio, "BACKUP_DIR", tmp_path / ".studio" / "backups")
+     return designs
+ 
+ 
+@@ -131,7 +131,11 @@ def _stop_studio(httpd):
+     """Tear a `_serve_studio` server down and drop the jobs still queued, so no leaked worker keeps checking designs after the test (T109)."""
+     httpd.shutdown()
+     httpd.server_close()
+-    return
++    while True:
++        try:
++            httpd.studio.q.get_nowait()
++        except queue.Empty:
++            return
+ 
+ 
+ def test_stop_studio_drops_queued_jobs(sandbox, monkeypatch):  # T109
+diff --git a/tests/test_surfaces_in_sync.py b/tests/test_surfaces_in_sync.py
+index 29cb151..3a9bdea 100644
+--- a/tests/test_surfaces_in_sync.py
++++ b/tests/test_surfaces_in_sync.py
+@@ -41,7 +41,6 @@ def sandbox(tmp_path, monkeypatch):
+     monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
+     monkeypatch.setattr(studio, "DATA_DIR", tmp_path / ".studio" / "data")
+     monkeypatch.setattr(studio, "CACHE_FILE", tmp_path / ".studio" / "cache.json")
+-    monkeypatch.setattr(studio, "BACKUP_DIR", tmp_path / ".studio" / "backups")
+     return designs
+ 
+ 
+diff --git a/tests/test_viewer_static.py b/tests/test_viewer_static.py
+index 8013e93..e59b5e7 100644
+--- a/tests/test_viewer_static.py
++++ b/tests/test_viewer_static.py
+@@ -80,7 +80,6 @@ def _start_studio(tmp_path, monkeypatch, seed):
+     monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
+     monkeypatch.setattr(studio, "DATA_DIR", tmp_path / ".studio" / "data")
+     monkeypatch.setattr(studio, "CACHE_FILE", tmp_path / ".studio" / "cache.json")
+-    monkeypatch.setattr(studio, "BACKUP_DIR", tmp_path / ".studio" / "backups")
+     httpd = _serve(studio.make_handler(studio.Studio()))
+     base = f"http://127.0.0.1:{httpd.server_port}"
+     t0 = time.time()

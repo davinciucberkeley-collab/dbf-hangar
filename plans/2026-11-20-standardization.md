@@ -340,6 +340,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D70 | Parametric geometry before Dec 2? | yes for G1 (kernel + PDL 1.2) and G2 (first generators), G5 if capacity; overrides the D66 freeze for this work only; demo = one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (any parameter); G3, G4, G6, G7 are v1.1 (T116-T119) | Tristan | 11-25 | decided (Tristan P200, 2026-11-25) |
 | D71 | Overnight 11-24: who decides, what runs? | conductor decides and merges after fresh review + green CI (irreversible actions wait); U4.25 merges only if reviewed and green by Sun 11-29; 11-30 update drafted not published; idle time goes to audits and QOL improvements under D66 paths | Tristan | 11-24 | decided (Tristan P209, P210, 2026-11-24) |
 | D72 | Deck: show R1, R12, R14, R17, R31 as open (D33)? | no: D33's premise is overtaken by the re-import (d24b6df); the deck shows ledger truth; T24, T54, T37 done | Tristan | 11-24 | decided (conductor under D71 on W24-R, 2026-11-24) |
+| D73 | Merge U4.25 despite the tier-1 budget miss? | yes, relaxed budget: concept-a-param tier-1 validate up to ~70 s; demo and deck updated to the new FAIL counts and timing | Tristan | 11-24 | decided (Tristan P214, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -419,7 +420,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | Tue 12-01 | fixes only | — |
 | **Wed 12-02** | present | — |
 
-*Status 11-24 early morning (audit W24-Au): ahead of this schedule. U4.20 merged 11-23; G1 (U4.21, 225c1b7) and G2 (U4.22, 49a1601 + a0ba030) merged 11-23, so both cut rules are met. Remaining: U4.23 demo/deck (in review), U4.24 fixes, U4.25 (only if green by Sun 11-29), Tristan's items (collaborators, guide send, video Sun, dry run Mon).*
+*Status 11-24 early morning (audit W24-Au): ahead of this schedule. U4.20 merged 11-23; G1 (U4.21, 225c1b7) and G2 (U4.22, 49a1601 + a0ba030) merged 11-23, so both cut rules are met. Update 11-24 morning: U4.23 and U4.24 merged (6f3bc00, bdbfbd2); U4.25 parked for v1.1 (budget); U4.26 QOL batch running. Remaining: Tristan's items (collaborators, guide send, video Sun, dry run Mon).*
 
 All units: Tristan. Acceptance testers: Dillon (Studio, concept A), Vaibhav (OpenCAE on Windows), James (harness install on his machine).
 
@@ -680,6 +681,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W23-T, W23-B, W23-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.21 (G1 kernel + PDL 1.2), U4.22 (G2 generators + concept-a parametric copy), D70 | `briefs/U4.21-*.md`, `briefs/U4.22-*.md`, branches `std/u4.21-*`, `std/u4.22-*`, `reviews/2026-11-26-w23.md` | volumes/masses vs hand calculations; regenerated meshes match the imported STLs within tolerance; one `design set` regenerates geometry, mass and CG; "### Verdict:" |
 | W24-T, W24-B, W24-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.23 (demo + deck for Dec 2), U4.24 (fix batch: T115, T105, guide rule 9, T122), U4.25 (T121 pose-aware cut pockets) | `briefs/U4.2x-*.md`, branches `std/u4.2x-*`, `reviews/2026-11-24-w24.md` | demo re-run on a fresh clone; deck numbers re-measured; "### Verdict:" |
 | W24-Au | `auditor` | Haiku | overnight 11-24 | report in the conductor's notes | hourly-ish; acted on |
+| W25-T, W25-B, W25-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.26 (QOL batch from audit W24-Au2, D71) | `briefs/U4.26-*.md`, branches `std/u4.26-*`, `reviews/2026-11-24-w25.md` | each fix has a test or a re-run command; "### Verdict:" |
+| W26-T, W26-B, W26-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.27 (test and tidy follow-ups T108, T109, T110, T123; D71) | `briefs/U4.27-*.md`, branches `std/u4.27-*`, `reviews/2026-11-24-w26.md` | each test fails before its fix; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -753,24 +756,40 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** add the parametric step (`plane design set designs/concept-a-param parameters.span_mm --value 940`) to `u4.2/demo-script.md` and re-run every step on a fresh clone of main; reframe `docs/deck/index.html` and `u4.2/deck-outline.md`/`metrics.md` honestly: real concept-a findings first, the one-file workflow, parametric geometry as a demonstration (10 known extra FAILs, T121), claims 53 recomputed + 40 read, fidelity 134 of 714, a roadmap slide (G3-G7, T114, T113); fix the stale op count; draft the 11-30 weekly update entry with `plane update add` (not published). Docs and updates only.
 
 - [x] **Step 1: Brief** (tactician W24-T) *(43c6ddf: demo, deck, update briefs; builds after U4.22 merges)*
-- [ ] **Step 2: Build** (W24-B)
-- [ ] **Step 3: Review** (W24-R); merge
+- [x] **Step 2: Build** (W24-B) *(35cc386, 032b8fd, 9159905, 44c488d, d561222)*
+- [x] **Step 3: Review** (W24-R); merge *(REOPEN once (D72 ledger truth), ACCEPT; merged 6f3bc00; Studio step not re-run 11-24; update drafted, not published)*
 
 ### Unit U4.24: Fix batch during the freeze (T115, T105, T122, guide rule 9; D66)
 
 **Scope:** fixes only: T115 (ledger-only commits run test_standards' pending-decision check; rebalance the windows shards; playwright cache key; renamed heavy test warning), T105 (docstrings say read values are not recomputed; D46 cold start 278 s), T122 (G1 review follow-ups S2, S4-S7), the garbled light-path sentence in docs/team-guide.md rule 9. Light path where it applies; full path for CI/core changes.
 
 - [x] **Step 1: Briefs** (tactician W24-T) *(dcd6f1d: ci, text (light path: docstring-only core edits accepted by the conductor), g1fixes)*
-- [ ] **Step 2: Build** (W24-B)
-- [ ] **Step 3: Review** (W24-R); merge
+- [x] **Step 2: Build** (W24-B) *(text f93b9b9, g1fixes 977500f, ci 239a27c + 3af73b6)*
+- [x] **Step 3: Review** (W24-R); merge *(text, g1fixes ACCEPT merged 4d73f1a, 720aa25; ci REOPEN once (windows balance), ACCEPT merged bdbfbd2)*
 
 ### Unit U4.25: Pose-aware cut pockets for generated parts (T121; D70 demo quality) [hard]
 
 **Scope:** `cut_files` subtract the union of a neighbour's swept poses (mechanism range), so concept-a-param's 10 extra tier-1/T6 FAIL rows (wng-007 swept poses, mec-002 range ends, elevon collisions) disappear; concept-a-param's baseline refreshed in a separate designs-only commit; existing designs unchanged.
 
 - [x] **Step 1: Brief** (tactician W24-T) *(dcd6f1d: builds after U4.22 Part B and U4.24-g1fixes merge)*
-- [ ] **Step 2: Build** (builder-plus W24-B)
+- [ ] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71)*
 - [ ] **Step 3: Review** (W24-R); merge
+
+### Unit U4.26: Quality-of-life batch (audit W24-Au2; D71)
+
+**Scope:** fixes a teammate would notice, no threshold/schema/gate-behaviour changes: `plane design sweep` crash with repeated `--values` (meshes path in the sweep copy) and the team-guide example; CI check names in the guide (8 names); clearer errors for `design get` on a missing design, `design set` with a bad key (deepest prefix + did-you-mean), missing `--why`, `design new` with an unknown template (list templates); README `--kind` list adds `remove`; stale TODO(U2.1) in ops/standards.py. CLI start-up time (lazy imports) only if measured and small.
+
+- [x] **Step 1: Briefs** (tactician W25-T) *(e5eb9af: sweep (hard; per-run sweep folders), errors, docs (light path); start-up is T124 v1.1)*
+- [x] **Step 2: Build** (W25-B) *(errors f908559; docs 5164bf2 + 9f15a4c; sweep 6790f64 + 05ae07a)*
+- [x] **Step 3: Review** (W25-R); merge *(errors ACCEPT merged 8b8f75d; docs and sweep REOPEN once each, ACCEPT, merged 2ed2ca4, 242b299)*
+
+### Unit U4.27: Test and tidy follow-ups (T108, T109, T110, T123; D71)
+
+**Scope:** review follow-ups that tighten tests or tidy code, no behaviour change for users: T108 (reaction-torque bad-value test asserts the field name; claim-check note counts FAIL/STALE read rows; idea.list reads CRLF front matter); T109 (drain queued Studio jobs at test teardown; delete unused BACKUP_DIR); T110 (knowledge tests cover knowledge/research/ and docs/research/ sources); T123 (old-designs test names concept-a-param or requires >= 8 folders; wing-core test asserts no neutral-pose overlap row for wng-001).
+
+- [x] **Step 1: Briefs** (tactician W26-T) *(64a5112: tests (pins + tightening), code (claim-check note for failing read claims; Studio test drain; BACKUP_DIR removed))*
+- [x] **Step 2: Build** (W26-B) *(tests b245f6b, code 6fd11e5)*
+- [x] **Step 3: Review** (W26-R); merge *(both ACCEPT; merged e632358, 3ba95df)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

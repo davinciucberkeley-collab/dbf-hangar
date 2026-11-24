@@ -50,6 +50,8 @@ def _alias_fail(result):
 
 
 def _load(path: str):
+    if not Path(str(path).replace("\\", "/")).exists():
+        _fail(f"no design folder at {path}; see `plane design list`")
     try:
         return load_design(path)
     except Exception as e:  # noqa: BLE001 - report any load failure cleanly
@@ -144,7 +146,8 @@ def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
     src_dir = DESIGNS_DIR / template
     src = src_dir / "plane.yaml"
     if not src.is_file():
-        raise ValueError(f"template {template!r} not found")
+        names = sorted(p.parent.name for p in list_designs())
+        raise ValueError(f"template {template!r} not found; available: {', '.join(names)}")
     from .yamlio import dump, load
     data = load(src.read_text())
     if not isinstance(data, dict):

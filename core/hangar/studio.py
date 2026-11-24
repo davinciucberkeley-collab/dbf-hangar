@@ -36,7 +36,6 @@ VIEWER_DIR = REPO_ROOT / "viewer"
 STUDIO_DIR = REPO_ROOT / ".studio"
 DATA_DIR = STUDIO_DIR / "data"
 CACHE_FILE = STUDIO_DIR / "cache.json"
-BACKUP_DIR = STUDIO_DIR / "backups"
 MAX_BODY = 20 * 1024 * 1024
 
 

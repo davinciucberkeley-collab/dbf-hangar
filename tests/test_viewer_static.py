@@ -80,7 +80,6 @@ def _start_studio(tmp_path, monkeypatch, seed):
     monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
     monkeypatch.setattr(studio, "DATA_DIR", tmp_path / ".studio" / "data")
     monkeypatch.setattr(studio, "CACHE_FILE", tmp_path / ".studio" / "cache.json")
-    monkeypatch.setattr(studio, "BACKUP_DIR", tmp_path / ".studio" / "backups")
     httpd = _serve(studio.make_handler(studio.Studio()))
     base = f"http://127.0.0.1:{httpd.server_port}"
     t0 = time.time()
