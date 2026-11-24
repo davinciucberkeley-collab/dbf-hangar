@@ -398,6 +398,19 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W4 Review, release, presentation | Mon 11-30 → Tue 12-01 | U4.1, U4.2 |
 | Present | **Wed 12-02** | demo + deck |
 
+**Revised schedule (Mon 11-23 22:45, conductor; W0-W3 finished early, see archive):**
+
+| When | What | Cut rule |
+|---|---|---|
+| Tue 11-24 | merge U4.20 a, b, d; G1 brief -> G1 build starts; Tristan adds collaborators; Dillon's first real task (guide) | — |
+| Wed 11-25 | async check-in: `plane update add` / `publish` (R26); G2 brief; G1 review | — |
+| Thu 11-26 | Thanksgiving, light: G1 fixes | G1 not merged by Fri 11-27 18:00 -> no parametric demo, roadmap slide only |
+| Fri 11-27 -> Sat 11-28 | G2 build + review; `concept-a-param`; deck reframed honestly (claims 53+40, fidelity 134/714, real findings first) | G2 not merged by Sun 11-29 12:00 -> demo G1 on one generated part |
+| Sun 11-29 | T2 (James), T62 done; re-run demo script incl. the parametric step; record backup video | — |
+| Mon 11-30 | freeze 18:00; dry run evening | after freeze: fix only what the dry run breaks |
+| Tue 12-01 | fixes only | — |
+| **Wed 12-02** | present | — |
+
 All units: Tristan. Acceptance testers: Dillon (Studio, concept A), Vaibhav (OpenCAE on Windows), James (harness install on his machine).
 
 Ordering follows R17: T6 mechanisms lands before T8 sourcing; U3.4 (an agent iterating concept-a with no code edits) is the acceptance test of the whole plan.
