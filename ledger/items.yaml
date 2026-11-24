@@ -4590,12 +4590,12 @@ items:
     text: 'W14-R follow-ups: module docstrings core/hangar/gates/claims.py:1 and core/hangar/claims/graph.py:1 still say every claim is recomputed (D60 wording); D46 ledger text says Studio cold start 149 s, the 11-23 re-run measured 278 s'
     source: W14-R review 2026-11-24 (reviews/2026-11-24-w14.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 4d73f1a
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D61
     kind: decision
     text: concept-a propulsion 1.1 data (spin, torque_per_thrust_m from DBF-Combined a_plant.py) is applied after Dec 2 and after T96 (cant direction) is settled, by a design-engineer who first confirms the LL/LR/UL/UR letters against the CAD; it turns the yaw SKIP into a FAIL, so it ships with a baseline accept in the same designs-only commit
@@ -4873,26 +4873,26 @@ items:
     updated: '2026-11-23'
   - id: T121
     kind: task
-    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set"
+    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)]"
     source: W23-B3 2026-11-23 (U4.22 Part B)
     owner: conductor
     status: open
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: designs/concept-a-param/README.md
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: T122
     kind: task
     text: "W23-R non-blocking (G1): T0.parameters PASS counts a reference to a non-number parameter as resolved (checks.py:68); mass_model volume ignores cavities; duplicate volume cache in resolve.py vs geometry.py; materials.py computes repo root instead of REPO_ROOT; data['regenerated'] only when non-empty; an unrelated design set is refused while any generated part fails; _aircraft catches every exception (resolve.py:87)"
     source: W23-R review 2026-11-23 (reviews/2026-11-23-w23.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 720aa25
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D71
     kind: decision
     text: 'Overnight 2026-11-24 (Tristan P209/P210, defaults): the conductor takes decisions and approvals and merges to main after a fresh review and green CI (irreversible actions still wait); U4.25 pose-aware cut pockets merges only if reviewed and green by Sun 11-29; the 11-30 weekly entry is drafted, not published; when the queue is empty, run audits and quality-of-life improvements (fixes, docs, tests, small tooling) under the D66 light/full path rules'
@@ -4913,5 +4913,16 @@ items:
     due: '2026-12-15'
     units: []
     evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: D72
+    kind: decision
+    text: "D33's 'show R1, R12, R14, R17, R31 as open gaps on Dec 2' is overtaken: the concept-a re-import (d24b6df) closed them, and T24, T54, T37 are done; the deck shows ledger truth (done with evidence)"
+    source: conductor on W24-R U4.23 finding, 2026-11-24 (D71)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-24-w24.md
     decided_in: ''
     updated: '2026-11-24'
