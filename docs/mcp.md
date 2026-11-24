@@ -40,8 +40,10 @@ For Claude Desktop, add this to `claude_desktop_config.json` under `mcpServers`:
 {
   "mcpServers": {
     "dbf-hangar": {
-      "command": "plane-mcp"
+      "command": "C:\\Users\\<you>\\dbf-hangar\\.venv\\Scripts\\plane-mcp.exe"
     }
   }
 }
 ```
+
+Use the full path to plane-mcp.exe in your venv: Claude Desktop does not see your venv on PATH. Fully quit and reopen Desktop after editing. See the team guide (team-guide.md) for the Project instructions and permissions.
