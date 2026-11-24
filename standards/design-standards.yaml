@@ -51,7 +51,7 @@ structure:
     value: 3.0
     rule: Every attachment must carry (mass outboard of the joint) x g x this factor (x ultimate_factor).
     source: pending
-    note: "Options from knowledge/sources: 3.0 (no scout file gives it; current value); 2.67 (std-astm-f3298-load-tables, 14 CFR 23.473(g) comparison for crewed Part 23, not a UAS rule); 3.8 (std-stanag-4703-annex-b-landing, UL5.2 value used only as the threshold in Annex B 1.2, not a landing factor); n = nj + 2/3 with nj = (h + d/3) / (ef x d), the STANAG 4703 Annex B formula (std-stanag-4703-annex-b-landing, Annex B 1.1), computed from W/S and gear travel. Decision D6 (Tristan/Dillon) picks one value; until then this key stays pending."
+    note: "Options from knowledge/sources: 3.0 (no scout file gives it; current value); 2.67 (std-astm-f3298-load-tables, 14 CFR 23.473(g) comparison for crewed Part 23, not a UAS rule); 3.8 (std-stanag-4703-annex-b-landing, UL5.2 value used only as the threshold in Annex B 1.2, not a landing factor); n = nj + 2/3 with nj = (h + d/3) / (ef x d), the STANAG 4703 Annex B formula (std-stanag-4703-annex-b-landing, Annex B 1.1), computed from W/S and gear travel. Decision D6 (Tristan/Dillon) picks one value; until then this key stays pending. STANAG 4703 Annex B formula is the candidate method; gear travel d not measured (T113)."
   ultimate_factor:
     value: 1.5
     rule: Ultimate load = limit load x 1.5; joint ratings are ultimate ratings.
