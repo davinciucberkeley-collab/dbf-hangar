@@ -465,7 +465,8 @@ def test_map_args_maps_only_the_declared_path_arguments(fake_repo, tmp_path):  #
     assert bench._map_args(["new", "concept-a"], cwd, ws, fresh) == ["new", "concept-a"]    # the old command names no op
     with pytest.raises(ValueError, match="outside the workspace"):      # a path argument outside the workspace is still refused
         bench._map_args(["design", "set", str(snap / "designs" / "concept-a"), key], cwd, ws, fresh)
-    assert bench._map_args(["design", "set", "concept-a", key, "--value", str(snap), "--why", "x"], cwd, ws, fresh)[5] == str(snap)   # an option value is never checked
+    kept = bench._map_args(["design", "set", "concept-a", key, "--value", str(snap), "--why", "x"], cwd, ws, fresh)
+    assert kept[5] == str(snap) and kept[7] == "x"      # --value and --why stay unmapped (as logged), even an absolute path outside the workspace
 
 
 def test_replay_runs_a_command_whose_why_text_names_an_existing_path(fake_repo, tmp_path):  # T101
@@ -473,6 +474,34 @@ def test_replay_runs_a_command_whose_why_text_names_an_existing_path(fake_repo, 
     _plane(ws / "designs", _logged_env(log), "design", "set", "concept-a", "components[pwr-001].mass_g",
            "--value", "140", "--why", "concept-a", "--kind", "modify")
     assert bench.replay(ws, snap, log) == []                            # the why text stayed "concept-a" in the replay
+
+
+def _plane_result(cwd, env, *args):
+    return REAL_RUN([sys.executable, "-m", "hangar.cli", *args], cwd=str(cwd), env=env, capture_output=True, text=True,
+                    encoding="utf-8", timeout=300)
+
+
+@pytest.mark.parametrize("cmd", [
+    ["design", "new", "u-tpl-new", "--template", "{abs}"],            # absolute path
+    ["design", "new", "u-tpl-new", "--template", "../designs/concept-a"],   # ../ form
+    ["design", "new", "u-tpl-new", "--template={abs}"],               # one-word form
+    ["new", "u-tpl-new", "--from", "{abs}"],                          # legacy command
+])
+def test_design_new_refuses_a_template_that_is_not_a_bare_id(cmd, fake_repo, tmp_path):  # T101 (W16-R)
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    env = {**_logged_env(log), "PLANE_DESIGNS_DIR": str(ws / "designs")}
+    args = [a.replace("{abs}", str(ws / "designs" / "concept-a")) for a in cmd]
+    r = _plane_result(ws, env, *args)
+    assert r.returncode == 2, (r.returncode, r.stderr)
+    assert "template must be a bare design id" in r.stderr, r.stderr
+    assert not (ws / "designs" / "u-tpl-new").exists()
+
+
+def test_design_new_accepts_a_bare_template_id(fake_repo, tmp_path):  # T101 (W16-R)
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    env = {**_logged_env(log), "PLANE_DESIGNS_DIR": str(ws / "designs")}
+    _plane(ws, env, "design", "new", "u-tpl-new", "--template", "concept-a")
+    assert (ws / "designs" / "u-tpl-new" / "plane.yaml").is_file()
 
 
 def test_replay_maps_a_workspace_path_written_as_dot_dot_run_id(fake_repo, tmp_path):
