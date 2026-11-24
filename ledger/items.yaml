@@ -4926,3 +4926,14 @@ items:
     evidence: reviews/2026-11-24-w24.md
     decided_in: ''
     updated: '2026-11-24'
+  - id: T124
+    kind: task
+    text: 'v1.1: plane CLI start-up ~4.4 s warm; hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx (1.48 s); lazy-import trimesh in checks.py, geometry.py and others (5+ modules) behind a measured before/after'
+    source: W25-T 2026-11-24 (python -X importtime)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
