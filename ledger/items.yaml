@@ -4494,9 +4494,9 @@ items:
     status: done
     due: '2026-11-30'
     units: []
-    evidence: 57a3a40
+    evidence: 6f3bc00
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: T98
     kind: task
     text: 'concept-a 14 AWG leftovers after T60: hrn-002 description, BOM W05 part number and the BOM line near plane.yaml:2317 still say 14 AWG pack leads; e-hrn-12 (ESC tail, same 44.8 A peak) has no gauge_awg so T7 does not check it (would be 36 A < 44.8 A at 14 AWG). Reconcile via plane design set (W11-R)'
@@ -4788,12 +4788,12 @@ items:
     text: "W20-R follow-ups (U4.18): add tests/test_standards.py::test_no_blocking_threshold_is_pending_without_a_decision to the progress.yml step so ledger-only commits keep that check (D65 'none that drop coverage'); rebalance _HEAVY with the windows shard times (shard 2 235 s vs 86-100 s); pin or key the playwright cache on the installed version; a renamed heavy test silently falls back to round-robin; measure progress.yml on the first ledger-only push"
     source: W20-R review 2026-11-25 (reviews/2026-11-25-w20.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: bdbfbd2
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D69
     kind: decision
     text: "Teammate full-path changes (gates, bench, security, schema): the teammate builds on their branch with their own session and tests, opens a PR, and Tristan runs a fresh reviewer agent on the PR before merging; no plan unit needed. Light path for data-only design changes is CI green + Dillon's approval, no reviewer agent, touching no code, hook, workflow, schema or threshold. Agent gate: built-in names allowed only when no project or user agent file redefines them; plugin and --agents overrides are an accepted leftover risk [amended by Tristan P203 (W22-A advice): built-ins Explore, Plan, claude-code-guide pass the launch gate by exact name; Write, Edit and NotebookEdit are refused inside any agent with those names (hook reads agent_type); no agent-file scan; an overriding agent of that name may still use Bash under the session's rules]"

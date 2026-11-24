@@ -753,16 +753,16 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** add the parametric step (`plane design set designs/concept-a-param parameters.span_mm --value 940`) to `u4.2/demo-script.md` and re-run every step on a fresh clone of main; reframe `docs/deck/index.html` and `u4.2/deck-outline.md`/`metrics.md` honestly: real concept-a findings first, the one-file workflow, parametric geometry as a demonstration (10 known extra FAILs, T121), claims 53 recomputed + 40 read, fidelity 134 of 714, a roadmap slide (G3-G7, T114, T113); fix the stale op count; draft the 11-30 weekly update entry with `plane update add` (not published). Docs and updates only.
 
 - [x] **Step 1: Brief** (tactician W24-T) *(43c6ddf: demo, deck, update briefs; builds after U4.22 merges)*
-- [ ] **Step 2: Build** (W24-B)
-- [ ] **Step 3: Review** (W24-R); merge
+- [x] **Step 2: Build** (W24-B) *(35cc386, 032b8fd, 9159905, 44c488d, d561222)*
+- [x] **Step 3: Review** (W24-R); merge *(REOPEN once (D72 ledger truth), ACCEPT; merged 6f3bc00; Studio step not re-run 11-24; update drafted, not published)*
 
 ### Unit U4.24: Fix batch during the freeze (T115, T105, T122, guide rule 9; D66)
 
 **Scope:** fixes only: T115 (ledger-only commits run test_standards' pending-decision check; rebalance the windows shards; playwright cache key; renamed heavy test warning), T105 (docstrings say read values are not recomputed; D46 cold start 278 s), T122 (G1 review follow-ups S2, S4-S7), the garbled light-path sentence in docs/team-guide.md rule 9. Light path where it applies; full path for CI/core changes.
 
 - [x] **Step 1: Briefs** (tactician W24-T) *(dcd6f1d: ci, text (light path: docstring-only core edits accepted by the conductor), g1fixes)*
-- [ ] **Step 2: Build** (W24-B)
-- [ ] **Step 3: Review** (W24-R); merge
+- [x] **Step 2: Build** (W24-B) *(text f93b9b9, g1fixes 977500f, ci 239a27c + 3af73b6)*
+- [x] **Step 3: Review** (W24-R); merge *(text, g1fixes ACCEPT merged 4d73f1a, 720aa25; ci REOPEN once (windows balance), ACCEPT merged bdbfbd2)*
 
 ### Unit U4.25: Pose-aware cut pockets for generated parts (T121; D70 demo quality) [hard]
 
