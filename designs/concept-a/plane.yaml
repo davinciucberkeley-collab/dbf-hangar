@@ -2220,7 +2220,7 @@ files:
 bom:
   items:
   - id: p01
-    qty: 6
+    qty: 5
     supplier: TMotor
     part_number: T-Motor MN2212 V2.0 KV780 (4 + 1 spare)
     unit_cost_usd: 46.9
@@ -2421,7 +2421,7 @@ bom:
       date: '2026-11-14'
       method: browser
   - id: m01
-    qty: 4
+    qty: 3
     supplier: RMRC
     part_number: EMAX ES3054HV servo (2 elevons + 1 spare; 20.5 g; replaces ES3352HV which fails the 1.5x torque at the 7.2 V rail)
     unit_cost_usd: 13.99
