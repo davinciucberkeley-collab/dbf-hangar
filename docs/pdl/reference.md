@@ -223,6 +223,7 @@ v1.0. One bill-of-materials line.
 | `unit_cost_usd` | number |  |  |
 | `mass_g` | number |  |  |
 | `verified` | `bom_verified` |  |  |
+| `library_part` | `slug` |  | id of a knowledge/parts/ entry; T8 checks it exists. |
 
 ### `bom`
 
