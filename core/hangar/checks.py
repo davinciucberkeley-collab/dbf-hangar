@@ -150,7 +150,7 @@ def _overlap_volume(a: list[trimesh.Trimesh], b: list[trimesh.Trimesh]) -> float
     return vol
 
 
-def _min_distance(a: list[trimesh.Trimesh], b: list[trimesh.Trimesh]) -> float:
+def _min_distance(a: list[trimesh.Trimesh], b: list[trimesh.Trimesh], stop_at: float = -1.0) -> float:
     best = math.inf
     for pa in a:
         for pb in b:
@@ -158,8 +158,12 @@ def _min_distance(a: list[trimesh.Trimesh], b: list[trimesh.Trimesh]) -> float:
             pts_b = trimesh.sample.sample_surface(pb, 400, seed=1)[0] if len(pb.faces) else pb.vertices
             pts_a = np.vstack([pts_a, pa.vertices])
             pts_b = np.vstack([pts_b, pb.vertices])
-            best = min(best, float(np.min(np.abs(trimesh.proximity.signed_distance(pb, pts_a)))),
-                       float(np.min(np.abs(trimesh.proximity.signed_distance(pa, pts_b)))))
+            best = min(best, float(np.min(np.abs(trimesh.proximity.signed_distance(pb, pts_a)))))
+            if best <= stop_at:
+                return best
+            best = min(best, float(np.min(np.abs(trimesh.proximity.signed_distance(pa, pts_b)))))
+            if best <= stop_at:
+                return best
     return best
 
 
@@ -196,12 +200,12 @@ class _PairCache:
             self.ov[key] = v
         return v
 
-    def gap(self, meshes, tf, a: str, b: str) -> float:
+    def gap(self, meshes, tf, a: str, b: str, stop_at: float = -1.0) -> float:
         static = bool(np.allclose(tf[a], tf[b]))
         key = self._key(a, b)
         if static and key in self.dist:
             return self.dist[key]
-        v = _min_distance(meshes[a], meshes[b])
+        v = _min_distance(meshes[a], meshes[b], stop_at)
         if static:
             self.dist[key] = v
         return v
@@ -390,7 +394,7 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
             continue
         ov = cache.overlap(meshes, tf, p, c)
         if ov <= 0:
-            d = cache.gap(meshes, tf, p, c)
+            d = cache.gap(meshes, tf, p, c, tol)
             if d > tol:
                 res.append(CheckResult("T1.attachment_contact", FAIL,
                                        f"{label}: parts are {d:.1f} mm apart (tolerance {tol} mm)",
