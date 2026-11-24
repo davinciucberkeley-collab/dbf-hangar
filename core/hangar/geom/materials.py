@@ -2,11 +2,12 @@
 from __future__ import annotations
 
 import functools
-from pathlib import Path
 
 import yaml
 
-_FILE = Path(__file__).resolve().parents[3] / "standards" / "materials.yaml"
+from hangar.design import REPO_ROOT
+
+_FILE = REPO_ROOT / "standards" / "materials.yaml"
 
 
 @functools.lru_cache(maxsize=1)
