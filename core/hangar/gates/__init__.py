@@ -95,7 +95,7 @@ def _import_gates() -> None:
 
 def _report_only(rep: TierReport) -> None:
     for r in rep.results:
-        if r.status in (FAIL, SKIP):
+        if r.status in (FAIL, SKIP) and not (r.data or {}).get("not_applicable"):
             r.data = {**r.data, "report_only": True, "raw_status": r.status}
             r.message = REPORT_ONLY_PREFIX + r.message
             r.status = WARN

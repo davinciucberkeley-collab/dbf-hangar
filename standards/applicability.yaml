@@ -1,0 +1,7 @@
+# Which morphology each check needs (D77). Closed vocabulary: hovers, transitions, winged, conventional (core/hangar/gates/applicability.py).
+version: "0.1"
+checks:
+  T2.hover_moment:        {needs: hovers,      why: "hover moment applies only to a design that hovers on thrust"}
+  T3.hover_tw:            {needs: hovers,      why: "hover thrust-to-weight applies only to a design that hovers on thrust"}
+  T3.control_authority:   {needs: hovers,      why: "hover control authority applies only to a design that hovers on thrust"}
+  T3.transition_margin:   {needs: transitions, why: "transition margin applies only to a design that transitions between hover and cruise"}

@@ -8,6 +8,7 @@ from scipy.optimize import linprog
 
 from ..design import FAIL, PASS, SKIP, CheckResult
 from . import discipline_check
+from .applicability import applicable, skip_row
 from .fidelity import resolve_threshold
 from .interfaces import load_connection_types
 
@@ -179,6 +180,9 @@ def joint_rf(ctx, rep) -> list[CheckResult]:
 def control_authority(ctx, rep) -> list[CheckResult]:
     cid, crit = "T3.control_authority", f"{OPS}#hover_ctrl_factor"
     design = ctx.design
+    ok, why = applicable(design, cid)
+    if not ok:
+        return [skip_row(cid, why, crit)]
     if not _lift_motors(design) or not _vtol(design):
         return [_skip(cid, "not applicable: no lift motors or vtol_method none", crit)]
     try:
@@ -260,8 +264,9 @@ def control_authority(ctx, rep) -> list[CheckResult]:
 def transition_margin(ctx, rep) -> list[CheckResult]:
     cid, crit = "T3.transition_margin", f"{OPS}#transition_thrust_fraction_max"
     design = ctx.design
-    if design.data["morphology"].get("vtol_method", "none") == "none":
-        return [_skip(cid, "not applicable: morphology.vtol_method is none", crit)]
+    ok, why = applicable(design, cid)
+    if not ok:
+        return [skip_row(cid, why, crit)]
     motors = _lift_motors(design)
     if not motors:
         return [_skip(cid, "no lift motors", crit)]
