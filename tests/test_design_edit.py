@@ -126,6 +126,16 @@ def test_sweep_never_touches_source(tmp_example, tmp_path, monkeypatch):
     assert (tmp_path / "sweeps" / "example-tailsitter-wing" / "1" / "plane.yaml").is_file()
 
 
+def test_sweep_writes_next_to_the_designs_dir_when_plane_designs_dir_is_set(tmp_example, tmp_path, monkeypatch):  # T101
+    monkeypatch.setattr(edit, "SWEEP_ROOT", tmp_path / "real-repo-sweeps")
+    monkeypatch.setenv("PLANE_DESIGNS_DIR", str(tmp_path / "ws" / "designs"))
+    r = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["100"])
+    assert r.ok, r.messages
+    assert (tmp_path / "ws" / ".sweeps" / "example-tailsitter-wing" / "1" / "plane.yaml").is_file()
+    assert not (tmp_path / "real-repo-sweeps").exists()
+    assert r.data["sweep_dir"] == str(tmp_path / "ws" / ".sweeps" / "example-tailsitter-wing")
+
+
 def test_sweep_bad_value_exits_2_and_creates_nothing(tmp_example, tmp_path, monkeypatch):
     monkeypatch.setattr(edit, "SWEEP_ROOT", tmp_path / "sweeps")
     r = call("design.sweep", path=str(tmp_example), key="components[battery].mass_g", values=["100", "heavy"])
