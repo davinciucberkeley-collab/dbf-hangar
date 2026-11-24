@@ -71,7 +71,7 @@ def test_bad_input_is_exit_2_and_valid_json(cli_runner, tmp_path):
     body = json.loads(r.output)
     jsonschema.validate(body, OP_RESULT_SCHEMA)
     assert r.exit_code == 2 and body["ok"] is False and body["data"]["error"] == "input"
-    assert "cannot load" in body["messages"][0]
+    assert "no design folder at" in body["messages"][0]
 
 
 def test_call_unknown_param_is_input_error_not_exception():
