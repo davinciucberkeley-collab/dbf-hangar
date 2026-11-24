@@ -39,7 +39,7 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <li>Static margin 16.4% MAC vs 5-15% target, CG x 21 mm (T76)</li>
 <li>Hub FEA: cge-001 SF 0.37 landing, 0.44 thrust; cge-006 SF 0.83, 0.72 (T71)</li></ul>
 <div class="src">Source: ledger T71, T73-T76; <code>plane design validate designs/concept-a --tier all</code> (11-24, JSON status counts and FAIL rows); metrics.md section C</div>
-<aside>FAILs sit behind pending thresholds and open model questions (T37), not behind a skipped gate. NP 59 mm against claim CL-A-SM 40.7 mm (designs/concept-a/claims.yaml:2181-2184). Each row has an owner and a due date in the ledger (Dillon, 12-08).</aside></section>
+<aside>FAILs sit behind pending thresholds and open model questions (yaw cant, T96 open; T37 done), not behind a skipped gate. NP 59 mm against claim CL-A-SM 40.7 mm (designs/concept-a/claims.yaml:2181-2184). Each row has an owner and a due date in the ledger (Dillon, 12-08).</aside></section>
 
 <section class="slide warn"><h1>More real findings on concept-a</h1>
 <ul><li>Yaw: all four motor cants turn the same way; about 1.06 N*m untrimmed vs about 0.27 N*m reaction torque (T96)</li>
@@ -117,7 +117,7 @@ Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside>
 
 <section class="slide"><h1>The harness</h1>
 <ul><li>10 agent roles in <code>.claude/agents/</code>; hooks enforce them</li>
-<li>Ledger: 437 items, 63 open, 0 overdue (all kinds: 40 rulings, 123 tasks, 1 idea, 273 decisions)</li>
+<li>Ledger: 438 items, 61 open, 0 overdue (all kinds: 40 rulings, 123 tasks, 1 idea, 274 decisions)</li>
 <li><code>plane ledger report</code> before a meeting</li>
 <li>Weekly <code>plane update publish</code> (3.0 s, 11-22 run)</li></ul>
 <div class="src">Source: <code>ls .claude/agents</code> = 10; <code>plane ledger report</code>, 2026-11-24</div>
@@ -138,7 +138,7 @@ Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside>
 <li>Haiku's 0 was declining to invent masses</li>
 <li>Do not read it as "agents can cut mass"</li></ul>
 <div class="src">Source: bench/results/2026-11-21.md; reviews/2026-11-21-w3.md:487,593,615; ledger T35, T54</div>
-<aside>fix-static-margin passes added mass without a real part change. The grader does not yet protect designs/ (T54, v1.1). Never rank Haiku last on mass-cut-10.</aside></section>
+<aside>fix-static-margin passes added mass without a real part change. The bench grader now replays logged plane commands and protects designs/ (T54 done: merge 41aa2a8, D56). Never rank Haiku last on mass-cut-10.</aside></section>
 
 <section class="slide"><h1>Scoreboard: 8 of 9 metrics pass</h1>
 <ul><li>M1 team tasks: 12 of 12 scripts (was 3 of 12)</li>
@@ -153,18 +153,18 @@ Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside>
 <li>Joint ratings are placeholders: 64 joint checks SKIP; per-joint ratings are the first v1.1 task (T114)</li>
 <li>Landing gear drop test not done: landing_load_factor stays pending until T113 is measured</li>
 <li>No mass-gate number: the standards say 2.6 and 2.7 kg (D32, T12)</li>
-<li>5 requirements shown as open gaps on Dec 2: R1, R12, R14, R17, R31 (D33)</li></ul>
-<div class="src">Source: ledger T113, T114, T12, D32, D33; metrics.md sections D and F; 64 = SKIP rows of T2.joint_load (32) and T2.sim_drop_loads (32) in <code>plane design validate designs/concept-a --tier all --json</code> (11-24)</div>
-<aside>If asked for a mass limit, say the sources disagree and the team has to pick. R17 is probably met by PR #3 elevon mechanisms (whole-branch line 21) but is ledger-open. The R1 ledger note is stale evidence. Ledger check 11-24: T24 (concept-a re-import) is marked done, so confirm the R-gap wording before the room.</aside></section>
+</ul>
+<div class="src">Source: ledger T113, T114, T12, D32; R1, R12, R14, R17, R31 done (merge d24b6df, ledger 11-24); metrics.md sections D and F; 64 = SKIP rows of T2.joint_load (32) and T2.sim_drop_loads (32) in <code>plane design validate designs/concept-a --tier all --json</code> (11-24)</div>
+<aside>If asked for a mass limit, say the sources disagree and the team has to pick. Requirements R1, R12, R14, R17 and R31 are closed by the concept-a re-import (merge d24b6df; T24 done in the ledger on 11-24). This supersedes the D33 open-gap wording (D72).</aside></section>
 
 <section class="slide"><h1>Roadmap</h1>
 <ul><li>First: per-joint ratings from sourced stresses (T114), then joint selection rules (T118)</li>
 <li>Parametric design (D70): layout from a configuration (G3, T116); sizing with AeroSandbox (G4, T117)</li>
 <li>Full flow: explore, propose 5 cards, human picks, build, gates (G7, T119)</li>
 <li>Pose-aware pockets (T121); gear drop test (T113)</li>
-<li>Still open from v1.0: concept-a re-import (T24), bench grader protects designs/ (T54), SITL and Blender adapters (T9), mass-gate decision (T12)</li></ul>
+<li>Still open from v1.0: SITL and Blender adapters (T9), mass-gate decision (T12)</li></ul>
 <div class="src">Source: ledger T9, T12, T113, T114, T116-T119, T121 (statuses checked 11-24); plan section 3 (D70)</div>
-<aside>G5 (concept cards) was optional and is not started. Old v1.1 list items kept in the aside: T49 jam ratio (open), T37 yaw authority (ledger status done; the yaw row is a WARN "not judged"); other v1.1 tasks as in the previous deck notes (T3, T18, T23, T7, T16, T31, T19, T26, T17, T52, T53, T55, T11). Ledger 11-24: T24 and T54 are marked done; their open parts are the ones named on this slide.</aside></section>
+<aside>G5 (concept cards) was optional and is not started. Old v1.1 list items kept in the aside: T49 jam ratio (open), T37 yaw authority (ledger status done; the yaw row is a WARN "not judged"); other v1.1 tasks as in the previous deck notes (T3, T18, T23, T7, T16, T31, T19, T26, T17, T52, T53, T55, T11). Ledger 11-24: T24, T54 and T37 are marked done and are not listed as open.</aside></section>
 <div id="ctr"></div>
 <script>
 (function(){
