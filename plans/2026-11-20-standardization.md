@@ -1338,8 +1338,8 @@ Not a code unit; it tests everything above.
 
 **Scope:** importer `importers/dbf_blocks.py:27` stops adding spares to a qty that already includes them (core + tests); then a designs-only branch sets concept-a P01 qty 5 and M01 qty 3 with `plane design set` (BOM lines total $1262.50) and refreshes any test that pins the old quantities.
 
-- [ ] **Step 1: Brief** (tactician W15-T): `briefs/U4.13-t94.md`
-- [ ] **Step 2: Build** (W15-B): core branch, then designs branch
+- [x] **Step 1: Brief** (tactician W15-T): `briefs/U4.13-t94.md` *(d4407ec; only P01 and M01 have spares)*
+- [ ] **Step 2: Build** (W15-B): core branch, then designs branch *(core d5bcda9, W15-R ACCEPT, merged df2d19e; designs branch next)*
 - [ ] **Step 3: Review** (reviewer W15-R); merge; T94 done
 
 ### Unit U4.14: v1.1 cleanup, second batch (T99, T100, T101, T102; P186)
