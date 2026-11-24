@@ -19,7 +19,8 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.5 Team adoption, CI, ratings, process | 4 | 2 |
 | W4.6 Parametric geometry for the demo (D70) | 2 | 1 |
 | W4.7 Presentation | 1 | 0 |
-| **all** | 43 | 39 |
+| Other (no wave row) | 3 | 0 |
+| **all** | 46 | 39 |
 
 ### Open ledger items by owner
 
@@ -136,13 +137,21 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 3/3 | done | ACCEPT |
-| U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 1/3 | in progress | - |
+| U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 1/3 | in progress | ACCEPT |
 
 ### W4.7 Presentation
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.2 | Dec 2 presentation package | 2/4 | in progress | ACCEPT |
+
+### Unscheduled
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U4.23 | Demo script and deck for Dec 2 (U4.2 Steps 2-3; D60, D70; P209) | 0/3 | not started | - |
+| U4.24 | Fix batch during the freeze (T115, T105, T122, guide rule 9; D66) | 0/3 | not started | - |
+| U4.25 | Pose-aware cut pockets for generated parts (T121; D70 demo quality) [hard] | 0/3 | not started | - |
 
 ## Ledger
 
