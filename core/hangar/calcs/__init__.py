@@ -10,6 +10,8 @@ def read_value(v):
     return {"v": v}
 
 
+read_value.stored_result = True   # T103: claims over this function are reported as read, not recomputed
+
 CALCS = {"sum_values": sum_values, "read_value": read_value}
 from .concept_a import CALCS as _CONCEPT_A  # noqa: E402
 

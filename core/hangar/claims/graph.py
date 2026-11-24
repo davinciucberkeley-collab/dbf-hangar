@@ -33,6 +33,7 @@ class ClaimResult:
     margin_abs: bool
     status: Literal["PASS", "FAIL", "PROPOSED", "STALE"]
     message: str = ""
+    read: bool = False     # T103: a stored result read from its source (calc function marked stored_result), not recomputed
 
 
 def _split_path(path: str) -> list[str]:
@@ -228,6 +229,7 @@ class ClaimGraph:
         calc = self.nodes[c["calc"]] if "calc" in c else None
         tol = rel_tol
         failed = unconfirmed = None
+        fn = None
         if calc is None:
             now = c.get("value")
         else:
@@ -255,6 +257,7 @@ class ClaimGraph:
                 except Exception as e:  # noqa: BLE001
                     failed = f"calculation {calc['id']} raised {type(e).__name__}: {e}"
                     now = None
+        read = bool(getattr(fn, "stored_result", False))
         limit = None
         m = None
         mabs = False
@@ -285,7 +288,9 @@ class ClaimGraph:
             else:
                 status = "PASS"
                 msg = f"margin {margin_text(m, limit['value'], unit, 1)}" if m is not None else "computed, no limit"
-        return ClaimResult(cid, now, limit, m, mabs, status, msg), (unconfirmed if calc is not None else None)
+                if read:
+                    msg = "stored result read from source, not recomputed; " + (msg if m is not None else "no limit")
+        return ClaimResult(cid, now, limit, m, mabs, status, msg, read), (unconfirmed if calc is not None else None)
 
     # ---------------------------------------------------------------- explain
     def explain(self, claim_id: str) -> list[dict]:
