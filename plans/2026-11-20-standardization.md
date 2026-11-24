@@ -787,8 +787,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** review follow-ups that tighten tests or tidy code, no behaviour change for users: T108 (reaction-torque bad-value test asserts the field name; claim-check note counts FAIL/STALE read rows; idea.list reads CRLF front matter); T109 (drain queued Studio jobs at test teardown; delete unused BACKUP_DIR); T110 (knowledge tests cover knowledge/research/ and docs/research/ sources); T123 (old-designs test names concept-a-param or requires >= 8 folders; wing-core test asserts no neutral-pose overlap row for wng-001).
 
 - [x] **Step 1: Briefs** (tactician W26-T) *(64a5112: tests (pins + tightening), code (claim-check note for failing read claims; Studio test drain; BACKUP_DIR removed))*
-- [ ] **Step 2: Build** (W26-B)
-- [ ] **Step 3: Review** (W26-R); merge
+- [x] **Step 2: Build** (W26-B) *(tests b245f6b, code 6fd11e5)*
+- [x] **Step 3: Review** (W26-R); merge *(both ACCEPT; merged e632358, 3ba95df)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

@@ -4634,23 +4634,23 @@ items:
     text: 'W17-R non-blocking (U4.15): test_reaction_torque_fields_reject_bad_values passes without the change (assert the message names the field); _reaction treats 0 as missing (schema forbids 0, harmless); claim check note counts only PASS read rows (a FAIL/STALE read claim is not in the note); idea.list reads only LF front matter'
     source: W17-R review 2026-11-24 (reviews/2026-11-24-w17.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e632358
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: T109
     kind: task
     text: 'W14-R non-blocking (T84): drain queued Studio jobs when _serve_studio tears down (leaked workers still load the windows runner); delete unused BACKUP_DIR (studio.py:39)'
     source: W14-R review 2026-11-24 (reviews/2026-11-24-w14.md, T84 step 4)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 3ba95df
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D62
     kind: decision
     text: 'Run the remaining knowledge import now: DBF-Combined docs/research/ (23 files, deferred by D28 to U2.2-3) becomes U4.16; the D35/D42 config-study import already ran (dc8902a, 50 entries)'
@@ -4667,12 +4667,12 @@ items:
     text: 'tests/test_knowledge.py covers only knowledge/concepts/ (exactly 50 config-study entries, sources under redesign/config-study/): widen the copy check and structure checks to knowledge/research/ and docs/research/ sources after U4.16 merges (W18-T)'
     source: W18-T 2026-11-24 (briefs/U2.2-3-research-import.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e632358
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: D63
     kind: decision
     text: 'Team workflow defaults for the team guide (W19-T O1-O11): teammates added as write collaborators (no forks); teammates never push to main, every teammate change is a PR (D30 stays Tristan/conductor only); Tristan merges, Dillon approves design PRs (R25), James advises on test/standards PRs, merge commits, branch protection requiring CI recommended; each teammate task is a ledger task they cite, teammates never edit plans/, ledger/, reviews/, PROGRESS.md; teammates do not run the conductor flow (design-engineer, recon, scout, plain sessions); hooks stay on, HANGAR_ALLOW_STOP=1 escape; branches std/<topic> for core/tests/standards/knowledge and design/<id>/<slug> for designs (never bare design/<id>); teammates keep their git author plus the repo-owner trailer; concept-a changes only via design set + PR, no re-import without telling Dillon; Python 3.12 recommended; weekly update entries per branch, only Tristan adds ledger items [O12: std/gate-<name> branches may touch core/hangar/gates/, checks.py, standards/, knowledge/, tests/; baseline.json in a second designs-only commit; new gates start report-only. O13: Desktop chat setup optional, set up once with Tristan; Code tab counts as full setup after three first-run checks (amendment 1, 05e114d)]'
@@ -4909,10 +4909,10 @@ items:
     text: 'W23-R non-blocking (U4.22): test_old_designs_untouched should skip concept-a-param by name or require >= 8 old folders; wing-core test should assert no neutral-pose attachment-overlap row names wng-001; concept-a-param baseline was recorded without fea/, so running plane fea on it brings the 4 cge stress FAILs back'
     source: W23-R review 2026-11-23 (reviews/2026-11-23-w23.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e632358
     decided_in: ''
     updated: '2026-11-24'
   - id: D72
