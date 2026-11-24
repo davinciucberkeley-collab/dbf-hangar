@@ -56,7 +56,7 @@ def _tier0_v12(design: Design) -> list[CheckResult]:
                                ("mass_model", bool(mm_comps))) if u]
         res.append(CheckResult("T0.version", FAIL, f"{' / '.join(used)} need schema_version \"1.2\"", sch))
     if has_params or gen_comps:
-        from .geom.params import find_references
+        from .geom.params import find_references, _is_num
         params = src.get("parameters") if isinstance(src.get("parameters"), dict) else {}
         refs = find_references(src)
         bad = [(cid, path, name) for cid, path, name in refs if name not in params]
@@ -64,7 +64,12 @@ def _tier0_v12(design: Design) -> list[CheckResult]:
             res.append(CheckResult("T0.parameters", FAIL,
                                    f"component {cid}: {path} references ${name}, which is not in parameters",
                                    sch, {"component": cid}))
-        if has_params and not bad:
+        nonnum = [(cid, path, name) for cid, path, name in refs if name in params and not _is_num(params[name])]
+        for cid, path, name in nonnum:
+            res.append(CheckResult("T0.parameters", FAIL,
+                                   f"component {cid}: {path} references ${name}, whose value {params[name]!r} is not a number",
+                                   sch, {"component": cid}))
+        if has_params and not bad and not nonnum:
             res.append(CheckResult("T0.parameters", PASS, f"{len(params)} parameters, {len(refs)} references resolved", sch))
     from .geom import registry
     by_id = {c.get("id"): c for c in design.data.get("components", []) if isinstance(c, dict)}
