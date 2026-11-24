@@ -94,17 +94,49 @@ register(Generator(
 
 
 # ------------------------------------------------------------------ fuselage_loft
+def _sgnpow(v: float, e: float) -> float:
+    return math.copysign(abs(v) ** e, v)
+
+
+def _fuse_loop(shape: str, exponent: float, cy: float, cz: float, w: float, h: float) -> list[tuple[float, float]]:
+    if shape == "ellipse":
+        return [(cy + w / 2.0 * math.cos(2 * math.pi * k / _N), cz + h / 2.0 * math.sin(2 * math.pi * k / _N))
+                for k in range(_N)]
+    if shape == "superellipse":
+        e = 2.0 / exponent
+        return [(cy + w / 2.0 * _sgnpow(math.cos(2 * math.pi * k / _N), e),
+                 cz + h / 2.0 * _sgnpow(math.sin(2 * math.pi * k / _N), e)) for k in range(_N)]
+    return [(cy - w / 2.0, cz - h / 2.0), (cy + w / 2.0, cz - h / 2.0),
+            (cy + w / 2.0, cz + h / 2.0), (cy - w / 2.0, cz + h / 2.0)]
+
+
+def _cap_scale(shape: str, t: float, tip: float) -> float:
+    if shape == "cone":
+        return tip + (1 - tip) * t
+    f = math.sqrt(1 - (1 - t) ** 2) if shape == "ellipsoid" else math.sin(math.pi * t / 2)
+    return max(tip, f)
+
+
 def _fuse_build(p: dict, base_dir) -> list:
     cy, cz = p["center_y"], p["center_z"]
+    shape, ex = p["shape"], p["exponent"]
+    st = p["stations"]
+    n, tip = p["cap_rings"], p["tip_frac"]
     secs = []
-    for x, w, h in p["stations"]:
-        if p["shape"] == "ellipse":
-            loop = [(cy + w / 2.0 * math.cos(2 * math.pi * k / _N), cz + h / 2.0 * math.sin(2 * math.pi * k / _N))
-                    for k in range(_N)]
-        else:
-            loop = [(cy - w / 2.0, cz - h / 2.0), (cy + w / 2.0, cz - h / 2.0),
-                    (cy + w / 2.0, cz + h / 2.0), (cy - w / 2.0, cz + h / 2.0)]
-        secs.append((x, loop))
+    if p["nose_length"] > 0:
+        x0, w0, h0 = st[0]
+        for k in range(n):
+            s = _cap_scale(p["nose_shape"], k / n, tip)
+            secs.append((x0 - p["nose_length"] * (1 - k / n), _fuse_loop(shape, ex, cy, cz, w0 * s, h0 * s)))
+    for x, w, h in st:
+        secs.append((x, _fuse_loop(shape, ex, cy, cz, w, h)))
+    if p["tail_length"] > 0:
+        xl, wl, hl = st[-1]
+        tn = math.tan(math.radians(p["tail_upsweep_deg"]))
+        for k in range(1, n + 1):
+            s = _cap_scale(p["tail_shape"], 1 - k / n, tip)
+            x = xl + p["tail_length"] * k / n
+            secs.append((x, _fuse_loop(shape, ex, cy, cz + (x - xl) * tn, wl * s, hl * s)))
     return [kernel.loft("x", secs)]
 
 
@@ -119,15 +151,29 @@ def _fuse_check(p: dict) -> list[str]:
         errs.append("stations: x must be strictly increasing")
     if any(s[1] <= 0 or s[2] <= 0 for s in st):
         errs.append("stations: width and height must be > 0")
+    if not 0 < p["tip_frac"] < 0.5:
+        errs.append("tip_frac: must be > 0 and < 0.5")
+    if p["tail_upsweep_deg"] >= 60:
+        errs.append("tail_upsweep_deg: must be < 60")
+    if p["exponent"] <= 1:
+        errs.append("exponent: must be > 1")
     return errs
 
 
 register(Generator(
     "fuselage_loft",
     {"stations": ParamSpec("list", required=True, doc="[x, width, height] per station"),
-     "shape": ParamSpec("choice", default="ellipse", choices=("ellipse", "rect")),
+     "shape": ParamSpec("choice", default="ellipse", choices=("ellipse", "rect", "superellipse")),
      "center_y": ParamSpec("number", default=0.0),
-     "center_z": ParamSpec("number", default=0.0)},
+     "center_z": ParamSpec("number", default=0.0),
+     "nose_length": ParamSpec("number", default=0, minimum=0),
+     "tail_length": ParamSpec("number", default=0, minimum=0),
+     "nose_shape": ParamSpec("choice", default="cone", choices=("cone", "ellipsoid", "ogive")),
+     "tail_shape": ParamSpec("choice", default="cone", choices=("cone", "ellipsoid", "ogive")),
+     "tail_upsweep_deg": ParamSpec("number", default=0, minimum=0),
+     "tip_frac": ParamSpec("number", default=0.02),
+     "cap_rings": ParamSpec("int", default=8, minimum=2),
+     "exponent": ParamSpec("number", default=2.5)},
     _fuse_build, check=_fuse_check))
 
 
