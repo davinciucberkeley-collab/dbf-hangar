@@ -343,6 +343,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D73 | Merge U4.25 despite the tier-1 budget miss? | yes, relaxed budget: concept-a-param tier-1 validate up to ~70 s; demo and deck updated to the new FAIL counts and timing | Tristan | 11-24 | decided (Tristan P214, 2026-11-24) |
 | D74 | Which mission do designs target? | the VTOL demonstrator brief in knowledge/; 'DBF' here is the capstone, not UC Berkeley's separate DBF competition team (T127 dropped) | Tristan | 11-24 | decided (Tristan P224, 2026-11-24) |
 | D75 | Build T129 (parameter changes propagate to attached parts) before Dec 2? | yes; merge only if reviewed and green by Sun 11-29 12:00, else branch + roadmap slide | Tristan | 11-24 | decided (Tristan P226, 2026-11-24) |
+| D76 | Shrinking span: what happens to the elevons? | variant A: the elevon chain moves inboard with the tip (1.0 mm centre gap at 820 mm); elevons sized from span plus a forward-flight control gate is v1.1 (T130) | Tristan | 11-24 | decided (Tristan P227, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
