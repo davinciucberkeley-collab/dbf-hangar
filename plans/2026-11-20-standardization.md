@@ -327,7 +327,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D57 | T60: 12 AWG or a lower peak current for concept-a hrn-bat? | 10 AWG (fix the design, not the threshold; amended from 12 AWG, which gives 55 A x 0.8 = 44.0 A < 44.8 A peak, W11-G; 10 AWG matches DBF-Combined D-64 pack leads); Dillon informed through T60 | Tristan | 11-23 | decided (conductor default, Tristan P175, 2026-11-23; amended same day) |
 | D58 | T37: which yaw fix for T3.control_authority? | the advisor's pick (W11-A): fix (a), per-axis max moment at fixed total thrust (linprog), cant only; yaw below 1.5 is SKIP (would_be FAIL) because reaction torque is not modelled; fix (b) deferred to v1.1 (T95); concept-a pinwheel cant to the design team (T96) | Tristan | 11-23 | decided (conductor default per T37 triage, P175) |
 | D59 | Build T28 (`read_value`, 40 concept-a claims) before Dec 2? | yes, overrules D52: build now; the deck and metrics lines saying "not recomputed" are updated with the measured result | Tristan | 11-23 | decided (Tristan, P182, 2026-11-23) |
-| D60 | T28: PASS or a separate status for the 40 read_value (stored-result) claims? | PASS kept for v1.0; every report and the deck say 53 recomputed + 40 read from source and checked against limits (analyses not re-run); a READ status is v1.1 (T103) | Tristan | 11-23 | decided (conductor default on W13-R follow-up, 2026-11-23) |
+| D60 | T28: PASS or a separate status for the 40 read_value (stored-result) claims? | PASS kept for v1.0; every report and the deck say 53 recomputed + 40 read from source and checked against limits (analyses not re-run); a read marker on PASS was built in v1.1 (T103, U4.15) | Tristan | 11-23 | decided (conductor default on W13-R follow-up, 2026-11-23) |
 | D61 | When does concept-a get the T95 propulsion 1.1 data (spin, reaction torque)? | after Dec 2 and after T96, by a design-engineer who confirms motor letters against CAD; baseline accept in the same designs-only commit (T106) | Tristan | 11-24 | decided (conductor default on W17-T flag, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
@@ -1360,7 +1360,7 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1: Briefs** (tactician W17-T): `briefs/U4.15-*.md` *(32336a4: t95 hard (patch A/B by T99), t103 easy (read flag on PASS), t67 easy (3 list ops); D61; leftovers T106, T107)*
 - [x] **Step 2: Build** (W17-B, at most 2 at once) *(t103 8b71ce1, t67 712ed3b builder; t95 7385e97 builder-plus, patch B)*
-- [ ] **Step 3: Review** (reviewer W17-R); merge; T95, T103, T67 done
+- [x] **Step 3: Review** (reviewer W17-R); merge; T95, T103, T67 done *(all ACCEPT, reviews/2026-11-24-w17.md; merged e3c5b99, f9463d4, dce451a; follow-ups T107, T108)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

@@ -4004,15 +4004,15 @@ items:
     updated: '2026-11-22'
   - id: T67
     kind: task
-    text: 'v1.1: add ops bom.list, morph.list, idea.list and davinci push/pull (D45)'
+    text: 'v1.1: add ops bom.list, morph.list, idea.list and davinci push/pull (D45) [list ops merged; davinci push/pull in T107]'
     source: D45
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: f9463d4
     decided_in: ''
-    updated: '2026-11-22'
+    updated: '2026-11-23'
   - id: T68
     kind: task
     text: 'tests/test_knowledge.py: add a copy check failing on any run of 10+ words shared between an entry and a file it cites (W4-RB proposal after U2.2-2 copied sentences)'
@@ -4458,10 +4458,10 @@ items:
     text: 'v1.1: prop reaction torque in PDL (optional propulsion.spin cw/ccw and propulsion.torque_per_thrust_m with _source; schema 1.0 -> 1.1 minor) so T3.control_authority yaw can be judged without cant (D58 fix b, deferred; concept-a source DBF-Combined sitl/a_plant.py KQ 0.0204 m)'
     source: W11-A advice 2026-11-23 (briefs/U4.9-t37-advice.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: dce451a
     decided_in: ''
     updated: '2026-11-23'
   - id: T96
@@ -4565,13 +4565,13 @@ items:
     updated: '2026-11-23'
   - id: T103
     kind: task
-    text: "v1.1: distinct claim status (READ, or a read marker) for stored-result claims so plane claim list does not show them like recomputed PASS; link the 40 read_value inputs to design-computed values where possible (e.g. CG) so STALE can fire; fix test texts tests/test_calcs_concept_a.py:87 and test name tests/test_import_dbf_v2.py:81 that say 'recompute' (W13-R)"
+    text: "v1.1: distinct claim status (READ, or a read marker) for stored-result claims so plane claim list does not show them like recomputed PASS; link the 40 read_value inputs to design-computed values where possible (e.g. CG) so STALE can fire; fix test texts tests/test_calcs_concept_a.py:87 and test name tests/test_import_dbf_v2.py:81 that say 'recompute' (W13-R) [read marker merged e3c5b99 (W17-R); second half (link read_value inputs to design values) in T107]"
     source: W13-R review 2026-11-23 (reviews/2026-11-23-w13.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: e3c5b99
     decided_in: ''
     updated: '2026-11-23'
   - id: T104
@@ -4622,6 +4622,17 @@ items:
     kind: task
     text: 'v1.1 leftovers from U4.15 briefing: davinci push/pull ops once the adapter is real (D3; T67 covers only the list ops); T103 second half (link the 40 read_value inputs to design-computed values); T99 part 3 (criterion for untrimmed yaw at equal thrust, needs a pending threshold in standards/operations.yaml); docs/deck/index.html:49 says 51 ops (52 now, 55 after T67)'
     source: W17-T 2026-11-24 (briefs/U4.15-*.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T108
+    kind: task
+    text: 'W17-R non-blocking (U4.15): test_reaction_torque_fields_reject_bad_values passes without the change (assert the message names the field); _reaction treats 0 as missing (schema forbids 0, harmless); claim check note counts only PASS read rows (a FAIL/STALE read claim is not in the note); idea.list reads only LF front matter'
+    source: W17-R review 2026-11-24 (reviews/2026-11-24-w17.md)
     owner: conductor
     status: open
     due: '2026-12-15'
