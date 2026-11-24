@@ -337,6 +337,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D67 | How to raise the fidelity of the gates? | source concept-a's connection-type ratings by joint count (64 SKIPs + 4 drop FAILs), datasheet > standard/test > team pull test, else pending; decide landing_load_factor; James reviews; track the fidelity line | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
 | D68 | U4.19: how to turn the 64 joint SKIPs into verdicts? | C now: source stresses into the library, landing_load_factor pending until the T113 drop test, SKIPs labelled honestly; B (per-joint contact area x stress) first in v1.1 (T114) | Tristan | 11-25 | decided (Tristan P199, 2026-11-25) |
 | D69 | How does a teammate's full-path change run, and which built-ins pass the gate? | teammate builds on their branch, opens a PR, Tristan runs a fresh reviewer on it; data-only design changes = CI + Dillon, no reviewer agent; built-ins Explore, Plan, claude-code-guide pass only when no project/user agent file redefines them (plugin and --agents overrides accepted risk) | Tristan | 11-25 | decided (conductor default on W22-R, 2026-11-25) |
+| D70 | Parametric geometry before Dec 2? | yes for G1 (kernel + PDL 1.2) and G2 (first generators), G5 if capacity; overrides the D66 freeze for this work only; demo = one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (any parameter); G3, G4, G6, G7 are v1.1 (T116-T119) | Tristan | 11-25 | decided (Tristan P200, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -653,6 +654,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W20-T, W20-B, W20-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.18 (CI unit-test speed, T11, P194) | `briefs/U4.18-ci-speed.md`, branch `std/u4.18-ci-speed`, `reviews/2026-11-25-w20.md` | measured before/after wall time per OS; no test dropped from main's full run; "### Verdict:" |
 | W21-T, W21-S, W21-X, W21-B, W21-R | `tactician`, `scout`, `recon`, `builder`, `reviewer` | Sonnet, Haiku, Sonnet, Haiku, Opus (fresh) | U4.19 (rating sourcing, D67, T82) | `briefs/U4.19-*.md`, `knowledge/sources/`, branch `std/u4.19-ratings`, `reviews/2026-11-25-w21.md` | every value has an opened source or stays pending with a reason; fidelity line before/after; "### Verdict:" |
 | W22-T, W22-B, W22-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.20 (process trim, D66, T112) | `briefs/U4.20-*.md`, branches `std/u4.20-*`, `reviews/2026-11-25-w22.md` | rules and hooks still enforced; progress tooling still green; "### Verdict:" |
+| W23-T, W23-B, W23-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.21 (G1 kernel + PDL 1.2), U4.22 (G2 generators + concept-a parametric copy), D70 | `briefs/U4.21-*.md`, `briefs/U4.22-*.md`, branches `std/u4.21-*`, `std/u4.22-*`, `reviews/2026-11-26-w23.md` | volumes/masses vs hand calculations; regenerated meshes match the imported STLs within tolerance; one `design set` regenerates geometry, mass and CG; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -704,6 +706,22 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Briefs** (tactician W22-T) *(a3600cc: a rules easy, b gate easy, c archive hard, d summary easy; merge b, a, c, d; no plan edits by the conductor while c is in flight)*
 - [ ] **Step 2: Build** (W22-B)
 - [ ] **Step 3: Review** (reviewer W22-R); merge
+
+### Unit U4.21: Geometry kernel and PDL 1.2 (G1; D70) [hard]
+
+**Scope:** `hangar.geom` built from `core/hangar/importers/dbf_geometry.py` (prism, revolve, loft, tube, box, cuts -> watertight trimesh; mass = density x volume from standards materials); PDL schema 1.2: a component may give `geometry: {generator, params}` instead of a mesh file, and a design-level `parameters:` block that params reference; tier 0 checks references; `design set` on a parameter or generator param regenerates the affected meshes and masses and logs one CHANGELOG entry; migrate 1.1 -> 1.2; viewer/export pick up generated meshes. Tests check volumes and masses against hand calculations.
+
+- [ ] **Step 1: Brief** (tactician W23-T)
+- [ ] **Step 2: Build** (builder-plus W23-B)
+- [ ] **Step 3: Review** (reviewer W23-R); merge
+
+### Unit U4.22: First generators and a parametric copy of concept-a (G2; D70) [hard]
+
+**Scope:** generators `wing_panel` (airfoil .dat, span, root/tip chord, sweep, dihedral, twist, spar bore, elevon split), `tube`, `fin`, `plate` (holes), `fuselage_loft` (stations), `motor_mount`; `mesh_file` fallback. Port concept-a's wing, spar and fins from DBF-Combined `redesign/qp/A/cad/amodel/` (recorded in PROVENANCE.md) into a new design copy whose regenerated meshes match the current STLs within a stated tolerance; the hub and complex printed parts stay imported meshes. Demo: one `plane design set` on a shared parameter regenerates the parts, mass and CG, and the gates re-run. Depends on U4.21.
+
+- [ ] **Step 1: Brief** (tactician W23-T)
+- [ ] **Step 2: Build** (builder-plus W23-B)
+- [ ] **Step 3: Review** (reviewer W23-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

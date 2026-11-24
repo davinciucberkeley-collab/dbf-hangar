@@ -74,15 +74,17 @@
 | U4.18 | Faster CI unit tests (T11; P194) | 3/3 | done | ACCEPT |
 | U4.19 | Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198) | 3/4 | in progress | - |
 | U4.20 | Process trim (D66; T112; P198) | 1/3 | in progress | ACCEPT |
+| U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 0/3 | not started | - |
+| U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 0/3 | not started | - |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 43 | 70 | 0 | 2 | 0 | 115 |
+| task | 47 | 70 | 0 | 2 | 0 | 119 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 255 | 271 |
+| decision | 12 | 0 | 0 | 4 | 256 | 272 |
 
 ## Overdue
 
