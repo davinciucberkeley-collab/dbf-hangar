@@ -445,14 +445,14 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
             res.append(CheckResult("T1.motor_has_prop", FAIL,
                                    f"{comp['id']}: has a propulsion block but no propeller attached directly or through "
                                    f"up to {chain_max} bolted or press-fit other/structure parts",
-                                   STD + "embed_max_fraction_of_child", {"component": comp["id"]}))
+                                   STD + "prop_chain_max_intermediate_parts", {"component": comp["id"]}))
         elif len(path) == 2:
             res.append(CheckResult("T1.motor_has_prop", PASS, f"{comp['id']}: drives an attached propeller",
-                                   STD + "embed_max_fraction_of_child"))
+                                   STD + "prop_chain_max_intermediate_parts"))
         else:
             res.append(CheckResult("T1.motor_has_prop", PASS,
                                    f"{' -> '.join(path)}: drives its propeller through an adapter chain",
-                                   STD + "embed_max_fraction_of_child", {"path": path}))
+                                   STD + "prop_chain_max_intermediate_parts", {"path": path}))
 
     # interference between non-attached parts (broad phase first: only boxes that overlap get the exact boolean)
     # kinematic_link children are moved by a linkage the schema does not model: a pair of one such child and a

@@ -49,9 +49,27 @@ def test_morph_add_option_refuses_ids_with_a_trailing_newline(tmp_path, monkeypa
     assert call("morph.add-option", dimension="tail", id="x-opt", name="X", source="morph-uaav-hybrid-2022").ok   # a plain id still works
 
 
+def test_bench_design_and_edit_ops_use_the_shared_id_re():  # T100
+    from hangar.ops import bench, design, edit
+    assert bench.ID_RE is ids.ID_RE and design.ID_RE is ids.ID_RE and edit.ID_RE is ids.ID_RE
+    for rel in ("ops/bench.py", "ops/design.py", "ops/edit.py"):
+        assert "from ..cli import ID_RE" not in (CORE / rel).read_text(encoding="utf-8"), rel
+
+
+def test_research_new_refuses_a_slug_with_a_trailing_newline(tmp_path, monkeypatch):  # T100
+    (tmp_path / "pyproject.toml").write_text("", encoding="utf-8")
+    shutil.copytree(REPO / "knowledge", tmp_path / "knowledge", ignore=shutil.ignore_patterns("diy-projects", "concepts"))
+    monkeypatch.chdir(tmp_path)
+    r = call("research.new", kind="source", slug="my-paper\n")
+    assert r.exit_code == 2 and "slug" in " ".join(r.messages)
+    assert not any((tmp_path / "knowledge" / "sources").glob("my-paper*"))
+    assert call("research.new", kind="source", slug="my-paper").ok     # a plain slug still works
+
+
 def test_no_module_matches_ids_with_match_or_defines_its_own_id_pattern():
-    for rel in ("cli.py", "studio.py", "mcp_server.py", "ops/morph.py", "ops/design.py", "ops/edit.py", "ops/bench.py"):
+    for rel in ("cli.py", "studio.py", "mcp_server.py", "ops/morph.py", "ops/design.py", "ops/edit.py", "ops/bench.py", "ops/research.py"):
         assert "ID_RE.match(" not in (CORE / rel).read_text(encoding="utf-8"), rel
+    assert "SLUG_RE.match(" not in (CORE / "ops/research.py").read_text(encoding="utf-8")      # T100
     assert 're.compile(r"^[a-z0-9][a-z0-9_-]*$")' not in (CORE / "cli.py").read_text(encoding="utf-8")
     assert 're.compile(r"^[a-z0-9][a-z0-9_-]*$")' not in (CORE / "mcp_server.py").read_text(encoding="utf-8")
 

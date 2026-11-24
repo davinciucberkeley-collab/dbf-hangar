@@ -22,7 +22,7 @@ DIY_SECTIONS = ["What's novel", "How it was built", "Problems and fixes", "Lesso
 @op(name="research.new", summary="Create knowledge/sources/<slug>.md or knowledge/diy-projects/<slug>.md from its template.",
     mutates=True, render=lambda r: r.data["path"])
 def new_op(kind: Literal["source", "diy"], slug: str) -> OpResult:
-    if not SLUG_RE.match(slug):
+    if not SLUG_RE.fullmatch(slug):      # T100: match() accepts a trailing newline after $
         raise OpInputError(f"slug {slug!r} must match {SLUG_RE.pattern}")
     root = repo_root()
     if kind == "source":

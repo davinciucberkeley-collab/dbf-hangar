@@ -16,6 +16,7 @@ from .. import design as design_mod
 from .. import pdledit
 from ..checks import validate
 from ..design import FAIL, load_design
+from ..ids import ID_RE
 from ..mass import mass_properties
 
 SWEEP_ROOT = design_mod.REPO_ROOT / ".sweeps"
@@ -138,7 +139,6 @@ def diff_op(a: str, b: str) -> OpResult:
 @op(name="design.copy", summary="Copy a design folder to a new id (without fea/ and logs).",
     mutates=True, render=lambda r: r.data["path"])
 def copy_op(src: str, new_id: str) -> OpResult:
-    from ..cli import ID_RE
     if not ID_RE.fullmatch(new_id):
         raise OpInputError(f"bad id {new_id!r}")
     src_dir = _plane(src).parent
