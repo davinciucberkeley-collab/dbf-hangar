@@ -402,3 +402,32 @@ def test_recheck_leaves_another_designs_files_alone_when_its_id_starts_with_this
     s.scan()
     _wait_studio_idle(s)
     assert all(f.is_file() for f in other)
+
+
+def test_a_studio_keeps_to_the_folders_it_was_built_with(sandbox, tmp_path, monkeypatch):  # T84 (W14-A): a leaked worker must not touch the next sandbox
+    did = "example-tailsitter-wing"
+    gate = threading.Event()
+    real = studio.design_entry
+
+    def held(*a, **kw):   # hold studio A's first check until the module folders point elsewhere
+        assert gate.wait(120), "gate never opened"
+        return real(*a, **kw)
+
+    monkeypatch.setattr(studio, "design_entry", held)
+    a = studio.Studio()
+    two = tmp_path / "two"
+    shutil.copytree(EXAMPLE, two / "designs" / did)
+    sentinel = two / ".studio" / "data" / f"{did}-0123456789ab.glb"
+    sentinel.parent.mkdir(parents=True)
+    sentinel.write_text("x", encoding="utf-8")
+    monkeypatch.setattr(studio, "DESIGNS_DIR", two / "designs")
+    monkeypatch.setattr(studio, "DATA_DIR", two / ".studio" / "data")
+    monkeypatch.setattr(studio, "CACHE_FILE", two / ".studio" / "cache.json")
+    gate.set()
+    _wait_studio_idle(a)
+    assert [j["state"] for j in a.state()["jobs"]] == ["done"]
+    assert sentinel.is_file(), "studio A's cleanup deleted a file in another sandbox"
+    assert [f.name for f in (two / ".studio" / "data").iterdir()] == [sentinel.name], "studio A wrote into another sandbox"
+    assert not (two / ".studio" / "cache.json").exists(), "studio A saved its cache in another sandbox"
+    assert (tmp_path / ".studio" / "data" / a.entries[did]["glb"]).is_file()
+    assert (tmp_path / ".studio" / "cache.json").is_file()

@@ -27,7 +27,7 @@ import yaml
 
 from . import __version__
 from .ids import ID_RE
-from .design import DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, list_designs, load_design
+from .design import DESIGNS_DIR, REPO_ROOT, SCHEMA_PATH, STANDARDS_PATH, load_design
 from .index import design_entry, dumps, error_entry, index_extras
 from .ops import OpResult, call, registry
 from .surfaces import map_params
@@ -60,14 +60,16 @@ class Studio:
     """Design state, the result cache and a single background worker that runs jobs one at a time."""
 
     def __init__(self):
-        DATA_DIR.mkdir(parents=True, exist_ok=True)
+        # The folders are fixed when the Studio is built: a worker thread that outlives its test or session must only ever touch its own folders (T84).
+        self.designs_dir, self.data_dir, self.cache_file = DESIGNS_DIR, DATA_DIR, CACHE_FILE
+        self.data_dir.mkdir(parents=True, exist_ok=True)
         self.lock = threading.RLock()
         self.entries: dict[str, dict] = {}
         self.jobs: list[dict] = []
         self.rev = 0
         self.q: queue.Queue = queue.Queue()
         try:
-            self.cache = json.loads(CACHE_FILE.read_text())
+            self.cache = json.loads(self.cache_file.read_text())
         except Exception:  # noqa: BLE001 - a missing or corrupt cache just means recomputing
             self.cache = {}
         threading.Thread(target=self._worker, daemon=True).start()
@@ -78,17 +80,17 @@ class Studio:
         self.rev += 1
 
     def _save_cache(self):
-        CACHE_FILE.write_text(json.dumps(self.cache, indent=1))
+        self.cache_file.write_text(json.dumps(self.cache, indent=1))
 
     def scan(self):
         """Pick up every design on disk: cached results where still valid, otherwise queue a check."""
         seen = set()
-        for p in list_designs():
+        for p in sorted(self.designs_dir.glob("*/plane.yaml")):
             did = p.parent.name
             seen.add(did)
             hsh = design_hash(p.parent)
             c = self.cache.get(did)
-            ok = c and c.get("hash") == hsh and "mechanisms" in c["entry"] and (c["entry"].get("error") or (DATA_DIR / (c["entry"].get("glb") or "_")).exists())
+            ok = c and c.get("hash") == hsh and "mechanisms" in c["entry"] and (c["entry"].get("error") or (self.data_dir / (c["entry"].get("glb") or "_")).exists())
             with self.lock:
                 if ok:
                     self.entries[did] = dict(c["entry"], pending=False)
@@ -114,7 +116,7 @@ class Studio:
     def index(self) -> dict:
         with self.lock:
             designs = sorted(self.entries.values(), key=lambda e: e["id"])
-            return {"studio": True, "designs": designs, **index_extras(designs, DESIGNS_DIR.parent, public=False)}
+            return {"studio": True, "designs": designs, **index_extras(designs, self.designs_dir.parent, public=False)}
 
     def state(self) -> dict:
         with self.lock:
@@ -151,7 +153,7 @@ class Studio:
 
     def _job_check(self, job, **_):
         did = job["target"]
-        ddir = DESIGNS_DIR / did
+        ddir = self.designs_dir / did
         if not (ddir / "plane.yaml").is_file():
             with self.lock:
                 self.entries.pop(did, None)
@@ -160,7 +162,7 @@ class Studio:
         fid = f"{did}-{hsh}"
         try:
             design = load_design(ddir / "plane.yaml")
-            entry = design_entry(design, DATA_DIR, file_id=fid)
+            entry = design_entry(design, self.data_dir, file_id=fid)
             entry["id"] = did
             msg = "accepted" if entry["accepted"] else "checked: " + ", ".join(
                 f"T{t} {s}" for t, s in entry["tiers"].items() if s not in ("PASS", "SKIP")) or "checked"
@@ -170,7 +172,7 @@ class Studio:
         prev = (self.cache.get(did) or {}).get("hash")
         keep = (fid + ".", f"{did}-{prev}.") if prev else (fid + ".",)
         mine = re.compile(re.escape(did) + r"-[0-9a-f]{12}\..*")   # exactly <did>-<12 hex>.<ext>: never another design's id that starts with "<did>-" (T86)
-        for old in DATA_DIR.glob(f"{did}-*.*"):  # drop results two versions back; the previous version stays for a page still showing it (T84)
+        for old in self.data_dir.glob(f"{did}-*.*"):  # drop results two versions back; the previous version stays for a page still showing it (T84)
             if mine.fullmatch(old.name) and not old.name.startswith(keep):
                 old.unlink(missing_ok=True)
         with self.lock:
@@ -182,7 +184,7 @@ class Studio:
 
     def _job_import_dbf(self, job, root: str, concept: str, new_id: str):
         from .importers.dbf import import_concept
-        out = DESIGNS_DIR / new_id
+        out = self.designs_dir / new_id
         import_concept(root, concept=concept, out_dir=str(out), log=lambda m: job["log"].append(str(m)))
         p = out / "plane.yaml"
         data = yaml.safe_load(p.read_text())
@@ -194,7 +196,7 @@ class Studio:
 
     def _job_fea(self, job, design_id: str, parts: list):
         from . import fea
-        design = load_design(DESIGNS_DIR / design_id / "plane.yaml")
+        design = load_design(self.designs_dir / design_id / "plane.yaml")
         oc = fea.find_opencae()
         if not oc["found"]:
             raise RuntimeError("OpenCAE is not set up (Stress check > Settings)")
@@ -215,7 +217,7 @@ class Studio:
 
     def fea_state(self, did: str) -> dict:
         from . import fea
-        design = load_design(DESIGNS_DIR / _check_id(did) / "plane.yaml")
+        design = load_design(self.designs_dir / _check_id(did) / "plane.yaml")
         rows = []
         for pid in fea.eligible_parts(design):
             f = fea.result_path(design, pid)
@@ -236,7 +238,7 @@ class Studio:
 
     # ---------- actions (called from the HTTP thread) ----------
     def read_yaml(self, did: str) -> str:
-        return (DESIGNS_DIR / _check_id(did) / "plane.yaml").read_text()
+        return (self.designs_dir / _check_id(did) / "plane.yaml").read_text()
 
     def read_design(self, did: str) -> dict:
         data = yaml.safe_load(self.read_yaml(did))
@@ -244,7 +246,7 @@ class Studio:
 
     def export(self, did: str, fmt: str) -> tuple[bytes, str, str]:
         from .export import export_glb, export_json, export_stl
-        design = load_design(DESIGNS_DIR / _check_id(did) / "plane.yaml")
+        design = load_design(self.designs_dir / _check_id(did) / "plane.yaml")
         with tempfile.TemporaryDirectory() as td:
             t = Path(td)
             if fmt == "glb":
@@ -435,7 +437,7 @@ def make_handler(studio: Studio):
             try:
                 if path == "/api/ping":
                     return self._json({"studio": True, "version": __version__, "dbf_root_guess": _guess_dbf_root(),
-                                       "designs": sorted(studio.entries), "designs_dir": DESIGNS_DIR.as_posix()})
+                                       "designs": sorted(studio.entries), "designs_dir": studio.designs_dir.as_posix()})
                 if path == "/api/state":
                     return self._json(studio.state())
                 if path == "/api/fea":
@@ -457,7 +459,7 @@ def make_handler(studio: Studio):
                 if path == "/data/index.json":
                     return self._json(studio.index())
                 if path.startswith("/data/"):
-                    return self._file(DATA_DIR, path[len("/data/"):])
+                    return self._file(studio.data_dir, path[len("/data/"):])
                 return self._file(VIEWER_DIR, path.lstrip("/") or "index.html")
             except (ValueError, FileNotFoundError) as e:
                 return self._err(str(e))
