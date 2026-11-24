@@ -632,6 +632,10 @@ W4 wave rules (W3 lessons T41–T43):
 | W11-A, W11-T, W11-B, W11-G, W11-R | `advisor`, `tactician`, `builder-plus`, `design-engineer`, `reviewer` | Opus, Sonnet, Sonnet, Sonnet, Opus (fresh) | U4.9 (T37, T60) | advisor pick in `briefs/U4.9-t37.md`; branches `std/u4.9-t37`, `std/u4.9-t60`; `reviews/2026-11-23-w11.md` | advisor names one fix; gates before/after; "### Verdict:" |
 | W12-T, W12-B, W12-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.10 (T83, T86, T88, T90) | `briefs/U4.10-*.md`, branches `std/u4.10-*`, `reviews/2026-11-23-w12.md` | builder-ready bar; brief checks; "### Verdict:" |
 | W13-T, W13-B, W13-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.11 (T28; D59) | `briefs/U4.11-t28.md` (refresh of `U4.3-t28.md`), branches `std/u4.11-t28` (core), `std/u4.11-t28-docs` (deck/metrics/claims data), `reviews/2026-11-23-w13.md` | builder-ready bar; claim counts before/after; "### Verdict:" |
+| W14-T, W14-B, W14-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.12 (demo re-run on main, T104) | `u4.2/demo-script.md`, `briefs/U4.12-t104.md`, branch `std/u4.12-t104`, `reviews/2026-11-24-w14.md` | every demo step re-run on a scratch clone; "### Verdict:" |
+| W15-T, W15-B, W15-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.13 (T94) | `briefs/U4.13-t94.md`, branches `std/u4.13-t94` (core), `std/u4.13-t94-design` (designs), `reviews/2026-11-24-w15.md` | BOM total before/after; "### Verdict:" |
+| W16-T, W16-B, W16-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.14 (T99, T100, T101, T102) | `briefs/U4.14-*.md`, branches `std/u4.14-*`, `reviews/2026-11-24-w16.md` | builder-ready bar; "### Verdict:" |
+| W17-T, W17-B, W17-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.15 (T95, T103, T67) | `briefs/U4.15-*.md`, branches `std/u4.15-*`, `reviews/2026-11-24-w17.md` | builder-ready bar; schema minor version for T95; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1321,6 +1325,38 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
 - [x] **Step 2: Build** (W13-B): core branch, then the docs/designs branch *(core e03fc2b, W13-R ACCEPT, merged b8b03cc, T28 done; docs 0f84a10/64e851d/7728d83 merged 57a3a40)*
 - [x] **Step 3: Review** (reviewer W13-R); merge; T28 done *(core ACCEPT; part 2 REOPEN once (slide title), ACCEPT; reviews/2026-11-23-w13.md; T97 done; follow-ups T103, T104)*
+
+### Unit U4.12: Dec 2 prep: demo re-run on current main, claims wording sweep (U4.2 Step 2, T104; P186)
+
+**Scope:** re-run every step of `u4.2/demo-script.md` on a scratch clone of current main (never `designs/`) and update expected outputs, wall times and fallbacks; brief and build T104 (README.md, docs/cli.md wording per D60). The backup video stays with Tristan.
+
+- [ ] **Step 1:** Demo re-run and T104 brief (tactician W14-T)
+- [ ] **Step 2:** Build T104 (W14-B)
+- [ ] **Step 3: Review** (reviewer W14-R); merge; T104 done
+
+### Unit U4.13: BOM spares double count (T94; P186)
+
+**Scope:** importer `importers/dbf_blocks.py:27` stops adding spares to a qty that already includes them (core + tests); then a designs-only branch sets concept-a P01 qty 5 and M01 qty 3 with `plane design set` (BOM lines total $1262.50) and refreshes any test that pins the old quantities.
+
+- [ ] **Step 1: Brief** (tactician W15-T): `briefs/U4.13-t94.md`
+- [ ] **Step 2: Build** (W15-B): core branch, then designs branch
+- [ ] **Step 3: Review** (reviewer W15-R); merge; T94 done
+
+### Unit U4.14: v1.1 cleanup, second batch (T99, T100, T101, T102; P186)
+
+**Scope:** the non-blocking follow-ups of W10-R to W12-R: yaw SKIP text and control-moment data key (T99); T83 guard beyond checks.py, scorecard criterion form, T1.motor_has_prop criterion, research.py SLUG_RE fullmatch, ID_RE imports from hangar.ids (T100); bench path mapping of option values, PLANE_BENCH_LOG pinning, SWEEP_ROOT redirect, tree_digest docstring (T101; the paid redirection probe stays open); T86 recovery test and comment (T102).
+
+- [ ] **Step 1: Briefs** (tactician W16-T): `briefs/U4.14-*.md`
+- [ ] **Step 2: Build** (W16-B, at most 2 at once)
+- [ ] **Step 3: Review** (reviewer W16-R); merge; T99-T102 done
+
+### Unit U4.15: v1.1 features (T95, T103, T67; P186)
+
+**Scope:** T95 prop reaction torque in PDL (optional `propulsion.spin`, `propulsion.torque_per_thrust_m` with `_source`; schema minor 1.0 -> 1.1) and its use in T3.control_authority yaw; T103 a distinct status or marker for stored-result (read_value) claims; T67 ops `bom.list`, `morph.list`, `idea.list` (davinci push/pull only if the adapter supports it, else stays open).
+
+- [ ] **Step 1: Briefs** (tactician W17-T): `briefs/U4.15-*.md`
+- [ ] **Step 2: Build** (W17-B, at most 2 at once)
+- [ ] **Step 3: Review** (reviewer W17-R); merge; T95, T103, T67 done
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
