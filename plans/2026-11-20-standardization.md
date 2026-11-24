@@ -1319,8 +1319,8 @@ Not a code unit; it tests everything above.
 **Scope:** register `read_value` (brief `U4.3-t28.md`, refreshed on current main), core and tests only; then, on a separate branch, refresh concept-a claim statuses through the CLI if they are stored in `designs/` and update the deck (`docs/deck/index.html`) and `u4.2/metrics.md`/`deck-outline.md` lines that say the claims are not recomputed, with the measured PASS/FAIL counts.
 
 - [x] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
-- [ ] **Step 2: Build** (W13-B): core branch, then the docs/designs branch *(core e03fc2b, W13-R ACCEPT, merged b8b03cc, T28 done; docs branch waits for the brief's part-2 wording fix (W13-R: read values are not recomputed, D60))*
-- [ ] **Step 3: Review** (reviewer W13-R); merge; T28 done
+- [x] **Step 2: Build** (W13-B): core branch, then the docs/designs branch *(core e03fc2b, W13-R ACCEPT, merged b8b03cc, T28 done; docs 0f84a10/64e851d/7728d83 merged 57a3a40)*
+- [x] **Step 3: Review** (reviewer W13-R); merge; T28 done *(core ACCEPT; part 2 REOPEN once (slide title), ACCEPT; reviews/2026-11-23-w13.md; T97 done; follow-ups T103, T104)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
