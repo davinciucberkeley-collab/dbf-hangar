@@ -333,6 +333,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D63 | Team workflow rules for the guide (W19-T O1-O11) | defaults in `briefs/U4.17-team-guide.md`: collaborators not forks; teammate changes by PR only; Tristan merges, Dillon approves design PRs; ledger task per teammate job; no conductor for teammates; hooks on; `std/<topic>` and `design/<id>/<slug>` branches; owner trailer kept; concept-a only via `design set` + PR; Python 3.12; only Tristan adds ledger items. The guide marks each as "confirm" | Tristan | 11-24 | decided (conductor defaults, 2026-11-24; to confirm when Tristan reads the guide) |
 | D64 | Team guide: commands or conversation? Claude Code only, or Claude Desktop too? | conversation first: teammates ask Claude in plain words and Claude runs the plane CLI/MCP, then validates/tests per its agent role; two setups, Claude Code (full) and Claude Desktop + plane MCP (design work; `design.propose` opens the PR; CI tests); Desktop never edits through `save_design`; "tests" means design validation gates (P191), and people/roles are examples, so the guide is organised by task, not by person | Tristan | 11-24 | decided (Tristan P190, P191, 2026-11-24) |
 | D65 | CI speed: which trade-offs? | none that drop coverage: 3 shards per OS, full validate on every main push and PR, ledger/PROGRESS-only commits run only the ledger and progress tests, cancel-in-progress only on std/** and PRs | Tristan | 11-25 | decided (conductor defaults on W20-T, 2026-11-25) |
+| D66 | After U4.18: freeze, and lighter process? | yes (Tristan P198): freeze until Dec 2 except teammate fixes, sourcing, deck, process trim; light path for small text/docs and data-only design changes; full path for gates, bench, security, schema; teammates work from a named ledger task; built-in read-only subagents allowed (T112); plan archived and summarised | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
+| D67 | How to raise the fidelity of the gates? | source concept-a's connection-type ratings by joint count (64 SKIPs + 4 drop FAILs), datasheet > standard/test > team pull test, else pending; decide landing_load_factor; James reviews; track the fidelity line | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -647,6 +649,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W19-T, W19-B, W19-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.17 (team guide, P189) | `briefs/U4.17-team-guide.md`, `docs/team-guide.md`, branch `std/u4.17-team-guide`, `reviews/2026-11-24-w19.md` | every command in the guide run on a fresh clone; reviewer follows it as a newcomer; "### Verdict:" |
 | W19-X | `recon` | Sonnet | U4.17 rework (D64): how Claude Desktop connects to a local MCP server on Windows/macOS, Project instructions, limits vs Claude Code | `plans/2026-11-20-standardization/u4.17/desktop-facts.md` | official docs opened and cited |
 | W20-T, W20-B, W20-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.18 (CI unit-test speed, T11, P194) | `briefs/U4.18-ci-speed.md`, branch `std/u4.18-ci-speed`, `reviews/2026-11-25-w20.md` | measured before/after wall time per OS; no test dropped from main's full run; "### Verdict:" |
+| W21-T, W21-S, W21-X, W21-B, W21-R | `tactician`, `scout`, `recon`, `builder`, `reviewer` | Sonnet, Haiku, Sonnet, Haiku, Opus (fresh) | U4.19 (rating sourcing, D67, T82) | `briefs/U4.19-*.md`, `knowledge/sources/`, branch `std/u4.19-ratings`, `reviews/2026-11-25-w21.md` | every value has an opened source or stays pending with a reason; fidelity line before/after; "### Verdict:" |
+| W22-T, W22-B, W22-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.20 (process trim, D66, T112) | `briefs/U4.20-*.md`, branches `std/u4.20-*`, `reviews/2026-11-25-w22.md` | rules and hooks still enforced; progress tooling still green; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1395,6 +1399,23 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Measure and brief** (tactician W20-T): `briefs/U4.18-ci-speed.md` *(e748226: CPU-bound, 523 s ubuntu / 311 s windows; shard x3 expected ~60%; D65)*
 - [ ] **Step 2: Build** (builder-plus W20-B)
 - [ ] **Step 3: Review** (reviewer W20-R); merge; T11 done
+
+### Unit U4.19: Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198)
+
+**Scope:** rank the connection types in `standards/connection-types.yaml` by how many concept-a joints use them; scouts collect datasheets/standards into `knowledge/sources/` (only sources opened); recon proposes `landing_load_factor` from its noted sources; a builder writes the sourced values (or `pending` with a reason) into standards; re-run concept-a and report which SKIPs and FAILs changed and the fidelity line before/after. Standards and knowledge only (plus the concept-a baseline refresh as a separate designs-only commit). James reviews the values.
+
+- [ ] **Step 1:** Ranking and scout/recon briefs (tactician W21-T)
+- [ ] **Step 2:** Sources (scouts W21-S, recon W21-X)
+- [ ] **Step 3:** Values into standards; concept-a re-run; baseline refresh (builder W21-B)
+- [ ] **Step 4: Review** (reviewer W21-R); James reads the values; merge
+
+### Unit U4.20: Process trim (D66; T112; P198)
+
+**Scope:** (a) write the light path and the teammate rule (named ledger task, no plan unit) into `standards/agents.md` and the `CLAUDE.md` pointer line; (b) agent gate allows Claude Code built-in read-only subagents (Explore, Plan, general read-only) for every session (T112); (c) archive finished units from the plan into `plans/2026-11-20-standardization/archive.md` and keep `plane progress` working; (d) a one-page reader summary. Rules and hooks must stay enforced.
+
+- [ ] **Step 1: Briefs** (tactician W22-T)
+- [ ] **Step 2: Build** (W22-B)
+- [ ] **Step 3: Review** (reviewer W22-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

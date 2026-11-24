@@ -4728,3 +4728,25 @@ items:
     evidence: plans/2026-11-20-standardization/briefs/U4.18-ci-speed.md
     decided_in: ''
     updated: '2026-11-23'
+  - id: D66
+    kind: decision
+    text: "Feature freeze until Dec 2 after U4.18: only teammate-run fixes, rating sourcing (U4.19), deck work and process trim (U4.20). Light path: text/docs fixes under ~20 lines = one builder + one reviewer glance, no tactician; data-only design changes via plane design set = CI + Dillon's approval; full tactician/builder/fresh-reviewer path kept for gates, bench, security, schema. Teammates work from a ledger task with their name (no plan unit). Agent gate allows Claude Code built-in read-only subagents (T112). Plan trimmed: finished units archived, one-page summary for readers"
+    source: Tristan, P198 (approved item 4), 2026-11-25
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D67
+    kind: decision
+    text: "Source concept-a's joint ratings first (64 of 73 SKIPs are placeholder connection-type ratings; 4 drop-load FAILs depend on them): rank connection types by joint count in concept-a; per type datasheet > published test/standard > team pull test, else pending with reason, never guessed; decide landing_load_factor from its seven noted sources; measure progress by the fidelity line (134 of 714 on 11-24). James (T82 owner) reviews the values"
+    source: Tristan, P198 (approved item 2), 2026-11-25
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
