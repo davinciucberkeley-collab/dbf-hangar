@@ -1414,7 +1414,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** (a) write the light path and the teammate rule (named ledger task, no plan unit) into `standards/agents.md` and the `CLAUDE.md` pointer line; (b) agent gate allows Claude Code built-in read-only subagents (Explore, Plan, general read-only) for every session (T112); (c) archive finished units from the plan into `plans/2026-11-20-standardization/archive.md` and keep `plane progress` working; (d) a one-page reader summary. Rules and hooks must stay enforced.
 
-- [ ] **Step 1: Briefs** (tactician W22-T)
+- [x] **Step 1: Briefs** (tactician W22-T) *(a3600cc: a rules easy, b gate easy, c archive hard, d summary easy; merge b, a, c, d; no plan edits by the conductor while c is in flight)*
 - [ ] **Step 2: Build** (W22-B)
 - [ ] **Step 3: Review** (reviewer W22-R); merge
 
