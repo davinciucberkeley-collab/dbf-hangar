@@ -822,7 +822,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** audit every gate/check for VTOL or concept-a assumptions; make applicability come from the design's morphology (vtol_method, lift, configuration) so non-applicable checks SKIP 'not applicable' with the reason; fixed-wing thresholds in `standards/` (stall, wing loading, static-margin band, etc.), each sourced or pending; a design-level mission block so each design is judged against its own mission (concept-a keeps the VTOL demonstrator, D74). Existing designs' verdicts unchanged.
 
-- [ ] **Step 1: Audit and briefs** (tactician W29-T)
+- [x] **Step 1: Audit and briefs** (tactician W29-T) *(54625cc: briefs U4.30-1 applicability (hard), -2 fixed-wing (hard), -3 mission schema (easy), -4 mission data (easy); defaults taken (Tristan 2026-11-21 rule): fixed-wing thresholds provisional in standards/fixed-wing.yaml, pending values WARN never FAIL; mission block = name, profile, intent only)*
 - [ ] **Step 2: Build** (W29-B)
 - [ ] **Step 3: Review** (W29-R); merge
 
@@ -830,7 +830,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** extract concept-a's bought parts (servos, ESC, battery, flight controller, receiver, motors, props, connectors, fasteners) into a reusable library under `standards/` or `knowledge/` (decide): part id, vendor and part number, URL, mass, dimensions, and the real 3D mesh; a design references a library part instead of copying its mesh; BOM lines carry the library reference; parts without vendor CAD are marked 'representative envelope'.
 
-- [ ] **Step 1: Brief** (tactician W29-T)
+- [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.31-1 library core (hard), -2 parts (easy), -3 BOM refs (easy); default taken: library in knowledge/parts/ (standards/ holds thresholds only); concept-a keeps its meshes, BOM lines get library refs)*
 - [ ] **Step 2: Build** (W29-B)
 - [ ] **Step 3: Review** (W29-R); merge
 
@@ -838,7 +838,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** a general set, not one aircraft's: `nacelle` (engine nacelle/cowl loft), `propeller` (n-blade, scale-look, spinner), richer `fuselage_loft` (nose shapes, upswept tail cone, cabin), `strut` (wing struts), `landing_gear` (fixed/spring gear, wheels), tail layouts (conventional, T, V, H) from fin + wing_panel; high/mid/low wing placement; tests with hand-checked volumes. Must cover A400M and Cessna 172 without per-aircraft code.
 
-- [ ] **Step 1: Brief** (tactician W29-T)
+- [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.32-1 fuselage, -2 powerplant, -3 airframe, -4 tails (hard), -5 wing placement (easy); run in sequence)*
 - [ ] **Step 2: Build** (W29-B)
 - [ ] **Step 3: Review** (W29-R); merge
 
