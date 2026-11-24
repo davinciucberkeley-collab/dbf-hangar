@@ -41,10 +41,20 @@ def test_every_committed_design_migrates_to_1_1_with_same_verdict(d):
 
 
 @pytest.mark.parametrize("d", DESIGNS, ids=IDS)
-def test_migrated_tier0_results_match_for_every_design(d):
-    a = [(r.check_id, r.status) for r in tier0_schema(load_design(d)).results]
-    b = [(r.check_id, r.status)
-         for r in tier0_schema(Design(migrate(load_design(d).data)[0], d)).results]
+def test_migrated_tier0_results_match_for_every_design(d, tmp_path):
+    dst = tmp_path / d.parent.name
+    shutil.copytree(d.parent, dst)
+    d = dst / "plane.yaml"
+    d0 = load_design(d)
+    a = [(r.check_id, r.status) for r in tier0_schema(d0).results]
+    # a design that uses generators is migrated on its unresolved data, then resolved again as load_design does
+    migrated = migrate(d0.raw if d0.raw is not None else d0.data)[0]
+    nd = Design(migrated, d0.path)
+    if d0.raw is not None:
+        from hangar.geom.resolve import resolve_design_data
+        nd.raw = migrated
+        nd.data, nd.resolve_errors = resolve_design_data(migrated, nd.base_dir)
+    b = [(r.check_id, r.status) for r in tier0_schema(nd).results]
     assert a == b
 
 
@@ -258,8 +268,7 @@ def test_migrate_write_with_a_broken_changelog_writes_nothing(tmp_path):  # T50
 @pytest.mark.parametrize("src", DESIGNS, ids=IDS)
 def test_migrate_op_write_on_copy_of_every_committed_design(tmp_path, src):
     dst = tmp_path / src.parent.name
-    dst.mkdir()
-    shutil.copy2(src, dst / "plane.yaml")
+    shutil.copytree(src.parent, dst)
     r = call("design.migrate", path=str(dst), write=True)
     assert r.ok
     assert tier0_schema(load_design(dst / "plane.yaml")).status == tier0_schema(load_design(src)).status

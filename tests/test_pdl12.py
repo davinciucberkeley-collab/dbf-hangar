@@ -132,10 +132,15 @@ def test_tier0_reference_and_generator_failures(mut, check, needle):
 def test_old_designs_untouched():
     folders = sorted(p.parent for p in DESIGNS_DIR.glob("*/plane.yaml")) + [FIXTURES / "concept-a-frozen"]
     assert len(folders) >= 8
+    checked = 0
     for f in folders:
         d = load_design(f)
+        if d.raw is not None:           # a design that uses generators is not an old design
+            continue
+        checked += 1
         assert d.raw is None and d.resolve_errors == {}, f
         assert not any(r.check_id in ("T0.parameters", "T0.generator") for r in tier0_schema(d).results), f
+    assert checked >= 7
 
 
 def test_design_set_parameter_regenerates(tmp_path):
