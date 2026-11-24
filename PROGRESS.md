@@ -161,7 +161,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.32 | Shape generators for common aircraft configurations (D77, D78) [hard] | 1/3 | in progress | - |
 | U4.33 | Reference-aircraft research template (D77, D78) | 3/3 | done | - |
 | U4.34 | Any-aircraft rehearsal (D77, D78) | 0/3 | not started | - |
-| U4.35 | Speed up design set (D81) [hard] | 0/3 | not started | - |
+| U4.35 | Speed up design set (D81) [hard] | 1/3 | in progress | - |
 
 ## Ledger
 
