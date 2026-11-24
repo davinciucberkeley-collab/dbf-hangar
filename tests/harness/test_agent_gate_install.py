@@ -17,9 +17,15 @@ def root(tmp_path):
     (tmp_path / "plans" / "2026-11-20-x.md").write_text("| Step | Role | Model | Pass criterion |\n|---|---|---|---|\n| H1 | `builder` | Haiku | t |\n| HR | `reviewer` | Opus | t |\n", encoding="utf-8")
     return tmp_path
 
-def gate(event, root):
+def gate(event, root, home=None):
+    home = home or (root / "nohome")  # isolated user home: no real ~/.claude/agents leaks into the test
     return subprocess.run([sys.executable, str(REPO / "harness/hooks/agent_gate.py")], input=json.dumps(event),
-                          capture_output=True, text=True, env=dict(os.environ, CLAUDE_PROJECT_DIR=str(root)))
+                          capture_output=True, text=True,
+                          env=dict(os.environ, CLAUDE_PROJECT_DIR=str(root), HOME=str(home), USERPROFILE=str(home)))
+
+def write_agent(directory, filename, name):
+    directory.mkdir(parents=True, exist_ok=True)
+    (directory / filename).write_text(f"---\nname: {name}\ntools: Read, Write, Edit, Bash\nmodel: haiku\n---\n# {name}\n", encoding="utf-8")
 
 def task(role, prompt="x"):
     return {"tool_name": "Task", "tool_input": {"subagent_type": role, "prompt": prompt}}
@@ -185,3 +191,20 @@ def test_builtin_allowance_keeps_every_other_check(root):
     assert gate(task("recon"), root).returncode == 2
     assert gate(task("builder", "make it better"), root).returncode == 2
     assert gate(task("builder", "Pass check: pytest. Stop rule: report."), root).returncode == 0
+
+
+def test_project_agent_named_like_builtin_is_checked(root):
+    write_agent(root / ".claude" / "agents", "explore-custom.md", "Explore")
+    r = gate(task("Explore"), root)
+    assert r.returncode == 2 and "agent table" in r.stderr
+
+def test_project_agent_named_like_builtin_passes_when_in_table(root):
+    write_agent(root / ".claude" / "agents", "explore-custom.md", "Explore")
+    (root / "plans" / "2026-11-20-x.md").write_text("| Step | Role | Model | Pass criterion |\n|---|---|---|---|\n| E1 | `Explore` | Haiku | t |\n", encoding="utf-8")
+    assert gate(task("Explore"), root).returncode == 0
+
+def test_user_agent_named_like_builtin_is_checked(root, tmp_path):
+    home = tmp_path / "home"
+    write_agent(home / ".claude" / "agents" / "team", "explore.md", "Plan")
+    r = gate(task("Plan"), root, home)
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr

@@ -7,7 +7,12 @@ from pathlib import Path
 
 GATED_TOOLS = ("Task", "Agent")
 BUILDER_ROLES = ("builder", "builder-plus")
-# Claude Code built-in subagents whose tools cannot write files (no Write, Edit or Bash); T112.
+# Claude Code built-in subagents (T112). Explore and Plan have read-only tools (Write and Edit denied);
+# Bash is not denied for them but stays under the parent session's permission rules and hooks.
+# claude-code-guide's tool list is not documented; it is allowed on the same basis (reviewer re-checks).
+# A user or project agent file with the same name replaces the built-in, so the allowance applies only
+# when no agent file defines the name. Plugin and --agents overrides the hook cannot see are an
+# accepted leftover risk (D69).
 BUILTIN_READ_ONLY = ("Explore", "Plan", "claude-code-guide")
 BRIEF_RE = re.compile(r"""[^\s"'`<>()]*plans/[^/\s"'`<>()]+/briefs/[^/\s"'`<>()]+\.md""")
 
@@ -29,21 +34,30 @@ def brief_exists(prompt, root):
     return False
 
 
+def frontmatter_name(path):
+    lines = path.read_text(encoding="utf-8").splitlines()
+    if not lines or lines[0].strip() != "---":
+        return ""
+    for line in lines[1:]:
+        if line.strip() == "---":
+            break
+        if line.startswith("name:"):
+            return line[len("name:"):].strip().strip("\"'")
+    return ""
+
+
 def roster_names(root):
+    names = {frontmatter_name(path) for path in (root / ".claude" / "agents").glob("*.md")}
+    return sorted(name for name in names if name)
+
+
+def defined_agent_names(root):
+    """Names defined by agent files (frontmatter name:) under the project and the user's .claude/agents/, recursively."""
     names = set()
-    for path in (root / ".claude" / "agents").glob("*.md"):
-        lines = path.read_text(encoding="utf-8").splitlines()
-        if not lines or lines[0].strip() != "---":
-            continue
-        for line in lines[1:]:
-            if line.strip() == "---":
-                break
-            if line.startswith("name:"):
-                value = line[len("name:"):].strip().strip("\"'")
-                if value:
-                    names.add(value)
-                break
-    return sorted(names)
+    for base in (Path(root) / ".claude" / "agents", Path.home() / ".claude" / "agents"):
+        if base.is_dir():
+            names.update(frontmatter_name(path) for path in base.rglob("*.md"))
+    return names - {""}
 
 
 def agent_table_roles(plan_text: str) -> set:
@@ -80,7 +94,7 @@ def run(event, root):
         return 0
     tool_input = event.get("tool_input") or {}
     role = tool_input.get("subagent_type") or ""
-    if role in BUILTIN_READ_ONLY:
+    if role in BUILTIN_READ_ONLY and role not in defined_agent_names(root):
         return 0
 
     roster = roster_names(root)
