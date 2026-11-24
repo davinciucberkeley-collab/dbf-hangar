@@ -691,6 +691,11 @@ W4 wave rules (W3 lessons T41–T43):
 | W25-T, W25-B, W25-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.26 (QOL batch from audit W24-Au2, D71) | `briefs/U4.26-*.md`, branches `std/u4.26-*`, `reviews/2026-11-24-w25.md` | each fix has a test or a re-run command; "### Verdict:" |
 | W26-T, W26-B, W26-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.27 (test and tidy follow-ups T108, T109, T110, T123; D71) | `briefs/U4.27-*.md`, branches `std/u4.27-*`, `reviews/2026-11-24-w26.md` | each test fails before its fix; "### Verdict:" |
 | W27-T, W27-B, W27-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.28 (T128 guide, T125 pockets follow moved parts, T126 propose slug; D74) | `briefs/U4.28-*.md`, branches `std/u4.28-*`, `reviews/2026-11-24-w27.md` | each fix has a failing-first test or a re-run; "### Verdict:" |
+
+### 6m. Agent table for W28-W29 (T129, D75; any-aircraft demo, D77-D79)
+
+| Agent | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
 | W28-A, W28-T, W28-B, W28-R | `advisor`, `tactician`, `builder-plus`, `reviewer` | Opus, Sonnet, Sonnet, Opus (fresh) | U4.29 (T129 parametric propagation, D75) | design note + `briefs/U4.29-*.md`, branches `std/u4.29-*`, `reviews/2026-11-24-w28.md` | one span change on concept-a-param moves fins and attached parts with no new interference; existing designs unchanged; "### Verdict:" |
 | W29-X, W29-S | `recon`, `scout` | Sonnet, Haiku | U4.33 (reference-aircraft template + how scale-RC builders turn a real aircraft into a model; filled for A400M and Cessna 172) | `knowledge/TEMPLATE-reference-aircraft.md`, `knowledge/` entries | only opened sources cited |
 | W29-T, W29-B, W29-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.30 (checks by aircraft type + fixed-wing standards + per-design mission), U4.31 (real-parts library), U4.32 (nacelle/prop/nose generators) | `briefs/U4.3x-*.md`, branches `std/u4.3x-*`, `reviews/2026-11-24-w29.md` | each brief builder-ready; "### Verdict:" |
