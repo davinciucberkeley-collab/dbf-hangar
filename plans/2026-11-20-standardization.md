@@ -419,7 +419,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | Tue 12-01 | fixes only | — |
 | **Wed 12-02** | present | — |
 
-*Status 11-24 early morning (audit W24-Au): ahead of this schedule. U4.20 merged 11-23; G1 (U4.21, 225c1b7) and G2 (U4.22, 49a1601 + a0ba030) merged 11-23, so both cut rules are met. Remaining: U4.23 demo/deck (in review), U4.24 fixes, U4.25 (only if green by Sun 11-29), Tristan's items (collaborators, guide send, video Sun, dry run Mon).*
+*Status 11-24 early morning (audit W24-Au): ahead of this schedule. U4.20 merged 11-23; G1 (U4.21, 225c1b7) and G2 (U4.22, 49a1601 + a0ba030) merged 11-23, so both cut rules are met. Update 11-24 morning: U4.23 and U4.24 merged (6f3bc00, bdbfbd2); U4.25 parked for v1.1 (budget); U4.26 QOL batch running. Remaining: Tristan's items (collaborators, guide send, video Sun, dry run Mon).*
 
 All units: Tristan. Acceptance testers: Dillon (Studio, concept A), Vaibhav (OpenCAE on Windows), James (harness install on his machine).
 
@@ -680,6 +680,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W23-T, W23-B, W23-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.21 (G1 kernel + PDL 1.2), U4.22 (G2 generators + concept-a parametric copy), D70 | `briefs/U4.21-*.md`, `briefs/U4.22-*.md`, branches `std/u4.21-*`, `std/u4.22-*`, `reviews/2026-11-26-w23.md` | volumes/masses vs hand calculations; regenerated meshes match the imported STLs within tolerance; one `design set` regenerates geometry, mass and CG; "### Verdict:" |
 | W24-T, W24-B, W24-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.23 (demo + deck for Dec 2), U4.24 (fix batch: T115, T105, guide rule 9, T122), U4.25 (T121 pose-aware cut pockets) | `briefs/U4.2x-*.md`, branches `std/u4.2x-*`, `reviews/2026-11-24-w24.md` | demo re-run on a fresh clone; deck numbers re-measured; "### Verdict:" |
 | W24-Au | `auditor` | Haiku | overnight 11-24 | report in the conductor's notes | hourly-ish; acted on |
+| W25-T, W25-B, W25-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.26 (QOL batch from audit W24-Au2, D71) | `briefs/U4.26-*.md`, branches `std/u4.26-*`, `reviews/2026-11-24-w25.md` | each fix has a test or a re-run command; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -771,6 +772,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Brief** (tactician W24-T) *(dcd6f1d: builds after U4.22 Part B and U4.24-g1fixes merge)*
 - [ ] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71)*
 - [ ] **Step 3: Review** (W24-R); merge
+
+### Unit U4.26: Quality-of-life batch (audit W24-Au2; D71)
+
+**Scope:** fixes a teammate would notice, no threshold/schema/gate-behaviour changes: `plane design sweep` crash with repeated `--values` (meshes path in the sweep copy) and the team-guide example; CI check names in the guide (8 names); clearer errors for `design get` on a missing design, `design set` with a bad key (deepest prefix + did-you-mean), missing `--why`, `design new` with an unknown template (list templates); README `--kind` list adds `remove`; stale TODO(U2.1) in ops/standards.py. CLI start-up time (lazy imports) only if measured and small.
+
+- [ ] **Step 1: Briefs** (tactician W25-T)
+- [ ] **Step 2: Build** (W25-B)
+- [ ] **Step 3: Review** (W25-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
