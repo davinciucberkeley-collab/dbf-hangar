@@ -3,10 +3,10 @@ entries:
 - person: Tristan
   link: https://davinciucberkeley-collab.github.io/dbf-hangar/
   changed: 'Parametric geometry landed on main: a geometry kernel and PDL 1.2 parameters
-    (U4.21, merge 225c1b7), then the first generators and concept-a-param, a parametric
-    copy of concept-a where one parameter, span, regenerates the wing core and spar
-    (U4.22, merges 49a1601 and a0ba030). Demo: span 900 to 940 mm moves the mass from
-    1272.99 to 1279.79 g. Honest status: concept-a-param has 10 extra known FAILs
-    from neutral-pose cut pockets (T121), so it is a demonstration, not an accepted
-    design. Open for the team: concept-a FAIL and WARN tasks T73-T81 (due 12-08),
-    joint ratings (T114), gear drop test (T113).'
+    (U4.21, merge 225c1b7), and concept-a-param, a parametric copy of concept-a where
+    span regenerates the wing core and spar (U4.22, merges 49a1601 and a0ba030). Demo:
+    span 900 to 940 mm moves the mass from 1272.99 to 1279.79 g. Honest status: concept-a-param
+    has 14 new FAIL rows from neutral-pose pockets (T121) and lacks concept-a''s 4
+    cge stress FAILs because fea/ is not copied: 20 FAIL vs 10, 19 at 940 mm. A demonstration,
+    not an accepted design. Open for the team: concept-a FAIL and WARN tasks T73-T81
+    (due 12-08), joint ratings (T114), gear drop test (T113).'

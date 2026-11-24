@@ -83,7 +83,7 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <ul><li>One shared parameter drives the parts: <code>parameters.span_mm</code> 900 -&gt; 940</li>
 <li>Regenerates the wing core and spar; mass 1272.99 -&gt; 1279.79 g, CG x 21.35 -&gt; 21.65 mm</li>
 <li>4 parts generated (wing, spar, two fin tubes); about 100 stay imported meshes</li>
-<li>Honest: <code>concept-a-param</code> has 10 extra known FAILs (20 vs 10): cut pockets follow the neutral pose only (T121)</li></ul>
+<li>Honest: <code>concept-a-param</code> has 14 new FAIL rows from neutral-pose pockets (T121) and lacks concept-a's 4 cge stress FAILs (fea/ not copied): 20 FAIL vs concept-a's 10</li></ul>
 <div class="src">Source: designs/concept-a-param/README.md (lines 3-4, 45, 47-48); <code>plane design mass</code> and <code>plane design validate</code> on 11-24 (demo-script.md step 6); ledger D70, T121</div>
 <aside>A demonstration, not a design flow: G1 kernel and G2 generators only. The static margin is still a FAIL at 15.6% (concept-a 16.4%, the copy 15.7% at 900 mm). At 940 mm the full validate shows 19 FAIL (measured 11-24). Layout, sizing and joint rules are the roadmap (slide 17).</aside></section>
 
