@@ -1,4 +1,4 @@
-"""Claims graph: load claims.yaml, validate, recompute every claim against the PDL, explain, import proofs/1.
+"""Claims graph: load claims.yaml, validate, recompute every claim that has a calc against the PDL (a `read_value` claim echoes its stored value and is not recomputed, D60), explain, import proofs/1.
 
 Adapted from DBF-Combined redesign/proofs (build_graph.py, proofkit.py); see PROVENANCE.md.
 """
