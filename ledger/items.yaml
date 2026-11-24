@@ -4750,3 +4750,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-23'
+  - id: T113
+    kind: task
+    text: "Measure concept-a's landing gear travel d (foot pad / leg compression) with a bench drop at ~0.23 m (STANAG 4703 Annex B 9 in floor) or 0.3 m; it is the one input that sources landing_load_factor via the Annex B formula n = nj + 2/3 (recon W21-X: 3.0 has no source; d = 30 mm gives ~16.6, d = 10 mm ~47, both far above 3.0)"
+    source: W21-X recon 2026-11-25 (knowledge/recon/2026-11-25-landing-load-factor.md on std/u4.19-ratings)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
