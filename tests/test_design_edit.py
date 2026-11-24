@@ -839,3 +839,21 @@ def test_sweep_prunes_only_runs_older_than_a_day(tmp_example, tmp_path, monkeypa
     os.utime(old, (t, t))
     r = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["100"])
     assert r.ok and not old.exists() and young.exists()
+
+
+def test_two_sweeps_in_the_same_second_and_process_get_distinct_folders(tmp_example, tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+
+    class Frozen(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            return datetime(2026, 11, 24, 12, 0, 0, tzinfo=timezone.utc)
+
+    monkeypatch.setattr(edit, "SWEEP_ROOT", tmp_path / ".sweeps")
+    monkeypatch.setattr(edit, "datetime", Frozen)
+    a = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["100"])
+    b = call("design.sweep", path=str(tmp_example), key="components[battery].position[0]", values=["140"])
+    assert a.ok and b.ok, (a.messages, b.messages)
+    assert a.data["sweep_dir"] != b.data["sweep_dir"]
+    assert (Path(a.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
+    assert (Path(b.data["sweep_dir"]) / "1" / "plane.yaml").is_file()

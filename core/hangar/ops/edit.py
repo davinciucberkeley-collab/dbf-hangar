@@ -5,6 +5,7 @@ import os
 import re
 import shutil
 import subprocess
+import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -196,8 +197,9 @@ def sweep_op(path: str, key: str, *, values: list[str]) -> OpResult:
         pairs.append((raw, t))
     did = str(before.get("id", plane.parent.name))
     base = _sweep_root() / did
-    root = base / f"{datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')}-{os.getpid()}"
-    root.mkdir(parents=True, exist_ok=True)
+    base.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')
+    root = Path(tempfile.mkdtemp(prefix=f"{stamp}-{os.getpid()}-", dir=base))
     cutoff = time.time() - 86400
     for sib in base.iterdir():
         try:
