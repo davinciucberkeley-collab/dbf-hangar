@@ -1352,7 +1352,7 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1: Briefs** (tactician W16-T): `briefs/U4.14-*.md` *(bb136c4: four easy briefs; T99 before U4.15 T95; T101 before T100; T99 untrimmed-yaw criterion deferred to U4.15; paid probe stays open)*
 - [x] **Step 2: Build** (W16-B, at most 2 at once) *(t99 5ec7d16, t102 297f94e, t101 579406a (brief amendment 1: patch extracted mechanically), t100 4946c8a; all builder)*
-- [ ] **Step 3: Review** (reviewer W16-R); merge; T99-T102 done
+- [x] **Step 3: Review** (reviewer W16-R); merge; T99-T102 done *(T99, T102, T100 ACCEPT merged 9fb1a6b, 790249e, 672bc11; T101 REOPEN once (--template path), ACCEPT, merged e72f545; T101 stays open for the paid redirection probe)*
 
 ### Unit U4.15: v1.1 features (T95, T103, T67; P186)
 
