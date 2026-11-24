@@ -5091,3 +5091,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: T132
+    kind: task
+    text: MCP tool hint annotations (readOnlyHint, destructiveHint, idempotentHint, openWorldHint) derived from each op's mutates flag; explicit hints on the 4 hand-written tools; test in tests/test_surfaces_in_sync.py. After Dec 2.
+    source: M8ven listing email, 2026-11-24
+    owner: conductor
+    status: open
+    due: '2026-12-09'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T133
+    kind: task
+    text: Choose a licence for the public repo (e.g. MIT or Apache-2.0), compatible with PROVENANCE.md imports and the CC BY-SA 3.0 A400M drawing; also decide whether the repo stays public
+    source: M8ven listing email, 2026-11-24
+    owner: Tristan
+    status: open
+    due: '2026-12-09'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
