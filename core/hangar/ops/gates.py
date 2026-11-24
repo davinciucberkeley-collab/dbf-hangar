@@ -9,7 +9,7 @@ from .. import pdledit
 
 
 # Check ids a run emits only when they FAIL, so a passing design cannot show them: every criterion checks.py gives
-# the id, the first one is the primary (T83). tests/test_gates.py keeps this table in step with checks.py.
+# the id, the first one is the primary (T83). tests/test_gates.py keeps this table in step with checks.py and gates/*.py.
 SCHEMA_CRIT = "schema/plane.schema.json"
 FAIL_ONLY_CRITERIA = {
     "T0.version": [SCHEMA_CRIT],
@@ -20,6 +20,7 @@ FAIL_ONLY_CRITERIA = {
     "T1.attachment_overlap": ["design-standards.yaml#embed_max_fraction_of_child", "design-standards.yaml#glued_overlap_max_fraction"],
     "T1.attachment_location": ["design-standards.yaml#attach_tolerance_mm", SCHEMA_CRIT],
     "T4.machine": ["manufacturing.yaml"],
+    "T9.claims.load": ["claims.yaml#recompute_rel_tol"],
 }
 
 

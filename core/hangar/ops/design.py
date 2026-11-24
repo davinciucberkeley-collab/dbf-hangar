@@ -7,6 +7,7 @@ from typing import Literal
 
 from . import op, OpResult, OpInputError
 from ..design import FAIL, SKIP, list_designs, load_design
+from ..ids import ID_RE
 from ..checks import validate
 from ..mass import mass_properties
 from .. import pdledit
@@ -105,7 +106,7 @@ def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out:
 
 @op(name="design.new", summary="Create a design from a template.", mutates=True, render=lambda r: r.data["path"])
 def new_op(new_id: str, *, template: str = "example-tailsitter-wing") -> OpResult:
-    from ..cli import new_design, ID_RE
+    from ..cli import new_design
     if not ID_RE.fullmatch(new_id):
         raise OpInputError(f"invalid id {new_id!r}: must match {ID_RE.pattern}")
     try:

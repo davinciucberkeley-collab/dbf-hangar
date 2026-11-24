@@ -273,17 +273,30 @@ def test_gate_explain_explains_a_fail_only_check_id_on_a_passing_design():  # T8
     assert call("gate.explain", check_id="T1.nope", design=str(EXAMPLE)).exit_code == 2   # unknown ids are still refused
 
 
-def test_fail_only_criteria_table_matches_checks_py():  # T83 guard: the table cannot drift from checks.py
+def test_fail_only_criteria_table_matches_checks_py_and_the_gates_package():  # T83 guard (T100: gates/*.py too): the table cannot drift
     from hangar import checks
     from hangar.ops.gates import FAIL_ONLY_CRITERIA
-    src = Path(checks.__file__).read_text(encoding="utf-8")
+    files = [Path(checks.__file__), *sorted((Path(checks.__file__).parent / "gates").glob("*.py"))]
+    assert Path(checks.__file__).parent / "gates" / "claims.py" in files
+    src = "\n".join(f.read_text(encoding="utf-8") for f in files)
     statuses = {}
     for m in re.finditer(r'CheckResult\(\s*"(T\d+\.[A-Za-z_0-9.]+)",\s*([^,]+?),', src):
         statuses.setdefault(m.group(1), set()).add(m.group(2).strip())
     assert {cid for cid, s in statuses.items() if s == {"FAIL"}} == set(FAIL_ONLY_CRITERIA)   # no FAIL-only id left out, none listed that can pass
     for criteria in FAIL_ONLY_CRITERIA.values():
         for criterion in criteria:
-            assert (f'STD + "{criterion.split("#")[1]}"' if "#" in criterion else f'"{criterion}"') in src, criterion
+            assert (f'STD + "{criterion.split("#")[1]}"' if criterion.startswith("design-standards.yaml#") else f'"{criterion}"') in src, criterion
+
+
+def test_gate_explain_explains_t9_claims_load_on_a_passing_design():  # T100
+    from hangar.ops import call
+    r = call("gate.explain", check_id="T9.claims.load", design=str(EXAMPLE))
+    assert r.ok and r.data["exact"] is True and r.data["criterion"] == "claims.yaml#recompute_rel_tol"
+
+
+def test_scorecard_lists_the_bare_manufacturing_file_as_a_criterion_form():  # T100: T4.machine cites manufacturing.yaml with no #<machine id>
+    text = (REPO_ROOT / "standards" / "review-scorecard.md").read_text(encoding="utf-8")
+    assert "`manufacturing.yaml` (the whole file, when a check is about the list of machines itself" in text
 
 
 def test_design_engineer_doc_explains_with_the_design():  # T83

@@ -27,7 +27,7 @@ Every review — human or agent — returns this. No free-form "looks good."
 
 Rules:
 - A design is **accepted** only when no automated result is FAIL or SKIP and no blocking criterion is FAIL (the validator's `accepted` flag applies this).
-- Every row cites a criterion that exists in `standards/`. Link forms: `design-standards.yaml#<leaf key>` (e.g. `static_margin`), `manufacturing.yaml#<machine id>`, `schema/plane.schema.json`, or `requirements.<field>` for a design's own requirement. A test resolves every criterion the validator emits. If you want to judge something that has no criterion, propose the criterion in "Non-blocking suggestions" instead.
+- Every row cites a criterion that exists in `standards/`. Link forms: `design-standards.yaml#<leaf key>` (e.g. `static_margin`), `manufacturing.yaml#<machine id>`, `manufacturing.yaml` (the whole file, when a check is about the list of machines itself, e.g. T4.machine), `schema/plane.schema.json`, or `requirements.<field>` for a design's own requirement. A test resolves every criterion the validator emits. If you want to judge something that has no criterion, propose the criterion in "Non-blocking suggestions" instead.
 
 ## Evidence and closure
 
