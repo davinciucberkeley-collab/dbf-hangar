@@ -346,6 +346,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D76 | Shrinking span: what happens to the elevons? | variant A: the elevon chain moves inboard with the tip (1.0 mm centre gap at 820 mm); elevons sized from span plus a forward-flight control gate is v1.1 (T130) | Tristan | 11-24 | decided (Tristan P227, 2026-11-24) |
 | D77 | Dec 2 demo: build an A400M RC model from a prompt? | yes: research, generators, real-parts BOM with matching 3D models, PR, Studio; checks general and selected by aircraft type; each design carries its own mission; cut rule Sun 11-29 12:00, fallback concept-a-param | Tristan | 11-24 | decided (Tristan P228, 2026-11-24) |
 | D78 | Is the demo capability A400M-only? | no: any real aircraft (A400M, Cessna 172, ...); general research template, generator set and parts library; rehearsal on two unseen aircraft (A400M, Cessna 172) | Tristan | 11-24 | decided (Tristan P229, 2026-11-24) |
+| D79 | U4.29: attached-part positions relative to the parent frame, or parameter expressions? | expressions resolved at regeneration; interference reported, never refused (W28-A design) | conductor | 11-24 | decided (default, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -690,6 +691,11 @@ W4 wave rules (W3 lessons T41–T43):
 | W25-T, W25-B, W25-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.26 (QOL batch from audit W24-Au2, D71) | `briefs/U4.26-*.md`, branches `std/u4.26-*`, `reviews/2026-11-24-w25.md` | each fix has a test or a re-run command; "### Verdict:" |
 | W26-T, W26-B, W26-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.27 (test and tidy follow-ups T108, T109, T110, T123; D71) | `briefs/U4.27-*.md`, branches `std/u4.27-*`, `reviews/2026-11-24-w26.md` | each test fails before its fix; "### Verdict:" |
 | W27-T, W27-B, W27-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.28 (T128 guide, T125 pockets follow moved parts, T126 propose slug; D74) | `briefs/U4.28-*.md`, branches `std/u4.28-*`, `reviews/2026-11-24-w27.md` | each fix has a failing-first test or a re-run; "### Verdict:" |
+
+### 6m. Agent table for W28-W29 (T129, D75; any-aircraft demo, D77-D79)
+
+| Agent | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
 | W28-A, W28-T, W28-B, W28-R | `advisor`, `tactician`, `builder-plus`, `reviewer` | Opus, Sonnet, Sonnet, Opus (fresh) | U4.29 (T129 parametric propagation, D75) | design note + `briefs/U4.29-*.md`, branches `std/u4.29-*`, `reviews/2026-11-24-w28.md` | one span change on concept-a-param moves fins and attached parts with no new interference; existing designs unchanged; "### Verdict:" |
 | W29-X, W29-S | `recon`, `scout` | Sonnet, Haiku | U4.33 (reference-aircraft template + how scale-RC builders turn a real aircraft into a model; filled for A400M and Cessna 172) | `knowledge/TEMPLATE-reference-aircraft.md`, `knowledge/` entries | only opened sources cited |
 | W29-T, W29-B, W29-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.30 (checks by aircraft type + fixed-wing standards + per-design mission), U4.31 (real-parts library), U4.32 (nacelle/prop/nose generators) | `briefs/U4.3x-*.md`, branches `std/u4.3x-*`, `reviews/2026-11-24-w29.md` | each brief builder-ready; "### Verdict:" |
@@ -815,39 +821,46 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** (1) expressions in references (`"$span_mm / 2 - 15"`, + - * / and parentheses over parameters and numbers only, no names beyond parameters); (2) a component position may be given relative to its parent part's attachment frame (from the interface graph joints), so moving or regenerating the parent moves its children; (3) after a regenerating `design set`, T1 interference runs on the changed parts and the result is reported in the set output. Demo target: shortening concept-a-param's span moves the fins and everything attached to them, with no new interference rows. Existing designs (absolute positions) unchanged. Coordinates with U4.28 T125 (pockets follow moved parts) on resolve.py. Cut rule D75: merge by Sun 11-29 12:00 or roadmap.
 
 - [x] **Step 1: Design** (advisor W28-A) and briefs (tactician W28-T) *(design d10eb26; briefs 3ab30be: core (hard, after U4.28 pockets), data (variant A/B pending Tristan; A leaves a 1.0 mm elevon gap at 820 mm))*
-- [ ] **Step 2: Build** (builder-plus W28-B)
+- [ ] **Step 2: Build** (builder-plus W28-B) *(core 3298078 ACCEPT, merged f952c92; data pending)*
 - [ ] **Step 3: Review** (W28-R); merge
 
 ### Unit U4.30: Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard]
 
+*Progress: U4.30-3/4 mission block merged a354e56 (W29-R ACCEPT); -1 applicability in fix; -2 fixed-wing waits on -1.*
+
 **Scope:** audit every gate/check for VTOL or concept-a assumptions; make applicability come from the design's morphology (vtol_method, lift, configuration) so non-applicable checks SKIP 'not applicable' with the reason; fixed-wing thresholds in `standards/` (stall, wing loading, static-margin band, etc.), each sourced or pending; a design-level mission block so each design is judged against its own mission (concept-a keeps the VTOL demonstrator, D74). Existing designs' verdicts unchanged.
 
-- [ ] **Step 1: Audit and briefs** (tactician W29-T)
-- [ ] **Step 2: Build** (W29-B)
+- [x] **Step 1: Audit and briefs** (tactician W29-T) *(54625cc: briefs U4.30-1 applicability (hard), -2 fixed-wing (hard), -3 mission schema (easy), -4 mission data (easy); defaults taken (Tristan 2026-11-21 rule): fixed-wing thresholds provisional in standards/fixed-wing.yaml, pending values WARN never FAIL; mission block = name, profile, intent only)*
+- [ ] **Step 2: Build** (W29-B) *(see sub-briefs; merged so far noted at Step 3)*
 - [ ] **Step 3: Review** (W29-R); merge
 
 ### Unit U4.31: Real-parts library (D77)
 
+*Progress: -1 core REJECT (docs/pdl/reference.md not regenerated), fixing in place; -2 parts and -3 BOM refs ACCEPT on content, merge after -1.*
+
 **Scope:** extract concept-a's bought parts (servos, ESC, battery, flight controller, receiver, motors, props, connectors, fasteners) into a reusable library under `standards/` or `knowledge/` (decide): part id, vendor and part number, URL, mass, dimensions, and the real 3D mesh; a design references a library part instead of copying its mesh; BOM lines carry the library reference; parts without vendor CAD are marked 'representative envelope'.
 
-- [ ] **Step 1: Brief** (tactician W29-T)
-- [ ] **Step 2: Build** (W29-B)
+- [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.31-1 library core (hard), -2 parts (easy), -3 BOM refs (easy); default taken: library in knowledge/parts/ (standards/ holds thresholds only); concept-a keeps its meshes, BOM lines get library refs)*
+- [ ] **Step 2: Build** (W29-B) *(see sub-briefs; merged so far noted at Step 3)*
 - [ ] **Step 3: Review** (W29-R); merge
 
 ### Unit U4.32: Shape generators for common aircraft configurations (D77, D78) [hard]
 
+*Progress: U4.32-1..4 (fuselage, powerplant, airframe, tails) merged f81bffa (W29-R ACCEPT); -5 wing placement building.*
+
 **Scope:** a general set, not one aircraft's: `nacelle` (engine nacelle/cowl loft), `propeller` (n-blade, scale-look, spinner), richer `fuselage_loft` (nose shapes, upswept tail cone, cabin), `strut` (wing struts), `landing_gear` (fixed/spring gear, wheels), tail layouts (conventional, T, V, H) from fin + wing_panel; high/mid/low wing placement; tests with hand-checked volumes. Must cover A400M and Cessna 172 without per-aircraft code.
 
-- [ ] **Step 1: Brief** (tactician W29-T)
-- [ ] **Step 2: Build** (W29-B)
+- [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.32-1 fuselage, -2 powerplant, -3 airframe, -4 tails (hard), -5 wing placement (easy); run in sequence)*
+- [ ] **Step 2: Build** (W29-B) *(see sub-briefs; merged so far noted at Step 3)*
 - [ ] **Step 3: Review** (W29-R); merge
 
 ### Unit U4.33: Reference-aircraft research template (D77, D78)
 
 **Scope:** `knowledge/TEMPLATE-reference-aircraft.md`: the fields any real aircraft needs to become a PDL design (span, length, height, wing area, sweep, dihedral, wing position, fuselage stations, engine count/positions, tail layout, prop diameter and blades, gear) plus RC-scale guidance (scale factor, target weight, power); recon benchmarks how scale-RC builders do it; scouts fill it for A400M and Cessna 172 as tests, sources opened.
 
-- [ ] **Step 1: Research** (recon W29-X, scouts W29-S)
-- [ ] **Step 2: Review** (W29-R)
+- [x] **Step 1: Research** (recon W29-X, scouts W29-S) *(template + method std/u4.33-recon f16bbae; A400M e11d841 (area -3.0%, height +1.9%); C172 c7ca127 (area -0.2%, span -0.3%); measured from Commons three-views)*
+- [x] **Step 2: Review** (W29-R) *(recon d253b16; A400M be4b833, C172 dac4392 merged; reviews/2026-11-24-w29.md)*
+- [x] **Step 3: Measuring tool** *(std/u4.33-measure 24a09cd ACCEPT, merged f515665)* in the repo (the recon's scratchpad scripts are not durable): `plane reference measure` reads a three-view PNG/SVG and returns scaled extents per view; brief (tactician W29-T), build (W29-B), review (W29-R)
 
 ### Unit U4.34: Any-aircraft rehearsal (D77, D78)
 

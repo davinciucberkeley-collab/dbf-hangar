@@ -3134,3 +3134,4 @@ mechanisms:
     input_range_deg: [-15, 15]
     expect: [{attachment: E-WNG-11, ratio: 1.33}]
     link: {driver_end: E-MEC-08, follower_end: E-MEC-PIN-L4}
+mission: {name: "VTOL demonstrator", profile: vtol-demonstrator, source: knowledge/concepts/judging-mission-and-learning.md}
