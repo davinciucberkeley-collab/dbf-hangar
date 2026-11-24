@@ -4873,7 +4873,7 @@ items:
     updated: '2026-11-23'
   - id: T121
     kind: task
-    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)]"
+    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)] [U4.25 parked on std/u4.25-pockets (D71): pose-aware pockets remove all 14 swept-pose FAIL rows, but concept-a-param tier-1 validate rises ~35 s -> ~62 s (budget 60.2 s); merge after Dec 2 with a relaxed budget or a faster boolean]"
     source: W23-B3 2026-11-23 (U4.22 Part B)
     owner: conductor
     status: open

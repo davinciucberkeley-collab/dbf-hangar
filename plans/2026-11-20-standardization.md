@@ -769,7 +769,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** `cut_files` subtract the union of a neighbour's swept poses (mechanism range), so concept-a-param's 10 extra tier-1/T6 FAIL rows (wng-007 swept poses, mec-002 range ends, elevon collisions) disappear; concept-a-param's baseline refreshed in a separate designs-only commit; existing designs unchanged.
 
 - [x] **Step 1: Brief** (tactician W24-T) *(dcd6f1d: builds after U4.22 Part B and U4.24-g1fixes merge)*
-- [ ] **Step 2: Build** (builder-plus W24-B)
+- [ ] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71)*
 - [ ] **Step 3: Review** (W24-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
