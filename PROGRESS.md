@@ -68,7 +68,7 @@
 | U4.12 | Dec 2 prep: demo re-run on current main, claims wording sweep (U4.2 Step 2, T104; P186) | 3/4 | in progress | - |
 | U4.13 | BOM spares double count (T94; P186) | 3/3 | done | - |
 | U4.14 | v1.1 cleanup, second batch (T99, T100, T101, T102; P186) | 2/3 | in progress | - |
-| U4.15 | v1.1 features (T95, T103, T67; P186) | 1/3 | in progress | - |
+| U4.15 | v1.1 features (T95, T103, T67; P186) | 2/3 | in progress | - |
 
 ## Ledger
 

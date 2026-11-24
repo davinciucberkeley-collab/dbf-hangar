@@ -1359,7 +1359,7 @@ Not a code unit; it tests everything above.
 **Scope:** T95 prop reaction torque in PDL (optional `propulsion.spin`, `propulsion.torque_per_thrust_m` with `_source`; schema minor 1.0 -> 1.1) and its use in T3.control_authority yaw; T103 a distinct status or marker for stored-result (read_value) claims; T67 ops `bom.list`, `morph.list`, `idea.list` (davinci push/pull only if the adapter supports it, else stays open).
 
 - [x] **Step 1: Briefs** (tactician W17-T): `briefs/U4.15-*.md` *(32336a4: t95 hard (patch A/B by T99), t103 easy (read flag on PASS), t67 easy (3 list ops); D61; leftovers T106, T107)*
-- [ ] **Step 2: Build** (W17-B, at most 2 at once)
+- [x] **Step 2: Build** (W17-B, at most 2 at once) *(t103 8b71ce1, t67 712ed3b builder; t95 7385e97 builder-plus, patch B)*
 - [ ] **Step 3: Review** (reviewer W17-R); merge; T95, T103, T67 done
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
