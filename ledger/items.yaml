@@ -5124,3 +5124,14 @@ items:
     evidence: ledger/items.yaml
     decided_in: ''
     updated: '2026-11-24'
+  - id: D81
+    kind: decision
+    text: 'Speed: profile a span change on concept-a-param, then cache meshes so the interference step reuses them instead of building twice, if the profile confirms it. Re-check-only-moved, parallelism and compiled code are not done before Dec 2'
+    source: Tristan, P235, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'

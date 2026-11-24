@@ -347,6 +347,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D77 | Dec 2 demo: build an A400M RC model from a prompt? | yes: research, generators, real-parts BOM with matching 3D models, PR, Studio; checks general and selected by aircraft type; each design carries its own mission; cut rule Sun 11-29 12:00, fallback concept-a-param | Tristan | 11-24 | decided (Tristan P228, 2026-11-24) |
 | D78 | Is the demo capability A400M-only? | no: any real aircraft (A400M, Cessna 172, ...); general research template, generator set and parts library; rehearsal on two unseen aircraft (A400M, Cessna 172) | Tristan | 11-24 | decided (Tristan P229, 2026-11-24) |
 | D79 | U4.29: attached-part positions relative to the parent frame, or parameter expressions? | expressions resolved at regeneration; interference reported, never refused (W28-A design) | conductor | 11-24 | decided (default, 2026-11-24) |
+| D81 | Speed up design set? | profile a span change, then a mesh cache for the interference step if the profile confirms the double build; nothing else before Dec 2 | Tristan | 11-24 | decided (Tristan P235, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -700,6 +701,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W29-X, W29-S | `recon`, `scout` | Sonnet, Haiku | U4.33 (reference-aircraft template + how scale-RC builders turn a real aircraft into a model; filled for A400M and Cessna 172) | `knowledge/TEMPLATE-reference-aircraft.md`, `knowledge/` entries | only opened sources cited |
 | W29-T, W29-B, W29-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.30 (checks by aircraft type + fixed-wing standards + per-design mission), U4.31 (real-parts library), U4.32 (nacelle/prop/nose generators) | `briefs/U4.3x-*.md`, branches `std/u4.3x-*`, `reviews/2026-11-24-w29.md` | each brief builder-ready; "### Verdict:" |
 | W29-G | `design-engineer` | Sonnet | U4.34 rehearsal: the Dec 1 prompt run on a branch for A400M and Cessna 172 | `reviews/2026-11-24-w29-rehearsal.md` | gaps listed; nothing merged |
+| W30-T, W30-B, W30-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.35 (profile a span change; mesh cache) | `plans/2026-11-20-standardization/u4.35/profile.md`, `briefs/U4.35-*.md`, branch `std/u4.35-*`, `reviews/2026-11-24-w30.md` | profile names where the seconds go; cached results byte-identical to uncached; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -869,6 +871,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 1: Rehearsal** (design-engineer W29-G)
 - [ ] **Step 2: Gap fixes** (W29-B)
 - [ ] **Step 3: Second rehearsal**
+
+### Unit U4.35: Speed up design set (D81) [hard]
+
+**Scope:** profile `plane design set designs/<copy of concept-a-param> parameters.span_mm --value 820` (cProfile, cumulative and own time, with machine load noted); if the interference step's double mesh build is confirmed, cache built meshes by generator+params hash so before/after share unchanged meshes; results (rows, masses, mesh bytes) identical with and without the cache; target: span change under 15 s on an idle machine.
+
+- [ ] **Step 1: Profile and brief** (tactician W30-T)
+- [ ] **Step 2: Build** (builder-plus W30-B)
+- [ ] **Step 3: Review** (W30-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
