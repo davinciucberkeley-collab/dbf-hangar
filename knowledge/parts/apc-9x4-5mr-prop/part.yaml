@@ -7,7 +7,7 @@ url: https://www.readymaderc.com/products/details/86771-apc-multirotor-9x4-5-2-b
 mass_g: 11.06
 dimensions_mm: [13.8, 228.9, 228.9]
 cad_status: representative-envelope
-cad_source: swept disc of an APC 9x4.5MR (9 in = 228.6 mm nominal) from the oriented bounding box of designs/concept-a/meshes/prp-002-ll.stl; envelope depth along the motor axis corrected to 13.8 mm (conductor: 13.3-13.75 mm; 24.1 mm was the blade chord in the disc plane)
+cad_source: "swept disc of an APC 9x4.5MR (9 in = 228.6 mm nominal) from the oriented bounding box of designs/concept-a/meshes/prp-002-ll.stl; axial depth 13.3-13.75 mm (W29-R measurement), envelope set to 13.8 mm; 24.1 mm was the blade chord in the disc plane"
 verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
 geometry:
   generator: tube
