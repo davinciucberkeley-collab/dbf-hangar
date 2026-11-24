@@ -459,3 +459,21 @@ def test_claim_list_without_read_claims_is_unchanged(mini):  # T103
     r = call("claim.list", path=str(MINI))
     assert r.data["read_count"] == 0 and not any("(read)" in ln for ln in registry()["claim.list"].render(r).splitlines())
     assert not any(m.startswith("note:") for m in call("claim.check", path=str(MINI)).messages)
+
+
+@pytest.mark.parametrize("change,status_", [({"limit": {"op": ">=", "value": 5000}}, "FAIL"),      # stored 946 g against >= 5000
+                                             ({"value": 1000}, "STALE")])                            # recorded 1000 differs from the stored 946
+def test_claim_check_names_failing_and_stale_read_claims(tmp_mini, change, status_):  # T108: the note counted PASS read rows only
+    _with_read_claim(tmp_mini)
+    edit_claims(tmp_mini, lambda n: n["CL-PROP-NOISE"].update(change))
+    c = call("claim.check", path=str(tmp_mini))
+    row = {x["id"]: x for x in c.data["claims"]}["CL-PROP-NOISE"]
+    assert row["read"] is True and row["status"] == status_
+    assert "note: stored-result claims not passing (FAIL or STALE): CL-PROP-NOISE" in c.messages
+    assert not any("PASS read from source" in m for m in c.messages)       # no read claim passes here
+
+
+def test_claim_check_note_for_passing_read_claims_is_unchanged(tmp_mini):  # T108 pin
+    c = call("claim.check", path=str(_with_read_claim(tmp_mini).path.parent))
+    assert "note: 1 PASS recomputed, 1 PASS read from source (stored results checked against their limits, analyses not re-run)" in c.messages
+    assert not any("FAIL or STALE" in m for m in c.messages)

@@ -41,7 +41,6 @@ def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
     monkeypatch.setattr(studio, "DATA_DIR", tmp_path / ".studio" / "data")
     monkeypatch.setattr(studio, "CACHE_FILE", tmp_path / ".studio" / "cache.json")
-    monkeypatch.setattr(studio, "BACKUP_DIR", tmp_path / ".studio" / "backups")
     return designs
 
 

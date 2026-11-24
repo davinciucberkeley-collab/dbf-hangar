@@ -94,6 +94,9 @@ def check_op(path: str) -> OpResult:
         n_pass = sum(1 for r in rows if r["status"] == "PASS")
         msgs.append(f"note: {n_pass - n_read} PASS recomputed, {n_read} PASS read from source "
                     "(stored results checked against their limits, analyses not re-run)")
+    bad_read = [r["id"] for r in rows if r["read"] and r["status"] in ("FAIL", "STALE")]
+    if bad_read:
+        msgs.append("note: stored-result claims not passing (FAIL or STALE): " + ", ".join(bad_read))
     return OpResult(ok=report.status in ("PASS", "WARN"),
                     data={"status": report.status, "claims": rows, "uncovered_requirements": uncovered,
                           "warnings": graph.warnings},
