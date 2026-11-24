@@ -70,7 +70,7 @@
 | U4.14 | v1.1 cleanup, second batch (T99, T100, T101, T102; P186) | 3/3 | done | - |
 | U4.15 | v1.1 features (T95, T103, T67; P186) | 3/3 | done | - |
 | U4.16 | Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188) | 3/3 | done | - |
-| U4.17 | Team guide: how the team works in dbf-hangar (P189) | 1/4 | in progress | - |
+| U4.17 | Team guide: how the team works in dbf-hangar (P189) | 2/5 | in progress | - |
 
 ## Ledger
 
@@ -79,7 +79,7 @@
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
 | task | 39 | 69 | 0 | 2 | 0 | 110 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 249 | 265 |
+| decision | 12 | 0 | 0 | 4 | 250 | 266 |
 
 ## Overdue
 

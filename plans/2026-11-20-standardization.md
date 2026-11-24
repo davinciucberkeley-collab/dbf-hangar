@@ -331,6 +331,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D61 | When does concept-a get the T95 propulsion 1.1 data (spin, reaction torque)? | after Dec 2 and after T96, by a design-engineer who confirms motor letters against CAD; baseline accept in the same designs-only commit (T106) | Tristan | 11-24 | decided (conductor default on W17-T flag, 2026-11-24) |
 | D62 | "D35, run the import now": which import? | the config-study import (D35/D42) already ran (dc8902a); run the deferred `docs/research/` import (D28, U2.2-3) now as U4.16 | Tristan | 11-24 | decided (Tristan P188; conductor reading, 2026-11-24) |
 | D63 | Team workflow rules for the guide (W19-T O1-O11) | defaults in `briefs/U4.17-team-guide.md`: collaborators not forks; teammate changes by PR only; Tristan merges, Dillon approves design PRs; ledger task per teammate job; no conductor for teammates; hooks on; `std/<topic>` and `design/<id>/<slug>` branches; owner trailer kept; concept-a only via `design set` + PR; Python 3.12; only Tristan adds ledger items. The guide marks each as "confirm" | Tristan | 11-24 | decided (conductor defaults, 2026-11-24; to confirm when Tristan reads the guide) |
+| D64 | Team guide: commands or conversation? Claude Code only, or Claude Desktop too? | conversation first: teammates ask Claude in plain words and Claude runs the plane CLI/MCP, then validates/tests per its agent role; two setups, Claude Code (full) and Claude Desktop + plane MCP (design work; `design.propose` opens the PR; CI tests); Desktop never edits through `save_design`; "tests" means design validation gates (P191), and people/roles are examples, so the guide is organised by task, not by person | Tristan | 11-24 | decided (Tristan P190, P191, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -566,14 +567,14 @@ Layers: **W3a** briefs for every unit in parallel, plus W3.0 (PROGRESS.md review
 ### 6j. Agent table for the concept-a budget unit fix (Tristan, 2026-11-21)
 Root cause (conductor, checked): `params-A.json` stores `req.budget_usd` = 2000.0 USD, not k$; `importers/dbf.py::_n(x, 0)` strips trailing zeros from an integer string ("2000" → "2"). `_n(..., 0)` has one call site (budget). Designs and core stay in separate PRs.
 
-| Agent | Role | Model | Input | Output | Pass check |
+| Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
 | FX-1 [x] | `builder` | Haiku | launch prompt (exact fix + tests) | branch `std/fx-importer-n0` | `_n(2000, 0) == "2000"`; re-import of concept A writes `budget_usd: 2000`; existing importer tests pass; CI green |
 | FX-2 [x] | `design-engineer` | Sonnet | `plane design set designs/concept-a requirements.budget_usd --value 2000 --kind modify` | commit on `main` (D30: small fixes, no PR) | validate `--tier all` before/after; baseline updated only if rows change; reviewer check before push |
 | FX-R | `reviewer` | Opus (fresh) | both commits (D30) | `reviews/2026-11-21-fixes.md` | "### Verdict: ACCEPT" per PR |
 
 ### 6k. Agent table for the ledger task triage (Tristan, 2026-11-21; no code, design or standards changes)
-| Agent | Role | Model | Input | Output | Pass check |
+| Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
 | TR-S1…S4 | `scout` | Haiku | one batch of about 12 open `kind: task` items each | evidence file in the session scratchpad: per task status proposal (done / superseded / dropped / open) with commit, PR or file evidence, duplicate pairs, W4-or-v1.1 home | every task in the batch has one proposal and cites only what was opened |
 | TR-R | `reviewer` | Opus (fresh) | every proposed "done" and "superseded" | confirm or reject each, one line | each confirmation names the code or file checked |
@@ -587,7 +588,7 @@ W4 wave rules (W3 lessons T41–T43):
 - R-b: tacticians run the brief's tests against the base commit first (record red/green under Known failures) and grep-verify every quoted name and path (T42).
 - R-c: the conductor launches `auditor` every hour while any W4 agent runs (T43).
 
-| Agent | Role | Model | Input | Output | Pass check |
+| Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
 | W4-TA | `tactician` | Sonnet | ledger T22, T25, T27, T29, T33, T34, T39, T46, T47 (texts + triage notes) | `briefs/W4a-*.md`, one per fix or per shared file, each marked easy or [hard] | builder-ready bar; R-a, R-b applied |
 | W4-A1…An | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one W4a brief each | branch `std/w4a-<task>` | brief's checks; CI green by headSha |
@@ -643,6 +644,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W17-T, W17-B, W17-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.15 (T95, T103, T67) | `briefs/U4.15-*.md`, branches `std/u4.15-*`, `reviews/2026-11-24-w17.md` | builder-ready bar; schema minor version for T95; "### Verdict:" |
 | W18-T, W18-B, W18-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.16 (U2.2-3 docs/research import, D62) | `briefs/U2.2-3-research-import.md`, branch `std/u4.16-research`, `reviews/2026-11-24-w18.md` | knowledge templates, PROVENANCE, copy check (T68), "### Verdict:" |
 | W19-T, W19-B, W19-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.17 (team guide, P189) | `briefs/U4.17-team-guide.md`, `docs/team-guide.md`, branch `std/u4.17-team-guide`, `reviews/2026-11-24-w19.md` | every command in the guide run on a fresh clone; reviewer follows it as a newcomer; "### Verdict:" |
+| W19-X | `recon` | Sonnet | U4.17 rework (D64): how Claude Desktop connects to a local MCP server on Windows/macOS, Project instructions, limits vs Claude Code | `plans/2026-11-20-standardization/u4.17/desktop-facts.md` | official docs opened and cited |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1379,7 +1381,8 @@ Not a code unit; it tests everything above.
 **Scope:** one guide `docs/team-guide.md` (linked from README.md) that Tristan can send to Dillon, James and Vaibhav: install and connect their own Claude Code sessions to this repo (hooks, agents, output style, MCP); the one-repo rule (no new repos; everything lands on main after review); branches per person and per unit that do not touch each other's files (designs vs core vs tests vs knowledge; e.g. James on tests, Dillon on a new concept); create a design, iterate on it (`plane design new/set/validate/sweep/propose`, Studio), add a test, add a standard with a source, add knowledge; how agents and the conductor/plan/ledger work; review and merge; CI. Every command in it is run on a fresh clone. Docs only (plus a README link); no core/, designs/, standards/.
 
 - [x] **Step 1: Brief** (tactician W19-T): verified facts, outline, open decisions with defaults: `briefs/U4.17-team-guide.md` *(6aac806; O1-O11 defaults recorded as D63; propose, push and PowerShell activation not run)*
-- [ ] **Step 2: Write** (builder-plus W19-B): `docs/team-guide.md`
+- [x] **Step 2: Write** (builder-plus W19-B): `docs/team-guide.md` *(b8e6074, 777 lines, 80 fenced commands all verified)*
+- [ ] **Step 2b: Rework in place for D64** (recon W19-X facts on Claude Desktop; tactician W19-T amends the brief; builder-plus W19-B rewrites on the same branch): conversation-first, Claude Code and Claude Desktop setups
 - [ ] **Step 3: Review** (reviewer W19-R follows the guide on a fresh clone as a newcomer); merge
 - [ ] **Step 4:** Tristan reads it and sends it to the team
 
