@@ -331,6 +331,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D61 | When does concept-a get the T95 propulsion 1.1 data (spin, reaction torque)? | after Dec 2 and after T96, by a design-engineer who confirms motor letters against CAD; baseline accept in the same designs-only commit (T106) | Tristan | 11-24 | decided (conductor default on W17-T flag, 2026-11-24) |
 | D62 | "D35, run the import now": which import? | the config-study import (D35/D42) already ran (dc8902a); run the deferred `docs/research/` import (D28, U2.2-3) now as U4.16 | Tristan | 11-24 | decided (Tristan P188; conductor reading, 2026-11-24) |
 | D63 | Team workflow rules for the guide (W19-T O1-O11) | defaults in `briefs/U4.17-team-guide.md`: collaborators not forks; teammate changes by PR only; Tristan merges, Dillon approves design PRs; ledger task per teammate job; no conductor for teammates; hooks on; `std/<topic>` and `design/<id>/<slug>` branches; owner trailer kept; concept-a only via `design set` + PR; Python 3.12; only Tristan adds ledger items. The guide marks each as "confirm" | Tristan | 11-24 | decided (conductor defaults, 2026-11-24; to confirm when Tristan reads the guide) |
+| D64 | Team guide: commands or conversation? Claude Code only, or Claude Desktop too? | conversation first: teammates ask Claude in plain words and Claude runs the plane CLI/MCP, then validates/tests per its agent role; two setups, Claude Code (full) and Claude Desktop + plane MCP (design work; `design.propose` opens the PR; CI tests); Desktop never edits through `save_design` | Tristan | 11-24 | decided (Tristan P190, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -643,6 +644,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W17-T, W17-B, W17-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.15 (T95, T103, T67) | `briefs/U4.15-*.md`, branches `std/u4.15-*`, `reviews/2026-11-24-w17.md` | builder-ready bar; schema minor version for T95; "### Verdict:" |
 | W18-T, W18-B, W18-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.16 (U2.2-3 docs/research import, D62) | `briefs/U2.2-3-research-import.md`, branch `std/u4.16-research`, `reviews/2026-11-24-w18.md` | knowledge templates, PROVENANCE, copy check (T68), "### Verdict:" |
 | W19-T, W19-B, W19-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.17 (team guide, P189) | `briefs/U4.17-team-guide.md`, `docs/team-guide.md`, branch `std/u4.17-team-guide`, `reviews/2026-11-24-w19.md` | every command in the guide run on a fresh clone; reviewer follows it as a newcomer; "### Verdict:" |
+| W19-X | `recon` | Sonnet | U4.17 rework (D64): how Claude Desktop connects to a local MCP server on Windows/macOS, Project instructions, limits vs Claude Code | `plans/2026-11-20-standardization/u4.17/desktop-facts.md` | official docs opened and cited |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1380,6 +1382,7 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1: Brief** (tactician W19-T): verified facts, outline, open decisions with defaults: `briefs/U4.17-team-guide.md` *(6aac806; O1-O11 defaults recorded as D63; propose, push and PowerShell activation not run)*
 - [x] **Step 2: Write** (builder-plus W19-B): `docs/team-guide.md` *(b8e6074, 777 lines, 80 fenced commands all verified)*
+- [ ] **Step 2b: Rework in place for D64** (recon W19-X facts on Claude Desktop; tactician W19-T amends the brief; builder-plus W19-B rewrites on the same branch): conversation-first, Claude Code and Claude Desktop setups
 - [ ] **Step 3: Review** (reviewer W19-R follows the guide on a fresh clone as a newcomer); merge
 - [ ] **Step 4:** Tristan reads it and sends it to the team
 
