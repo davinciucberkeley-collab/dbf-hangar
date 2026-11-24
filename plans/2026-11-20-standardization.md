@@ -1404,7 +1404,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** rank the connection types in `standards/connection-types.yaml` by how many concept-a joints use them; scouts collect datasheets/standards into `knowledge/sources/` (only sources opened); recon proposes `landing_load_factor` from its noted sources; a builder writes the sourced values (or `pending` with a reason) into standards; re-run concept-a and report which SKIPs and FAILs changed and the fidelity line before/after. Standards and knowledge only (plus the concept-a baseline refresh as a separate designs-only commit). James reviews the values.
 
-- [ ] **Step 1:** Ranking and scout/recon briefs (tactician W21-T)
+- [x] **Step 1:** Ranking and scout/recon briefs (tactician W21-T) *(cda9184; finding: the joint gates read each joint's own rating, not the library, so library sources clear 0 of the 64 SKIPs; only landing_load_factor moves fidelity; S1, S4, X1 launched, S2/S3 held)*
 - [ ] **Step 2:** Sources (scouts W21-S, recon W21-X)
 - [ ] **Step 3:** Values into standards; concept-a re-run; baseline refresh (builder W21-B)
 - [ ] **Step 4: Review** (reviewer W21-R); James reads the values; merge

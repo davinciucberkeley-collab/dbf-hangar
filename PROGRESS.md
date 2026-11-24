@@ -72,7 +72,7 @@
 | U4.16 | Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188) | 3/3 | done | - |
 | U4.17 | Team guide: how the team works in dbf-hangar (P189) | 4/5 | in progress | - |
 | U4.18 | Faster CI unit tests (T11; P194) | 1/3 | in progress | - |
-| U4.19 | Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198) | 0/4 | not started | - |
+| U4.19 | Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198) | 1/4 | in progress | - |
 | U4.20 | Process trim (D66; T112; P198) | 0/3 | not started | - |
 
 ## Ledger
