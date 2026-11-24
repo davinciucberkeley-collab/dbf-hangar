@@ -4992,3 +4992,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: D74
+    kind: decision
+    text: The program's mission is the VTOL demonstrator brief in knowledge/ (2-minute hover, 5 min cruise, 10 goal, 20 % reserve, 0.25 kg growth); 'DBF' in this repo means the DaVinci DBF capstone, not UC Berkeley's separate DBF competition team, whose rules are out of scope
+    source: Tristan, P224, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'
