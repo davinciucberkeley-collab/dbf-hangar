@@ -1330,7 +1330,7 @@ Not a code unit; it tests everything above.
 
 **Scope:** re-run every step of `u4.2/demo-script.md` on a scratch clone of current main (never `designs/`) and update expected outputs, wall times and fallbacks; brief and build T104 (README.md, docs/cli.md wording per D60). The backup video stays with Tristan.
 
-- [ ] **Step 1:** Demo re-run and T104 brief (tactician W14-T)
+- [x] **Step 1:** Demo re-run and T104 brief (tactician W14-T) *(d54bef8: re-run on 39c7c58, steps 2-6 pass, issues 9-11 added (11-30 URL 404 until merged + Pages run; cold Studio 278 s); `update publish` not run (permission refused), read from code)*
 - [ ] **Step 2:** Build T104 (W14-B)
 - [ ] **Step 3: Review** (reviewer W14-R); merge; T104 done
 
