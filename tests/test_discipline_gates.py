@@ -191,8 +191,7 @@ def test_control_authority_skips_non_vtol():
 
 
 def _moment(r) -> float:
-    import re
-    return float(re.search(r"control moment (-?[0-9.]+) N\*m", r.message).group(1))
+    return r.data["moment_nm"]      # T99: a data key, so the tests do not depend on the message wording
 
 
 def _axis_row(design, axis):
@@ -216,6 +215,24 @@ def test_control_authority_pinwheel_cant_yaw_is_not_judged_and_never_passes():  
     assert abs(row.data["trim_yaw_nm"]) > 0.5       # equal thrust leaves an untrimmed yaw moment
     assert _moment(row) < 0.2 * abs(row.data["trim_yaw_nm"])     # the old sum of magnitudes gave a large number here
     assert {_axis_row(_pinwheel(vtol()), a).status for a in ("pitch", "roll")} <= {PASS, FAIL}
+
+
+def test_control_authority_data_moment_matches_the_message():  # T99
+    import re
+    for axis in ("pitch", "roll", "yaw"):
+        row = _axis_row(_pinwheel(vtol()), axis)
+        assert row.data["moment_nm"] == float(re.search(r"control moment (-?[0-9.]+) N\*m", row.message).group(1)), axis
+
+
+def test_control_authority_yaw_skip_says_when_hover_ctrl_factor_is_pending(monkeypatch):  # T99
+    row = _axis_row(_pinwheel(vtol()), "yaw")
+    assert row.status == SKIP and "is pending" not in row.message      # sourced criterion: the text is unchanged
+    real = hangar.gates.discipline._crit
+    monkeypatch.setattr(hangar.gates.discipline, "_crit",
+                        lambda f, k: (real(f, k)[0], True) if k == "hover_ctrl_factor" else real(f, k))
+    row = _axis_row(_pinwheel(vtol()), "yaw")
+    assert row.status == SKIP and row.data["would_be"] == FAIL
+    assert "operations.yaml#hover_ctrl_factor is pending" in row.message and "prop reaction torque is not modelled" in row.message
 
 
 def test_control_authority_equal_pitch_lever_gives_zero_pitch_moment():  # T37 (D58)
