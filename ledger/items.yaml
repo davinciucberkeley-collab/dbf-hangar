@@ -5069,3 +5069,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-24'
+  - id: D79
+    kind: decision
+    text: U4.29 positions of attached parts are written as parameter expressions (e.g. $span_mm/2 - 40) resolved at regeneration, not as positions relative to the parent's attachment frame; interference is reported after a change, never refused (advisor W28-A design)
+    source: conductor default, W28-A design, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-24-w28.md
+    decided_in: ''
+    updated: '2026-11-24'
