@@ -5003,3 +5003,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-24'
+  - id: T129
+    kind: task
+    text: "v1.1 parametric propagation: a parameter change moves everything attached to the changed part, not just regenerated parts. (1) Expressions in references (e.g. \"$span_mm / 2 - 15\"), today only whole-string \"$name\"; (2) positions relative to the parent part's attachment frame (joints in the interface graph), so children (fins, pitot, servos, wiring anchors) follow their parent; (3) after regeneration, run T1 interference and report or let the design-engineer resolve collisions. Today only generated parts follow parameters; attached parts must be moved by hand (Tristan's trial moved the pitot manually)"
+    source: Tristan P225, 2026-11-24
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
