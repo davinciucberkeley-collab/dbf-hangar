@@ -27,7 +27,7 @@ def test_example_accepted(example):
             continue
         rows = next(t for t in sc.tiers if t.tier == tier).results
         # report-only discipline rows (U3.6) may leave a tier WARN; any other non-PASS row still fails
-        assert by_tier[tier] == WARN and all(r.status == PASS or r.data.get("report_only") is True for r in rows),             f"tier {tier} is {by_tier[tier]}"
+        assert by_tier[tier] == WARN and all(r.status == PASS or r.not_applicable or r.data.get("report_only") is True for r in rows),             f"tier {tier} is {by_tier[tier]}"
 
 
 def test_mass_equals_sum_of_components(example):

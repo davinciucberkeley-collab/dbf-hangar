@@ -110,7 +110,7 @@ def snapshot(scorecard: Scorecard) -> dict:
         for r in tier.results:
             if r.status not in (FAIL, SKIP) or is_blocking(r.check_id, r.status, r.message):
                 continue
-            if r.status == SKIP and (r.data or {}).get("not_applicable"):
+            if r.status == SKIP and r.not_applicable:
                 continue
             key = result_key(r.check_id, r.message, r.data)
             entry = found.get(key)

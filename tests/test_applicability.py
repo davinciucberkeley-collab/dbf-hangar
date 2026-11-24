@@ -71,3 +71,35 @@ def test_vtol_design_unchanged():
 def test_baseline_ignores_not_applicable():
     snap = snapshot(card(fixed_wing()))
     assert not [k for k in snap["known"] if k["check_id"] in IDS]
+
+
+# ---- not-applicable rows are not results (TierReport.status, accepted, validate_op) ----
+def _cr(status, na=False):
+    from hangar.design import CheckResult
+    return CheckResult("X.y", status, "m", "", {"not_applicable": True} if na else {})
+
+
+def test_tier_status_ignores_not_applicable_rows():
+    from hangar.design import PASS, TierReport
+    assert TierReport(3, "t", [_cr(PASS), _cr(SKIP, na=True)]).status == PASS
+    assert TierReport(3, "t", [_cr(SKIP, na=True)]).status == SKIP
+    assert TierReport(3, "t", [_cr(PASS), _cr(SKIP)]).status == SKIP
+
+
+def test_design_verdicts_unchanged_against_main():
+    import json
+    from hangar.checks import validate
+    from hangar.design import DESIGNS_DIR, load_design
+    want = json.loads((FIX / "design-verdicts.json").read_text(encoding="utf-8"))
+    for name, exp in want.items():
+        sc = validate(load_design(DESIGNS_DIR / name))
+        assert {str(t.tier): t.status for t in sc.tiers} == exp["tiers"], name
+        assert sc.accepted == exp["accepted"], name
+
+
+def test_validate_op_leaves_not_applicable_out_of_messages():
+    from hangar.design import DESIGNS_DIR
+    from hangar.ops import call
+    r = call("design.validate", path=str(DESIGNS_DIR / "example-tailsitter-wing"))
+    assert not any("not applicable" in m for m in list(r.messages) + list(r.skipped))
+    assert "not_applicable" in r.data

@@ -70,13 +70,17 @@ def validate_op(path: str, tier: Literal["0", "1", "2", "3", "4", "5", "6", "7",
     card = validate(design, max_tier=9 if tier == "all" else int(tier))
     data = {**card.to_dict(), "markdown": card.to_markdown()}
     ok = bool(card.clean and (card.accepted or card.partial))
-    messages, skipped = [], []
+    messages, skipped, n_a = [], [], []
     for t in card.tiers:
         for r in t.results:
+            if r.not_applicable:
+                n_a.append(f"{r.check_id}: {r.message}")
+                continue
             if r.status in (FAIL, SKIP):
                 messages.append(f"{r.check_id} {r.status}: {r.message}")
             if r.status == SKIP:
                 skipped.append(f"{r.check_id}: {r.message}")
+    data["not_applicable"] = n_a
     return OpResult(ok, data, messages, skipped=skipped)
 
 
