@@ -83,7 +83,7 @@ Writes files.
 
 ### `plane claim check`
 
-Recompute every claim and report the T9 verdicts.
+Check every claim and report the T9 verdicts: stored-result claims are read from source and checked against limits, the rest are recomputed.
 
 ```
 plane claim check <path>

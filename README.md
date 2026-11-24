@@ -52,7 +52,7 @@ Replace `<id>` with a design folder name from `plane list`. Most commands take `
 - One operations layer (`core/hangar/ops/`) holds every operation. The `plane` CLI and the MCP server ([docs/mcp.md](docs/mcp.md)) are generated from it, and Plane Studio is built on it.
 - Checks run as gates T0 to T9 (`plane gate list`): schema, geometry, physics, aero, manufacturing, standards, mechanisms, integration, sourcing and claims.
 - Every threshold lives in `standards/*.yaml`, with a source or marked `pending`.
-- Claims in `claims.yaml` are recomputed from the design's values on every check. A claim with a negative margin fails T9; a claim with no calculation stays proposed.
+- Claims in `claims.yaml` are checked on every check: stored-result claims are read from source and checked against limits, the rest are recomputed from the design's values. A claim with a negative margin fails T9; a claim with no calculation stays proposed.
 - The agent harness is `.claude/agents/` (roles), `harness/hooks/` wired through `.claude/settings.json`, and the prompt and decision ledger in `ledger/`.
 
 ## Rules
