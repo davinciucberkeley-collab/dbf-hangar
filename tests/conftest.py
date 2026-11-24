@@ -62,14 +62,14 @@ _HEAVY = (  # slowest tests, most expensive first (W20-T measurement); dealt one
     "tests/test_baseline.py::test_every_fail_or_skip_names_its_subject_or_is_design_level",
     "tests/test_adapters.py::test_missing_tool_is_skip_with_fix",
     "tests/test_bench.py::test_grader_passes_on_known_good_solution[fix-static-margin]",
-    "tests/test_gates.py::test_program_constraints_apply_to_every_active_design[concept-a]",
+    "tests/test_pdl.py::test_every_committed_design_migrates_to_1_1_with_same_verdict[concept-a]",
     "tests/test_adapters.py::test_plane_fea_group_and_legacy_alias",
     "tests/test_bench.py::test_grader_fails_on_start_design[fix-static-margin]",
     "tests/test_gates.py::test_tiers_0_5_unchanged_for_committed_designs[concept-a]",
     "tests/test_adapters.py::test_fea_plan_op_matches_engine",
     "tests/test_fea.py::test_hub_is_held_by_bridge_and_struts_not_by_wiring",
     "tests/test_discipline_gates.py::test_existing_gate_rows_fire_concept_a",
-    "tests/test_pdl.py::test_every_committed_design_migrates_to_1_1_with_same_verdict[concept-a]",
+    "tests/test_gates.py::test_program_constraints_apply_to_every_active_design[concept-a]",
     "tests/test_bench.py::test_grade_replay_passes_when_only_plane_changed_the_design",
 )
 
