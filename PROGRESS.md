@@ -26,7 +26,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | owner | open | next due |
 |---|---|---|
-| Dillon | 29 | 2026-12-08 |
+| Dillon | 30 | 2026-12-08 |
 | James | 2 | 2026-11-29 |
 | Tristan | 9 | 2026-12-05 |
 | conductor | 19 | 2026-12-15 |
@@ -43,7 +43,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 - T74 (Dillon, due 2026-12-08): concept-a drop test: E-WNG-20 1.8 N and E-WNG-21 1.8 N vs 1.4 N rating (T2.sim_drop_loads FAIL,...
 - T75 (Dillon, due 2026-12-08): concept-a T2.sim_rest FAIL: tailsitter tips 81 deg on its gear; widen the gear footprint or lower...
 - T76 (Dillon, due 2026-12-08): concept-a T3.static_margin FAIL 16.4% MAC (CG x=21 mm); move CG or confirm the target band
-- and 21 more in `ledger/items.yaml`
+- and 22 more in `ledger/items.yaml`
 
 ## Units by wave
 
@@ -167,7 +167,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 45 | 82 | 1 | 2 | 0 | 130 |
+| task | 46 | 82 | 1 | 2 | 0 | 131 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 265 | 281 |
 
