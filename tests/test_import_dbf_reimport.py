@@ -57,9 +57,20 @@ def _items(text):
 def test_bom_block_maps_a_verified_line(tmp_path):
     root = _bom(tmp_path, "P01,propulsion,T-Motor MN2212,TMotor,5,1,46.90,V,verified,https://store.tmotor.com/x,2026-11-14,note")
     (item,) = _items(blk.bom_block(root, "A", PARTS, "a93f14d"))
-    assert item == {"id": "p01", "qty": 6, "supplier": "TMotor", "part_number": "T-Motor MN2212", "unit_cost_usd": 46.9,
+    assert item == {"id": "p01", "qty": 5, "supplier": "TMotor", "part_number": "T-Motor MN2212", "unit_cost_usd": 46.9,
                     "url": "https://store.tmotor.com/x", "component_ids": ["wng-001"],
                     "verified": {"by": "DBF-Combined BOM-A.csv @ a93f14d", "date": "2026-11-14", "method": "browser"}}
+
+
+def test_bom_block_qty_already_includes_spares_and_is_not_added_to(tmp_path):  # T94
+    root = _bom(tmp_path,
+                "P01,propulsion,T-Motor MN2212 (4 + 1 spare),TMotor,5,1,46.90,V,unverified,-,-,n",
+                "M01,mechanisms,Servo (2 elevons + 1 spare),RMRC,3,1,13.99,V,unverified,-,-,n",
+                "P02,propulsion,Props,RMRC,1,0,9.40,V,unverified,-,-,n")
+    items = {i["id"]: i for i in _items(blk.bom_block(root, "A", {}, "a93f14d"))}
+    assert [items[k]["qty"] for k in ("p01", "m01", "p02")] == [5, 3, 1]
+    assert items["p01"]["part_number"] == "T-Motor MN2212 (4 + 1 spare)"
+    assert "spares" not in items["p01"]
 
 
 def test_bom_block_unverified_line_has_no_verified_and_no_url(tmp_path):
@@ -90,9 +101,9 @@ def test_concept_a_bom_total_matches_source():
     parts = {r["part_id"]: r for r in csv.DictReader((DBF / "redesign/qp/A/cad/out/parts-a.csv").open(encoding="utf-8"))}
     items = _items(blk.bom_block(DBF, "A", parts, "a93f14d"))
     rows = list(csv.DictReader((DBF / "redesign/qp/A/BOM-A.csv").open(encoding="utf-8")))
-    want = sum((int(r["qty"]) + int(r["spares"] or 0)) * float(r["unit_usd"]) for r in rows)
+    want = sum(int(r["qty"]) * float(r["unit_usd"]) for r in rows)
     got = sum(i["qty"] * i["unit_cost_usd"] for i in items)
-    assert got == pytest.approx(want, abs=0.01) and got == pytest.approx(1323.39, abs=0.01)
+    assert got == pytest.approx(want, abs=0.01) and got == pytest.approx(1262.50, abs=0.01)
     assert len(items) == 42 and sum(1 for i in items if "verified" in i) == 26
     assert all(i["url"] and i["verified"]["date"] for i in items if "verified" in i)
 
