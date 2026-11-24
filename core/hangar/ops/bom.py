@@ -112,3 +112,24 @@ def cost_op(path: str) -> OpResult:
             unverified.append(it["id"])
     data = {"total_usd": round(total, 2), "costed": costed, "missing_cost": missing_cost, "unverified": unverified}
     return OpResult(True, data)
+
+
+def _render_list(res: OpResult) -> str:
+    rows = res.data["items"]
+    if not rows:
+        return "no bom items"
+    w = max(len(r["id"]) for r in rows)
+    cost = lambda r: "-" if r["unit_cost_usd"] is None else r["unit_cost_usd"]  # noqa: E731
+    return "\n".join(f"{r['id']:<{w}}  x{r['qty']}  {cost(r)}  {'verified' if r['verified'] else 'unverified'}" for r in rows)
+
+
+@op(name="bom.list", summary="List the BOM lines of a design (id, qty, unit cost, verified, url).", render=_render_list)
+def list_op(path: str) -> OpResult:
+    _, _, _, items = _load(path)
+    rows = []
+    for n, it in enumerate(items):
+        if not isinstance(it, dict) or "id" not in it:
+            raise OpInputError(f"bom.items[{n}]: must be a mapping with an id")
+        rows.append({"id": str(it["id"]), "qty": it.get("qty"), "unit_cost_usd": it.get("unit_cost_usd"),
+                     "verified": "verified" in it, "url": it.get("url")})
+    return OpResult(True, {"items": rows})
