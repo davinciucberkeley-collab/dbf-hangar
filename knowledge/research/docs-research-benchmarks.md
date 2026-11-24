@@ -13,7 +13,7 @@ verified: false
 A check of the C0 design against 22 published small VTOL aircraft (16 lift-plus-cruise, 6 tilt-rotor or tailsitter) and 37 literature values, done on 2026-10-26. The modelling assumptions came out mostly typical or conservative, and the study led to one design change, a lower cruise speed.
 
 ## Key facts
-- C0 wing loading is 9.6 kg/m2 (published range 6.9 to 15.9), disk loading 110 N/m2 (published 126 to 315) and battery energy 22 Wh per kg of MTOW (published 51 to 98); the low battery figures follow from a 12 minute mission against published endurances of 1 to 4 hours. [benchmarks.md section 2]
+- C0 wing loading is 9.6 kg/m2 (published range 6.9 to 15.9), disk loading 110 N/m2 (published 126 to 315 above 3 kg) and battery energy 22 Wh per kg of MTOW (published 51 to 98); the low battery figures follow from a 12 minute mission against published endurances of 1 to 4 hours. [benchmarks.md section 2]
 - Adopted decision: the cruise speed drops from 20 to 18 m/s. Cruise power falls from 338 W to 264 W and available cruise time rises from 12.3 to 15.7 min against the 10 min requirement R10; the wing is sized by stall, so geometry is unchanged. [benchmarks.md section 4 item 1]
 - C0's own polar puts best lift-to-drag speed at 12.6 m/s with a maximum L/D of 10.9, so even 18 m/s is well above it. [benchmarks.md section 3]
 - Kept as conservative: propeller efficiency 0.60, hover figure of merit times efficiency 0.516, and a 64 kJ transition energy (literature scaling gives about 29 kJ, an estimate). [benchmarks.md sections 3-4]

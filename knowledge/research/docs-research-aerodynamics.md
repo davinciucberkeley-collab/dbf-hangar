@@ -10,7 +10,7 @@ verified: false
 ---
 
 ## Summary
-An aerodynamic study of the C0 baseline, a twin-boom quadplane with four lift rotors, a pusher and a NACA 2415 wing. It combines XFOIL and NeuralFoil section polars, an AVL whole-aircraft lattice model, a component drag build-up and a 2-D RANS cross-check. The v0.3.1 geometry failed the stall and endurance requirements mainly because of bare round landing legs; the v0.4 redesign, with faired legs and a re-sized wing, closes them. The tail is a conventional twin-fin H-tail, so the tail cell is the closest fit.
+An aerodynamic study of the C0 baseline, a twin-boom quadplane with four lift rotors, a pusher and a NACA 2415 wing. It combines XFOIL and NeuralFoil section polars, an AVL whole-aircraft lattice model, a component drag build-up and a 2-D RANS cross-check. In the v0.3.1 geometry the bare round landing legs caused the drag and endurance miss (9.1 min against 10 min), while the stall miss (12.4 m/s against 12) came from a trimmed CL_max of 1.13 against the 1.2 assumed in sizing; the source rates stall as at risk rather than failed. The v0.4 redesign, with faired legs and a wing re-sized on the trimmed CL_max, closes both. The tail is a conventional twin-fin H-tail, so the tail cell is the closest fit.
 
 ## Key facts
 - v0.3.1 (MTOW 6.182 kg, wing span 2.4 m, area 0.5728 m2): trimmed 3-D CL_max is 1.13 against 1.2 assumed in sizing, which gives a stall speed of 12.4 m/s against the 12 m/s limit of requirement R11. [aerodynamics.md verdict table, section 5]
@@ -26,6 +26,6 @@ An aerodynamic study of the C0 baseline, a twin-boom quadplane with four lift ro
 none
 
 ## Open questions
-- Drag items tagged EST (frontal areas of printed parts, stopped-propeller drag, leakage) carry about plus or minus 20 % in the source.
+- The drag count as a whole carries about plus or minus 20 % in the source, because of its estimated items (frontal areas of printed parts, stopped-propeller drag, leakage).
 - Gear-fairing benefit is an estimate (drag coefficient 0.1 on frontal area); the source has no BOM line for it yet.
 - The no-payload CG leaves only about 5 % static margin; the source recommends ballast and a flight check.

@@ -26,5 +26,5 @@ none
 
 ## Open questions
 - Loss fractions (lift motor 20 percent, ESC 4 percent, pusher 15 percent times 75 percent) are not from datasheets; every temperature rise scales linearly with them.
-- Radiation, bay-air warming, solar load and simplified geometry are left out; results are optimistic for the sealed flight-controller bay.
+- Radiation is left out, which the source calls conservative; bay-air warming (optimistic for the sealed flight-controller bay), solar load and simplified geometry are also left out.
 - Planned test-plan measurements (motor and ESC heat, pack resistance, controller and connector temperatures, three 60 s hovers, pusher after cruise legs) are not yet done and close every estimate.

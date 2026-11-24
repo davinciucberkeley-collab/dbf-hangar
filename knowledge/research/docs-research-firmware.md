@@ -10,7 +10,7 @@ verified: false
 ---
 
 ## Summary
-Flight-software research for the C0 lift-plus-cruise aircraft, checked 2026-10-21 with a revision on 2026-11-01. It confirms the board and ArduPilot firmware target, then records thirteen design decisions behind the parameter file, from frame and output map through ESC protocol, tuning, failsafes and telemetry. Simulator runs passed all seven scripted scenarios.
+Flight-software research for the C0 lift-plus-cruise aircraft, checked 2026-10-21 with a revision on 2026-11-01. It confirms the board and ArduPilot firmware target, then records fourteen design decisions (D1 to D14) behind the parameter file, from frame and output map through ESC protocol, tuning, failsafes and telemetry. Simulator runs passed all seven scripted scenarios, but the simulated airframe is ArduPilot's generic QuadPlane, not C0, so they do not validate gains, power or endurance.
 
 ## Key facts
 - The board maps to the ArduPilot target CoreWingF405WingV2, which the stable Plane 4.7.2 release includes, so the earlier "beta-only" risk is closed. The build has DShot on outputs 1 to 10 and no Lua scripting. [firmware.md section 1, D1]
@@ -29,4 +29,4 @@ none
 - Tuning values for 17 inch props are interpolated starting points and the first-flight tuning must confirm them.
 - Cell voltages for the failsafe stages (3.5 V and 3.3 V) are estimates.
 - Final current-limit numbers depend on the pack burst test named in the source's review.
-- Whether the hover-phase overlay should land in place or return is a documented choice, not a verified one.
+- The simulator runs used the generic QuadPlane (learned hover throttle 0.15 against about 0.49 estimated for C0), so gains, power and endurance remain unvalidated.
