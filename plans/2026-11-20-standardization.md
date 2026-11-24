@@ -807,8 +807,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** T128 team guide: how to start a new concept (D9: concept-a the only active design; a ledger task with owner; target mission is the VTOL demonstrator, D74) and that from-scratch concept generation is v1.1, plus a one-line mission pointer where Claude sessions will see it; T125 generated parts' `cut_files` follow each neighbour's current position, and T1 reports a part sitting inside a generated core it should be cut for; T126 `design propose` cuts the branch slug at a word boundary.
 
 - [x] **Step 1: Briefs** (tactician W27-T) *(0c007c4: guide + CLAUDE.md mission pointer (light), slug (easy), pockets with T1.pocket (hard))*
-- [ ] **Step 2: Build** (W27-B)
-- [ ] **Step 3: Review** (W27-R); merge
+- [x] **Step 2: Build** (W27-B) *(guide 7abf7c5, slug 06be12f, pockets faff845)*
+- [x] **Step 3: Review** (W27-R); merge *(all ACCEPT, reviews/2026-11-24-w27.md; pockets merged 41ae0e7)*
 
 ### Unit U4.29: Parameter changes propagate to attached parts (T129; D75) [hard]
 
@@ -822,7 +822,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** audit every gate/check for VTOL or concept-a assumptions; make applicability come from the design's morphology (vtol_method, lift, configuration) so non-applicable checks SKIP 'not applicable' with the reason; fixed-wing thresholds in `standards/` (stall, wing loading, static-margin band, etc.), each sourced or pending; a design-level mission block so each design is judged against its own mission (concept-a keeps the VTOL demonstrator, D74). Existing designs' verdicts unchanged.
 
-- [ ] **Step 1: Audit and briefs** (tactician W29-T)
+- [x] **Step 1: Audit and briefs** (tactician W29-T) *(54625cc: briefs U4.30-1 applicability (hard), -2 fixed-wing (hard), -3 mission schema (easy), -4 mission data (easy); defaults taken (Tristan 2026-11-21 rule): fixed-wing thresholds provisional in standards/fixed-wing.yaml, pending values WARN never FAIL; mission block = name, profile, intent only)*
 - [ ] **Step 2: Build** (W29-B)
 - [ ] **Step 3: Review** (W29-R); merge
 
@@ -830,7 +830,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** extract concept-a's bought parts (servos, ESC, battery, flight controller, receiver, motors, props, connectors, fasteners) into a reusable library under `standards/` or `knowledge/` (decide): part id, vendor and part number, URL, mass, dimensions, and the real 3D mesh; a design references a library part instead of copying its mesh; BOM lines carry the library reference; parts without vendor CAD are marked 'representative envelope'.
 
-- [ ] **Step 1: Brief** (tactician W29-T)
+- [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.31-1 library core (hard), -2 parts (easy), -3 BOM refs (easy); default taken: library in knowledge/parts/ (standards/ holds thresholds only); concept-a keeps its meshes, BOM lines get library refs)*
 - [ ] **Step 2: Build** (W29-B)
 - [ ] **Step 3: Review** (W29-R); merge
 
@@ -838,7 +838,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** a general set, not one aircraft's: `nacelle` (engine nacelle/cowl loft), `propeller` (n-blade, scale-look, spinner), richer `fuselage_loft` (nose shapes, upswept tail cone, cabin), `strut` (wing struts), `landing_gear` (fixed/spring gear, wheels), tail layouts (conventional, T, V, H) from fin + wing_panel; high/mid/low wing placement; tests with hand-checked volumes. Must cover A400M and Cessna 172 without per-aircraft code.
 
-- [ ] **Step 1: Brief** (tactician W29-T)
+- [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.32-1 fuselage, -2 powerplant, -3 airframe, -4 tails (hard), -5 wing placement (easy); run in sequence)*
 - [ ] **Step 2: Build** (W29-B)
 - [ ] **Step 3: Review** (W29-R); merge
 
@@ -846,8 +846,9 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** `knowledge/TEMPLATE-reference-aircraft.md`: the fields any real aircraft needs to become a PDL design (span, length, height, wing area, sweep, dihedral, wing position, fuselage stations, engine count/positions, tail layout, prop diameter and blades, gear) plus RC-scale guidance (scale factor, target weight, power); recon benchmarks how scale-RC builders do it; scouts fill it for A400M and Cessna 172 as tests, sources opened.
 
-- [ ] **Step 1: Research** (recon W29-X, scouts W29-S)
+- [x] **Step 1: Research** (recon W29-X, scouts W29-S) *(template + method std/u4.33-recon f16bbae; A400M e11d841 (area -3.0%, height +1.9%); C172 c7ca127 (area -0.2%, span -0.3%); measured from Commons three-views)*
 - [ ] **Step 2: Review** (W29-R)
+- [ ] **Step 3: Measuring tool** in the repo (the recon's scratchpad scripts are not durable): `plane reference measure` reads a three-view PNG/SVG and returns scaled extents per view; brief (tactician W29-T), build (W29-B), review (W29-R)
 
 ### Unit U4.34: Any-aircraft rehearsal (D77, D78)
 
