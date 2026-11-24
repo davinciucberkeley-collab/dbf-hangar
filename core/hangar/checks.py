@@ -56,20 +56,31 @@ def _tier0_v12(design: Design) -> list[CheckResult]:
                                ("mass_model", bool(mm_comps))) if u]
         res.append(CheckResult("T0.version", FAIL, f"{' / '.join(used)} need schema_version \"1.2\"", sch))
     if has_params or gen_comps:
-        from .geom.params import find_references, _is_num
+        from .geom.params import find_references, expression_errors, _is_num
         params = src.get("parameters") if isinstance(src.get("parameters"), dict) else {}
         refs = find_references(src)
         bad = [(cid, path, name) for cid, path, name in refs if name not in params]
+        def who(owner):
+            if owner.startswith("attachments["):
+                aid = owner[len("attachments["):-1]
+                return f"attachment {aid}", {"attachment": aid}
+            return f"component {owner}", {"component": owner}
+
         for cid, path, name in bad:
+            label, dat = who(cid)
             res.append(CheckResult("T0.parameters", FAIL,
-                                   f"component {cid}: {path} references ${name}, which is not in parameters",
-                                   sch, {"component": cid}))
+                                   f"{label}: {path} references ${name}, which is not in parameters", sch, dat))
         nonnum = [(cid, path, name) for cid, path, name in refs if name in params and not _is_num(params[name])]
         for cid, path, name in nonnum:
+            label, dat = who(cid)
             res.append(CheckResult("T0.parameters", FAIL,
-                                   f"component {cid}: {path} references ${name}, whose value {params[name]!r} is not a number",
-                                   sch, {"component": cid}))
-        if has_params and not bad and not nonnum:
+                                   f"{label}: {path} references ${name}, whose value {params[name]!r} is not a number",
+                                   sch, dat))
+        exprs = expression_errors(src)
+        for owner, path, msg in exprs:
+            label, dat = who(owner)
+            res.append(CheckResult("T0.parameters", FAIL, f"{label}: {path}: {msg}", sch, dat))
+        if has_params and not bad and not nonnum and not exprs:
             res.append(CheckResult("T0.parameters", PASS, f"{len(params)} parameters, {len(refs)} references resolved", sch))
     from .geom import registry
     by_id = {c.get("id"): c for c in design.data.get("components", []) if isinstance(c, dict)}
@@ -432,7 +443,7 @@ def _motor_prop_path(design: Design, motor: str, atts: list[dict], max_intermedi
 
 
 def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict, atts: list[dict],
-                              cache: _PairCache | None = None) -> list[CheckResult]:
+                              cache: _PairCache | None = None, only: set[str] | None = None) -> list[CheckResult]:
     """Attachment contact / overlap / containment, motor-prop pairing and interference for ONE configuration.
     `meshes` holds solid components only (point masses, schema 0.4, are absent); `cache` shares results between
     configurations (see _PairCache)."""
@@ -455,6 +466,8 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
     for a in atts:
         p, c = a["parent"], a["child"]
         attached_pairs.add(frozenset((p, c)))
+        if only is not None and p not in only and c not in only:
+            continue
         label = a.get("id") or f"{p}->{c}"
         ptype, ctype = design.component(p)["type"], design.component(c)["type"]
         embed = a.get("embed_ok", False)
@@ -522,7 +535,7 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
         res.append(r)
 
     # every motor must drive an attached propeller (so a mislabelled prop leaves its motor prop-less)
-    for comp in design.components:
+    for comp in ([] if only is not None else design.components):
         if "propulsion" not in comp:
             continue
         path = _motor_prop_path(design, comp["id"], atts, chain_max)
@@ -548,6 +561,8 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
     clashes = []
     for a_, b_ in _broad_phase(meshes):
         if frozenset((a_, b_)) in attached_pairs:
+            continue
+        if only is not None and a_ not in only and b_ not in only:
             continue
         if (a_ in linked and b_ in moved) or (b_ in linked and a_ in moved):
             unchecked.append((a_, b_))
@@ -692,6 +707,16 @@ def _pocket_checks(design: Design, std: dict, meshes: dict, cache: _PairCache) -
         out += fails or [CheckResult("T1.pocket", PASS, f"{wid}: no part it is cut for or attached to sits in uncut core",
                                      STD + "interference_max_mm3")]
     return out
+
+
+def interference_rows(design: Design, std: dict, only: set[str] | None = None) -> list[CheckResult]:
+    """FAIL rows of the neutral-pose contact, overlap and interference checks (tier 1, no articulation poses), restricted to parts in `only`."""
+    all_ids = [c["id"] for c in design.components]
+    meshes = {c["id"]: component_parts(c, design.base_dir) for c in design.components if not is_point_mass(c)}
+    atts = design.data.get("attachments", [])
+    identity = {cid: np.eye(4) for cid in all_ids}
+    res = _contact_and_clash_checks(design, std, meshes, identity, atts, _PairCache(), only=only)
+    return [r for r in res if r.status == FAIL]
 
 
 def tier1_geometry(design: Design, std: dict) -> TierReport:
