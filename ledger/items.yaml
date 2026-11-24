@@ -4972,14 +4972,14 @@ items:
     updated: '2026-11-24'
   - id: T127
     kind: task
-    text: This year's DBF competition rules (mission, scoring, size/weight/battery limits) are not in knowledge/; the only mission brief is the VTOL demonstrator. Scout the official rules into knowledge/ via the source template (cite only opened pages) and state which mission concept-a and new concepts target
+    text: "This year's DBF competition rules (mission, scoring, size/weight/battery limits) are not in knowledge/; the only mission brief is the VTOL demonstrator. Scout the official rules into knowledge/ via the source template (cite only opened pages) and state which mission concept-a and new concepts target [wrong premise (D74): the mission is the VTOL demonstrator, not the DBF competition]"
     source: Tristan's fresh-session trial 2026-11-24 (P223)
     owner: Tristan
-    status: open
+    status: dropped
     due: '2026-12-08'
     units: []
-    evidence: ''
-    decided_in: ''
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: D74
     updated: '2026-11-24'
   - id: T128
     kind: task
