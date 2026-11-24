@@ -1336,7 +1336,7 @@ Not a code unit; it tests everything above.
 - [x] **Step 1:** Demo re-run and T104 brief (tactician W14-T) *(d54bef8: re-run on 39c7c58, steps 2-6 pass, issues 9-11 added (11-30 URL 404 until merged + Pages run; cold Studio 278 s); `update publish` not run (permission refused), read from code)*
 - [x] **Step 2:** Build T104 (W14-B) *(5b31c07)*
 - [x] **Step 3: Review** (reviewer W14-R); merge; T104 done *(T104 ACCEPT, merged c7a5dc7 with windows red only on the T84 race (W14-A diagnosis); demo re-run REOPEN once, ACCEPT 7540ad7; follow-up T105)*
-- [ ] **Step 4:** T84 reopened in place: Studio stores DESIGNS_DIR/DATA_DIR/CACHE_FILE at construction so leaked workers cannot touch another test's sandbox (W14-A); brief W14-T2, build W14-B2 (builder-plus), review W14-R
+- [x] **Step 4:** T84 reopened in place: Studio stores DESIGNS_DIR/DATA_DIR/CACHE_FILE at construction so leaked workers cannot touch another test's sandbox (W14-A); brief W14-T2, build W14-B2 (builder-plus), review W14-R *(38bb968, W14-R ACCEPT, windows CI green, merged afcc8d2; T84 done; follow-up T109)*
 
 ### Unit U4.13: BOM spares double count (T94; P186)
 

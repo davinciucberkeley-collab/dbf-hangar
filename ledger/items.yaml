@@ -4271,10 +4271,10 @@ items:
     text: "Flaky CI: tests/test_viewer_static.py::test_propose_link_survives_real_git_side_effects:350 404 console error (ubuntu runs 45165154819, 45167246241; windows main 45163693398) [reopened 2026-11-24: test_propose_link_survives_real_git_side_effects 404 on a concept-a GLB again on windows (W14-R, run 45300604062)] [cause (W14-A): leaked Studio worker threads from test_studio tests read module-level DESIGNS_DIR/DATA_DIR at job time and delete the live test's newest .glb; fix: Studio stores its folders at construction]"
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-30'
     units: []
-    evidence: reviews/2026-11-24-w14.md
+    evidence: afcc8d2
     decided_in: ''
     updated: '2026-11-23'
   - id: T85
@@ -4633,6 +4633,17 @@ items:
     kind: task
     text: 'W17-R non-blocking (U4.15): test_reaction_torque_fields_reject_bad_values passes without the change (assert the message names the field); _reaction treats 0 as missing (schema forbids 0, harmless); claim check note counts only PASS read rows (a FAIL/STALE read claim is not in the note); idea.list reads only LF front matter'
     source: W17-R review 2026-11-24 (reviews/2026-11-24-w17.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T109
+    kind: task
+    text: 'W14-R non-blocking (T84): drain queued Studio jobs when _serve_studio tears down (leaked workers still load the windows runner); delete unused BACKUP_DIR (studio.py:39)'
+    source: W14-R review 2026-11-24 (reviews/2026-11-24-w14.md, T84 step 4)
     owner: conductor
     status: open
     due: '2026-12-15'
