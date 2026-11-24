@@ -340,6 +340,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D70 | Parametric geometry before Dec 2? | yes for G1 (kernel + PDL 1.2) and G2 (first generators), G5 if capacity; overrides the D66 freeze for this work only; demo = one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (any parameter); G3, G4, G6, G7 are v1.1 (T116-T119) | Tristan | 11-25 | decided (Tristan P200, 2026-11-25) |
 | D71 | Overnight 11-24: who decides, what runs? | conductor decides and merges after fresh review + green CI (irreversible actions wait); U4.25 merges only if reviewed and green by Sun 11-29; 11-30 update drafted not published; idle time goes to audits and QOL improvements under D66 paths | Tristan | 11-24 | decided (Tristan P209, P210, 2026-11-24) |
 | D72 | Deck: show R1, R12, R14, R17, R31 as open (D33)? | no: D33's premise is overtaken by the re-import (d24b6df); the deck shows ledger truth; T24, T54, T37 done | Tristan | 11-24 | decided (conductor under D71 on W24-R, 2026-11-24) |
+| D73 | Merge U4.25 despite the tier-1 budget miss? | yes, relaxed budget: concept-a-param tier-1 validate up to ~70 s; demo and deck updated to the new FAIL counts and timing | Tristan | 11-24 | decided (Tristan P214, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 

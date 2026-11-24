@@ -4937,3 +4937,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: D73
+    kind: decision
+    text: "U4.25 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match"
+    source: Tristan, P214, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'
