@@ -572,3 +572,13 @@
   new: 3
   why: 'T94: BOM-A.csv qty already includes the spare'
   kind: modify
+- date: '2026-11-24T21:24:13Z'
+  key: mission
+  old: null
+  new:
+    name: VTOL demonstrator
+    profile: vtol-demonstrator
+    source: knowledge/concepts/judging-mission-and-learning.md
+  why: 'U4.30: each design states its mission; concept A keeps the VTOL demonstrator
+    (D74)'
+  kind: add

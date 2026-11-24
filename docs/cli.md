@@ -2,7 +2,7 @@
 
 # plane command reference
 
-57 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+59 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -541,6 +541,40 @@ plane parts show <id>
 ```
 
 - `<id>`: str, required
+
+## reference
+
+### `plane reference measure`
+
+Measure one view of a PNG in metres from one known dimension; returns per-column and per-row stations of the ink outline.
+
+```
+plane reference measure <image> --known-axis <str> --known-m <float> [--box <str>] [--rotate-deg <float>] [--ignore-cols <str>] [--ignore-rows <str>] [--stations <int>] [--threshold <int>] [--dark-on-light]
+```
+
+- `<image>`: str, required
+- `--known-axis`: str, required
+- `--known-m`: float, required
+- `--box`: str, optional
+- `--rotate-deg`: float, optional
+- `--ignore-cols`: str, optional
+- `--ignore-rows`: str, optional
+- `--stations`: int, optional
+- `--threshold`: int, optional
+- `--dark-on-light`: bool, optional
+
+### `plane reference views`
+
+Find the separate drawings (views) in a PNG: tight ink boxes in reading order.
+
+```
+plane reference views <image> [--threshold <int>] [--dark-on-light] [--min-gap <int>]
+```
+
+- `<image>`: str, required
+- `--threshold`: int, optional
+- `--dark-on-light`: bool, optional
+- `--min-gap`: int, optional
 
 ## research
 
