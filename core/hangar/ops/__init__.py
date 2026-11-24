@@ -160,7 +160,9 @@ def registry() -> dict[str, OpSpec]:
                     importlib.import_module(f"{__name__}.{m.name}")
                 except BaseException:
                     for added in set(_REGISTRY) - before:  # a retry re-runs the failed module(s): drop what they registered before failing
-                        if _REGISTRY[added].func.__module__ not in sys.modules:   # a module that stayed cached keeps its ops: it does not re-run
+                        # Python removes a module whose import raised from sys.modules (a module that finished importing stays there);
+                        # so "not in sys.modules" means that module will run again on a retry. A module that stayed cached keeps its ops.
+                        if _REGISTRY[added].func.__module__ not in sys.modules:
                             del _REGISTRY[added]
                     raise
         _LOADED = True

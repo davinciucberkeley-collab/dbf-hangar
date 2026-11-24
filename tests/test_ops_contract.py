@@ -221,6 +221,8 @@ def test_registry_drops_the_op_of_an_imported_module_that_failed_after_registeri
         assert "zz.badinner" not in ops._REGISTRY, "the failed inner module's op is dropped: it is not cached and will re-run"
         with pytest.raises(RuntimeError, match="inner boom"):   # the retry must reach the real error, not 'duplicate op name'
             ops.registry()
+        monkeypatch.setenv("ZZ_BAD_FAIL", "0")   # T102: the fault is gone; the third call recovers and registers the op
+        assert "zz.badinner" in ops.registry()
     finally:
         ops._REGISTRY.pop("zz.badinner", None)
         for mod in ("hangar.ops.zz_c_outer", "hangar.ops.zz_d_bad"):
