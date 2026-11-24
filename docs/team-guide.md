@@ -309,7 +309,7 @@ Use this to check stress, drop loads and mass.
 
 **Ask:**
 
-> Run the stress check on the wing spar (wng-002) of concept-a.
+> Run the stress check on the left spar plug (wng-004-l) of concept-a.
 >
 > Run the drop test on my-test and tell me which joint is closest to its limit.
 >
