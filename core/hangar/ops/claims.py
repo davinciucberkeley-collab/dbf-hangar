@@ -28,7 +28,7 @@ def _rows(graph: ClaimGraph) -> list[dict]:
         n = graph.nodes[r.id]
         out.append({"id": r.id, "title": n.get("title", ""), "value": r.value, "unit": n.get("unit", ""),
                     "limit": r.limit, "margin": r.margin, "margin_abs": r.margin_abs,
-                    "status": r.status, "message": r.message})
+                    "status": r.status, "read": r.read, "message": r.message})
     return out
 
 
@@ -51,7 +51,9 @@ def _fmt_margin(r: dict) -> str:
 def _render_list(res: OpResult) -> str:
     rows = res.data.get("claims", [])
     w = max((len(r["id"]) for r in rows), default=0)
-    return "\n".join(f"{r['id']:<{w}}  {r['status']:<8}  {r['value']} {r['unit']}  {_fmt_margin(r)}".rstrip() for r in rows)
+    cell = lambda r: r["status"] + (" (read)" if r.get("read") else "")  # noqa: E731
+    sw = max([8] + [len(cell(r)) for r in rows])
+    return "\n".join(f"{r['id']:<{w}}  {cell(r):<{sw}}  {r['value']} {r['unit']}  {_fmt_margin(r)}".rstrip() for r in rows)
 
 
 def _render_explain(res: OpResult) -> str:
@@ -67,7 +69,8 @@ def list_op(path: str) -> OpResult:
     _, graph = _load(path)
     rows = _rows(graph)
     counts = {k: sum(1 for r in rows if r["status"] == k) for k in ("PASS", "FAIL", "PROPOSED", "STALE")}
-    return OpResult(ok=True, data={"claims": rows, "requirements": _requirements(graph), "counts": counts})
+    return OpResult(ok=True, data={"claims": rows, "requirements": _requirements(graph), "counts": counts,
+                                   "read_count": sum(1 for r in rows if r["read"])})
 
 
 @op(name="claim.explain", summary="Show the chain from a claim down to its sources.", render=_render_explain)
@@ -85,8 +88,14 @@ def check_op(path: str) -> OpResult:
     uncovered = [r["id"] for r in _requirements(graph) if not r["claims"]]
     msgs = [f"{r.check_id} {r.status}: {r.message}" for r in report.results if r.status in ("FAIL", "SKIP", "WARN")]
     msgs += [f"warning: {w}" for w in graph.warnings]
+    rows = _rows(graph)
+    n_read = sum(1 for r in rows if r["read"] and r["status"] == "PASS")
+    if n_read:
+        n_pass = sum(1 for r in rows if r["status"] == "PASS")
+        msgs.append(f"note: {n_pass - n_read} PASS recomputed, {n_read} PASS read from source "
+                    "(stored results checked against their limits, analyses not re-run)")
     return OpResult(ok=report.status in ("PASS", "WARN"),
-                    data={"status": report.status, "claims": _rows(graph), "uncovered_requirements": uncovered,
+                    data={"status": report.status, "claims": rows, "uncovered_requirements": uncovered,
                           "warnings": graph.warnings},
                     messages=msgs,
                     skipped=[f"{r.check_id}: {r.message}" for r in report.results if r.status == "SKIP"])

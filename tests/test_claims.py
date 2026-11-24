@@ -415,3 +415,47 @@ def test_bare_return_satisfies_named_output(tmp_mini):
     edit_claims(tmp_mini, lambda n: (n["CALC-TW"].update(function="bare_tw_test"), n["CL-AERO-TW"].update(output="v_ms")))
     r = results(load_design(tmp_mini))["CL-AERO-TW"]
     assert r.status == "PASS" and r.value == pytest.approx(946 / 550)
+
+
+def _with_read_claim(folder):
+    """CL-PROP-NOISE becomes a stored-result claim: read_value over the stored thrust constant, limit >= 100 (T103)."""
+    def fn(n):
+        n["CALC-NOISE-READ"] = {"id": "CALC-NOISE-READ", "type": "calculation", "title": "Stored result", "function": "read_value",
+                                "equation": "read, not recomputed", "inputs": {"v": "P:env.total_thrust_g"}}
+        n["CL-PROP-NOISE"].pop("status")
+        n["CL-PROP-NOISE"].pop("value")
+        n["CL-PROP-NOISE"].update(calc="CALC-NOISE-READ", output="v", limit={"op": ">=", "value": 100})
+    edit_claims(folder, fn)
+    return load_design(folder)
+
+
+def test_read_claim_stays_pass_but_is_marked_read(tmp_mini):  # T103
+    r = results(_with_read_claim(tmp_mini))
+    assert r["CL-PROP-NOISE"].status == "PASS" and r["CL-PROP-NOISE"].read is True
+    assert r["CL-PROP-NOISE"].message.startswith("stored result read from source, not recomputed; margin")
+    assert r["CL-AERO-TW"].status == "PASS" and r["CL-AERO-TW"].read is False
+    assert r["CL-MASS-GATE"].read is False and r["CL-STR-CLEAR"].read is False
+
+
+def test_t9_row_of_a_read_claim_says_read(tmp_mini):  # T103
+    rows = {r.check_id: r for r in tier9_claims(_with_read_claim(tmp_mini)).results}
+    assert rows["T9.claim.CL-PROP-NOISE"].status == PASS and rows["T9.claim.CL-PROP-NOISE"].data["read"] is True
+    assert "not recomputed" in rows["T9.claim.CL-PROP-NOISE"].message
+    assert rows["T9.claim.CL-AERO-TW"].data["read"] is False and "not recomputed" not in rows["T9.claim.CL-AERO-TW"].message
+
+
+def test_claim_list_and_check_show_read_claims_apart(tmp_mini):  # T103
+    d = str(_with_read_claim(tmp_mini).path.parent)
+    r = call("claim.list", path=d)
+    assert r.data["counts"] == {"PASS": 2, "FAIL": 1, "PROPOSED": 1, "STALE": 0} and r.data["read_count"] == 1
+    assert {x["id"]: x["read"] for x in r.data["claims"]}["CL-PROP-NOISE"] is True
+    lines = {ln.split()[0]: ln for ln in registry()["claim.list"].render(r).splitlines()}
+    assert "PASS (read)" in lines["CL-PROP-NOISE"] and "(read)" not in lines["CL-AERO-TW"]
+    c = call("claim.check", path=d)
+    assert "note: 1 PASS recomputed, 1 PASS read from source (stored results checked against their limits, analyses not re-run)" in c.messages
+
+
+def test_claim_list_without_read_claims_is_unchanged(mini):  # T103
+    r = call("claim.list", path=str(MINI))
+    assert r.data["read_count"] == 0 and not any("(read)" in ln for ln in registry()["claim.list"].render(r).splitlines())
+    assert not any(m.startswith("note:") for m in call("claim.check", path=str(MINI)).messages)

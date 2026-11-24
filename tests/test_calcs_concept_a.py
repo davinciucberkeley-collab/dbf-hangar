@@ -84,7 +84,7 @@ def test_golden_matches_the_source_files():
     assert rows == GOLDEN
 
 
-def test_concept_a_t9_has_no_skipped_claim_and_no_fail():  # T28: the 40 read_value claims now recompute (from live PDL values)
+def test_concept_a_t9_has_no_skipped_claim_and_no_fail():  # T28: the 40 read_value claims are evaluated (stored results read from source, not recomputed; T103)
     from hangar.design import REPO_ROOT, load_design
     from hangar.gates import run_gates
     card = run_gates(load_design(REPO_ROOT / "designs" / "concept-a"), only_tiers={9})

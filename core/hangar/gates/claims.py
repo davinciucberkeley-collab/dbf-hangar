@@ -19,6 +19,6 @@ def tier9_claims(design: Design) -> TierReport | None:
         return TierReport(9, "claims", [CheckResult("T9.claims.load", FAIL, str(e), CRIT)])
     rows = [CheckResult(f"T9.claim.{r.id}", _MAP[r.status], r.message or "", CRIT,
                         data={"claim": r.id, "value": r.value, "limit": r.limit, "margin": r.margin,
-                              "margin_abs": r.margin_abs, "claim_status": r.status})
+                              "margin_abs": r.margin_abs, "claim_status": r.status, "read": r.read})
             for r in res]
     return TierReport(9, "claims", rows)

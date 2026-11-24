@@ -78,7 +78,7 @@ def test_reimport_is_stable(tmp_path):
 
 
 @pytest.mark.skipif(not (DBF / "redesign/qp/A/proofs").exists(), reason="DBF-Combined clone not present")
-def test_concept_a_claims_import_recomputes_all_93_read_value_echoes_included(tmp_path):
+def test_concept_a_claims_import_evaluates_all_93_claims_read_value_echoes_included(tmp_path):
     p = import_claims(DBF, "A", tmp_path / "d", log=lambda m: None)
     folder = tmp_path / "concept-a"
     folder.mkdir()
