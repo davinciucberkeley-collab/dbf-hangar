@@ -4761,3 +4761,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D68
+    kind: decision
+    text: "U4.19 option C: this week source the adhesive/tape and strap/hinge stresses into the connection-type library (notes) and keep landing_load_factor pending (T113 gear-travel drop test); the 64 joint SKIPs stay, labelled 'rating not given per joint'; option B (per-joint contact area x sourced stress, schema field + gate change) is the first v1.1 task after Dec 2"
+    source: Tristan, P199, 2026-11-25
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T114
+    kind: task
+    text: "v1.1 first: per-joint ratings (option B, D68): optional contact area per joint in PDL (schema minor), gates T2.joint_load and T2.sim_drop_loads compute rating = area x sourced stress from standards/connection-types.yaml when the joint's own rating is a placeholder; Dillon or a design-engineer enters ~26 structural joint areas via plane design set"
+    source: D68, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'

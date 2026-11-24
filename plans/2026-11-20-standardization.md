@@ -335,6 +335,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D65 | CI speed: which trade-offs? | none that drop coverage: 3 shards per OS, full validate on every main push and PR, ledger/PROGRESS-only commits run only the ledger and progress tests, cancel-in-progress only on std/** and PRs | Tristan | 11-25 | decided (conductor defaults on W20-T, 2026-11-25) |
 | D66 | After U4.18: freeze, and lighter process? | yes (Tristan P198): freeze until Dec 2 except teammate fixes, sourcing, deck, process trim; light path for small text/docs and data-only design changes; full path for gates, bench, security, schema; teammates work from a named ledger task; built-in read-only subagents allowed (T112); plan archived and summarised | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
 | D67 | How to raise the fidelity of the gates? | source concept-a's connection-type ratings by joint count (64 SKIPs + 4 drop FAILs), datasheet > standard/test > team pull test, else pending; decide landing_load_factor; James reviews; track the fidelity line | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
+| D68 | U4.19: how to turn the 64 joint SKIPs into verdicts? | C now: source stresses into the library, landing_load_factor pending until the T113 drop test, SKIPs labelled honestly; B (per-joint contact area x stress) first in v1.1 (T114) | Tristan | 11-25 | decided (Tristan P199, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
