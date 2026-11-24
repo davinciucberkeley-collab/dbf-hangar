@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import queue
 import shutil
 import threading
 import time
@@ -34,7 +35,6 @@ def sandbox(tmp_path, monkeypatch):
     monkeypatch.setattr(studio, "STUDIO_DIR", tmp_path / ".studio")
     monkeypatch.setattr(studio, "DATA_DIR", tmp_path / ".studio" / "data")
     monkeypatch.setattr(studio, "CACHE_FILE", tmp_path / ".studio" / "cache.json")
-    monkeypatch.setattr(studio, "BACKUP_DIR", tmp_path / ".studio" / "backups")
     return designs
 
 
@@ -123,7 +123,44 @@ def _serve_studio(sandbox):
     s = studio.Studio()
     httpd = ThreadingHTTPServer(("127.0.0.1", 0), studio.make_handler(s))
     threading.Thread(target=httpd.serve_forever, daemon=True).start()
+    httpd.studio = s
     return httpd, f"http://127.0.0.1:{httpd.server_port}"
+
+
+def _stop_studio(httpd):
+    """Tear a `_serve_studio` server down and drop the jobs still queued, so no leaked worker keeps checking designs after the test (T109)."""
+    httpd.shutdown()
+    httpd.server_close()
+    while True:
+        try:
+            httpd.studio.q.get_nowait()
+        except queue.Empty:
+            return
+
+
+def test_stop_studio_drops_queued_jobs(sandbox, monkeypatch):  # T109
+    started, release, ran = threading.Event(), threading.Event(), []
+
+    def slow_check(self, job, **_):
+        ran.append(job["id"])
+        started.set()
+        release.wait(30)
+
+    monkeypatch.setattr(studio.Studio, "_job_check", slow_check)
+    httpd, _ = _serve_studio(sandbox)          # the scan queues a check for the example design; the worker is now stuck in it
+    try:
+        assert started.wait(30)
+        httpd.studio.submit("check", "example-tailsitter-wing", "queued 1")
+        httpd.studio.submit("check", "example-tailsitter-wing", "queued 2")
+        _stop_studio(httpd)
+        assert httpd.studio.q.empty()
+    finally:
+        release.set()
+    t0 = time.time()
+    while httpd.studio.jobs[0]["state"] != "done" and time.time() - t0 < 30:
+        time.sleep(0.05)
+    time.sleep(0.3)                             # a job that was still queued would have started by now
+    assert ran == ["j1"] and [j["state"] for j in httpd.studio.jobs] == ["done", "queued", "queued"]
 
 
 @pytest.mark.parametrize("eol", [b"\n", b"\r\n"], ids=["lf", "crlf"])
@@ -140,8 +177,7 @@ def test_studio_set_changes_only_the_edited_line(sandbox, eol):
             "key": "components[pwr-001].mass_g", "value": "275", "why": "test", "kind": "modify"})
         assert code == 200 and res["ok"]
     finally:
-        httpd.shutdown()
-        httpd.server_close()
+        _stop_studio(httpd)
     after = dst.read_bytes()
     a, b = before.splitlines(keepends=True), after.splitlines(keepends=True)
     assert len(a) == len(b)
@@ -166,8 +202,7 @@ def test_studio_has_no_reemitting_save_routes(sandbox):
         assert _call(base, "/api/patch", {"id": "x", "changes": []})[0] == 404
         assert _call(base, "/api/yaml", {"id": "x", "text": ""})[0] == 404
     finally:
-        httpd.shutdown()
-        httpd.server_close()
+        _stop_studio(httpd)
     assert not hasattr(studio.Studio, "patch")
     assert not hasattr(studio.Studio, "write_yaml")
 
@@ -189,8 +224,7 @@ def test_studio_op_refuses_a_design_path_outside_designs(sandbox, tmp_path):  # 
         assert code == 400 and _refused(res), res
         assert _call(base, "/api/op/design.get", {"path": str(sandbox / "example-tailsitter-wing")})[0] == 200
     finally:
-        httpd.shutdown()
-        httpd.server_close()
+        _stop_studio(httpd)
 
 
 def test_studio_op_refuses_out_and_non_id_templates(sandbox, tmp_path):  # T7 / D54
@@ -210,8 +244,7 @@ def test_studio_op_refuses_out_and_non_id_templates(sandbox, tmp_path):  # T7 / 
         code, res = _call(base, "/api/op/fea.setup", {"opencae_python": str(tmp_path / "py.exe")})
         assert code == 400 and "not available from Studio" in " ".join(res["messages"]), res
     finally:
-        httpd.shutdown()
-        httpd.server_close()
+        _stop_studio(httpd)
 
 
 def test_confine_op_params_refuses_unc_and_network_paths(sandbox, monkeypatch):  # T7 / D54
@@ -260,8 +293,7 @@ def test_studio_op_refuses_ops_that_read_or_write_arbitrary_paths(sandbox, tmp_p
             code, res = _call(base, "/api/op/" + op_name, body)
             assert code == 400 and "not available from Studio" in " ".join(res["messages"]), (op_name, res)
     finally:
-        httpd.shutdown()
-        httpd.server_close()
+        _stop_studio(httpd)
 
 
 def test_confine_op_params_allows_designs_and_empty_values(sandbox):  # T7 guard: what Studio legitimately sends stays allowed
