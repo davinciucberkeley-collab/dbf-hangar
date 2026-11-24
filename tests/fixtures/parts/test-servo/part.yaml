@@ -1,0 +1,12 @@
+id: test-servo
+name: Test micro servo
+category: servo
+vendor: Test Vendor
+part_number: TS-9
+url: https://example.com/test-servo
+mass_g: 9.0
+dimensions_mm: [23, 12, 24]
+cad_status: representative-envelope
+cad_source: test fixture envelope
+verified: {by: test, date: '2026-11-24', method: fixture}
+geometry: {generator: tube, params: {axis: x, length: 20, outer_d: 10}}
