@@ -49,7 +49,7 @@ Before any agent is launched, the conductor writes an **agent table** in the cur
 | Step | Role | Model | Input | Output | Pass criterion |
 ```
 
-The `agent_gate` hook allows only roles that appear (in backticks) in such a table in the newest `plans/*.md`. No agent is launched that isn't in the table, except the read-only Claude Code built-ins `Explore`, `Plan` and `claude-code-guide`, which the gate allows unless a project or user agent file redefines the name (D69). Every other built-in is refused, for example `general-purpose`, and `claude` (the catch-all with every tool). Adding a role mid-task means updating the table first.
+The `agent_gate` hook allows only roles that appear (in backticks) in such a table in the newest `plans/*.md`. No agent is launched that isn't in the table, except the read-only Claude Code built-ins `Explore`, `Plan` and `claude-code-guide`, which the gate allows by exact name; Write, Edit and NotebookEdit are refused inside any agent with those names, so a redefined `Explore` cannot write files (D69). Every other built-in is refused, for example `general-purpose`, and `claude` (the catch-all with every tool). Adding a role mid-task means updating the table first.
 
 ## Builder-ready bar
 
@@ -124,7 +124,7 @@ Before launching a brief, the conductor checks that it:
 Hooks live in `harness/hooks/`:
 
 - `log_prompt` — on each prompt, logs it to the ledger and reports its id.
-- `agent_gate` — before a Task/Agent launch, checks the role against the roster, the newest plan's agent table, and the builder-ready bar; the read-only built-ins `Explore`, `Plan` and `claude-code-guide` skip the roster and table checks.
+- `agent_gate` — before a Task/Agent launch, checks the role against the roster, the newest plan's agent table, and the builder-ready bar; the read-only built-ins `Explore`, `Plan` and `claude-code-guide` skip the roster and table checks, and Write, Edit and NotebookEdit are refused inside any agent with those names.
 - `reinject` — at session start, re-injects hangar context and the unfinished units.
 - `stop_gate` — blocks stopping while the session has open prompts; after 3 blocks in a row the stop is forced and logged. Override with `HANGAR_ALLOW_STOP=1`.
 
