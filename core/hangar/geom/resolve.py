@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
 
 import yaml
@@ -10,10 +9,6 @@ import yaml
 from hangar.geom import materials
 from hangar.geom.kernel import GeometryError, volume_mm3
 from hangar.geom.params import resolve_references
-from hangar.geom.registry import build_component, component_files
-
-_VOLUMES: dict[str, list[float]] = {}
-_VOLUMES_MAX = 512
 
 
 def is_generated(c) -> bool:
@@ -25,29 +20,13 @@ def _strip(cid, msg: str) -> str:
     return msg[len(pre):] if msg.startswith(pre) else msg
 
 
-def _key(c: dict, base_dir: Path) -> str | None:
-    key = json.dumps(c["geometry"], sort_keys=True, default=str)
-    for f in component_files(c):
-        p = Path(base_dir) / f
-        try:
-            st = p.stat()
-        except OSError:
-            return None
-        key += f"|{os.path.abspath(p)}|{st.st_mtime_ns}|{st.st_size}"
-    return key
-
-
 def generated_volumes(c: dict, base_dir: Path) -> list[float]:
-    """Volumes (mm3) of the parts a generator component builds; cached in memory by content key. Raises GeometryError."""
-    key = _key(c, base_dir)
-    if key is not None and key in _VOLUMES:
-        return list(_VOLUMES[key])
-    vols = [volume_mm3(m) for m in build_component(c, base_dir)]
-    if key is not None:
-        if len(_VOLUMES) >= _VOLUMES_MAX:
-            _VOLUMES.clear()
-        _VOLUMES[key] = vols
-    return list(vols)
+    """Volumes (mm3) of the parts a generator component builds, cavities subtracted. Uses the geometry cache. Raises GeometryError."""
+    from hangar.geometry import _base_parts
+    try:
+        return [volume_mm3(m) for m in _base_parts(c, base_dir)]
+    except ValueError as e:                    # geometry._apply_cavities: "a cavity removes the whole part"
+        raise GeometryError(str(e)) from e
 
 
 def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]]:
@@ -78,17 +57,22 @@ def _signature(c: dict) -> str:
                       sort_keys=True, default=str)
 
 
-def _aircraft(data: dict, plane_path: Path):
+def _aircraft(data: dict, plane_path: Path, errors: dict):
+    """(mass_g, cg_mm) of the resolved design, or (None, None) while a generated part fails (no mass without it). Other errors propagate."""
+    if errors:
+        return None, None
     from hangar.design import Design
     from hangar.mass import mass_properties
-    try:
-        mp = mass_properties(Design(data, Path(plane_path)))
-        return mp["mass_g"], mp["cg_mm"]
-    except Exception:
-        return None, None
+    mp = mass_properties(Design(data, Path(plane_path)))
+    return mp["mass_g"], mp["cg_mm"]
 
 
 def regeneration_report(old_text: str, new_text: str, plane_path: Path) -> dict | None:
+    """Regeneration report for an edit, or None when no generated part is involved.
+
+    Refuses (OpInputError) only when the edit NEWLY breaks a generated part. `data["regenerated"]` is only reported
+    by the op when `components` is non-empty; `failing` lists parts that still fail and were failing before the edit.
+    """
     from hangar.ops import OpInputError
     old_raw, new_raw = yaml.safe_load(old_text), yaml.safe_load(new_text)
 
@@ -101,7 +85,8 @@ def regeneration_report(old_text: str, new_text: str, plane_path: Path) -> dict 
     old, old_err = resolve_design_data(old_raw, base)
     new, new_err = resolve_design_data(new_raw, base)
     for cid, msg in new_err.items():
-        raise OpInputError(f"regeneration failed: {cid}: {msg}")
+        if cid not in old_err:                 # newly broken by this edit; a part that already failed is reported, not refused
+            raise OpInputError(f"regeneration failed: {cid}: {msg}")
     old_by = {c["id"]: c for c in old.get("components") or []}
     comps = {}
     for c in new.get("components") or []:
@@ -120,6 +105,7 @@ def regeneration_report(old_text: str, new_text: str, plane_path: Path) -> dict 
                 continue
             entry["mass_g"][i] = comp.get("mass_g")
         comps[c["id"]] = entry
-    om, ocg = _aircraft(old, plane_path)
-    nm, ncg = _aircraft(new, plane_path)
-    return {"components": comps, "mass_g": [om, nm], "cg_mm": [ocg, ncg]}
+    om, ocg = _aircraft(old, plane_path, old_err)
+    nm, ncg = _aircraft(new, plane_path, new_err)
+    return {"components": comps, "mass_g": [om, nm], "cg_mm": [ocg, ncg],
+            "failing": {cid: msg for cid, msg in new_err.items()}}

@@ -140,6 +140,9 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
                     f"{'n/a' if m0 is None else f'{m0:.1f}'} -> {'n/a' if m1 is None else f'{m1:.1f}'} g, "
                     f"CG {fmt_cg(c0)} -> {fmt_cg(c1)} mm")
         out["regenerated"] = regen
+    if regen is not None and regen["failing"]:       # parts that already failed and still fail: reported, never a reason to refuse
+        msgs += [f"still failing (not caused by this edit): {cid}: {m}" for cid, m in sorted(regen["failing"].items())]
+        out["still_failing"] = regen["failing"]
     return OpResult(True, out, msgs, changed_files=[str(plane), str(log)])
 
 
