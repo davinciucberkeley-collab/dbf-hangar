@@ -1,0 +1,93 @@
+- date: '2026-11-24T19:27:16Z'
+  key: parameters.span_mm
+  old: 900
+  new: 820
+  why: 'test: shorter span'
+  kind: modify
+  regenerated:
+  - wng-001
+  - wng-002
+- date: '2026-11-24T19:33:31Z'
+  key: components[avn-005].position[1]
+  old: 0
+  new: 40
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: components[avn-006].position[1]
+  old: 0
+  new: 40
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: components[avn-009-s].position[1]
+  old: 0
+  new: 40
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: components[avn-009-t].position[1]
+  old: 0
+  new: 40
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-04].location[1]
+  old: -419.778
+  new: -379.778
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-07].location[1]
+  old: -419.606
+  new: -379.606
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-08].location[1]
+  old: -418.775
+  new: -378.775
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-09].location[1]
+  old: -418.232
+  new: -378.232
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-10].location[1]
+  old: -418.352
+  new: -378.352
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-11].location[1]
+  old: -422.056
+  new: -382.056
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-12].location[1]
+  old: -423.143
+  new: -383.143
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
+- date: '2026-11-24T19:33:31Z'
+  key: attachments[E-AVN-13].location[1]
+  old: -422.752
+  new: -382.752
+  why: move pitot (avn-005/006/009-s/009-t) and its joints 40 mm inboard with the
+    wingtip after span 900->820
+  kind: modify
