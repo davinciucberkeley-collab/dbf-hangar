@@ -45,14 +45,13 @@
 | U3.5 | Discipline skills, scorecard and procedures (from §1c; not on the core path) | 3/3 | done | ACCEPT |
 | U3.6 | Discipline gates [hard] (from §1c; not on the core path) | 3/3 | done | ACCEPT |
 
-### W4 Review, release, presentation
+### W4.1 Whole-branch review and release prep
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.1 | Whole-branch review, performance, release | 5/5 | done | ACCEPT |
-| U4.2 | Dec 2 presentation package | 2/4 | in progress | ACCEPT |
 
-### Unscheduled
+### W4.2 Overnight core fixes
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
@@ -61,28 +60,54 @@
 | U4.5 | Overnight core fixes, round 3 (D51) | 3/3 | done | - |
 | U4.6 | bench.run agent id check (T89, from the W7-R T7 re-review; D51) | 3/3 | done | - |
 | U4.7 | List-entry edits and bench grader replay (T55, T54; D55, D56) | 3/3 | done | - |
+
+### W4.3 Hardening and v1.1 batch 1
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 | U4.8 | Bench grader hardening (T91, T92, T93; P175) | 3/3 | done | - |
 | U4.9 | Yaw authority fix and concept-a battery harness (T37, T60; D57, D58) | 3/3 | done | - |
 | U4.10 | v1.1 cleanup, first batch (T83, T86, T88, T90; P175) | 3/3 | done | - |
 | U4.11 | Recompute the 40 read_value claims (T28; D59 overrules D52) | 3/3 | done | - |
+
+### W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 | U4.12 | Dec 2 prep: demo re-run on current main, claims wording sweep (U4.2 Step 2, T104; P186) | 4/4 | done | - |
 | U4.13 | BOM spares double count (T94; P186) | 3/3 | done | - |
 | U4.14 | v1.1 cleanup, second batch (T99, T100, T101, T102; P186) | 3/3 | done | - |
 | U4.15 | v1.1 features (T95, T103, T67; P186) | 3/3 | done | - |
 | U4.16 | Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188) | 3/3 | done | - |
+
+### W4.5 Team adoption, CI, ratings, process
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 | U4.17 | Team guide: how the team works in dbf-hangar (P189) | 4/5 | in progress | - |
 | U4.18 | Faster CI unit tests (T11; P194) | 3/3 | done | ACCEPT |
 | U4.19 | Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198) | 3/4 | in progress | - |
 | U4.20 | Process trim (D66; T112; P198) | 1/3 | in progress | ACCEPT |
+
+### W4.6 Parametric geometry for the demo (D70)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 | U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 0/3 | not started | - |
 | U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 0/3 | not started | - |
+
+### W4.7 Presentation
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U4.2 | Dec 2 presentation package | 2/4 | in progress | ACCEPT |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 47 | 70 | 0 | 2 | 0 | 119 |
+| task | 48 | 70 | 0 | 2 | 0 | 120 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 256 | 272 |
 

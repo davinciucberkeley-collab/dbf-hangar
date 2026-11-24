@@ -336,7 +336,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D66 | After U4.18: freeze, and lighter process? | yes (Tristan P198): freeze until Dec 2 except teammate fixes, sourcing, deck, process trim; light path for small text/docs and data-only design changes; full path for gates, bench, security, schema; teammates work from a named ledger task; built-in read-only subagents allowed (T112); plan archived and summarised | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
 | D67 | How to raise the fidelity of the gates? | source concept-a's connection-type ratings by joint count (64 SKIPs + 4 drop FAILs), datasheet > standard/test > team pull test, else pending; decide landing_load_factor; James reviews; track the fidelity line | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
 | D68 | U4.19: how to turn the 64 joint SKIPs into verdicts? | C now: source stresses into the library, landing_load_factor pending until the T113 drop test, SKIPs labelled honestly; B (per-joint contact area x stress) first in v1.1 (T114) | Tristan | 11-25 | decided (Tristan P199, 2026-11-25) |
-| D69 | How does a teammate's full-path change run, and which built-ins pass the gate? | teammate builds on their branch, opens a PR, Tristan runs a fresh reviewer on it; data-only design changes = CI + Dillon, no reviewer agent; built-ins Explore, Plan, claude-code-guide pass only when no project/user agent file redefines them (plugin and --agents overrides accepted risk) | Tristan | 11-25 | decided (conductor default on W22-R, 2026-11-25) |
+| D69 | How does a teammate's full-path change run, and which built-ins pass the gate? | teammate builds on their branch, opens a PR, Tristan runs a fresh reviewer on it; data-only design changes = CI + Dillon, no reviewer agent; built-ins Explore, Plan, claude-code-guide pass the launch gate by exact name, and Write/Edit/NotebookEdit are refused inside any agent with those names (amended by Tristan P203 on W22-A advice; no agent-file scan) | Tristan | 11-23 | decided (conductor default on W22-R; amended Tristan P203, 2026-11-23) |
 | D70 | Parametric geometry before Dec 2? | yes for G1 (kernel + PDL 1.2) and G2 (first generators), G5 if capacity; overrides the D66 freeze for this work only; demo = one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (any parameter); G3, G4, G6, G7 are v1.1 (T116-T119) | Tristan | 11-25 | decided (Tristan P200, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
@@ -395,8 +395,27 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | — async check-in (no meeting) | Wed 11-25 | `plane update publish` → link in the Drive doc |
 | W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
 | Freeze | Mon 11-30 18:00 | — |
-| W4 Review, release, presentation | Mon 11-30 → Tue 12-01 | U4.1, U4.2 |
+| W4.1 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
+| W4.2 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
+| W4.3 Hardening and v1.1 batch 1 | Mon 11-23 | U4.8, U4.9, U4.10, U4.11 |
+| W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U4.12, U4.13, U4.14, U4.15, U4.16 |
+| W4.5 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U4.17, U4.18, U4.19, U4.20 |
+| W4.6 Parametric geometry for the demo (D70) | Tue 11-24 → Sun 11-29 | U4.21, U4.22 |
+| W4.7 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
 | Present | **Wed 12-02** | demo + deck |
+
+**Revised schedule (Mon 11-23 22:45, conductor; W0-W3 finished early, see archive):**
+
+| When | What | Cut rule |
+|---|---|---|
+| Tue 11-24 | merge U4.20 a, b, d; G1 brief -> G1 build starts; Tristan adds collaborators; Dillon's first real task (guide) | — |
+| Wed 11-25 | async check-in: `plane update add` / `publish` (R26); G2 brief; G1 review | — |
+| Thu 11-26 | Thanksgiving, light: G1 fixes | G1 not merged by Fri 11-27 18:00 -> no parametric demo, roadmap slide only |
+| Fri 11-27 -> Sat 11-28 | G2 build + review; `concept-a-param`; deck reframed honestly (claims 53+40, fidelity 134/714, real findings first) | G2 not merged by Sun 11-29 12:00 -> demo G1 on one generated part |
+| Sun 11-29 | T2 (James), T62 done; re-run demo script incl. the parametric step; record backup video | — |
+| Mon 11-30 | freeze 18:00; dry run evening | after freeze: fix only what the dry run breaks |
+| Tue 12-01 | fixes only | — |
+| **Wed 12-02** | present | — |
 
 All units: Tristan. Acceptance testers: Dillon (Studio, concept A), Vaibhav (OpenCAE on Windows), James (harness install on his machine).
 
@@ -697,7 +716,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1:** Ranking and scout/recon briefs (tactician W21-T) *(cda9184; finding: the joint gates read each joint's own rating, not the library, so library sources clear 0 of the 64 SKIPs; only landing_load_factor moves fidelity; S1, S4, X1 launched, S2/S3 held)*
 - [x] **Step 2:** Sources (scouts W21-S, recon W21-X) *(S1: 4 of 5 sourced; S4: 0 of 5; X1: landing_load_factor pending on gear travel, T113; S2/S3 not run)*
 - [x] **Step 3:** Values into standards; concept-a re-run; baseline refresh (builder W21-B) *(795cc3e: 3 types sourced, pending 31 -> 28; concept-a counts and fidelity unchanged as D68 expected; no baseline change)*
-- [ ] **Step 4: Review** (reviewer W21-R); James reads the values; merge
+- [ ] **Step 4: Review** (reviewer W21-R); James reads the values; merge *(REOPEN once (4 note fixes), ACCEPT; merged 2bcd1d8; James's read open)*
 
 ### Unit U4.20: Process trim (D66; T112; P198)
 
