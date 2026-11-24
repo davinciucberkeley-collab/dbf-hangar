@@ -7,13 +7,16 @@ from pathlib import Path
 
 GATED_TOOLS = ("Task", "Agent")
 BUILDER_ROLES = ("builder", "builder-plus")
-# Claude Code built-in subagents (T112). Explore and Plan have read-only tools (Write and Edit denied);
-# Bash is not denied for them but stays under the parent session's permission rules and hooks.
-# claude-code-guide's tool list is not documented; it is allowed on the same basis (reviewer re-checks).
-# A user or project agent file with the same name replaces the built-in, so the allowance applies only
-# when no agent file defines the name. Plugin and --agents overrides the hook cannot see are an
-# accepted leftover risk (D69).
+# Claude Code built-in subagents (T112, D69). Launch: they pass by exact name, no file is read. A user, project,
+# plugin or --agents file of the same name replaces the built-in, and the launch hook cannot see that (the Agent
+# tool input carries only subagent_type, prompt, description, model). So the write tools are gated too: inside an
+# agent with one of these names Write, Edit and NotebookEdit are refused, whatever its tool list says. The hook
+# input field is agent_type (code.claude.com/docs/en/hooks.md, "Common input fields").
+# Leftover: Bash or PowerShell inside an override (the genuine built-ins can use Bash too), and an override may set
+# permissionMode. Hooks guard the process, not the session owner: they are not a boundary against the person
+# who runs the session.
 BUILTIN_READ_ONLY = ("Explore", "Plan", "claude-code-guide")
+WRITE_TOOLS = ("Write", "Edit", "NotebookEdit")
 BRIEF_RE = re.compile(r"""[^\s"'`<>()]*plans/[^/\s"'`<>()]+/briefs/[^/\s"'`<>()]+\.md""")
 
 
@@ -34,54 +37,21 @@ def brief_exists(prompt, root):
     return False
 
 
-def read_agent_text(path):
-    """UTF-8 (BOM tolerated), or UTF-16 when a BOM says so. Anything else raises UnicodeDecodeError."""
-    raw = path.read_bytes()
-    if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
-        return raw.decode("utf-16")
-    return raw.decode("utf-8-sig")
-
-
-def frontmatter_name(path):
-    """The name: value, "" if there is none, or None if the file cannot be read or decoded."""
-    try:
-        lines = read_agent_text(path).splitlines()
-    except (OSError, UnicodeDecodeError):
-        return None
-    if not lines or lines[0].strip() != "---":
-        return ""
-    for line in lines[1:]:
-        if line.strip() == "---":
-            break
-        if line.startswith("name:"):
-            return line[len("name:"):].split("#", 1)[0].strip().strip("\"'").strip()
-    return ""
-
-
 def roster_names(root):
-    names = {frontmatter_name(path) for path in (root / ".claude" / "agents").glob("*.md")}
-    return sorted(name for name in names if name)
-
-
-def defined_agent_names(root):
-    """(names, unreadable): names defined by agent files (frontmatter name:) under the project and the user's
-    .claude/agents/, recursively. unreadable is True if any file could not be read or decoded, or a folder
-    could not be listed. Callers fail closed on it: a built-in name may be redefined by a file they cannot see.
-    Plugin and --agents overrides are not visible to this hook (accepted leftover risk, D69)."""
-    names, unreadable = set(), False
-    for base in (Path(root) / ".claude" / "agents", Path.home() / ".claude" / "agents"):
-        try:
-            if not base.is_dir():
-                continue
-            for path in base.rglob("*.md"):
-                name = frontmatter_name(path)
-                if name is None:
-                    unreadable = True
-                elif name:
-                    names.add(name)
-        except OSError:
-            unreadable = True
-    return names, unreadable
+    names = set()
+    for path in (root / ".claude" / "agents").glob("*.md"):
+        lines = path.read_text(encoding="utf-8").splitlines()
+        if not lines or lines[0].strip() != "---":
+            continue
+        for line in lines[1:]:
+            if line.strip() == "---":
+                break
+            if line.startswith("name:"):
+                value = line[len("name:"):].strip().strip("\"'")
+                if value:
+                    names.add(value)
+                break
+    return sorted(names)
 
 
 def agent_table_roles(plan_text: str) -> set:
@@ -114,14 +84,16 @@ def block(message):
 
 
 def run(event, root):
+    if event.get("tool_name") in WRITE_TOOLS:
+        if event.get("agent_type") in BUILTIN_READ_ONLY:
+            return block(f'Built-in read-only agent "{event.get("agent_type")}" may not write files ({event.get("tool_name")} refused).')
+        return 0
     if event.get("tool_name") not in GATED_TOOLS:
         return 0
     tool_input = event.get("tool_input") or {}
     role = tool_input.get("subagent_type") or ""
     if role in BUILTIN_READ_ONLY:
-        names, unreadable = defined_agent_names(root)
-        if role not in names and not unreadable:
-            return 0
+        return 0
 
     roster = roster_names(root)
     if role not in roster:

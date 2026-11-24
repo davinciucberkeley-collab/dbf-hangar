@@ -17,15 +17,9 @@ def root(tmp_path):
     (tmp_path / "plans" / "2026-11-20-x.md").write_text("| Step | Role | Model | Pass criterion |\n|---|---|---|---|\n| H1 | `builder` | Haiku | t |\n| HR | `reviewer` | Opus | t |\n", encoding="utf-8")
     return tmp_path
 
-def gate(event, root, home=None):
-    home = home or (root / "nohome")  # isolated user home: no real ~/.claude/agents leaks into the test
+def gate(event, root):
     return subprocess.run([sys.executable, str(REPO / "harness/hooks/agent_gate.py")], input=json.dumps(event),
-                          capture_output=True, text=True,
-                          env=dict(os.environ, CLAUDE_PROJECT_DIR=str(root), HOME=str(home), USERPROFILE=str(home)))
-
-def write_agent(directory, filename, name):
-    directory.mkdir(parents=True, exist_ok=True)
-    (directory / filename).write_text(f"---\nname: {name}\ntools: Read, Write, Edit, Bash\nmodel: haiku\n---\n# {name}\n", encoding="utf-8")
+                          capture_output=True, text=True, env=dict(os.environ, CLAUDE_PROJECT_DIR=str(root)))
 
 def task(role, prompt="x"):
     return {"tool_name": "Task", "tool_input": {"subagent_type": role, "prompt": prompt}}
@@ -193,63 +187,68 @@ def test_builtin_allowance_keeps_every_other_check(root):
     assert gate(task("builder", "Pass check: pytest. Stop rule: report."), root).returncode == 0
 
 
-def test_project_agent_named_like_builtin_is_checked(root):
-    write_agent(root / ".claude" / "agents", "explore-custom.md", "Explore")
-    r = gate(task("Explore"), root)
-    assert r.returncode == 2 and "agent table" in r.stderr
+WRITE_TOOLS = ["Write", "Edit", "NotebookEdit"]
 
-def test_project_agent_named_like_builtin_passes_when_in_table(root):
-    write_agent(root / ".claude" / "agents", "explore-custom.md", "Explore")
-    (root / "plans" / "2026-11-20-x.md").write_text("| Step | Role | Model | Pass criterion |\n|---|---|---|---|\n| E1 | `Explore` | Haiku | t |\n", encoding="utf-8")
-    assert gate(task("Explore"), root).returncode == 0
 
-def test_user_agent_named_like_builtin_is_checked(root, tmp_path):
+def tool_event(tool, agent_type=None):
+    event = {"tool_name": tool, "tool_input": {"file_path": "x"}}
+    if agent_type is not None:
+        event["agent_type"] = agent_type
+    return event
+
+
+@pytest.mark.parametrize("name", BUILTINS)
+@pytest.mark.parametrize("tool", WRITE_TOOLS)
+def test_write_tools_refused_inside_builtin_read_only_agents(root, tool, name):
+    r = gate(tool_event(tool, name), root)
+    assert r.returncode == 2 and "may not write" in r.stderr and name in r.stderr
+
+
+@pytest.mark.parametrize("agent_type", [None, "", "builder", "reviewer", "explore", "general-purpose"])
+@pytest.mark.parametrize("tool", WRITE_TOOLS)
+def test_write_tools_pass_for_every_other_agent_and_the_main_session(root, tool, agent_type):
+    assert gate(tool_event(tool, agent_type), root).returncode == 0
+
+
+@pytest.mark.parametrize("tool", ["Read", "Grep", "Glob", "Bash"])
+def test_read_tools_and_bash_pass_inside_a_builtin(root, tool):
+    assert gate(tool_event(tool, "Explore"), root).returncode == 0
+
+
+def test_builtin_launch_reads_no_user_agent_files(root, tmp_path):
     home = tmp_path / "home"
-    write_agent(home / ".claude" / "agents" / "team", "explore.md", "Plan")
-    r = gate(task("Plan"), root, home)
-    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+    agents = home / ".claude" / "agents"
+    agents.mkdir(parents=True)
+    nl = chr(10)
+    (agents / "Explore.md").write_text(nl.join(["---", "name: Explore", "tools: Read, Write, Edit, Bash", "---", "# x", ""]), encoding="utf-8")
+    (agents / "cp.md").write_bytes((nl.join(["---", "name: cp", "---", chr(0x201C) + "q" + chr(0x201D), ""])).encode("cp1252", errors="replace") + bytes([0x93, 0x94]))
+    (agents / "u16.md").write_bytes(nl.join(["---", "name: u16", "---", ""]).encode("utf-16"))
+    env = dict(os.environ, CLAUDE_PROJECT_DIR=str(root), HOME=str(home), USERPROFILE=str(home))
+    r = subprocess.run([sys.executable, str(REPO / "harness/hooks/agent_gate.py")], input=json.dumps(task("Explore")),
+                       capture_output=True, text=True, env=env)
+    assert r.returncode == 0, r.stderr
 
 
-def user_agents(home):
-    d = home / ".claude" / "agents"
-    d.mkdir(parents=True, exist_ok=True)
-    return d
+def test_settings_route_the_write_tools_to_the_gate(tmp_path):
+    def gate_matcher(settings):
+        return next(e["matcher"] for e in settings["hooks"]["PreToolUse"]
+                    if any("agent_gate" in h["command"] for h in e["hooks"]))
+    s = json.loads((REPO / ".claude/settings.json").read_text())
+    assert set(gate_matcher(s).split("|")) == {"Task", "Agent", "Write", "Edit", "NotebookEdit"}
+    proj = tmp_path / "p"
+    installer.install(proj)
+    assert gate_matcher(json.loads((proj / ".claude/settings.json").read_text())) == gate_matcher(s)
 
-def agent_bytes(name_line, encoding="utf-8"):
-    return f"---\n{name_line}\ntools: Read, Write, Edit, Bash\nmodel: haiku\n---\n# x\n".encode(encoding)
 
-def test_utf8_override_next_to_undecodable_file_is_checked(root, tmp_path):
-    home = tmp_path / "home"
-    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore"))
-    (user_agents(home) / "notes.md").write_bytes("---\nname: notes\n---\n\u201cquoted\u201d\n".encode("cp1252"))
-    r = gate(task("Explore"), root, home)
-    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
-
-def test_utf16_override_is_checked(root, tmp_path):
-    home = tmp_path / "home"
-    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore", "utf-16"))
-    r = gate(task("Explore"), root, home)
-    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
-
-def test_bom_utf8_override_is_checked(root, tmp_path):
-    home = tmp_path / "home"
-    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore", "utf-8-sig"))
-    r = gate(task("Explore"), root, home)
-    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
-
-def test_trailing_comment_in_name_is_stripped(root, tmp_path):
-    home = tmp_path / "home"
-    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore  # comment"))
-    r = gate(task("Explore"), root, home)
-    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
-
-def test_plain_builtin_with_clean_user_folder_passes(root, tmp_path):
-    home = tmp_path / "home"
-    user_agents(home)
-    assert gate(task("Explore"), root, home).returncode == 0
-
-def test_plain_builtin_with_unrelated_undecodable_user_file_fails_closed(root, tmp_path):
-    home = tmp_path / "home"
-    (user_agents(home) / "notes.md").write_bytes("---\nname: notes\n---\n\u201cquoted\u201d\n".encode("cp1252"))
-    r = gate(task("Explore"), root, home)
-    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+def test_install_upgrades_an_old_gate_matcher_without_a_second_entry(tmp_path):
+    proj = tmp_path / "p"
+    (proj / ".claude").mkdir(parents=True)
+    installer.install(proj)
+    path = proj / ".claude/settings.json"
+    s = json.loads(path.read_text())
+    for e in s["hooks"]["PreToolUse"]:
+        e["matcher"] = "Task|Agent"
+    path.write_text(json.dumps(s))
+    installer.install(proj)
+    pre = json.loads(path.read_text())["hooks"]["PreToolUse"]
+    assert len(pre) == 1 and pre[0]["matcher"] == "Task|Agent|Write|Edit|NotebookEdit"
