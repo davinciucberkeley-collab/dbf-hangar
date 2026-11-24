@@ -17,10 +17,10 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.3 Hardening and v1.1 batch 1 | 4 | 4 |
 | W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | 5 | 5 |
 | W4.5 Team adoption, CI, ratings, process | 4 | 2 |
-| W4.6 Parametric geometry for the demo (D70) | 2 | 1 |
+| W4.6 Parametric geometry for the demo (D70) | 2 | 2 |
 | W4.7 Presentation | 1 | 0 |
 | Other (no wave row) | 3 | 0 |
-| **all** | 46 | 39 |
+| **all** | 46 | 40 |
 
 ### Open ledger items by owner
 
@@ -137,7 +137,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 3/3 | done | ACCEPT |
-| U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 1/3 | in progress | ACCEPT |
+| U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 3/3 | done | ACCEPT |
 
 ### W4.7 Presentation
 
