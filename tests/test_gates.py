@@ -237,7 +237,7 @@ def test_gate_ops():
     from hangar.ops import call, registry
     assert {"gate.list", "gate.explain", "sim.mechanism"} <= set(registry())
     r = call("gate.list")
-    assert r.ok and r.data["count"] == 15
+    assert r.ok and r.data["count"] == 17
     r = call("gate.explain", check_id="T7.wiring.x")
     assert r.ok and r.data["blocking"] is False and r.data["threshold"]["source"] == "pending"
     assert call("gate.explain", check_id="Q1.x").exit_code == 2

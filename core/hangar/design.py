@@ -53,6 +53,11 @@ class CheckResult:
     criterion: str = ""    # link into standards/, e.g. "design-standards.yaml#static_margin"
     data: dict = field(default_factory=dict)
 
+    @property
+    def not_applicable(self) -> bool:
+        """A SKIP row for a check that does not apply to the design's morphology (D77); not a result."""
+        return self.status == SKIP and bool(self.data.get("not_applicable"))
+
 
 @dataclass
 class TierReport:
@@ -62,7 +67,9 @@ class TierReport:
 
     @property
     def status(self) -> str:
-        s = [r.status for r in self.results]
+        s = [r.status for r in self.results if not r.not_applicable]
+        if not s and self.results:
+            return SKIP
         if FAIL in s:
             return FAIL
         if not s or SKIP in s:
@@ -86,12 +93,12 @@ class Scorecard:
     @property
     def clean(self) -> bool:
         """No FAIL/SKIP among the tiers that ran."""
-        return all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
+        return all(r.status not in (FAIL, SKIP) or r.not_applicable for t in self.tiers for r in t.results)
 
     @property
     def accepted(self) -> bool:
         """Full-run verdict only: a partial run (max_tier < 9) is never accepted."""
-        return not self.partial and all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
+        return not self.partial and all(r.status not in (FAIL, SKIP) or r.not_applicable for t in self.tiers for r in t.results)
 
     def to_dict(self) -> dict:
         d = {

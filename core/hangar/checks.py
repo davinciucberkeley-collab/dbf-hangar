@@ -25,7 +25,8 @@ from .geometry import (component_parts, lifting_surface_properties, articulated_
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
 from .gates import gate, run_gates
-from .gates.applicability import applicable, skip_row
+from .gates.applicability import NEEDS, applicable, skip_row
+from .gates.fidelity import resolve_threshold
 from .mass import mass_properties
 from .migrate import KNOWN_VERSIONS
 
@@ -1070,14 +1071,22 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
             num += k * p["x_ac_mm"]; den += k
         x_np = num / den
         sm = (x_np - mp["cg_mm"][0]) / main["mac_mm"]
-        lo, hi = a["static_margin"]["min"], a["static_margin"]["max"]
-        st = PASS if lo <= sm <= hi else FAIL
+        conv = NEEDS["conventional"](design.data["morphology"])
+        if conv:
+            lo = resolve_threshold("fixed-wing.yaml#fw_static_margin_min")["value"]
+            hi = resolve_threshold("fixed-wing.yaml#fw_static_margin_max")["value"]
+            sm_crit = "fixed-wing.yaml#fw_static_margin_min"
+        else:
+            lo, hi = a["static_margin"]["min"], a["static_margin"]["max"]
+            sm_crit = STD + "static_margin"
+        st = PASS if lo <= sm <= hi else WARN if (conv and sm > hi) else FAIL
         sm_band = "below" if sm < lo else "above" if sm > hi else "within"
         res.append(CheckResult("T3.static_margin", st,
                                f"{sm:.1%} MAC (NP x={x_np:.0f} mm, CG x={mp['cg_mm'][0]:.0f} mm; target {lo:.0%}-{hi:.0%}; "
                                "fuselage effect not modelled)"
+                               + ("; provisional band (fw_static_margin_max pending)" if conv else "")
                                + (f" (mesh wing: chord measured at {n_strip} stations)" if main_from_planform else ""),
-                               STD + "static_margin", {"static_margin": round(sm, 4), "x_np_mm": round(x_np, 1), "band": sm_band}))
+                               sm_crit, {"static_margin": round(sm, 4), "x_np_mm": round(x_np, 1), "band": sm_band}))
         lat = abs(mp["cg_mm"][1]) / main["span_mm"]
         lim = a["lateral_cg_max_fraction_span"]["value"]
         res.append(CheckResult("T3.lateral_cg", PASS if lat <= lim else FAIL,

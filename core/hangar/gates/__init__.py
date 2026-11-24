@@ -90,12 +90,12 @@ def load_gate_thresholds() -> dict[str, dict]:
 
 def _import_gates() -> None:
     from .. import checks  # noqa: F401  (registers tiers 0 to 5)
-    from . import mechanisms, integration, sourcing, claims, discipline  # noqa: F401
+    from . import mechanisms, integration, sourcing, claims, discipline, fixedwing  # noqa: F401
 
 
 def _report_only(rep: TierReport) -> None:
     for r in rep.results:
-        if r.status in (FAIL, SKIP) and not (r.data or {}).get("not_applicable"):
+        if r.status in (FAIL, SKIP) and not r.not_applicable:
             r.data = {**r.data, "report_only": True, "raw_status": r.status}
             r.message = REPORT_ONLY_PREFIX + r.message
             r.status = WARN
