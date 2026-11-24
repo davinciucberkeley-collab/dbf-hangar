@@ -4686,7 +4686,7 @@ items:
     updated: '2026-11-23'
   - id: D64
     kind: decision
-    text: "Team guide leads with talking to Claude, not typing commands: teammates ask in plain words ('set concept-a's battery mass to 290 g') and Claude runs the plane CLI/MCP, validates and tests per its agent definition; commands stay in the guide only as what Claude runs and for troubleshooting. Two setups: Claude Code (full: agents, hooks, tests, git, PRs) and Claude Desktop with the plane MCP server (design work in chat; design.propose opens the PR; CI runs the tests). Desktop must not use the save_design MCP tool for edits (it bypasses design set and the CHANGELOG)"
+    text: "Team guide leads with talking to Claude, not typing commands: teammates ask in plain words ('set concept-a's battery mass to 290 g') and Claude runs the plane CLI/MCP, validates and tests per its agent definition; commands stay in the guide only as what Claude runs and for troubleshooting. Two setups: Claude Code (full: agents, hooks, tests, git, PRs) and Claude Desktop with the plane MCP server (design work in chat; design.propose opens the PR; CI runs the tests). Desktop must not use the save_design MCP tool for edits (it bypasses design set and the CHANGELOG) [P191: 'tests' means design validation gates (gates, checks, thresholds in standards with a source), not pytest; names and roles are examples only, so the guide is organised by task (design work, gate work, standards, knowledge, FEA), not by person]"
     source: Tristan, P190, 2026-11-24
     owner: Tristan
     status: decided
