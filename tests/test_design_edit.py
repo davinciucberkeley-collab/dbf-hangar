@@ -857,3 +857,42 @@ def test_two_sweeps_in_the_same_second_and_process_get_distinct_folders(tmp_exam
     assert a.data["sweep_dir"] != b.data["sweep_dir"]
     assert (Path(a.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
     assert (Path(b.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
+
+
+def test_branch_slug_cuts_at_a_word_boundary():
+    cases = {
+        "New test design from concept-a-param span change": "new-test-design-from-concept-a-param",
+        "Lighter battery": "lighter-battery",
+        "a" * 50: "a" * 40,
+        "x" * 39 + " yy": "x" * 39,
+        "!!!": "change",
+        "w" * 19 + " " + "w" * 20: "w" * 19 + "-" + "w" * 20,
+    }
+    for t, want in cases.items():
+        got = edit._branch_slug(t)
+        assert got == want, (t, got)
+        assert len(got) <= 40
+
+
+def test_propose_branch_name_is_cut_at_a_word(tmp_example, tmp_path, monkeypatch):
+    calls: list[list[str]] = []
+
+    def fake_run(argv, cwd):
+        calls.append(list(argv))
+        if "--show-toplevel" in argv:
+            return str(tmp_path) + "\n"
+        if "status" in argv:
+            return " M designs/example-tailsitter-wing/plane.yaml\n"
+        if "--abbrev-ref" in argv:
+            return "main\n"
+        if "create" in argv:
+            return "https://github.com/o/r/pull/8\n"
+        return ""
+
+    monkeypatch.setattr(edit, "_run", fake_run)
+    monkeypatch.setenv("HANGAR_GH", "gh-test")
+    r = call("design.propose", path=str(tmp_example), title="New test design from concept-a-param span change")
+    assert r.ok, r.messages
+    branch = "design/example-tailsitter-wing/new-test-design-from-concept-a-param"
+    assert r.data["branch"] == branch
+    assert ["git", "-C", str(tmp_path), "switch", "-c", branch] in calls
