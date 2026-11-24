@@ -25,6 +25,7 @@ from .geometry import (component_parts, lifting_surface_properties, articulated_
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
 from .gates import gate, run_gates
+from .gates.applicability import applicable, skip_row
 from .mass import mass_properties
 from .migrate import KNOWN_VERSIONS
 
@@ -888,6 +889,9 @@ def tier2_physics(design: Design, std: dict, mp: dict) -> TierReport:
                                    f"({ratio:.0%} of a {lever * 100:g} cm thrust offset)" + at_pose,
                                    STD + "hover_moment_pass_ratio",
                                    {"moment_nm": round(imbalance, 3)}))
+    elif not applicable(design, "T2.hover_moment")[0]:
+        res.append(skip_row("T2.hover_moment", applicable(design, "T2.hover_moment")[1],
+                            STD + "hover_moment_pass_ratio"))
     return TierReport(2, "physics", res)
 
 
@@ -1090,6 +1094,8 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                                f"hover T/W {tw:.2f} (upward thrust {thrust:.1f} N of {rated:.1f} N rated; minimum {lim})"
                                + (f" at pose {hover_pose}" if hover_pose else ""), STD + "hover_thrust_to_weight_min",
                                {"thrust_to_weight": round(tw, 3), "band": "below" if tw < lim else "within"}))
+    elif not applicable(design, "T3.hover_tw")[0]:
+        res.append(skip_row("T3.hover_tw", applicable(design, "T3.hover_tw")[1], STD + "hover_thrust_to_weight_min"))
     return TierReport(3, "aero", res)
 
 

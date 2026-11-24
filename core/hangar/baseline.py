@@ -101,6 +101,7 @@ def snapshot(scorecard: Scorecard) -> dict:
     """FAIL and SKIP results of a scorecard, one entry per key (worse status wins, duplicates get a count).
 
     T0 results and crashed or blocked tiers are never entries; they are listed under "blocking" instead.
+    SKIP rows flagged not_applicable (the check does not apply to the design's morphology) are left out.
     """
     found: dict[str, dict[str, Any]] = {}
     blocking = [{"check_id": r.check_id, "status": r.status, "message": r.message}
@@ -108,6 +109,8 @@ def snapshot(scorecard: Scorecard) -> dict:
     for tier in scorecard.tiers:
         for r in tier.results:
             if r.status not in (FAIL, SKIP) or is_blocking(r.check_id, r.status, r.message):
+                continue
+            if r.status == SKIP and (r.data or {}).get("not_applicable"):
                 continue
             key = result_key(r.check_id, r.message, r.data)
             entry = found.get(key)
