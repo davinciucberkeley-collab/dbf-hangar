@@ -328,6 +328,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D58 | T37: which yaw fix for T3.control_authority? | the advisor's pick (W11-A): fix (a), per-axis max moment at fixed total thrust (linprog), cant only; yaw below 1.5 is SKIP (would_be FAIL) because reaction torque is not modelled; fix (b) deferred to v1.1 (T95); concept-a pinwheel cant to the design team (T96) | Tristan | 11-23 | decided (conductor default per T37 triage, P175) |
 | D59 | Build T28 (`read_value`, 40 concept-a claims) before Dec 2? | yes, overrules D52: build now; the deck and metrics lines saying "not recomputed" are updated with the measured result | Tristan | 11-23 | decided (Tristan, P182, 2026-11-23) |
 | D60 | T28: PASS or a separate status for the 40 read_value (stored-result) claims? | PASS kept for v1.0; every report and the deck say 53 recomputed + 40 read from source and checked against limits (analyses not re-run); a READ status is v1.1 (T103) | Tristan | 11-23 | decided (conductor default on W13-R follow-up, 2026-11-23) |
+| D61 | When does concept-a get the T95 propulsion 1.1 data (spin, reaction torque)? | after Dec 2 and after T96, by a design-engineer who confirms motor letters against CAD; baseline accept in the same designs-only commit (T106) | Tristan | 11-24 | decided (conductor default on W17-T flag, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -633,6 +634,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W12-T, W12-B, W12-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.10 (T83, T86, T88, T90) | `briefs/U4.10-*.md`, branches `std/u4.10-*`, `reviews/2026-11-23-w12.md` | builder-ready bar; brief checks; "### Verdict:" |
 | W13-T, W13-B, W13-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.11 (T28; D59) | `briefs/U4.11-t28.md` (refresh of `U4.3-t28.md`), branches `std/u4.11-t28` (core), `std/u4.11-t28-docs` (deck/metrics/claims data), `reviews/2026-11-23-w13.md` | builder-ready bar; claim counts before/after; "### Verdict:" |
 | W14-T, W14-B, W14-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.12 (demo re-run on main, T104) | `u4.2/demo-script.md`, `briefs/U4.12-t104.md`, branch `std/u4.12-t104`, `reviews/2026-11-24-w14.md` | every demo step re-run on a scratch clone; "### Verdict:" |
+| W14-A | `advisor` | Opus | U4.12 CI: T104 branch fails `test_propose_link_survives_real_git_side_effects` on windows twice (GLB 404), T84 reopened | diagnosis in `reviews/2026-11-24-w14.md` | names cause and one fix, who builds it |
 | W15-T, W15-B, W15-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.13 (T94) | `briefs/U4.13-t94.md`, branches `std/u4.13-t94` (core), `std/u4.13-t94-design` (designs), `reviews/2026-11-24-w15.md` | BOM total before/after; "### Verdict:" |
 | W16-T, W16-B, W16-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.14 (T99, T100, T101, T102) | `briefs/U4.14-*.md`, branches `std/u4.14-*`, `reviews/2026-11-24-w16.md` | builder-ready bar; "### Verdict:" |
 | W17-T, W17-B, W17-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.15 (T95, T103, T67) | `briefs/U4.15-*.md`, branches `std/u4.15-*`, `reviews/2026-11-24-w17.md` | builder-ready bar; schema minor version for T95; "### Verdict:" |
@@ -1339,22 +1341,22 @@ Not a code unit; it tests everything above.
 **Scope:** importer `importers/dbf_blocks.py:27` stops adding spares to a qty that already includes them (core + tests); then a designs-only branch sets concept-a P01 qty 5 and M01 qty 3 with `plane design set` (BOM lines total $1262.50) and refreshes any test that pins the old quantities.
 
 - [x] **Step 1: Brief** (tactician W15-T): `briefs/U4.13-t94.md` *(d4407ec; only P01 and M01 have spares)*
-- [ ] **Step 2: Build** (W15-B): core branch, then designs branch *(core d5bcda9, W15-R ACCEPT, merged df2d19e; designs branch next)*
-- [ ] **Step 3: Review** (reviewer W15-R); merge; T94 done
+- [x] **Step 2: Build** (W15-B): core branch, then designs branch *(core d5bcda9, W15-R ACCEPT, merged df2d19e; designs 50aeb72/b70291a merged be51625)*
+- [x] **Step 3: Review** (reviewer W15-R); merge; T94 done *(both parts ACCEPT, reviews/2026-11-24-w15.md; BOM $1262.50)*
 
 ### Unit U4.14: v1.1 cleanup, second batch (T99, T100, T101, T102; P186)
 
 **Scope:** the non-blocking follow-ups of W10-R to W12-R: yaw SKIP text and control-moment data key (T99); T83 guard beyond checks.py, scorecard criterion form, T1.motor_has_prop criterion, research.py SLUG_RE fullmatch, ID_RE imports from hangar.ids (T100); bench path mapping of option values, PLANE_BENCH_LOG pinning, SWEEP_ROOT redirect, tree_digest docstring (T101; the paid redirection probe stays open); T86 recovery test and comment (T102).
 
 - [x] **Step 1: Briefs** (tactician W16-T): `briefs/U4.14-*.md` *(bb136c4: four easy briefs; T99 before U4.15 T95; T101 before T100; T99 untrimmed-yaw criterion deferred to U4.15; paid probe stays open)*
-- [ ] **Step 2: Build** (W16-B, at most 2 at once)
+- [x] **Step 2: Build** (W16-B, at most 2 at once) *(t99 5ec7d16, t102 297f94e, t101 579406a (brief amendment 1: patch extracted mechanically), t100 4946c8a; all builder)*
 - [ ] **Step 3: Review** (reviewer W16-R); merge; T99-T102 done
 
 ### Unit U4.15: v1.1 features (T95, T103, T67; P186)
 
 **Scope:** T95 prop reaction torque in PDL (optional `propulsion.spin`, `propulsion.torque_per_thrust_m` with `_source`; schema minor 1.0 -> 1.1) and its use in T3.control_authority yaw; T103 a distinct status or marker for stored-result (read_value) claims; T67 ops `bom.list`, `morph.list`, `idea.list` (davinci push/pull only if the adapter supports it, else stays open).
 
-- [ ] **Step 1: Briefs** (tactician W17-T): `briefs/U4.15-*.md`
+- [x] **Step 1: Briefs** (tactician W17-T): `briefs/U4.15-*.md` *(32336a4: t95 hard (patch A/B by T99), t103 easy (read flag on PASS), t67 easy (3 list ops); D61; leftovers T106, T107)*
 - [ ] **Step 2: Build** (W17-B, at most 2 at once)
 - [ ] **Step 3: Review** (reviewer W17-R); merge; T95, T103, T67 done
 

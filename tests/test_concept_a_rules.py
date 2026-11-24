@@ -70,6 +70,15 @@ def test_motor_through_bolted_adapter_passes_and_names_chain():
     assert "motor -> adapter -> prop" in rows[0].message
 
 
+def test_motor_has_prop_cites_the_chain_limit_not_the_embed_limit():  # T100
+    from hangar.design import FAIL
+    want = "design-standards.yaml#prop_chain_max_intermediate_parts"
+    for sc, status in ((run(motor_design()), PASS), (run(motor_design(extra_chain=("spacer-a",))), PASS),
+                       (run(motor_design(first_method="glued")), FAIL)):
+        rows = [r for t in sc.tiers for r in t.results if r.check_id == "T1.motor_has_prop"]
+        assert [(r.status, r.criterion) for r in rows] == [(status, want)]
+
+
 def test_motor_through_glued_adapter_fails():
     sc = run(motor_design(first_method="glued"))
     assert statuses(sc, "T1.motor_has_prop") == [FAIL]

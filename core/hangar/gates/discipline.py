@@ -220,14 +220,14 @@ def control_authority(ctx, rep) -> list[CheckResult]:
         r = m_axis / m_wind if m_wind > 0 else math.inf
         msg = (f"{name}: control moment {m_axis:.3f} N*m, wind moment {m_wind:.3f} N*m, ratio {r:.2f} vs min {factor} "
                "(sagged pack, differential thrust at constant total upward thrust, cant geometry only)")
-        data = {"axis": name}
+        data = {"axis": name, "moment_nm": round(m_axis, 3)}
         if name == "yaw":
             data["trim_yaw_nm"] = round(trim_yaw, 3)
             msg += f"; yaw moment at equal hover thrust {trim_yaw:.3f} N*m (not judged); yaw wind moment uses the pitch/roll model (conservative)"
         msg += _prov(note)
         if name == "yaw" and r < factor:
-            res.append(_skip(cid, msg + "; not judged: yaw from prop reaction torque is not modelled (PDL has no spin/torque field)",
-                             crit, {**data, "would_be": FAIL}))
+            res.append(_skip(cid, msg + "; not judged: yaw from prop reaction torque is not modelled (PDL has no spin/torque field)"
+                             + (f"; {OPS}#hover_ctrl_factor is pending" if pending else ""), crit, {**data, "would_be": FAIL}))
         else:
             res.append(_judge(cid, PASS if r >= factor else FAIL, msg, f"{OPS}#hover_ctrl_factor", pending, data, crit))
     return res

@@ -4268,13 +4268,13 @@ items:
     updated: '2026-11-23'
   - id: T84
     kind: task
-    text: 'Flaky CI: tests/test_viewer_static.py::test_propose_link_survives_real_git_side_effects:350 404 console error (ubuntu runs 45165154819, 45167246241; windows main 45163693398)'
+    text: 'Flaky CI: tests/test_viewer_static.py::test_propose_link_survives_real_git_side_effects:350 404 console error (ubuntu runs 45165154819, 45167246241; windows main 45163693398) [reopened 2026-11-24: test_propose_link_survives_real_git_side_effects 404 on a concept-a GLB again on windows (W14-R, run 45300604062)]'
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
-    status: done
+    status: open
     due: '2026-11-30'
     units: []
-    evidence: 770cc4c
+    evidence: '45300604062'
     decided_in: ''
     updated: '2026-11-23'
   - id: T85
@@ -4447,10 +4447,10 @@ items:
     text: "concept-a BOM qty double-counts spares: importers/dbf_blocks.py:27 sets qty = qty + spares, but BOM-A.csv qty already includes the spare (P01 '4 + 1 spare' qty 5; M01 '2 elevons + 1 spare' qty 3), so plane.yaml has P01 6 and M01 4 and lines total $1323.39 instead of $1262.50 (+$60.89). Fix the importer (core) and set P01/M01 qty with plane design set (designs, separate branch)"
     source: conductor T62 prep 2026-11-23 (BOM-A.csv @ a93f14da vs designs/concept-a)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: be51625
     decided_in: ''
     updated: '2026-11-23'
   - id: T95
@@ -4510,13 +4510,13 @@ items:
     updated: '2026-11-23'
   - id: T99
     kind: task
-    text: 'W11-R non-blocking (T37): yaw SKIP text should say when hover_ctrl_factor is pending; add a data key for the control moment (tests read it from the message); with T95 propose a criterion for untrimmed yaw at equal thrust'
+    text: 'W11-R non-blocking (T37): yaw SKIP text should say when hover_ctrl_factor is pending; add a data key for the control moment (tests read it from the message); with T95 propose a criterion for untrimmed yaw at equal thrust [parts 1-2 merged 9fb1a6b (W16-R); part 3 (untrimmed yaw criterion) moved to T107]'
     source: W11-R review 2026-11-23 (reviews/2026-11-23-w11.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 9fb1a6b
     decided_in: ''
     updated: '2026-11-23'
   - id: T100
@@ -4524,10 +4524,10 @@ items:
     text: "W12-R follow-ups (U4.10): T83 guard scans only checks.py (ids from gates/*.py not covered); scorecard lacks manufacturing.yaml without '#' as a criterion form; T1.motor_has_prop still cites embed_max_fraction_of_child; ops/research.py:25 SLUG_RE.match trailing-newline hole; after U4.8 switch bench.py, design.py, edit.py to import ID_RE from hangar.ids"
     source: W12-R review 2026-11-23 (reviews/2026-11-23-w12.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 672bc11
     decided_in: ''
     updated: '2026-11-23'
   - id: T101
@@ -4546,10 +4546,10 @@ items:
     text: 'W12-R non-blocking (T86): the failed-inner-module test should add a third call with the fault cleared (recovery covered only by a probe); comment that the rollback relies on Python dropping a failed module from sys.modules'
     source: W12-R re-review 2026-11-23 (reviews/2026-11-23-w12.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 790249e
     decided_in: ''
     updated: '2026-11-23'
   - id: D60
@@ -4581,6 +4581,50 @@ items:
     owner: conductor
     status: open
     due: '2026-11-30'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T105
+    kind: task
+    text: 'W14-R follow-ups: module docstrings core/hangar/gates/claims.py:1 and core/hangar/claims/graph.py:1 still say every claim is recomputed (D60 wording); D46 ledger text says Studio cold start 149 s, the 11-23 re-run measured 278 s'
+    source: W14-R review 2026-11-24 (reviews/2026-11-24-w14.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D61
+    kind: decision
+    text: concept-a propulsion 1.1 data (spin, torque_per_thrust_m from DBF-Combined a_plant.py) is applied after Dec 2 and after T96 (cant direction) is settled, by a design-engineer who first confirms the LL/LR/UL/UR letters against the CAD; it turns the yaw SKIP into a FAIL, so it ships with a baseline accept in the same designs-only commit
+    source: conductor default on W17-T flag 4, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T106
+    kind: task
+    text: 'concept-a: apply the U4.15-t95 follow-up (propulsion.spin and torque_per_thrust_m with source, schema 1.1) after Dec 2 and after T96, per D61; confirm motor letters against CAD; baseline accept in the same commit; update deck/metrics FAIL counts'
+    source: W17-T 2026-11-24 (briefs/U4.15-t95.md follow-up)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T107
+    kind: task
+    text: 'v1.1 leftovers from U4.15 briefing: davinci push/pull ops once the adapter is real (D3; T67 covers only the list ops); T103 second half (link the 40 read_value inputs to design-computed values); T99 part 3 (criterion for untrimmed yaw at equal thrust, needs a pending threshold in standards/operations.yaml); docs/deck/index.html:49 says 51 ops (52 now, 55 after T67)'
+    source: W17-T 2026-11-24 (briefs/U4.15-*.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
     units: []
     evidence: ''
     decided_in: ''

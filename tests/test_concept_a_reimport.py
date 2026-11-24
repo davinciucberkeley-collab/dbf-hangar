@@ -9,7 +9,7 @@ def test_concept_a_has_the_u25d_blocks():
     assert len(d["wiring"]["harnesses"]) == 14 and d["transport"]["disassembly"][0]["group"] == "packed-airframe"
     assert d["requirements"]["transport_box_mm"] == [1200, 500, 400]
 def test_concept_a_bom_total():
-    assert call("bom.cost", path=str(A)).data["total_usd"] == pytest.approx(1323.39, abs=0.01)
+    assert call("bom.cost", path=str(A)).data["total_usd"] == pytest.approx(1262.50, abs=0.01)
 def test_every_verified_bom_line_keeps_url_and_date():
     items = load_design(A).data["bom"]["items"]
     assert all(i["url"] and i["verified"]["date"] for i in items if i.get("verified"))
