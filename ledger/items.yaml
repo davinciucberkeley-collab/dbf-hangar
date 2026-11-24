@@ -4807,7 +4807,7 @@ items:
     updated: '2026-11-23'
   - id: D70
     kind: decision
-    text: "Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide [U4.22 Part B conductor calls: CG y residue 0.12 mm accepted (y bound 0.15 mm); density by the brief's rule 0.03499; concept-a-param carries 10 extra tier-1/T6 FAIL rows (cut pockets follow the neutral pose only), baselined and listed in its README]"
+    text: "Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide [U4.22 Part B conductor calls: CG y residue 0.12 mm accepted (y bound 0.15 mm); density by the brief's rule 0.03499; concept-a-param carries 10 extra tier-1/T6 FAIL rows (cut pockets follow the neutral pose only), baselined and listed in its README] [correction (W23-R): concept-a-param has 14 new FAIL rows (wng-007 8 interference + 2 overlap, mec-002 2, T6 elevon 2) and lacks concept-a's 4 cge stress FAILs because fea/ was not copied; net 20 vs 10]"
     source: Tristan, P200, 2026-11-25
     owner: Tristan
     status: decided
@@ -4815,7 +4815,7 @@ items:
     units: []
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-24'
   - id: T116
     kind: task
     text: 'v1.1 parametric design (D70): G3: layout from a configuration (place wing, fins, booms, pack from a few top-level parameters and a morph-chart combination)'
@@ -4893,3 +4893,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D71
+    kind: decision
+    text: 'Overnight 2026-11-24 (Tristan P209/P210, defaults): the conductor takes decisions and approvals and merges to main after a fresh review and green CI (irreversible actions still wait); U4.25 pose-aware cut pockets merges only if reviewed and green by Sun 11-29; the 11-30 weekly entry is drafted, not published; when the queue is empty, run audits and quality-of-life improvements (fixes, docs, tests, small tooling) under the D66 light/full path rules'
+    source: Tristan, P209 and P210, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T123
+    kind: task
+    text: 'W23-R non-blocking (U4.22): test_old_designs_untouched should skip concept-a-param by name or require >= 8 old folders; wing-core test should assert no neutral-pose attachment-overlap row names wng-001; concept-a-param baseline was recorded without fea/, so running plane fea on it brings the 4 cge stress FAILs back'
+    source: W23-R review 2026-11-23 (reviews/2026-11-23-w23.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
