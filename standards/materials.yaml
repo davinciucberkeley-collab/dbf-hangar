@@ -1,0 +1,7 @@
+# Material densities for `mass_model` (PDL 1.2). Every entry needs a source; `source: pending` means provisional.
+# Kept apart from design-standards.yaml because core/hangar/fea.py hashes that file (D13, U2.3).
+version: "0.1"
+material_density_g_cm3:
+  value: {cfrp-tube: 1.6, petg-printed: 1.27, xps-foam: 0.025}
+  rule: "Density in g/cm3 of a generated part's material; mass = generated volume x density + extra_g. A design's own `materials` block overrides an id."
+  source: "cfrp-tube: DBF-Combined @ a93f14d redesign/qp/A/cad/amodel/common.py tube_g (rho 1600 kg/m3, 'STRUCTURES'); petg-printed: UltiMaker PETG TDS v1.00 specific gravity 1.27 (the sheet design-standards.yaml cites for the printed-PETG material record); xps-foam: amodel/wing.py PARTS WNG-001 label 'XPS 25 kg/m3'"

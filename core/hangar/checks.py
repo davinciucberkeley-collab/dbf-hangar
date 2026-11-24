@@ -40,9 +40,79 @@ def _below(design: Design, version: str) -> bool:
     return cur in KNOWN_VERSIONS and KNOWN_VERSIONS.index(cur) < KNOWN_VERSIONS.index(version)
 
 
+def _tier0_v12(design: Design) -> list[CheckResult]:
+    """PDL 1.2 rows (parameters, generators, mass_model); nothing at all for a design that uses none of it."""
+    src = design.raw if design.raw is not None else design.data
+    comps = [c for c in src.get("components", []) if isinstance(c, dict)]
+    gen_comps = [c for c in comps if isinstance(c.get("geometry"), dict) and "generator" in c["geometry"]]
+    mm_comps = [c for c in comps if "mass_model" in c]
+    has_params = "parameters" in src
+    if not (gen_comps or mm_comps or has_params):
+        return []
+    sch = "schema/plane.schema.json"
+    res: list[CheckResult] = []
+    if _below(design, "1.2"):
+        used = [n for n, u in (("generator geometry", bool(gen_comps)), ("parameters", has_params),
+                               ("mass_model", bool(mm_comps))) if u]
+        res.append(CheckResult("T0.version", FAIL, f"{' / '.join(used)} need schema_version \"1.2\"", sch))
+    if has_params or gen_comps:
+        from .geom.params import find_references
+        params = src.get("parameters") if isinstance(src.get("parameters"), dict) else {}
+        refs = find_references(src)
+        bad = [(cid, path, name) for cid, path, name in refs if name not in params]
+        for cid, path, name in bad:
+            res.append(CheckResult("T0.parameters", FAIL,
+                                   f"component {cid}: {path} references ${name}, which is not in parameters",
+                                   sch, {"component": cid}))
+        if has_params and not bad:
+            res.append(CheckResult("T0.parameters", PASS, f"{len(params)} parameters, {len(refs)} references resolved", sch))
+    from .geom import registry
+    by_id = {c.get("id"): c for c in design.data.get("components", []) if isinstance(c, dict)}
+    failed = False
+
+    def fail(cid, msg):
+        nonlocal failed
+        failed = True
+        res.append(CheckResult("T0.generator", FAIL, f"component {cid}: {msg}", sch, {"component": cid}))
+
+    for c in gen_comps:
+        cid = c.get("id")
+        n0 = len(res)
+        try:
+            gen = registry.get(c["geometry"]["generator"])
+        except KeyError as e:
+            fail(cid, e.args[0])
+            continue
+        resolved = by_id.get(cid, c)
+        for msg in registry.validate_params(gen, (resolved.get("geometry") or {}).get("params") or {}):
+            fail(cid, msg)
+        if "mass_model" not in c and "mass_g" not in c:
+            fail(cid, "a generated component needs mass_model or mass_g")
+        if len(res) == n0 and cid in design.resolve_errors:
+            fail(cid, design.resolve_errors[cid])
+        elif len(res) == n0 and "mass_model" not in c:      # never built by the resolver: build it here
+            from .geom.kernel import GeometryError
+            from .geom.resolve import generated_volumes
+            try:
+                generated_volumes(resolved, design.base_dir)
+            except GeometryError as e:
+                fail(cid, str(e).removeprefix(f"{cid}: "))
+    for c in mm_comps:
+        if c not in gen_comps:
+            fail(c.get("id"), "mass_model needs a generator geometry (use mass_g for other geometry)")
+    if gen_comps and not failed:
+        res.append(CheckResult("T0.generator", PASS, f"{len(gen_comps)} generated component(s) build watertight", sch))
+    return res
+
+
 def tier0_schema(design: Design) -> TierReport:
     schema = json.loads(SCHEMA_PATH.read_text())
-    errors = sorted(Draft202012Validator(schema).iter_errors(design.data), key=lambda e: list(e.path))
+    # PDL 1.2: validate the file as written with its "$name" references resolved (design.data also carries generated mass_g)
+    schema_data = design.data
+    if design.raw is not None:
+        from .geom.params import resolve_references
+        schema_data = resolve_references(design.raw)
+    errors = sorted(Draft202012Validator(schema).iter_errors(schema_data), key=lambda e: list(e.path))
     unknown = [e for e in errors if e.validator == "enum" and len(e.path) == 3
                and e.path[0] == "components" and isinstance(e.path[1], int) and e.path[2] == "type"]
     errors = [e for e in errors if e not in unknown]
@@ -108,6 +178,7 @@ def tier0_schema(design: Design) -> TierReport:
     if v11 and _below(design, "1.1"):
         res.append(CheckResult("T0.version", FAIL, ", ".join(f"propulsion.{k}" for k in v11) + " need schema_version \"1.1\"",
                                "schema/plane.schema.json"))
+    res.extend(_tier0_v12(design))
     both = [c["id"] for c in design.data.get("components", [])
             if "planform" in c and "lifting_surface" in c.get("geometry", {})]
     if both:

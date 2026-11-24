@@ -1,0 +1,18 @@
+schema_version: "1.2"
+id: gen-rod
+name: Generated rod fixture
+status: concept
+morphology: {lift: flying-wing, vtol_method: none}
+parameters:
+  rod_len_mm: 100
+  rod_od_mm: 10
+root: rod
+components:
+  - id: rod
+    type: structure
+    geometry: {generator: tube, params: {axis: x, center: [0, 0, 0], length: "$rod_len_mm", outer_d: "$rod_od_mm", inner_d: 8}}
+    position: [0, 0, 0]
+    mass_model: {material: cfrp-tube}
+  - {id: ballast, type: other, geometry: {point_mass: {}}, position: [100, 0, 0], mass_g: 10}
+attachments:
+  - {id: rod-ballast, parent: rod, child: ballast, method: bolted, location: [50, 0, 0], rated_load_n: 10}

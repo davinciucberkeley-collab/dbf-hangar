@@ -523,6 +523,9 @@ def remove_item(text: str, key: str, item) -> tuple[str, list, list]:
 
 
 def _errors(data) -> dict:
+    if isinstance(data, dict) and "parameters" in data:     # PDL 1.2: a "$name" reference stands for a number
+        from .geom.params import resolve_references
+        data = resolve_references(data)
     v = Draft202012Validator(json.loads(SCHEMA_PATH.read_text(encoding="utf-8")))
     return {(tuple(map(str, e.absolute_path)), e.message): e for e in v.iter_errors(data)}
 
