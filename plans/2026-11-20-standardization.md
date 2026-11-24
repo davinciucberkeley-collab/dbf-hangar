@@ -697,7 +697,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1:** Ranking and scout/recon briefs (tactician W21-T) *(cda9184; finding: the joint gates read each joint's own rating, not the library, so library sources clear 0 of the 64 SKIPs; only landing_load_factor moves fidelity; S1, S4, X1 launched, S2/S3 held)*
 - [x] **Step 2:** Sources (scouts W21-S, recon W21-X) *(S1: 4 of 5 sourced; S4: 0 of 5; X1: landing_load_factor pending on gear travel, T113; S2/S3 not run)*
 - [x] **Step 3:** Values into standards; concept-a re-run; baseline refresh (builder W21-B) *(795cc3e: 3 types sourced, pending 31 -> 28; concept-a counts and fidelity unchanged as D68 expected; no baseline change)*
-- [ ] **Step 4: Review** (reviewer W21-R); James reads the values; merge
+- [ ] **Step 4: Review** (reviewer W21-R); James reads the values; merge *(REOPEN once (4 note fixes), ACCEPT; merged 2bcd1d8; James's read open)*
 
 ### Unit U4.20: Process trim (D66; T112; P198)
 

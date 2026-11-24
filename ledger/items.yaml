@@ -4235,13 +4235,13 @@ items:
     updated: '2026-11-23'
   - id: T82
     kind: task
-    text: 'standards/connection-types.yaml: CT-TAPE-FOAM, CT-TAPE-HINGE, CT-EPOXY, CT-GEL-PAD, CT-STRAP-VELCRO have no rated_load_n, and 63 concept-a joints carry derived ratings pending a sourced value (107 T2.joint_rf WARN, report-only to 12-08); source ratings with citations'
+    text: "standards/connection-types.yaml: CT-TAPE-FOAM, CT-TAPE-HINGE, CT-EPOXY, CT-GEL-PAD, CT-STRAP-VELCRO have no rated_load_n, and 63 concept-a joints carry derived ratings pending a sourced value (107 T2.joint_rf WARN, report-only to 12-08); source ratings with citations [U4.19 merged 2bcd1d8: CT-EPOXY, CT-CA, CT-TAPE-HINGE sourced (stress notes), CT-TAPE-FOAM/STRAP-VELCRO/HATCH-HL notes; 28 types still pending; James to review values (reviews/2026-11-25-w21.md 'For James')]"
     source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
     owner: James
     status: open
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: 2bcd1d8
     decided_in: ''
     updated: '2026-11-23'
   - id: D52
