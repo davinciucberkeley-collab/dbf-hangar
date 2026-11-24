@@ -17,9 +17,9 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.3 Hardening and v1.1 batch 1 | 4 | 4 |
 | W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | 5 | 5 |
 | W4.5 Team adoption, CI, ratings, process | 4 | 2 |
-| W4.6 Parametric geometry for the demo (D70) | 2 | 0 |
+| W4.6 Parametric geometry for the demo (D70) | 2 | 1 |
 | W4.7 Presentation | 1 | 0 |
-| **all** | 43 | 38 |
+| **all** | 43 | 39 |
 
 ### Open ledger items by owner
 
@@ -28,7 +28,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 29 | 2026-12-08 |
 | James | 2 | 2026-11-29 |
 | Tristan | 9 | 2026-12-05 |
-| conductor | 21 | 2026-12-08 |
+| conductor | 22 | 2026-12-08 |
 
 ### Open items for teammates
 
@@ -135,7 +135,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 1/3 | in progress | - |
+| U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 3/3 | done | ACCEPT |
 | U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 1/3 | in progress | - |
 
 ### W4.7 Presentation
@@ -149,7 +149,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 47 | 72 | 0 | 2 | 0 | 121 |
+| task | 48 | 72 | 0 | 2 | 0 | 122 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 256 | 272 |
 

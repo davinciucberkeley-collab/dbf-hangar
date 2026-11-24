@@ -731,8 +731,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** `hangar.geom` built from `core/hangar/importers/dbf_geometry.py` (prism, revolve, loft, tube, box, cuts -> watertight trimesh; mass = density x volume from standards materials); PDL schema 1.2: a component may give `geometry: {generator, params}` instead of a mesh file, and a design-level `parameters:` block that params reference; tier 0 checks references; `design set` on a parameter or generator param regenerates the affected meshes and masses and logs one CHANGELOG entry; migrate 1.1 -> 1.2; viewer/export pick up generated meshes. Tests check volumes and masses against hand calculations.
 
 - [x] **Step 1: Brief** (tactician W23-T) *(0df19b6; generated meshes computed on load, PDL 1.2 parameters + `$name` refs + mass_model; cut line in the brief)*
-- [ ] **Step 2: Build** (builder-plus W23-B)
-- [ ] **Step 3: Review** (reviewer W23-R); merge
+- [x] **Step 2: Build** (builder-plus W23-B) *(b21c1b1, a7434a5, 45d47bb; fix fe08487)*
+- [x] **Step 3: Review** (reviewer W23-R); merge *(REOPEN once: slow test pin, T0.generator build, FEA hash of mesh_file; ACCEPT; merged 225c1b7; follow-ups S2, S4-S7 in reviews/2026-11-23-w23.md)*
 
 ### Unit U4.22: First generators and a parametric copy of concept-a (G2; D70) [hard]
 

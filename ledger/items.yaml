@@ -4882,3 +4882,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: T122
+    kind: task
+    text: "W23-R non-blocking (G1): T0.parameters PASS counts a reference to a non-number parameter as resolved (checks.py:68); mass_model volume ignores cavities; duplicate volume cache in resolve.py vs geometry.py; materials.py computes repo root instead of REPO_ROOT; data['regenerated'] only when non-empty; an unrelated design set is refused while any generated part fails; _aircraft catches every exception (resolve.py:87)"
+    source: W23-R review 2026-11-23 (reviews/2026-11-23-w23.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
