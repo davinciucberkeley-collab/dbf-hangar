@@ -5058,3 +5058,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-24'
+  - id: D78
+    kind: decision
+    text: 'Any-aircraft scope: the Dec 2 prompt may name any real aircraft (A400M, Cessna 172, ...). Capabilities are general: a reference-aircraft research template filled per request, a generator set covering common configurations (high/low wing, struts, nacelles, props, cowls, fixed/retract gear, conventional/T/V tails), and a real-parts library. A400M is the demo example; the rehearsal uses two aircraft not built before (A400M and Cessna 172) to prove generality'
+    source: Tristan, P229, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'

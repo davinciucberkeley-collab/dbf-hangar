@@ -158,9 +158,9 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.29 | Parameter changes propagate to attached parts (T129; D75) [hard] | 1/3 | in progress | - |
 | U4.30 | Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard] | 0/3 | not started | - |
 | U4.31 | Real-parts library (D77) | 0/3 | not started | - |
-| U4.32 | Shape generators for transport-style aircraft (D77) [hard] | 0/3 | not started | - |
-| U4.33 | A400M references (D77) | 0/2 | not started | - |
-| U4.34 | A400M rehearsal (D77) | 0/3 | not started | - |
+| U4.32 | Shape generators for common aircraft configurations (D77, D78) [hard] | 0/3 | not started | - |
+| U4.33 | Reference-aircraft research template (D77, D78) | 0/2 | not started | - |
+| U4.34 | Any-aircraft rehearsal (D77, D78) | 0/3 | not started | - |
 
 ## Ledger
 
@@ -169,7 +169,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
 | task | 46 | 81 | 1 | 2 | 0 | 130 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 263 | 279 |
+| decision | 12 | 0 | 0 | 4 | 264 | 280 |
 
 ## Overdue
 
