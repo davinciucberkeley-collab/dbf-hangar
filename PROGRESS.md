@@ -68,16 +68,16 @@
 | U4.12 | Dec 2 prep: demo re-run on current main, claims wording sweep (U4.2 Step 2, T104; P186) | 1/3 | in progress | - |
 | U4.13 | BOM spares double count (T94; P186) | 3/3 | done | - |
 | U4.14 | v1.1 cleanup, second batch (T99, T100, T101, T102; P186) | 2/3 | in progress | - |
-| U4.15 | v1.1 features (T95, T103, T67; P186) | 0/3 | not started | - |
+| U4.15 | v1.1 features (T95, T103, T67; P186) | 1/3 | in progress | - |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 42 | 61 | 0 | 2 | 0 | 105 |
+| task | 44 | 61 | 0 | 2 | 0 | 107 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 246 | 262 |
+| decision | 12 | 0 | 0 | 4 | 247 | 263 |
 
 ## Overdue
 

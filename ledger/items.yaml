@@ -4596,3 +4596,36 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D61
+    kind: decision
+    text: concept-a propulsion 1.1 data (spin, torque_per_thrust_m from DBF-Combined a_plant.py) is applied after Dec 2 and after T96 (cant direction) is settled, by a design-engineer who first confirms the LL/LR/UL/UR letters against the CAD; it turns the yaw SKIP into a FAIL, so it ships with a baseline accept in the same designs-only commit
+    source: conductor default on W17-T flag 4, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T106
+    kind: task
+    text: 'concept-a: apply the U4.15-t95 follow-up (propulsion.spin and torque_per_thrust_m with source, schema 1.1) after Dec 2 and after T96, per D61; confirm motor letters against CAD; baseline accept in the same commit; update deck/metrics FAIL counts'
+    source: W17-T 2026-11-24 (briefs/U4.15-t95.md follow-up)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T107
+    kind: task
+    text: 'v1.1 leftovers from U4.15 briefing: davinci push/pull ops once the adapter is real (D3; T67 covers only the list ops); T103 second half (link the 40 read_value inputs to design-computed values); T99 part 3 (criterion for untrimmed yaw at equal thrust, needs a pending threshold in standards/operations.yaml); docs/deck/index.html:49 says 51 ops (52 now, 55 after T67)'
+    source: W17-T 2026-11-24 (briefs/U4.15-*.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
