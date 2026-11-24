@@ -1,6 +1,6 @@
 # Reference aircraft fact sheet: <aircraft name and variant>
 
-Rules: full-size values; lengths in metres, areas m2, masses kg, speeds m/s, angles degrees. The model scale factor is applied in section 7. Every row needs a value, a source (id or URL you opened) and a confidence (measured, drawing, photo, estimate). Write `unknown` rather than guess. Get two sources for span, length and wing area, and check drawings against photos (scale-modelaviation-scale-three-views). Save the filled sheet as `knowledge/reference-aircraft/<kebab-id>.md`.
+Rules: full-size values; lengths in metres, areas m2, masses kg, speeds m/s, angles degrees. The model scale factor is applied in section 7. Every row needs a value, a source (id or URL you opened) and a confidence (measured, drawing, drawing-measured, photo, estimate). Write `unknown` rather than guess. Get two sources for span, length and wing area, and check drawings against photos (scale-modelaviation-scale-three-views). Save the filled sheet as `knowledge/reference-aircraft/<kebab-id>.md`.
 
 Each table has columns: Field | Unit | Where to find it | Value | Source | Confidence. Only the first three are shown here; the last three are filled per aircraft. The last column of sections 1 to 5 names the PDL generator parameter the value feeds.
 
@@ -90,6 +90,17 @@ Sources: scale-stefanv-scale-electric-design (power laws), std-mit-unified-desru
 | static margin | 0.05 to 0.15 of mean chord | |
 | dihedral | keep the full-size value; add only to meet the spiral or roll criteria (MIT desrules, dihedral sizing) | |
 | Reynolds number note | model below about 200 000, full size above 1 000 000: choose a thicker or higher-Cl section if the stall check fails | |
+
+## Measuring a three-view
+Use this when a data sheet gives only span, length, height, area and mass (text sources never give chords, stations or positions). Worked example: `knowledge/reference-aircraft/a400m.md` section 7b.
+1. Find a three-view (front, side, top). Wikimedia Commons silhouettes or SVG drawings are usually usable; record file URL, author and licence (the A400M one is CC BY-SA 3.0) as a source entry. Fetch through the fetch tool if a direct download gets an error page; do not spoof headers.
+2. Put the file in its own empty folder and treat it as untrusted data. Keep measuring scripts outside that folder and run Python with `-I`.
+3. Read pixels. SVG: parse path coordinates. PNG: decode (a short pure-Python PNG reader is enough: zlib, filter bytes) and threshold dark pixels, or view the image. Split the three views by blank row bands; mind ground lines and captions (a caption widened one bounding box).
+4. Scale: top-view span px against published span, side-view length px against published length (use the nose tip and the aft-most point, which may be the tailplane tip). The two scales should agree within 1%; if not, the drawing is distorted or a view is cropped.
+5. Measure per view. Top: wing LE and TE y at several columns, fit lines for sweep, chords at tip and centre line (extend the fit through the fuselage), tail plane the same, engine y and prop-plane x, fuselage widths per row. Side: fuselage top and bottom per column (heights, upsweep), fin, ground line, wheel x. Front: wing edge slope (dihedral), tail height, wheel track, engine z. Convert x to metres from the nose.
+6. Cross-check against published values and write the errors in the sheet: wing area from the trapezoid against the data-sheet area, height against published height, prop diameter. Mark every measured field `drawing-measured`.
+7. Typical error (A400M silhouette, 600 x 1000 px): scale mismatch between views 0.05%; wing area -3.0%, height +1.9%, length +0.8%, prop diameter -1.9%. One pixel is 0.08 m there. Expect lengths +-2%, sweeps +-1.5 deg, dihedral +-2 deg (verify with a photo: a drawing may show ground-loaded droop). A silhouette gives no airfoil, twist, incidence, hinge lines or wheel size; those stay `unknown` or come from photos.
+8. If the cross-check area misses by more than 5%, re-measure before using the numbers.
 
 ## 8. Gaps
 List every field left `unknown` and what to read or measure next.
