@@ -55,6 +55,13 @@ def test_fixed_wing_gets_not_applicable_rows():
             assert r.status == SKIP and r.message.startswith("not applicable:") and r.data["not_applicable"] is True
 
 
+def test_not_applicable_stays_skip_in_report_only_mode():
+    sc = run_gates(fixed_wing(), 9, today=TODAY)
+    for cid in IDS:
+        rs = rows(sc, cid)
+        assert rs and all(r.status == SKIP and r.message.startswith("not applicable:") for r in rs), cid
+
+
 def test_vtol_design_unchanged():
     sc = card(vtol())
     for cid in IDS:
