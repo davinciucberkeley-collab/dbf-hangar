@@ -32,6 +32,15 @@ def generated_volumes(c: dict, base_dir: Path) -> list[float]:
 def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]]:
     data = resolve_references(raw)
     errors: dict[str, str] = {}
+    for c in data.get("components") or []:
+        g = c.get("geometry") if isinstance(c, dict) else None
+        gp = g.get("params") if isinstance(g, dict) and g.get("generator") == "wing_panel" else None
+        if isinstance(gp, dict) and gp.get("cut_files") and gp.get("cut_sweep", "swept") == "swept":
+            try:
+                from hangar.geom.sweeps import swept_cut_poses
+                gp["cut_poses"] = swept_cut_poses(data, list(gp["cut_files"]), base_dir, str(c.get("id")))
+            except Exception as e:
+                errors[str(c.get("id"))] = f"cut_sweep: {e}"
     design_materials = data.get("materials") if isinstance(data.get("materials"), dict) else None
     for c in data.get("components") or []:
         mm = c.get("mass_model") if isinstance(c, dict) else None

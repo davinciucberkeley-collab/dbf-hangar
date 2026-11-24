@@ -4,8 +4,8 @@ Adapted from DBF-Combined redesign/fusion/k09kit.py (read_dat, section_loop, ele
 wing.py (build_wing core loft and spar bore). Lengths mm, angles degrees, component-local frame.
 
 Not ported: the `te_min` trailing-edge opening of k09kit.section_loop, the cove, and the explicit pockets and slots of
-amodel/wing.py build_wing; only what `cut_files` removes is cut. Known limit: the cut_files pockets are the
-neighbours' meshes as stored, they do not follow a neighbour that is moved later.
+amodel/wing.py build_wing; only what `cut_files` removes is cut. Known limit: the pockets follow a neighbour only
+over the poses the resolver samples (T1 configurations and T6 mechanism steps, see sweeps.py), not over every angle.
 """
 from __future__ import annotations
 
@@ -120,7 +120,17 @@ def _build(p: dict, base_dir) -> list:
         lo, hi = core.bounds[0][1], core.bounds[1][1]
         cyl = kernel.tube("y", (p["bore_x"], (lo + hi) / 2.0, p["bore_z"]), (hi - lo) + 2.0, p["bore_d"])
         core = kernel.difference(core, [cyl])
-    cuts = [_load_cut(base_dir, f) for f in p["cut_files"]]
+    poses = {e["file"]: e["matrices"] for e in p.get("cut_poses", [])}
+    cuts = []
+    for f in p["cut_files"]:
+        m = _load_cut(base_dir, f)
+        cuts.append(m)
+        for row in poses.get(f, []):
+            t = np.eye(4)
+            t[:3] = np.array(row, dtype=float).reshape(3, 4)
+            moved = m.copy()
+            moved.apply_transform(t)
+            cuts.append(moved)
     hit = [m for m in cuts if np.all(m.bounds[0] < core.bounds[1]) and np.all(m.bounds[1] > core.bounds[0])]
     if hit:
         core = kernel.difference(core, hit)
@@ -143,6 +153,11 @@ def _check(p: dict) -> list[str]:
             errs.append("elevon_y: need 0 <= y0 < y1 <= span/2")
     if not all(isinstance(f, str) for f in p["cut_files"]):
         errs.append("cut_files: must be a list of strings")
+    for e in p.get("cut_poses", []):
+        ok = isinstance(e, dict) and e.get("file") in p["cut_files"] and isinstance(e.get("matrices"), list) and all(
+            isinstance(m, list) and len(m) == 12 and all(isinstance(x, (int, float)) for x in m) for m in e["matrices"])
+        if not ok:
+            errs.append(f"cut_poses: each entry needs a file from cut_files and matrices of 12 numbers, got {e!r}"[:200])
     return errs
 
 
@@ -161,5 +176,8 @@ register(Generator(
      "elevon_y": ParamSpec("vec2", default=[0.0, 0.0], doc="[y0, y1] on |y|"),
      "side": ParamSpec("choice", default="both", choices=("both", "right", "left")),
      "bore_x": ParamSpec("number"), "bore_z": ParamSpec("number"), "bore_d": ParamSpec("number"),
-     "cut_files": ParamSpec("list", default=[], doc="design-folder-relative closed-solid meshes subtracted from the core")},
+     "cut_files": ParamSpec("list", default=[], doc="design-folder-relative closed-solid meshes subtracted from the core"),
+     "cut_sweep": ParamSpec("choice", default="swept", choices=("none", "swept"),
+                            doc="swept: pockets also follow the poses of cut meshes that move (resolver fills cut_poses)"),
+     "cut_poses": ParamSpec("list", default=[], doc="derived by the resolver from the design's joints when cut_sweep is swept; do not write")},
     _build, files=lambda p: [p["airfoil_file"]] + list(p["cut_files"]), check=_check))
