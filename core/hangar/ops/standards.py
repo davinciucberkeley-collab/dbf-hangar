@@ -9,7 +9,6 @@ from ..gates.interfaces import load_connection_types
 
 KINDS = ("mechanical", "electrical", "thermal", "kinematic")
 SOURCES_DIR = REPO_ROOT / "knowledge" / "sources"
-# TODO(U2.1): replace with gates.yaml blocking flags
 BLOCKING_KEYS = ("landing_load_factor", "hover_thrust_to_weight_min")
 
 
