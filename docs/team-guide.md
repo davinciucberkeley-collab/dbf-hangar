@@ -134,7 +134,7 @@ The server finds the repo from where the package is installed, not from the fold
 Desktop asks before it uses a tool ("Allow once" or "Always allow"). Change it later on the connector page under Tool permissions. That the same menu applies to servers set up in the config file is presumed, not verified.
 
 - Keep every write tool on "Needs approval": at least `design_set`, `design_new`, `design_copy`, `design_propose`, `design_migrate`, `save_design`, `fea_run`, `fea_setup`, `ledger_*`, `update_*`, `idea_add`, `research_new`.
-- "Always allow" only readers: `design_get`, `design_validate`, `design_diff`, `design_sweep`, `design_mass`, `gate_*`, `claim_*`, `bom_cost`, `bom_list`, `standards_*`, `tools_doctor`.
+- "Always allow" only readers: `design_get`, `design_validate`, `design_diff`, `design_sweep`, `design_mass`, `gate_*`, `claim_check`, `claim_explain`, `claim_list`, `bom_cost`, `bom_list`, `standards_*`, `tools_doctor`.
 
 Never use `save_design` for edits. It writes the whole file and bypasses `design_set` and `CHANGELOG.yaml`. It checks only tier 0. Edits go through `design_set`.
 
@@ -164,7 +164,8 @@ Test it once: open a chat in the Project and check that the Connectors list show
 ### Limits of Setup B
 
 - No tests run in the chat. CI runs them on the PR (the `validate` workflow, on Windows and Linux).
-- No git. `design_propose` is the only way a change leaves your machine. It needs `gh` logged in, push access (O1) and uncommitted changes in that design folder.
+- No git. `design_propose` is the only way a change leaves your machine. It needs `gh` logged in, push access (O1) and uncommitted changes in that design folder. It also needs `git` and `gh` on the PATH that the Desktop-launched server sees. That is unverified: check it when you set up with Tristan.
+- No baseline tool and no git in the chat. A design that needs a `baseline.json`, or an update to an open PR, must be finished in Setup A (or by Tristan). `design_propose` from Desktop always opens a new PR.
 - It branches from the clone's current HEAD, so keep the clone on an up-to-date `main`.
 
 ## 4. Task: design work
@@ -188,14 +189,14 @@ Use this to make a design, change it, compare it and hand it over.
 - Makes a design folder `designs/<id>/` with `plane.yaml` (written in PDL, see [pdl/README.md](pdl/README.md)) and a `CHANGELOG.yaml`. Tools: `design_new` (or `design_copy`).
 - Changes one key at a time with `design_set` (CLI: `plane design set`). It always gives a reason, and the change goes into `CHANGELOG.yaml`.
 - Re-checks with `design_validate` (tiers T0 to T9), then `claim_check` if the design has claims. Tries values with `design_sweep` (a scratch copy: your file is untouched). Compares with `design_diff`.
-- If the design has known FAIL or SKIP rows, it records them with `plane baseline update`. A new design that is not fully accepted needs this, or CI fails. A full design takes about 3 minutes.
+- Setup A only: if the design has known FAIL or SKIP rows, it records them with `plane baseline update`. A new design that is not fully accepted needs this, or CI fails. A full design takes about 3 minutes.
 - On "Propose this change": uses `design_propose` (CLI: `plane design propose`). Do not commit first: propose commits for you. It needs uncommitted changes in that design folder. It makes the branch `design/<id>/<slug>` from your current HEAD, commits only that design folder, pushes and opens a PR. It does not merge. It needs `gh` logged in and push access (O1).
 
 **Check the answer:**
 
 - The reply shows the old and new value (`requirements.mtow_g: 900 -> 950`), the result of `design_validate` with failing and WARN rows named, and the PR link.
 - A rejected value (wrong type or key) leaves the file untouched. Claude should say so and fix the value.
-- After review feedback, do not open a second PR. Ask: "Update my open PR." Claude switches to the PR branch `design/<id>/<slug>`, makes the change, commits and pushes to the same branch.
+- Setup A only: after review feedback, do not open a second PR. Ask: "Update my open PR." Claude switches to the PR branch `design/<id>/<slug>`, makes the change, commits and pushes to the same branch.
 - Red flags, stop and ask Tristan: Claude committed design edits on local `main`, edited a file by hand, used `save_design`, edited `designs/concept-a/plane.yaml` directly, touched `core/` in the same commit, or says a change is "merged" when only a PR is open.
 - Not every key moves the numbers. `requirements.mtow_g` is a requirement, so sweeping it gives identical results. Use a key that drives the physics, such as `flight.cl_max`.
 - Never update a baseline to hide a regression. Update it only when you fixed rows or created the design.
@@ -308,7 +309,7 @@ Use this to check stress, drop loads and mass.
 
 **Ask:**
 
-> Run the stress check on the left wing spar of concept-a.
+> Run the stress check on the wing spar (wng-002) of concept-a.
 >
 > Run the drop test on my-test and tell me which joint is closest to its limit.
 >
@@ -400,6 +401,8 @@ Nobody but Tristan edits `plans/`, `reviews/`, `ledger/`, `PROGRESS.md`, `.githu
 9. Work comes from ledger tasks (O4). Your branch and PR text name the ledger id. You do not edit the ledger. Tell Tristan, who closes the item with evidence.
 
 ## 11. Ledger and weekly update
+
+Needs: setup A
 
 Read this to see project status and post your weekly update.
 
@@ -539,7 +542,7 @@ requirements.budget_usd: 250 -> 300
 1.0: accepted=True mass_g=759.0 static_margin=0.1404 stall_speed_mps=7.79 hover_tw=2.418 failures=[]
 1.2: accepted=True mass_g=759.0 static_margin=0.1404 stall_speed_mps=7.12 hover_tw=2.418 failures=[]
 1.4: accepted=True mass_g=759.0 static_margin=0.1404 stall_speed_mps=6.59 hover_tw=2.418 failures=[]
-requirements.mtow_g: 950 -> 900
+requirements.mtow_g: 950 -> 900   (example; the real diff prints one line per differing key, several for a fresh copy)
 ```
 
 A bad value or key exits 2 and leaves the file untouched:
