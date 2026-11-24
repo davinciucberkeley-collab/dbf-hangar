@@ -5,6 +5,8 @@ import os
 import re
 import shutil
 import subprocess
+import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Literal
@@ -194,9 +196,17 @@ def sweep_op(path: str, key: str, *, values: list[str]) -> OpResult:
         pdledit.check_schema(before, yaml.safe_load(t), key)
         pairs.append((raw, t))
     did = str(before.get("id", plane.parent.name))
-    root = _sweep_root() / did
-    if root.exists():
-        shutil.rmtree(root)
+    base = _sweep_root() / did
+    base.mkdir(parents=True, exist_ok=True)
+    stamp = datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S')
+    root = Path(tempfile.mkdtemp(prefix=f"{stamp}-{os.getpid()}-", dir=base))
+    cutoff = time.time() - 86400
+    for sib in base.iterdir():
+        try:
+            if sib != root and sib.stat().st_mtime < cutoff:
+                shutil.rmtree(sib, ignore_errors=True)
+        except OSError:
+            pass
     rows = []
     for n, (raw, t) in enumerate(pairs, 1):
         dst = root / str(n)
