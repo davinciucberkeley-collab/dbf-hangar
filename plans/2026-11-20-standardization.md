@@ -635,6 +635,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W13-T, W13-B, W13-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.11 (T28; D59) | `briefs/U4.11-t28.md` (refresh of `U4.3-t28.md`), branches `std/u4.11-t28` (core), `std/u4.11-t28-docs` (deck/metrics/claims data), `reviews/2026-11-23-w13.md` | builder-ready bar; claim counts before/after; "### Verdict:" |
 | W14-T, W14-B, W14-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.12 (demo re-run on main, T104) | `u4.2/demo-script.md`, `briefs/U4.12-t104.md`, branch `std/u4.12-t104`, `reviews/2026-11-24-w14.md` | every demo step re-run on a scratch clone; "### Verdict:" |
 | W14-A | `advisor` | Opus | U4.12 CI: T104 branch fails `test_propose_link_survives_real_git_side_effects` on windows twice (GLB 404), T84 reopened | diagnosis in `reviews/2026-11-24-w14.md` | names cause and one fix, who builds it |
+| W14-T2, W14-B2 | `tactician`, `builder-plus` | Sonnet, Sonnet | U4.12 step 4 (T84 reopened: Studio fixes its folders at construction, W14-A) | `briefs/U4.12-t84.md`, branch `std/u4.12-t84`, review by W14-R | new isolation test fails on main; windows CI green |
 | W15-T, W15-B, W15-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.13 (T94) | `briefs/U4.13-t94.md`, branches `std/u4.13-t94` (core), `std/u4.13-t94-design` (designs), `reviews/2026-11-24-w15.md` | BOM total before/after; "### Verdict:" |
 | W16-T, W16-B, W16-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.14 (T99, T100, T101, T102) | `briefs/U4.14-*.md`, branches `std/u4.14-*`, `reviews/2026-11-24-w16.md` | builder-ready bar; "### Verdict:" |
 | W17-T, W17-B, W17-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.15 (T95, T103, T67) | `briefs/U4.15-*.md`, branches `std/u4.15-*`, `reviews/2026-11-24-w17.md` | builder-ready bar; schema minor version for T95; "### Verdict:" |
@@ -1333,8 +1334,9 @@ Not a code unit; it tests everything above.
 **Scope:** re-run every step of `u4.2/demo-script.md` on a scratch clone of current main (never `designs/`) and update expected outputs, wall times and fallbacks; brief and build T104 (README.md, docs/cli.md wording per D60). The backup video stays with Tristan.
 
 - [x] **Step 1:** Demo re-run and T104 brief (tactician W14-T) *(d54bef8: re-run on 39c7c58, steps 2-6 pass, issues 9-11 added (11-30 URL 404 until merged + Pages run; cold Studio 278 s); `update publish` not run (permission refused), read from code)*
-- [ ] **Step 2:** Build T104 (W14-B)
-- [ ] **Step 3: Review** (reviewer W14-R); merge; T104 done
+- [x] **Step 2:** Build T104 (W14-B) *(5b31c07)*
+- [x] **Step 3: Review** (reviewer W14-R); merge; T104 done *(T104 ACCEPT, merged c7a5dc7 with windows red only on the T84 race (W14-A diagnosis); demo re-run REOPEN once, ACCEPT 7540ad7; follow-up T105)*
+- [ ] **Step 4:** T84 reopened in place: Studio stores DESIGNS_DIR/DATA_DIR/CACHE_FILE at construction so leaked workers cannot touch another test's sandbox (W14-A); brief W14-T2, build W14-B2 (builder-plus), review W14-R
 
 ### Unit U4.13: BOM spares double count (T94; P186)
 

@@ -4268,13 +4268,13 @@ items:
     updated: '2026-11-23'
   - id: T84
     kind: task
-    text: 'Flaky CI: tests/test_viewer_static.py::test_propose_link_survives_real_git_side_effects:350 404 console error (ubuntu runs 45165154819, 45167246241; windows main 45163693398) [reopened 2026-11-24: test_propose_link_survives_real_git_side_effects 404 on a concept-a GLB again on windows (W14-R, run 45300604062)]'
+    text: "Flaky CI: tests/test_viewer_static.py::test_propose_link_survives_real_git_side_effects:350 404 console error (ubuntu runs 45165154819, 45167246241; windows main 45163693398) [reopened 2026-11-24: test_propose_link_survives_real_git_side_effects 404 on a concept-a GLB again on windows (W14-R, run 45300604062)] [cause (W14-A): leaked Studio worker threads from test_studio tests read module-level DESIGNS_DIR/DATA_DIR at job time and delete the live test's newest .glb; fix: Studio stores its folders at construction]"
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
     status: open
     due: '2026-11-30'
     units: []
-    evidence: '45300604062'
+    evidence: reviews/2026-11-24-w14.md
     decided_in: ''
     updated: '2026-11-23'
   - id: T85
@@ -4579,10 +4579,10 @@ items:
     text: "D60 wording sweep outside U4.11: README.md:55 ('recomputed from the design's values on every check') and docs/cli.md:86 / claim check summary ('Recompute every claim') overstate the 40 read_value claims; say stored results are read from source and checked against limits (W13-R part 2)"
     source: W13-R review 2026-11-23 (reviews/2026-11-23-w13.md Part 2)
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-30'
     units: []
-    evidence: ''
+    evidence: c7a5dc7
     decided_in: ''
     updated: '2026-11-23'
   - id: T105
