@@ -17,7 +17,7 @@ def test_cli_doc_lists_every_op_and_no_missing_command():
     text = build_cli_reference()
     for s in registry().values():
         assert f"### `plane {s.group} {s.verb}`" in text
-    for ghost in ("plane bom list", "plane morph list", "plane idea list", "plane davinci push", "plane davinci pull"):
+    for ghost in ("plane davinci push", "plane davinci pull"):
         assert ghost not in text
 
 

@@ -217,3 +217,14 @@ def test_ledger_set_rejects_an_impossible_due_date_exit2(root):  # T85
     call("ledger.add", kind="task", text="x", source="t")
     r = call("ledger.set", item_id="T1", status="open", due="2026-13-45")
     assert r.exit_code == 2 and any("YYYY-MM-DD" in m for m in r.messages)
+
+
+def test_idea_list_empty_then_lists_added_ideas(root):
+    r = call("idea.list")
+    assert r.ok and r.data["ideas"] == []
+    assert call("idea.add", title="Use foam", body="Cheap.", by="alex").ok
+    r = call("idea.list")
+    row = r.data["ideas"][0]
+    assert len(r.data["ideas"]) == 1
+    assert row["title"] == "Use foam" and row["by"] == "alex" and row["path"].startswith("knowledge/ideas/")
+    assert row["date"] == row["path"].split("/")[-1][:10]

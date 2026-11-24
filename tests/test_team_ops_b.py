@@ -30,7 +30,8 @@ def bom_design(root):
 
 
 def test_b_ops_registered():
-    assert {"research.new", "research.check", "morph.add-option", "morph.coverage", "bom.verify", "bom.cost"} <= set(registry())
+    assert {"research.new", "research.check", "morph.add-option", "morph.coverage", "bom.verify", "bom.cost",
+            "bom.list", "morph.list", "idea.list"} <= set(registry())
 
 
 def test_research_new_source_copies_template(root):
@@ -202,3 +203,18 @@ def test_bom_cost_non_numeric_unit_cost_is_an_input_error(root, bom_design):  # 
     p.write_text(p.read_text(encoding="utf-8").replace("unit_cost_usd: 12.5", "unit_cost_usd: free"), encoding="utf-8")
     r = call("bom.cost", path=bom_design)
     assert r.exit_code == 2 and "motor-a" in " ".join(r.messages) and "unit_cost_usd" in " ".join(r.messages)
+
+
+def test_morph_list_matches_the_chart(root):
+    r = call("morph.list")
+    chart = yaml.safe_load((root / "knowledge" / "morphological-chart.yaml").read_text(encoding="utf-8"))
+    assert len(r.data["cells"]) == sum(len(d["options"]) for d in chart["dimensions"])
+    assert {"dimension": "lift", "option": "flying-wing", "name": "Flying wing", "source": None} in r.data["cells"]
+
+
+def test_bom_list_rows_and_errors(bom_design):
+    r = call("bom.list", path=bom_design)
+    assert [x["id"] for x in r.data["items"]] == ["motor-a", "servo-b", "prop-c"]
+    assert r.data["items"][0] == {"id": "motor-a", "qty": 2, "unit_cost_usd": 12.5, "verified": False, "url": "https://example.com/m"}
+    assert r.data["items"][1]["unit_cost_usd"] is None
+    assert call("bom.list", path="designs/missing").exit_code == 2

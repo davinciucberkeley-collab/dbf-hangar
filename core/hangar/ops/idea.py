@@ -5,6 +5,8 @@ import json
 import re
 from datetime import date
 
+import yaml
+
 from . import op, OpResult, OpInputError
 from ._paths import repo_root, rel
 
@@ -26,3 +28,28 @@ def add_op(title: str, body: str, by: str) -> OpResult:
         f.write(text)
     path = rel(root, target)
     return OpResult(True, {"path": path}, changed_files=[path])
+
+
+def _render_list(res: OpResult) -> str:
+    rows = res.data["ideas"]
+    if not rows:
+        return "no ideas"
+    return "\n".join(f"{r['path']}  {r['date']}  {r['by']}  {r['title']}" for r in rows)
+
+
+@op(name="idea.list", summary="List the recorded ideas (knowledge/ideas/*.md): path, date, title, by.", render=_render_list)
+def list_op() -> OpResult:
+    root = repo_root()
+    rows = []
+    for f in sorted((root / "knowledge" / "ideas").glob("*.md")):
+        head = {}
+        text = f.read_text(encoding="utf-8")
+        if text.startswith("---\n") and "\n---\n" in text:
+            try:
+                parsed = yaml.safe_load(text[4:text.index("\n---\n")])
+            except yaml.YAMLError:
+                parsed = None
+            head = parsed if isinstance(parsed, dict) else {}
+        rows.append({"path": rel(root, f), "date": str(head.get("date", f.name[:10])), "title": str(head.get("title", f.stem)),
+                     "by": str(head.get("by", ""))})
+    return OpResult(True, {"ideas": rows})

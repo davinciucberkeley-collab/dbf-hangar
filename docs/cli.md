@@ -2,7 +2,7 @@
 
 # plane command reference
 
-52 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+55 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -59,6 +59,16 @@ Total cost of a design's BOM and which lines lack a cost or a verification.
 
 ```
 plane bom cost <path>
+```
+
+- `<path>`: str, required
+
+### `plane bom list`
+
+List the BOM lines of a design (id, qty, unit cost, verified, url).
+
+```
+plane bom list <path>
 ```
 
 - `<path>`: str, required
@@ -367,6 +377,14 @@ Writes files.
 - `<body>`: str, required
 - `<by>`: str, required
 
+### `plane idea list`
+
+List the recorded ideas (knowledge/ideas/*.md): path, date, title, by.
+
+```
+plane idea list
+```
+
 ## ledger
 
 ### `plane ledger add`
@@ -482,6 +500,14 @@ For every dimension and option of the chart, which designs use it.
 
 ```
 plane morph coverage
+```
+
+### `plane morph list`
+
+List every dimension and option of the morphological chart.
+
+```
+plane morph list
 ```
 
 ## ops

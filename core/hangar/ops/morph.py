@@ -91,3 +91,15 @@ def coverage_op() -> OpResult:
                     if morph.get(dim["id"]) is not None and str(morph.get(dim["id"])) == str(opt["id"])]
             cells.append({"dimension": dim["id"], "option": opt["id"], "designs": used})
     return OpResult(True, {"cells": cells})
+
+
+@op(name="morph.list", summary="List every dimension and option of the morphological chart.",
+    render=lambda r: "\n".join(f"{c['dimension']}/{c['option']}  {c['name']}" for c in r.data["cells"]))
+def list_op() -> OpResult:
+    chart = _load_chart(repo_root())
+    cells = []
+    for dim in chart.get("dimensions") or []:
+        for opt in dim.get("options") or []:
+            cells.append({"dimension": str(dim["id"]), "option": str(opt["id"]), "name": str(opt.get("name", "")),
+                          "source": opt.get("source")})
+    return OpResult(True, {"cells": cells})
