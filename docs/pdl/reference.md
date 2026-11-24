@@ -30,6 +30,12 @@ Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, se
 | `requirements.endurance_min` | number |  |  |
 | `requirements.budget_usd` | number |  |  |
 | `requirements.transport_box_mm` | array of number |  | v1.0. Transport box inner size [length, width, height] in mm. |
+| `mission` | object |  | v1.0. What this design is for. Numbers the gates judge against stay in `requirements` and `flight`. |
+| `mission.name` | string | yes |  |
+| `mission.profile` | one of `vtol-demonstrator`, `scale-model`, `trainer`, `utility`, `other` | yes |  |
+| `mission.statement` | string |  |  |
+| `mission.reference_aircraft` | string |  | The real aircraft a scale model copies, e.g. 'Airbus A400M'. |
+| `mission.source` | string |  | repo-relative path of the knowledge/ entry that states the mission. |
 | `flight` | object |  | Operating point used by tier-3 checks. |
 | `flight.cl_max` | number |  |  |
 | `flight.air_density_kgm3` | number |  |  |
