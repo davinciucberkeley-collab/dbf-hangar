@@ -807,8 +807,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** T128 team guide: how to start a new concept (D9: concept-a the only active design; a ledger task with owner; target mission is the VTOL demonstrator, D74) and that from-scratch concept generation is v1.1, plus a one-line mission pointer where Claude sessions will see it; T125 generated parts' `cut_files` follow each neighbour's current position, and T1 reports a part sitting inside a generated core it should be cut for; T126 `design propose` cuts the branch slug at a word boundary.
 
 - [x] **Step 1: Briefs** (tactician W27-T) *(0c007c4: guide + CLAUDE.md mission pointer (light), slug (easy), pockets with T1.pocket (hard))*
-- [ ] **Step 2: Build** (W27-B)
-- [ ] **Step 3: Review** (W27-R); merge
+- [x] **Step 2: Build** (W27-B) *(guide 7abf7c5, slug 06be12f, pockets faff845)*
+- [x] **Step 3: Review** (W27-R); merge *(all ACCEPT, reviews/2026-11-24-w27.md; pockets merged 41ae0e7)*
 
 ### Unit U4.29: Parameter changes propagate to attached parts (T129; D75) [hard]
 
