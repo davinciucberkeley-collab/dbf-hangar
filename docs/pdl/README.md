@@ -69,8 +69,9 @@ All are optional; they need `schema_version: "1.0"`.
 | 0.3 | `component.cavities`. |
 | 0.4 | `point_mass` geometry, `attachment.kinematic_link`, `attachment.rating_basis`, `component.planform`. |
 | 1.0 | The blocks above and `requirements.transport_box_mm`. |
+| 1.1 | Motor prop reaction torque: `propulsion.spin` (`cw` or `ccw`), `propulsion.torque_per_thrust_m` (N*m per N) and `propulsion.torque_per_thrust_m_source`. With all three on every lift motor, the yaw row of `T3.control_authority` is judged; without them it stays not judged. |
 
-## Move an old file to 1.0
+## Move an old file to the latest version
 
 `plane design migrate designs/<id>` shows what would change. Add `--write` to
 change only the `schema_version` line; every other byte stays. Old versions

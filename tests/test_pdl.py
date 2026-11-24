@@ -33,10 +33,10 @@ def _example_data():
 
 
 @pytest.mark.parametrize("d", VERDICT_PARAMS)
-def test_every_committed_design_migrates_to_1_0_with_same_verdict(d):
+def test_every_committed_design_migrates_to_1_1_with_same_verdict(d):
     before = validate(load_design(d)).accepted
     data, _ = migrate(load_design(d).data)
-    assert data["schema_version"] == "1.0"
+    assert data["schema_version"] == "1.1"
     assert validate(Design(data, d)).accepted == before
 
 
@@ -54,7 +54,7 @@ def test_migrate_does_not_mutate_input_and_is_idempotent():
     out, _ = migrate(data)
     assert data == orig and data["schema_version"] == "0.1"
     again, notes = migrate(out)
-    assert again == out and notes == ["already 1.0"]
+    assert again == out and notes == ["already 1.1"]
 
 
 def test_migrate_rejects_unknown_or_missing_version():
@@ -67,24 +67,24 @@ def test_migrate_rejects_unknown_or_missing_version():
         migrate(data)
 
 
-@pytest.mark.parametrize("v", ["0.1", "0.2", "0.3", "0.4"])
+@pytest.mark.parametrize("v", ["0.1", "0.2", "0.3", "0.4", "1.0"])
 def test_migrate_notes_for_each_old_version(v):
     data = _example_data()
     data["schema_version"] = v
     _, notes = migrate(data)
-    assert notes == [f"schema_version {v} -> 1.0",
-                     "no fields added, removed or renamed (all 1.0 blocks are optional)"]
+    assert notes == [f"schema_version {v} -> 1.1",
+                     "no fields added, removed or renamed (all 1.0 blocks and 1.1 fields are optional)"]
 
 
 def test_bump_version_text_keeps_crlf_comments_and_other_bytes():
     text = '# head\r\nschema_version: "0.2"  # keep me\r\nid: x\r\n'
-    assert bump_version_text(text) == '# head\r\nschema_version: "1.0"  # keep me\r\nid: x\r\n'
-    assert bump_version_text("schema_version: '0.3'\nid: x\n") == 'schema_version: "1.0"\nid: x\n'
-    assert bump_version_text("schema_version: 0.1\nid: x\n") == 'schema_version: "1.0"\nid: x\n'
+    assert bump_version_text(text) == '# head\r\nschema_version: "1.1"  # keep me\r\nid: x\r\n'
+    assert bump_version_text("schema_version: '0.3'\nid: x\n") == 'schema_version: "1.1"\nid: x\n'
+    assert bump_version_text("schema_version: 0.1\nid: x\n") == 'schema_version: "1.1"\nid: x\n'
 
 
-def test_bump_version_text_rejects_missing_or_duplicate_or_already_1_0():
-    for bad in ("id: x\n", 'schema_version: "0.1"\nschema_version: "0.2"\n', 'schema_version: "1.0"\n'):
+def test_bump_version_text_rejects_missing_or_duplicate_or_already_1_1():
+    for bad in ("id: x\n", 'schema_version: "0.1"\nschema_version: "0.2"\n', 'schema_version: "1.1"\n'):
         with pytest.raises(ValueError):
             bump_version_text(bad)
 
@@ -97,7 +97,7 @@ def test_bump_changes_only_the_version_line_of_every_committed_design(d):
     assert len(a) == len(b)
     diff = [i for i, (x, y) in enumerate(zip(a, b)) if x != y]
     assert len(diff) == 1
-    assert b[diff[0]].startswith('schema_version: "1.0"')
+    assert b[diff[0]].startswith('schema_version: "1.1"')
 
 
 def test_v1_blocks_validate():
@@ -138,10 +138,10 @@ def test_file_paths_must_be_relative_with_forward_slashes(bad):
 
 def test_schema_is_v1_and_lists_all_versions():
     s = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
-    assert s["title"] == "Plane Design Language v1.0"
-    assert s["properties"]["schema_version"]["enum"] == ["0.1", "0.2", "0.3", "0.4", "1.0"]
-    assert KNOWN_VERSIONS == ("0.1", "0.2", "0.3", "0.4", "1.0")
-    assert LATEST == "1.0"
+    assert s["title"] == "Plane Design Language v1.1"
+    assert s["properties"]["schema_version"]["enum"] == ["0.1", "0.2", "0.3", "0.4", "1.0", "1.1"]
+    assert KNOWN_VERSIONS == ("0.1", "0.2", "0.3", "0.4", "1.0", "1.1")
+    assert LATEST == "1.1"
 
 
 def test_schema_file_is_canonical_json():
@@ -200,7 +200,7 @@ def test_migrate_op_dry_run_writes_nothing(tmp_path):
     d = _copy_example(tmp_path)
     before = (d / "plane.yaml").read_bytes()
     r = call("design.migrate", path=str(d))
-    assert r.ok and r.data["to_version"] == "1.0" and r.data["written"] is False
+    assert r.ok and r.data["to_version"] == "1.1" and r.data["written"] is False
     assert (d / "plane.yaml").read_bytes() == before
 
 
@@ -212,11 +212,11 @@ def test_migrate_op_write_changes_only_version_line_and_keeps_crlf(tmp_path):
     new = (d / "plane.yaml").read_bytes()
     a, b = old.decode().splitlines(keepends=True), new.decode().splitlines(keepends=True)
     diff = [i for i, (x, y) in enumerate(zip(a, b)) if x != y]
-    assert len(a) == len(b) and len(diff) == 1 and b[diff[0]].startswith('schema_version: "1.0"')
+    assert len(a) == len(b) and len(diff) == 1 and b[diff[0]].startswith('schema_version: "1.1"')
     assert new.count(b"\r\n") == old.count(b"\r\n")
     assert tier0_schema(load_design(d)).status == "PASS"
     r2 = call("design.migrate", path=str(d), write=True)
-    assert r2.ok and r2.data["written"] is False and r2.data["notes"] == ["already 1.0"]
+    assert r2.ok and r2.data["written"] is False and r2.data["notes"] == ["already 1.1"]
 
 
 def test_migrate_write_appends_one_changelog_entry_and_keeps_the_old_ones(tmp_path):  # T50
@@ -230,7 +230,7 @@ def test_migrate_write_appends_one_changelog_entry_and_keeps_the_old_ones(tmp_pa
     entries = yaml.safe_load(raw.decode("utf-8"))
     assert len(entries) == 2 and entries[0]["why"] == "earlier"
     last = entries[1]
-    assert (last["key"], last["old"], last["new"], last["kind"]) == ("schema_version", "0.1", "1.0", "modify")
+    assert (last["key"], last["old"], last["new"], last["kind"]) == ("schema_version", "0.1", "1.1", "modify")
     assert "migrate" in last["why"] and last["date"].endswith("Z")
     again = call("design.migrate", path=str(d), write=True)
     assert again.ok and again.data["written"] is False
@@ -243,7 +243,7 @@ def test_migrate_write_creates_the_changelog_and_a_dry_run_does_not(tmp_path):  
     assert not (d / "CHANGELOG.yaml").exists()
     assert call("design.migrate", path=str(d), write=True).ok
     (entry,) = yaml.safe_load((d / "CHANGELOG.yaml").read_text(encoding="utf-8"))
-    assert entry["key"] == "schema_version" and entry["old"] == "0.1" and entry["new"] == "1.0"
+    assert entry["key"] == "schema_version" and entry["old"] == "0.1" and entry["new"] == "1.1"
 
 
 def test_migrate_write_with_a_broken_changelog_writes_nothing(tmp_path):  # T50
@@ -263,7 +263,7 @@ def test_migrate_op_write_on_copy_of_every_committed_design(tmp_path, src):
     r = call("design.migrate", path=str(dst), write=True)
     assert r.ok
     assert tier0_schema(load_design(dst / "plane.yaml")).status == tier0_schema(load_design(src)).status
-    assert load_design(dst / "plane.yaml").data["schema_version"] == "1.0"
+    assert load_design(dst / "plane.yaml").data["schema_version"] == "1.1"
 
 
 def test_migrate_op_bad_input(tmp_path):
@@ -302,11 +302,50 @@ def test_cli_design_migrate_json(tmp_path):
     d = _copy_example(tmp_path)
     res = CliRunner().invoke(cli, ["design", "migrate", str(d), "--json"])
     assert res.exit_code == 0
-    assert json.loads(res.output)["data"]["to_version"] == "1.0"
+    assert json.loads(res.output)["data"]["to_version"] == "1.1"
 
 
 @pytest.mark.skipif(os.name != "nt", reason="backslash paths are a Windows form")
 def test_migrate_op_accepts_backslash_path(tmp_path):
     d = _copy_example(tmp_path)
     r = call("design.migrate", path=str(d).replace("/", "\\"))
-    assert r.ok and r.data["to_version"] == "1.0"
+    assert r.ok and r.data["to_version"] == "1.1"
+
+
+# ---- PDL 1.1 (T95): propulsion.spin, torque_per_thrust_m, torque_per_thrust_m_source ----
+V11_FIELDS = {"spin": "cw", "torque_per_thrust_m": 0.0204, "torque_per_thrust_m_source": "test fixture"}
+
+
+def _spin_data(version):
+    data = _example_data()
+    next(c for c in data["components"] if c["type"] == "motor")["propulsion"].update(V11_FIELDS)
+    data["schema_version"] = version
+    return data
+
+
+def test_reaction_torque_fields_validate_at_1_1():
+    assert tier0_schema(Design(_spin_data("1.1"), EXAMPLE)).status == "PASS"
+
+
+def test_reaction_torque_fields_need_schema_version_1_1():
+    res = tier0_schema(Design(_spin_data("1.0"), EXAMPLE))
+    assert res.status == "FAIL"
+    assert any(r.check_id == "T0.version" and r.status == "FAIL" and "propulsion.spin" in r.message
+               and "propulsion.torque_per_thrust_m_source" in r.message and '"1.1"' in r.message for r in res.results)
+
+
+@pytest.mark.parametrize("field,bad", [("spin", "up"), ("torque_per_thrust_m", 0), ("torque_per_thrust_m", -0.01),
+                                       ("torque_per_thrust_m_source", "")])
+def test_reaction_torque_fields_reject_bad_values(field, bad):
+    data = _spin_data("1.1")
+    next(c for c in data["components"] if c["type"] == "motor")["propulsion"][field] = bad
+    assert tier0_schema(Design(data, EXAMPLE)).status == "FAIL"
+
+
+def test_migrate_op_moves_a_1_0_design_to_1_1_and_logs_it(tmp_path):
+    d = _copy_example(tmp_path)
+    r = call("design.migrate", path=str(d), write=True)
+    assert r.ok and (r.data["from_version"], r.data["to_version"], r.data["written"]) == ("1.0", "1.1", True)
+    assert load_design(d / "plane.yaml").data["schema_version"] == "1.1"
+    last = yaml.safe_load((d / "CHANGELOG.yaml").read_text(encoding="utf-8"))[-1]
+    assert (last["key"], last["old"], last["new"]) == ("schema_version", "1.0", "1.1")

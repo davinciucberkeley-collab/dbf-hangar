@@ -255,6 +255,53 @@ def test_control_authority_concept_a_yaw_trim():  # T37 (D58): the drawn cant is
     assert _moment(row) == pytest.approx(0.014, abs=0.005)
 
 
+def _spin(d: Design, spins=("cw", "ccw", "cw", "ccw"), kq: float = 0.02) -> Design:
+    """T95: the PDL 1.1 reaction-torque fields on the four lift motors motor_1..motor_4."""
+    d.data["schema_version"] = "1.1"
+    for i, s in enumerate(spins):
+        d.component(f"motor_{i + 1}")["propulsion"].update(spin=s, torque_per_thrust_m=kq, torque_per_thrust_m_source="test fixture")
+    return d
+
+
+def test_yaw_with_reaction_torque_is_judged_not_skipped():  # T95
+    tiny = _axis_row(_spin(_pinwheel(vtol()), kq=0.0001), "yaw")
+    assert tiny.status == FAIL and "would_be" not in tiny.data
+    assert "cant geometry and prop reaction torque" in tiny.message and "not modelled" not in tiny.message
+    big = _axis_row(_spin(_pinwheel(vtol()), kq=0.2), "yaw")
+    assert big.status == PASS and "would_be" not in big.data
+    assert _moment(big) > 1.4 and _moment(tiny) < 0.05
+    assert big.data["trim_yaw_nm"] == pytest.approx(0.838, abs=0.01)      # alternating spins add no net torque at equal thrust
+
+
+def test_yaw_moment_from_reaction_torque_alone_scales_with_kq():  # T95: cant 0, so the cant-only yaw moment is 0
+    assert _moment(_axis_row(vtol(cant_deg=0.0), "yaw")) == 0.0
+    m1 = _moment(_axis_row(_spin(vtol(cant_deg=0.0), kq=0.02), "yaw"))
+    m2 = _moment(_axis_row(_spin(vtol(cant_deg=0.0), kq=0.04), "yaw"))
+    assert m1 == pytest.approx(0.145, abs=0.005) and m2 == pytest.approx(2 * m1, rel=0.01)
+
+
+def test_yaw_reaction_trim_sign_follows_the_spin_direction():  # T95: cw adds +axis, ccw -axis, all one way gives no differential
+    cw = _axis_row(_spin(vtol(cant_deg=0.0), spins=("cw",) * 4), "yaw")
+    ccw = _axis_row(_spin(vtol(cant_deg=0.0), spins=("ccw",) * 4), "yaw")
+    assert cw.data["trim_yaw_nm"] == pytest.approx(0.145, abs=0.005) and ccw.data["trim_yaw_nm"] == pytest.approx(-cw.data["trim_yaw_nm"])
+    assert _moment(cw) == 0.0 and _moment(ccw) == 0.0
+    assert abs(_axis_row(_spin(vtol(cant_deg=0.0)), "yaw").data["trim_yaw_nm"]) < 1e-6
+
+
+def test_pitch_and_roll_ignore_the_reaction_fields():  # T95: only the yaw row uses them
+    for axis in ("pitch", "roll"):
+        assert _moment(_axis_row(_spin(_pinwheel(vtol())), axis)) == _moment(_axis_row(_pinwheel(vtol()), axis))
+
+
+@pytest.mark.parametrize("missing", ["spin", "torque_per_thrust_m", "torque_per_thrust_m_source"])
+def test_yaw_stays_not_judged_when_any_motor_lacks_a_reaction_field(missing):  # T95: the D58 SKIP is kept
+    d = _spin(_pinwheel(vtol()))
+    del d.component("motor_2")["propulsion"][missing]
+    row = _axis_row(d, "yaw")
+    assert row.status == SKIP and row.data["would_be"] == FAIL
+    assert f"motor motor_2: propulsion.{missing} missing" in row.message and "prop reaction torque is not modelled" in row.message
+
+
 # ---- T3.transition_margin ----
 def _stall(design) -> float:
     return rows(run(design, tiers={3}), "T3.stall")[0].data["stall_mps"]

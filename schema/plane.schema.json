@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/REPLACE_ME/aircraft-platform/schema/plane.schema.json",
-  "title": "Plane Design Language v1.0",
+  "title": "Plane Design Language v1.1",
   "description": "Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, seconds. Body frame: origin at the nose datum, +x aft, +y starboard (right), +z up.",
   "type": "object",
   "required": [
@@ -22,9 +22,10 @@
         "0.2",
         "0.3",
         "0.4",
-        "1.0"
+        "1.0",
+        "1.1"
       ],
-      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields)."
+      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields). 1.1 adds the optional motor fields propulsion.spin, propulsion.torque_per_thrust_m and propulsion.torque_per_thrust_m_source (prop reaction torque, used by the yaw row of T3.control_authority); 0.1-1.0 files validate unchanged."
     },
     "id": {
       "$ref": "#/$defs/slug"
@@ -436,6 +437,23 @@
             "prop_diameter_mm": {
               "type": "number",
               "exclusiveMinimum": 0
+            },
+            "spin": {
+              "enum": [
+                "cw",
+                "ccw"
+              ],
+              "description": "PDL 1.1. Sense of rotation of the prop seen from the side the thrust force points to, looking back at the motor (a hover lift motor: seen from above). The reaction torque on the airframe about the thrust axis is the opposite way: a cw prop adds +axis, a ccw prop -axis."
+            },
+            "torque_per_thrust_m": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "description": "PDL 1.1. Prop reaction torque per unit thrust (N*m per N, a length in metres; measured or from the prop data). Needs spin and torque_per_thrust_m_source."
+            },
+            "torque_per_thrust_m_source": {
+              "type": "string",
+              "minLength": 1,
+              "description": "PDL 1.1. Where torque_per_thrust_m comes from (document, test or plant file with its line)."
             }
           }
         },

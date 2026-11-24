@@ -108,6 +108,19 @@ def _axis_moment(c, a, dt_lo, dt_hi) -> float:
     return max(0.0, min(best))
 
 
+def _reaction(active: list[dict]) -> tuple[list[float] | None, str]:
+    """T95: signed prop reaction torque per unit thrust (N*m/N) of each motor about its own thrust axis (cw +, ccw -), or (None, reason)
+    when any motor lacks propulsion.spin, torque_per_thrust_m or torque_per_thrust_m_source."""
+    k = []
+    for m in active:
+        p = m["propulsion"]
+        for f in ("spin", "torque_per_thrust_m", "torque_per_thrust_m_source"):
+            if not p.get(f):
+                return None, f"motor {m['id']}: propulsion.{f} missing"
+        k.append((1.0 if p["spin"] == "cw" else -1.0) * float(p["torque_per_thrust_m"]))
+    return k, ""
+
+
 def _active(h: dict) -> list[dict]:
     """Lift motors that have an upward thrust component at hover."""
     return [m for m, _ in h["lift"] if h["f"][m["id"]] > 1e-9]
@@ -213,20 +226,29 @@ def control_authority(ctx, rep) -> list[CheckResult]:
     lever = max(abs(float(np.dot((lo + hi) / 2 - cg, up))), lever_frac * ext_up) / 1000
     m_wind = 0.5 * _rho(design) * v_wind ** 2 * cd * area * lever
     res = []
-    trim_yaw = T * sum(float(np.dot(tau, up)) for tau, _, _, _ in taus)
+    kq, kq_why = _reaction(active)     # T95: yaw adds the prop reaction torque when every active motor has the PDL 1.1 fields
+
+    def coeffs(name, e):
+        c = [float(np.dot(tau, e)) for tau, _, _, _ in taus]
+        if name == "yaw" and kq is not None:
+            c = [ci + k * a for ci, k, (_, a, _, _) in zip(c, kq, taus)]     # reaction torque about the thrust axis, along up: k * (u . up)
+        return c
+
+    trim_yaw = T * sum(coeffs("yaw", up))
     for name, e in axes.items():
-        m_axis = _axis_moment([float(np.dot(tau, e)) for tau, _, _, _ in taus], [a for _, a, _, _ in taus],
+        m_axis = _axis_moment(coeffs(name, e), [a for _, a, _, _ in taus],
                               [lo_ for _, _, lo_, _ in taus], [hi_ for _, _, _, hi_ in taus])
         r = m_axis / m_wind if m_wind > 0 else math.inf
+        basis = "cant geometry and prop reaction torque" if name == "yaw" and kq is not None else "cant geometry only"
         msg = (f"{name}: control moment {m_axis:.3f} N*m, wind moment {m_wind:.3f} N*m, ratio {r:.2f} vs min {factor} "
-               "(sagged pack, differential thrust at constant total upward thrust, cant geometry only)")
+               f"(sagged pack, differential thrust at constant total upward thrust, {basis})")
         data = {"axis": name, "moment_nm": round(m_axis, 3)}
         if name == "yaw":
             data["trim_yaw_nm"] = round(trim_yaw, 3)
             msg += f"; yaw moment at equal hover thrust {trim_yaw:.3f} N*m (not judged); yaw wind moment uses the pitch/roll model (conservative)"
         msg += _prov(note)
-        if name == "yaw" and r < factor:
-            res.append(_skip(cid, msg + "; not judged: yaw from prop reaction torque is not modelled (PDL has no spin/torque field)"
+        if name == "yaw" and kq is None and r < factor:
+            res.append(_skip(cid, msg + f"; not judged: yaw from prop reaction torque is not modelled ({kq_why})"
                              + (f"; {OPS}#hover_ctrl_factor is pending" if pending else ""), crit, {**data, "would_be": FAIL}))
         else:
             res.append(_judge(cid, PASS if r >= factor else FAIL, msg, f"{OPS}#hover_ctrl_factor", pending, data, crit))

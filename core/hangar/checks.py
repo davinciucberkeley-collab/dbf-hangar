@@ -103,6 +103,11 @@ def tier0_schema(design: Design) -> TierReport:
     if v1 and _below(design, "1.0"):
         res.append(CheckResult("T0.version", FAIL, ", ".join(v1) + " need schema_version \"1.0\"",
                                "schema/plane.schema.json"))
+    v11 = [k for k in ("spin", "torque_per_thrust_m", "torque_per_thrust_m_source")
+           if any(k in c.get("propulsion", {}) for c in d.get("components", []))]
+    if v11 and _below(design, "1.1"):
+        res.append(CheckResult("T0.version", FAIL, ", ".join(f"propulsion.{k}" for k in v11) + " need schema_version \"1.1\"",
+                               "schema/plane.schema.json"))
     both = [c["id"] for c in design.data.get("components", [])
             if "planform" in c and "lifting_surface" in c.get("geometry", {})]
     if both:
