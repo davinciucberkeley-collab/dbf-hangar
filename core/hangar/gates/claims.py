@@ -1,4 +1,4 @@
-"""Gate T9: recompute every claim of a design and report PASS / FAIL / SKIP / WARN rows."""
+"""Gate T9: recompute the claims of a design that have a calc and report PASS / FAIL / SKIP / WARN rows; a `read_value` claim echoes its stored value and is not recomputed (D60)."""
 from __future__ import annotations
 
 from ..claims.calc import load_claims_standards
