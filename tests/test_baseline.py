@@ -362,6 +362,7 @@ def _guard_designs(tmp_path):
     return paths
 
 
+@pytest.mark.slow
 def test_every_fail_or_skip_names_its_subject_or_is_design_level(tmp_path):
     from hangar.baseline import DESIGN_LEVEL, SUBJECT_KEYS, is_blocking
     from hangar.design import FAIL, SKIP
