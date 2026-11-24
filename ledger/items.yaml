@@ -5014,3 +5014,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: D75
+    kind: decision
+    text: "Build T129 parametric propagation before the Dec 2 demo (overrides the freeze for this work): expressions in references, positions relative to the parent part's attachment frame, interference reported after regeneration; merge only if reviewed and CI-green by Sun 11-29 12:00, else it stays on its branch and goes on the roadmap slide"
+    source: Tristan, P226, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'

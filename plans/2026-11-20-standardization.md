@@ -342,6 +342,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D72 | Deck: show R1, R12, R14, R17, R31 as open (D33)? | no: D33's premise is overtaken by the re-import (d24b6df); the deck shows ledger truth; T24, T54, T37 done | Tristan | 11-24 | decided (conductor under D71 on W24-R, 2026-11-24) |
 | D73 | Merge U4.25 despite the tier-1 budget miss? | yes, relaxed budget: concept-a-param tier-1 validate up to ~70 s; demo and deck updated to the new FAIL counts and timing | Tristan | 11-24 | decided (Tristan P214, 2026-11-24) |
 | D74 | Which mission do designs target? | the VTOL demonstrator brief in knowledge/; 'DBF' here is the capstone, not UC Berkeley's separate DBF competition team (T127 dropped) | Tristan | 11-24 | decided (Tristan P224, 2026-11-24) |
+| D75 | Build T129 (parameter changes propagate to attached parts) before Dec 2? | yes; merge only if reviewed and green by Sun 11-29 12:00, else branch + roadmap slide | Tristan | 11-24 | decided (Tristan P226, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -686,6 +687,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W25-T, W25-B, W25-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.26 (QOL batch from audit W24-Au2, D71) | `briefs/U4.26-*.md`, branches `std/u4.26-*`, `reviews/2026-11-24-w25.md` | each fix has a test or a re-run command; "### Verdict:" |
 | W26-T, W26-B, W26-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.27 (test and tidy follow-ups T108, T109, T110, T123; D71) | `briefs/U4.27-*.md`, branches `std/u4.27-*`, `reviews/2026-11-24-w26.md` | each test fails before its fix; "### Verdict:" |
 | W27-T, W27-B, W27-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.28 (T128 guide, T125 pockets follow moved parts, T126 propose slug; D74) | `briefs/U4.28-*.md`, branches `std/u4.28-*`, `reviews/2026-11-24-w27.md` | each fix has a failing-first test or a re-run; "### Verdict:" |
+| W28-A, W28-T, W28-B, W28-R | `advisor`, `tactician`, `builder-plus`, `reviewer` | Opus, Sonnet, Sonnet, Opus (fresh) | U4.29 (T129 parametric propagation, D75) | design note + `briefs/U4.29-*.md`, branches `std/u4.29-*`, `reviews/2026-11-24-w28.md` | one span change on concept-a-param moves fins and attached parts with no new interference; existing designs unchanged; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -801,6 +803,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 1: Briefs** (tactician W27-T)
 - [ ] **Step 2: Build** (W27-B)
 - [ ] **Step 3: Review** (W27-R); merge
+
+### Unit U4.29: Parameter changes propagate to attached parts (T129; D75) [hard]
+
+**Scope:** (1) expressions in references (`"$span_mm / 2 - 15"`, + - * / and parentheses over parameters and numbers only, no names beyond parameters); (2) a component position may be given relative to its parent part's attachment frame (from the interface graph joints), so moving or regenerating the parent moves its children; (3) after a regenerating `design set`, T1 interference runs on the changed parts and the result is reported in the set output. Demo target: shortening concept-a-param's span moves the fins and everything attached to them, with no new interference rows. Existing designs (absolute positions) unchanged. Coordinates with U4.28 T125 (pockets follow moved parts) on resolve.py. Cut rule D75: merge by Sun 11-29 12:00 or roadmap.
+
+- [ ] **Step 1: Design** (advisor W28-A) and briefs (tactician W28-T)
+- [ ] **Step 2: Build** (builder-plus W28-B)
+- [ ] **Step 3: Review** (W28-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

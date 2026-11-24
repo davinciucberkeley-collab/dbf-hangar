@@ -19,8 +19,8 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.5 Team adoption, CI, ratings, process | 4 | 2 |
 | W4.6 Parametric geometry for the demo (D70) | 2 | 2 |
 | W4.7 Presentation | 1 | 0 |
-| Other (no wave row) | 6 | 4 |
-| **all** | 49 | 44 |
+| Other (no wave row) | 7 | 4 |
+| **all** | 50 | 44 |
 
 ### Open ledger items by owner
 
@@ -155,6 +155,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.26 | Quality-of-life batch (audit W24-Au2; D71) | 3/3 | done | ACCEPT |
 | U4.27 | Test and tidy follow-ups (T108, T109, T110, T123; D71) | 3/3 | done | ACCEPT |
 | U4.28 | Findings from Tristan's fresh-session trial (T125, T126, T128; D74; P224) | 0/3 | not started | - |
+| U4.29 | Parameter changes propagate to attached parts (T129; D75) [hard] | 0/3 | not started | - |
 
 ## Ledger
 
@@ -163,7 +164,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
 | task | 47 | 79 | 1 | 2 | 0 | 129 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 260 | 276 |
+| decision | 12 | 0 | 0 | 4 | 261 | 277 |
 
 ## Overdue
 
