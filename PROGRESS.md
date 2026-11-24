@@ -16,10 +16,10 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.2 Overnight core fixes | 5 | 5 |
 | W4.3 Hardening and v1.1 batch 1 | 4 | 4 |
 | W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | 5 | 5 |
-| W4.5 Team adoption, CI, ratings, process | 4 | 1 |
+| W4.5 Team adoption, CI, ratings, process | 4 | 2 |
 | W4.6 Parametric geometry for the demo (D70) | 2 | 0 |
 | W4.7 Presentation | 1 | 0 |
-| **all** | 43 | 37 |
+| **all** | 43 | 38 |
 
 ### Open ledger items by owner
 
@@ -27,7 +27,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 |---|---|---|
 | Dillon | 29 | 2026-12-08 |
 | James | 2 | 2026-11-29 |
-| Tristan | 11 | 2026-11-29 |
+| Tristan | 10 | 2026-11-29 |
 | conductor | 20 | 2026-12-08 |
 
 ### Open items for teammates
@@ -129,7 +129,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.17 | Team guide: how the team works in dbf-hangar (P189) | 4/5 | in progress | - |
 | U4.18 | Faster CI unit tests (T11; P194) | 3/3 | done | ACCEPT |
 | U4.19 | Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198) | 3/4 | in progress | - |
-| U4.20 | Process trim (D66; T112; P198) | 1/3 | in progress | ACCEPT |
+| U4.20 | Process trim (D66; T112; P198) | 3/3 | done | ACCEPT |
 
 ### W4.6 Parametric geometry for the demo (D70)
 
@@ -149,7 +149,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 48 | 70 | 0 | 2 | 0 | 120 |
+| task | 47 | 71 | 0 | 2 | 0 | 120 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 256 | 272 |
 

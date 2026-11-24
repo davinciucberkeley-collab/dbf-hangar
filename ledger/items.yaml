@@ -4711,10 +4711,10 @@ items:
     text: agent gate refuses Claude Code built-in subagents (e.g. Explore) for every session, teammates included; decide whether built-ins are allowed or listed in the plan's agent table (W19-R)
     source: W19-R review 2026-11-24
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 3f99ab0
     decided_in: ''
     updated: '2026-11-23'
   - id: D65
