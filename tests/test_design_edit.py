@@ -444,7 +444,7 @@ def test_concept_a_right_elevon_mechanism_in_one_call(tmp_concept_a):
     r = call("design.migrate", path=str(tmp_concept_a), write=True)
     assert r.ok, r.messages
     base = _plane_text(tmp_concept_a)
-    assert 'schema_version: "1.0"' in base
+    assert 'schema_version: "1.1"' in base
     ops = _opcodes(original, base)
     assert len(ops) == 1 and ops[0][2] - ops[0][1] == 1 and ops[0][4] - ops[0][3] == 1
     log_file = tmp_concept_a / "CHANGELOG.yaml"
