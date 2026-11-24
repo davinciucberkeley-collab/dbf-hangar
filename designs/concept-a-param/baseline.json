@@ -1,0 +1,577 @@
+{
+  "accepted": false,
+  "design_id": "concept-a-param",
+  "known": [
+    {
+      "check_id": "T1.attachment_overlap",
+      "example": "pose down (E-WNG-10 -21\u00b0): E-WNG-10: parts overlap 6% of the smaller part; set embed_ok if intended",
+      "key": "T1.attachment_overlap|pose down (E-WNG-10 #\u00b0): E-WNG-10: parts overlap #% of the smaller part; set embed_ok if intended|{\"joint\":\"E-WNG-10\",\"pose\":\"pose down (E-WNG-10 -21\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.attachment_overlap",
+      "example": "pose down (E-WNG-11 -21\u00b0): E-WNG-11: parts overlap 6% of the smaller part; set embed_ok if intended",
+      "key": "T1.attachment_overlap|pose down (E-WNG-11 #\u00b0): E-WNG-11: parts overlap #% of the smaller part; set embed_ok if intended|{\"joint\":\"E-WNG-11\",\"pose\":\"pose down (E-WNG-11 -21\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "pose down (E-WNG-10 -21\u00b0): clipping: wng-001 and wng-007-r overlap 232 mm^3",
+      "key": "T1.interference|pose down (E-WNG-10 #\u00b0): clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"pose down (E-WNG-10 -21\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "pose down (E-WNG-11 -21\u00b0): clipping: wng-001 and wng-007-l overlap 232 mm^3",
+      "key": "T1.interference|pose down (E-WNG-11 #\u00b0): clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"pose down (E-WNG-11 -21\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "pose up (E-WNG-10 21\u00b0): clipping: wng-001 and wng-007-r overlap 436 mm^3",
+      "key": "T1.interference|pose up (E-WNG-10 #\u00b0): clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"pose up (E-WNG-10 21\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "pose up (E-WNG-11 21\u00b0): clipping: wng-001 and wng-007-l overlap 436 mm^3",
+      "key": "T1.interference|pose up (E-WNG-11 #\u00b0): clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"pose up (E-WNG-11 21\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "range max of E-MEC-07 (15\u00b0): clipping: wng-001 and mec-002-l overlap 8 mm^3",
+      "key": "T1.interference|range max of E-MEC-07 (#\u00b0): clipping: wng-001 and mec-002-l overlap # mm^#|{\"pair\":[\"wng-001\",\"mec-002-l\"],\"pose\":\"range max of E-MEC-07 (15\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "range min of E-MEC-02 (-15\u00b0): clipping: wng-001 and mec-002-r overlap 8 mm^3",
+      "key": "T1.interference|range min of E-MEC-02 (#\u00b0): clipping: wng-001 and mec-002-r overlap # mm^#|{\"pair\":[\"wng-001\",\"mec-002-r\"],\"pose\":\"range min of E-MEC-02 (-15\u00b0)\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "sweep E-WNG-10 -6\u00b0: clipping: wng-001 and wng-007-r overlap 1266 mm^3",
+      "key": "T1.interference|sweep E-WNG-10 #\u00b0: clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"sweep E-WNG-10 -6\u00b0\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "sweep E-WNG-10 9\u00b0: clipping: wng-001 and wng-007-r overlap 1288 mm^3",
+      "key": "T1.interference|sweep E-WNG-10 #\u00b0: clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"sweep E-WNG-10 9\u00b0\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "sweep E-WNG-11 -6\u00b0: clipping: wng-001 and wng-007-l overlap 1266 mm^3",
+      "key": "T1.interference|sweep E-WNG-11 #\u00b0: clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"sweep E-WNG-11 -6\u00b0\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.interference",
+      "example": "sweep E-WNG-11 9\u00b0: clipping: wng-001 and wng-007-l overlap 1288 mm^3",
+      "key": "T1.interference|sweep E-WNG-11 #\u00b0: clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"sweep E-WNG-11 9\u00b0\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "pose down (E-WNG-10 -21\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-009-r, wng-010-r",
+      "key": "T1.kinematic_link|pose down (E-WNG-10 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\"],\"pose\":\"pose down (E-WNG-10 -21\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "pose down (E-WNG-11 -21\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-009-l, wng-010-l",
+      "key": "T1.kinematic_link|pose down (E-WNG-11 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\"],\"pose\":\"pose down (E-WNG-11 -21\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "pose up (E-WNG-10 21\u00b0): 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-006-r, wng-009-r, wng-010-r",
+      "key": "T1.kinematic_link|pose up (E-WNG-10 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-006-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & wng-006-r\",\"mec-003-r & mec-004-r\"],\"pose\":\"pose up (E-WNG-10 21\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "pose up (E-WNG-11 21\u00b0): 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-006-l, wng-009-l, wng-010-l",
+      "key": "T1.kinematic_link|pose up (E-WNG-11 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-006-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & wng-006-l\",\"mec-003-l & mec-004-l\"],\"pose\":\"pose up (E-WNG-11 21\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep E-WNG-10 -6\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r",
+      "key": "T1.kinematic_link|sweep E-WNG-10 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\",\"mec-003-r & mec-005-r\"],\"pose\":\"sweep E-WNG-10 -6\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep E-WNG-10 9\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r",
+      "key": "T1.kinematic_link|sweep E-WNG-10 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\",\"mec-003-r & mec-005-r\"],\"pose\":\"sweep E-WNG-10 9\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep E-WNG-11 -6\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l",
+      "key": "T1.kinematic_link|sweep E-WNG-11 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\",\"mec-003-l & mec-005-l\"],\"pose\":\"sweep E-WNG-11 -6\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep E-WNG-11 9\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l",
+      "key": "T1.kinematic_link|sweep E-WNG-11 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\",\"mec-003-l & mec-005-l\"],\"pose\":\"sweep E-WNG-11 9\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.fea_strength",
+      "example": "28 printed part(s) have no OpenCAE stress check yet (plane fea concept-a-param --all)",
+      "key": "T2.fea_strength|# printed part(s) have no OpenCAE stress check yet (plane fea concept-a-param --all)|{\"parts\":[\"avn-001\",\"avn-008\",\"cge-001\",\"cge-003-ll\",\"cge-003-lr\",\"cge-003-ul\",\"cge-003-ur\",\"cge-006\",\"cge-007-l\",\"cge-007-r\",\"cge-008\",\"fin-003-l\",\"fin-003-r\",\"fin-005-l\",\"fin-005-r\",\"ger-001-ll\",\"ger-001-lr\",\"ger-001-ul\",\"ger-001-ur\",\"wng-003-c\",\"wng-004-l\",\"wng-004-r\",\"wng-005-l\",\"wng-005-r\",\"wng-008-ll\",\"wng-008-lu\",\"wng-008-rl\",\"wng-008-ru\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-ASM-01: carries 1.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-ASM-01: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-ASM-01\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-02: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-02\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-03: carries 0.8 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-03: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-03\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-04: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-04\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-05: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-05: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-05\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-06: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-06: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-06\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-08: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-08: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-08\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-09: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-09: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-09\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-10: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-10\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-11: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-11\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-12: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-12: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-12\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-13: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-13: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-13\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-AVN-14: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-AVN-14: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-14\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-GER-02: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-GER-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-02\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-GER-04: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-GER-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-04\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-GER-06: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-GER-06: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-06\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-GER-08: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-GER-08: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-08\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-HRN-20: carries 1.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-HRN-20: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-20\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-HRN-21: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-HRN-21: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-21\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-HRN-32: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-HRN-32: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-32\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-HRN-33: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-HRN-33: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-33\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-PRP-09: carries 0.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-PRP-09: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PRP-09\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-PWR-01: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-PWR-01: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-01\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-PWR-02: carries 11.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-PWR-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-02\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-PWR-03: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-PWR-03: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-03\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-PWR-04: carries 11.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-PWR-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-04\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-WNG-10: carries 1.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-WNG-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-10\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-WNG-11: carries 1.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-WNG-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-11\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-WNG-30L: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-WNG-30L: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-30L\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-WNG-30R: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-WNG-30R: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-30R\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-WNG-31L: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-WNG-31L: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-31L\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "E-WNG-31R: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|E-WNG-31R: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-31R\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-ASM-01: carries 1.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-ASM-01: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-ASM-01\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-02: carries 1.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-02\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-03: carries 1.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-03: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-03\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-04: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-04\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-05: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-05: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-05\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-06: carries 1.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-06: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-06\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-08: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-08: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-08\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-09: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-09: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-09\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-10: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-10\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-11: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-11\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-12: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-12: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-12\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-13: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-13: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-13\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-AVN-14: carries 6.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-AVN-14: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-14\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-GER-02: carries 6.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-GER-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-02\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-GER-04: carries 6.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-GER-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-04\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-GER-06: carries 6.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-GER-06: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-06\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-GER-08: carries 6.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-GER-08: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-GER-08\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-HRN-20: carries 1.8 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-HRN-20: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-20\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-HRN-21: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-HRN-21: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-21\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-HRN-32: carries 21.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-HRN-32: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-32\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-HRN-33: carries 21.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-HRN-33: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-HRN-33\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-MEC-05: peak 1.2 N in drop test exceeds rating 0.7 N",
+      "key": "T2.sim_drop_loads|E-MEC-05: peak # N in drop test exceeds rating # N|{\"joint\":\"E-MEC-05\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-MEC-10: peak 1.1 N in drop test exceeds rating 0.7 N",
+      "key": "T2.sim_drop_loads|E-MEC-10: peak # N in drop test exceeds rating # N|{\"joint\":\"E-MEC-10\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-PRP-09: carries 1.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-PRP-09: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PRP-09\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-PWR-01: carries 6.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-PWR-01: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-01\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-PWR-02: carries 16.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-PWR-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-02\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-PWR-03: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-PWR-03: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-03\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-PWR-04: carries 6.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-PWR-04: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-04\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-10: carries 3.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-WNG-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-10\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-11: carries 2.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-WNG-11: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-11\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-20: peak 1.8 N in drop test exceeds rating 1.4 N",
+      "key": "T2.sim_drop_loads|E-WNG-20: peak # N in drop test exceeds rating # N|{\"joint\":\"E-WNG-20\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-21: peak 1.9 N in drop test exceeds rating 1.4 N",
+      "key": "T2.sim_drop_loads|E-WNG-21: peak # N in drop test exceeds rating # N|{\"joint\":\"E-WNG-21\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-30L: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-WNG-30L: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-30L\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-30R: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-WNG-30R: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-30R\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-31L: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-WNG-31L: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-31L\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "E-WNG-31R: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|E-WNG-31R: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-31R\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_rest",
+      "example": "tipped over after drop: landing axis 81 deg from vertical (limit 30), speed 0.009 m/s; tailsitter cannot stand on its landing gear",
+      "key": "T2.sim_rest|tipped over after drop: landing axis # deg from vertical (limit #), speed # m/s; tailsitter cannot stand on its landing gear",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T3.static_margin",
+      "example": "15.7% MAC (NP x=57 mm, CG x=21 mm; target 5%-15%; fuselage effect not modelled) (mesh wing: chord measured at 41 stations)",
+      "key": "T3.static_margin|#% MAC (NP x=# mm, CG x=# mm; target #%#%; fuselage effect not modelled) (mesh wing: chord measured at # stations)|{\"band\":\"above\"}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T6.mechanism.elevon-l",
+      "example": "mechanism elevon-l: wng-001 and wng-007-l collide at input -15 deg (330.1 mm3 > 1.0 mm3)",
+      "key": "T6.mechanism.elevon-l|mechanism elevon-l: wng-001 and wng-007-l collide at input # deg (# mm3 > # mm3)|{\"joint\":[\"E-MEC-07\",\"E-WNG-11\"]}",
+      "status": "FAIL"
+    },
+    {
+      "check_id": "T6.mechanism.elevon-r",
+      "example": "mechanism elevon-r: mec-002-r and wng-001 collide at input -15 deg (8.2 mm3 > 1.0 mm3)",
+      "key": "T6.mechanism.elevon-r|mechanism elevon-r: mec-002-r and wng-001 collide at input # deg (# mm3 > # mm3)|{\"joint\":[\"E-MEC-02\",\"E-WNG-10\"]}",
+      "status": "FAIL"
+    }
+  ],
+  "schema": 1,
+  "tiers_run": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ]
+}

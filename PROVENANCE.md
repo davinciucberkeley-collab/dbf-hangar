@@ -133,3 +133,6 @@ Snapshot import, no history. Full history: aircraft-platform @ f462468 (plans/ a
 | core/hangar/geom/wing.py | DBF-Combined @ a93f14d : redesign/fusion/k09kit.py (`read_dat`, `surface_y`, `section_loop`, `elevon`), redesign/qp/A/cad/amodel/wing.py (`build_wing` core loft and spar bore), common.py (`WING_DZ`) | airfoil reader and section loop adapted; TE opening, cove and all pockets not ported |
 | core/hangar/geom/parts.py | DBF-Combined @ a93f14d : redesign/fusion/k09kit.py (`fin_plate`, `half_fin`, `tube_z`), amodel/wing.py (`build_fins`) | shapes re-expressed on the hangar kernel, `fuselage_loft` and `motor_mount` have no source function (new) |
 | tests/test_generators.py, tests/fixtures/pdl-gen/airfoils/diamond.dat | dbf-hangar (new) | no source file |
+| designs/concept-a-param/ | designs/concept-a (this repo) with parameter values from DBF-Combined @ a93f14d : redesign/qp/A/cad/amodel/common.py lines 32, 33-34, 38, 39, 46, 47 | copy of concept-a; four components generated; see README |
+| designs/concept-a-param/airfoils/s5010.dat | DBF-Combined @ a93f14d : redesign/subsystems/wing/s5010.dat (UIUC s5010.dat, checked 2026-11-09 in the source) | data file copied unchanged except CRLF to LF |
+| tests/test_concept_a_param.py | dbf-hangar (new) | no source file |

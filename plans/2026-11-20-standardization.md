@@ -742,8 +742,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** generators `wing_panel` (airfoil .dat, span, root/tip chord, sweep, dihedral, twist, spar bore, elevon split), `tube`, `fin`, `plate` (holes), `fuselage_loft` (stations), `motor_mount`; `mesh_file` fallback. Port concept-a's wing, spar and fins from DBF-Combined `redesign/qp/A/cad/amodel/` (recorded in PROVENANCE.md) into a new design copy whose regenerated meshes match the current STLs within a stated tolerance; the hub and complex printed parts stay imported meshes. Demo: one `plane design set` on a shared parameter regenerates the parts, mass and CG, and the gates re-run. Depends on U4.21.
 
 - [x] **Step 1: Brief** (tactician W23-T) *(0df19b6; generated meshes computed on load, PDL 1.2 parameters + `$name` refs + mass_model; cut line in the brief)*
-- [ ] **Step 2: Build** (builder-plus W23-B)
-- [ ] **Step 3: Review** (reviewer W23-R); merge
+- [x] **Step 2: Build** (builder-plus W23-B) *(Part A f8ae078 + tests fix a7252a1, merged 49a1601; Part B 49aae96, 79e4eae, README fix 93b9037)*
+- [x] **Step 3: Review** (reviewer W23-R); merge *(Part A ACCEPT; Part B REOPEN once (README residue count), ACCEPT; merged a0ba030; follow-ups T121, T123)*
 
 ### Unit U4.23: Demo script and deck for Dec 2 (U4.2 Steps 2-3; D60, D70; P209)
 
