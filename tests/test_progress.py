@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -278,14 +279,15 @@ def test_summary_comes_first_and_rolls_up_waves(repo):
     text = build_progress(repo)
     assert text.index("## Summary") < text.index("## Units by wave")
     assert "one format (PDL)" in text
-    for row in ["| W0 First | 2 | 1 | 2 |", "| W1 Second | 1 | 0 | 0 |", "| Other (no wave row) | 1 | 1 | 0 |", "| **all** | 4 | 2 | 2 |"]:
+    for row in ["| W0 First | 2 | 1 |", "| W1 Second | 1 | 0 |", "| Other (no wave row) | 1 | 1 |", "| **all** | 4 | 2 |"]:
         assert row in text, row
+    assert "| accepted |" not in text
 
 
 def test_summary_counts_archived_units(repo):
     _with_archive(repo)
     text = build_progress(repo)
-    assert "| W1 Second | 2 | 1 | 0 |" in text and "| **all** | 5 | 3 | 2 |" in text
+    assert "| W1 Second | 2 | 1 |" in text and "| **all** | 5 | 3 |" in text
 
 
 def test_summary_open_items_by_owner_and_for_teammates(repo):
@@ -308,3 +310,14 @@ def test_summary_teammate_list_is_capped_and_can_be_empty(repo):
         led.add("task", f"job {n}", source="x", owner="Dillon", due="2026-12-01")
     team = _team_section(build_progress(repo))
     assert team.count("- T") == 10 and "- and 2 more in `ledger/items.yaml`" in team
+
+
+def test_summary_teammates_sort_by_numeric_id_and_cut_at_a_word(repo):
+    led = Ledger(repo / "ledger" / "items.yaml")
+    for n in range(11):  # ids cross 9 -> 10, where a plain string sort would misorder
+        led.add("task", f"job {n} " + "word " * 30, source="x", owner="Dillon", due="2026-12-01")
+    team = _team_section(build_progress(repo))
+    nums = [int(m) for m in re.findall(r"^- T(\d+) ", team, flags=re.M)]
+    assert nums == sorted(nums) and len(nums) == 10
+    body = re.search(r"^- T\d+ \(Dillon, due 2026-12-01\): (.*)$", team, flags=re.M).group(1)
+    assert body.endswith(" word...") and 90 <= len(body) <= 103  # cut at a word, never mid-word

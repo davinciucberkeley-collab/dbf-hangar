@@ -6,15 +6,15 @@
 
 DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`plane`: CLI, MCP and Studio) and one set of checks (`standards/`). v1.0 is due 2026-12-02.
 
-| area | units | done | accepted |
-|---|---|---|---|
-| W0 Seed, harness & ledger | 4 | 4 | 4 |
-| W1 Ops layer & PDL | 6 | 6 | 6 |
-| W2 Gates, adapters, import, team ops | 5 | 5 | 5 |
-| W3 One surface, skills, proof | 6 | 6 | 6 |
-| W4 Review, release, presentation | 2 | 1 | 2 |
-| Other (no wave row) | 20 | 15 | 2 |
-| **all** | 43 | 37 | 25 |
+| area | units | done |
+|---|---|---|
+| W0 Seed, harness & ledger | 4 | 4 |
+| W1 Ops layer & PDL | 6 | 6 |
+| W2 Gates, adapters, import, team ops | 5 | 5 |
+| W3 One surface, skills, proof | 6 | 6 |
+| W4 Review, release, presentation | 2 | 1 |
+| Other (no wave row) | 20 | 15 |
+| **all** | 43 | 37 |
 
 ### Open ledger items by owner
 
@@ -27,16 +27,16 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 ### Open items for teammates
 
-- T2 (James, due 2026-11-29): James: harness install test (plan 6b) [triage 2026-11-21: James runs the harness install by 11-29; e
-- T113 (Dillon, due 2026-12-08): Measure concept-a's landing gear travel d (foot pad / leg compression) with a bench drop at ~0.23 m 
-- T63 (Dillon, due 2026-12-08): concept-a: 38 PETG parts assigned to jacobs-fdm, whose standard lists PLA only; confirm PETG at Jaco
-- T64 (Dillon, due 2026-12-08): concept-a: CA (including foam-safe CA) declared on XPS fin fairings E-FIN-05..08 and 13..16; advisor
-- T65 (Dillon, due 2026-12-08): concept-a: torsion-mode damping behind CL-A-VIB-GM and VIB-GM-SHIFT is unstated and unsourced (zeta 
-- T66 (Dillon, due 2026-12-08): concept-a: FC power board and capacitor not modelled; RC receiver regional variant unstated; no Remo
-- T71 (Dillon, due 2026-12-08): concept-a re-import FEA: cge-001 FAIL (landing SF 0.37, thrust SF 0.44; was SKIP for coarse mesh, T3
-- T73 (Dillon, due 2026-12-08): concept-a drop test: E-MEC-05 1.2 N and E-MEC-10 1.3 N peak vs 0.7 N rating (T2.sim_drop_loads FAIL,
-- T74 (Dillon, due 2026-12-08): concept-a drop test: E-WNG-20 1.8 N and E-WNG-21 1.8 N vs 1.4 N rating (T2.sim_drop_loads FAIL, pre-
-- T75 (Dillon, due 2026-12-08): concept-a T2.sim_rest FAIL: tailsitter tips 81 deg on its gear; widen the gear footprint or lower th
+- T2 (James, due 2026-11-29): James: harness install test (plan 6b) [triage 2026-11-21: James runs the harness install by 11-29;...
+- T63 (Dillon, due 2026-12-08): concept-a: 38 PETG parts assigned to jacobs-fdm, whose standard lists PLA only; confirm PETG at...
+- T64 (Dillon, due 2026-12-08): concept-a: CA (including foam-safe CA) declared on XPS fin fairings E-FIN-05..08 and 13..16;...
+- T65 (Dillon, due 2026-12-08): concept-a: torsion-mode damping behind CL-A-VIB-GM and VIB-GM-SHIFT is unstated and unsourced (zeta...
+- T66 (Dillon, due 2026-12-08): concept-a: FC power board and capacitor not modelled; RC receiver regional variant unstated; no...
+- T71 (Dillon, due 2026-12-08): concept-a re-import FEA: cge-001 FAIL (landing SF 0.37, thrust SF 0.44; was SKIP for coarse mesh,...
+- T73 (Dillon, due 2026-12-08): concept-a drop test: E-MEC-05 1.2 N and E-MEC-10 1.3 N peak vs 0.7 N rating (T2.sim_drop_loads...
+- T74 (Dillon, due 2026-12-08): concept-a drop test: E-WNG-20 1.8 N and E-WNG-21 1.8 N vs 1.4 N rating (T2.sim_drop_loads FAIL,...
+- T75 (Dillon, due 2026-12-08): concept-a T2.sim_rest FAIL: tailsitter tips 81 deg on its gear; widen the gear footprint or lower...
+- T76 (Dillon, due 2026-12-08): concept-a T3.static_margin FAIL 16.4% MAC (CG x=21 mm); move CG or confirm the target band
 - and 21 more in `ledger/items.yaml`
 
 ## Units by wave
