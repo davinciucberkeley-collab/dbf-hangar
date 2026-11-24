@@ -24,7 +24,8 @@ def bom_block(root: Path, concept: str, parts_csv: dict[str, dict], commit8: str
     items = []
     with path.open(encoding="utf-8", newline="") as f:
         for r in csv.DictReader(f):
-            it: dict = {"id": r["id"].lower(), "qty": int(r["qty"]) + int(r["spares"] or 0), "supplier": r["ship_group"],
+            # T94: BOM-A.csv qty already includes spares ("4 + 1 spare" is qty 5). Spares is not stored: PDL bom items have no spares field; part_number keeps the item text.
+            it: dict = {"id": r["id"].lower(), "qty": int(r["qty"]), "supplier": r["ship_group"],
                         "part_number": r["item"]}
             if (r["unit_usd"] or "").strip():
                 it["unit_cost_usd"] = float(r["unit_usd"])
