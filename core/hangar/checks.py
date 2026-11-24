@@ -656,6 +656,44 @@ def _point_mass_checks(design: Design, std: dict, meshes: dict, atts: list[dict]
     return res
 
 
+def _pocket_checks(design: Design, std: dict, meshes: dict, cache: _PairCache) -> list[CheckResult]:
+    """T1.pocket: a part a wing_panel is cut for (or attached to) must not sit in the wing's uncut core."""
+    from .geom.resolve import is_generated
+    limit = std["geometry"]["interference_max_mm3"]["value"]
+    tf = {cid: np.eye(4) for cid in meshes}
+    atts = design.data.get("attachments", [])
+    out: list[CheckResult] = []
+    for w in design.components:
+        wid = w["id"]
+        g = w.get("geometry")
+        if not is_generated(w) or g["generator"] != "wing_panel" or wid not in meshes:
+            continue
+        cut_files = (g.get("params") or {}).get("cut_files") or []
+        if not cut_files:
+            continue
+        linked = {a["child"] if a["parent"] == wid else a["parent"] for a in atts if wid in (a["parent"], a["child"])}
+        fails = []
+        for c in sorted(design.components, key=lambda x: x["id"]):
+            cid = c["id"]
+            if cid == wid or cid not in meshes or is_generated(c):
+                continue
+            mg = c.get("geometry")
+            listed = isinstance(mg, dict) and isinstance(mg.get("mesh"), dict) and mg["mesh"].get("file") in cut_files
+            if not listed and cid not in linked:
+                continue
+            v = cache.overlap(meshes, tf, wid, cid)
+            if v > limit:
+                msg = (f"{cid}: {v:.0f} mm^3 of it sits in uncut core of {wid}; its pocket is not cut where the part is now"
+                       if listed else
+                       f"{cid}: {v:.0f} mm^3 of it sits in uncut core of {wid}; it is attached to {wid} but its mesh file "
+                       f"is not in {wid}'s cut_files")
+                fails.append(CheckResult("T1.pocket", FAIL, msg, STD + "interference_max_mm3",
+                                         {"part": cid, "core": wid, "volume_mm3": round(v, 1), "listed": bool(listed)}))
+        out += fails or [CheckResult("T1.pocket", PASS, f"{wid}: no part it is cut for or attached to sits in uncut core",
+                                     STD + "interference_max_mm3")]
+    return out
+
+
 def tier1_geometry(design: Design, std: dict) -> TierReport:
     all_ids = [c["id"] for c in design.components]
     # point masses (schema 0.4) have no mesh: they count for connectivity and mass, not for any geometry check
@@ -690,6 +728,7 @@ def tier1_geometry(design: Design, std: dict) -> TierReport:
     identity = {cid: np.eye(4) for cid in all_ids}
     cache = _PairCache()
     res += _contact_and_clash_checks(design, std, meshes, identity, atts, cache)
+    res += _pocket_checks(design, std, meshes, cache)
     res += _point_mass_checks(design, std, meshes, atts)
 
     # articulated joints: the same contact / overlap / interference checks in every configuration

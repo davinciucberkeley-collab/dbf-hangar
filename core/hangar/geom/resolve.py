@@ -29,9 +29,43 @@ def generated_volumes(c: dict, base_dir: Path) -> list[float]:
         raise GeometryError(str(e)) from e
 
 
+def _cut_poses(data: dict) -> None:
+    """Give every wing_panel the current placement of each neighbour in its cut_files (params.cut_poses, derived, never stored)."""
+    import numpy as np
+    from hangar.geometry import _transform
+    comps = [c for c in data.get("components") or [] if isinstance(c, dict)]
+    by_file = {}
+    for c in comps:
+        g = c.get("geometry")
+        if isinstance(g, dict) and isinstance(g.get("mesh"), dict) and "file" in g["mesh"]:
+            by_file.setdefault(g["mesh"]["file"], c)
+    for w in comps:
+        if not is_generated(w) or w["geometry"]["generator"] != "wing_panel":
+            continue
+        params = w["geometry"].get("params")
+        if not isinstance(params, dict):
+            continue
+        params.pop("cut_poses", None)
+        out = []
+        try:
+            inv = np.linalg.inv(_transform(w))
+            for f in params.get("cut_files") or []:
+                c = by_file.get(f)
+                if c is None:
+                    continue
+                m = inv @ _transform(c)
+                if not np.allclose(m, np.eye(4), atol=1e-9):
+                    out.append({"file": f, "matrix": [round(float(x), 9) for x in m[:3].ravel()]})
+        except (KeyError, TypeError, ValueError, np.linalg.LinAlgError):
+            continue
+        if out:
+            params["cut_poses"] = out
+
+
 def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]]:
     data = resolve_references(raw)
     errors: dict[str, str] = {}
+    _cut_poses(data)
     design_materials = data.get("materials") if isinstance(data.get("materials"), dict) else None
     for c in data.get("components") or []:
         mm = c.get("mass_model") if isinstance(c, dict) else None
