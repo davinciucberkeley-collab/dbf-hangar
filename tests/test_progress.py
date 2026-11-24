@@ -268,3 +268,43 @@ def test_real_repo_archive_holds_only_finished_units_not_in_the_plan():
     assert len(archived) >= 30
     assert all(u["total"] and u["done"] == u["total"] for u in archived.values())
     assert not set(archived) & set(in_plan)
+
+
+def _team_section(text):
+    return text.split("### Open items for teammates")[1].split("## Units by wave")[0]
+
+
+def test_summary_comes_first_and_rolls_up_waves(repo):
+    text = build_progress(repo)
+    assert text.index("## Summary") < text.index("## Units by wave")
+    assert "one format (PDL)" in text
+    for row in ["| W0 First | 2 | 1 | 2 |", "| W1 Second | 1 | 0 | 0 |", "| Other (no wave row) | 1 | 1 | 0 |", "| **all** | 4 | 2 | 2 |"]:
+        assert row in text, row
+
+
+def test_summary_counts_archived_units(repo):
+    _with_archive(repo)
+    text = build_progress(repo)
+    assert "| W1 Second | 2 | 1 | 0 |" in text and "| **all** | 5 | 3 | 2 |" in text
+
+
+def test_summary_open_items_by_owner_and_for_teammates(repo):
+    led = Ledger(repo / "ledger" / "items.yaml")
+    led.add("task", "Dillon thing one", source="x", owner="Dillon", due="2026-12-01")
+    led.add("task", "James thing", source="x", owner="James")
+    led.add("task", "Tristan thing", source="x", owner="Tristan", due="2026-11-30")
+    text = build_progress(repo)
+    for row in ["| Dillon | 1 | 2026-12-01 |", "| James | 1 | - |", "| Tristan | 1 | 2026-11-30 |", "| (unassigned) | 2 | 2026-11-01 |"]:
+        assert row in text, row
+    team = _team_section(text)
+    assert "Dillon thing one" in team and "James thing" in team and "Tristan thing" not in team
+    assert team.index("Dillon thing one") < team.index("James thing")  # due date first, no date last
+
+
+def test_summary_teammate_list_is_capped_and_can_be_empty(repo):
+    assert _team_section(build_progress(repo)).strip() == "none"
+    led = Ledger(repo / "ledger" / "items.yaml")
+    for n in range(12):
+        led.add("task", f"job {n}", source="x", owner="Dillon", due="2026-12-01")
+    team = _team_section(build_progress(repo))
+    assert team.count("- T") == 10 and "- and 2 more in `ledger/items.yaml`" in team
