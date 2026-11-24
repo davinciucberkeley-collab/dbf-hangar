@@ -69,6 +69,7 @@
 | U4.13 | BOM spares double count (T94; P186) | 3/3 | done | - |
 | U4.14 | v1.1 cleanup, second batch (T99, T100, T101, T102; P186) | 3/3 | done | - |
 | U4.15 | v1.1 features (T95, T103, T67; P186) | 3/3 | done | - |
+| U4.16 | Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188) | 0/3 | not started | - |
 
 ## Ledger
 
@@ -77,7 +78,7 @@
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
 | task | 38 | 69 | 0 | 2 | 0 | 109 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 247 | 263 |
+| decision | 12 | 0 | 0 | 4 | 248 | 264 |
 
 ## Overdue
 

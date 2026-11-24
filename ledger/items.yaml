@@ -4651,3 +4651,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D62
+    kind: decision
+    text: 'Run the remaining knowledge import now: DBF-Combined docs/research/ (23 files, deferred by D28 to U2.2-3) becomes U4.16; the D35/D42 config-study import already ran (dc8902a, 50 entries)'
+    source: Tristan, P188, 2026-11-24 ('D35, run the import now')
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'

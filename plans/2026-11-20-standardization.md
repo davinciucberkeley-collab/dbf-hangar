@@ -329,6 +329,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D59 | Build T28 (`read_value`, 40 concept-a claims) before Dec 2? | yes, overrules D52: build now; the deck and metrics lines saying "not recomputed" are updated with the measured result | Tristan | 11-23 | decided (Tristan, P182, 2026-11-23) |
 | D60 | T28: PASS or a separate status for the 40 read_value (stored-result) claims? | PASS kept for v1.0; every report and the deck say 53 recomputed + 40 read from source and checked against limits (analyses not re-run); a read marker on PASS was built in v1.1 (T103, U4.15) | Tristan | 11-23 | decided (conductor default on W13-R follow-up, 2026-11-23) |
 | D61 | When does concept-a get the T95 propulsion 1.1 data (spin, reaction torque)? | after Dec 2 and after T96, by a design-engineer who confirms motor letters against CAD; baseline accept in the same designs-only commit (T106) | Tristan | 11-24 | decided (conductor default on W17-T flag, 2026-11-24) |
+| D62 | "D35, run the import now": which import? | the config-study import (D35/D42) already ran (dc8902a); run the deferred `docs/research/` import (D28, U2.2-3) now as U4.16 | Tristan | 11-24 | decided (Tristan P188; conductor reading, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -639,6 +640,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W15-T, W15-B, W15-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.13 (T94) | `briefs/U4.13-t94.md`, branches `std/u4.13-t94` (core), `std/u4.13-t94-design` (designs), `reviews/2026-11-24-w15.md` | BOM total before/after; "### Verdict:" |
 | W16-T, W16-B, W16-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.14 (T99, T100, T101, T102) | `briefs/U4.14-*.md`, branches `std/u4.14-*`, `reviews/2026-11-24-w16.md` | builder-ready bar; "### Verdict:" |
 | W17-T, W17-B, W17-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.15 (T95, T103, T67) | `briefs/U4.15-*.md`, branches `std/u4.15-*`, `reviews/2026-11-24-w17.md` | builder-ready bar; schema minor version for T95; "### Verdict:" |
+| W18-T, W18-B, W18-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.16 (U2.2-3 docs/research import, D62) | `briefs/U2.2-3-research-import.md`, branch `std/u4.16-research`, `reviews/2026-11-24-w18.md` | knowledge templates, PROVENANCE, copy check (T68), "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1361,6 +1363,14 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Briefs** (tactician W17-T): `briefs/U4.15-*.md` *(32336a4: t95 hard (patch A/B by T99), t103 easy (read flag on PASS), t67 easy (3 list ops); D61; leftovers T106, T107)*
 - [x] **Step 2: Build** (W17-B, at most 2 at once) *(t103 8b71ce1, t67 712ed3b builder; t95 7385e97 builder-plus, patch B)*
 - [x] **Step 3: Review** (reviewer W17-R); merge; T95, T103, T67 done *(all ACCEPT, reviews/2026-11-24-w17.md; merged e3c5b99, f9463d4, dce451a; follow-ups T107, T108)*
+
+### Unit U4.16: Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188)
+
+**Scope:** turn DBF-Combined `docs/research/` (23 files @ a93f14da) into `knowledge/` entries through the existing templates (same pattern as U2.2-2, merged dc8902a): adapted not copied (the knowledge copy check must pass), each entry linked to its morph-chart cell where one fits, each source file listed in `PROVENANCE.md`; only sources actually opened are cited. Knowledge and provenance files only; no core/, designs/, standards/.
+
+- [ ] **Step 1: Brief** (tactician W18-T): `briefs/U2.2-3-research-import.md`
+- [ ] **Step 2: Build** (builder W18-B)
+- [ ] **Step 3: Review** (reviewer W18-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
