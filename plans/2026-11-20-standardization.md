@@ -336,6 +336,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D66 | After U4.18: freeze, and lighter process? | yes (Tristan P198): freeze until Dec 2 except teammate fixes, sourcing, deck, process trim; light path for small text/docs and data-only design changes; full path for gates, bench, security, schema; teammates work from a named ledger task; built-in read-only subagents allowed (T112); plan archived and summarised | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
 | D67 | How to raise the fidelity of the gates? | source concept-a's connection-type ratings by joint count (64 SKIPs + 4 drop FAILs), datasheet > standard/test > team pull test, else pending; decide landing_load_factor; James reviews; track the fidelity line | Tristan | 11-25 | decided (Tristan P198, 2026-11-25) |
 | D68 | U4.19: how to turn the 64 joint SKIPs into verdicts? | C now: source stresses into the library, landing_load_factor pending until the T113 drop test, SKIPs labelled honestly; B (per-joint contact area x stress) first in v1.1 (T114) | Tristan | 11-25 | decided (Tristan P199, 2026-11-25) |
+| D69 | How does a teammate's full-path change run, and which built-ins pass the gate? | teammate builds on their branch, opens a PR, Tristan runs a fresh reviewer on it; data-only design changes = CI + Dillon, no reviewer agent; built-ins Explore, Plan, claude-code-guide pass only when no project/user agent file redefines them (plugin and --agents overrides accepted risk) | Tristan | 11-25 | decided (conductor default on W22-R, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -684,16 +685,16 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** the "Unit tests" step takes 8.7 min on ubuntu and 5.2 min on windows (run 45321467502). Measure the slowest tests (`--durations`), then cut wall time without losing coverage on main: speed up or share the slowest fixtures (e.g. concept-a validate, Studio, viewer/playwright), mark genuinely slow tests and run them on main/nightly only if needed, shard or rebalance xdist, cache installs, and the three T11 items (slow mark for test_baseline, skip validate for PROGRESS/ledger-only commits, cancel-in-progress only on std/**). Core/tests/.github only.
 
 - [x] **Step 1: Measure and brief** (tactician W20-T): `briefs/U4.18-ci-speed.md` *(e748226: CPU-bound, 523 s ubuntu / 311 s windows; shard x3 expected ~60%; D65)*
-- [ ] **Step 2: Build** (builder-plus W20-B)
-- [ ] **Step 3: Review** (reviewer W20-R); merge; T11 done
+- [x] **Step 2: Build** (builder-plus W20-B) *(478c2d6 + retune fb2b33d)*
+- [x] **Step 3: Review** (reviewer W20-R); merge; T11 done *(ACCEPT, reviews/2026-11-25-w20.md; merged d6212ea; slowest shard ubuntu ~4 min (was ~9.5), windows ~5.5 min (was ~7); follow-ups T115)*
 
 ### Unit U4.19: Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198)
 
 **Scope:** rank the connection types in `standards/connection-types.yaml` by how many concept-a joints use them; scouts collect datasheets/standards into `knowledge/sources/` (only sources opened); recon proposes `landing_load_factor` from its noted sources; a builder writes the sourced values (or `pending` with a reason) into standards; re-run concept-a and report which SKIPs and FAILs changed and the fidelity line before/after. Standards and knowledge only (plus the concept-a baseline refresh as a separate designs-only commit). James reviews the values.
 
 - [x] **Step 1:** Ranking and scout/recon briefs (tactician W21-T) *(cda9184; finding: the joint gates read each joint's own rating, not the library, so library sources clear 0 of the 64 SKIPs; only landing_load_factor moves fidelity; S1, S4, X1 launched, S2/S3 held)*
-- [ ] **Step 2:** Sources (scouts W21-S, recon W21-X)
-- [ ] **Step 3:** Values into standards; concept-a re-run; baseline refresh (builder W21-B)
+- [x] **Step 2:** Sources (scouts W21-S, recon W21-X) *(S1: 4 of 5 sourced; S4: 0 of 5; X1: landing_load_factor pending on gear travel, T113; S2/S3 not run)*
+- [x] **Step 3:** Values into standards; concept-a re-run; baseline refresh (builder W21-B) *(795cc3e: 3 types sourced, pending 31 -> 28; concept-a counts and fidelity unchanged as D68 expected; no baseline change)*
 - [ ] **Step 4: Review** (reviewer W21-R); James reads the values; merge
 
 ### Unit U4.20: Process trim (D66; T112; P198)
