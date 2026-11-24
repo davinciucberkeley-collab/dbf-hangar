@@ -113,6 +113,11 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
         else:
             pdledit.get_value(data, k)      # raises the "no key" error
         entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": kind})
+    from ..geom.params import expression_errors
+    after = yaml.safe_load(working)
+    fresh = [e for e in expression_errors(after) if e not in set(expression_errors(before))]
+    if fresh:
+        raise OpInputError("; ".join(f"{o}: {p}: {m}" for o, p, m in fresh))
     pdledit.check_schema(before, yaml.safe_load(working), key)
     from ..geom.resolve import regeneration_report      # PDL 1.2: refuses the edit (nothing written) when a generated part fails
     regen = regeneration_report(text, working, plane)
@@ -142,6 +147,13 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
                     f"{'n/a' if m0 is None else f'{m0:.1f}'} -> {'n/a' if m1 is None else f'{m1:.1f}'} g, "
                     f"CG {fmt_cg(c0)} -> {fmt_cg(c1)} mm")
         out["regenerated"] = regen
+    inter = regen["interference"] if regen is not None else None
+    if inter and (inter["moved"] or inter["joints"]):
+        msgs.append(f"moved {len(inter['moved'])} part(s), {len(inter['joints'])} joint(s); interference: "
+                    f"{len(inter['new'])} new, {len(inter['cleared'])} cleared")
+        msgs += [f"new interference: {r['message']}" for r in inter["new"]]
+        msgs += [f"cleared: {r['message']}" for r in inter["cleared"]]
+        out["interference"] = inter
     if regen is not None and regen["failing"]:       # parts that already failed and still fail: reported, never a reason to refuse
         msgs += [f"still failing (not caused by this edit): {cid}: {m}" for cid, m in sorted(regen["failing"].items())]
         out["still_failing"] = regen["failing"]

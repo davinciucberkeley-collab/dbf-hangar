@@ -113,7 +113,10 @@ def regeneration_report(old_text: str, new_text: str, plane_path: Path) -> dict 
     def has_gen(d):
         return isinstance(d, dict) and any(is_generated(c) for c in (d.get("components") or []))
 
-    if not (has_gen(old_raw) or has_gen(new_raw)):
+    def has_params(d):
+        return isinstance(d, dict) and "parameters" in d
+
+    if not (has_gen(old_raw) or has_gen(new_raw) or has_params(old_raw) or has_params(new_raw)):
         return None
     base = Path(plane_path).parent
     old, old_err = resolve_design_data(old_raw, base)
@@ -141,5 +144,60 @@ def regeneration_report(old_text: str, new_text: str, plane_path: Path) -> dict 
         comps[c["id"]] = entry
     om, ocg = _aircraft(old, plane_path, old_err)
     nm, ncg = _aircraft(new, plane_path, new_err)
+    inter = {"moved": [], "joints": [], "new": [], "cleared": []}
+    if not new_err and not old_err:
+        try:
+            _interference(old, new, plane_path, inter)
+        except Exception as e:                 # reported, never a reason to refuse
+            inter["error"] = str(e)
     return {"components": comps, "mass_g": [om, nm], "cg_mm": [ocg, ncg],
-            "failing": {cid: msg for cid, msg in new_err.items()}}
+            "failing": {cid: msg for cid, msg in new_err.items()}, "interference": inter}
+
+
+def _interference(old: dict, new: dict, plane_path: Path, inter: dict) -> None:
+    """Fill `inter` (moved parts, changed joints, new and cleared neutral-pose interference rows) for two resolved designs."""
+    from hangar.checks import interference_rows
+    from hangar.design import Design, load_standards
+
+    def dump(*x):
+        return json.dumps(list(x), sort_keys=True, default=str)
+
+    def comps(d):
+        return {c["id"]: dump(c.get("geometry"), c.get("position"), c.get("rotation_deg"))
+                for c in d.get("components") or [] if isinstance(c, dict)}
+
+    def joints(d):
+        out = {}
+        for a in d.get("attachments") or []:
+            if isinstance(a, dict):
+                art = a.get("articulation")
+                out[a.get("id") or f"{a.get('parent')}->{a.get('child')}"] = (
+                    dump(a.get("location"), art.get("pivot") if isinstance(art, dict) else None), a)
+        return out
+
+    oc, nc = comps(old), comps(new)
+    oj, nj = joints(old), joints(new)
+    moved = sorted(i for i, s in nc.items() if oc.get(i) != s)
+    changed = {k: v[1] for k, v in nj.items() if k not in oj or oj[k][0] != v[0]}
+    inter["moved"], inter["joints"] = moved, sorted(changed)
+    if not moved and not changed:
+        return
+    only = set(moved)
+    for a in changed.values():
+        only |= {a.get("parent"), a.get("child")}
+    std = load_standards()
+    rows = {}
+    for tag, data in (("new", new), ("old", old)):
+        out = {}
+        for r in interference_rows(Design(data, Path(plane_path)), std, only):
+            key = r.data["joint"] if "joint" in r.data else tuple(sorted(r.data["pair"]))
+            out[(r.check_id, key)] = r
+        rows[tag] = out
+
+    def entry(r):
+        key = r.data["joint"] if "joint" in r.data else sorted(r.data["pair"])
+        return {"check_id": r.check_id, "key": key, "message": r.message}
+
+    for name, a, b in (("new", rows["new"], rows["old"]), ("cleared", rows["old"], rows["new"])):
+        inter[name] = sorted((entry(r) for k, r in a.items() if k not in b),
+                             key=lambda e: (e["check_id"], str(e["key"])))

@@ -19,14 +19,14 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.5 Team adoption, CI, ratings, process | 4 | 2 |
 | W4.6 Parametric geometry for the demo (D70) | 2 | 2 |
 | W4.7 Presentation | 1 | 0 |
-| Other (no wave row) | 12 | 5 |
-| **all** | 55 | 45 |
+| Other (no wave row) | 12 | 6 |
+| **all** | 55 | 46 |
 
 ### Open ledger items by owner
 
 | owner | open | next due |
 |---|---|---|
-| Dillon | 29 | 2026-12-08 |
+| Dillon | 30 | 2026-12-08 |
 | James | 2 | 2026-11-29 |
 | Tristan | 9 | 2026-12-05 |
 | conductor | 19 | 2026-12-15 |
@@ -43,7 +43,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 - T74 (Dillon, due 2026-12-08): concept-a drop test: E-WNG-20 1.8 N and E-WNG-21 1.8 N vs 1.4 N rating (T2.sim_drop_loads FAIL,...
 - T75 (Dillon, due 2026-12-08): concept-a T2.sim_rest FAIL: tailsitter tips 81 deg on its gear; widen the gear footprint or lower...
 - T76 (Dillon, due 2026-12-08): concept-a T3.static_margin FAIL 16.4% MAC (CG x=21 mm); move CG or confirm the target band
-- and 21 more in `ledger/items.yaml`
+- and 22 more in `ledger/items.yaml`
 
 ## Units by wave
 
@@ -156,10 +156,10 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.27 | Test and tidy follow-ups (T108, T109, T110, T123; D71) | 3/3 | done | ACCEPT |
 | U4.28 | Findings from Tristan's fresh-session trial (T125, T126, T128; D74; P224) | 3/3 | done | ACCEPT |
 | U4.29 | Parameter changes propagate to attached parts (T129; D75) [hard] | 1/3 | in progress | - |
-| U4.30 | Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard] | 0/3 | not started | - |
-| U4.31 | Real-parts library (D77) | 0/3 | not started | - |
-| U4.32 | Shape generators for common aircraft configurations (D77, D78) [hard] | 0/3 | not started | - |
-| U4.33 | Reference-aircraft research template (D77, D78) | 0/2 | not started | - |
+| U4.30 | Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard] | 1/3 | in progress | - |
+| U4.31 | Real-parts library (D77) | 1/3 | in progress | - |
+| U4.32 | Shape generators for common aircraft configurations (D77, D78) [hard] | 1/3 | in progress | - |
+| U4.33 | Reference-aircraft research template (D77, D78) | 3/3 | done | - |
 | U4.34 | Any-aircraft rehearsal (D77, D78) | 0/3 | not started | - |
 
 ## Ledger
@@ -167,9 +167,9 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 45 | 82 | 1 | 2 | 0 | 130 |
+| task | 46 | 82 | 1 | 2 | 0 | 131 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 264 | 280 |
+| decision | 12 | 0 | 0 | 4 | 265 | 281 |
 
 ## Overdue
 
