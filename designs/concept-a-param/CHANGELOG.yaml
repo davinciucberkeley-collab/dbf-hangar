@@ -1,0 +1,672 @@
+- date: '2026-11-24T21:35:42Z'
+  key: components[avn-005].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[avn-006].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[avn-009-s].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[avn-009-t].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-002-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-002-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-003-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-003-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-004-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-004-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-005-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-005-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-006-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[fin-006-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[ger-001-ll].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[ger-001-lr].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[ger-001-ul].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[ger-001-ur].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[ger-002-ll].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:35:42Z'
+  key: components[ger-002-lr].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[ger-002-ul].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[ger-002-ur].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-005-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-005-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[fin-001-l].geometry.params.center[1]
+  old: -380
+  new: -($span_mm/2 - 70)
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[fin-001-r].geometry.params.center[1]
+  old: 380
+  new: $span_mm/2 - 70
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-006-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-006-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-007-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-007-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-009-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-009-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-010-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[wng-010-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[mec-001-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[mec-001-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[mec-002-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[mec-002-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[mec-003-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:38:01Z'
+  key: components[mec-003-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[mec-004-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[mec-004-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[mec-005-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[mec-005-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[hwc-002-l].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[hwc-002-r].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[wng-008-ll].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[wng-008-lu].position[1]
+  old: 0
+  new: 450 - $span_mm/2
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[wng-008-rl].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: components[wng-008-ru].position[1]
+  old: 0
+  new: $span_mm/2 - 450
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-05].location[1]
+  old: 380.062
+  new: $span_mm/2 - 450 + 380.062
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-06].location[1]
+  old: -379.846
+  new: 450 - $span_mm/2 - 379.846
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-10].location[1]
+  old: 128.599
+  new: $span_mm/2 - 450 + 128.599
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-10].articulation.pivot[1]
+  old: 195
+  new: $span_mm/2 - 450 + 195
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-11].location[1]
+  old: -156.262
+  new: 450 - $span_mm/2 - 156.262
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-11].articulation.pivot[1]
+  old: -195
+  new: 450 - $span_mm/2 - 195
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-20].location[1]
+  old: 317
+  new: $span_mm/2 - 450 + 317
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-30R].location[1]
+  old: 288.852
+  new: $span_mm/2 - 450 + 288.852
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-31R].location[1]
+  old: 289.684
+  new: $span_mm/2 - 450 + 289.684
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:41:08Z'
+  key: attachments[E-WNG-4R].location[1]
+  old: 366.458
+  new: $span_mm/2 - 450 + 366.458
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-WNG-5R].location[1]
+  old: 349.5
+  new: $span_mm/2 - 450 + 349.5
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-WNG-21].location[1]
+  old: -250.542
+  new: 450 - $span_mm/2 - 250.542
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-WNG-30L].location[1]
+  old: -283.513
+  new: 450 - $span_mm/2 - 283.513
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-WNG-31L].location[1]
+  old: -284.625
+  new: 450 - $span_mm/2 - 284.625
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-WNG-4L].location[1]
+  old: -363.167
+  new: 450 - $span_mm/2 - 363.167
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-WNG-5L].location[1]
+  old: -349.5
+  new: 450 - $span_mm/2 - 349.5
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-01].location[1]
+  old: 377.399
+  new: $span_mm/2 - 450 + 377.399
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-02].location[1]
+  old: 379.129
+  new: $span_mm/2 - 450 + 379.129
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-03].location[1]
+  old: 386.826
+  new: $span_mm/2 - 450 + 386.826
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-04].location[1]
+  old: 378.813
+  new: $span_mm/2 - 450 + 378.813
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-05].location[1]
+  old: 380.426
+  new: $span_mm/2 - 450 + 380.426
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-06].location[1]
+  old: 379.083
+  new: $span_mm/2 - 450 + 379.083
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-07].location[1]
+  old: 379.584
+  new: $span_mm/2 - 450 + 379.584
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-08].location[1]
+  old: 384.842
+  new: $span_mm/2 - 450 + 384.842
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-09].location[1]
+  old: -382.601
+  new: 450 - $span_mm/2 - 382.601
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-10].location[1]
+  old: -384.098
+  new: 450 - $span_mm/2 - 384.098
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-11].location[1]
+  old: -373.174
+  new: 450 - $span_mm/2 - 373.174
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-12].location[1]
+  old: -381.187
+  new: 450 - $span_mm/2 - 381.187
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-13].location[1]
+  old: -379.574
+  new: 450 - $span_mm/2 - 379.574
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:43:47Z'
+  key: attachments[E-FIN-14].location[1]
+  old: -380.917
+  new: 450 - $span_mm/2 - 380.917
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-FIN-15].location[1]
+  old: -380.416
+  new: 450 - $span_mm/2 - 380.416
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-FIN-16].location[1]
+  old: -384.9
+  new: 450 - $span_mm/2 - 384.9
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-04].location[1]
+  old: -419.778
+  new: 450 - $span_mm/2 - 419.778
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-07].location[1]
+  old: -419.606
+  new: 450 - $span_mm/2 - 419.606
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-08].location[1]
+  old: -418.775
+  new: 450 - $span_mm/2 - 418.775
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-09].location[1]
+  old: -418.232
+  new: 450 - $span_mm/2 - 418.232
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-10].location[1]
+  old: -418.352
+  new: 450 - $span_mm/2 - 418.352
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-11].location[1]
+  old: -422.056
+  new: 450 - $span_mm/2 - 422.056
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-12].location[1]
+  old: -423.143
+  new: 450 - $span_mm/2 - 423.143
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-AVN-13].location[1]
+  old: -422.752
+  new: 450 - $span_mm/2 - 422.752
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-01].location[1]
+  old: 199.75
+  new: $span_mm/2 - 450 + 199.75
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-02].location[1]
+  old: 195.69
+  new: $span_mm/2 - 450 + 195.69
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-02].articulation.pivot[1]
+  old: 200.0
+  new: $span_mm/2 - 450 + 200.0
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-03].location[1]
+  old: 187.987
+  new: $span_mm/2 - 450 + 187.987
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-05].location[1]
+  old: 188.66
+  new: $span_mm/2 - 450 + 188.66
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-PIN-R4].location[1]
+  old: 188.01
+  new: $span_mm/2 - 450 + 188.01
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-HW-R2].location[1]
+  old: 200.153
+  new: $span_mm/2 - 450 + 200.153
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-06].location[1]
+  old: -200.25
+  new: 450 - $span_mm/2 - 200.25
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-07].location[1]
+  old: -195.814
+  new: 450 - $span_mm/2 - 195.814
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:46:14Z'
+  key: attachments[E-MEC-07].articulation.pivot[1]
+  old: -200.0
+  new: 450 - $span_mm/2 - 200.0
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-MEC-08].location[1]
+  old: -188.013
+  new: 450 - $span_mm/2 - 188.013
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-MEC-10].location[1]
+  old: -187.935
+  new: 450 - $span_mm/2 - 187.935
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-MEC-PIN-L4].location[1]
+  old: -187.99
+  new: 450 - $span_mm/2 - 187.99
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-MEC-HW-L2].location[1]
+  old: -199.847
+  new: 450 - $span_mm/2 - 199.847
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-01].location[1]
+  old: 376.198
+  new: $span_mm/2 - 450 + 376.198
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-02].location[1]
+  old: 380.36
+  new: $span_mm/2 - 450 + 380.36
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-03].location[1]
+  old: -383.802
+  new: 450 - $span_mm/2 - 383.802
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-04].location[1]
+  old: -379.64
+  new: 450 - $span_mm/2 - 379.64
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-05].location[1]
+  old: 375.352
+  new: $span_mm/2 - 450 + 375.352
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-06].location[1]
+  old: 379.734
+  new: $span_mm/2 - 450 + 379.734
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-07].location[1]
+  old: -384.648
+  new: 450 - $span_mm/2 - 384.648
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify
+- date: '2026-11-24T21:48:41Z'
+  key: attachments[E-GER-08].location[1]
+  old: -379.858
+  new: 450 - $span_mm/2 - 379.858
+  why: 'T129: placement follows parameters.span_mm'
+  kind: modify

@@ -98,7 +98,7 @@ components:
     type: other
     description: "Airspeed sensor MS4525 board"
     geometry: {mesh: {file: meshes/avn-005.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 3
     material: "PCB"
     manufacturing: {method: purchased, part_number: "BOM V05"}
@@ -109,7 +109,7 @@ components:
     type: other
     description: "Pitot-static probe (RMRC kit; size not published: EST 166 x 3 mm, measure)"
     geometry: {mesh: {file: meshes/avn-006.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 5
     material: "brass tube"
     manufacturing: {method: purchased, part_number: "BOM V05"}
@@ -142,7 +142,7 @@ components:
     type: other
     description: "Pitot line, static pressure: silicone tubing 2 / 4 mm (V RMRC), 36 mm (CAD route)"
     geometry: {mesh: {file: meshes/avn-009-s.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.4
     material: "silicone rubber"
     manufacturing: {method: purchased, part_number: "BOM V05"}
@@ -153,7 +153,7 @@ components:
     type: other
     description: "Pitot line, total pressure: silicone tubing 2 / 4 mm (V RMRC), 36 mm (CAD route)"
     geometry: {mesh: {file: meshes/avn-009-t.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.4
     material: "silicone rubber"
     manufacturing: {method: purchased, part_number: "BOM V05"}
@@ -417,7 +417,7 @@ components:
     type: structure
     description: "Fin tube 16x14 x 0.36 m (L)"
     # common.py:46 YFIN 0.38
-    geometry: {generator: tube, params: {axis: z, center: ["$fin_x_mm", -380, 0], length: "$fin_len_mm", outer_d: "$fin_od_mm", inner_d: "$fin_id_mm"}}
+    geometry: {generator: tube, params: {axis: z, center: ["$fin_x_mm", "-($span_mm/2 - 70)", 0], length: "$fin_len_mm", outer_d: "$fin_od_mm", inner_d: "$fin_id_mm"}}
     mass_model: {material: cfrp-tube}
     position: [0, 0, 0]
     material: "CFRP tube"
@@ -429,7 +429,7 @@ components:
     type: structure
     description: "Fin tube 16x14 x 0.36 m (R)"
     # common.py:46 YFIN 0.38
-    geometry: {generator: tube, params: {axis: z, center: ["$fin_x_mm", 380, 0], length: "$fin_len_mm", outer_d: "$fin_od_mm", inner_d: "$fin_id_mm"}}
+    geometry: {generator: tube, params: {axis: z, center: ["$fin_x_mm", "$span_mm/2 - 70", 0], length: "$fin_len_mm", outer_d: "$fin_od_mm", inner_d: "$fin_id_mm"}}
     mass_model: {material: cfrp-tube}
     position: [0, 0, 0]
     material: "CFRP tube"
@@ -441,7 +441,7 @@ components:
     type: structure
     description: "Fin rib tube 14x12 (L)"
     geometry: {mesh: {file: meshes/fin-002-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 14.1
     material: "CFRP tube"
     manufacturing: {method: hand-cut}
@@ -452,7 +452,7 @@ components:
     type: structure
     description: "Fin rib tube 14x12 (R)"
     geometry: {mesh: {file: meshes/fin-002-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 14.1
     material: "CFRP tube"
     manufacturing: {method: hand-cut}
@@ -463,7 +463,7 @@ components:
     type: structure
     description: "Fin root block (L)"
     geometry: {mesh: {file: meshes/fin-003-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 3.2
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -474,7 +474,7 @@ components:
     type: structure
     description: "Fin root block (R)"
     geometry: {mesh: {file: meshes/fin-003-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 3.2
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -485,7 +485,7 @@ components:
     type: tail_surface
     description: "Fin fairing 3 mm XPS + tape (L)"
     geometry: {mesh: {file: meshes/fin-004-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 8.4
     material: "XPS foam + tape"
     manufacturing: {method: hotwire-foam}
@@ -496,7 +496,7 @@ components:
     type: tail_surface
     description: "Fin fairing 3 mm XPS + tape (R)"
     geometry: {mesh: {file: meshes/fin-004-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 8.4
     material: "XPS foam + tape"
     manufacturing: {method: hotwire-foam}
@@ -507,7 +507,7 @@ components:
     type: structure
     description: "Rib saddle on spar (L)"
     geometry: {mesh: {file: meshes/fin-005-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 1
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -518,7 +518,7 @@ components:
     type: structure
     description: "Rib saddle on spar (R)"
     geometry: {mesh: {file: meshes/fin-005-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 1
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -529,7 +529,7 @@ components:
     type: tail_surface
     description: "Rib fairing, upper (L): XPS + tape blister over the 14 mm rib where the S5010 skin is thinner than the tube (D-194); mass EST"
     geometry: {mesh: {file: meshes/fin-006-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.3
     material: "XPS foam + tape"
     manufacturing: {method: hotwire-foam}
@@ -540,7 +540,7 @@ components:
     type: tail_surface
     description: "Rib fairing, upper (R): XPS + tape blister over the 14 mm rib where the S5010 skin is thinner than the tube (D-194); mass EST"
     geometry: {mesh: {file: meshes/fin-006-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 0.3
     material: "XPS foam + tape"
     manufacturing: {method: hotwire-foam}
@@ -551,7 +551,7 @@ components:
     type: landing_gear
     description: "Foot shoe (LL)"
     geometry: {mesh: {file: meshes/ger-001-ll.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 1.4
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -562,7 +562,7 @@ components:
     type: landing_gear
     description: "Foot shoe (LR)"
     geometry: {mesh: {file: meshes/ger-001-lr.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 1.4
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -573,7 +573,7 @@ components:
     type: landing_gear
     description: "Foot shoe (UL)"
     geometry: {mesh: {file: meshes/ger-001-ul.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 1.4
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -584,7 +584,7 @@ components:
     type: landing_gear
     description: "Foot shoe (UR)"
     geometry: {mesh: {file: meshes/ger-001-ur.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 1.4
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -595,7 +595,7 @@ components:
     type: landing_gear
     description: "Foot pad EVA/PE 12x15x30 (LL)"
     geometry: {mesh: {file: meshes/ger-002-ll.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.7
     material: "EVA / PE foam"
     manufacturing: {method: hand-cut}
@@ -606,7 +606,7 @@ components:
     type: landing_gear
     description: "Foot pad EVA/PE 12x15x30 (LR)"
     geometry: {mesh: {file: meshes/ger-002-lr.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 0.7
     material: "EVA / PE foam"
     manufacturing: {method: hand-cut}
@@ -617,7 +617,7 @@ components:
     type: landing_gear
     description: "Foot pad EVA/PE 12x15x30 (UL)"
     geometry: {mesh: {file: meshes/ger-002-ul.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.7
     material: "EVA / PE foam"
     manufacturing: {method: hand-cut}
@@ -628,7 +628,7 @@ components:
     type: landing_gear
     description: "Foot pad EVA/PE 12x15x30 (UR)"
     geometry: {mesh: {file: meshes/ger-002-ur.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 0.7
     material: "EVA / PE foam"
     manufacturing: {method: hand-cut}
@@ -749,7 +749,7 @@ components:
     type: other
     description: "Servo arm screw M2 x 6 pan (L)"
     geometry: {mesh: {file: meshes/hwc-002-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.27
     material: "A2 stainless"
     manufacturing: {method: purchased, part_number: "BOM R05"}
@@ -760,7 +760,7 @@ components:
     type: other
     description: "Servo arm screw M2 x 6 pan (R)"
     geometry: {mesh: {file: meshes/hwc-002-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 0.27
     material: "A2 stainless"
     manufacturing: {method: purchased, part_number: "BOM R05"}
@@ -782,7 +782,7 @@ components:
     type: servo
     description: "Servo EMAX ES3054HV (L)"
     geometry: {mesh: {file: meshes/mec-001-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 20.5
     material: "plastic / metal gear"
     manufacturing: {method: purchased, part_number: "BOM M01"}
@@ -793,7 +793,7 @@ components:
     type: servo
     description: "Servo EMAX ES3054HV (R)"
     geometry: {mesh: {file: meshes/mec-001-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 20.5
     material: "plastic / metal gear"
     manufacturing: {method: purchased, part_number: "BOM M01"}
@@ -804,7 +804,7 @@ components:
     type: other
     description: "Servo arm (L)"
     geometry: {mesh: {file: meshes/mec-002-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 1
     material: "nylon"
     manufacturing: {method: purchased, part_number: "BOM M01"}
@@ -815,7 +815,7 @@ components:
     type: other
     description: "Servo arm (R)"
     geometry: {mesh: {file: meshes/mec-002-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 1
     material: "nylon"
     manufacturing: {method: purchased, part_number: "BOM M01"}
@@ -826,7 +826,7 @@ components:
     type: other
     description: "Pushrod 1.2 mm with Z-bend and clevis (L)"
     geometry: {mesh: {file: meshes/mec-003-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.97
     material: "steel"
     manufacturing: {method: purchased, part_number: "BOM M02"}
@@ -837,7 +837,7 @@ components:
     type: other
     description: "Pushrod 1.2 mm with Z-bend and clevis (R)"
     geometry: {mesh: {file: meshes/mec-003-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 0.97
     material: "steel"
     manufacturing: {method: purchased, part_number: "BOM M02"}
@@ -848,7 +848,7 @@ components:
     type: other
     description: "Control horn (L)"
     geometry: {mesh: {file: meshes/mec-004-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 1
     material: "nylon"
     manufacturing: {method: purchased, part_number: "BOM M02"}
@@ -859,7 +859,7 @@ components:
     type: other
     description: "Control horn (R)"
     geometry: {mesh: {file: meshes/mec-004-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 1
     material: "nylon"
     manufacturing: {method: purchased, part_number: "BOM M02"}
@@ -870,7 +870,7 @@ components:
     type: other
     description: "Clevis pin 1.0 x 4.4 mm (L); mass CALC steel, carried inside the 1.0 g rod before D-194"
     geometry: {mesh: {file: meshes/mec-005-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.03
     material: "steel"
     manufacturing: {method: purchased, part_number: "BOM M02"}
@@ -881,7 +881,7 @@ components:
     type: other
     description: "Clevis pin 1.0 x 4.4 mm (R); mass CALC steel, carried inside the 1.0 g rod before D-194"
     geometry: {mesh: {file: meshes/mec-005-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 0.03
     material: "steel"
     manufacturing: {method: purchased, part_number: "BOM M02"}
@@ -1191,7 +1191,7 @@ components:
     type: structure
     description: "Spar plug (left rib clamp)"
     geometry: {mesh: {file: meshes/wng-005-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 1.2
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1202,7 +1202,7 @@ components:
     type: structure
     description: "Spar plug (right rib clamp)"
     geometry: {mesh: {file: meshes/wng-005-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 1.2
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1213,7 +1213,7 @@ components:
     type: tail_surface
     description: "Elevon left"
     geometry: {mesh: {file: meshes/wng-006-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 6.7
     material: "XPS foam + tape"
     manufacturing: {method: hotwire-foam}
@@ -1224,7 +1224,7 @@ components:
     type: tail_surface
     description: "Elevon right"
     geometry: {mesh: {file: meshes/wng-006-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 6.7
     material: "XPS foam + tape"
     manufacturing: {method: hotwire-foam}
@@ -1235,7 +1235,7 @@ components:
     type: structure
     description: "Elevon balance (D-187 v2, D-205 L): 12.8 g lead strip 20 mm ahead of the hinge (10 x 1.07 mm x 106 mm; D-195 fallback) + 2 PETG/CF tabs 0.5 g (caps are separate parts WNG-008)"
     geometry: {mesh: {file: meshes/wng-007-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 13.3
     material: "lead + PETG/CF"
     manufacturing: {method: hand-cut}
@@ -1246,7 +1246,7 @@ components:
     type: structure
     description: "Elevon balance (D-187 v2, D-205 R): 12.8 g lead strip 20 mm ahead of the hinge (10 x 1.07 mm x 106 mm; D-195 fallback) + 2 PETG/CF tabs 0.5 g (caps are separate parts WNG-008)"
     geometry: {mesh: {file: meshes/wng-007-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 13.3
     material: "lead + PETG/CF"
     manufacturing: {method: hand-cut}
@@ -1257,7 +1257,7 @@ components:
     type: structure
     description: "Lens cap + stop bosses (L, lower skin): wall 0.6 mm, >= 0.5 mm clearance to the lead at the +-21 deg stop"
     geometry: {mesh: {file: meshes/wng-008-ll.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 3.8
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1268,7 +1268,7 @@ components:
     type: structure
     description: "Lens cap + stop bosses (L, upper skin): wall 0.6 mm, >= 0.5 mm clearance to the lead at the +-21 deg stop"
     geometry: {mesh: {file: meshes/wng-008-lu.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 3.8
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1279,7 +1279,7 @@ components:
     type: structure
     description: "Lens cap + stop bosses (R, lower skin): wall 0.6 mm, >= 0.5 mm clearance to the lead at the +-21 deg stop"
     geometry: {mesh: {file: meshes/wng-008-rl.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 3.8
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1290,7 +1290,7 @@ components:
     type: structure
     description: "Lens cap + stop bosses (R, upper skin): wall 0.6 mm, >= 0.5 mm clearance to the lead at the +-21 deg stop"
     geometry: {mesh: {file: meshes/wng-008-ru.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 3.8
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1301,7 +1301,7 @@ components:
     type: other
     description: "Hinge damper stator (L): printed housing + pin, 12,500 cSt silicone fluid, 2 silicone preload strips"
     geometry: {mesh: {file: meshes/wng-009-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 2
     material: "PETG + silicone"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1312,7 +1312,7 @@ components:
     type: other
     description: "Hinge damper stator (R): printed housing + pin, 12,500 cSt silicone fluid, 2 silicone preload strips"
     geometry: {mesh: {file: meshes/wng-009-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 2
     material: "PETG + silicone"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1323,7 +1323,7 @@ components:
     type: other
     description: "Hinge damper rotor (L): sleeve + flange bonded on the elevon tip"
     geometry: {mesh: {file: meshes/wng-010-l.stl}}
-    position: [0, 0, 0]
+    position: [0, "450 - $span_mm/2", 0]
     mass_g: 0.5
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1334,7 +1334,7 @@ components:
     type: other
     description: "Hinge damper rotor (R): sleeve + flange bonded on the elevon tip"
     geometry: {mesh: {file: meshes/wng-010-r.stl}}
-    position: [0, 0, 0]
+    position: [0, "$span_mm/2 - 450", 0]
     mass_g: 0.5
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
@@ -1354,106 +1354,106 @@ attachments:
   - {id: E-WNG-04, parent: wng-002, child: wng-004-l, method: glued, location: [57.367, -299.938, 4.182], rated_load_n: 1247.8, rating_basis: derived, connection: CT-EPOXY}
   # E-WNG-05 CT-EPOXY (WNG-002 -> WNG-005-R): plug in the spar bore under a clamp (C2 rule)
   # rating [derived] contact area 624 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)
-  - {id: E-WNG-05, parent: wng-002, child: wng-005-r, method: glued, location: [57.367, 380.062, 4.182], rated_load_n: 1247.8, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-WNG-05, parent: wng-002, child: wng-005-r, method: glued, location: [57.367, "$span_mm/2 - 450 + 380.062", 4.182], rated_load_n: 1247.8, rating_basis: derived, connection: CT-EPOXY}
   # E-WNG-06 CT-EPOXY (WNG-002 -> WNG-005-L): plug in the spar bore under a clamp (C2 rule)
   # rating [derived] contact area 624 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)
-  - {id: E-WNG-06, parent: wng-002, child: wng-005-l, method: glued, location: [57.701, -379.846, 4.374], rated_load_n: 1247.8, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-WNG-06, parent: wng-002, child: wng-005-l, method: glued, location: [57.701, "450 - $span_mm/2 - 379.846", 4.374], rated_load_n: 1247.8, rating_basis: derived, connection: CT-EPOXY}
   # E-WNG-10 CT-TAPE-HINGE (WNG-001 -> WNG-006-R): tape hinge, upper surface
   # rating [placeholder] placeholder - not from source: CT-TAPE-HINGE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.95 N, rounded up)
   # articulation: pivot = joint origin of E-WNG-10 x1000 (hinge line x 183.75 = (1 - ELEV_FRAC 0.25) x chord 245, mid-span of the elevon);
   # axis = -Y so that a positive angle lifts the trailing edge (the source rotates about +Y, +angle = trailing edge down);
   # range +-21 deg = joint limits (ELEV_STOP 21, amodel/common.py); poses: neutral 0, up +21, down -21
-  - {id: E-WNG-10, parent: wng-001, child: wng-006-r, method: hinge, location: [183.717, 128.599, 0.18], rated_load_n: 1, rating_basis: placeholder, connection: CT-TAPE-HINGE,
-     articulation: {type: revolute, pivot: [183.75, 195, 0.295], axis: [0, -1, 0], range_deg: [-21, 21],
+  - {id: E-WNG-10, parent: wng-001, child: wng-006-r, method: hinge, location: [183.717, "$span_mm/2 - 450 + 128.599", 0.18], rated_load_n: 1, rating_basis: placeholder, connection: CT-TAPE-HINGE,
+     articulation: {type: revolute, pivot: [183.75, "$span_mm/2 - 450 + 195", 0.295], axis: [0, -1, 0], range_deg: [-21, 21],
                     poses: {neutral: 0, up: 21, down: -21}}}
   # E-WNG-11 CT-TAPE-HINGE (WNG-001 -> WNG-006-L): tape hinge, upper surface
   # rating [placeholder] placeholder - not from source: CT-TAPE-HINGE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.95 N, rounded up)
   # articulation: pivot = joint origin of E-WNG-11 x1000 (hinge line x 183.75 = (1 - ELEV_FRAC 0.25) x chord 245, mid-span of the elevon);
   # axis = -Y so that a positive angle lifts the trailing edge (the source rotates about +Y, +angle = trailing edge down);
   # range +-21 deg = joint limits (ELEV_STOP 21, amodel/common.py); poses: neutral 0, up +21, down -21
-  - {id: E-WNG-11, parent: wng-001, child: wng-006-l, method: hinge, location: [183.728, -156.262, 0.218], rated_load_n: 1, rating_basis: placeholder, connection: CT-TAPE-HINGE,
-     articulation: {type: revolute, pivot: [183.75, -195, 0.295], axis: [0, -1, 0], range_deg: [-21, 21],
+  - {id: E-WNG-11, parent: wng-001, child: wng-006-l, method: hinge, location: [183.728, "450 - $span_mm/2 - 156.262", 0.218], rated_load_n: 1, rating_basis: placeholder, connection: CT-TAPE-HINGE,
+     articulation: {type: revolute, pivot: [183.75, "450 - $span_mm/2 - 195", 0.295], axis: [0, -1, 0], range_deg: [-21, 21],
                     poses: {neutral: 0, up: 21, down: -21}}}
   # E-WNG-20 CT-EPOXY (WNG-006-R -> WNG-007-R): balance horn root bonded to the elevon nose face (D-187)
   # rating [derived] contact area 16 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-WNG-20, parent: wng-006-r, child: wng-007-r, method: glued, location: [183.397, 317, -3.379], rated_load_n: 1.4, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-WNG-20, parent: wng-006-r, child: wng-007-r, method: glued, location: [183.397, "$span_mm/2 - 450 + 317", -3.379], rated_load_n: 1.4, rating_basis: derived, connection: CT-EPOXY}
   # E-WNG-30R CT-EPOXY (WNG-001 -> WNG-008-RU): lens cap flange bonded on the tape skin over the strip window; the stop bosses pass through the window to the tab (FIXES2)
   # rating [placeholder] placeholder - not from source: foam_103.md L10 'Stop reaction at stall (30 N) peeling the lens cap off the skin' states 'peel of the tape skin is not covered by a foam value: pull coupon required'; the only adhesive allowable is epoxy shear (structures_a.py L17 BOND_TAU 2.0 MPa (EST)), which does not apply to peel; set to the platform's own demand (4.5 x g x subtree mass = 0.17 N, rounded up)
-  - {id: E-WNG-30R, parent: wng-001, child: wng-008-ru, method: glued, location: [141.219, 288.852, 6.501], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
+  - {id: E-WNG-30R, parent: wng-001, child: wng-008-ru, method: glued, location: [141.219, "$span_mm/2 - 450 + 288.852", 6.501], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
   # E-WNG-31R CT-EPOXY (WNG-001 -> WNG-008-RL): lens cap flange bonded on the tape skin over the strip window; the stop bosses pass through the window to the tab (FIXES2)
   # rating [placeholder] placeholder - not from source: foam_103.md L10 'Stop reaction at stall (30 N) peeling the lens cap off the skin' states 'peel of the tape skin is not covered by a foam value: pull coupon required'; the only adhesive allowable is epoxy shear (structures_a.py L17 BOND_TAU 2.0 MPa (EST)), which does not apply to peel; set to the platform's own demand (4.5 x g x subtree mass = 0.17 N, rounded up)
-  - {id: E-WNG-31R, parent: wng-001, child: wng-008-rl, method: glued, location: [142.374, 289.684, -9.983], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
+  - {id: E-WNG-31R, parent: wng-001, child: wng-008-rl, method: glued, location: [142.374, "$span_mm/2 - 450 + 289.684", -9.983], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
   # E-WNG-4R CT-EPOXY (WNG-001 -> WNG-009-R): damper housing bonded in the core notch at the elevon tip, axis on the hinge line (FIXES2)
   # rating [derived] contact area 67 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
   # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
-  - {id: E-WNG-4R, parent: wng-001, child: wng-009-r, method: glued, location: [177.225, 366.458, -0.457], rated_load_n: 5.7, rating_basis: derived, connection: CT-EPOXY, kinematic_link: true}
+  - {id: E-WNG-4R, parent: wng-001, child: wng-009-r, method: glued, location: [177.225, "$span_mm/2 - 450 + 366.458", -0.457], rated_load_n: 5.7, rating_basis: derived, connection: CT-EPOXY, kinematic_link: true}
   # E-WNG-5R CT-EPOXY (WNG-006-R -> WNG-010-R): damper rotor flange bonded on the elevon tip face (FIXES2)
   # rating [derived] contact area 25 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-WNG-5R, parent: wng-006-r, child: wng-010-r, method: glued, location: [186.323, 349.5, -2.251], rated_load_n: 2.2, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-WNG-5R, parent: wng-006-r, child: wng-010-r, method: glued, location: [186.323, "$span_mm/2 - 450 + 349.5", -2.251], rated_load_n: 2.2, rating_basis: derived, connection: CT-EPOXY}
   # E-WNG-21 CT-EPOXY (WNG-006-L -> WNG-007-L): balance horn root bonded to the elevon nose face (D-187)
   # rating [derived] contact area 16 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-WNG-21, parent: wng-006-l, child: wng-007-l, method: glued, location: [183.42, -250.542, -3.318], rated_load_n: 1.4, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-WNG-21, parent: wng-006-l, child: wng-007-l, method: glued, location: [183.42, "450 - $span_mm/2 - 250.542", -3.318], rated_load_n: 1.4, rating_basis: derived, connection: CT-EPOXY}
   # E-WNG-30L CT-EPOXY (WNG-001 -> WNG-008-LU): lens cap flange bonded on the tape skin over the strip window; the stop bosses pass through the window to the tab (FIXES2)
   # rating [placeholder] placeholder - not from source: foam_103.md L10 'Stop reaction at stall (30 N) peeling the lens cap off the skin' states 'peel of the tape skin is not covered by a foam value: pull coupon required'; the only adhesive allowable is epoxy shear (structures_a.py L17 BOND_TAU 2.0 MPa (EST)), which does not apply to peel; set to the platform's own demand (4.5 x g x subtree mass = 0.17 N, rounded up)
-  - {id: E-WNG-30L, parent: wng-001, child: wng-008-lu, method: glued, location: [141.191, -283.513, 6.502], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
+  - {id: E-WNG-30L, parent: wng-001, child: wng-008-lu, method: glued, location: [141.191, "450 - $span_mm/2 - 283.513", 6.502], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
   # E-WNG-31L CT-EPOXY (WNG-001 -> WNG-008-LL): lens cap flange bonded on the tape skin over the strip window; the stop bosses pass through the window to the tab (FIXES2)
   # rating [placeholder] placeholder - not from source: foam_103.md L10 'Stop reaction at stall (30 N) peeling the lens cap off the skin' states 'peel of the tape skin is not covered by a foam value: pull coupon required'; the only adhesive allowable is epoxy shear (structures_a.py L17 BOND_TAU 2.0 MPa (EST)), which does not apply to peel; set to the platform's own demand (4.5 x g x subtree mass = 0.17 N, rounded up)
-  - {id: E-WNG-31L, parent: wng-001, child: wng-008-ll, method: glued, location: [142.82, -284.625, -9.967], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
+  - {id: E-WNG-31L, parent: wng-001, child: wng-008-ll, method: glued, location: [142.82, "450 - $span_mm/2 - 284.625", -9.967], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-EPOXY}
   # E-WNG-4L CT-EPOXY (WNG-001 -> WNG-009-L): damper housing bonded in the core notch at the elevon tip, axis on the hinge line (FIXES2)
   # rating [derived] contact area 70 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
   # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
-  - {id: E-WNG-4L, parent: wng-001, child: wng-009-l, method: glued, location: [177.201, -363.167, 0.339], rated_load_n: 6, rating_basis: derived, connection: CT-EPOXY, kinematic_link: true}
+  - {id: E-WNG-4L, parent: wng-001, child: wng-009-l, method: glued, location: [177.201, "450 - $span_mm/2 - 363.167", 0.339], rated_load_n: 6, rating_basis: derived, connection: CT-EPOXY, kinematic_link: true}
   # E-WNG-5L CT-EPOXY (WNG-006-L -> WNG-010-L): damper rotor flange bonded on the elevon tip face (FIXES2)
   # rating [derived] contact area 24 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-WNG-5L, parent: wng-006-l, child: wng-010-l, method: glued, location: [185.718, -349.5, -2.425], rated_load_n: 2.1, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-WNG-5L, parent: wng-006-l, child: wng-010-l, method: glued, location: [185.718, "450 - $span_mm/2 - 349.5", -2.425], rated_load_n: 2.1, rating_basis: derived, connection: CT-EPOXY}
   # E-FIN-01 CT-EPOXY (FIN-003-R -> FIN-001-R): root block wraps the tube
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Fin root block on fin tube (40 mm long, 16 mm OD)', 130 N, MS +6.17; rated = 130 N x K 2.1562 x (1 + MS 6.17)
-  - {id: E-FIN-01, parent: fin-003-r, child: fin-001-r, method: glued, location: [286.453, 377.399, -1.175], rated_load_n: 2009.8, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-01, parent: fin-003-r, child: fin-001-r, method: glued, location: [286.453, "$span_mm/2 - 450 + 377.399", -1.175], rated_load_n: 2009.8, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-02 CT-EPOXY (FIN-002-R -> FIN-003-R): rib end in the block socket
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Rib tube 14x12 in fin root block, 60 mm embed', 84 N, MS +28.14; rated = 84 N x K 2.1562 x (1 + MS 28.14)
-  - {id: E-FIN-02, parent: fin-002-r, child: fin-003-r, method: glued, location: [271.39, 379.129, 6.943], rated_load_n: 5278, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-02, parent: fin-002-r, child: fin-003-r, method: glued, location: [271.39, "$span_mm/2 - 450 + 379.129", 6.943], rated_load_n: 5278, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-03 CT-EPOXY (FIN-002-R -> FIN-005-R): rib start in the saddle socket
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Rib saddle on 12 mm spar, wrap 60 mm wide', 783 N, MS +0.34 (same saddle wrap used for the saddle-on-rib joint); rated = 783 N x K 2.1562 x (1 + MS 0.34)
-  - {id: E-FIN-03, parent: fin-002-r, child: fin-005-r, method: glued, location: [80.084, 386.826, -1.488], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-03, parent: fin-002-r, child: fin-005-r, method: glued, location: [80.084, "$span_mm/2 - 450 + 386.826", -1.488], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-04 CT-EPOXY (WNG-002 -> FIN-005-R): saddle wraps the spar (60 mm)
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Rib saddle on 12 mm spar, wrap 60 mm wide', 783 N, MS +0.34 (same saddle wrap used for the saddle-on-rib joint); rated = 783 N x K 2.1562 x (1 + MS 0.34)
-  - {id: E-FIN-04, parent: wng-002, child: fin-005-r, method: glued, location: [59.884, 378.813, -5.992], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-04, parent: wng-002, child: fin-005-r, method: glued, location: [59.884, "$span_mm/2 - 450 + 378.813", -5.992], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-05 CT-CA (FIN-004-R -> FIN-001-R): fairing in the tube slot (foam-safe CA)
   # rating [derived] contact area 896 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-05, parent: fin-004-r, child: fin-001-r, method: glued, location: [286.028, 380.426, 35.583], rated_load_n: 77, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-05, parent: fin-004-r, child: fin-001-r, method: glued, location: [286.028, "$span_mm/2 - 450 + 380.426", 35.583], rated_load_n: 77, rating_basis: derived, connection: CT-CA}
   # E-FIN-06 CT-CA (FIN-002-R -> FIN-004-R): fairing round the rib
   # rating [derived] contact area 489 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-06, parent: fin-002-r, child: fin-004-r, method: glued, location: [218.25, 379.083, 7.19], rated_load_n: 42, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-06, parent: fin-002-r, child: fin-004-r, method: glued, location: [218.25, "$span_mm/2 - 450 + 379.083", 7.19], rated_load_n: 42, rating_basis: derived, connection: CT-CA}
   # E-FIN-07 CT-CA (FIN-006-R -> FIN-002-R): rib fairing over the rib top (foam-safe CA), sits on the core skin
   # rating [derived] contact area 647 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-07, parent: fin-006-r, child: fin-002-r, method: glued, location: [165.738, 379.584, 6.973], rated_load_n: 55.7, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-07, parent: fin-006-r, child: fin-002-r, method: glued, location: [165.738, "$span_mm/2 - 450 + 379.584", 6.973], rated_load_n: 55.7, rating_basis: derived, connection: CT-CA}
   # E-FIN-08 CT-CA (WNG-001 -> FIN-006-R): rib fairing bonded on the upper skin
   # rating [derived] contact area 311 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-08, parent: wng-001, child: fin-006-r, method: glued, location: [151.136, 384.842, 5.077], rated_load_n: 26.7, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-08, parent: wng-001, child: fin-006-r, method: glued, location: [151.136, "$span_mm/2 - 450 + 384.842", 5.077], rated_load_n: 26.7, rating_basis: derived, connection: CT-CA}
   # E-FIN-09 CT-EPOXY (FIN-003-L -> FIN-001-L): root block wraps the tube
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Fin root block on fin tube (40 mm long, 16 mm OD)', 130 N, MS +6.17; rated = 130 N x K 2.1562 x (1 + MS 6.17)
-  - {id: E-FIN-09, parent: fin-003-l, child: fin-001-l, method: glued, location: [286.453, -382.601, -1.175], rated_load_n: 2009.8, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-09, parent: fin-003-l, child: fin-001-l, method: glued, location: [286.453, "450 - $span_mm/2 - 382.601", -1.175], rated_load_n: 2009.8, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-10 CT-EPOXY (FIN-002-L -> FIN-003-L): rib end in the block socket
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Rib tube 14x12 in fin root block, 60 mm embed', 84 N, MS +28.14; rated = 84 N x K 2.1562 x (1 + MS 28.14)
-  - {id: E-FIN-10, parent: fin-002-l, child: fin-003-l, method: glued, location: [270.576, -384.098, 5.663], rated_load_n: 5278, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-10, parent: fin-002-l, child: fin-003-l, method: glued, location: [270.576, "450 - $span_mm/2 - 384.098", 5.663], rated_load_n: 5278, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-11 CT-EPOXY (FIN-002-L -> FIN-005-L): rib start in the saddle socket
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Rib saddle on 12 mm spar, wrap 60 mm wide', 783 N, MS +0.34 (same saddle wrap used for the saddle-on-rib joint); rated = 783 N x K 2.1562 x (1 + MS 0.34)
-  - {id: E-FIN-11, parent: fin-002-l, child: fin-005-l, method: glued, location: [80.084, -373.174, -1.488], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-11, parent: fin-002-l, child: fin-005-l, method: glued, location: [80.084, "450 - $span_mm/2 - 373.174", -1.488], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-12 CT-EPOXY (WNG-002 -> FIN-005-L): saddle wraps the spar (60 mm)
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Rib saddle on 12 mm spar, wrap 60 mm wide', 783 N, MS +0.34 (same saddle wrap used for the saddle-on-rib joint); rated = 783 N x K 2.1562 x (1 + MS 0.34)
-  - {id: E-FIN-12, parent: wng-002, child: fin-005-l, method: glued, location: [59.884, -381.187, -5.992], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-FIN-12, parent: wng-002, child: fin-005-l, method: glued, location: [59.884, "450 - $span_mm/2 - 381.187", -5.992], rated_load_n: 2262.4, rating_basis: sourced, connection: CT-EPOXY}
   # E-FIN-13 CT-CA (FIN-004-L -> FIN-001-L): fairing in the tube slot (foam-safe CA)
   # rating [derived] contact area 896 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-13, parent: fin-004-l, child: fin-001-l, method: glued, location: [286.028, -379.574, 35.583], rated_load_n: 77, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-13, parent: fin-004-l, child: fin-001-l, method: glued, location: [286.028, "450 - $span_mm/2 - 379.574", 35.583], rated_load_n: 77, rating_basis: derived, connection: CT-CA}
   # E-FIN-14 CT-CA (FIN-002-L -> FIN-004-L): fairing round the rib
   # rating [derived] contact area 489 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-14, parent: fin-002-l, child: fin-004-l, method: glued, location: [218.25, -380.917, 7.19], rated_load_n: 42, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-14, parent: fin-002-l, child: fin-004-l, method: glued, location: [218.25, "450 - $span_mm/2 - 380.917", 7.19], rated_load_n: 42, rating_basis: derived, connection: CT-CA}
   # E-FIN-15 CT-CA (FIN-006-L -> FIN-002-L): rib fairing over the rib top (foam-safe CA), sits on the core skin
   # rating [derived] contact area 647 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-15, parent: fin-006-l, child: fin-002-l, method: glued, location: [165.738, -380.416, 6.973], rated_load_n: 55.7, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-15, parent: fin-006-l, child: fin-002-l, method: glued, location: [165.738, "450 - $span_mm/2 - 380.416", 6.973], rated_load_n: 55.7, rating_basis: derived, connection: CT-CA}
   # E-FIN-16 CT-CA (WNG-001 -> FIN-006-L): rib fairing bonded on the upper skin
   # rating [derived] contact area 313 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-FIN-16, parent: wng-001, child: fin-006-l, method: glued, location: [150.435, -384.9, 5.181], rated_load_n: 27, rating_basis: derived, connection: CT-CA}
+  - {id: E-FIN-16, parent: wng-001, child: fin-006-l, method: glued, location: [150.435, "450 - $span_mm/2 - 384.9", 5.181], rated_load_n: 27, rating_basis: derived, connection: CT-CA}
   # E-CGE-01 CT-EPOXY (CGE-001 -> CGE-002-A): tube through the two sleeves and the centre block, bonded over s +-24 mm (D-202)
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Arm 12x10 in socket, 25 mm, strike couple', 296 N, MS +0.48; rated = 296 N x K 2.1562 x (1 + MS 0.48)
   - {id: E-CGE-01, parent: cge-001, child: cge-002-a, method: glued, location: [-69.871, -0.873, 1.879], rated_load_n: 944.6, rating_basis: sourced, connection: CT-EPOXY}
@@ -1633,7 +1633,7 @@ attachments:
   - {id: E-AVN-03, parent: avn-007, child: avn-002, method: tape, location: [52.721, 7.001, 16.88], rated_load_n: 0.8, rating_basis: placeholder, connection: CT-GEL-PAD}
   # E-AVN-04 CT-TAPE-FOAM (WNG-001 -> AVN-005): airspeed board in its pocket in the left wing core next to the pitot, foam tape; pocket taped over (D-208)
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.13 N, rounded up)
-  - {id: E-AVN-04, parent: wng-001, child: avn-005, method: tape, location: [76.243, -419.778, 3.25], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-TAPE-FOAM}
+  - {id: E-AVN-04, parent: wng-001, child: avn-005, method: tape, location: [76.243, "450 - $span_mm/2 - 419.778", 3.25], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-AVN-05 CT-TAPE-FOAM (AVN-001 -> AVN-003): foam tape + tie
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.20 N, rounded up)
   - {id: E-AVN-05, parent: avn-001, child: avn-003, method: tape, location: [112.622, -46.088, 13.88], rated_load_n: 0.3, rating_basis: placeholder, connection: CT-TAPE-FOAM}
@@ -1642,25 +1642,25 @@ attachments:
   - {id: E-AVN-06, parent: avn-001, child: avn-004, method: tape, location: [57.32, 40.549, 13.88], rated_load_n: 0.6, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-AVN-07 CT-EPOXY (WNG-001 -> AVN-006): pitot in a groove in the LE at y = -0.42 (D-208: left wing, the sensor board side; 0.11 m outboard of the prop discs, EST)
   # rating [derived] contact area 83 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-AVN-07, parent: wng-001, child: avn-006, method: glued, location: [33.356, -419.606, -3.25], rated_load_n: 7.1, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-AVN-07, parent: wng-001, child: avn-006, method: glued, location: [33.356, "450 - $span_mm/2 - 419.606", -3.25], rated_load_n: 7.1, rating_basis: derived, connection: CT-EPOXY}
   # E-AVN-08 CT-PITOT-TUBING (AVN-009-T -> AVN-006): total line on the probe total outlet barb (D-208)
   # rating [placeholder] placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.22 N, rounded up); method note: push-on silicone tubing on a barb: nearest enum is press-fit
-  - {id: E-AVN-08, parent: avn-009-t, child: avn-006, method: press-fit, location: [41.871, -418.775, 0.151], rated_load_n: 0.3, rating_basis: placeholder, connection: CT-PITOT-TUBING}
+  - {id: E-AVN-08, parent: avn-009-t, child: avn-006, method: press-fit, location: [41.871, "450 - $span_mm/2 - 418.775", 0.151], rated_load_n: 0.3, rating_basis: placeholder, connection: CT-PITOT-TUBING}
   # E-AVN-09 CT-PITOT-TUBING (AVN-009-T -> AVN-005): total line on board port P1 (ARSPD_TUBE_ORDR 2: a swap is harmless; D-208)
   # rating [placeholder] placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.13 N, rounded up); method note: push-on silicone tubing on a barb: nearest enum is press-fit
-  - {id: E-AVN-09, parent: avn-009-t, child: avn-005, method: press-fit, location: [68.073, -418.232, 8.107], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-PITOT-TUBING}
+  - {id: E-AVN-09, parent: avn-009-t, child: avn-005, method: press-fit, location: [68.073, "450 - $span_mm/2 - 418.232", 8.107], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-PITOT-TUBING}
   # E-AVN-10 CT-TAPE-FOAM (WNG-001 -> AVN-009-T): total line in its foam-core groove, laid in from above through a slit in the skin, slit taped (as the servo grooves; D-208)
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.02 N, rounded up)
-  - {id: E-AVN-10, parent: wng-001, child: avn-009-t, method: tape, location: [51.755, -418.352, 6.698], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
+  - {id: E-AVN-10, parent: wng-001, child: avn-009-t, method: tape, location: [51.755, "450 - $span_mm/2 - 418.352", 6.698], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-AVN-11 CT-PITOT-TUBING (AVN-009-S -> AVN-006): static line on the probe static outlet barb (D-208)
   # rating [placeholder] placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.22 N, rounded up); method note: push-on silicone tubing on a barb: nearest enum is press-fit
-  - {id: E-AVN-11, parent: avn-009-s, child: avn-006, method: press-fit, location: [41.679, -422.056, -0.976], rated_load_n: 0.3, rating_basis: placeholder, connection: CT-PITOT-TUBING}
+  - {id: E-AVN-11, parent: avn-009-s, child: avn-006, method: press-fit, location: [41.679, "450 - $span_mm/2 - 422.056", -0.976], rated_load_n: 0.3, rating_basis: placeholder, connection: CT-PITOT-TUBING}
   # E-AVN-12 CT-PITOT-TUBING (AVN-009-S -> AVN-005): static line on board port P2 (ARSPD_TUBE_ORDR 2: a swap is harmless; D-208)
   # rating [placeholder] placeholder - not from source: no rule for CT-PITOT-TUBING; set to the platform's own demand (4.5 x g x subtree mass = 0.13 N, rounded up); method note: push-on silicone tubing on a barb: nearest enum is press-fit
-  - {id: E-AVN-12, parent: avn-009-s, child: avn-005, method: press-fit, location: [68.16, -423.143, 9.304], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-PITOT-TUBING}
+  - {id: E-AVN-12, parent: avn-009-s, child: avn-005, method: press-fit, location: [68.16, "450 - $span_mm/2 - 423.143", 9.304], rated_load_n: 0.2, rating_basis: placeholder, connection: CT-PITOT-TUBING}
   # E-AVN-13 CT-TAPE-FOAM (WNG-001 -> AVN-009-S): static line in its foam-core groove, laid in from above through a slit in the skin, slit taped (as the servo grooves; D-208)
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.02 N, rounded up)
-  - {id: E-AVN-13, parent: wng-001, child: avn-009-s, method: tape, location: [51.755, -422.752, 6.698], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
+  - {id: E-AVN-13, parent: wng-001, child: avn-009-s, method: tape, location: [51.755, "450 - $span_mm/2 - 422.752", 6.698], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-AVN-14 CT-TAPE-FOAM (AVN-001 -> AVN-008): cover stands on the plate (and its front ramp on the skin ahead of the plate), foam tape + two ties; removable for FC access (D-198)
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.42 N, rounded up)
   - {id: E-AVN-14, parent: avn-001, child: avn-008, method: tape, location: [79.604, 26.644, 13.88], rated_load_n: 0.5, rating_basis: placeholder, connection: CT-TAPE-FOAM}
@@ -1675,66 +1675,66 @@ attachments:
   - {id: E-AVN-17, parent: avn-001, child: hwc-003, method: bolted, location: [68.001, 8.787, 12.746], rated_load_n: 3726, rating_basis: derived, connection: CT-HW-SEATED}
   # E-MEC-01 CT-EPOXY (WNG-001 -> MEC-001-R): servo in its pocket
   # rating [derived] contact area 2107 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-01, parent: wng-001, child: mec-001-r, method: glued, location: [140.505, 199.75, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-MEC-01, parent: wng-001, child: mec-001-r, method: glued, location: [140.505, "$span_mm/2 - 450 + 199.75", -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
   # E-MEC-02 CT-SERVO-SPLINE (MEC-001-R -> MEC-002-R): arm on the 23T output spline (V readymaderc 85975; the old 25T was an ES3352 copy)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area); method note: arm on a spline held by an M2 retaining screw: nearest enum is bolted
-  - {id: E-MEC-02, parent: mec-001-r, child: mec-002-r, method: bolted, location: [140.563, 195.69, 6.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-SERVO-SPLINE, articulation: {type: revolute, pivot: [140.5, 200.0, 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
+  - {id: E-MEC-02, parent: mec-001-r, child: mec-002-r, method: bolted, location: [140.563, "$span_mm/2 - 450 + 195.69", 6.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-SERVO-SPLINE, articulation: {type: revolute, pivot: [140.5, "$span_mm/2 - 450 + 200.0", 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
   # E-MEC-03 CT-CLEVIS (MEC-002-R -> MEC-003-R): rod Z-bend in the arm tip hole (vertical pin)
   # rating [doc] redesign/qp/A/structures/qp5_checks.md s1 pushrod buckling, Pcr 73 N at the CAD rod length 52.5 mm (D-194)
   # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
-  - {id: E-MEC-03, parent: mec-002-r, child: mec-003-r, method: hinge, location: [141.723, 187.987, 8.701], rated_load_n: 73, rating_basis: sourced, connection: CT-CLEVIS, kinematic_link: true}
+  - {id: E-MEC-03, parent: mec-002-r, child: mec-003-r, method: hinge, location: [141.723, "$span_mm/2 - 450 + 187.987", 8.701], rated_load_n: 73, rating_basis: sourced, connection: CT-CLEVIS, kinematic_link: true}
   # E-MEC-05 CT-EPOXY (WNG-006-R -> MEC-004-R): horn bonded on the elevon upper skin
   # rating [derived] contact area 8 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-05, parent: wng-006-r, child: mec-004-r, method: glued, location: [189.659, 188.66, -0.508], rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-MEC-05, parent: wng-006-r, child: mec-004-r, method: glued, location: [189.659, "$span_mm/2 - 450 + 188.66", -0.508], rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
   # E-MEC-PIN-R4 CT-HW-SEATED (MEC-004-R -> MEC-005-R): clevis pin through the horn hole (pressed in along y after the clevis is lowered onto the blade); moves with the horn
   # rating [derived] 1 x pin shear pi/4 x 1^2 mm2 x 270 MPa (arm_cup_checks.md steel shear allowable, EST)
-  - {id: E-MEC-PIN-R4, parent: mec-004-r, child: mec-005-r, method: bolted, location: [193.12, 188.01, 9.896], rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: E-MEC-PIN-R4, parent: mec-004-r, child: mec-005-r, method: bolted, location: [193.12, "$span_mm/2 - 450 + 188.01", 9.896], rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
   # E-MEC-HW-R2 CT-HW-SEATED (HWC-002-R -> MEC-002-R): arm retaining screw (hardware of the spline joint)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
-  - {id: E-MEC-HW-R2, parent: hwc-002-r, child: mec-002-r, method: bolted, location: [139.43, 200.153, 8.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: E-MEC-HW-R2, parent: hwc-002-r, child: mec-002-r, method: bolted, location: [139.43, "$span_mm/2 - 450 + 200.153", 8.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
   # E-MEC-06 CT-EPOXY (WNG-001 -> MEC-001-L): servo in its pocket
   # rating [derived] contact area 2107 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-06, parent: wng-001, child: mec-001-l, method: glued, location: [140.505, -200.25, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-MEC-06, parent: wng-001, child: mec-001-l, method: glued, location: [140.505, "450 - $span_mm/2 - 200.25", -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
   # E-MEC-07 CT-SERVO-SPLINE (MEC-001-L -> MEC-002-L): arm on the 23T output spline (V readymaderc 85975; the old 25T was an ES3352 copy)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area); method note: arm on a spline held by an M2 retaining screw: nearest enum is bolted
-  - {id: E-MEC-07, parent: mec-001-l, child: mec-002-l, method: bolted, location: [140.342, -195.814, 6.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-SERVO-SPLINE, articulation: {type: revolute, pivot: [140.5, -200.0, 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
+  - {id: E-MEC-07, parent: mec-001-l, child: mec-002-l, method: bolted, location: [140.342, "450 - $span_mm/2 - 195.814", 6.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-SERVO-SPLINE, articulation: {type: revolute, pivot: [140.5, "450 - $span_mm/2 - 200.0", 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
   # E-MEC-08 CT-CLEVIS (MEC-002-L -> MEC-003-L): rod Z-bend in the arm tip hole (vertical pin)
   # rating [doc] redesign/qp/A/structures/qp5_checks.md s1 pushrod buckling, Pcr 73 N at the CAD rod length 52.5 mm (D-194)
   # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
-  - {id: E-MEC-08, parent: mec-002-l, child: mec-003-l, method: hinge, location: [141.723, -188.013, 8.701], rated_load_n: 73, rating_basis: sourced, connection: CT-CLEVIS, kinematic_link: true}
+  - {id: E-MEC-08, parent: mec-002-l, child: mec-003-l, method: hinge, location: [141.723, "450 - $span_mm/2 - 188.013", 8.701], rated_load_n: 73, rating_basis: sourced, connection: CT-CLEVIS, kinematic_link: true}
   # E-MEC-10 CT-EPOXY (WNG-006-L -> MEC-004-L): horn bonded on the elevon upper skin
   # rating [derived] contact area 8 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-10, parent: wng-006-l, child: mec-004-l, method: glued, location: [189.575, -187.935, -0.502], rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
+  - {id: E-MEC-10, parent: wng-006-l, child: mec-004-l, method: glued, location: [189.575, "450 - $span_mm/2 - 187.935", -0.502], rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
   # E-MEC-PIN-L4 CT-HW-SEATED (MEC-004-L -> MEC-005-L): clevis pin through the horn hole (pressed in along y after the clevis is lowered onto the blade); moves with the horn
   # rating [derived] 1 x pin shear pi/4 x 1^2 mm2 x 270 MPa (arm_cup_checks.md steel shear allowable, EST)
-  - {id: E-MEC-PIN-L4, parent: mec-004-l, child: mec-005-l, method: bolted, location: [193.12, -187.99, 9.896], rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: E-MEC-PIN-L4, parent: mec-004-l, child: mec-005-l, method: bolted, location: [193.12, "450 - $span_mm/2 - 187.99", 9.896], rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
   # E-MEC-HW-L2 CT-HW-SEATED (HWC-002-L -> MEC-002-L): arm retaining screw (hardware of the spline joint)
   # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
-  - {id: E-MEC-HW-L2, parent: hwc-002-l, child: mec-002-l, method: bolted, location: [139.43, -199.847, 8.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: E-MEC-HW-L2, parent: hwc-002-l, child: mec-002-l, method: bolted, location: [139.43, "450 - $span_mm/2 - 199.847", 8.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
   # E-GER-01 CT-EPOXY (FIN-001-R -> GER-001-UR): shoe cap on the tube end
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Foot shoe on the fin tube end (25 mm wrap, 16 mm OD)', 52 N, MS +21.41; rated = 52 N x K 2.1562 x (1 + MS 21.41)
-  - {id: E-GER-01, parent: fin-001-r, child: ger-001-ur, method: glued, location: [286.974, 376.198, 174.417], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-GER-01, parent: fin-001-r, child: ger-001-ur, method: glued, location: [286.974, "$span_mm/2 - 450 + 376.198", 174.417], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
   # E-GER-02 CT-TAPE-FOAM (GER-001-UR -> GER-002-UR): pad PSA on the shoe plate
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.03 N, rounded up)
-  - {id: E-GER-02, parent: ger-001-ur, child: ger-002-ur, method: tape, location: [307.5, 380.36, 177.083], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
+  - {id: E-GER-02, parent: ger-001-ur, child: ger-002-ur, method: tape, location: [307.5, "$span_mm/2 - 450 + 380.36", 177.083], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-GER-03 CT-EPOXY (FIN-001-L -> GER-001-UL): shoe cap on the tube end
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Foot shoe on the fin tube end (25 mm wrap, 16 mm OD)', 52 N, MS +21.41; rated = 52 N x K 2.1562 x (1 + MS 21.41)
-  - {id: E-GER-03, parent: fin-001-l, child: ger-001-ul, method: glued, location: [286.974, -383.802, 174.417], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-GER-03, parent: fin-001-l, child: ger-001-ul, method: glued, location: [286.974, "450 - $span_mm/2 - 383.802", 174.417], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
   # E-GER-04 CT-TAPE-FOAM (GER-001-UL -> GER-002-UL): pad PSA on the shoe plate
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.03 N, rounded up)
-  - {id: E-GER-04, parent: ger-001-ul, child: ger-002-ul, method: tape, location: [307.5, -379.64, 177.083], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
+  - {id: E-GER-04, parent: ger-001-ul, child: ger-002-ul, method: tape, location: [307.5, "450 - $span_mm/2 - 379.64", 177.083], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-GER-05 CT-EPOXY (FIN-001-R -> GER-001-LR): shoe cap on the tube end
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Foot shoe on the fin tube end (25 mm wrap, 16 mm OD)', 52 N, MS +21.41; rated = 52 N x K 2.1562 x (1 + MS 21.41)
-  - {id: E-GER-05, parent: fin-001-r, child: ger-001-lr, method: glued, location: [287.505, 375.352, -173.974], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-GER-05, parent: fin-001-r, child: ger-001-lr, method: glued, location: [287.505, "$span_mm/2 - 450 + 375.352", -173.974], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
   # E-GER-06 CT-TAPE-FOAM (GER-001-LR -> GER-002-LR): pad PSA on the shoe plate
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.03 N, rounded up)
-  - {id: E-GER-06, parent: ger-001-lr, child: ger-002-lr, method: tape, location: [307.5, 379.734, -176.414], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
+  - {id: E-GER-06, parent: ger-001-lr, child: ger-002-lr, method: tape, location: [307.5, "$span_mm/2 - 450 + 379.734", -176.414], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-GER-07 CT-EPOXY (FIN-001-L -> GER-001-LL): shoe cap on the tube end
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Foot shoe on the fin tube end (25 mm wrap, 16 mm OD)', 52 N, MS +21.41; rated = 52 N x K 2.1562 x (1 + MS 21.41)
-  - {id: E-GER-07, parent: fin-001-l, child: ger-001-ll, method: glued, location: [287.505, -384.648, -173.974], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
+  - {id: E-GER-07, parent: fin-001-l, child: ger-001-ll, method: glued, location: [287.505, "450 - $span_mm/2 - 384.648", -173.974], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
   # E-GER-08 CT-TAPE-FOAM (GER-001-LL -> GER-002-LL): pad PSA on the shoe plate
   # rating [placeholder] placeholder - not from source: CT-TAPE-FOAM has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 0.03 N, rounded up)
-  - {id: E-GER-08, parent: ger-001-ll, child: ger-002-ll, method: tape, location: [307.5, -379.858, -176.677], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
+  - {id: E-GER-08, parent: ger-001-ll, child: ger-002-ll, method: tape, location: [307.5, "450 - $span_mm/2 - 379.858", -176.677], rated_load_n: 0.1, rating_basis: placeholder, connection: CT-TAPE-FOAM}
   # E-HRN-30 CT-EPOXY (HRN-003-R -> CGE-008): raceway bonded to the tray plate underside (top face z 6.0), lowered from above before the tray, in its foam groove (D-199)
   # rating [derived] contact area 656 mm2 (measured on the meshes) x structures_a.py L17 BOND_TAU 2.0 MPa (EST)
   - {id: E-HRN-30, parent: hrn-003-r, child: cge-008, method: glued, location: [-13.215, 19.315, 6], rated_load_n: 1311.7, rating_basis: derived, connection: CT-EPOXY}

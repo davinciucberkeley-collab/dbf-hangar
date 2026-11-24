@@ -113,11 +113,20 @@ def test_unchanged_parts_are_identical_to_concept_a():
     for cid, c in cp.items():
         if cid in GENERATED:
             continue
+        # U4.29/T129: a part whose placement is a span expression moves with parameters.span_mm; Test 5 covers its shift
+        if any(isinstance(v, str) and "$" in v for v in c.get("position", [])):
+            continue
         assert c == ca[cid], cid
         f = ((c.get("geometry") or {}).get("mesh") or {}).get("file")
         if f:
             assert (P / f).read_bytes() == (A / f).read_bytes(), cid
-    assert pa["attachments"] == aa["attachments"]
+    # U4.29/T129: a joint whose location or pivot is a span expression moves with the span; the rest must match
+    ja = {a["id"]: a for a in aa["attachments"]}
+    for a in pa["attachments"]:
+        if any(isinstance(v, str) and "$" in v for v in [*a["location"], *(a.get("articulation") or {}).get("pivot", [])]):
+            continue
+        assert a == ja[a["id"]], a["id"]
+    assert [a["id"] for a in pa["attachments"]] == [a["id"] for a in aa["attachments"]]
 
 
 def _demo_copy(tmp_path):
@@ -136,10 +145,12 @@ def test_demo_span_change_regenerates(tmp_path):
     before = load_design(d)
     v0 = _mesh(before, "wng-001").volume
     stall0 = _stall(validate(before))
+    n0 = len(yaml.safe_load((d / "CHANGELOG.yaml").read_text(encoding="utf-8")))   # U4.29/T129: the file already holds the conversion entries
     r = call("design.set", path=str(d), key="parameters.span_mm", value=DEMO_VALUE, why="demo")
     assert r.ok, r.messages
     reg = r.data["regenerated"]
-    assert sorted(reg["components"]) == ["wng-001", "wng-002"]
+    # U4.29/T129: the fin tubes are regenerated too (their centre follows span_mm)
+    assert sorted(reg["components"]) == ["fin-001-l", "fin-001-r", "wng-001", "wng-002"]
     after = load_design(d)
     dm = {c: v["mass_g"][1] - v["mass_g"][0] for c, v in reg["components"].items()}
     assert dm["wng-002"] == pytest.approx(2.205, abs=0.02)
@@ -152,15 +163,15 @@ def test_demo_span_change_regenerates(tmp_path):
     xs = {c: _mesh(after, c).center_mass[0] for c in dm}
     expect = (m0 * reg["cg_mm"][0][0] + sum(dm[c] * xs[c] for c in dm)) / (m0 + sum(dm.values()))
     assert reg["cg_mm"][1][0] == pytest.approx(expect, abs=0.01)
-    for c in dm:
+    for c in ("wng-001", "wng-002"):   # U4.29/T129: the tubes end at span/2 - 70, not at the wing tips
         b = _mesh(after, c).bounds
         assert (b[0][1], b[1][1]) == pytest.approx((-470, 470), abs=0.05)
     assert _comp(after, "wng-001")["planform"]["lifting_surface"]["span"] == 940
     entries = yaml.safe_load((d / "CHANGELOG.yaml").read_text(encoding="utf-8"))
-    assert len(entries) == 1
-    e = entries[0]
+    assert len(entries) == n0 + 1
+    e = entries[-1]
     assert (e["key"], e["old"], e["new"]) == ("parameters.span_mm", 900, 940)
-    assert sorted(e["regenerated"]) == ["wng-001", "wng-002"]
+    assert sorted(e["regenerated"]) == ["fin-001-l", "fin-001-r", "wng-001", "wng-002"]
     card = validate(after)
     assert _stall(card) < stall0
     assert compare(snapshot(card), read_baseline(d))["regressions"] == EXPECTED_REGRESSIONS
