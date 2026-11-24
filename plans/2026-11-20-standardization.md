@@ -418,6 +418,8 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | Tue 12-01 | fixes only | — |
 | **Wed 12-02** | present | — |
 
+*Status 11-24 early morning (audit W24-Au): ahead of this schedule. U4.20 merged 11-23; G1 (U4.21, 225c1b7) and G2 (U4.22, 49a1601 + a0ba030) merged 11-23, so both cut rules are met. Remaining: U4.23 demo/deck (in review), U4.24 fixes, U4.25 (only if green by Sun 11-29), Tristan's items (collaborators, guide send, video Sun, dry run Mon).*
+
 All units: Tristan. Acceptance testers: Dillon (Studio, concept A), Vaibhav (OpenCAE on Windows), James (harness install on his machine).
 
 Ordering follows R17: T6 mechanisms lands before T8 sourcing; U3.4 (an agent iterating concept-a with no code edits) is the acceptance test of the whole plan.
