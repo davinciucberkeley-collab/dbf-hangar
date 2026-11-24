@@ -44,7 +44,7 @@ def test_reviewer_in_plan_allowed(root):
     assert gate(task("reviewer", "review"), root).returncode == 0
 
 def test_agent_tool_name_also_gated(root):
-    assert gate({"tool_name": "Agent", "tool_input": {"subagent_type": "Explore"}}, root).returncode == 2
+    assert gate({"tool_name": "Agent", "tool_input": {"subagent_type": "helper"}}, root).returncode == 2
 
 def test_other_tools_and_bad_input_pass(root):
     assert gate({"tool_name": "Bash", "tool_input": {"command": "ls"}}, root).returncode == 0
@@ -161,3 +161,27 @@ def test_agent_gate_roster_matches_hangar_roster():
     import agent_gate
     from hangar.roster import load_roster
     assert agent_gate.roster_names(REPO) == sorted(load_roster(REPO))
+
+
+BUILTINS = ["Explore", "Plan", "claude-code-guide"]
+
+
+@pytest.mark.parametrize("tool", ["Task", "Agent"])
+@pytest.mark.parametrize("name", BUILTINS)
+def test_builtin_read_only_subagent_passes_without_roster_or_table(root, tool, name):
+    r = gate({"tool_name": tool, "tool_input": {"subagent_type": name, "prompt": "find x"}}, root)
+    assert r.returncode == 0, r.stderr
+
+
+@pytest.mark.parametrize("name", ["general-purpose", "statusline-setup", "output-style-setup", "explore", "Explore2", ""])
+def test_other_names_including_writing_builtins_still_refused(root, name):
+    r = gate(task(name), root)
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr and "Explore" in r.stderr
+
+
+def test_builtin_allowance_keeps_every_other_check(root):
+    assert gate(task("Explore"), root).returncode == 0
+    assert gate(task("helper"), root).returncode == 2
+    assert gate(task("recon"), root).returncode == 2
+    assert gate(task("builder", "make it better"), root).returncode == 2
+    assert gate(task("builder", "Pass check: pytest. Stop rule: report."), root).returncode == 0

@@ -7,6 +7,8 @@ from pathlib import Path
 
 GATED_TOOLS = ("Task", "Agent")
 BUILDER_ROLES = ("builder", "builder-plus")
+# Claude Code built-in subagents whose tools cannot write files (no Write, Edit or Bash); T112.
+BUILTIN_READ_ONLY = ("Explore", "Plan", "claude-code-guide")
 BRIEF_RE = re.compile(r"""[^\s"'`<>()]*plans/[^/\s"'`<>()]+/briefs/[^/\s"'`<>()]+\.md""")
 
 
@@ -78,11 +80,13 @@ def run(event, root):
         return 0
     tool_input = event.get("tool_input") or {}
     role = tool_input.get("subagent_type") or ""
+    if role in BUILTIN_READ_ONLY:
+        return 0
 
     roster = roster_names(root)
     if role not in roster:
         return block(
-            f'Agent "{role}" is not in the hangar roster. Use one of: {", ".join(roster)}. '
+            f'Agent "{role}" is not in the hangar roster. Use one of: {", ".join(roster)}, or a read-only built-in: {", ".join(BUILTIN_READ_ONLY)}. '
             "See .claude/agents/ and the plan's agent table. Builds go to builder (Haiku)."
         )
 
