@@ -21,12 +21,23 @@ Wing density is lumped: `xps-tape-lumped` 0.03499 g/cm3 = 100.1 g / nominal core
 CG y moves 0.12 mm because the cut pockets (neighbour meshes) are not mirror-symmetric, so the generated core's y centroid
 is not 0; the test allows 0.15 mm for y only.
 
-## Baselined residue (93 known rows, 20 FAIL; concept-a has 10)
-Cut pockets follow the neutral pose only; swept-pose pockets are a follow-up. Extra rows against `concept-a`:
-8 `wng-007-l/r` swept-pose rows (6 T1.interference at pose up/down/sweep, 2 T1.attachment_overlap), 2 `mec-002-l/r`
-T1.interference rows (range +-15 deg), and T6.mechanism.elevon-l/r collisions at -15 deg. T2.sim_drop_loads, T2.sim_rest,
-T3.static_margin (15.7 % vs 16.4 %, FAIL in both) and the planform WARN change numbers only. No neutral-pose interference.
-`baseline check` messages quote the folder name: check a scratch copy only if the folder is also named `concept-a-param`.
+## Baselined residue (93 known rows: 20 FAIL + 73 SKIP; concept-a has 10 FAIL + 73 SKIP)
+Verified row by row from the two `baseline.json` files. Net FAIL: 10 + 14 new - 4 absent = 20.
+
+14 new FAIL rows. Cut pockets follow the neutral pose only; swept-pose pockets are a follow-up.
+- `wng-007-l/r` against `wng-001`: 8 T1.interference (pose up, pose down, sweep -6 and 9 deg, per side) and
+  2 T1.attachment_overlap (pose down, 6 %).
+- `mec-002-l/r` against `wng-001`: 2 T1.interference (range max/min, 15 deg, 8 mm3 each).
+- T6.mechanism.elevon-l/r: 2 collisions at -15 deg (`wng-007-l`, `mec-002-r`).
+
+4 concept-a FAIL rows are absent because `fea/` is not copied: cge-001 landing and thrust (SF 0.37, 0.44) and cge-006
+landing and thrust (SF 0.83, 0.72). The cge-008 SKIP is absent too; in their place one SKIP ("28 printed part(s) have no
+OpenCAE stress check yet"). The hub-clamp parts are identical to concept-a, so those stress failures still apply:
+running `plane fea` on concept-a-param would bring them back as FAIL rows (the baseline was recorded without `fea/`).
+
+Other rows keep their status and only change numbers (T2.sim_drop_loads, T2.sim_rest, T3.static_margin 15.7 % vs 16.4 %,
+FAIL in both). No neutral-pose interference. `baseline check` messages quote the folder name: check a scratch copy only
+if the folder is also named `concept-a-param`.
 
 ## Demo: `plane design set designs/concept-a-param parameters.span_mm --value 940 --why "demo"`
 | | 900 | 940 |
