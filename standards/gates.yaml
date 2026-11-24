@@ -18,3 +18,5 @@ discipline_checks:
   - {id: T3.transition_margin,   tier: 3, blocking: false, criterion: "operations.yaml#transition_thrust_fraction_max"}
   - {id: T3.endurance,           tier: 3, blocking: false, criterion: "operations.yaml#energy_reserve_fraction"}
   - {id: T7.electrical_rating,   tier: 7, blocking: false, criterion: "connection-types.yaml#wire_ampacity_a"}
+  - {id: T3.wing_loading,        tier: 3, blocking: false, criterion: "fixed-wing.yaml#wing_loading_max_g_dm2"}
+  - {id: T3.cruise_stall_ratio,  tier: 3, blocking: false, criterion: "fixed-wing.yaml#cruise_to_stall_ratio_min"}

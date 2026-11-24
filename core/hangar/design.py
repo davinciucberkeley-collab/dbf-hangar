@@ -86,12 +86,14 @@ class Scorecard:
     @property
     def clean(self) -> bool:
         """No FAIL/SKIP among the tiers that ran."""
-        return all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
+        return all(r.status not in (FAIL, SKIP) or (r.status == SKIP and r.data.get("not_applicable"))
+                                       for t in self.tiers for r in t.results)
 
     @property
     def accepted(self) -> bool:
         """Full-run verdict only: a partial run (max_tier < 9) is never accepted."""
-        return not self.partial and all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
+        return not self.partial and all(r.status not in (FAIL, SKIP) or (r.status == SKIP and r.data.get("not_applicable"))
+                                       for t in self.tiers for r in t.results)
 
     def to_dict(self) -> dict:
         d = {
