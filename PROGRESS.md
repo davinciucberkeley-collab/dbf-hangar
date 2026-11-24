@@ -71,7 +71,7 @@
 | U4.15 | v1.1 features (T95, T103, T67; P186) | 3/3 | done | - |
 | U4.16 | Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188) | 3/3 | done | - |
 | U4.17 | Team guide: how the team works in dbf-hangar (P189) | 4/5 | in progress | - |
-| U4.18 | Faster CI unit tests (T11; P194) | 0/3 | not started | - |
+| U4.18 | Faster CI unit tests (T11; P194) | 1/3 | in progress | - |
 
 ## Ledger
 
@@ -80,7 +80,7 @@
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
 | task | 41 | 69 | 0 | 2 | 0 | 112 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 250 | 266 |
+| decision | 12 | 0 | 0 | 4 | 251 | 267 |
 
 ## Overdue
 

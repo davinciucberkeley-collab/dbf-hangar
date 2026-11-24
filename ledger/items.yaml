@@ -4717,3 +4717,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D65
+    kind: decision
+    text: 'CI speed (U4.18) defaults, full coverage kept: shard unit tests 3 ways per OS (check names become validate (os, shard); branch protection is not on yet); no not-slow subset on std/** pushes; PROGRESS.md/ledger-only commits skip validate but progress.yml runs the ledger and progress tests; every main push runs full validate; cancel-in-progress only on std/** and PRs'
+    source: conductor defaults on W20-T D1-D5, 2026-11-25 (briefs/U4.18-ci-speed.md)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/briefs/U4.18-ci-speed.md
+    decided_in: ''
+    updated: '2026-11-23'
