@@ -1,0 +1,14 @@
+id: speedybee-bls-35a-mini-v2-esc
+name: ESC SpeedyBee BLS 35A Mini V2 4-in-1 with leads
+category: esc
+vendor: RMRC
+part_number: SpeedyBee BLS 35A Mini V2 4-in-1 ESC 20x20
+url: https://www.readymaderc.com/products/details/86873-speedybee-bls-35a-mini-v2-20x20-4-in-1-esc
+mass_g: 20.0
+dimensions_mm: [35.0, 35.0, 9.6]
+cad_status: representative-envelope
+cad_source: designs/concept-a/meshes/prp-003.stl (imported from DBF-Combined @ a93f14d; not vendor CAD)
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
+geometry:
+  generator: mesh_file
+  params: {file: mesh.stl}

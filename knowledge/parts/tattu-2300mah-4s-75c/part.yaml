@@ -1,0 +1,14 @@
+id: tattu-2300mah-4s-75c
+name: Pack Tattu 2300 mAh 4S 75C
+category: battery
+vendor: RMRC
+part_number: Tattu 2300 mAh 4S 75C XT60 270 g
+url: https://www.readymaderc.com/products/details/tattu-2300-75c-4s1p-xt60
+mass_g: 270.0
+dimensions_mm: [124.5, 123.8, 36.2]
+cad_status: representative-envelope
+cad_source: designs/concept-a/meshes/pwr-001.stl (imported from DBF-Combined @ a93f14d; not vendor CAD)
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
+geometry:
+  generator: mesh_file
+  params: {file: mesh.stl}

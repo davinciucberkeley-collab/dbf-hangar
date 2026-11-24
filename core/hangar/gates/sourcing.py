@@ -38,6 +38,41 @@ def _budget_row(check_id: str, crit: str, items: list[dict], limit: float, label
     return CheckResult(check_id, (WARN if missing else PASS) if ok else FAIL, msg, crit, {"parts": []})
 
 
+def _library_rows(d: dict, items: list) -> list[CheckResult]:
+    from hangar.geom.library import list_parts, load_part
+    rows: list[CheckResult] = []
+    known = set(list_parts())
+    for it in items:
+        part = it.get("library_part")
+        if not part:
+            continue
+        data = {"parts": it.get("component_ids") or []}
+        if part in known:
+            data["cad_status"] = load_part(part)["cad_status"]
+            rows.append(CheckResult(f"T8.bom.library.{it['id']}", PASS,
+                                    f"{it['id']}: library part {part} ({data['cad_status']})", CRIT, data))
+        else:
+            rows.append(CheckResult(f"T8.bom.library.{it['id']}", FAIL,
+                                    f"{it['id']}: library part {part} not in knowledge/parts/", CRIT, data))
+    for c in d.get("components", []):
+        g = c.get("geometry") or {}
+        if g.get("generator") != "library_part":
+            continue
+        cid, x = c["id"], (g.get("params") or {}).get("part")
+        line = next((it for it in items if cid in (it.get("component_ids") or [])), None)
+        z = line.get("library_part") if line else None
+        y = line["id"] if line else "none"
+        if line is None or z != x:
+            rows.append(CheckResult(f"T8.bom.library_match.{cid}", FAIL,
+                                    f"{cid}: 3D model is library part {x} but its BOM line {y} says {z}", CRIT,
+                                    {"parts": [cid]}))
+        else:
+            rows.append(CheckResult(f"T8.bom.library_match.{cid}", PASS,
+                                    f"{cid}: 3D model and BOM line {y} both name library part {x}", CRIT,
+                                    {"parts": [cid]}))
+    return rows
+
+
 @gate("T8.sourcing", 8)
 def tier8_sourcing(ctx) -> TierReport | None:
     d = ctx.design.data
@@ -78,6 +113,7 @@ def tier8_sourcing(ctx) -> TierReport | None:
             else:
                 res.append(CheckResult(cid, PASS, f"{it['id']}: verified {n} days ago by {v.get('by')} ({v.get('method')})",
                                        CRIT, data))
+        res.extend(_library_rows(d, items))
         budget = d.get("requirements", {}).get("budget_usd")
         if budget is not None:
             res.append(_budget_row("T8.budget", "requirements.budget_usd", items, budget, ""))
