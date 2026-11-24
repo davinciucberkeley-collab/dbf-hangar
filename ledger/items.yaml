@@ -5047,3 +5047,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: D77
+    kind: decision
+    text: 'Dec 2 demo goal: the day before, Tristan prompts Claude to build an RC model of the A400M; Claude researches references, builds the design from generators and real parts, every part in the BOM with a clear reference and a matching 3D model, opens a PR, and the model shows in Studio. Checks stay general and are selected by aircraft type (vtol_method etc.), never per plane; each design carries its own mission. Cut rule: capabilities ready by Sun 11-29 12:00 (rehearsal passes), else the demo falls back to concept-a-param'
+    source: Tristan, P228, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'

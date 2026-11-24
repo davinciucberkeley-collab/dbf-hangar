@@ -344,6 +344,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D74 | Which mission do designs target? | the VTOL demonstrator brief in knowledge/; 'DBF' here is the capstone, not UC Berkeley's separate DBF competition team (T127 dropped) | Tristan | 11-24 | decided (Tristan P224, 2026-11-24) |
 | D75 | Build T129 (parameter changes propagate to attached parts) before Dec 2? | yes; merge only if reviewed and green by Sun 11-29 12:00, else branch + roadmap slide | Tristan | 11-24 | decided (Tristan P226, 2026-11-24) |
 | D76 | Shrinking span: what happens to the elevons? | variant A: the elevon chain moves inboard with the tip (1.0 mm centre gap at 820 mm); elevons sized from span plus a forward-flight control gate is v1.1 (T130) | Tristan | 11-24 | decided (Tristan P227, 2026-11-24) |
+| D77 | Dec 2 demo: build an A400M RC model from a prompt? | yes: research, generators, real-parts BOM with matching 3D models, PR, Studio; checks general and selected by aircraft type; each design carries its own mission; cut rule Sun 11-29 12:00, fallback concept-a-param | Tristan | 11-24 | decided (Tristan P228, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -689,6 +690,9 @@ W4 wave rules (W3 lessons T41–T43):
 | W26-T, W26-B, W26-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.27 (test and tidy follow-ups T108, T109, T110, T123; D71) | `briefs/U4.27-*.md`, branches `std/u4.27-*`, `reviews/2026-11-24-w26.md` | each test fails before its fix; "### Verdict:" |
 | W27-T, W27-B, W27-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.28 (T128 guide, T125 pockets follow moved parts, T126 propose slug; D74) | `briefs/U4.28-*.md`, branches `std/u4.28-*`, `reviews/2026-11-24-w27.md` | each fix has a failing-first test or a re-run; "### Verdict:" |
 | W28-A, W28-T, W28-B, W28-R | `advisor`, `tactician`, `builder-plus`, `reviewer` | Opus, Sonnet, Sonnet, Opus (fresh) | U4.29 (T129 parametric propagation, D75) | design note + `briefs/U4.29-*.md`, branches `std/u4.29-*`, `reviews/2026-11-24-w28.md` | one span change on concept-a-param moves fins and attached parts with no new interference; existing designs unchanged; "### Verdict:" |
+| W29-X, W29-S | `recon`, `scout` | Sonnet, Haiku | U4.33 (A400M references: three-view proportions, dimensions, RC scale examples) | `knowledge/` entries + `plans/2026-11-20-standardization/u4.30/a400m-facts.md` | only opened sources cited |
+| W29-T, W29-B, W29-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.30 (checks by aircraft type + fixed-wing standards + per-design mission), U4.31 (real-parts library), U4.32 (nacelle/prop/nose generators) | `briefs/U4.3x-*.md`, branches `std/u4.3x-*`, `reviews/2026-11-24-w29.md` | each brief builder-ready; "### Verdict:" |
+| W29-G | `design-engineer` | Sonnet | U4.34 rehearsal: the Dec 1 prompt run on a branch | `reviews/2026-11-24-w29-rehearsal.md` | gaps listed; nothing merged |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -812,6 +816,45 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Design** (advisor W28-A) and briefs (tactician W28-T) *(design d10eb26; briefs 3ab30be: core (hard, after U4.28 pockets), data (variant A/B pending Tristan; A leaves a 1.0 mm elevon gap at 820 mm))*
 - [ ] **Step 2: Build** (builder-plus W28-B)
 - [ ] **Step 3: Review** (W28-R); merge
+
+### Unit U4.30: Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard]
+
+**Scope:** audit every gate/check for VTOL or concept-a assumptions; make applicability come from the design's morphology (vtol_method, lift, configuration) so non-applicable checks SKIP 'not applicable' with the reason; fixed-wing thresholds in `standards/` (stall, wing loading, static-margin band, etc.), each sourced or pending; a design-level mission block so each design is judged against its own mission (concept-a keeps the VTOL demonstrator, D74). Existing designs' verdicts unchanged.
+
+- [ ] **Step 1: Audit and briefs** (tactician W29-T)
+- [ ] **Step 2: Build** (W29-B)
+- [ ] **Step 3: Review** (W29-R); merge
+
+### Unit U4.31: Real-parts library (D77)
+
+**Scope:** extract concept-a's bought parts (servos, ESC, battery, flight controller, receiver, motors, props, connectors, fasteners) into a reusable library under `standards/` or `knowledge/` (decide): part id, vendor and part number, URL, mass, dimensions, and the real 3D mesh; a design references a library part instead of copying its mesh; BOM lines carry the library reference; parts without vendor CAD are marked 'representative envelope'.
+
+- [ ] **Step 1: Brief** (tactician W29-T)
+- [ ] **Step 2: Build** (W29-B)
+- [ ] **Step 3: Review** (W29-R); merge
+
+### Unit U4.32: Shape generators for transport-style aircraft (D77) [hard]
+
+**Scope:** new generators: `nacelle` (turboprop nacelle loft), `propeller` (multi-blade disc or blade set, scale-look), richer `fuselage_loft` (upswept tail cone, nose), high-wing pylon/fairing if needed; T-tail from existing fin + wing_panel; tests with hand-checked volumes.
+
+- [ ] **Step 1: Brief** (tactician W29-T)
+- [ ] **Step 2: Build** (W29-B)
+- [ ] **Step 3: Review** (W29-R); merge
+
+### Unit U4.33: A400M references (D77)
+
+**Scope:** recon and scouts collect public A400M data (span, length, height, wing area, sweep, dihedral, fuselage stations, nacelle positions, tail geometry, prop diameter and blade count) and RC-scale examples (span, weight, power) into `knowledge/` with sources opened; a one-page fact sheet for the rehearsal.
+
+- [ ] **Step 1: Research** (recon W29-X, scouts W29-S)
+- [ ] **Step 2: Review** (W29-R)
+
+### Unit U4.34: A400M rehearsal (D77)
+
+**Scope:** after U4.30-U4.33 merge (and T129), a design-engineer session runs the Dec 1 prompt on a branch exactly as Tristan will, and lists every gap; fixes go back into U4.30-U4.32; nothing from the rehearsal merges. Cut rule: rehearsal passes by Sun 11-29 12:00 or the demo falls back to concept-a-param.
+
+- [ ] **Step 1: Rehearsal** (design-engineer W29-G)
+- [ ] **Step 2: Gap fixes** (W29-B)
+- [ ] **Step 3: Second rehearsal**
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
