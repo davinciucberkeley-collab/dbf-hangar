@@ -90,6 +90,13 @@ def _tier0_v12(design: Design) -> list[CheckResult]:
             fail(cid, "a generated component needs mass_model or mass_g")
         if len(res) == n0 and cid in design.resolve_errors:
             fail(cid, design.resolve_errors[cid])
+        elif len(res) == n0 and "mass_model" not in c:      # never built by the resolver: build it here
+            from .geom.kernel import GeometryError
+            from .geom.resolve import generated_volumes
+            try:
+                generated_volumes(resolved, design.base_dir)
+            except GeometryError as e:
+                fail(cid, str(e).removeprefix(f"{cid}: "))
     for c in mm_comps:
         if c not in gen_comps:
             fail(c.get("id"), "mass_model needs a generator geometry (use mass_g for other geometry)")
