@@ -826,7 +826,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U4.30: Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard]
 
-*Progress: U4.30-3/4 mission block merged a354e56 (W29-R ACCEPT); -1 applicability in fix; -2 fixed-wing waits on -1.*
+*Progress: U4.30-3/4 mission block merged a354e56; -1 applicability merged c55632c (W29-R ACCEPT); -2 fixed-wing REJECT once (pending max FAILs), fixing.*
 
 **Scope:** audit every gate/check for VTOL or concept-a assumptions; make applicability come from the design's morphology (vtol_method, lift, configuration) so non-applicable checks SKIP 'not applicable' with the reason; fixed-wing thresholds in `standards/` (stall, wing loading, static-margin band, etc.), each sourced or pending; a design-level mission block so each design is judged against its own mission (concept-a keeps the VTOL demonstrator, D74). Existing designs' verdicts unchanged.
 
