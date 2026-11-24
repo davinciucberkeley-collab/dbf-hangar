@@ -823,13 +823,13 @@ items:
     text: 'CI speed follow-ups: mark test_baseline::test_every_fail_or_skip... (62 s) slow; skip validate for PROGRESS.md/ledger-only commits; cancel-in-progress only on std/** not main [triage 2026-11-21: All three items not done]'
     source: reviews/2026-11-21-w1.md W1-P
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: d6212ea
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T12
     kind: task
     text: 'Triage source conflicts recorded in discipline-extract Gaps (e.g. mass gate 2.6 vs 2.7 kg, thermal 40/50 vs 33/38 K, pack charge 4.20 vs 4.35 V); conflicting keys stay pending until decided [triage 2026-11-21: conflicting keys stay pending; slides quote no mass-gate number (D32)]'
@@ -4781,5 +4781,27 @@ items:
     due: '2026-12-15'
     units: []
     evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T115
+    kind: task
+    text: "W20-R follow-ups (U4.18): add tests/test_standards.py::test_no_blocking_threshold_is_pending_without_a_decision to the progress.yml step so ledger-only commits keep that check (D65 'none that drop coverage'); rebalance _HEAVY with the windows shard times (shard 2 235 s vs 86-100 s); pin or key the playwright cache on the installed version; a renamed heavy test silently falls back to round-robin; measure progress.yml on the first ledger-only push"
+    source: W20-R review 2026-11-25 (reviews/2026-11-25-w20.md)
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D69
+    kind: decision
+    text: "Teammate full-path changes (gates, bench, security, schema): the teammate builds on their branch with their own session and tests, opens a PR, and Tristan runs a fresh reviewer agent on the PR before merging; no plan unit needed. Light path for data-only design changes is CI green + Dillon's approval, no reviewer agent, touching no code, hook, workflow, schema or threshold. Agent gate: built-in names allowed only when no project or user agent file redefines them; plugin and --agents overrides are an accepted leftover risk"
+    source: conductor default on W22-R blockers, 2026-11-25 (reviews/2026-11-25-w22.md)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-25-w22.md
     decided_in: ''
     updated: '2026-11-23'
