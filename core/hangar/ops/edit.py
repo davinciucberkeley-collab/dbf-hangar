@@ -241,6 +241,17 @@ def _run(argv: list[str], cwd: str) -> str:
     return p.stdout
 
 
+def _branch_slug(title: str, limit: int = 40) -> str:
+    """Kebab-case slug of `title`, at most `limit` characters, cut at a word boundary (a single longer word is cut hard)."""
+    full = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+    if len(full) <= limit:
+        return full or "change"
+    cut = full[:limit]
+    if full[limit] != "-" and "-" in cut:
+        cut = cut[:cut.rindex("-")]
+    return cut.strip("-") or "change"
+
+
 @op(name="design.propose", summary="Commit a design change on a new branch, push it and open a PR against main.",
     mutates=True, render=lambda r: r.data["pr_url"])
 def propose_op(path: str, title: str) -> OpResult:
@@ -249,7 +260,7 @@ def propose_op(path: str, title: str) -> OpResult:
     did = str(yaml.safe_load(_text(plane))["id"])
     if not title.strip():
         raise OpInputError("title must not be empty")
-    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:40].strip("-") or "change"
+    slug = _branch_slug(title)
     branch = f"design/{did}/{slug}"
     subject = f"design({did}): {title}"
     root = _run(["git", "-C", ddir, "rev-parse", "--show-toplevel"], ddir).strip()
