@@ -132,10 +132,15 @@ def test_tier0_reference_and_generator_failures(mut, check, needle):
 def test_old_designs_untouched():
     folders = sorted(p.parent for p in DESIGNS_DIR.glob("*/plane.yaml")) + [FIXTURES / "concept-a-frozen"]
     assert len(folders) >= 8
+    checked = 0
     for f in folders:
         d = load_design(f)
+        if d.raw is not None:           # a design that uses generators is not an old design
+            continue
+        checked += 1
         assert d.raw is None and d.resolve_errors == {}, f
         assert not any(r.check_id in ("T0.parameters", "T0.generator") for r in tier0_schema(d).results), f
+    assert checked >= 7
 
 
 def test_design_set_parameter_regenerates(tmp_path):
@@ -233,3 +238,34 @@ def test_migrate_1_1_design_to_1_2(tmp_path):
     a, b = text.splitlines(keepends=True), new.splitlines(keepends=True)
     diff = [i for i, (x, y) in enumerate(zip(a, b)) if x != y]
     assert len(a) == len(b) and len(diff) == 1 and b[diff[0]].startswith('schema_version: "1.2"')
+
+
+def _mesh_file_design(tmp_path, with_file=True):
+    from hangar.geom.kernel import box
+    d = tmp_path / "mf"
+    d.mkdir(parents=True)
+    if with_file:
+        box((10, 10, 10)).export(d / "b.stl")
+    raw = yaml.safe_load((GEN / "plane.yaml").read_text(encoding="utf-8"))
+    raw["components"][0]["geometry"] = {"generator": "mesh_file", "params": {"file": "b.stl"}}
+    del raw["components"][0]["mass_model"]
+    raw["components"][0]["mass_g"] = 5
+    (d / "plane.yaml").write_text(yaml.safe_dump(raw, sort_keys=False), encoding="utf-8")
+    return d
+
+
+def test_t0_generator_builds_components_with_mass_g(tmp_path):
+    d = _mesh_file_design(tmp_path, with_file=False)
+    rows = {r.check_id: r for r in tier0_schema(load_design(d)).results}
+    assert rows["T0.generator"].status == "FAIL" and "rod" in rows["T0.generator"].message
+    d2 = _mesh_file_design(tmp_path / "ok")
+    rows = {r.check_id: r.status for r in tier0_schema(load_design(d2)).results}
+    assert rows["T0.generator"] == "PASS"
+
+
+def test_fea_part_hash_tracks_mesh_file_bytes(tmp_path):
+    from hangar.geom.kernel import box
+    d = _mesh_file_design(tmp_path)
+    h1 = part_hash(load_design(d), "rod")
+    box((10, 10, 20)).export(d / "b.stl")
+    assert part_hash(load_design(d), "rod") != h1

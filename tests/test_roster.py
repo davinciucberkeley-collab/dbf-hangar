@@ -51,3 +51,19 @@ def test_agents_md_has_brief_template():
     ]:
         assert needle in text, needle
     assert text.startswith("# Agent Standard v0.2")
+
+
+def test_light_path_teammate_rule_and_builtins_are_written():
+    agents = (REPO / "standards/agents.md").read_text(encoding="utf-8")
+    for needle in ["## Light path and full path (D66)", "## Teammate rule", "under about 20 changed lines",
+                   "Dillon's approval", "gates, the bench, security or schema", "never edits `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`",
+                   "`Explore`, `Plan` and `claude-code-guide`", "Tristan runs a fresh reviewer agent on the PR before merging",
+                   "(D69)", "refused inside any agent with those names"]:
+        assert needle in agents, needle
+    assert "ledger task with their name" in (REPO / "CLAUDE.md").read_text(encoding="utf-8")
+    guide = (REPO / "docs/team-guide.md").read_text(encoding="utf-8")
+    assert "are not in it, so the roster gate refuses them" not in guide
+    assert "Built-in subagents such as `Explore` are refused too" not in guide
+    assert guide.count("`Explore`, `Plan` and `claude-code-guide`") >= 3 and "light path" in guide
+    assert "redefines the name" not in guide and "redefines the name" not in agents
+    assert guide.count("Write, Edit and NotebookEdit are refused inside") >= 2
