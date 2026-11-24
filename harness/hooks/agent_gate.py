@@ -34,15 +34,27 @@ def brief_exists(prompt, root):
     return False
 
 
+def read_agent_text(path):
+    """UTF-8 (BOM tolerated), or UTF-16 when a BOM says so. Anything else raises UnicodeDecodeError."""
+    raw = path.read_bytes()
+    if raw[:2] in (b"\xff\xfe", b"\xfe\xff"):
+        return raw.decode("utf-16")
+    return raw.decode("utf-8-sig")
+
+
 def frontmatter_name(path):
-    lines = path.read_text(encoding="utf-8").splitlines()
+    """The name: value, "" if there is none, or None if the file cannot be read or decoded."""
+    try:
+        lines = read_agent_text(path).splitlines()
+    except (OSError, UnicodeDecodeError):
+        return None
     if not lines or lines[0].strip() != "---":
         return ""
     for line in lines[1:]:
         if line.strip() == "---":
             break
         if line.startswith("name:"):
-            return line[len("name:"):].strip().strip("\"'")
+            return line[len("name:"):].split("#", 1)[0].strip().strip("\"'").strip()
     return ""
 
 
@@ -52,12 +64,24 @@ def roster_names(root):
 
 
 def defined_agent_names(root):
-    """Names defined by agent files (frontmatter name:) under the project and the user's .claude/agents/, recursively."""
-    names = set()
+    """(names, unreadable): names defined by agent files (frontmatter name:) under the project and the user's
+    .claude/agents/, recursively. unreadable is True if any file could not be read or decoded, or a folder
+    could not be listed. Callers fail closed on it: a built-in name may be redefined by a file they cannot see.
+    Plugin and --agents overrides are not visible to this hook (accepted leftover risk, D69)."""
+    names, unreadable = set(), False
     for base in (Path(root) / ".claude" / "agents", Path.home() / ".claude" / "agents"):
-        if base.is_dir():
-            names.update(frontmatter_name(path) for path in base.rglob("*.md"))
-    return names - {""}
+        try:
+            if not base.is_dir():
+                continue
+            for path in base.rglob("*.md"):
+                name = frontmatter_name(path)
+                if name is None:
+                    unreadable = True
+                elif name:
+                    names.add(name)
+        except OSError:
+            unreadable = True
+    return names, unreadable
 
 
 def agent_table_roles(plan_text: str) -> set:
@@ -94,8 +118,10 @@ def run(event, root):
         return 0
     tool_input = event.get("tool_input") or {}
     role = tool_input.get("subagent_type") or ""
-    if role in BUILTIN_READ_ONLY and role not in defined_agent_names(root):
-        return 0
+    if role in BUILTIN_READ_ONLY:
+        names, unreadable = defined_agent_names(root)
+        if role not in names and not unreadable:
+            return 0
 
     roster = roster_names(root)
     if role not in roster:

@@ -208,3 +208,48 @@ def test_user_agent_named_like_builtin_is_checked(root, tmp_path):
     write_agent(home / ".claude" / "agents" / "team", "explore.md", "Plan")
     r = gate(task("Plan"), root, home)
     assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+
+
+def user_agents(home):
+    d = home / ".claude" / "agents"
+    d.mkdir(parents=True, exist_ok=True)
+    return d
+
+def agent_bytes(name_line, encoding="utf-8"):
+    return f"---\n{name_line}\ntools: Read, Write, Edit, Bash\nmodel: haiku\n---\n# x\n".encode(encoding)
+
+def test_utf8_override_next_to_undecodable_file_is_checked(root, tmp_path):
+    home = tmp_path / "home"
+    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore"))
+    (user_agents(home) / "notes.md").write_bytes("---\nname: notes\n---\n\u201cquoted\u201d\n".encode("cp1252"))
+    r = gate(task("Explore"), root, home)
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+
+def test_utf16_override_is_checked(root, tmp_path):
+    home = tmp_path / "home"
+    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore", "utf-16"))
+    r = gate(task("Explore"), root, home)
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+
+def test_bom_utf8_override_is_checked(root, tmp_path):
+    home = tmp_path / "home"
+    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore", "utf-8-sig"))
+    r = gate(task("Explore"), root, home)
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+
+def test_trailing_comment_in_name_is_stripped(root, tmp_path):
+    home = tmp_path / "home"
+    (user_agents(home) / "explore.md").write_bytes(agent_bytes("name: Explore  # comment"))
+    r = gate(task("Explore"), root, home)
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
+
+def test_plain_builtin_with_clean_user_folder_passes(root, tmp_path):
+    home = tmp_path / "home"
+    user_agents(home)
+    assert gate(task("Explore"), root, home).returncode == 0
+
+def test_plain_builtin_with_unrelated_undecodable_user_file_fails_closed(root, tmp_path):
+    home = tmp_path / "home"
+    (user_agents(home) / "notes.md").write_bytes("---\nname: notes\n---\n\u201cquoted\u201d\n".encode("cp1252"))
+    r = gate(task("Explore"), root, home)
+    assert r.returncode == 2 and "not in the hangar roster" in r.stderr
