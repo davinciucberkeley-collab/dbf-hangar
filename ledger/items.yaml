@@ -4948,3 +4948,25 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-24'
+  - id: T125
+    kind: task
+    text: Generated wing cut_files point at neighbour meshes at their imported positions, so when a design set moves a neighbour (e.g. pitot avn-005/006/009 moved 40 mm inboard on test-tristan) the pocket stays behind and no check flags the moved part sitting in uncut core; make cut_files follow the neighbour's current position (resolver) and make T1 report overlap between a generated core and a part it should be cut for
+    source: Tristan's fresh-session trial 2026-11-24 (P221, design/test-tristan PR)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T126
+    kind: task
+    text: design propose branch slug is cut mid-word (design/test-tristan/new-test-design-from-concept-a-param-spa); cut at a word boundary
+    source: Tristan's fresh-session trial 2026-11-24 (P221)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
