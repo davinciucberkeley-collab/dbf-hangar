@@ -1,0 +1,14 @@
+id: emax-es3054hv-servo
+name: Servo EMAX ES3054HV (L)
+category: servo
+vendor: RMRC
+part_number: EMAX ES3054HV servo
+url: https://www.readymaderc.com/products/details/85975-emax-es3054-hv-high-voltage-17g-metal-gear-digital-servo
+mass_g: 20.5
+dimensions_mm: [28.4, 26.7, 16.9]
+cad_status: representative-envelope
+cad_source: designs/concept-a/meshes/mec-001-l.stl (imported from DBF-Combined @ a93f14d; not vendor CAD)
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-15', method: browser}
+geometry:
+  generator: mesh_file
+  params: {file: mesh.stl}

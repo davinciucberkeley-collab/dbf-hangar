@@ -1,0 +1,14 @@
+id: radiomaster-rp3-v2-elrs-rx
+name: Receiver RP3 V2 ELRS
+category: receiver
+vendor: RMRC
+part_number: Radiomaster RP3 V2 ELRS RX
+url: https://www.readymaderc.com/products/details/85670-radiomaster-rp3-expresslrs-2-4ghz-nano-receiver-v2
+mass_g: 4.6
+dimensions_mm: [72.1, 13.0, 4.0]
+cad_status: representative-envelope
+cad_source: designs/concept-a/meshes/avn-003.stl (imported from DBF-Combined @ a93f14d; not vendor CAD)
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
+geometry:
+  generator: mesh_file
+  params: {file: mesh.stl}

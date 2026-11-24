@@ -1,0 +1,14 @@
+id: rmrc-ms4525-airspeed-pitot
+name: Airspeed sensor MS4525 board
+category: sensor
+vendor: RMRC
+part_number: RMRC MS4525 airspeed + pitot
+url: https://www.readymaderc.com/products/details/rmrc-digital-air-speed-sensor-pixhawk-ii-2
+mass_g: 3.0
+dimensions_mm: [17.5, 15.0, 8.0]
+cad_status: representative-envelope
+cad_source: designs/concept-a/meshes/avn-005.stl (imported from DBF-Combined @ a93f14d; not vendor CAD)
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
+geometry:
+  generator: mesh_file
+  params: {file: mesh.stl}

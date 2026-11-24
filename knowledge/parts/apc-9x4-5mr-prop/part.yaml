@@ -1,0 +1,14 @@
+id: apc-9x4-5mr-prop
+name: Prop APC 9x4.5MRP (LL), CW reverse
+category: propeller
+vendor: RMRC
+part_number: APC 9x4.5MR 4-pack
+url: https://www.readymaderc.com/products/details/86771-apc-multirotor-9x4-5-2-blade-4-pack-with-adapter-rings
+mass_g: 11.06
+dimensions_mm: [24.1, 228.9, 228.9]
+cad_status: representative-envelope
+cad_source: swept disc of an APC 9x4.5MR (9 in = 228.6 mm nominal) from the oriented bounding box of designs/concept-a/meshes/prp-002-ll.stl
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
+geometry:
+  generator: tube
+  params: {axis: x, length: 24.1, outer_d: 228.9}
