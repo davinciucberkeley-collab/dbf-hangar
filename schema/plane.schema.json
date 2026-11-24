@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/REPLACE_ME/aircraft-platform/schema/plane.schema.json",
-  "title": "Plane Design Language v1.1",
+  "title": "Plane Design Language v1.2",
   "description": "Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, seconds. Body frame: origin at the nose datum, +x aft, +y starboard (right), +z up.",
   "type": "object",
   "required": [
@@ -23,9 +23,10 @@
         "0.3",
         "0.4",
         "1.0",
-        "1.1"
+        "1.1",
+        "1.2"
       ],
-      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields). 1.1 adds the optional motor fields propulsion.spin, propulsion.torque_per_thrust_m and propulsion.torque_per_thrust_m_source (prop reaction torque, used by the yaw row of T3.control_authority); 0.1-1.0 files validate unchanged."
+      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields). 1.1 adds the optional motor fields propulsion.spin, propulsion.torque_per_thrust_m and propulsion.torque_per_thrust_m_source (prop reaction torque, used by the yaw row of T3.control_authority); 0.1-1.0 files validate unchanged. 1.2 adds optional geometry generators (component.geometry {generator, params}), the design-level parameters block with \"$name\" references in geometry params, planform, position and rotation_deg, and component.mass_model (mass from generated volume x density, instead of mass_g); 0.1-1.1 files validate unchanged."
     },
     "id": {
       "$ref": "#/$defs/slug"
@@ -257,6 +258,16 @@
     },
     "notes": {
       "type": "string"
+    },
+    "parameters": {
+      "type": "object",
+      "description": "v1.2. Named numbers that component geometry.params, planform, position and rotation_deg may reference as the string \"$name\". Change one with `plane design set parameters.<name> <value>`.",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "number"
+      }
     }
   },
   "$defs": {
@@ -278,8 +289,7 @@
         "id",
         "type",
         "geometry",
-        "position",
-        "mass_g"
+        "position"
       ],
       "additionalProperties": false,
       "properties": {
@@ -479,6 +489,39 @@
               "exclusiveMinimum": 0
             }
           }
+        },
+        "mass_model": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "v1.2. Mass computed from the generated geometry: volume x density + extra_g. Use instead of mass_g (giving both is an error). Only for a component whose geometry is a generator.",
+          "properties": {
+            "material": {
+              "type": "string",
+              "description": "Id of an entry of the design's materials block or of standards/materials.yaml."
+            },
+            "density_g_cm3": {
+              "type": "number",
+              "exclusiveMinimum": 0
+            },
+            "extra_g": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0,
+              "description": "Mass not in the volume (glue, tape, hardware), grams."
+            }
+          },
+          "oneOf": [
+            {
+              "required": [
+                "material"
+              ]
+            },
+            {
+              "required": [
+                "density_g_cm3"
+              ]
+            }
+          ]
         }
       },
       "allOf": [
@@ -493,6 +536,28 @@
           "then": {
             "required": [
               "propulsion"
+            ]
+          }
+        },
+        {
+          "anyOf": [
+            {
+              "required": [
+                "mass_g"
+              ]
+            },
+            {
+              "required": [
+                "mass_model"
+              ]
+            }
+          ]
+        },
+        {
+          "not": {
+            "required": [
+              "mass_g",
+              "mass_model"
             ]
           }
         }
@@ -708,6 +773,24 @@
                 ]
               },
               "description": "v0.4. Mass with no extent (a lumped hardware or harness allowance). Counted in mass and CG at `position` (+ cg_offset); never in collision, contact, interference, drop-test collision or machine-fit checks."
+            }
+          }
+        },
+        {
+          "type": "object",
+          "required": [
+            "generator"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "generator": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9_]*$",
+              "description": "v1.2. Name of a registered geometry generator (hangar.geom registry: wing_panel, tube, fin, plate, fuselage_loft, motor_mount, mesh_file)."
+            },
+            "params": {
+              "type": "object",
+              "description": "v1.2. Generator parameters in mm and degrees; any number may be the string \"$name\" naming an entry of the design-level parameters block."
             }
           }
         }
