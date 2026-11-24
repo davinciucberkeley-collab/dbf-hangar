@@ -4794,3 +4794,69 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D69
+    kind: decision
+    text: "Teammate full-path changes (gates, bench, security, schema): the teammate builds on their branch with their own session and tests, opens a PR, and Tristan runs a fresh reviewer agent on the PR before merging; no plan unit needed. Light path for data-only design changes is CI green + Dillon's approval, no reviewer agent, touching no code, hook, workflow, schema or threshold. Agent gate: built-in names allowed only when no project or user agent file redefines them; plugin and --agents overrides are an accepted leftover risk"
+    source: conductor default on W22-R blockers, 2026-11-25 (reviews/2026-11-25-w22.md)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-25-w22.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D70
+    kind: decision
+    text: 'Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide'
+    source: Tristan, P200, 2026-11-25
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T116
+    kind: task
+    text: 'v1.1 parametric design (D70): G3: layout from a configuration (place wing, fins, booms, pack from a few top-level parameters and a morph-chart combination)'
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T117
+    kind: task
+    text: 'v1.1 parametric design (D70): G4: constraint and mission sizing with AeroSandbox (install in CI/env, adapter): span, area, weight build-up, pack, motor/prop'
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T118
+    kind: task
+    text: 'v1.1 parametric design (D70): G6: joint selection rules: connection type by load, material, access, sized with sourced stresses (needs T114)'
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T119
+    kind: task
+    text: "v1.1 parametric design (D70): G7: full-design flow: explore configurations, propose 5 cards, human picks, build with generators, gates and design-engineer loop, propose; explicit human decision points (Douglas's ask)"
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'

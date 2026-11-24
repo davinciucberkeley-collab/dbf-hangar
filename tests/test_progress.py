@@ -9,7 +9,7 @@ from click.testing import CliRunner
 
 from hangar.cli import cli
 from hangar.ledger import Ledger
-from hangar.progress import build_progress, latest_verdicts, parent_verdicts, parse_units
+from hangar.progress import archive_path, build_progress, latest_verdicts, parent_verdicts, parse_units
 
 REPO = Path(__file__).resolve().parents[1]
 
@@ -210,3 +210,61 @@ def test_roadmap_is_short_and_traceable():
     assert len(text.splitlines()) <= 60
     for needle in ["2026-12-02", "W0", "W1", "W2", "W3", "W4", "D10", "plans/2026-11-20-standardization.md", "PROGRESS.md"]:
         assert needle in text, needle
+
+
+ARCHIVE = """# Archive
+## 7. Archived units
+### Unit U5.1: Old and done
+- [x] a
+- [x] b
+### Unit U1.1: Gamma archived copy
+- [x] a
+"""
+
+
+def _with_archive(repo):
+    plan = repo / "plans" / "2026-11-20-p.md"
+    plan.write_text(PLAN.replace("| W1 Second | Sat 11-21 | U1.1 |", "| W1 Second | Sat 11-21 | U1.1, U5.1 |"), encoding="utf-8")
+    arch = archive_path(plan)
+    arch.parent.mkdir()
+    arch.write_text(ARCHIVE, encoding="utf-8")
+    return arch
+
+
+def test_archive_path_is_a_sub_folder_named_like_the_plan(repo):
+    plan = repo / "plans" / "2026-11-20-p.md"
+    assert archive_path(plan) == repo / "plans" / "2026-11-20-p" / "archive.md"
+
+
+def test_archived_units_appear_in_progress_with_their_verdict(repo):
+    _with_archive(repo)
+    text = build_progress(repo)
+    assert "| U5.1 | Old and done | 2/2 | done | - |" in text
+    assert "U9.9" in text and "| U0.1 | Alpha | 2/2 | done | ACCEPT |" in text
+
+
+def test_unit_in_plan_wins_over_archived_copy(repo):
+    _with_archive(repo)
+    text = build_progress(repo)
+    assert "| U1.1 | Gamma | 0/1 | not started | - |" in text
+    assert "archived copy" not in text
+
+
+def test_archive_does_not_become_the_active_plan(repo):
+    sys.path.insert(0, str(REPO / "harness" / "hooks"))
+    import agent_gate
+    from hangar.progress import active_plan
+    arch = _with_archive(repo)
+    plan = repo / "plans" / "2026-11-20-p.md"
+    assert active_plan(repo) == plan
+    assert agent_gate.active_plan(repo) == plan
+    assert arch.parent.parent == repo / "plans"
+
+
+def test_real_repo_archive_holds_only_finished_units_not_in_the_plan():
+    archive = archive_path(REPO / "plans" / "2026-11-20-standardization.md")
+    archived = parse_units(archive.read_text(encoding="utf-8").splitlines())
+    in_plan = parse_units((REPO / "plans" / "2026-11-20-standardization.md").read_text(encoding="utf-8").splitlines())
+    assert len(archived) >= 30
+    assert all(u["total"] and u["done"] == u["total"] for u in archived.values())
+    assert not set(archived) & set(in_plan)
