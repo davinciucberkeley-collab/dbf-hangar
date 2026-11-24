@@ -78,7 +78,7 @@ def explain_op(path: str, claim_id: str) -> OpResult:
     return OpResult(ok=True, data={"claim": claim_id, "chain": graph.explain(claim_id)})
 
 
-@op(name="claim.check", summary="Recompute every claim and report the T9 verdicts.", render=_render_check)
+@op(name="claim.check", summary="Check every claim and report the T9 verdicts: stored-result claims are read from source and checked against limits, the rest are recomputed.", render=_render_check)
 def check_op(path: str) -> OpResult:
     design, graph = _load(path)
     report = tier9_claims(design)
