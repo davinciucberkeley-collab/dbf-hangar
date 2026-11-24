@@ -1370,8 +1370,8 @@ Not a code unit; it tests everything above.
 **Scope:** turn DBF-Combined `docs/research/` (23 files @ a93f14da) into `knowledge/` entries through the existing templates (same pattern as U2.2-2, merged dc8902a): adapted not copied (the knowledge copy check must pass), each entry linked to its morph-chart cell where one fits, each source file listed in `PROVENANCE.md`; only sources actually opened are cited. Knowledge and provenance files only; no core/, designs/, standards/.
 
 - [x] **Step 1: Brief** (tactician W18-T): `briefs/U2.2-3-research-import.md` *(646708f: 23 entries in knowledge/research/, extracted by script; copy check 0 shared 10-word runs; test widening T110)*
-- [ ] **Step 2: Build** (builder W18-B)
-- [ ] **Step 3: Review** (reviewer W18-R); merge
+- [x] **Step 2: Build** (builder W18-B) *(b306c2d; corrected 8aa03d4)*
+- [x] **Step 3: Review** (reviewer W18-R); merge *(REOPEN once: 7 accuracy errors fixed via brief amendment 1; ACCEPT; merged 1b0bcac; test widening T110)*
 
 ### Unit U4.17: Team guide: how the team works in dbf-hangar (P189)
 
