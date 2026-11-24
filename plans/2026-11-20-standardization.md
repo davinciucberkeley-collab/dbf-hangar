@@ -641,6 +641,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W16-T, W16-B, W16-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.14 (T99, T100, T101, T102) | `briefs/U4.14-*.md`, branches `std/u4.14-*`, `reviews/2026-11-24-w16.md` | builder-ready bar; "### Verdict:" |
 | W17-T, W17-B, W17-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.15 (T95, T103, T67) | `briefs/U4.15-*.md`, branches `std/u4.15-*`, `reviews/2026-11-24-w17.md` | builder-ready bar; schema minor version for T95; "### Verdict:" |
 | W18-T, W18-B, W18-R | `tactician`, `builder`, `reviewer` | Sonnet, Haiku, Opus (fresh) | U4.16 (U2.2-3 docs/research import, D62) | `briefs/U2.2-3-research-import.md`, branch `std/u4.16-research`, `reviews/2026-11-24-w18.md` | knowledge templates, PROVENANCE, copy check (T68), "### Verdict:" |
+| W19-T, W19-B, W19-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.17 (team guide, P189) | `briefs/U4.17-team-guide.md`, `docs/team-guide.md`, branch `std/u4.17-team-guide`, `reviews/2026-11-24-w19.md` | every command in the guide run on a fresh clone; reviewer follows it as a newcomer; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1371,6 +1372,15 @@ Not a code unit; it tests everything above.
 - [x] **Step 1: Brief** (tactician W18-T): `briefs/U2.2-3-research-import.md` *(646708f: 23 entries in knowledge/research/, extracted by script; copy check 0 shared 10-word runs; test widening T110)*
 - [ ] **Step 2: Build** (builder W18-B)
 - [ ] **Step 3: Review** (reviewer W18-R); merge
+
+### Unit U4.17: Team guide: how the team works in dbf-hangar (P189)
+
+**Scope:** one guide `docs/team-guide.md` (linked from README.md) that Tristan can send to Dillon, James and Vaibhav: install and connect their own Claude Code sessions to this repo (hooks, agents, output style, MCP); the one-repo rule (no new repos; everything lands on main after review); branches per person and per unit that do not touch each other's files (designs vs core vs tests vs knowledge; e.g. James on tests, Dillon on a new concept); create a design, iterate on it (`plane design new/set/validate/sweep/propose`, Studio), add a test, add a standard with a source, add knowledge; how agents and the conductor/plan/ledger work; review and merge; CI. Every command in it is run on a fresh clone. Docs only (plus a README link); no core/, designs/, standards/.
+
+- [ ] **Step 1: Brief** (tactician W19-T): verified facts, outline, open decisions with defaults: `briefs/U4.17-team-guide.md`
+- [ ] **Step 2: Write** (builder-plus W19-B): `docs/team-guide.md`
+- [ ] **Step 3: Review** (reviewer W19-R follows the guide on a fresh clone as a newcomer); merge
+- [ ] **Step 4:** Tristan reads it and sends it to the team
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
