@@ -19,8 +19,8 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.5 Team adoption, CI, ratings, process | 4 | 2 |
 | W4.6 Parametric geometry for the demo (D70) | 2 | 2 |
 | W4.7 Presentation | 1 | 0 |
-| Other (no wave row) | 12 | 7 |
-| **all** | 55 | 47 |
+| Other (no wave row) | 12 | 8 |
+| **all** | 55 | 48 |
 
 ### Open ledger items by owner
 
@@ -29,7 +29,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-12-08 |
 | James | 2 | 2026-11-29 |
 | Tristan | 9 | 2026-12-05 |
-| conductor | 19 | 2026-12-15 |
+| conductor | 18 | 2026-12-15 |
 
 ### Open items for teammates
 
@@ -155,7 +155,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.26 | Quality-of-life batch (audit W24-Au2; D71) | 3/3 | done | ACCEPT |
 | U4.27 | Test and tidy follow-ups (T108, T109, T110, T123; D71) | 3/3 | done | ACCEPT |
 | U4.28 | Findings from Tristan's fresh-session trial (T125, T126, T128; D74; P224) | 3/3 | done | ACCEPT |
-| U4.29 | Parameter changes propagate to attached parts (T129; D75) [hard] | 1/3 | in progress | - |
+| U4.29 | Parameter changes propagate to attached parts (T129; D75) [hard] | 3/3 | done | - |
 | U4.30 | Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard] | 1/3 | in progress | - |
 | U4.31 | Real-parts library (D77) | 3/3 | done | - |
 | U4.32 | Shape generators for common aircraft configurations (D77, D78) [hard] | 1/3 | in progress | - |
@@ -167,7 +167,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 46 | 82 | 3 | 2 | 0 | 133 |
+| task | 45 | 83 | 3 | 2 | 0 | 133 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 266 | 282 |
 

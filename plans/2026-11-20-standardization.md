@@ -821,8 +821,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** (1) expressions in references (`"$span_mm / 2 - 15"`, + - * / and parentheses over parameters and numbers only, no names beyond parameters); (2) a component position may be given relative to its parent part's attachment frame (from the interface graph joints), so moving or regenerating the parent moves its children; (3) after a regenerating `design set`, T1 interference runs on the changed parts and the result is reported in the set output. Demo target: shortening concept-a-param's span moves the fins and everything attached to them, with no new interference rows. Existing designs (absolute positions) unchanged. Coordinates with U4.28 T125 (pockets follow moved parts) on resolve.py. Cut rule D75: merge by Sun 11-29 12:00 or roadmap.
 
 - [x] **Step 1: Design** (advisor W28-A) and briefs (tactician W28-T) *(design d10eb26; briefs 3ab30be: core (hard, after U4.28 pockets), data (variant A/B pending Tristan; A leaves a 1.0 mm elevon gap at 820 mm))*
-- [ ] **Step 2: Build** (builder-plus W28-B) *(core 3298078 ACCEPT, merged f952c92; data pending)*
-- [ ] **Step 3: Review** (W28-R); merge
+- [x] **Step 2: Build** (builder-plus W28-B) *(core 3298078 merged f952c92; data 0cbf4e9 variant A)*
+- [x] **Step 3: Review** (W28-R); merge *(both ACCEPT; data merged b4d1710; span 820: 52 parts, 58 joints moved, 0 new interference, 23.2 s)*
 
 ### Unit U4.30: Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard]
 
