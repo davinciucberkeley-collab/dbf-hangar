@@ -201,6 +201,13 @@ Use this to make a design, change it, compare it and hand it over.
 - Not every key moves the numbers. `requirements.mtow_g` is a requirement, so sweeping it gives identical results. Use a key that drives the physics, such as `flight.cl_max`.
 - Never update a baseline to hide a regression. Update it only when you fixed rows or created the design.
 
+### Starting a new concept
+
+- `concept-a` is the only active design (D9). Every other folder in `designs/` is a template, a reference or retired.
+- A new concept needs a ledger task with your name on it (O4). Ask Tristan for it first; it names the concept and the mission it targets.
+- The target mission is the VTOL demonstrator brief (D74): a 2 minute hover, 5 minutes of cruise (10 minutes is the goal), a 20 % reserve and a 0.25 kg growth allowance. It is in `knowledge/concepts/judging-mission-and-learning.md`. "DBF" in this repo means the DaVinci DBF capstone. UC Berkeley's separate DBF competition team and its rules are out of scope.
+- Claude cannot yet generate a concept from a blank page. From-scratch concept generation (G3 to G7, ledger T116 to T119) is v1.1. Today a new design starts from a template: ask "Make a new design from the tailsitter template" (CLI: `plane design new <new-id> --template example-tailsitter-wing`), then change it one key at a time with `design_set`.
+
 Studio (`plane studio`) does the same edits point and click, on the same files. It opens an app and a browser.
 
 ## 5. Task: gate work
