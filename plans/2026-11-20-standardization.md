@@ -567,14 +567,14 @@ Layers: **W3a** briefs for every unit in parallel, plus W3.0 (PROGRESS.md review
 ### 6j. Agent table for the concept-a budget unit fix (Tristan, 2026-11-21)
 Root cause (conductor, checked): `params-A.json` stores `req.budget_usd` = 2000.0 USD, not k$; `importers/dbf.py::_n(x, 0)` strips trailing zeros from an integer string ("2000" → "2"). `_n(..., 0)` has one call site (budget). Designs and core stay in separate PRs.
 
-| Agent | Role | Model | Input | Output | Pass check |
+| Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
 | FX-1 [x] | `builder` | Haiku | launch prompt (exact fix + tests) | branch `std/fx-importer-n0` | `_n(2000, 0) == "2000"`; re-import of concept A writes `budget_usd: 2000`; existing importer tests pass; CI green |
 | FX-2 [x] | `design-engineer` | Sonnet | `plane design set designs/concept-a requirements.budget_usd --value 2000 --kind modify` | commit on `main` (D30: small fixes, no PR) | validate `--tier all` before/after; baseline updated only if rows change; reviewer check before push |
 | FX-R | `reviewer` | Opus (fresh) | both commits (D30) | `reviews/2026-11-21-fixes.md` | "### Verdict: ACCEPT" per PR |
 
 ### 6k. Agent table for the ledger task triage (Tristan, 2026-11-21; no code, design or standards changes)
-| Agent | Role | Model | Input | Output | Pass check |
+| Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
 | TR-S1…S4 | `scout` | Haiku | one batch of about 12 open `kind: task` items each | evidence file in the session scratchpad: per task status proposal (done / superseded / dropped / open) with commit, PR or file evidence, duplicate pairs, W4-or-v1.1 home | every task in the batch has one proposal and cites only what was opened |
 | TR-R | `reviewer` | Opus (fresh) | every proposed "done" and "superseded" | confirm or reject each, one line | each confirmation names the code or file checked |
@@ -588,7 +588,7 @@ W4 wave rules (W3 lessons T41–T43):
 - R-b: tacticians run the brief's tests against the base commit first (record red/green under Known failures) and grep-verify every quoted name and path (T42).
 - R-c: the conductor launches `auditor` every hour while any W4 agent runs (T43).
 
-| Agent | Role | Model | Input | Output | Pass check |
+| Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
 | W4-TA | `tactician` | Sonnet | ledger T22, T25, T27, T29, T33, T34, T39, T46, T47 (texts + triage notes) | `briefs/W4a-*.md`, one per fix or per shared file, each marked easy or [hard] | builder-ready bar; R-a, R-b applied |
 | W4-A1…An | `builder` (easy) / `builder-plus` ([hard]) | Haiku / Sonnet | one W4a brief each | branch `std/w4a-<task>` | brief's checks; CI green by headSha |
