@@ -23,6 +23,7 @@ from ._paths import repo_root, rel
 
 PROTECTED = ("core", "schema", "standards")
 REPLAY_TIMEOUT_S = 600
+PATH_PARAM_NAMES = ("path", "src")    # T101: an op argument with one of these names (or of type Path) holds a design path; no other word is mapped
 # T92: a logged command is replayed only when it is one of these (they write only below the design folders they are given,
 # or, for design new, below DESIGNS_DIR, which the grader points into the workspace); read-only commands are skipped;
 # any other command that can write (bench run, fea run, design export, ledger, update, import, baseline, ...) fails the run unexecuted.
@@ -146,7 +147,8 @@ def snapshot_design(task: dict, ws) -> Path:
 
 
 def tree_digest(root) -> str:
-    """T92: sha256 over every file below `root` (relative path and content), so any added, removed or changed file changes it."""
+    """T92: sha256 over every file below `root` (relative path and content), so any added, removed or changed file changes it.
+    Folders are not hashed: an added empty folder goes undetected (harmless today: designs_diff compares files only too)."""
     root, h = Path(root), hashlib.sha256()
     for p in sorted(root.rglob("*")):
         if p.is_file():
@@ -178,13 +180,39 @@ def replay_kind(argv: list[str]) -> Literal["skip", "replay", "refuse"]:
     return "refuse"
 
 
+def _path_positions(argv: list[str]) -> set[int]:
+    """T101: indices into argv of the words that are declared path arguments of the op the first two words name (an argument,
+    not an option, whose name is in PATH_PARAM_NAMES or whose type is Path): `design set PATH`, `design copy SRC`. Option values
+    (the word after --why, --value, ...) and the other arguments (KEY, NEW_ID) are never listed. A command that names no op gives an empty set."""
+    spec = next((s for s in registry().values() if argv[:2] == [s.group, s.verb]), None)
+    if spec is None:
+        return set()
+    options = {p.cli_name: p for p in spec.params if p.kind == "option"}
+    arguments = [p for p in spec.params if p.kind == "argument"]
+    found, n, i, only_words = set(), 0, 2, False
+    while i < len(argv):
+        a = argv[i]
+        if not only_words and a == "--":
+            only_words = True
+        elif not only_words and a.startswith("-"):
+            opt = options.get(a.lstrip("-").split("=", 1)[0])
+            if "=" not in a and opt is not None and opt.type_name != "bool":
+                i += 1                                   # the next word is this option's value
+        else:
+            if n < len(arguments) and (arguments[n].type_name == "path" or arguments[n].name in PATH_PARAM_NAMES):
+                found.add(i)
+            n += 1
+        i += 1
+    return found
+
+
 def _map_args(argv: list[str], cwd: str, ws: Path, fresh: Path) -> list[str]:
-    """T93/T92: an argument that names an existing path is resolved against the logged cwd; inside the workspace it becomes the
-    same path inside `fresh` (short names, case and ../ forms included, because the comparison is on resolved paths);
-    outside the workspace is a ValueError. Other arguments are kept."""
-    base, ws_r, out = Path(cwd), ws.resolve(), []
-    for a in argv:
-        if not a or a.startswith("-"):
+    """T93/T92/T101: a declared path argument (see _path_positions) that names an existing path is resolved against the logged cwd;
+    inside the workspace it becomes the same path inside `fresh` (short names, case and ../ forms included, because the comparison
+    is on resolved paths); outside the workspace is a ValueError. Every other word (options, option values, KEY, NEW_ID) is kept as logged."""
+    base, ws_r, out, positions = Path(cwd), ws.resolve(), [], _path_positions(argv)
+    for i, a in enumerate(argv):
+        if i not in positions or not a or a.startswith("-"):
             out.append(a)
             continue
         try:
@@ -238,8 +266,16 @@ def replay(ws, snapshot, log, digest=None) -> list[str]:
     outside the workspace, is a message and nothing is run."""
     ws, snapshot, log = Path(ws), Path(snapshot), Path(log)
     try:
+        log.resolve().relative_to(ws.resolve())
+        return ["the plane command log is inside the workspace; cannot replay"]      # T101: the log must lie outside what the agent can edit
+    except ValueError:
+        pass
+    try:
         rows = [json.loads(line) for line in log.read_text(encoding="utf-8").splitlines() if line.strip()] if log.is_file() else []
-        entries = [(list(e["argv"]), str(e["cwd"])) for e in rows]
+        if not all(isinstance(e, dict) and set(e) == {"argv", "cwd"} and isinstance(e["cwd"], str)
+                   and isinstance(e["argv"], list) and all(isinstance(a, str) for a in e["argv"]) for e in rows):
+            raise ValueError("log line is not {argv: [str], cwd: str}")      # T101: exactly what cli._log_invocation writes
+        entries = [(list(e["argv"]), e["cwd"]) for e in rows]
     except (ValueError, KeyError, TypeError, OSError):
         return ["the plane command log is unreadable; cannot replay"]
     if digest is not None and tree_digest(snapshot) != digest:

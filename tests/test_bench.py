@@ -386,6 +386,32 @@ def test_tree_digest_changes_with_any_file_change(tmp_path):
     assert len({d0, d1, bench.tree_digest(tmp_path / "d")}) == 3
 
 
+def test_tree_digest_docstring_names_the_empty_folder_gap():  # T101
+    assert "empty folder" in bench.tree_digest.__doc__
+
+
+@pytest.mark.parametrize("row", [
+    {"argv": "design set x", "cwd": "C:/x"},                      # argv must be a list
+    {"argv": ["design", 1], "cwd": "C:/x"},                       # every word a string
+    {"argv": ["design"], "cwd": 5},                               # cwd a string
+    {"argv": ["design"]},                                         # both keys
+    {"argv": ["design"], "cwd": "C:/x", "extra": 1},              # no other key
+])
+def test_replay_refuses_a_log_line_that_cli_would_not_write(row, fake_repo, tmp_path, monkeypatch):  # T101: PLANE_BENCH_LOG content check
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    monkeypatch.setattr(bench.subprocess, "run", lambda *a, **k: pytest.fail("a command was started"))
+    _log_rows(log, row)
+    assert bench.replay(ws, snap, log) == ["the plane command log is unreadable; cannot replay"]
+
+
+def test_replay_refuses_a_log_inside_the_workspace(fake_repo, tmp_path):  # T101: PLANE_BENCH_LOG location check
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    inside = ws / "plane-commands.jsonl"
+    inside.write_bytes(b"")
+    assert bench.replay(ws, snap, inside) == ["the plane command log is inside the workspace; cannot replay"]
+    assert bench.replay(ws, snap, log) == []
+
+
 def test_replay_fails_when_the_snapshot_changed_during_the_run(fake_repo, tmp_path):
     task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
     digest = bench.tree_digest(snap)
@@ -420,6 +446,62 @@ def test_replay_refuses_a_path_outside_the_workspace_and_runs_nothing(fake_repo,
     _log_rows(log, {"argv": ["design", "set", "designs/concept-a", "status", "--value", "x", "--why", "w"], "cwd": str(tmp_path)})
     msgs = bench.replay(ws, snap, log)
     assert len(msgs) == 1 and "outside the workspace" in msgs[0], msgs
+
+
+def test_map_args_maps_only_the_declared_path_arguments(fake_repo, tmp_path):  # T101
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    fresh = ws.parent / "replay"
+    cwd = str(ws / "designs")                     # here "concept-a" and "." both name existing paths
+    key = "components[pwr-001].mass_g"
+    mapped = str(fresh / "designs" / "concept-a")
+    assert bench._map_args(["design", "set", "concept-a", key, "--value", ".", "--why", "concept-a", "--kind", "modify"], cwd, ws, fresh) \
+        == ["design", "set", mapped, key, "--value", ".", "--why", "concept-a", "--kind", "modify"]
+    assert bench._map_args(["design", "set", "--why=concept-a", "--value", "..", "concept-a", key], cwd, ws, fresh) \
+        == ["design", "set", "--why=concept-a", "--value", "..", mapped, key]
+    assert bench._map_args(["design", "copy", "concept-a", "concept-a"], cwd, ws, fresh) \
+        == ["design", "copy", mapped, "concept-a"]                      # SRC is mapped, NEW_ID is not
+    assert bench._map_args(["design", "new", "concept-a", "--template", "concept-a"], cwd, ws, fresh) \
+        == ["design", "new", "concept-a", "--template", "concept-a"]    # no path argument at all
+    assert bench._map_args(["new", "concept-a"], cwd, ws, fresh) == ["new", "concept-a"]    # the old command names no op
+    with pytest.raises(ValueError, match="outside the workspace"):      # a path argument outside the workspace is still refused
+        bench._map_args(["design", "set", str(snap / "designs" / "concept-a"), key], cwd, ws, fresh)
+    kept = bench._map_args(["design", "set", "concept-a", key, "--value", str(snap), "--why", "x"], cwd, ws, fresh)
+    assert kept[5] == str(snap) and kept[7] == "x"      # --value and --why stay unmapped (as logged), even an absolute path outside the workspace
+
+
+def test_replay_runs_a_command_whose_why_text_names_an_existing_path(fake_repo, tmp_path):  # T101
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    _plane(ws / "designs", _logged_env(log), "design", "set", "concept-a", "components[pwr-001].mass_g",
+           "--value", "140", "--why", "concept-a", "--kind", "modify")
+    assert bench.replay(ws, snap, log) == []                            # the why text stayed "concept-a" in the replay
+
+
+def _plane_result(cwd, env, *args):
+    return REAL_RUN([sys.executable, "-m", "hangar.cli", *args], cwd=str(cwd), env=env, capture_output=True, text=True,
+                    encoding="utf-8", timeout=300)
+
+
+@pytest.mark.parametrize("cmd", [
+    ["design", "new", "u-tpl-new", "--template", "{abs}"],            # absolute path
+    ["design", "new", "u-tpl-new", "--template", "../designs/concept-a"],   # ../ form
+    ["design", "new", "u-tpl-new", "--template={abs}"],               # one-word form
+    ["new", "u-tpl-new", "--from", "{abs}"],                          # legacy command
+])
+def test_design_new_refuses_a_template_that_is_not_a_bare_id(cmd, fake_repo, tmp_path):  # T101 (W16-R)
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    env = {**_logged_env(log), "PLANE_DESIGNS_DIR": str(ws / "designs")}
+    args = [a.replace("{abs}", str(ws / "designs" / "concept-a")) for a in cmd]
+    r = _plane_result(ws, env, *args)
+    assert r.returncode == 2, (r.returncode, r.stderr)
+    assert "template must be a bare design id" in r.stderr, r.stderr
+    assert not (ws / "designs" / "u-tpl-new").exists()
+
+
+def test_design_new_accepts_a_bare_template_id(fake_repo, tmp_path):  # T101 (W16-R)
+    task, ws, snap, log = _bench_ws(fake_repo, tmp_path)
+    env = {**_logged_env(log), "PLANE_DESIGNS_DIR": str(ws / "designs")}
+    _plane(ws, env, "design", "new", "u-tpl-new", "--template", "concept-a")
+    assert (ws / "designs" / "u-tpl-new" / "plane.yaml").is_file()
 
 
 def test_replay_maps_a_workspace_path_written_as_dot_dot_run_id(fake_repo, tmp_path):

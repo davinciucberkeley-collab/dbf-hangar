@@ -136,6 +136,8 @@ def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
     """Copy designs/TEMPLATE (plane.yaml plus mesh files) to designs/NEW_ID; return the new plane.yaml."""
     if not ID_RE.fullmatch(new_id):
         raise ValueError(f"invalid id {new_id!r}: use lowercase letters, digits, - and _")
+    if not ID_RE.fullmatch(template):   # T101 (W16-R): a template is a bare design id, never a path
+        raise ValueError(f"template must be a bare design id matching {ID_RE.pattern}: {template!r}")
     target_dir = DESIGNS_DIR / new_id
     if target_dir.exists():
         raise ValueError(f"design {new_id!r} already exists")

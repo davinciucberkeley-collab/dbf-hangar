@@ -25,6 +25,13 @@ OWNER_TRAILER = "Co-authored-by: Tristan Hottier <185231225+TristanHottier@users
 _SKIP_COPY = ("fea", ".sweeps", "CHANGELOG.yaml", "baseline.json", "import-report.json", "__pycache__")
 
 
+def _sweep_root() -> Path:
+    """T101: SWEEP_ROOT (<repo>/.sweeps); but when PLANE_DESIGNS_DIR is set (a bench run) the .sweeps folder next to that designs/ folder,
+    so a bench run writes no sweep into the real repo."""
+    env = os.environ.get(design_mod.DESIGNS_DIR_ENV)
+    return Path(env).parent / ".sweeps" if env else SWEEP_ROOT
+
+
 def _plane(path: str) -> Path:
     p = pdledit.resolve_design_path(path)
     if p.suffix != ".yaml" or not p.is_file():
@@ -173,7 +180,7 @@ def sweep_op(path: str, key: str, *, values: list[str]) -> OpResult:
         pdledit.check_schema(before, yaml.safe_load(t), key)
         pairs.append((raw, t))
     did = str(before.get("id", plane.parent.name))
-    root = SWEEP_ROOT / did
+    root = _sweep_root() / did
     if root.exists():
         shutil.rmtree(root)
     rows = []
