@@ -4662,3 +4662,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-23'
+  - id: T110
+    kind: task
+    text: 'tests/test_knowledge.py covers only knowledge/concepts/ (exactly 50 config-study entries, sources under redesign/config-study/): widen the copy check and structure checks to knowledge/research/ and docs/research/ sources after U4.16 merges (W18-T)'
+    source: W18-T 2026-11-24 (briefs/U2.2-3-research-import.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
