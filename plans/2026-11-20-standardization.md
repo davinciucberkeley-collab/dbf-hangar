@@ -1383,8 +1383,8 @@ Not a code unit; it tests everything above.
 
 - [x] **Step 1: Brief** (tactician W19-T): verified facts, outline, open decisions with defaults: `briefs/U4.17-team-guide.md` *(6aac806; O1-O11 defaults recorded as D63; propose, push and PowerShell activation not run)*
 - [x] **Step 2: Write** (builder-plus W19-B): `docs/team-guide.md` *(b8e6074, 777 lines, 80 fenced commands all verified)*
-- [ ] **Step 2b: Rework in place for D64** (recon W19-X facts on Claude Desktop; tactician W19-T amends the brief; builder-plus W19-B rewrites on the same branch): conversation-first, Claude Code and Claude Desktop setups
-- [ ] **Step 3: Review** (reviewer W19-R follows the guide on a fresh clone as a newcomer); merge
+- [x] **Step 2b: Rework in place for D64** (recon W19-X facts on Claude Desktop; tactician W19-T amends the brief; builder-plus W19-B rewrites on the same branch): conversation-first, Claude Code and Claude Desktop setups
+- [x] **Step 3: Review** (reviewer W19-R follows the guide on a fresh clone as a newcomer); merge *(REOPEN on b8e6074, 9ad7d18, 5d01843; ACCEPT 5fdf401; merged b547fb1; follow-ups T111, T112)*
 - [ ] **Step 4:** Tristan reads it and sends it to the team
 
 ### Unit U4.18: Faster CI unit tests (T11; P194)
