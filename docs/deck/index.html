@@ -25,11 +25,30 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 }
 </style></head><body>
 
+
 <section class="slide"><h1>dbf-hangar v1.0</h1>
 <p>One design language and one app for the team.</p>
 <p>Dec 2 demo. Tag <code>v1.0.0</code> at <code>55fedae</code>.</p>
-<div class="src">Source: README.md; git tag v1.0.0</div>
-<aside>Plain opening. v1.0.0 was tagged at 55fedae. Everything after this is measured, with the gaps named.</aside></section>
+<div class="src">Source: README.md; <code>git rev-parse --short v1.0.0^{commit}</code> = 55fedae (tag object 3635549), <code>git cat-file -t v1.0.0</code> = tag; measured 2026-11-24</div>
+<aside>Plain opening. v1.0.0 was tagged at commit 55fedae (annotated tag object 3635549). Everything after this is measured, with the gaps named.</aside></section>
+
+<section class="slide warn"><h1>What the gates found on concept-a</h1>
+<ul><li>PASS 693, WARN 146, SKIP 73, FAIL 10: not accepted</li>
+<li>Drop test: E-WNG-20 and E-WNG-21 1.8 N vs 1.4 N (T74); E-MEC-05 1.2 N and E-MEC-10 1.3 N vs 0.7 N (T73)</li>
+<li>Tips over after the drop: 81 deg from vertical, limit 30 (T75)</li>
+<li>Static margin 16.4% MAC vs 5-15% target, CG x 21 mm (T76)</li>
+<li>Hub FEA: cge-001 SF 0.37 landing, 0.44 thrust; cge-006 SF 0.83, 0.72 (T71)</li></ul>
+<div class="src">Source: ledger T71, T73-T76; <code>plane design validate designs/concept-a --tier all</code> (11-24, JSON status counts and FAIL rows); metrics.md section C</div>
+<aside>FAILs sit behind pending thresholds and open model questions (T37), not behind a skipped gate. NP 59 mm against claim CL-A-SM 40.7 mm (designs/concept-a/claims.yaml:2181-2184). Each row has an owner and a due date in the ledger (Dillon, 12-08).</aside></section>
+
+<section class="slide warn"><h1>More real findings on concept-a</h1>
+<ul><li>Yaw: all four motor cants turn the same way; about 1.06 N*m untrimmed vs about 0.27 N*m reaction torque (T96)</li>
+<li>13 harnesses leave their envelopes by 8-197 mm (T78); 16 BOM lines not verified (T79)</li>
+<li>Packed airframe 38 mm over the transport box (T80); wing step 14 touches nothing (T81)</li>
+<li>38 PETG parts routed to a PLA-only printer standard (T63); CA glue on XPS fairings (T64)</li>
+<li>Found and fixed this week: 14 AWG harness under-rated (T60), BOM spares double-counted +$60.89 (T94)</li></ul>
+<div class="src">Source: ledger T60, T63, T64, T77-T81, T94, T96 (statuses checked 11-24); reviews/2026-11-22-concept-a-discipline.md</div>
+<aside>Design problems found by the review skills and gates, not gate bugs. T63-T66, T73-T81, T96 are open with Dillon, due 12-08; T60 and T94 are done. T65 (torsion damping unsourced) and T66 (FC power board, Remote ID not modelled) are open too. T77 (two harnesses without gauge) is a WARN.</aside></section>
 
 <section class="slide"><h1>The problem</h1>
 <ul><li>About 15 interfaces to open, the team needs about 3</li>
@@ -38,18 +57,19 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <div class="src">Source: plans/2026-11-20-standardization.md (R6 ruling, rulings table)</div>
 <aside>R6: "you have ~15, need ~3". Metric M1 was 3 of 12 team tasks doable with no code edit before this work.</aside></section>
 
-<section class="slide"><h1>One design, as data</h1>
-<ul><li>Plane Design Language (PDL): <code>designs/&lt;id&gt;/plane.yaml</code> plus a schema</li>
-<li>Change a design with <code>plane design set</code></li>
-<li>Never by editing code</li></ul>
-<div class="src">Source: schema/plane.schema.json; docs/pdl/reference.md; designs/concept-a/CHANGELOG.yaml</div>
+<section class="slide"><h1>One design, one file</h1>
+<ul><li>A design is <code>designs/&lt;id&gt;/plane.yaml</code> plus a schema (PDL)</li>
+<li>Change it with <code>plane design set</code>, one value and a reason</li>
+<li>Every change writes a CHANGELOG entry; a designs-only PR never touches code</li>
+<li>Validate gives a scorecard: seconds for a small design, about 80 s for concept-a</li></ul>
+<div class="src">Source: schema/plane.schema.json; docs/pdl/reference.md; designs/concept-a/CHANGELOG.yaml; timings 11-24 (demo-script.md)</div>
 <aside>Every set writes a CHANGELOG entry with old value, new value and a reason. Designs-only PRs never touch core/.</aside></section>
 
 <section class="slide"><h1>One operation, three surfaces</h1>
-<ul><li>One <code>@op</code> registry: 51 ops registered</li>
+<ul><li>One <code>@op</code> registry: 55 ops registered</li>
 <li>CLI, MCP and Studio are generated from it</li>
 <li>Gap (M2): not fully generated. 4 hand-written MCP tools, Studio-only routes, CLI-only commands</li></ul>
-<div class="src">Source: reviews/2026-11-22-whole-branch.md:49; metrics.md M2 (ran <code>plane ops list</code>)</div>
+<div class="src">Source: reviews/2026-11-22-whole-branch.md:49; metrics.md M2 (ran <code>plane ops list</code>, 55 lines, 11-24)</div>
 <aside>Be upfront: M2 is the one metric rated GAP.</aside></section>
 
 <section class="slide"><h1>Plane Studio</h1>
@@ -59,41 +79,49 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <div class="src">Source: viewer/README.md; viewer/app.js:9; metrics.md M3</div>
 <aside>Pages link: https://davinciucberkeley-collab.github.io/dbf-hangar/. Caveat: R11 "drag it around" is not built; Physics replays analytic sweeps (D43, v1.1).</aside></section>
 
+<section class="slide"><h1>Parametric geometry: a demonstration</h1>
+<ul><li>One shared parameter drives the parts: <code>parameters.span_mm</code> 900 -&gt; 940</li>
+<li>Regenerates the wing core and spar; mass 1272.99 -&gt; 1279.79 g, CG x 21.35 -&gt; 21.65 mm</li>
+<li>4 parts generated (wing, spar, two fin tubes); about 100 stay imported meshes</li>
+<li>Honest: <code>concept-a-param</code> has 10 extra known FAILs (20 vs 10): cut pockets follow the neutral pose only (T121)</li></ul>
+<div class="src">Source: designs/concept-a-param/README.md (lines 3-4, 45, 47-48); <code>plane design mass</code> and <code>plane design validate</code> on 11-24 (demo-script.md step 6); ledger D70, T121</div>
+<aside>A demonstration, not a design flow: G1 kernel and G2 generators only. The static margin is still a FAIL at 15.6% (concept-a 16.4%, the copy 15.7% at 900 mm). At 940 mm the full validate shows 19 FAIL (measured 11-24). Layout, sizing and joint rules are the roadmap (slide 17).</aside></section>
+
 <section class="slide"><h1>Live demo</h1>
 <ul><li>Example template: new, set, validate, fix</li>
-<li>concept-a in Physics</li>
+<li>Parametric step: span 900 to 940, regenerated parts, validate</li>
+<li>concept-a in Physics (elevon-r)</li>
 <li>Show PR #3 (no live propose)</li>
 <li>Publish the 11-30 week</li>
 <li>The one link. Launch Studio 15 minutes early</li></ul>
 <div class="src">Source: plans/2026-11-20-standardization/u4.2/demo-script.md (D46)</div>
 <aside>
-Flow (D46): template new, set, validate, fix; Physics on concept-a (elevon-r then elevon-l, Play); PR #3; publish; the one Pages link.
+Flow (D46): template new, set, validate, fix; parametric span step; Physics on concept-a (elevon-r; elevon-l is in the click path only); PR #3; publish; the one Pages link.
 Decided (D46): show PR #3 (merged e2504d2), no live propose; publish the 11-30 week, whose updates/ entry must be merged to main before the demo, or the URL returns 404 (demo-script Issue 4); Tristan records the backup video at the 11-30 dry run.
-Studio: start 15 minutes early; a cold start is slow, never cold in the room. three.js loads from a CDN, so the room needs internet. Check that plane resolves on the demo laptop (Issue 6 in the script).</aside></section>
+Studio: start 15 minutes early; a cold start is slow, never cold in the room. three.js loads from a CDN, so the room needs internet. Check that plane resolves on the demo laptop (Issue 6 in the script).
+Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside></section>
 
-<section class="slide"><h1>Gates, tiers 0 to 9</h1>
+<section class="slide"><h1>Gates, tiers 0 to 9, and how sourced they are</h1>
 <ul><li>Schema, geometry, physics, aero, manufacturing, standards, mechanisms, integration, sourcing, claims</li>
 <li>Every threshold has a source or <code>pending</code></li>
-<li>1 blocking threshold still pending: <code>landing_load_factor</code></li></ul>
-<div class="src">Source: standards/*.yaml; metrics.md M4, M5 (ran <code>plane standards pending</code>)</div>
-<aside>Docs still say tiers 0-5, though the default validate also runs tiers 7 and 8 (whole-branch blocking item 4). Say "default tiers" on stage.</aside></section>
+<li>1 blocking threshold still pending: <code>landing_load_factor</code></li>
+<li>Fidelity: 134 of 714 blocking checks use sourced thresholds; 0 components have measured mass</li></ul>
+<div class="src">Source: standards/*.yaml; metrics.md M4, M5 (ran <code>plane standards pending</code>, 11-24: one BLOCK line); Fidelity line of <code>plane design validate designs/concept-a</code> (11-24)</div>
+<aside>Docs still say tiers 0-5, though the default validate also runs tiers 7 and 8 (whole-branch blocking item 4). Say "default tiers" on stage. Fidelity says how many blocking checks rest on a source, not whether the design is good.</aside></section>
 
-<section class="slide warn"><h1>Caveat: 10 known concept-a FAILs</h1>
-<ul><li><code>T2.sim_drop_loads</code>: E-WNG-20 and E-WNG-21 peak 1.8 N vs rating 1.4 N; E-MEC-05 1.2 N and E-MEC-10 1.3 N vs rating 0.7 N</li>
-<li><code>T2.sim_rest</code>: tipped over after drop, 81 deg from vertical (limit 30)</li>
-<li><code>T2.fea_strength</code>: cge-001 SF 0.37 landing, 0.44 thrust; cge-006 SF 0.83 landing, 0.72 thrust (at 1.5x load)</li>
-<li><code>T3.static_margin</code>: 16.4% MAC vs target 5-15%</li>
-<li>concept-a is not accepted. PASS 693, WARN 146, SKIP 73, FAIL 10</li></ul>
-<div class="src">Source: plans/2026-11-20-standardization/u4.2/metrics.md sections B and C (2026-11-23 run)</div>
-<aside>The FAILs sit behind pending thresholds and open model questions (T37), not behind a skipped gate. Fidelity line: 134 of 714 blocking checks use sourced thresholds; 0 components have measured mass. Model NP is 59 mm against claim CL-A-SM 40.7 mm.</aside></section>
+<section class="slide"><h1>Claims tier: 93 of 93 concept-a claims PASS (T28)</h1>
+<ul><li>53 recompute from their calculations; 40 are stored results (CAD mass, SITL, FEA margins, collision and assembly reports) read from their sources and checked against their limits: pass on paper, analyses not re-run</li>
+<li>Claims tier: 93 PASS (<code>plane claim check</code>, 11-24: 53 recomputed + 40 read)</li></ul>
+<div class="src">Source: ledger T28, D59, D60; <code>plane claim check designs/concept-a</code> (11-24 summary line)</div>
+<aside>Each of the 40 read values traces to a named source (<code>plane claim explain</code>); re-running those analyses is not in v1.0.</aside></section>
 
 <section class="slide"><h1>The harness</h1>
 <ul><li>10 agent roles in <code>.claude/agents/</code>; hooks enforce them</li>
-<li>Ledger: 359 items, 66 open, 0 overdue</li>
+<li>Ledger: 437 items, 63 open, 0 overdue (all kinds: 40 rulings, 123 tasks, 1 idea, 273 decisions)</li>
 <li><code>plane ledger report</code> before a meeting</li>
-<li>Weekly <code>plane update publish</code> (3.0 s)</li></ul>
-<div class="src">Source: .claude/agents/; <code>plane ledger report</code>, 2026-11-22</div>
-<aside>Ledger counts move as items are added or closed; these are the live values on 2026-11-22.</aside></section>
+<li>Weekly <code>plane update publish</code> (3.0 s, 11-22 run)</li></ul>
+<div class="src">Source: <code>ls .claude/agents</code> = 10; <code>plane ledger report</code>, 2026-11-24</div>
+<aside>Ledger counts move as items are added or closed; these are the live values on 2026-11-24.</aside></section>
 
 <section class="slide"><h1>v1.0 facts and speed</h1>
 <ul><li><code>v1.0.0</code> tagged at <code>55fedae</code></li>
@@ -101,7 +129,7 @@ Studio: start 15 minutes early; a cold start is slow, never cold in the room. th
 <li>78.9 s cold; results byte-identical</li>
 <li>60 s target met by about 3 s: thin</li></ul>
 <div class="src">Source: reviews/2026-11-22-w4.md:94-108; metrics.md M9</div>
-<aside>Medians of 3 quiet runs each. A loaded machine took 113.5 s. A fresh clone took 83 s cold.</aside></section>
+<aside>Medians of 3 quiet runs each. A loaded machine took 113.5 s. A fresh clone took 83 s cold. On 11-24 a full concept-a validate took 82.6 s (JSON run).</aside></section>
 
 <section class="slide warn"><h1>Caveat: PlaneBench 7 of 9</h1>
 <ul><li>7 of 9 runs passed, but mass-cut-10 was gamed</li>
@@ -115,51 +143,28 @@ Studio: start 15 minutes early; a cold start is slow, never cold in the room. th
 <section class="slide"><h1>Scoreboard: 8 of 9 metrics pass</h1>
 <ul><li>M1 team tasks: 12 of 12 scripts (was 3 of 12)</li>
 <li>M3, M9 pass with caveats; M6 with data gaps</li>
-<li>M2 is a GAP (slide 4)</li>
+<li>M2 is a GAP (slide 6)</li>
 <li>Process FAIL: no record that the U2.5 Step 4 BOM check happened</li></ul>
 <div class="src">Source: plans/2026-11-20-standardization/u4.2/metrics.md section A</div>
 <aside>Whole-branch verdict at dea6f2a was REJECT with six blocking items; B6 was closed by the concept-a discipline review (ACCEPT); the remaining items were closed on main by 14a7efd and verified in reviews/2026-11-30-v1.0.md. Two team-task scripts are weak: send_design.sh only runs --help and run_stress.sh is plan-only.</aside></section>
 
-<section class="slide warn"><h1>Caveat: no mass-gate number (D32)</h1>
-<ul><li>Standards conflict: 2.6 vs 2.7 kg</li>
-<li>Unresolved; the keys stay <code>pending</code></li>
-<li>No mass-gate number is quoted</li>
-<li>Needs a team decision (T12), v1.1</li></ul>
-<div class="src">Source: plans/2026-11-20-standardization.md section 3, row D32; ledger D32, T12</div>
-<aside>If asked for a mass limit, say the sources disagree and the team has to pick.</aside></section>
+<section class="slide warn"><h1>What is not done</h1>
+<ul><li>The team has not been onboarded yet: teammates have not run it on their own machines (harness install is CI-tested only)</li>
+<li>Joint ratings are placeholders: 64 joint checks SKIP; per-joint ratings are the first v1.1 task (T114)</li>
+<li>Landing gear drop test not done: landing_load_factor stays pending until T113 is measured</li>
+<li>No mass-gate number: the standards say 2.6 and 2.7 kg (D32, T12)</li>
+<li>5 requirements shown as open gaps on Dec 2: R1, R12, R14, R17, R31 (D33)</li></ul>
+<div class="src">Source: ledger T113, T114, T12, D32, D33; metrics.md sections D and F; 64 = SKIP rows of T2.joint_load (32) and T2.sim_drop_loads (32) in <code>plane design validate designs/concept-a --tier all --json</code> (11-24)</div>
+<aside>If asked for a mass limit, say the sources disagree and the team has to pick. R17 is probably met by PR #3 elevon mechanisms (whole-branch line 21) but is ledger-open. The R1 ledger note is stale evidence. Ledger check 11-24: T24 (concept-a re-import) is marked done, so confirm the R-gap wording before the room.</aside></section>
 
-<section class="slide warn"><h1>Caveat: 5 requirements still open (D33)</h1>
-<ul><li>R1, R12, R14, R17, R31 are open gaps</li>
-<li>Waiting on concept-a re-import into PDL 1.0 (U2.5d, T24)</li>
-<li>Cannot land before the 11-30 freeze; v1.1</li>
-<li>concept-a lacks bom, files, transport and assembly data</li></ul>
-<div class="src">Source: metrics.md sections A (M6) and D; ledger R1, R12, R14, R17, R31</div>
-<aside>R17 is probably met by PR #3 elevon mechanisms (whole-branch line 21) but is ledger-open. The R1 ledger note is stale evidence.</aside></section>
-
-<section class="slide"><h1>Claims tier: 93 of 93 concept-a claims PASS (T28)</h1>
-<ul><li>53 recompute from their calculations; 40 are stored results (CAD mass, SITL, FEA margins, collision and assembly reports) read from their sources and checked against their limits: pass on paper, analyses not re-run</li>
-<li>Claims tier: 93 PASS, 0 SKIP, 0 FAIL (was 53 PASS, 40 SKIP)</li></ul>
-<div class="src">Source: ledger T28, D59, D60; plane claim check designs/concept-a</div>
-<aside>Each of the 40 read values traces to a named source (<code>plane claim explain</code>); re-running those analyses is not in v1.0.</aside></section>
-
-<section class="slide warn"><h1>Discipline findings on concept-a</h1>
-<ul><li>T60: hrn-bat 14 AWG is under-rated; pick 12 AWG or lower the peak</li>
-<li>T63: 38 PETG parts routed to a PLA-only printer standard</li>
-<li>T64: CA glue declared on XPS fin fairings</li>
-<li>T65: torsion damping unstated and unsourced</li>
-<li>T66: FC power board and Remote ID not modelled</li></ul>
-<div class="src">Source: reviews/2026-11-22-concept-a-discipline.md; metrics.md section E</div>
-<aside>These are design problems found by the review skills, not gate bugs. T60 is owned by the conductor, due 12-08; T63 to T66 by Dillon, due 12-08. T60: 45 A x 0.8 derating = 36 A, below the 44.8 A peak pack current.</aside></section>
-
-<section class="slide"><h1>What's next: v1.1</h1>
-<ul><li>concept-a re-import into PDL 1.0 (T24)</li>
-<li>Bench grader protects <code>designs/</code> (T54)</li>
-<li>Real physics checks: T6 jam ratio (T49), yaw authority (T37)</li>
-<li>SITL and Blender adapters (T9)</li>
-<li>Team decision: mass gate 2.6 vs 2.7 kg (T12)</li></ul>
-<div class="src">Source: ledger/items.yaml, open tasks with unit v1.1 (<code>plane ledger report</code>)</div>
-<aside>Other open v1.1 tasks: ops-registry and CLI cleanups (T3, T18, T23), path confinement for /api/op (T7), FEA hash and cge-001 mesh (T16, T31), standards.pending and gate.explain fixes (T19, T26), importer and ledger tooling (T17, T52, T53, T55), CI speed (T11). Drag physics, bom/morph/idea list and surrogates (D43, D45, R37) are in plan section 3, not v1.1-unit tasks in the ledger.</aside></section>
-
+<section class="slide"><h1>Roadmap</h1>
+<ul><li>First: per-joint ratings from sourced stresses (T114), then joint selection rules (T118)</li>
+<li>Parametric design (D70): layout from a configuration (G3, T116); sizing with AeroSandbox (G4, T117)</li>
+<li>Full flow: explore, propose 5 cards, human picks, build, gates (G7, T119)</li>
+<li>Pose-aware pockets (T121); gear drop test (T113)</li>
+<li>Still open from v1.0: concept-a re-import (T24), bench grader protects designs/ (T54), SITL and Blender adapters (T9), mass-gate decision (T12)</li></ul>
+<div class="src">Source: ledger T9, T12, T113, T114, T116-T119, T121 (statuses checked 11-24); plan section 3 (D70)</div>
+<aside>G5 (concept cards) was optional and is not started. Old v1.1 list items kept in the aside: T49 jam ratio (open), T37 yaw authority (ledger status done; the yaw row is a WARN "not judged"); other v1.1 tasks as in the previous deck notes (T3, T18, T23, T7, T16, T31, T19, T26, T17, T52, T53, T55, T11). Ledger 11-24: T24 and T54 are marked done; their open parts are the ones named on this slide.</aside></section>
 <div id="ctr"></div>
 <script>
 (function(){
