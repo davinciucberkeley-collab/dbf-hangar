@@ -6,7 +6,7 @@ year: unknown
 url: https://openvsp.org/api_docs/latest/group___geom.html
 type: website
 retrieved: 2026-11-24
-verified: false
+verified: true   # true for the part read (first 100 000 of 162 800 characters)
 ---
 
 ## Summary

@@ -178,4 +178,4 @@ def test_motor_mount_volume():
 
 
 def test_all_generators_listed():
-    assert registry.names() == ["fin", "fuselage_loft", "mesh_file", "motor_mount", "plate", "tube", "wing_panel"]
+    assert {"fin", "fuselage_loft", "mesh_file", "motor_mount", "plate", "tube", "wing_panel"} <= set(registry.names())

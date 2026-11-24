@@ -159,6 +159,44 @@
         }
       }
     },
+    "mission": {
+      "description": "v1.0. What this design is for. Numbers the gates judge against stay in `requirements` and `flight`.",
+      "type": "object",
+      "required": [
+        "name",
+        "profile"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "profile": {
+          "enum": [
+            "vtol-demonstrator",
+            "scale-model",
+            "trainer",
+            "utility",
+            "other"
+          ]
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reference_aircraft": {
+          "type": "string",
+          "minLength": 1,
+          "description": "The real aircraft a scale model copies, e.g. 'Airbus A400M'."
+        },
+        "source": {
+          "type": "string",
+          "minLength": 1,
+          "description": "repo-relative path of the knowledge/ entry that states the mission."
+        }
+      }
+    },
     "flight": {
       "description": "Operating point used by tier-3 checks.",
       "type": "object",

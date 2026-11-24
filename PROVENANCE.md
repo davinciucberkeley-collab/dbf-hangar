@@ -136,3 +136,4 @@ Snapshot import, no history. Full history: aircraft-platform @ f462468 (plans/ a
 | designs/concept-a-param/ | designs/concept-a (this repo) with parameter values from DBF-Combined @ a93f14d : redesign/qp/A/cad/amodel/common.py lines 32, 33-34, 38, 39, 46, 47 | copy of concept-a; four components generated; see README |
 | designs/concept-a-param/airfoils/s5010.dat | DBF-Combined @ a93f14d : redesign/subsystems/wing/s5010.dat (UIUC s5010.dat, checked 2026-11-09 in the source) | data file copied unchanged except CRLF to LF |
 | tests/test_concept_a_param.py | dbf-hangar (new) | no source file |
+| `core/hangar/ops/_png.py` | dbf-hangar scratch tool `png.py` (untrusted session scratch, not a repo) | rewritten, not copied: adds colour types 3 and 4, 16-bit and interlace refusal, size cap, alpha handling, gray conversion (U4.33) |
