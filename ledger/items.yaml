@@ -4893,3 +4893,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-23'
+  - id: D71
+    kind: decision
+    text: 'Overnight 2026-11-24 (Tristan P209/P210, defaults): the conductor takes decisions and approvals and merges to main after a fresh review and green CI (irreversible actions still wait); U4.25 pose-aware cut pockets merges only if reviewed and green by Sun 11-29; the 11-30 weekly entry is drafted, not published; when the queue is empty, run audits and quality-of-life improvements (fixes, docs, tests, small tooling) under the D66 light/full path rules'
+    source: Tristan, P209 and P210, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'
