@@ -21,7 +21,7 @@ These rules are not final. Tristan confirms or edits them (decisions D63 and D64
 - O1 Access: Tristan asks the org owner to add the three of you as collaborators with write access. Until then you cannot push or open a PR.
 - O2 No pushes to `main`: every change from you is a pull request (PR). The "push straight to `main`" rule (D30) is for Tristan and the conductor only.
 - O3 Merging: Tristan merges everything, with a plain merge commit. Dillon must approve design PRs. James's review on test and standards PRs is advice only. Tristan is asked to turn on branch protection (CI must pass, one review) so nobody can push `main` by accident.
-- O4 Work comes from ledger tasks: Tristan gives you a task with your name on it. Put its id in your branch and PR text. You do not edit `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`. Tristan closes the task.
+- O4 Work comes from ledger tasks: Tristan gives you a task with your name on it. Put its id in your branch and PR text. You do not edit `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`. Tristan closes the task. Your task is your unit of work: you never need a plan unit.
 - O5 Agents: you do not run the `conductor`. Use `design-engineer`, `recon`, `scout` and plain Claude. For a builder, give it exact output, exact inputs, a pass check and a stop rule, or ask Tristan for a brief. `tactician` and `reviewer` are Tristan's; he may allow them for James if he confirms it.
 - O6 Hooks: keep them on. If the Stop hook gets in the way, tell Claude to set `HANGAR_ALLOW_STOP=1`. Nobody edits `.claude/` or `harness/` on a topic branch (James may on a harness branch).
 - O7 Branch names: `std/<topic>` for tests, standards, knowledge, harness and gates; `design/<id>/<slug>` for design changes. You may use `std/<person>-<topic>`.
@@ -29,7 +29,7 @@ These rules are not final. Tristan confirms or edits them (decisions D63 and D64
 - O9 `concept-a`: every change goes through `design_set` (or `plane design set`) and a PR. Dillon owns it. Tristan does not re-run the importer on it without telling Dillon. New concepts start from a template and belong to their author.
 - O10 Python: 3.12 is recommended (CI uses it). 3.10 or later installs.
 - O11 Ledger and weekly update: only Tristan adds ledger items. You add your weekly update once, on a branch `std/<person>-update-<week>` that touches only `updates/<week>/`, and re-run it after a conflict.
-- O12 Gate work: a gate branch `std/gate-<name>` may touch `core/hangar/gates/`, `core/hangar/checks.py`, `standards/`, `knowledge/` and `tests/`. The `baseline.json` update is a second commit in the same PR, touching only `designs/*/baseline.json`. New gates start report-only. Tristan decides whether to also require the `migration` label, or to reword the `CLAUDE.md` sentence from "PR" to "commit".
+- O12 Gate work: a gate branch `std/gate-<name>` may touch `core/hangar/gates/`, `core/hangar/checks.py`, `standards/`, `knowledge/` and `tests/`. The `baseline.json` update is a second commit in the same PR, touching only `designs/*/baseline.json`. New gates start report-only. Tristan decides whether to also require the `migration` label, or to reword the `CLAUDE.md` sentence from "PR" to "commit". A teammate's gate work (D69) ends in a PR that Tristan reviews with a fresh reviewer agent before he merges; no plan unit is needed.
 - O13 Desktop chat: Setup B is optional and is set up once with Tristan. If it does not work for you, use Setup A. The Desktop Code tab counts as Setup A only after its three "check on first run" items pass.
 
 ## 1. Pick your setup
@@ -227,7 +227,7 @@ A finished gate has five parts:
 - Adds the gate code, the threshold (with source or `pending`) and the test. New gates start report-only (`blocking: false` in `standards/gates.yaml`, like T7 and T8) until Tristan flips them.
 - Runs the new test and checks that it fails without the gate. Runs `plane baseline check --all --format md`, which prints one block per design: known results, unchanged, regressions, improvements.
 - Runs the local suite `python -m pytest -q -m "not slow" -n auto` before pushing (several minutes). Slow tests run in CI.
-- Makes the `baseline.json` update as its own second commit. Pushes the branch and opens a PR.
+- Makes the `baseline.json` update as its own second commit. Pushes the branch and opens a PR. If a teammate does this work, Tristan runs a fresh reviewer agent on that PR before merging (D69); no plan unit is needed.
 
 **Check the answer:**
 
@@ -334,7 +334,7 @@ Read this to choose a role. The full standard is [agents.md](../standards/agents
 
 Ask Claude: "use the design-engineer to ..." or "use the recon to compare 3 approaches". The main session starts the role.
 
-A session may launch only the roles in the agent table of the newest plan. Tristan maintains that table. Claude Code's built-in subagents (for example `Explore` or `general-purpose`) are not in it, so the roster gate refuses them.
+A session may launch only the roles in the agent table of the newest plan. Tristan maintains that table. The read-only built-in subagents `Explore`, `Plan` and `claude-code-guide` are allowed by exact name; Write, Edit and NotebookEdit are refused inside any agent with those names (D69). Every other built-in is refused, for example `general-purpose` and `claude`, because they are not in the table.
 
 | Role | Model | What it does |
 |---|---|---|
@@ -349,7 +349,7 @@ A session may launch only the roles in the agent table of the newest plan. Trist
 | `reviewer` | Opus | Fresh for each wave. Scores against `standards/review-scorecard.md`. Tristan's (O5). |
 | `auditor` | Haiku | Read-only hourly check for open prompts, broken rules, stale ledger items. |
 
-For you (O5): `design-engineer`, `recon`, `scout`, and plain sessions. A builder only with a builder-ready prompt.
+For you (O5): `design-engineer`, `recon`, `scout`, and plain sessions. A builder only with a builder-ready prompt. The read-only built-ins `Explore`, `Plan` and `claude-code-guide` need no table row.
 
 The agent gate refuses a launch when:
 
@@ -359,7 +359,7 @@ The agent gate refuses a launch when:
 
 Haiku builds, hard work goes one tier up, and a unit that fails review twice goes to `advisor`.
 
-The plan is `plans/2026-11-20-standardization.md`. [PROGRESS.md](../PROGRESS.md) is generated from it. Do not edit either. See also [ROADMAP.md](../ROADMAP.md) and [CLAUDE.md](../CLAUDE.md).
+The plan is `plans/2026-11-20-standardization.md`. Finished units are archived in `plans/2026-11-20-standardization/archive.md`. [PROGRESS.md](../PROGRESS.md) is generated from both. Do not edit any of them. See also [ROADMAP.md](../ROADMAP.md) and [CLAUDE.md](../CLAUDE.md).
 
 ## 10. Branches, review and merge
 
@@ -398,7 +398,7 @@ Nobody but Tristan edits `plans/`, `reviews/`, `ledger/`, `PROGRESS.md`, `.githu
 6. Review and merge: open a PR from your branch to `main`. Design PRs need Dillon's OK (R25). Tests, standards, gate and core PRs need Tristan's. Only Tristan merges (O3).
 7. After the merge, delete the branch on GitHub and on your machine (D47).
 8. Commits are small and have one topic. Message format: `<area>: <what> (<ledger id if any>)`. Every commit ends with Tristan's trailer `Co-authored-by: Tristan Hottier <185231225+TristanHottier@users.noreply.github.com>`, plus any agent line (O8).
-9. Work comes from ledger tasks (O4). Your branch and PR text name the ledger id. You do not edit the ledger. Tell Tristan, who closes the item with evidence.
+9. Work comes from ledger tasks (O4). Your branch and PR text name the ledger id. You do not edit the ledger. Tell Tristan, who closes the item with evidence. Your change takes the light path (D66, [agents.md](../standards/agents.md)) when it is a text or docs fix under about 20 lines that touches no code, hook, workflow, schema or threshold gets one builder and one reviewer glance, with no brief and no tactician. A data-only design change (`plane design set`) needs CI green and Dillon's approval, with no reviewer agent, and touches no code, hook, workflow, schema or threshold. Full path (D69): anything touching gates, the bench, security or schema, or over about 20 lines, is built on your branch with your own tests and ends in a PR; Tristan runs a fresh reviewer agent on the PR before merging. You need no plan unit.
 
 ## 11. Ledger and weekly update
 
@@ -684,7 +684,7 @@ plane ledger add task "Run drop test on my-test" --source "team guide check" --o
 | `plane progress --check` fails | Run `plane progress --write` and commit. |
 | `plane tools doctor` says OpenCAE is missing | Install OpenCAE (FEA person only). Everyone else can ignore it. |
 | The Stop hook blocks the session | Answer or defer the open prompt. |
-| The agent gate blocks a launch | Use a role from the plan's agent table, and give a builder a builder-ready brief. For `Agent "<role>" is not in the active plan's agent table (plans/2026-11-20-standardization.md). Add it to the table first.`, ask Tristan. Built-in subagents such as `Explore` are refused too. |
+| The agent gate blocks a launch | Use a role from the plan's agent table, and give a builder a builder-ready brief. For `Agent "<role>" is not in the active plan's agent table (plans/2026-11-20-standardization.md). Add it to the table first.`, ask Tristan. The read-only built-ins `Explore`, `Plan` and `claude-code-guide` are allowed by exact name, and Write, Edit and NotebookEdit are refused inside them (D69); every other built-in, such as `general-purpose` or `claude`, is refused. |
 | `git push` is denied | You are not a collaborator yet (O1). Ask Tristan. |
 | Desktop shows no `dbf-hangar` tools | Fully quit and reopen Desktop. Check the config path and the doubled backslashes. Read the logs below. Tell Tristan which tools are missing. |
 
