@@ -2,7 +2,7 @@
 
 # plane command reference
 
-57 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+59 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -519,6 +519,28 @@ List every operation and its parameters.
 ```
 plane ops list
 ```
+
+## parts
+
+### `plane parts list`
+
+List the real-parts library (knowledge/parts/).
+
+```
+plane parts list [--category <str>]
+```
+
+- `--category`: str, optional
+
+### `plane parts show`
+
+Show one real-parts library record.
+
+```
+plane parts show <id>
+```
+
+- `<id>`: str, required
 
 ## reference
 

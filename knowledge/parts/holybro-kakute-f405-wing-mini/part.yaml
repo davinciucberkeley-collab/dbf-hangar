@@ -1,0 +1,14 @@
+id: holybro-kakute-f405-wing-mini
+name: Flight controller Kakute F405 Wing Mini
+category: flight-controller
+vendor: RMRC
+part_number: Holybro Kakute F405 Wing Mini FC
+url: https://www.readymaderc.com/products/details/87184-holybro-kakute-f405-wing-mini-flight-controller
+mass_g: 17.0
+dimensions_mm: [30.0, 25.0, 21.4]
+cad_status: representative-envelope
+cad_source: designs/concept-a/meshes/avn-002.stl (imported from DBF-Combined @ a93f14d; not vendor CAD)
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
+geometry:
+  generator: mesh_file
+  params: {file: mesh.stl}

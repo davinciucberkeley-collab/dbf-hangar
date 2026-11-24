@@ -1,0 +1,14 @@
+id: tbs-m10q-gps-qmc5883
+name: GPS TBS M10Q + compass
+category: gps
+vendor: RMRC
+part_number: TBS M10Q GPS + QMC5883 compass
+url: https://www.readymaderc.com/products/details/86501-tbs-m10q-gps-receiver-with-glonass
+mass_g: 13.5
+dimensions_mm: [25.0, 25.0, 7.7]
+cad_status: representative-envelope
+cad_source: designs/concept-a/meshes/avn-004.stl (imported from DBF-Combined @ a93f14d; not vendor CAD)
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-15', method: browser}
+geometry:
+  generator: mesh_file
+  params: {file: mesh.stl}

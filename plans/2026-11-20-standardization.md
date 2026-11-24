@@ -826,7 +826,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U4.30: Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard]
 
-*Progress: U4.30-3/4 mission block merged a354e56 (W29-R ACCEPT); -1 applicability in fix; -2 fixed-wing waits on -1.*
+*Progress: U4.30-3/4 mission block merged a354e56; -1 applicability merged c55632c (W29-R ACCEPT); -2 fixed-wing REJECT twice (pending max FAILs; tier status counts not-applicable SKIPs); advisor consulted.*
 
 **Scope:** audit every gate/check for VTOL or concept-a assumptions; make applicability come from the design's morphology (vtol_method, lift, configuration) so non-applicable checks SKIP 'not applicable' with the reason; fixed-wing thresholds in `standards/` (stall, wing loading, static-margin band, etc.), each sourced or pending; a design-level mission block so each design is judged against its own mission (concept-a keeps the VTOL demonstrator, D74). Existing designs' verdicts unchanged.
 
@@ -836,13 +836,13 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U4.31: Real-parts library (D77)
 
-*Progress: -1 core REJECT (docs/pdl/reference.md not regenerated), fixing in place; -2 parts and -3 BOM refs ACCEPT on content, merge after -1.*
+*Progress: -1 core, -2 parts, -3 BOM refs merged 7043626 (W29-R ACCEPT after one reopen each).*
 
 **Scope:** extract concept-a's bought parts (servos, ESC, battery, flight controller, receiver, motors, props, connectors, fasteners) into a reusable library under `standards/` or `knowledge/` (decide): part id, vendor and part number, URL, mass, dimensions, and the real 3D mesh; a design references a library part instead of copying its mesh; BOM lines carry the library reference; parts without vendor CAD are marked 'representative envelope'.
 
 - [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.31-1 library core (hard), -2 parts (easy), -3 BOM refs (easy); default taken: library in knowledge/parts/ (standards/ holds thresholds only); concept-a keeps its meshes, BOM lines get library refs)*
-- [ ] **Step 2: Build** (W29-B) *(see sub-briefs; merged so far noted at Step 3)*
-- [ ] **Step 3: Review** (W29-R); merge
+- [x] **Step 2: Build** (W29-B) *(e569ada, b98bc2c, 38d86bb)* *(see sub-briefs; merged so far noted at Step 3)*
+- [x] **Step 3: Review** (W29-R); merge *(ACCEPT; merged 7043626)*
 
 ### Unit U4.32: Shape generators for common aircraft configurations (D77, D78) [hard]
 

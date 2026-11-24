@@ -824,7 +824,7 @@
             "generator": {
               "type": "string",
               "pattern": "^[a-z][a-z0-9_]*$",
-              "description": "v1.2. Name of a registered geometry generator (hangar.geom registry: wing_panel, tube, fin, plate, fuselage_loft, motor_mount, mesh_file)."
+              "description": "v1.2. Name of a registered geometry generator (hangar.geom registry: wing_panel, tube, fin, plate, fuselage_loft, motor_mount, mesh_file, library_part)."
             },
             "params": {
               "type": "object",
@@ -1148,6 +1148,10 @@
         },
         "verified": {
           "$ref": "#/$defs/bom_verified"
+        },
+        "library_part": {
+          "$ref": "#/$defs/slug",
+          "description": "id of a knowledge/parts/ entry; T8 checks it exists."
         }
       },
       "additionalProperties": false

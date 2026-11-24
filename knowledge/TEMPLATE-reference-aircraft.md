@@ -1,3 +1,10 @@
+---
+id: "<kebab-case aircraft id, same as the file name: a400m, c172>"
+title: "<aircraft name and variant>"
+kind: reference-aircraft
+created: <YYYY-MM-DD>
+verified: false   # true only after a person has checked the sheet against its sources
+---
 # Reference aircraft fact sheet: <aircraft name and variant>
 
 Rules: full-size values; lengths in metres, areas m2, masses kg, speeds m/s, angles degrees. The model scale factor is applied in section 7. Every row needs a value, a source (id or URL you opened) and a confidence (published, drawing-measured, photo, derived, estimate; `published` = a printed figure from an opened source, `derived` = computed from rows with the formula shown). Write `unknown` rather than guess. Get two sources for span, length and wing area, and check drawings against photos (scale-modelaviation-scale-three-views). Save the filled sheet as `knowledge/reference-aircraft/<kebab-id>.md`.
