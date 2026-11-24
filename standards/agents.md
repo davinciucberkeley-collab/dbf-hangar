@@ -33,11 +33,13 @@ Roles are by type and level of work, not aircraft domain. The role files are `.c
 - text or docs fixes of under about 20 changed lines, touching no code, hook, workflow, schema or threshold;
 - data-only design changes made with `plane design set` (never by editing files): CI green and Dillon's approval, no reviewer agent.
 
-**Full path** (tactician brief, builder, fresh reviewer, a plan unit): anything that touches gates, the bench, security or schema, or `core/`, `harness/`, `.github/`, `standards/*.yaml` thresholds, or is over about 20 lines. When unsure, take the full path. The conductor decides which path a change takes.
+**Full path** (conductor work: tactician brief, builder, fresh reviewer, a plan unit): anything that touches gates, the bench, security or schema, or `core/`, `harness/`, `.github/`, `standards/*.yaml` thresholds, or is over about 20 lines. A teammate's full-path change follows the teammate rule below. When unsure, take the full path. The conductor decides which path a change takes.
 
 ## Teammate rule
 
-A teammate works only from a ledger task with their name, and puts its id in the branch and PR text. There is no plan unit and no conductor for a teammate. A teammate never edits `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`; Tristan closes the task. The change then takes the light or the full path above.
+A teammate works only from a ledger task with their name, and puts its id in the branch and PR text. There is no plan unit and no conductor for a teammate. A teammate never edits `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`; Tristan closes the task.
+
+A teammate's light-path change takes the light path above. A teammate's full-path change (D69) is built on their branch in their own session with their own tests, and ends in a PR; Tristan runs a fresh reviewer agent on the PR before merging. No plan unit is needed.
 
 ## Agent tables
 
@@ -47,7 +49,7 @@ Before any agent is launched, the conductor writes an **agent table** in the cur
 | Step | Role | Model | Input | Output | Pass criterion |
 ```
 
-The `agent_gate` hook allows only roles that appear (in backticks) in such a table in the newest `plans/*.md`. No agent is launched that isn't in the table, except the read-only Claude Code built-ins `Explore`, `Plan` and `claude-code-guide`, which the gate always allows. Built-ins that can write files (`general-purpose`, `statusline-setup`, `output-style-setup`) are refused. Adding a role mid-task means updating the table first.
+The `agent_gate` hook allows only roles that appear (in backticks) in such a table in the newest `plans/*.md`. No agent is launched that isn't in the table, except the read-only Claude Code built-ins `Explore`, `Plan` and `claude-code-guide`, which the gate allows unless a project or user agent file redefines the name (D69). Every other built-in is refused, for example `general-purpose`, and `claude` (the catch-all with every tool). Adding a role mid-task means updating the table first.
 
 ## Builder-ready bar
 

@@ -29,7 +29,7 @@ These rules are not final. Tristan confirms or edits them (decisions D63 and D64
 - O9 `concept-a`: every change goes through `design_set` (or `plane design set`) and a PR. Dillon owns it. Tristan does not re-run the importer on it without telling Dillon. New concepts start from a template and belong to their author.
 - O10 Python: 3.12 is recommended (CI uses it). 3.10 or later installs.
 - O11 Ledger and weekly update: only Tristan adds ledger items. You add your weekly update once, on a branch `std/<person>-update-<week>` that touches only `updates/<week>/`, and re-run it after a conflict.
-- O12 Gate work: a gate branch `std/gate-<name>` may touch `core/hangar/gates/`, `core/hangar/checks.py`, `standards/`, `knowledge/` and `tests/`. The `baseline.json` update is a second commit in the same PR, touching only `designs/*/baseline.json`. New gates start report-only. Tristan decides whether to also require the `migration` label, or to reword the `CLAUDE.md` sentence from "PR" to "commit".
+- O12 Gate work: a gate branch `std/gate-<name>` may touch `core/hangar/gates/`, `core/hangar/checks.py`, `standards/`, `knowledge/` and `tests/`. The `baseline.json` update is a second commit in the same PR, touching only `designs/*/baseline.json`. New gates start report-only. Tristan decides whether to also require the `migration` label, or to reword the `CLAUDE.md` sentence from "PR" to "commit". A teammate's gate work (D69) ends in a PR that Tristan reviews with a fresh reviewer agent before he merges; no plan unit is needed.
 - O13 Desktop chat: Setup B is optional and is set up once with Tristan. If it does not work for you, use Setup A. The Desktop Code tab counts as Setup A only after its three "check on first run" items pass.
 
 ## 1. Pick your setup
@@ -227,7 +227,7 @@ A finished gate has five parts:
 - Adds the gate code, the threshold (with source or `pending`) and the test. New gates start report-only (`blocking: false` in `standards/gates.yaml`, like T7 and T8) until Tristan flips them.
 - Runs the new test and checks that it fails without the gate. Runs `plane baseline check --all --format md`, which prints one block per design: known results, unchanged, regressions, improvements.
 - Runs the local suite `python -m pytest -q -m "not slow" -n auto` before pushing (several minutes). Slow tests run in CI.
-- Makes the `baseline.json` update as its own second commit. Pushes the branch and opens a PR.
+- Makes the `baseline.json` update as its own second commit. Pushes the branch and opens a PR. If a teammate does this work, Tristan runs a fresh reviewer agent on that PR before merging (D69); no plan unit is needed.
 
 **Check the answer:**
 
@@ -398,7 +398,7 @@ Nobody but Tristan edits `plans/`, `reviews/`, `ledger/`, `PROGRESS.md`, `.githu
 6. Review and merge: open a PR from your branch to `main`. Design PRs need Dillon's OK (R25). Tests, standards, gate and core PRs need Tristan's. Only Tristan merges (O3).
 7. After the merge, delete the branch on GitHub and on your machine (D47).
 8. Commits are small and have one topic. Message format: `<area>: <what> (<ledger id if any>)`. Every commit ends with Tristan's trailer `Co-authored-by: Tristan Hottier <185231225+TristanHottier@users.noreply.github.com>`, plus any agent line (O8).
-9. Work comes from ledger tasks (O4). Your branch and PR text name the ledger id. You do not edit the ledger. Tell Tristan, who closes the item with evidence. A small text or docs fix (under about 20 lines) or a data-only design change takes the light path in [agents.md](../standards/agents.md): one builder, one reviewer glance, no brief, no tactician. Anything touching gates, the bench, security or schema takes the full path.
+9. Work comes from ledger tasks (O4). Your branch and PR text name the ledger id. You do not edit the ledger. Tell Tristan, who closes the item with evidence. Your change takes the light path (D66, [agents.md](../standards/agents.md)) when it is a text or docs fix under about 20 lines that touches no code, hook, workflow, schema or threshold gets one builder and one reviewer glance, with no brief and no tactician. A data-only design change (`plane design set`) needs CI green and Dillon's approval, with no reviewer agent, and touches no code, hook, workflow, schema or threshold. Full path (D69): anything touching gates, the bench, security or schema, or over about 20 lines, is built on your branch with your own tests and ends in a PR; Tristan runs a fresh reviewer agent on the PR before merging. You need no plan unit.
 
 ## 11. Ledger and weekly update
 
