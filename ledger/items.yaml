@@ -4865,9 +4865,9 @@ items:
     text: 'Tristan: after U4.20-b merges, put ~/.claude/agents/Explore.md (no tools line) in place, ask it to write a file, expect the agent gate to block Write/Edit (confirms Claude Code fills agent_type in subagent hook events); then delete the file. Conductor reminds Tristan at merge (P204)'
     source: W22-A advice; Tristan P204, 2026-11-23
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-29'
     units: []
-    evidence: ''
+    evidence: 'Tristan live check 2026-11-23 (P207): Explore launch allowed, Write refused with the D69 message, gate-test.txt 0 bytes'
     decided_in: ''
     updated: '2026-11-23'
