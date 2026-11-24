@@ -823,13 +823,13 @@ items:
     text: 'CI speed follow-ups: mark test_baseline::test_every_fail_or_skip... (62 s) slow; skip validate for PROGRESS.md/ledger-only commits; cancel-in-progress only on std/** not main [triage 2026-11-21: All three items not done]'
     source: reviews/2026-11-21-w1.md W1-P
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units:
       - v1.1
-    evidence: ''
+    evidence: d6212ea
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-23'
   - id: T12
     kind: task
     text: 'Triage source conflicts recorded in discipline-extract Gaps (e.g. mass gate 2.6 vs 2.7 kg, thermal 40/50 vs 33/38 K, pack charge 4.20 vs 4.35 V); conflicting keys stay pending until decided [triage 2026-11-21: conflicting keys stay pending; slides quote no mass-gate number (D32)]'
@@ -4748,5 +4748,115 @@ items:
     due: ''
     units: []
     evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T113
+    kind: task
+    text: "Measure concept-a's landing gear travel d (foot pad / leg compression) with a bench drop at ~0.23 m (STANAG 4703 Annex B 9 in floor) or 0.3 m; it is the one input that sources landing_load_factor via the Annex B formula n = nj + 2/3 (recon W21-X: 3.0 has no source; d = 30 mm gives ~16.6, d = 10 mm ~47, both far above 3.0)"
+    source: W21-X recon 2026-11-25 (knowledge/recon/2026-11-25-landing-load-factor.md on std/u4.19-ratings)
+    owner: Dillon
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D68
+    kind: decision
+    text: "U4.19 option C: this week source the adhesive/tape and strap/hinge stresses into the connection-type library (notes) and keep landing_load_factor pending (T113 gear-travel drop test); the 64 joint SKIPs stay, labelled 'rating not given per joint'; option B (per-joint contact area x sourced stress, schema field + gate change) is the first v1.1 task after Dec 2"
+    source: Tristan, P199, 2026-11-25
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T114
+    kind: task
+    text: "v1.1 first: per-joint ratings (option B, D68): optional contact area per joint in PDL (schema minor), gates T2.joint_load and T2.sim_drop_loads compute rating = area x sourced stress from standards/connection-types.yaml when the joint's own rating is a placeholder; Dillon or a design-engineer enters ~26 structural joint areas via plane design set"
+    source: D68, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T115
+    kind: task
+    text: "W20-R follow-ups (U4.18): add tests/test_standards.py::test_no_blocking_threshold_is_pending_without_a_decision to the progress.yml step so ledger-only commits keep that check (D65 'none that drop coverage'); rebalance _HEAVY with the windows shard times (shard 2 235 s vs 86-100 s); pin or key the playwright cache on the installed version; a renamed heavy test silently falls back to round-robin; measure progress.yml on the first ledger-only push"
+    source: W20-R review 2026-11-25 (reviews/2026-11-25-w20.md)
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D69
+    kind: decision
+    text: "Teammate full-path changes (gates, bench, security, schema): the teammate builds on their branch with their own session and tests, opens a PR, and Tristan runs a fresh reviewer agent on the PR before merging; no plan unit needed. Light path for data-only design changes is CI green + Dillon's approval, no reviewer agent, touching no code, hook, workflow, schema or threshold. Agent gate: built-in names allowed only when no project or user agent file redefines them; plugin and --agents overrides are an accepted leftover risk"
+    source: conductor default on W22-R blockers, 2026-11-25 (reviews/2026-11-25-w22.md)
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: reviews/2026-11-25-w22.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: D70
+    kind: decision
+    text: 'Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide'
+    source: Tristan, P200, 2026-11-25
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T116
+    kind: task
+    text: 'v1.1 parametric design (D70): G3: layout from a configuration (place wing, fins, booms, pack from a few top-level parameters and a morph-chart combination)'
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T117
+    kind: task
+    text: 'v1.1 parametric design (D70): G4: constraint and mission sizing with AeroSandbox (install in CI/env, adapter): span, area, weight build-up, pack, motor/prop'
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T118
+    kind: task
+    text: 'v1.1 parametric design (D70): G6: joint selection rules: connection type by load, material, access, sized with sourced stresses (needs T114)'
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T119
+    kind: task
+    text: "v1.1 parametric design (D70): G7: full-design flow: explore configurations, propose 5 cards, human picks, build with generators, gates and design-engineer loop, propose; explicit human decision points (Douglas's ask)"
+    source: D70, 2026-11-25
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
     decided_in: ''
     updated: '2026-11-23'

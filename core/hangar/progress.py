@@ -23,6 +23,11 @@ def active_plan(root: Path) -> Path:
     return plans[-1]
 
 
+def archive_path(plan: Path) -> Path:
+    """plans/<plan stem>/archive.md: finished units moved out of the plan. A sub-folder, so it is never a plans/*.md plan."""
+    return Path(plan).with_suffix("") / "archive.md"
+
+
 def parse_units(lines: list[str]) -> dict[str, dict]:
     """Units under '## 7.' -> {id: {title, done, total}}. Checkboxes inside code fences are ignored."""
     units: dict[str, dict] = {}
@@ -115,7 +120,11 @@ def build_progress(root: Path, today: str | None = None) -> str:
     root = Path(root)
     plan = active_plan(root)
     lines = plan.read_text(encoding="utf-8").splitlines()
-    units = parse_units(lines)
+    units: dict[str, dict] = {}
+    archive = archive_path(plan)
+    if archive.is_file():
+        units.update(parse_units(archive.read_text(encoding="utf-8").splitlines()))
+    units.update(parse_units(lines))  # a unit still in the plan wins over an archived copy
     verdicts = parent_verdicts(latest_verdicts(root))
     out = [
         "# Progress",
