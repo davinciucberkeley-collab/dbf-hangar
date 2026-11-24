@@ -78,13 +78,14 @@ Studio: start 15 minutes early; a cold start is slow, never cold in the room. th
 <div class="src">Source: standards/*.yaml; metrics.md M4, M5 (ran <code>plane standards pending</code>)</div>
 <aside>Docs still say tiers 0-5, though the default validate also runs tiers 7 and 8 (whole-branch blocking item 4). Say "default tiers" on stage.</aside></section>
 
-<section class="slide warn"><h1>Caveat: 4 known concept-a FAILs</h1>
-<ul><li><code>T2.sim_drop_loads</code>: peak 2.2 N and 2.1 N vs rating 1.4 N</li>
-<li><code>T2.sim_rest</code>: tipped over, 79 deg from vertical (limit 30)</li>
-<li><code>T3.static_margin</code>: 16.8% MAC (target 5-15%)</li>
-<li>concept-a is not accepted. PASS 531, WARN 9, SKIP 102, FAIL 4</li></ul>
-<div class="src">Source: metrics.md sections B and C; reviews/2026-11-22-whole-branch.md:7</div>
-<aside>The FAILs sit behind pending thresholds and open model questions (T37), not behind a skipped gate. Fidelity line: 134 of 635 blocking checks use sourced thresholds; 0 components have measured mass. Model NP is 59 mm against claim CL-A-SM 40.7 mm.</aside></section>
+<section class="slide warn"><h1>Caveat: 10 known concept-a FAILs</h1>
+<ul><li><code>T2.sim_drop_loads</code>: E-WNG-20 and E-WNG-21 peak 1.8 N vs rating 1.4 N; E-MEC-05 1.2 N and E-MEC-10 1.3 N vs rating 0.7 N</li>
+<li><code>T2.sim_rest</code>: tipped over after drop, 81 deg from vertical (limit 30)</li>
+<li><code>T2.fea_strength</code>: cge-001 SF 0.37 landing, 0.44 thrust; cge-006 SF 0.83 landing, 0.72 thrust (at 1.5x load)</li>
+<li><code>T3.static_margin</code>: 16.4% MAC vs target 5-15%</li>
+<li>concept-a is not accepted. PASS 693, WARN 146, SKIP 73, FAIL 10</li></ul>
+<div class="src">Source: plans/2026-11-20-standardization/u4.2/metrics.md sections B and C (2026-11-23 run)</div>
+<aside>The FAILs sit behind pending thresholds and open model questions (T37), not behind a skipped gate. Fidelity line: 134 of 714 blocking checks use sourced thresholds; 0 components have measured mass. Model NP is 59 mm against claim CL-A-SM 40.7 mm.</aside></section>
 
 <section class="slide"><h1>The harness</h1>
 <ul><li>10 agent roles in <code>.claude/agents/</code>; hooks enforce them</li>
@@ -135,13 +136,11 @@ Studio: start 15 minutes early; a cold start is slow, never cold in the room. th
 <div class="src">Source: metrics.md sections A (M6) and D; ledger R1, R12, R14, R17, R31</div>
 <aside>R17 is probably met by PR #3 elevon mechanisms (whole-branch line 21) but is ledger-open. The R1 ledger note is stale evidence.</aside></section>
 
-<section class="slide warn"><h1>Caveat: 40 claims not recomputed (D34)</h1>
-<ul><li>40 concept-a claims are SKIP</li>
-<li>The <code>read_value</code> echo functions are not ported</li>
-<li>So those claims are not recomputed</li>
-<li>Fix is T28, v1.1</li></ul>
-<div class="src">Source: metrics.md section D; ledger D34, T28</div>
-<aside>Do not describe the claims tier as fully checking concept-a.</aside></section>
+<section class="slide"><h1>Claims tier: 93 of 93 concept-a claims PASS (T28)</h1>
+<ul><li>53 recompute from their calculations; 40 are stored results (CAD mass, SITL, FEA margins, collision and assembly reports) read from their sources and checked against their limits: pass on paper, analyses not re-run</li>
+<li>Claims tier: 93 PASS, 0 SKIP, 0 FAIL (was 53 PASS, 40 SKIP)</li></ul>
+<div class="src">Source: ledger T28, D59, D60; plane claim check designs/concept-a</div>
+<aside>Each of the 40 read values traces to a named source (<code>plane claim explain</code>); re-running those analyses is not in v1.0.</aside></section>
 
 <section class="slide warn"><h1>Discipline findings on concept-a</h1>
 <ul><li>T60: hrn-bat 14 AWG is under-rated; pick 12 AWG or lower the peak</li>
@@ -153,7 +152,7 @@ Studio: start 15 minutes early; a cold start is slow, never cold in the room. th
 <aside>These are design problems found by the review skills, not gate bugs. T60 is owned by the conductor, due 12-08; T63 to T66 by Dillon, due 12-08. T60: 45 A x 0.8 derating = 36 A, below the 44.8 A peak pack current.</aside></section>
 
 <section class="slide"><h1>What's next: v1.1</h1>
-<ul><li>concept-a re-import into PDL 1.0 (T24); port the 40 claims (T28)</li>
+<ul><li>concept-a re-import into PDL 1.0 (T24)</li>
 <li>Bench grader protects <code>designs/</code> (T54)</li>
 <li>Real physics checks: T6 jam ratio (T49), yaw authority (T37)</li>
 <li>SITL and Blender adapters (T9)</li>
