@@ -1347,7 +1347,7 @@ Not a code unit; it tests everything above.
 **Scope:** the non-blocking follow-ups of W10-R to W12-R: yaw SKIP text and control-moment data key (T99); T83 guard beyond checks.py, scorecard criterion form, T1.motor_has_prop criterion, research.py SLUG_RE fullmatch, ID_RE imports from hangar.ids (T100); bench path mapping of option values, PLANE_BENCH_LOG pinning, SWEEP_ROOT redirect, tree_digest docstring (T101; the paid redirection probe stays open); T86 recovery test and comment (T102).
 
 - [x] **Step 1: Briefs** (tactician W16-T): `briefs/U4.14-*.md` *(bb136c4: four easy briefs; T99 before U4.15 T95; T101 before T100; T99 untrimmed-yaw criterion deferred to U4.15; paid probe stays open)*
-- [ ] **Step 2: Build** (W16-B, at most 2 at once)
+- [x] **Step 2: Build** (W16-B, at most 2 at once) *(t99 5ec7d16, t102 297f94e, t101 579406a (brief amendment 1: patch extracted mechanically), t100 4946c8a; all builder)*
 - [ ] **Step 3: Review** (reviewer W16-R); merge; T99-T102 done
 
 ### Unit U4.15: v1.1 features (T95, T103, T67; P186)
