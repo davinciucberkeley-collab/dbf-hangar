@@ -169,6 +169,7 @@ def tier0_schema(design: Design) -> TierReport:
                             ("components[].provenance", any("provenance" in c for c in d.get("components", []))),
                             ("attachments[].connection/seat", any("connection" in a or "seat" in a for a in d.get("attachments", []))),
                             ("requirements.transport_box_mm", "transport_box_mm" in d.get("requirements", {})),
+                            ("mission", "mission" in d),
                             ("D21 fields (components[].battery, propulsion.max_current_a, propulsion.prop_diameter_mm, "
                              "flight.cruise_ld, flight.transition_speed_mps)",
                              any("battery" in c or any(k in c.get("propulsion", {}) for k in ("max_current_a", "prop_diameter_mm"))
@@ -206,6 +207,10 @@ def tier0_schema(design: Design) -> TierReport:
     if design.data.get("root") not in known:
         res.append(CheckResult("T0.root", FAIL, f"root '{design.data.get('root')}' is not a component",
                                "schema/plane.schema.json", {"parts": [str(design.data.get("root"))]}))
+    if "mission" in d and not errors:
+        m = d["mission"]
+        res.append(CheckResult("T0.mission", PASS, f"mission: {m['name']} (profile {m['profile']})",
+                               "schema/plane.schema.json"))
     return TierReport(0, "schema", res)
 
 
