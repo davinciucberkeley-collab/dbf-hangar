@@ -4970,3 +4970,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: T127
+    kind: task
+    text: This year's DBF competition rules (mission, scoring, size/weight/battery limits) are not in knowledge/; the only mission brief is the VTOL demonstrator. Scout the official rules into knowledge/ via the source template (cite only opened pages) and state which mission concept-a and new concepts target
+    source: Tristan's fresh-session trial 2026-11-24 (P223)
+    owner: Tristan
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T128
+    kind: task
+    text: 'Team guide: say how to start a new concept (D9 keeps concept-a as the only active design; a new concept needs a ledger task with an owner and the target mission), and that from-scratch concept generation (G3-G7, T116-T119) is v1.1, so today a new design starts from a template'
+    source: Tristan's fresh-session trial 2026-11-24 (P223)
+    owner: conductor
+    status: open
+    due: '2026-11-30'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
