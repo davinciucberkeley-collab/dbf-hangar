@@ -46,12 +46,19 @@ def parse_key(key: str) -> list[tuple[str, object]]:
     return steps
 
 
-def _child(node, step, key):
+def _suggest(v, options) -> str:
+    near = difflib.get_close_matches(v, [str(x) for x in options], n=1)
+    return f"; did you mean {near[0]!r}?" if near else ""
+
+
+def _child(node, step, key, done: str = ""):
     kind, v = step
     if kind == "key":
         if not isinstance(node, dict) or v not in node:
             have = sorted(map(str, node)) if isinstance(node, dict) else type(node).__name__
-            raise OpInputError(f"{key}: no key {v!r} (have: {have})")
+            where = f"under {done!r}" if done else "at the top level"
+            hint = _suggest(v, have) if isinstance(node, dict) else ""
+            raise OpInputError(f"{key}: no key {v!r} {where} (have: {have}){hint}")
         return node[v], "value", v
     if not isinstance(node, list):
         raise OpInputError(f"{key}: [{v}] needs a list")
@@ -63,15 +70,21 @@ def _child(node, step, key):
         if isinstance(item, dict) and str(item.get("id")) == v:
             return item, "item", i
     ids = [str(x.get("id")) for x in node if isinstance(x, dict) and "id" in x]
-    raise OpInputError(f"{key}: no element with id {v!r} (have: {ids})")
+    raise OpInputError(f"{key}: no element with id {v!r} (have: {ids}){_suggest(v, ids)}")
 
 
 def walk(root, key: str):
     """Return (value, parent, how, ref) for the last step of `key`; raise OpInputError if any step is missing."""
     node, parent, how, ref = root, None, None, None
+    done = ""
     for step in parse_key(key):
         parent = node
-        node, how, ref = _child(node, step, key)
+        node, how, ref = _child(node, step, key, done)
+        kind, v = step
+        if kind == "key":
+            done = f"{done}.{v}" if done else v
+        else:
+            done = f"{done}[{v}]"
     return node, parent, how, ref
 
 
