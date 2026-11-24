@@ -1079,13 +1079,13 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
         else:
             lo, hi = a["static_margin"]["min"], a["static_margin"]["max"]
             sm_crit = STD + "static_margin"
-        st = PASS if lo <= sm <= hi else FAIL
+        st = PASS if lo <= sm <= hi else WARN if (conv and sm > hi) else FAIL
         sm_band = "below" if sm < lo else "above" if sm > hi else "within"
         res.append(CheckResult("T3.static_margin", st,
                                f"{sm:.1%} MAC (NP x={x_np:.0f} mm, CG x={mp['cg_mm'][0]:.0f} mm; target {lo:.0%}-{hi:.0%}; "
                                "fuselage effect not modelled)"
-                               + (f" (mesh wing: chord measured at {n_strip} stations)" if main_from_planform else "")
-                               + ("; provisional band (fw_static_margin_max pending)" if conv else ""),
+                               + ("; provisional band (fw_static_margin_max pending)" if conv else "")
+                               + (f" (mesh wing: chord measured at {n_strip} stations)" if main_from_planform else ""),
                                sm_crit, {"static_margin": round(sm, 4), "x_np_mm": round(x_np, 1), "band": sm_band}))
         lat = abs(mp["cg_mm"][1]) / main["span_mm"]
         lim = a["lateral_cg_max_fraction_span"]["value"]

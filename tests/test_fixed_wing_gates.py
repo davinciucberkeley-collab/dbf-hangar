@@ -78,3 +78,12 @@ def test_accepted_ignores_not_applicable_skip():
     na = CheckResult("A.y", SKIP, "na", "c", {"not_applicable": True})
     assert Scorecard("d", [TierReport(0, "t", [ok, na])]).accepted
     assert not Scorecard("d", [TierReport(0, "t", [ok, CheckResult("A.z", SKIP, "s", "c")])]).accepted
+
+
+def test_static_margin_above_pending_max_warns_below_min_fails():
+    d = fw()
+    d.component("battery")["position"][0] = -200
+    r = one(d, "T3.static_margin")
+    assert r.data["band"] == "above" and r.data["static_margin"] > 0.25
+    assert r.status == WARN and "fw_static_margin_max pending" in r.message
+    assert one(fw(), "T3.static_margin").status == FAIL  # below the sourced 0.05 minimum
