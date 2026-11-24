@@ -778,8 +778,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** fixes a teammate would notice, no threshold/schema/gate-behaviour changes: `plane design sweep` crash with repeated `--values` (meshes path in the sweep copy) and the team-guide example; CI check names in the guide (8 names); clearer errors for `design get` on a missing design, `design set` with a bad key (deepest prefix + did-you-mean), missing `--why`, `design new` with an unknown template (list templates); README `--kind` list adds `remove`; stale TODO(U2.1) in ops/standards.py. CLI start-up time (lazy imports) only if measured and small.
 
 - [x] **Step 1: Briefs** (tactician W25-T) *(e5eb9af: sweep (hard; per-run sweep folders), errors, docs (light path); start-up is T124 v1.1)*
-- [ ] **Step 2: Build** (W25-B)
-- [ ] **Step 3: Review** (W25-R); merge
+- [x] **Step 2: Build** (W25-B) *(errors f908559; docs 5164bf2 + 9f15a4c; sweep 6790f64 + 05ae07a)*
+- [x] **Step 3: Review** (W25-R); merge *(errors ACCEPT merged 8b8f75d; docs and sweep REOPEN once each, ACCEPT, merged 2ed2ca4, 242b299)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
