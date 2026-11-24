@@ -217,6 +217,9 @@ def call(name: str, /, **params) -> OpResult:
     return _call_spec(registry()[name], **params)
 
 
+_REQUIRED_HINTS = {("design.set", "why"): "say why the value changes (it goes to CHANGELOG.yaml)"}
+
+
 def _call_spec(spec: OpSpec, /, **params) -> OpResult:
     declared = {p.name for p in spec.params}
     for k in params:
@@ -226,6 +229,9 @@ def _call_spec(spec: OpSpec, /, **params) -> OpResult:
     for p in spec.params:
         if p.name in params:
             raw = params[p.name]
+            if raw is None and p.required:
+                hint = _REQUIRED_HINTS.get((spec.name, p.name))
+                return _input_error(f"--{p.cli_name} is required" + (f": {hint}" if hint else ""))
         elif p.required:
             return _input_error(f"missing parameter {p.name!r}")
         elif p.type_name == "list[str]" and p.default is None:

@@ -15,6 +15,8 @@ from ..export import export_glb, export_stl, export_json
 
 
 def _load(path: str):
+    if not Path(str(path).replace("\\", "/")).exists():
+        raise OpInputError(f"no design folder at {path}; see `plane design list`")
     try:
         return load_design(pdledit.resolve_design_path(path))
     except Exception as e:  # noqa: BLE001 - report any load failure cleanly
