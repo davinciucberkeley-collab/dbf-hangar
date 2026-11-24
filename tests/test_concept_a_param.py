@@ -71,6 +71,12 @@ def test_generated_wing_core_matches_outline(pd):
            if r.check_id == "T1.interference" and "wng-001" in r.message
            and not any(k in r.message for k in ("pose ", "sweep ", "range "))]
     assert bad == []
+    # attachment rows name the joint (E-WNG-..), not the part: no neutral-pose overlap row for a joint of wng-001 (the two pose-down rows are the baselined residue)
+    joints = {a.get("id") or f"{a['parent']}->{a['child']}" for a in pd.data["attachments"] if "wng-001" in (a["parent"], a["child"])}
+    assert len(joints) >= 5
+    neutral = [r.message for r in _rows(validate(pd, max_tier=1))
+               if r.check_id == "T1.attachment_overlap" and r.message.split(":")[0] in joints]
+    assert neutral == []
 
 
 def test_nominal_masses(pd, ad):

@@ -348,7 +348,9 @@ def test_reaction_torque_fields_need_schema_version_1_1():
 def test_reaction_torque_fields_reject_bad_values(field, bad):
     data = _spin_data("1.1")
     next(c for c in data["components"] if c["type"] == "motor")["propulsion"][field] = bad
-    assert tier0_schema(Design(data, EXAMPLE)).status == "FAIL"
+    res = tier0_schema(Design(data, EXAMPLE))
+    assert res.status == "FAIL"
+    assert any(r.check_id == "T0.schema" and r.status == "FAIL" and f"propulsion/{field}:" in r.message for r in res.results)   # T108: the FAIL is about this field
 
 
 def test_migrate_op_moves_a_1_0_design_to_1_1_and_logs_it(tmp_path):

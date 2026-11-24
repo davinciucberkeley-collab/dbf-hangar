@@ -228,3 +228,11 @@ def test_idea_list_empty_then_lists_added_ideas(root):
     assert len(r.data["ideas"]) == 1
     assert row["title"] == "Use foam" and row["by"] == "alex" and row["path"].startswith("knowledge/ideas/")
     assert row["date"] == row["path"].split("/")[-1][:10]
+
+
+def test_idea_list_reads_front_matter_of_a_crlf_file(root):  # T108: a CRLF file (Windows editor) must not fall back to file name and stem
+    f = root / "knowledge" / "ideas" / "2026-11-20-crlf-idea.md"
+    f.parent.mkdir(parents=True)
+    f.write_bytes(b'---\r\ntitle: "Use foam"\r\nby: "alex"\r\ndate: "2026-11-21"\r\n---\r\n\r\nCheap.\r\n')
+    row = call("idea.list").data["ideas"][0]
+    assert (row["title"], row["by"], row["date"]) == ("Use foam", "alex", "2026-11-21")
