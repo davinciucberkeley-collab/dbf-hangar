@@ -723,16 +723,16 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** (a) write the light path and the teammate rule (named ledger task, no plan unit) into `standards/agents.md` and the `CLAUDE.md` pointer line; (b) agent gate allows Claude Code built-in read-only subagents (Explore, Plan, general read-only) for every session (T112); (c) archive finished units from the plan into `plans/2026-11-20-standardization/archive.md` and keep `plane progress` working; (d) a one-page reader summary. Rules and hooks must stay enforced.
 
 - [x] **Step 1: Briefs** (tactician W22-T) *(a3600cc: a rules easy, b gate easy, c archive hard, d summary easy; merge b, a, c, d; no plan edits by the conductor while c is in flight)*
-- [ ] **Step 2: Build** (W22-B)
-- [ ] **Step 3: Review** (reviewer W22-R); merge
+- [x] **Step 2: Build** (W22-B) *(b 48cca9d, a fd5636f, c 3ee58b1, d cc7d53d)*
+- [x] **Step 3: Review** (reviewer W22-R); merge *(c ACCEPT merged c04cec4; b REOPEN twice then advisor W22-A, D69 amended, ACCEPT merged 3f99ab0; a ACCEPT merged 6ac4bae; d REOPEN once, ACCEPT merged c6997e9)*
 
 ### Unit U4.21: Geometry kernel and PDL 1.2 (G1; D70) [hard]
 
 **Scope:** `hangar.geom` built from `core/hangar/importers/dbf_geometry.py` (prism, revolve, loft, tube, box, cuts -> watertight trimesh; mass = density x volume from standards materials); PDL schema 1.2: a component may give `geometry: {generator, params}` instead of a mesh file, and a design-level `parameters:` block that params reference; tier 0 checks references; `design set` on a parameter or generator param regenerates the affected meshes and masses and logs one CHANGELOG entry; migrate 1.1 -> 1.2; viewer/export pick up generated meshes. Tests check volumes and masses against hand calculations.
 
 - [x] **Step 1: Brief** (tactician W23-T) *(0df19b6; generated meshes computed on load, PDL 1.2 parameters + `$name` refs + mass_model; cut line in the brief)*
-- [ ] **Step 2: Build** (builder-plus W23-B)
-- [ ] **Step 3: Review** (reviewer W23-R); merge
+- [x] **Step 2: Build** (builder-plus W23-B) *(b21c1b1, a7434a5, 45d47bb; fix fe08487)*
+- [x] **Step 3: Review** (reviewer W23-R); merge *(REOPEN once: slow test pin, T0.generator build, FEA hash of mesh_file; ACCEPT; merged 225c1b7; follow-ups S2, S4-S7 in reviews/2026-11-23-w23.md)*
 
 ### Unit U4.22: First generators and a parametric copy of concept-a (G2; D70) [hard]
 

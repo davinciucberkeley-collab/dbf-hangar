@@ -7,6 +7,16 @@ from pathlib import Path
 
 GATED_TOOLS = ("Task", "Agent")
 BUILDER_ROLES = ("builder", "builder-plus")
+# Claude Code built-in subagents (T112, D69). Launch: they pass by exact name, no file is read. A user, project,
+# plugin or --agents file of the same name replaces the built-in, and the launch hook cannot see that (the Agent
+# tool input carries only subagent_type, prompt, description, model). So the write tools are gated too: inside an
+# agent with one of these names Write, Edit and NotebookEdit are refused, whatever its tool list says. The hook
+# input field is agent_type (code.claude.com/docs/en/hooks.md, "Common input fields").
+# Leftover: Bash or PowerShell inside an override (the genuine built-ins can use Bash too), and an override may set
+# permissionMode. Hooks guard the process, not the session owner: they are not a boundary against the person
+# who runs the session.
+BUILTIN_READ_ONLY = ("Explore", "Plan", "claude-code-guide")
+WRITE_TOOLS = ("Write", "Edit", "NotebookEdit")
 BRIEF_RE = re.compile(r"""[^\s"'`<>()]*plans/[^/\s"'`<>()]+/briefs/[^/\s"'`<>()]+\.md""")
 
 
@@ -74,15 +84,21 @@ def block(message):
 
 
 def run(event, root):
+    if event.get("tool_name") in WRITE_TOOLS:
+        if event.get("agent_type") in BUILTIN_READ_ONLY:
+            return block(f'Built-in read-only agent "{event.get("agent_type")}" may not write files ({event.get("tool_name")} refused).')
+        return 0
     if event.get("tool_name") not in GATED_TOOLS:
         return 0
     tool_input = event.get("tool_input") or {}
     role = tool_input.get("subagent_type") or ""
+    if role in BUILTIN_READ_ONLY:
+        return 0
 
     roster = roster_names(root)
     if role not in roster:
         return block(
-            f'Agent "{role}" is not in the hangar roster. Use one of: {", ".join(roster)}. '
+            f'Agent "{role}" is not in the hangar roster. Use one of: {", ".join(roster)}, or a read-only built-in: {", ".join(BUILTIN_READ_ONLY)}. '
             "See .claude/agents/ and the plan's agent table. Builds go to builder (Haiku)."
         )
 

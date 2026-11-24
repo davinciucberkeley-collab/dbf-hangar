@@ -224,6 +224,10 @@ def part_hash(design: Design, part_id: str) -> str:
             files.add(design.base_dir / mf)
         elif "generator" in (c.get("geometry") or {}):
             h.update(json.dumps([c["geometry"], c.get("mass_model"), c["position"]], sort_keys=True, default=str).encode())
+            from .geom.registry import component_files
+            for rel in sorted(component_files(c)):
+                if (design.base_dir / rel).is_file():
+                    files.add(design.base_dir / rel)
     for f in sorted(files):
         h.update(f.read_bytes())
     h.update(standards_fingerprint())

@@ -27,6 +27,20 @@ Roles are by type and level of work, not aircraft domain. The role files are `.c
 - **Hard** (unit marked `[hard]` in the plan) → `builder-plus` (Sonnet). Tactician hard → escalate via `advisor` (Opus).
 - A unit that fails review twice goes to `advisor`, not a third fix.
 
+## Light path and full path (D66)
+
+**Light path:** one builder and one reviewer glance at the diff; no tactician, no plan unit, no brief file (the prompt still meets the builder-ready bar below). Use it only for:
+- text or docs fixes of under about 20 changed lines, touching no code, hook, workflow, schema or threshold;
+- data-only design changes made with `plane design set` (never by editing files): CI green and Dillon's approval, no reviewer agent.
+
+**Full path** (conductor work: tactician brief, builder, fresh reviewer, a plan unit): anything that touches gates, the bench, security or schema, or `core/`, `harness/`, `.github/`, `standards/*.yaml` thresholds, or is over about 20 lines. A teammate's full-path change follows the teammate rule below. When unsure, take the full path. The conductor decides which path a change takes.
+
+## Teammate rule
+
+A teammate works only from a ledger task with their name, and puts its id in the branch and PR text. There is no plan unit and no conductor for a teammate. A teammate never edits `plans/`, `ledger/`, `reviews/` or `PROGRESS.md`; Tristan closes the task.
+
+A teammate's light-path change takes the light path above. A teammate's full-path change (D69) is built on their branch in their own session with their own tests, and ends in a PR; Tristan runs a fresh reviewer agent on the PR before merging. No plan unit is needed.
+
 ## Agent tables
 
 Before any agent is launched, the conductor writes an **agent table** in the current plan:
@@ -35,7 +49,7 @@ Before any agent is launched, the conductor writes an **agent table** in the cur
 | Step | Role | Model | Input | Output | Pass criterion |
 ```
 
-The `agent_gate` hook allows only roles that appear (in backticks) in such a table in the newest `plans/*.md`. No agent is launched that isn't in the table. Adding one mid-task means updating the table first.
+The `agent_gate` hook allows only roles that appear (in backticks) in such a table in the newest `plans/*.md`. No agent is launched that isn't in the table, except the read-only Claude Code built-ins `Explore`, `Plan` and `claude-code-guide`, which the gate allows by exact name; Write, Edit and NotebookEdit are refused inside any agent with those names, so a redefined `Explore` cannot write files (D69). Every other built-in is refused, for example `general-purpose`, and `claude` (the catch-all with every tool). Adding a role mid-task means updating the table first.
 
 ## Builder-ready bar
 
@@ -110,7 +124,7 @@ Before launching a brief, the conductor checks that it:
 Hooks live in `harness/hooks/`:
 
 - `log_prompt` — on each prompt, logs it to the ledger and reports its id.
-- `agent_gate` — before a Task/Agent launch, checks the role against the roster, the newest plan's agent table, and the builder-ready bar.
+- `agent_gate` — before a Task/Agent launch, checks the role against the roster, the newest plan's agent table, and the builder-ready bar; the read-only built-ins `Explore`, `Plan` and `claude-code-guide` skip the roster and table checks, and Write, Edit and NotebookEdit are refused inside any agent with those names.
 - `reinject` — at session start, re-injects hangar context and the unfinished units.
 - `stop_gate` — blocks stopping while the session has open prompts; after 3 blocks in a row the stop is forced and logged. Override with `HANGAR_ALLOW_STOP=1`.
 

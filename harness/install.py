@@ -42,6 +42,9 @@ def _merge_settings(target_settings: Path, source_settings: Path, written: list)
         for entry in entries:
             cmds = [h.get("command") for h in entry.get("hooks", [])]
             if cmds and all(c in present for c in cmds):
+                for e in existing:  # same hook already installed: take over a changed matcher
+                    if "matcher" in entry and [h.get("command") for h in e.get("hooks", [])] == cmds:
+                        e["matcher"] = entry["matcher"]
                 continue
             existing.append(entry)
             present.update(cmds)

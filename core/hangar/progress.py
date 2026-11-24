@@ -116,6 +116,55 @@ def _unit_row(uid: str, u: dict, verdicts: dict[str, str]) -> str:
     return f"| {uid} | {u['title']} | {u['done']}/{u['total']} | {_status(u['done'], u['total'])} | {verdicts.get(uid, '-')} |"
 
 
+SYSTEM_LINE = (
+    "DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`plane`: CLI, MCP and Studio) "
+    "and one set of checks (`standards/`). v1.0 is due 2026-12-02."
+)
+LEAD_OWNERS = ("", "Tristan", "conductor")  # every other owner is a teammate
+TEAM_LIST_MAX = 10
+
+
+def _id_num(item_id: str) -> int:
+    m = re.search(r"\d+", item_id)
+    return int(m.group()) if m else 0
+
+
+def _cut(text: str, limit: int = 100) -> str:
+    """Shorten to at most `limit` characters at a word boundary, marking the cut with an ellipsis."""
+    if len(text) <= limit:
+        return text
+    return text[:limit].rsplit(" ", 1)[0].rstrip() + "..."
+
+
+def summary_lines(waves, units: dict, items) -> list[str]:
+    """One-page reader summary: what the system is, units by wave, open ledger items by owner and for teammates."""
+    out = ["## Summary", "", SYSTEM_LINE, "", "| area | units | done |", "|---|---|---|"]
+    for name, ids in waves:
+        present = [u for u in ids if u in units]
+        if present:
+            done = sum(1 for u in present if _status(units[u]["done"], units[u]["total"]) == "done")
+            out.append(f"| {name} | {len(present)} | {done} |")
+    in_wave = {u for _, ids in waves for u in ids}
+    other = [u for u in units if u not in in_wave]
+    if other:
+        done = sum(1 for u in other if _status(units[u]["done"], units[u]["total"]) == "done")
+        out.append(f"| Other (no wave row) | {len(other)} | {done} |")
+    all_done = sum(1 for u in units.values() if _status(u["done"], u["total"]) == "done")
+    out.append(f"| **all** | {len(units)} | {all_done} |")
+    open_items = [i for i in items if i.status == "open"]
+    out += ["", "### Open ledger items by owner", "", "| owner | open | next due |", "|---|---|---|"]
+    for owner in sorted({i.owner for i in open_items}, key=lambda o: (o == "", o)):
+        mine = [i for i in open_items if i.owner == owner]
+        dues = sorted(i.due for i in mine if i.due)
+        out.append(f"| {owner or '(unassigned)'} | {len(mine)} | {dues[0] if dues else '-'} |")
+    team = sorted((i for i in open_items if i.owner not in LEAD_OWNERS), key=lambda i: (i.due or "9999", _id_num(i.id)))
+    out += ["", "### Open items for teammates", ""]
+    out += [f"- {i.id} ({i.owner}, due {i.due or '-'}): {_cut(i.text)}" for i in team[:TEAM_LIST_MAX]] or ["none"]
+    if len(team) > TEAM_LIST_MAX:
+        out.append(f"- and {len(team) - TEAM_LIST_MAX} more in `ledger/items.yaml`")
+    return out
+
+
 def build_progress(root: Path, today: str | None = None) -> str:
     root = Path(root)
     plan = active_plan(root)
@@ -133,6 +182,8 @@ def build_progress(root: Path, today: str | None = None) -> str:
     ]
     if today:
         out.append(f"> As of {today}.")
+    ledger = Ledger(root / "ledger" / "items.yaml")
+    out += [""] + summary_lines(parse_waves(lines), units, ledger.items)
     placed: set[str] = set()
     out += ["", "## Units by wave"]
     header = ["", "| unit | title | done/total | status | review |", "|---|---|---|---|---|"]
@@ -146,7 +197,6 @@ def build_progress(root: Path, today: str | None = None) -> str:
     if rest:
         out += ["", "### Unscheduled"] + header
         out += [_unit_row(uid, units[uid], verdicts) for uid in rest]
-    ledger = Ledger(root / "ledger" / "items.yaml")
     out += ["", "## Ledger", ""] + count_table(ledger.items, total_row=False)
     if today:
         overdue = sorted(ledger.report_overdue(today))

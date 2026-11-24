@@ -4711,10 +4711,10 @@ items:
     text: agent gate refuses Claude Code built-in subagents (e.g. Explore) for every session, teammates included; decide whether built-ins are allowed or listed in the plan's agent table (W19-R)
     source: W19-R review 2026-11-24
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: 3f99ab0
     decided_in: ''
     updated: '2026-11-23'
   - id: D65
@@ -4807,7 +4807,7 @@ items:
     updated: '2026-11-23'
   - id: D70
     kind: decision
-    text: 'Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide'
+    text: "Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide [U4.22 Part B conductor calls: CG y residue 0.12 mm accepted (y bound 0.15 mm); density by the brief's rule 0.03499; concept-a-param carries 10 extra tier-1/T6 FAIL rows (cut pockets follow the neutral pose only), baselined and listed in its README]"
     source: Tristan, P200, 2026-11-25
     owner: Tristan
     status: decided
@@ -4862,11 +4862,33 @@ items:
     updated: '2026-11-23'
   - id: T120
     kind: task
-    text: 'Tristan: after U4.20-b merges, put ~/.claude/agents/Explore.md (no tools line) in place, ask it to write a file, expect the agent gate to block Write/Edit (confirms Claude Code fills agent_type in subagent hook events); then delete the file. Conductor reminds Tristan at merge (P204)'
+    text: 'Tristan: after U4.20-b merges, put ~/.claude/agents/Explore.md (no tools line) in place, ask it to write a file, expect the agent gate to block Write/Edit (confirms Claude Code fills agent_type in subagent hook events); then delete the file. Conductor reminds Tristan at merge (P204) [Tristan live check 2026-11-23 (P207): Explore launch allowed, Write refused with the D69 message, gate-test.txt stayed 0 bytes]'
     source: W22-A advice; Tristan P204, 2026-11-23
     owner: Tristan
-    status: open
+    status: done
     due: '2026-11-29'
+    units: []
+    evidence: c5a803e
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T121
+    kind: task
+    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set"
+    source: W23-B3 2026-11-23 (U4.22 Part B)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-23'
+  - id: T122
+    kind: task
+    text: "W23-R non-blocking (G1): T0.parameters PASS counts a reference to a non-number parameter as resolved (checks.py:68); mass_model volume ignores cavities; duplicate volume cache in resolve.py vs geometry.py; materials.py computes repo root instead of REPO_ROOT; data['regenerated'] only when non-empty; an unrelated design set is refused while any generated part fails; _aircraft catches every exception (resolve.py:87)"
+    source: W23-R review 2026-11-23 (reviews/2026-11-23-w23.md)
+    owner: conductor
+    status: open
+    due: '2026-12-15'
     units: []
     evidence: ''
     decided_in: ''
