@@ -24,7 +24,7 @@ from .design import (Design, CheckResult, TierReport, Scorecard, SCHEMA_PATH, RE
 from .geometry import (component_parts, lifting_surface_properties, articulated_attachments, att_label,
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
-from .geom.planform import counted_tail_ids, generated_planform
+from .geom.planform import analytic_wing_area, counted_tail_ids, generated_planform
 from .gates import gate, run_gates
 from .gates.applicability import NEEDS, applicable, skip_row
 from .gates.fidelity import resolve_threshold
@@ -1064,6 +1064,7 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
     n_strip = a["planform_strip_count"]["value"]
     surfaces = []
     derived_tails = []  # derived tail_surfaces stabilisers: counted only when a wing surface exists
+    core_wings = []  # (id, measured area, analytic area) of measured core wings
     counted = counted_tail_ids(design.components)
     for c in design.components:
         if "lifting_surface" in c["geometry"]:
@@ -1086,6 +1087,9 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                 p = strip_planform(_planform_parts(design, c)[1], c["id"], n=n_strip,
                                    gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
                                    control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
+                analytic = analytic_wing_area(c)
+                if analytic:
+                    core_wings.append((c["id"], p["area_mm2"], analytic))
             else:
                 dx, dy, dz = gp["offset"]
                 pseudo = {**c, "geometry": {"lifting_surface": gp["lifting_surface"]},
@@ -1096,6 +1100,19 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
         surfaces.append((c, ls_c, p))
     if len(derived_tails) == len(surfaces):  # no wing surface: behave as without a derived tail
         surfaces = []
+    if core_wings:
+        wmin = resolve_threshold("gate-thresholds.yaml#" + "wing_area_complete_min")["value"]
+        for wid, m, an in core_wings:
+            ok = m / an >= wmin
+            res.append(CheckResult(
+                "T3.wing_area_complete", PASS if ok else WARN,
+                f"{wid}: planform complete ({m / an:.1%} of the {an:.0f} mm2 the wing_panel params give)" if ok else
+                f"{wid}: measured planform {m:.0f} mm2 is only {m / an:.1%} of the {an:.0f} mm2 the wing_panel params "
+                "give; the chord behind hinge_frac outside the control surfaces belongs to no component (set "
+                "core_fill: outside on the core, or add trailing pieces); wing area, MAC and the neutral point are off",
+                "gate-thresholds.yaml#wing_area_complete_min",
+                {"component": wid, "measured_mm2": round(m, 1), "analytic_mm2": round(an, 1),
+                 "ratio": round(m / an, 4)}))
     lifting = [(c, ls_c, p) for c, ls_c, p in surfaces if p["lifting"]]
     if lifting and design.data["morphology"]["lift"] != "multirotor":
         main_c, main_ls, main = max(lifting, key=lambda cp: cp[2]["area_mm2"])

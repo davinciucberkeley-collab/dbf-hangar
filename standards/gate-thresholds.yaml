@@ -33,3 +33,9 @@ servo_must_drive_mechanism:
   rule: "On a conventional fixed-wing design every servo is the parent of the driver attachment of some mechanisms[] entry; T6.servo_undriven is a WARN for a servo that is not."
   source: pending
   note: "Team expectation from the control-surface recipe (docs/mechanisms.md); no external source yet. Report-only: the row is a WARN."
+
+wing_area_complete_min:
+  value: 0.97
+  rule: "T3.wing_area_complete: the measured planform area of a generated core wing divided by the area its wing_panel params give must be at least this; below it the wing has uncovered chord (a WARN)."
+  source: pending
+  note: "Strip measurement agrees with the params within 0.1 % on a complete wing (U13.7-5 findings); 0.97 leaves room for sweep and airfoil tip effects; internal expectation, no external source."
