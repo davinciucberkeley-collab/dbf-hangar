@@ -5283,12 +5283,12 @@ items:
     text: "After tonight's W31 reviews merge: rename the old U4.x ids to the wave ids (plan §6 mapping table) in brief file names (134) and their references in reviews/, docs/, knowledge/, tests/, core comments and .claude/agents (about 88 files), in one mechanical builder commit; commit messages, old branches and GitHub PR titles stay as they are; keep the mapping table"
     source: Tristan, P272/P273, 2026-11-25
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-26'
     units: []
-    evidence: ''
+    evidence: 047edf5
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-25'
   - id: T143
     kind: task
     text: 'Recon: generated C172 wing area measures 18 % below the hand value (W31-R §20); find whether strip measurement, inboard_span or the airfoil scaling is off'
