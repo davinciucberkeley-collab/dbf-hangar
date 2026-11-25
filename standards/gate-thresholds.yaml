@@ -28,3 +28,8 @@ bom_verified_max_age_days:
   value: 30
   rule: "A BOM line's verified.date may be at most this many days old."
   source: internal convention
+wing_area_complete_min:
+  value: 0.97
+  rule: "T3.wing_area_complete: the measured planform area of a generated core wing divided by the area its wing_panel params give must be at least this; below it the wing has uncovered chord (a WARN)."
+  source: pending
+  note: "Strip measurement agrees with the params within 0.1 % on a complete wing (U13.7-5 findings); 0.97 leaves room for sweep and airfoil tip effects; internal expectation, no external source."

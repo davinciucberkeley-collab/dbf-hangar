@@ -62,3 +62,5 @@ The pitfall: the core ends at `hinge_frac` of the chord everywhere, and the elev
 The fix: set `core_fill: outside` on the CORE component only (not on the elevon pieces). The core then runs full chord outside the `elevon_y` span, so core plus elevon pieces cover the whole planform (192,517 mm2 measured). The default `core_fill: off` changes nothing. `core_fill: outside` needs `part: core` and a valid `elevon_y`.
 
 Keep the two elevon pieces as `articulated` children of the wing: `T3` measures the planform from the core and its articulated children, so only then is the aileron area counted.
+
+Tier 3 warns with T3.wing_area_complete when the measured wing is less than 97 % of the area its wing_panel params give.
