@@ -16,6 +16,7 @@ Plain-text coordinate file for the Clark Y airfoil. The first line is "CLARK Y A
 - Point-count line reads 61.0 61.0 (file as downloaded).
 - Parse check (hangar.geom.wing.read_airfoil) on the copied file: 61 upper, 61 lower points.
 - Licence / terms: none stated in the file.
+- Stored with LF line endings (downloaded CRLF); numbers unchanged.
 
 ## How we could use it
 - Airfoil coordinates for the wing if Clark Y is chosen as a candidate section.

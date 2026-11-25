@@ -135,5 +135,8 @@ Snapshot import, no history. Full history: aircraft-platform @ f462468 (plans/ a
 | tests/test_generators.py, tests/fixtures/pdl-gen/airfoils/diamond.dat | dbf-hangar (new) | no source file |
 | designs/concept-a-param/ | designs/concept-a (this repo) with parameter values from DBF-Combined @ a93f14d : redesign/qp/A/cad/amodel/common.py lines 32, 33-34, 38, 39, 46, 47 | copy of concept-a; four components generated; see README |
 | designs/concept-a-param/airfoils/s5010.dat | DBF-Combined @ a93f14d : redesign/subsystems/wing/s5010.dat (UIUC s5010.dat, checked 2026-11-09 in the source) | data file copied unchanged except CRLF to LF |
+| knowledge/airfoils/s5010.dat | copy of designs/concept-a-param/airfoils/s5010.dat (row above); UIUC s5010.dat, checked 2026-11-09 | byte-equal copy, LF (U4.36-4) |
+| knowledge/airfoils/clarky.dat | UIUC https://m-selig.ae.illinois.edu/ads/coord/clarky.dat, checked 2026-11-24; no licence stated on the page or in the file | data file copied unchanged except CRLF to LF; not a repo import |
+| knowledge/airfoils/sd7037.dat | UIUC https://m-selig.ae.illinois.edu/ads/coord/sd7037.dat, checked 2026-11-24; no licence stated on the page or in the file | data file copied unchanged except CRLF to LF; not a repo import |
 | tests/test_concept_a_param.py | dbf-hangar (new) | no source file |
 | `core/hangar/ops/_png.py` | dbf-hangar scratch tool `png.py` (untrusted session scratch, not a repo) | rewritten, not copied: adds colour types 3 and 4, 16-bit and interlace refusal, size cap, alpha handling, gray conversion (U4.33) |

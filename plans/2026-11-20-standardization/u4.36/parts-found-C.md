@@ -1,6 +1,6 @@
 # W31-S2 lot C: propellers and spinners (checked 2026-11-24)
 
-Written to knowledge/research/ (plans/ not touched, per the brief). Columns as the spec requires.
+
 
 | part-id | category | vendor | part number | URL | mass g | envelope mm (x y z) | key spec | vendor CAD link | CAD licence | in library (yes/no, why not) |
 |---|---|---|---|---|---|---|---|---|---|---|

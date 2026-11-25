@@ -15,6 +15,7 @@ Plain-text coordinate file. The first line is "SD7037-092-88", then x/y pairs. C
 ## Usable rules / numbers
 - Parse check (hangar.geom.wing.read_airfoil) on the copied file: 32 upper, 30 lower points.
 - Licence / terms: none stated in the file.
+- Stored with LF line endings (downloaded CRLF); numbers unchanged.
 
 ## How we could use it
 - Airfoil coordinates for the wing if SD7037 is chosen as a candidate section.

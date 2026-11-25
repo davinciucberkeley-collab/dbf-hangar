@@ -1,6 +1,6 @@
 # W31-S2 lot D: airfoil coordinate files (checked 2026-11-24)
 
-Files copied unchanged from the UIUC coordinate database into knowledge/airfoils/ (plans/ not touched, per the brief). Licence: none stated on the page or in the files read.
+Files copied from the UIUC coordinate database into knowledge/airfoils/ (CRLF converted to LF; numbers unchanged). Licence: none stated on the page or in the files read.
 
 | name | file | source URL | date checked | points upper/lower |
 |---|---|---|---|---|
