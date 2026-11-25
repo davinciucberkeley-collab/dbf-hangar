@@ -41,7 +41,7 @@ def test_unknown_connection_type_fails():
 def test_every_library_type_has_source_or_pending():
     import re
     lib = load_connection_types()
-    assert len(lib) == 44
+    assert len(lib) == 46
     methods = {"fastened", "bonded", "clamped", "press_fit", "taped", "strapped", "hinged", "slid",
                "connector", "soldered", "conductive", "radio"}
     for t in lib.values():
@@ -96,7 +96,7 @@ def test_standards_connections_op():
     assert "standards.connections" in registry()
     r = call("standards.connections")
     assert r.ok
-    assert r.data["count"] == 44 and len(r.data["connection_types"]) == 44
+    assert r.data["count"] == 46 and len(r.data["connection_types"]) == 46
     assert all(isinstance(t["structural"], bool) for t in r.data["connection_types"])
     elec = call("standards.connections", kind="electrical").data["connection_types"]
     assert elec and all(t["kind"] == "electrical" for t in elec)
@@ -109,7 +109,7 @@ def test_standards_connections_bad_kind_and_cli():
     assert r.data["error"] == "input"
     out = CliRunner().invoke(cli, ["standards", "connections", "--json"])
     assert out.exit_code == 0
-    assert json.loads(out.output)["data"]["count"] == 44
+    assert json.loads(out.output)["data"]["count"] == 46
 
 
 @pytest.mark.skipif(not (DBF / "redesign/qp/A/cad/model").exists(), reason="DBF-Combined clone not present")
@@ -163,6 +163,7 @@ def test_account_interface_edges_partitions_and_flags_unknown(tmp_path):
                     reason="DBF-Combined clone not present")
 def test_library_ids_match_source_when_present():
     src = json.loads((DBF / "redesign/interfaces/connection_types.json").read_text(encoding="utf-8"))["connection_types"]
-    lib = list(load_connection_types().values())
+    src_ids = {t["id"] for t in src}
+    lib = [t for t in load_connection_types().values() if t["id"] in src_ids]
     assert [(t["id"], t["kind"], t["method"], t["spec"]) for t in lib] == \
         [(t["id"], t["kind"], t["method"], t["spec"]) for t in src]

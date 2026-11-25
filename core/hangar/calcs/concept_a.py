@@ -203,16 +203,17 @@ def servo_factors(stall_72_nm, hinge_vd_nm, preload_nm, damper_slew_nm, damper_s
 
 
 # ================================================================ cost, schedule, transport
-def bom_cost(rows, tax, faa, ship, bump, tubes, budget):
+def bom_cost(rows, tax, faa, ship, bump, tubes, budget, rship=None):
     sh = dict(ship)
     shipping = sum(sh[g] for g in {r[2] for r in rows})
     line = lambda i: next(r[4] for r in rows if r[0] == i)
+    extra = sum(rship) if rship is not None else sh["TMotor"] + sh["RMRC"] + sh["Amazon"]
 
     def total(b):
         goods = sum(q * u * (1 + (b if unv else 0)) for _, _, _, q, u, unv in rows)
         f = 1 + b
         air = line("R01") * f + sum(r[3] * r[4] for r in rows if r[0] in tubes) + 0.5 * line("R03") * f
-        reserve = (line("W01") + line("P01") + line("M01") + air) * (1 + tax) + sh["TMotor"] + sh["RMRC"] + sh["Amazon"]
+        reserve = (line("W01") + line("P01") + line("M01") + air) * (1 + tax) + extra
         return goods * (1 + tax) + shipping + faa + reserve, reserve
     t0, r0 = total(0.0)
     t30, r30 = total(bump)
