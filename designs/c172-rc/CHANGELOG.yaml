@@ -1,0 +1,281 @@
+- date: '2026-11-25T11:31:12Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'base airframe: fuselage and split wing from the C172 fact sheet scaled 1:10'
+  count: 9
+  keys:
+  - name
+  - description
+  - mission
+  - components
+  - components
+  - components
+  - components
+  - root
+  - components[datum]
+  file: e1.yaml
+- date: '2026-11-25T11:31:37Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: tail and gear from the fact sheet
+  count: 4
+  keys:
+  - components
+  - components
+  - components
+  - components
+  file: e2.yaml
+- date: '2026-11-25T11:32:14Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'joints: glued fixed parts, hinged control surfaces'
+  count: 7
+  keys:
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  file: e3.yaml
+- date: '2026-11-25T11:33:35Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: keep the rudder above the fuselage; gear legs inside the fuselage section;
+    hinges embed by design
+  count: 13
+  keys:
+  - components[tail-fixed].geometry.params.fin_z_root
+  - components[tail-fixed].geometry.params.fin_height
+  - components[elevator].geometry.params.fin_z_root
+  - components[elevator].geometry.params.fin_height
+  - components[rudder].geometry.params.fin_z_root
+  - components[rudder].geometry.params.fin_height
+  - components[landing-gear].geometry.params.attach_z
+  - components[landing-gear].geometry.params.front_attach_z
+  - attachments[fuselage-gear].location
+  - attachments[wing-aileron-r].embed_ok
+  - attachments[wing-aileron-l].embed_ok
+  - attachments[tail-elevator].embed_ok
+  - attachments[tail-rudder].embed_ok
+  file: e4.yaml
+- date: '2026-11-25T11:34:29Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: propulsion, battery, esc, receiver from library parts; wing struts
+  count: 21
+  keys:
+  - attachments[tail-rudder].location
+  - attachments[tail-rudder].articulation.pivot
+  - attachments[tail-rudder].articulation.axis
+  - components[fuselage].geometry.params.stations
+  - components[fuselage].geometry.params.nose_length
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  file: e5.yaml
+- date: '2026-11-25T11:35:16Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: motor fully inside the cowl, prop clear of it; battery clear of the nose leg
+  count: 9
+  keys:
+  - components[fuselage].geometry.params.stations
+  - components[motor].position
+  - components[prop].position
+  - attachments[fuselage-motor].location
+  - attachments[motor-prop].location
+  - attachments[motor-prop].embed_ok
+  - components[battery].position
+  - attachments[fuselage-battery].location
+  - attachments[fuselage-receiver].location
+  file: e6.yaml
+- date: '2026-11-25T11:35:34Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: battery in the cabin to balance the CG, esc and receiver in the nose bay
+  count: 6
+  keys:
+  - components[battery].position
+  - attachments[fuselage-battery].location
+  - components[esc].position
+  - attachments[fuselage-esc].location
+  - components[receiver].position
+  - attachments[fuselage-receiver].location
+  file: e7.yaml
+- date: '2026-11-25T11:38:46Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: control surface servos, arms, pushrods, horns, link pins; fuselage pushrod
+    slots; clear esc and receiver
+  count: 45
+  keys:
+  - components[esc].position
+  - attachments[fuselage-esc].location
+  - components[receiver].position
+  - components[landing-gear].manufacturing.machine
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - components[fuselage].cavities
+  file: e8.yaml
+- date: '2026-11-25T11:39:18Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: pushrod slots and arm pockets sized to the rods; rudder horn clear of the rod
+    end
+  count: 5
+  keys:
+  - components[fuselage].cavities
+  - components[horn-rud].position
+  - components[pin-rud].position
+  - attachments[rud-horn].location
+  - attachments[horn-pin-rud].location
+  file: e9.yaml
+- date: '2026-11-25T11:39:31Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'four mechanisms: ailerons, elevator, rudder'
+  count: 1
+  keys:
+  - mechanisms
+  file: e10.yaml
+- date: '2026-11-25T11:41:40Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: arm travel limited to what the pushrod can sweep; temporary expect ratio to
+    read the T6.ratio geometry value
+  count: 8
+  keys:
+  - attachments[servo-arm-elev].articulation.range_deg
+  - attachments[servo-arm-rud].articulation.range_deg
+  - mechanisms[elevator-drive].input_range_deg
+  - mechanisms[rudder-drive].input_range_deg
+  - mechanisms[aileron-r-drive].expect
+  - mechanisms[aileron-l-drive].expect
+  - mechanisms[elevator-drive].expect
+  - mechanisms[rudder-drive].expect
+  file: e11.yaml
+- date: '2026-11-25T11:42:24Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: slits for the swept pushrods; expect.ratio from the T6.ratio geometry messages
+  count: 5
+  keys:
+  - components[fuselage].cavities
+  - mechanisms[aileron-r-drive].expect
+  - mechanisms[aileron-l-drive].expect
+  - mechanisms[elevator-drive].expect
+  - mechanisms[rudder-drive].expect
+  file: e12.yaml
+- date: '2026-11-25T11:43:04Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: cavity z-extent matches the arm and rod so the servos stay inside
+  count: 1
+  keys:
+  - components[fuselage].cavities
+  file: e13.yaml
+- date: '2026-11-25T11:44:09Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: scale prop 191 mm (published 1.91 m x 0.1) from the propeller generator instead
+    of a 229 mm library envelope disc
+  count: 5
+  keys:
+  - attachments[motor-prop]
+  - components[prop]
+  - components
+  - attachments
+  - components[motor].propulsion.prop_diameter_mm
+  file: e14.yaml
+- date: '2026-11-25T11:45:08Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'BOM: every component, library parts by id, design-made parts by description;
+    no prices (none sourced)'
+  count: 1
+  keys:
+  - bom
+  file: e15.yaml
