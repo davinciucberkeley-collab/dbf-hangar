@@ -5258,15 +5258,16 @@ items:
     updated: '2026-11-24'
   - id: I2
     kind: idea
-    text: 'Milestone after Dec 2: mechanical fidelity of generated models. Wheels as separate parts on axle joints (rolling), linkages solved kinematically (servo arm -> pushrod -> horn follows the surface), control surfaces on true hinge lines with gap/cut-outs so they never clip, verified by animating each mechanism through its range in Studio Physics mode (ties to R11)'
+    text: 'Milestone after Dec 2: mechanical fidelity of generated models. Wheels as separate parts on axle joints (rolling), linkages solved kinematically (servo arm -> pushrod -> horn follows the surface), control surfaces on true hinge lines with gap/cut-outs so they never clip, verified by animating each mechanism through its range in Studio Physics mode (ties to R11) [D87 (P279, 11-25): pulled forward, starts now as U13.12; rehearsals paused until it delivers.]'
     source: Tristan, P267, 2026-11-24
     owner: Tristan
     status: open
     due: ''
-    units: []
+    units:
+      - U13.12
     evidence: ''
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-25'
   - id: T141
     kind: task
     text: Allow removing elements of nested lists such as bom.items (remove accepts top-level lists only)

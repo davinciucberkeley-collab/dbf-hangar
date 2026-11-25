@@ -353,6 +353,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D84 | Dillon's redesign/v1 concept-a vs hangar's edited concept-a? | Dillon's is the truth; he imports it as `concept-a-reborn` by PR with D-212..D-261 and a DaVinci reconnect record; hangar's edits not reapplied; DBF-Combined not archived yet | Tristan | 11-24 | decided (Tristan P263, 2026-11-24) |
 | D85 | Mechanical fidelity of generated models (rolling wheels, kinematic linkages, non-clipping surfaces) for Dec 2? | no: post-Dec 2 milestone; Dec 2 shows recognisable geometry and real parts placed sensibly | Tristan | 11-24 | decided (Tristan P267, 2026-11-24) |
 | D86 | What does the Dec 2 demo actually show (shape, live change, overlay, prompt)? | decided at the Mon 11-30 dry run; until then the demo-script defaults stay provisional and the work is: keep improving the any-aircraft flow as much as possible | Tristan | 11-25 | decided (Tristan P278, 2026-11-25) |
+| D87 | Keep rehearsing the prompt flow? | no: rehearsals stop until 3D generation gives a model genuinely close to the real aircraft (real linkages, joints, parts, wires); mechanical fidelity (I2, D85) starts now as U13.12 instead of after Dec 2 | Tristan | 11-25 | decided (Tristan P279, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -419,7 +420,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W10 Freeze fixes and fresh-session findings | Tue 11-24 | U10.1, U10.2, U10.3, U10.4, U10.5, U10.6 |
 | W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U11.1, U11.2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U12.1, U12.2, U12.3, U12.4, U12.5 |
-| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8, U13.9 [hard], U13.10, U13.11 [hard] |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8, U13.9 [hard], U13.10, U13.11 [hard], U13.12 [hard] |
 | W14 Presentation | Mon 11-30 → Wed 12-02 | U14.1 |
 | Present | **Wed 12-02** | demo + deck |
 
@@ -768,10 +769,11 @@ W4 wave rules (W3 lessons T41–T43):
 
 | Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
-| W34-G | `design-engineer` | Sonnet | U13.1 step 6: fifth rehearsal, the Dec 1 prompt for an unseen aircraft (Supermarine Spitfire: elliptical wing, taildragger, single tractor prop) | draft PR (do not merge), gap log `reviews/2026-11-25-w34-rehearsal.md` (conductor commits) | gaps listed with evidence; nothing merged; no invented ratings |
 | W34-T | `tactician` | Sonnet | U13.9, U13.10, U13.11 (and rehearsal-5 gaps) | `briefs/U13.9-*.md`, `briefs/U13.10-*.md`, `briefs/U13.11-*.md` | builder-ready bar |
 | W34-B | `builder` / `builder-plus` | Haiku / Sonnet | one brief each | branches `std/u13.9-*`, `std/u13.10-*`, `std/u13.11-*` | brief tests pass; CI green |
 | W34-R | `reviewer` | Opus (fresh) | every W34 branch | `reviews/2026-11-25-w34.md` | "### Verdict:" per branch |
+| W34-X | `recon` | Sonnet | U13.12: how others generate RC/aircraft CAD with real linkages, hinges, wheels on axles and routed wires (OpenVSP, CadQuery/build123d assemblies, FreeCAD Assembly4, RC kit CAD, MuJoCo/URDF practice) | `plans/2026-11-20-standardization/u13.12/recon.md` | 3-5 approaches ranked; only opened sources |
+| W34-A | `advisor` | Opus | U13.12: what the repo has (generators, PDL joints/mechanisms/harnesses, T1/T6/T7, MJCF export) vs a model close to the real aircraft; with W34-X's recon | `plans/2026-11-20-standardization/u13.12/design-note.md` | gap list, ordered build steps sized for briefs, what to cut |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -953,7 +955,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
 - [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
 - [x] **Step 5: Fourth rehearsal** *(Wed 11-25 ~03:30: Cessna 172 from a blank design, ~35 min / ~45 calls, renders checked, 0 FAIL / 26 WARN, static margin 9.2 % MAC, wing area 100 %, draft PR #9 with all 6 CI jobs green; placeholders listed, nothing invented; gaps -> U13.8)*
-- [ ] **Step 6: Fifth rehearsal** (design-engineer W34-G; D86): an unseen aircraft with new features (Supermarine Spitfire); gaps -> U13.9-U13.11 or new steps there
+- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U13.12 delivers
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
@@ -1052,6 +1054,15 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 1: Brief** (tactician W34-T, with the importtime profile)
 - [ ] **Step 2: Build** (builder-plus W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U13.12: 3D generation close to the real aircraft (I2; D85, D87) [hard]
+
+**Scope:** generated models carry real mechanical content, not only shapes: control surfaces on hinge joints driven by servo -> horn -> pushrod -> control horn linkages that move kinematically and do not clip; wheels as separate parts on axle joints that roll; library parts placed where they really go (servos in wing/fuselage bays, not floating); wires as routed harness geometry between real connectors; joints and fasteners visible in the model. Exported to Studio and MJCF so the mechanisms play. Step 1 decides the order; each later step is one brief. Existing designs unchanged unless they opt in. Rehearsals resume when Tristan judges the output close to the real deal (D87).
+
+- [ ] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u13.12/recon.md`, `u13.12/design-note.md`
+- [ ] **Step 2: Briefs** (tactician W34-T) from the design note
+- [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order
+- [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
 
 ### Unit U14.1: Dec 2 presentation package
 
