@@ -418,7 +418,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W10 Freeze fixes and fresh-session findings | Tue 11-24 | U10.1, U10.2, U10.3, U10.4, U10.5, U10.6 |
 | W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U11.1, U11.2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U12.1, U12.2, U12.3, U12.4, U12.5 |
-| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7 |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8 |
 | W14 Presentation | Mon 11-30 → Wed 12-02 | U14.1 |
 | Present | **Wed 12-02** | demo + deck |
 
@@ -941,6 +941,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 2: Gap fixes** (W29-B) *(via U13.2, U13.3, U12.5, U13.4)*
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
 - [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
+- [x] **Step 5: Fourth rehearsal** *(Wed 11-25 ~03:30: Cessna 172 from a blank design, ~35 min / ~45 calls, renders checked, 0 FAIL / 26 WARN, static margin 9.2 % MAC, wing area 100 %, draft PR #9 with all 6 CI jobs green; placeholders listed, nothing invented; gaps -> U13.8)*
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
@@ -1005,6 +1006,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Briefs** (tactician W31-T) *(d7d251d: -1 overlay baselines (hard), -2 verdict date, -3 servo criterion, -4 nested remove (hard), -5 C172 wing area measure (likely a design gap: core + ailerons), -6 id rename (last, alone); default: std/u4.25-pockets stays parked (T121) and is excluded from the rename)*
 - [x] **Step 2: Build** (W31-B)
 - [x] **Step 3: Review** (W31-R, W31-R2); merge *(all ACCEPT; last 047edf5)*
+
+### Unit U13.8: Rehearsal 4 gaps
+
+**Scope:** from rehearsal 4 (gap log 2026-11-25, PR #9): `propulsion.max_thrust_n` accepts `pending` when no source gives it (schema now forces a number, so agents write 1); BOM `verified.method` enum gains `webfetch`; `design apply` CHANGELOG records each edit's kind (add/modify/remove) inside the batch entry; wing_panel sweep semantics with inboard_span documented (or a sweep_outboard param); library props as n-blade scale props instead of solid discs; small servo for 1:10 wings in the library (scout). Existing designs unchanged.
+
+- [ ] **Step 1: Briefs** (tactician W31-T)
+- [ ] **Step 2: Build** (W31-B)
+- [ ] **Step 3: Review** (W31-R, W31-R2); merge
 
 ### Unit U14.1: Dec 2 presentation package
 
