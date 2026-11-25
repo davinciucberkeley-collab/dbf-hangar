@@ -5140,12 +5140,12 @@ items:
     text: Pin the date in tests/fixtures/design-verdicts.json checks and regenerate the fixture at the 2026-12-08 report-only flip (W29-R note on U12.1-2)
     source: reviews/2026-11-24-w29.md, 2026-11-24
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: 9c83f1f
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-25'
   - id: D82
     kind: decision
     text: Library parts without vendor CAD use dimension-accurate envelopes labelled representative-envelope for Dec 2; Tristan supplies real 3D models for the parts the demo uses, and agents swap them in with licence recorded
@@ -5272,12 +5272,12 @@ items:
     text: Allow removing elements of nested lists such as bom.items (remove accepts top-level lists only)
     source: reviews/2026-11-25-w31.md §19
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-09'
     units: []
-    evidence: ''
+    evidence: bbf388a
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-25'
   - id: T142
     kind: task
     text: "After tonight's W31 reviews merge: rename the old U4.x ids to the wave ids (plan §6 mapping table) in brief file names (134) and their references in reviews/, docs/, knowledge/, tests/, core comments and .claude/agents (about 88 files), in one mechanical builder commit; commit messages, old branches and GitHub PR titles stay as they are; keep the mapping table"
@@ -5294,16 +5294,49 @@ items:
     text: 'Recon: generated C172 wing area measures 18 % below the hand value (W31-R §20); find whether strip measurement, inboard_span or the airfoil scaling is off'
     source: reviews/2026-11-25-w31.md §20
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-09'
     units: []
-    evidence: ''
+    evidence: plans/2026-11-20-standardization/u13.7/c172-wing-area-findings.md
     decided_in: ''
     updated: '2026-11-25'
   - id: T144
     kind: task
     text: 'design render: add tests for the overlay refusal into a tracked path and the missing-matplotlib message; consider shading fix for thin dark slivers in iso view'
     source: reviews/2026-11-25-w31b.md §11
+    owner: conductor
+    status: open
+    due: '2026-12-09'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T145
+    kind: task
+    text: 'wing_panel split usability: with part: core (0.72 chord) plus elevon pieces only over the aileron span, the trailing 28 % of the chord outside the aileron span belongs to no component (C172 rehearsal lost 18 % wing area). Make part: core full-chord outside the elevon span (opt-in or a new part kind), or document the 3-piece layout in docs/mechanisms.md and the agent file'
+    source: plans/2026-11-20-standardization/u13.7/c172-wing-area-findings.md
+    owner: conductor
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T146
+    kind: task
+    text: 'After the 2026-12-08 report-only flip (hand edit to standards/gates.yaml): regenerate tests/fixtures/design-verdicts.json as its docstring describes'
+    source: reviews/2026-11-25-w31b.md §14
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T147
+    kind: task
+    text: "test_design_edit.py:608: give it a concept-a case that hits the new 'named by a key' guard in nested remove"
+    source: reviews/2026-11-25-w31b.md §15
     owner: conductor
     status: open
     due: '2026-12-09'

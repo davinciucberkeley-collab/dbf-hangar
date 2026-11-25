@@ -1,4 +1,8 @@
 {
+ "_recorded": {
+  "today": "2026-11-24",
+  "how": "run_gates(load_design(designs/<id>), 9, today=<today>) on origin/main; regenerate with the snippet in tests/test_applicability.py after the 2026-12-08 report-only flip"
+ },
  "c0-a1": {
   "accepted": false,
   "tiers": {

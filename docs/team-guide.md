@@ -215,7 +215,14 @@ Use this to make a design, change it, compare it and hand it over.
 - Component types: there is no `control_surface` type. Ailerons and flaps are `wing`, elevator and rudder are `tail_surface`, servos are `servo`, horns, rods and pins are `other`.
 - Generating a whole concept from a prompt (G3 to G7, ledger T116 to T119) is still v1.1: today Claude builds the design with the steps above, one op per element, and validates with `plane design validate <path> --tier all`.
 
-Studio (`plane studio`) does the same edits point and click, on the same files. It opens an app and a browser.
+To look at a design, run `plane studio`: it serves the app on http://127.0.0.1:8765 (`--port` changes it, `--no-browser` keeps the browser closed), builds the designs it needs and caches them in `.studio/`, and lets you edit, validate and compare point and click on the same files. No `build-index` is needed for Studio.
+`plane build-index --out viewer/data` is for the static copy of the viewer (the GitHub Pages build runs it): it exports every design under `designs/` (mesh, scorecard, mass) and writes `index.json`, and it took about 5 minutes for 11 designs on 2026-11-24. `viewer/data/` is a build output and is gitignored.
+A new design shows up in Studio as soon as `designs/<id>/plane.yaml` exists. `plane design validate designs/<id> --tier all` prints the same scorecard without a browser.
+For one design use `plane build-index --design <id> --out <folder>`; designs using the local CAD overlay must be built outside the repo or into a git-ignored folder (docs/cad-overlay.md); `plane design render <path> --out <file.png>` writes quick PNG views.
+
+### Control surfaces and servos
+
+A control surface only counts for tier 6 when a `mechanisms[]` entry joins its servo, arm, pushrod and horn. The recipe, the numbers T6 checks and the usual failures are in `docs/mechanisms.md`; its worked example is `tests/fixtures/mechanism-recipe/plane.yaml`. In short: servo just ahead of the hinge line; arm and horn from `plate`; pushrod from `strut`; the surface hinge and the servo arm are articulated attachments; the pushrod end at the arm is a `kinematic_link` attachment; the horn end is a small pin part joined to the horn; then one `mechanisms[]` entry with `link: {driver_end, follower_end}`. Add the parts with `plane design add`, read the real lever ratio from the `T6.ratio` message and write it as `expect`. A servo that no mechanism uses shows as `T6.servo_undriven.<id>` (WARN) on conventional fixed-wing designs.
 
 ## 5. Task: gate work
 

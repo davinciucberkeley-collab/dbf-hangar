@@ -53,3 +53,31 @@ Not a failure but worth knowing: a `plane import dbf` run takes about 13 minutes
 ## Mistake in the dry run, disclosed
 
 One re-run (3e) was started with `PYTHONPATH` entries separated by `:`, which Python on Windows does not split, so it imported the editable install of the MAIN checkout and wrote its output into `C:/Users/trist/dbf-hangar/designs/concept-a-reborn` (untracked, the main checkout was otherwise untouched; the importer code is identical between e5fcec3 and main HEAD 3676609, only `core/hangar/geom/*` differs). The folder was moved into the dry-run worktree and the main checkout was left clean (`git status` empty). Nothing was committed or pushed from it.
+
+---
+
+# Final dry run (W32-T, 2026-11-25): main f9698a0 with the U13.5 importer fixes (B1 to B5), NO stand-ins
+
+Nothing pushed, DBF-Combined untouched. Worktree `dry/reborn2` (from origin/main f9698a0, contains adb4fcb) and scratch folders `reborn2/dbf` (d83b26f) and `reborn2/dbf-old` (a93f14d), all removed or outside the repo. `plane` run as `python -c "from hangar.cli import cli; cli()"` with `PYTHONPATH=<worktree>/core` (single entry). The guide's commands, as written, in order.
+
+| # | Command | Time | Result |
+|---|---|---|---|
+| 1 | `git archive d83b26f \| tar -x` (and a93f14d) | 85 s (v1), 71 s (old); files in disk cache (first time on 11-24: 6 min 24 s) | OK |
+| 2 | `plane import dbf --dbf-root <scratch>/dbf --concept A --id concept-a-reborn` | 1155 s (19 min 15 s; machine loaded, 796 s on 11-24 with stand-ins) | exit 0, stderr empty, prints the plane.yaml path; `fallback: []`, 129 meshes; `commit` empty (B6) |
+| 3 | `plane claim import-dbf <scratch>/dbf A designs/concept-a-reborn` | 10 s | nodes 495, parameters 200, claims 112 |
+| 4 | `plane claim check designs/concept-a-reborn` | 13 s | exit 1; 46 PASS recomputed (was 43), 49 read from source; the 3 CL-A-COST-* claims no longer error; FAIL = 12 real v1 states, SKIP = stall_pred + 4 proposed |
+| 5 | `plane design validate designs/concept-a-reborn --tier all` | 121 s | exit 1, Accepted no: 41 FAIL, 84 SKIP, 179 WARN, 759 PASS (was 45/84/182/752). FAIL: T1 12 (8 attachment/location/articulation, E-WNG-91 17.0 mm, E-WNG-10 6.8 mm, E-WNG-11, E-PWR-04, E-MEC-01/07, E-HRN-21; hrn-001 point mass 3.3 %), T2 13 (3 joint-load, 10 drop-test), T3 4 (mass 1641 vs 1470 g, stall 22.3 m/s, planform -67.5 %, static margin 116 % MAC), T9 12. No `connection_known`, no interference FAIL. |
+| 6 | `plane baseline update designs/concept-a-reborn` | 128 s | wrote baseline.json (123 known) |
+| 7 | `plane baseline check designs/concept-a-reborn` | 131 s | pass: 123 known (FAIL 41, SKIP 82), unchanged 123, regressions 0 |
+| 8 | `plane ledger import-dbf <scratch>/dbf <scratch copy of ledger/items.yaml>` | 13 s | `changelog 55, decisions_md 0, skipped 187, duplicates 5`. New ids: D-127, D-128 (status open), D-212, D-212b, D-212c, D-212d, D-213 to D-261. 0 existing ids removed or changed (id diff: 55 added, 0 removed). `plane ledger check` on the unchanged repo ledger: no problems. |
+| 9 | acceptance U4.40-4 step 3: `plane import dbf --dbf-root <scratch>/dbf-old --concept A --id concept-a --out <scratch>/out-old` (a93f14d) | 882 s | exit 0, 113 meshes. sha256 vs `designs/concept-a/meshes`: 110 equal, 3 DIFFERENT: `cge-003-ll`, `cge-003-ul`, `cge-003-ur` |
+
+## Finding F1 (for the conductor, a builder task): the U13.5 fixes change 3 of 113 meshes of the original concept-a import
+
+The criterion "the original concept-a import is unchanged" holds for 110 meshes and fails for CGE-003-LL/UL/UR (CGE-003-LR is identical). Triangle counts: LL 4630 to 4650, UL 4510 to 4520, UR 4594 to 4598; volume (9490.426 / 9490.491 / 9490.426 mm3) and bounds identical to 3 decimals, so only the triangulation differs (sliver faces that were previously collapsed are now kept). Proof of cause: running `part_mesh` plus `_write_stl` for these four parts on the a93f14d extract with the code of the commit before the fixes (`40f2fc2^`, a detached worktree) gives exactly the hashes in the repo (`03bccbbe...` for LL, 231 584 bytes), with the code on main it gives `dedfd95c...` (232 584 bytes); LR is `46e21dd8...` in both. So the repo's concept-a (imported once, never re-imported) is untouched, and no gate result changes unless someone re-imports concept-a, which the guide forbids. Suggested fix, if the criterion must hold: restrict the second pass of `_separate_pinches` (U13.5-3) and the `_canonical` separation (U13.5-4) so they act only on a mesh that fails the round trip, or only on vertex groups of an edge pinch. Pass check: this same re-import gives 113 equal hashes AND the v1 import still ends with `fallback: []`.
+
+## Other observations
+
+- The generated `plane.yaml` for v1 still says `T-Motor MN2212 KV780` in its description and `@ ` (empty commit) in its header and notes (B6, plus a fixed string in the importer). Guide step 4b offers `plane design set ... description`.
+- Timing is dominated by the CAD build and boolean steps: 13 to 19 minutes, whole procedure about 45 minutes of machine time plus the extract.
+- B7 (planform declared 220 500 mm2 vs measured 71 618 mm2, static margin 116 % MAC) is unchanged by the fixes: still a decision for Dillon and the advisor, linked with U4.41 item 6.
