@@ -169,6 +169,38 @@ def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
     return target_dir / "plane.yaml"
 
 
+BLANK_DESIGN_TEXT = """# Blank design from `plane design new --blank`. Add parts with `plane design add`, change values with `plane design set`.
+schema_version: "1.2"
+id: <id>
+name: "<id>"
+status: concept
+description: "Blank start: one placeholder root component `datum` (a 1 g point mass). Add the real root component, point `root` at it, then remove `datum`."
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: datum
+components:
+  - id: datum
+    type: other
+    geometry: {point_mass: {}}
+    position: [0, 0, 0]
+    mass_g: 1
+attachments: []
+"""
+
+
+def new_blank_design(new_id: str) -> Path:
+    """Write designs/NEW_ID/plane.yaml only: a minimal valid design with one placeholder root `datum`; return its path."""
+    if not ID_RE.fullmatch(new_id):
+        raise ValueError(f"invalid id {new_id!r}: use lowercase letters, digits, - and _")
+    target_dir = DESIGNS_DIR / new_id
+    if target_dir.exists():
+        raise ValueError(f"design {new_id!r} already exists")
+    target_dir.mkdir(parents=True)
+    path = target_dir / "plane.yaml"
+    path.write_bytes(BLANK_DESIGN_TEXT.replace("<id>", new_id).encode("utf-8"))
+    return path
+
+
 @cli.command("build-index")
 @click.option("--out", "out_dir", type=click.Path(file_okay=False), required=True,
               help="Directory to write per-design artifacts and index.json into.")
