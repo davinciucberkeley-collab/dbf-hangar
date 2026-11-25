@@ -18,8 +18,9 @@ from hangar.sim import joint_load_cases
 EXAMPLE_DIR = design_mod.DESIGNS_DIR / "example-tailsitter-wing"
 RECIPE_DIR = design_mod.REPO_ROOT / "tests" / "fixtures" / "mechanism-recipe"
 KEY = "components[{}].propulsion.max_thrust_n"
-# sha256 of the sorted (id, status, message) rows of an unmodified copy of example-tailsitter-wing, recorded on main
-MAIN_ROWS_SHA = "349ef48f092c9e51da8d7a06a1e2ceaadae717cb53d3b49432ece743713e6f25"
+# sha256 of the sorted (id, status, message) rows of an unmodified copy of example-tailsitter-wing, recorded on main;
+# updated for U18.3 (one row added: T3.spar_bending, "no spar tube found", report-only)
+MAIN_ROWS_SHA = "85aa9894ec3707ddb3fb54ae1b23b4c530cda51b3b5f1b0df9e7ac84281b980d"
 
 
 @pytest.fixture

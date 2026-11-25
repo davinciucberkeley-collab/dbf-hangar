@@ -1,0 +1,20 @@
+# Wing spar bending thresholds (U18.3). Every entry needs a source; `source: pending` means provisional.
+version: "0.1"
+spar_limit_load_factor:
+  value: 3.8
+  rule: "T3.spar_bending: symmetric limit manoeuvring load factor; total wing lift at limit = this x weight (no inertial relief)"
+  source: "STANAG 4703 / AEP-83 UL5.2, symmetric limit manoeuvring load factor at least 3.8 (knowledge/sources/std-stanag-4703-aep-83.md, opened 2026-11-11)"
+  note: "fixed-wing light UAS up to 150 kg; hand-launched or toy-scale models may justify less: Tristan/Dillon decide"
+spar_reserve_factor_min:
+  value: 1.0
+  rule: "T3.spar_bending: reserve factor = material allowable / (limit stress x ultimate_factor) must be at least this"
+  source: "definition: at 1.0 the ultimate load (limit x design-standards.yaml#ultimate_factor 1.5, STANAG 4703 UL2.3) is just carried; the margin is the 1.5 factor itself, so no second factor is added"
+spar_material_allowable_mpa:
+  value: {petg-printed: 12.6}
+  rule: "Stress a spar tube of this material id (mass_model.material, else component.material) may reach at ultimate load, MPa"
+  source: "design-standards.yaml#fea_allowable_printed_petg_mpa (UltiMaker PETG TDS v1.00, mean minus one standard deviation of the weakest printed direction)"
+  note: "only materials with a sourced value are listed, on purpose. cfrp-tube: pending (needs the tube maker's tensile/flexural strength with test conditions). al-6061-t6: pending (needs MMPDS or MIL-HDBK-5 yield, S-basis). Add a material here only with an opened source."
+spar_material_modulus_mpa:
+  value: {petg-printed: 1939}
+  rule: "Young's modulus of a spar tube material id, MPa, for tip deflection"
+  source: "design-standards.yaml#fea_material_printed_petg youngs_modulus_mpa (UltiMaker PETG TDS v1.00 tensile modulus XY)"

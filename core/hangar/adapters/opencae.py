@@ -53,6 +53,14 @@ class OpenCAE:
         finally:
             shutil.rmtree(work, ignore_errors=True)
 
+    def cli_available(self) -> tuple[bool, str]:
+        from .. import opencae_cli
+        return opencae_cli.cli_available()
+
+    def run_cli_project(self, project_dir, analyses, log=print) -> dict:
+        from .. import opencae_cli
+        return opencae_cli.run_project(project_dir, tuple(analyses), opencae_cli.find_cli(), log=log)
+
     def run(self, design, **params) -> OpResult:
         part = params.get("part")
         if not part:

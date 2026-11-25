@@ -148,7 +148,7 @@ def tier0_schema(design: Design) -> TierReport:
     errors = [e for e in errors if e not in unknown]
     if errors:
         res = [CheckResult("T0.schema", FAIL, f"{'/'.join(map(str, e.path)) or '<root>'}: {e.message}",
-                           "schema/plane.schema.json", {"parts": ["/".join(map(str, e.path)) or "<root>"]}) for e in errors[:20]]
+                           "schema/plane.schema.json", {"paths": ["/".join(map(str, e.path)) or "<root>"]}) for e in errors[:20]]
     else:
         res = [CheckResult("T0.schema", PASS, f"matches schema v{design.data.get('schema_version', '0.1')}", "schema/plane.schema.json")]
     for e in unknown:
@@ -462,6 +462,15 @@ def _motor_prop_path(design: Design, motor: str, atts: list[dict], max_intermedi
     return None
 
 
+def _kinematic_link_row(unchecked: list[tuple[str, str]]) -> CheckResult:
+    ids = sorted({i for pair in unchecked for i in pair})
+    shown = ", ".join(ids[:6]) + (", …" if len(ids) > 6 else "")
+    return CheckResult("T1.kinematic_link", SKIP,
+                       f"{len(unchecked)} pair(s) not checked — linkage path not modelled: {shown}",
+                       "schema/plane.schema.json",
+                       {"unchecked_pairs": [f"{a_} & {b_}" for a_, b_ in unchecked], "parts": ids})
+
+
 def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict, atts: list[dict],
                               cache: _PairCache | None = None, only: set[str] | None = None) -> list[CheckResult]:
     """Attachment contact / overlap / containment, motor-prop pairing and interference for ONE configuration.
@@ -599,11 +608,7 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
         res.append(CheckResult("T1.interference", PASS, "no clipping between unattached parts",
                                STD + "interference_max_mm3"))
     if unchecked:
-        ids = sorted({i for pair in unchecked for i in pair})
-        shown = ", ".join(ids[:6]) + (", \u2026" if len(ids) > 6 else "")
-        res.append(CheckResult("T1.kinematic_link", SKIP,
-                               f"{len(unchecked)} pair(s) not checked \u2014 linkage path not modelled: {shown}",
-                               "schema/plane.schema.json", {"pair": [f"{a_} & {b_}" for a_, b_ in unchecked]}))
+        res.append(_kinematic_link_row(unchecked))
     return res
 
 
@@ -1340,6 +1345,8 @@ def _tier2(ctx):
     rep.results.extend(tier2_sim(ctx.design, ctx.std, ctx.mp))
     from .fea import tier2_fea
     rep.results.extend(tier2_fea(ctx.design))
+    from .opencae_rows import tier2_opencae
+    rep.results.extend(tier2_opencae(ctx.design))
     return rep
 
 

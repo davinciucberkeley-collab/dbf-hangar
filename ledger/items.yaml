@@ -3194,13 +3194,13 @@ items:
     text: 'standards.pending ignores gate-thresholds.yaml (misses wire_clearance_mm, blocking 12-08); CT-M3-SHCS-INSERT should cite the PETG test; nyloc ratings use bolt proof load, overstating printed-plastic joints [triage 2026-11-21: Make standards.pending read gate-thresholds.yaml; repoint CT-M3-SHCS-INSERT to the PETG test; rate printed-plastic nyloc joints by the weaker member, not bolt proof load]'
     source: reviews/2026-11-21-w2.md U2.2
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-05'
     units:
       - v1.1
-    evidence: ''
+    evidence: 3a6b9d7
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-25'
   - id: T20
     kind: task
     text: 'sim.drop height override: sim._build reads drop_height_m from standards internally; factor a drop_test(design, height_m) out of tier2_sim (tier2 behaviour identical) so the op can take --height-m [triage 2026-11-21: Factor drop_test(design, height_m) out of tier2_sim with identical tier2 behaviour; add --height-m to sim.drop]'
@@ -4538,7 +4538,7 @@ items:
     status: done
     due: '2026-12-15'
     units: []
-    evidence: e72f545 (_map_args maps only declared path args; W34-T check 11-25)
+    evidence: e72f545
     decided_in: ''
     updated: '2026-11-25'
   - id: T102
@@ -4700,12 +4700,12 @@ items:
     text: plane design new/set write CRLF in the working copy on Windows (W19-R newcomer walkthrough); .gitattributes normalises on commit but the working file differs; write with newline LF
     source: W19-R review 2026-11-24 (reviews/2026-11-24-w19.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: ac3af45
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-25'
   - id: T112
     kind: task
     text: agent gate refuses Claude Code built-in subagents (e.g. Explore) for every session, teammates included; decide whether built-ins are allowed or listed in the plan's agent table (W19-R)
