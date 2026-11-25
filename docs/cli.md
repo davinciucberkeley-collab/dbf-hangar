@@ -2,7 +2,7 @@
 
 # plane command reference
 
-64 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+65 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -284,6 +284,21 @@ Writes files.
 - `<path>`: str, required
 - `<title>`: str, required
 - `--draft`: bool, optional
+
+### `plane design render`
+
+Render the model to a PNG (top, side, front or iso view; headless; needs matplotlib). A design that uses licensed CAD overlay parts may only be rendered to a local, untracked path.
+
+```
+plane design render <path> --out <path> [--view <choice>] [--size <int>]
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `--out`: path, required
+- `--view`: choice, one of top, side, front, iso, all, optional
+- `--size`: int, optional
 
 ### `plane design set`
 
