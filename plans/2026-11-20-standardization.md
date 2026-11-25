@@ -352,6 +352,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D83 | GrabCAD models can't go on GitHub: how do they show? | local git-ignored CAD overlay on team PCs only; committed parts keep envelopes + source URL + licence; never in CI, public viewer or committed GLB | Tristan | 11-24 | decided (Tristan P237, 2026-11-24) |
 | D84 | Dillon's redesign/v1 concept-a vs hangar's edited concept-a? | Dillon's is the truth; he imports it as `concept-a-reborn` by PR with D-212..D-261 and a DaVinci reconnect record; hangar's edits not reapplied; DBF-Combined not archived yet | Tristan | 11-24 | decided (Tristan P263, 2026-11-24) |
 | D85 | Mechanical fidelity of generated models (rolling wheels, kinematic linkages, non-clipping surfaces) for Dec 2? | no: post-Dec 2 milestone; Dec 2 shows recognisable geometry and real parts placed sensibly | Tristan | 11-24 | decided (Tristan P267, 2026-11-24) |
+| D86 | What does the Dec 2 demo actually show (shape, live change, overlay, prompt)? | decided at the Mon 11-30 dry run; until then the demo-script defaults stay provisional and the work is: keep improving the any-aircraft flow as much as possible | Tristan | 11-25 | decided (Tristan P278, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -418,7 +419,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W10 Freeze fixes and fresh-session findings | Tue 11-24 | U10.1, U10.2, U10.3, U10.4, U10.5, U10.6 |
 | W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U11.1, U11.2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U12.1, U12.2, U12.3, U12.4, U12.5 |
-| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8 |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8, U13.9 [hard], U13.10, U13.11 [hard] |
 | W14 Presentation | Mon 11-30 → Wed 12-02 | U14.1 |
 | Present | **Wed 12-02** | demo + deck |
 
@@ -763,6 +764,16 @@ W4 wave rules (W3 lessons T41–T43):
 | W32-T | `tactician` | Sonnet | D84: dry-run of the concept-a-reborn import from DBF-Combined origin/redesign/v1 in a scratch copy (no push), then Dillon's step-by-step guide | `plans/2026-11-20-standardization/u4.40/dillon-import-guide.md` | every command in the guide ran once in the dry run; issues listed with fixes |
 | W33-Au | `auditor` | Haiku | hourly overnight audits (R-c) | report in chat | 15 lines, fixes named |
 
+### 6n. Agent table for W34 (keep improving, D86)
+
+| Agent | Role | Model | Input | Output | Pass criterion |
+|---|---|---|---|---|---|
+| W34-G | `design-engineer` | Sonnet | U13.1 step 6: fifth rehearsal, the Dec 1 prompt for an unseen aircraft (Supermarine Spitfire: elliptical wing, taildragger, single tractor prop) | draft PR (do not merge), gap log `reviews/2026-11-25-w34-rehearsal.md` (conductor commits) | gaps listed with evidence; nothing merged; no invented ratings |
+| W34-T | `tactician` | Sonnet | U13.9, U13.10, U13.11 (and rehearsal-5 gaps) | `briefs/U13.9-*.md`, `briefs/U13.10-*.md`, `briefs/U13.11-*.md` | builder-ready bar |
+| W34-B | `builder` / `builder-plus` | Haiku / Sonnet | one brief each | branches `std/u13.9-*`, `std/u13.10-*`, `std/u13.11-*` | brief tests pass; CI green |
+| W34-R | `reviewer` | Opus (fresh) | every W34 branch | `reviews/2026-11-25-w34.md` | "### Verdict:" per branch |
+| W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
+
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
 ## 7. Units
@@ -942,6 +953,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
 - [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
 - [x] **Step 5: Fourth rehearsal** *(Wed 11-25 ~03:30: Cessna 172 from a blank design, ~35 min / ~45 calls, renders checked, 0 FAIL / 26 WARN, static margin 9.2 % MAC, wing area 100 %, draft PR #9 with all 6 CI jobs green; placeholders listed, nothing invented; gaps -> U13.8)*
+- [ ] **Step 6: Fifth rehearsal** (design-engineer W34-G; D86): an unseen aircraft with new features (Supermarine Spitfire); gaps -> U13.9-U13.11 or new steps there
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
@@ -1016,6 +1028,30 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Briefs** (tactician W31-T) *(147b035: -1 pending thrust (hard), -2 BOM webfetch, -3 apply kinds, -4 wing sweep reference (hard), -5 scale props + servo scout; defaults taken: a webfetch stamp counts like other verification methods; generator-built library props carry vendor none, verified.method computed, a repo reference URL)*
 - [x] **Step 2: Build** (W31-B)
 - [x] **Step 3: Review** (W31-R, W31-R2); merge *(all ACCEPT; last 7ca06d3)*
+
+### Unit U13.9: Control surfaces follow their wing (T130; demo-script Issue 6) [hard]
+
+**Scope:** an aileron, elevator or flap generated from a wing's planform today repeats the wing's span, chords and sweep in its own `geometry.params`, so a wing-only `design set ...span` leaves the surface stale (A400M: 8 new T1 hinge-overlap FAILs at span 1800, u4.2/demo-script.md Decisions 2). Make generated control surfaces derive their planform from the parent wing (reference the wing component's params, or a design `parameters:` entry, or a surface generator that reads the parent), so one wing change regenerates the surfaces and their hinges with no new FAIL. Document it in the new-concept recipe. Existing designs unchanged (byte-identical meshes and baselines) unless they opt in.
+
+- [ ] **Step 1: Brief** (tactician W34-T)
+- [ ] **Step 2: Build** (builder-plus W34-B)
+- [ ] **Step 3: Review** (W34-R); merge; check on a scratch copy of PR #8's a400m-rc that span 1800 gives no new FAIL
+
+### Unit U13.10: Small fixes (T19, T111, T101)
+
+**Scope:** T19 `standards.pending` also reads gate-thresholds.yaml (wire_clearance_mm, wing_area_complete_min, servo_must_drive_mechanism; blocks the 12-08 flip) and CT-M3-SHCS-INSERT cites its source; T111 `plane design new/set` write LF on Windows; T101 bench `_map_args` maps only argument values that name parameters. No threshold or gate-behaviour change.
+
+- [ ] **Step 1: Briefs** (tactician W34-T)
+- [ ] **Step 2: Build** (builder W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U13.11: Faster plane CLI start-up (T124) [hard]
+
+**Scope:** every agent call pays about 4.4 s of start-up (hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx). Measure with `python -X importtime`, lazy-import the heavy modules where the op does not need them, and report before/after for `plane --help`, `design get`, `design set`, `design validate --tier 1`. Outputs byte-identical; no behaviour change.
+
+- [ ] **Step 1: Brief** (tactician W34-T, with the importtime profile)
+- [ ] **Step 2: Build** (builder-plus W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
 
 ### Unit U14.1: Dec 2 presentation package
 
