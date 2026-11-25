@@ -348,6 +348,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D78 | Is the demo capability A400M-only? | no: any real aircraft (A400M, Cessna 172, ...); general research template, generator set and parts library; rehearsal on two unseen aircraft (A400M, Cessna 172) | Tristan | 11-24 | decided (Tristan P229, 2026-11-24) |
 | D79 | U4.29: attached-part positions relative to the parent frame, or parameter expressions? | expressions resolved at regeneration; interference reported, never refused (W28-A design) | conductor | 11-24 | decided (default, 2026-11-24) |
 | D81 | Speed up design set? | profile a span change, then a mesh cache for the interference step if the profile confirms the double build; nothing else before Dec 2 | Tristan | 11-24 | decided (Tristan P235, 2026-11-24) |
+| D82 | Parts without vendor CAD? | dimension-accurate envelopes labelled representative for Dec 2; Tristan supplies real models for the demo's parts, agents swap them in with licence recorded | Tristan | 11-24 | decided (Tristan P236, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -869,7 +870,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** after U4.30-U4.33 merge (and T129), a design-engineer session runs the Dec 1 prompt on a branch exactly as Tristan will, for A400M and for Cessna 172, and lists every gap; fixes go back into U4.30-U4.32; nothing from the rehearsal merges. Cut rule: rehearsal passes by Sun 11-29 12:00 or the demo falls back to concept-a-param.
 
-- [x] **Step 1: Rehearsal** (design-engineer W29-G) *(C172: blocked — no CLI op adds components; no blank start; no airfoil source; gaps -> U4.36)*
+- [x] **Step 1: Rehearsal** (design-engineer W29-G) *(C172: blocked — no CLI op adds components; no blank start; no airfoil source; gaps -> U4.36. A400M: built in 73 min via an undocumented add form, PR #5, 1 FAIL (static margin: generated tail invisible to T3); gaps -> U4.37)*
 - [ ] **Step 2: Gap fixes** (W29-B)
 - [ ] **Step 3: Second rehearsal**
 
@@ -878,10 +879,12 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** profile `plane design set designs/<copy of concept-a-param> parameters.span_mm --value 820` (cProfile, cumulative and own time, with machine load noted); if the interference step's double mesh build is confirmed, cache built meshes by generator+params hash so before/after share unchanged meshes; results (rows, masses, mesh bytes) identical with and without the cache; target: span change under 15 s on an idle machine.
 
 - [x] **Step 1: Profile and brief** (tactician W30-T) *(5a34cab, ec99a85: span change 16-17 s; meshes already cached per process (double build ~1.5 s, mesh cache dropped); interference old+new ~8 s, needed for new/cleared; pure-Python YAML loader ~3.5 s -> brief U4.35-speed (libyaml CSafeLoader), expected 13-14 s)*
-- [ ] **Step 2: Build** (builder-plus W30-B)
-- [ ] **Step 3: Review** (W30-R); merge
+- [x] **Step 2: Build** (builder-plus W30-B) *(c421673, f0c581a)*
+- [x] **Step 3: Review** (W30-R); merge *(ACCEPT after one reopen; merged 5d53a50; ~4-5 s faster under load; idle timing still to do)*
 
 ### Unit U4.36: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
+
+*Progress: -4 airfoils a6b1839, -2 blank 9989382, -1 design add 969b242 merged (W31-R ACCEPT); parts A/B and C/D REJECT (fixing); -6 wing inboard building.*
 
 **Scope:** from the C172 rehearsal (gap log 2026-11-24): (1) an op that appends list elements (components, attachments, bom lines) with id checks, also used by Studio edit; (2) `design new --blank` (minimal valid design: no components) and a light remove for many elements; (3) airfoils: NACA 4-digit generated on demand plus a small `knowledge/airfoils/` library, selectable by name; (4) `plane generators list/show` with each generator's params and units, and the team guide's "Starting a new concept" updated; (5) fixed-wing real parts (motor, ESC, servos, 2-blade props with spinner, receiver) in the library with vendor CAD where licensed, envelopes otherwise (scouts); (6) wing_panel multi-section (straight inboard + tapered outboard) if cheap. Existing designs unchanged.
 
@@ -889,6 +892,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R); merge
 - [ ] **Step 4: Second rehearsal** (U4.34)
+
+### Unit U4.37: A400M rehearsal gaps (D78) [hard]
+
+**Scope:** from the A400M rehearsal (PR #5, gap log 2026-11-24, 73 min, 1 FAIL left): (1) tier-3 aero sees generated lifting surfaces: planform derived from wing_panel and tail_surfaces params (no hand-copied `planform`), so stall and static margin include the tail; (2) batch editing: many edits applied with one regeneration and one interference pass (about 150 single calls took ~50 min at 30-70 s each); (3) `design propose --draft`, title kept as given, CHANGELOG entries of one batch compacted, working tree keeps the design; (4) geometry fidelity: fuselage_loft per-station centre z if not already supported, tail control surfaces split from fixed surfaces, landing_gear in-line multi-wheel mains; (5) docs: build-index/Studio how-to. Existing designs unchanged. Items not done by Sat 11-28 18:00 move to after Dec 2.
+
+- [x] **Step 1: Briefs** (tactician W31-T) *(1fbe834: -1 derived planform, -2 batch apply, -3 propose --draft, -4a/b/c optional fidelity, -5 Studio how-to; defaults taken: `design add` is the one documented way to create elements (set --kind add stays as a field-add); batch CHANGELOG logs count and keys, values in the git diff)*
+- [ ] **Step 2: Build** (W31-B)
+- [ ] **Step 3: Review** (W31-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

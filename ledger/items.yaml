@@ -5146,3 +5146,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: D82
+    kind: decision
+    text: Library parts without vendor CAD use dimension-accurate envelopes labelled representative-envelope for Dec 2; Tristan supplies real 3D models for the parts the demo uses, and agents swap them in with licence recorded
+    source: Tristan, P236, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T135
+    kind: task
+    text: "Download real 3D models (STEP or STL, with licence noted) for the demo's parts into C:/Users/trist/parts-cad/<part-id>/: servo emax-es08maii-metal, motor sunnysky-x2814-v3-900kv, ESC hobbywing-flyfun-40a-v5, receiver radiomaster-er5a (GrabCAD or vendor pages; login needed). Agents then swap them into knowledge/parts/"
+    source: D82, 2026-11-24
+    owner: Tristan
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'

@@ -10,6 +10,8 @@ from typing import Any
 
 import yaml
 
+from . import yamlfast
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = REPO_ROOT / "schema" / "plane.schema.json"
 STANDARDS_PATH = REPO_ROOT / "standards" / "design-standards.yaml"
@@ -137,7 +139,7 @@ def load_design(path: str | Path) -> Design:
     if p.is_dir():
         p = p / "plane.yaml"
     text = p.read_text()
-    data = json.loads(text) if p.suffix == ".json" else yaml.safe_load(text)
+    data = json.loads(text) if p.suffix == ".json" else yamlfast.safe_load(text)
     if not isinstance(data, dict):
         raise ValueError(f"{p}: top level must be a mapping")
     design = Design(data=data, path=p.resolve())

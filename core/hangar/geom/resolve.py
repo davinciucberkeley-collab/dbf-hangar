@@ -4,8 +4,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import yaml
-
+from hangar import yamlfast
 from hangar.geom import materials
 from hangar.geom.kernel import GeometryError, volume_mm3
 from hangar.geom.params import resolve_references
@@ -108,7 +107,7 @@ def regeneration_report(old_text: str, new_text: str, plane_path: Path) -> dict 
     by the op when `components` is non-empty; `failing` lists parts that still fail and were failing before the edit.
     """
     from hangar.ops import OpInputError
-    old_raw, new_raw = yaml.safe_load(old_text), yaml.safe_load(new_text)
+    old_raw, new_raw = yamlfast.safe_load(old_text), yamlfast.safe_load(new_text)
 
     def has_gen(d):
         return isinstance(d, dict) and any(is_generated(c) for c in (d.get("components") or []))
