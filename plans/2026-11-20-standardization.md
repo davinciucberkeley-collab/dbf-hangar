@@ -358,6 +358,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D89 | Use OpenCAE Studio's new `opencae` CLI (OpenCAEModel main, 11-24: mass, propulsion operating point and current margins, CalculiX structure, SU2/OpenFOAM whole-aircraft CFD, 6-DOF hover) for hangar's physics checks? | yes (default taken, conductor 11-25, Tristan P282 pointed at it): run it as an external GPL program through a hangar adapter (PDL -> drone.json + mesh, `opencae run --json` -> check rows); no OpenCAE source copied; SKIP where it is not installed (CI); CFD via SU2 lifts the plan section 8 'no CFD' line for this external route only | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan P282) |
 | D90 | U16.1 showcase design and MJCF timing (design note u16.1/design-note.md)? | showcase = c172-rc (from rehearsal-4 PR #9), landed on main in a designs-only PR (S0); the kinematic MJCF export (S7) follows the Studio-visible steps and is not needed before Tristan judges D87 | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan may change) |
 | D91 | U17.1 inventory findings: 518 blocking rows (481 T4 manufacturing, 27 schema, 8 mtow, 2 connection types) have criteria that resolve to no threshold, and the fidelity count treats any source text but `pending`/`internal convention` as sourced | (a) add a core step to U17.1 that links those criteria to real keys so they count; (b) a `team constraint` counts as sourced only with a named owner and date (D88); scouts run packets 1, 6, 7, 2, 3, 4, 5, then 8, 9 | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D92 | Studio UI overhaul with a much better 3D viewer? | yes (Tristan P285, 2026-11-25): new wave W19; recon of best-in-class web CAD/model viewers, then an advisor-led UI spec, then briefs; the viewer must show U16.1's moving linkages, wheels and wires; no GrabCAD geometry in published builds (D83) | Tristan | 11-25 | decided (Tristan P285, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -430,6 +431,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W16 3D generation close to the real aircraft (D85, D87) | Wed 11-25 → after Dec 2 | U16.1 [hard], U16.2 [hard] |
 | W17 Sourced gates (D88) | Wed 11-25 → Sun 11-29 | U17.1 |
 | W18 Physics checks (D89) | Wed 11-25 → after Dec 2 | U18.1 [hard], U18.2, U18.3, U18.4 [hard] |
+| W19 Studio UI and 3D viewer (D92) | Wed 11-25 → after Dec 2 | U19.1 [hard] |
 | Present | **Wed 12-02** | demo + deck |
 
 **Unit ids by wave (Tue 11-24, Tristan P271):** units are numbered by the wave they run in (U5.x in W5 ... U14.x in W14). Briefs, branches, reviews, commits and code comments written before this change keep the old U4.x names; this table maps them.
@@ -788,6 +790,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-T4 | `tactician` | Sonnet | U18.2, U18.3, U18.4 (calibration, spar bending, trim and stability) | `briefs/U18.2-*.md`, `briefs/U18.3-*.md`, `briefs/U18.4-*.md` | builder-ready bar; every threshold sourced or `pending` |
 | W34-B2 | `builder-plus` | Sonnet | U16.2 step 1b: refresh std/u4.25-pockets onto main | the branch, merged with main, tests green, tier-1 time | no force push; T121 rows still gone |
 | W34-T5 | `tactician` | Sonnet | U16.1 briefs S0-S9 from `u16.1/design-note.md`, S0 and S1 first | `briefs/U16.1-s<n>-*.md` | builder-ready bar; export sha256 check in every brief |
+| W34-X2 | `recon` | Sonnet | U19.1: how best-in-class browser CAD/3D model viewers work (Onshape, Autodesk Viewer/APS, xeokit, three.js editor, Google model-viewer, Babylon.js sandbox, Shapr3D/Fusion web, OpenVSP viewer, MuJoCo web) | `plans/2026-11-20-standardization/u19.1/recon.md` | 3-5 ranked approaches per feature; only opened sources |
+| W34-A2 | `advisor` | Opus | U19.1: audit of Studio (viewer/, core/hangar/studio.py) against the recon and Tristan's needs; UI spec | `plans/2026-11-20-standardization/u19.1/ui-spec.md` | ordered build steps sized for briefs, each Studio-visible |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -1133,6 +1137,15 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 1: Brief** (tactician W34-T4)
 - [ ] **Step 2: Build** (builder-plus W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U19.1: Studio UI overhaul and a better 3D viewer (D92; P285) [hard]
+
+**Scope:** a big UI improvement to Studio (viewer/, three.js 0.160 from CDN, core/hangar/studio.py), the 3D viewer first: lighting and materials (PBR, environment light, shadows, edge lines), part selection with highlight and a part tree, section/clipping planes and x-ray, measure tool, exploded view, standard views and a view cube, smooth orbit/pan/zoom with fit-to-selection, playing mechanisms (U16.1 linkages, wheels) with a timeline, check rows shown on the parts they concern (FAIL in red), and a cleaner layout for the other panels (scorecard, BOM, edit, compare). Performance on concept-a (100+ meshes). The public viewer build keeps working; Playwright tests for the click paths (install it in .venv if missing). Step 1 decides the order.
+
+- [ ] **Step 1: Recon and UI spec** (recon W34-X2, then advisor W34-A2): `u19.1/recon.md`, `u19.1/ui-spec.md`
+- [ ] **Step 2: Briefs** (tactician) from the spec
+- [ ] **Step 3: Build** (W34-B), one brief at a time
+- [ ] **Step 4: Review** (W34-R); merge; Tristan tries it in Studio
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

@@ -27,7 +27,8 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W16 3D generation close to the real aircraft (D85, D87) | 2 | 0 |
 | W17 Sourced gates (D88) | 1 | 0 |
 | W18 Physics checks (D89) | 4 | 0 |
-| **all** | 73 | 58 |
+| W19 Studio UI and 3D viewer (D92) | 1 | 0 |
+| **all** | 74 | 58 |
 
 ### Open ledger items by owner
 
@@ -221,6 +222,12 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U18.2 | Calibration against a real aircraft (D89; P280) | 0/3 | not started | - |
 | U18.3 | Wing spar bending by beam theory (D89; P280) | 0/3 | not started | - |
 | U18.4 | Trim and stability (D89; P280) [hard] | 0/3 | not started | - |
+
+### W19 Studio UI and 3D viewer (D92)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U19.1 | Studio UI overhaul and a better 3D viewer (D92; P285) [hard] | 0/4 | not started | - |
 
 ## Ledger
 
