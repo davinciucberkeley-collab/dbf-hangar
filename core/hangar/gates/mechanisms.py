@@ -198,13 +198,23 @@ def _mechanism_row(design: Design, mech: dict, th: dict, limit: float) -> CheckR
     return CheckResult(f"T6.mechanism.{mid}", PASS, msg, CRIT, data)
 
 
+def _undriven_servos(design) -> list[str]:
+    from .applicability import NEEDS
+    if not NEEDS["conventional"](design.data["morphology"]):
+        return []
+    atts = {a["id"]: a for a in design.data.get("attachments", [])}
+    driven = {atts[m["driver"]]["parent"] for m in design.data.get("mechanisms", []) if m["driver"] in atts}
+    return [c["id"] for c in design.data["components"] if c.get("type") == "servo" and c["id"] not in driven]
+
+
 @gate("T6.mechanisms", 6)
 def tier6_mechanisms(ctx) -> TierReport | None:
     from ..geometry import articulated_attachments, att_label
     design = ctx.design
     mechs = design.data.get("mechanisms", [])
     arts = articulated_attachments(design)
-    if not mechs and not arts:
+    idle = _undriven_servos(design)
+    if not mechs and not arts and not idle:
         return None
     th = load_gate_thresholds()
     limit = ctx.std["geometry"]["interference_max_mm3"]["value"]
@@ -225,4 +235,7 @@ def tier6_mechanisms(ctx) -> TierReport | None:
             ratio = _ratio_row(design, m, atts, th)
             if ratio:
                 res.append(ratio)
+    res += [CheckResult(f"T6.servo_undriven.{c}", WARN,
+                        f"servo {c} is not the driver of any mechanism (no mechanisms[] entry has a driver attachment whose parent is {c}); see docs/mechanisms.md",
+                        CRIT, {"servo": c}) for c in idle]
     return TierReport(6, "mechanisms", res)
