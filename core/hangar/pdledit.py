@@ -12,7 +12,7 @@ import yaml
 from jsonschema import Draft202012Validator
 from ruamel.yaml import YAML
 
-from . import yamlio
+from . import yamlfast, yamlio
 from .design import SCHEMA_PATH
 from .ops import OpInputError
 
@@ -99,7 +99,7 @@ def assign(data, key: str, new) -> None:
 
 def parse_scalar(raw: str):
     try:
-        v = yaml.safe_load(raw)
+        v = yamlfast.safe_load(raw)
     except yaml.YAMLError as e:
         raise OpInputError(f"cannot read value {raw!r}: {e}") from e
     if isinstance(v, (dict, list)):
@@ -128,7 +128,7 @@ def parse_value(raw: str):
     s = raw.strip()
     if (s.startswith("[") and s.endswith("]")) or (s.startswith("{") and s.endswith("}")):
         try:
-            v = yaml.safe_load(s)
+            v = yamlfast.safe_load(s)
         except yaml.YAMLError as e:
             raise OpInputError(f"cannot read value {raw!r}: {e}") from e
         if not isinstance(v, (list, dict)):
@@ -167,7 +167,7 @@ def render_scalar(v) -> str:
             raise OpInputError("value must be finite")
         return repr(v)
     if isinstance(v, str):
-        if re.fullmatch(r"[A-Za-z0-9_./-]+", v) and yaml.safe_load(v) == v:
+        if re.fullmatch(r"[A-Za-z0-9_./-]+", v) and yamlfast.safe_load(v) == v:
             return v
         return json.dumps(v, ensure_ascii=False)
     raise OpInputError(f"unsupported value type {type(v).__name__}")
@@ -193,10 +193,10 @@ def patch_text(text: str, key: str, new) -> str:
             raise OpInputError(f"{key}: cannot find the value's text in the file")
         end = m.end()
     patched = text[:pos] + render_scalar(new) + text[end:]
-    expected = copy.deepcopy(yaml.safe_load(text))
+    expected = copy.deepcopy(yamlfast.safe_load(text))
     assign(expected, key, new)
     try:
-        same = yaml.safe_load(patched) == expected
+        same = yamlfast.safe_load(patched) == expected
     except yaml.YAMLError:
         same = False
     if not same:
@@ -355,7 +355,7 @@ def add_value(text: str, key: str, new) -> str:
     """
     crlf = "\r\n" in text
     t = text.replace("\r\n", "\n")
-    expected = copy.deepcopy(yaml.safe_load(t))
+    expected = copy.deepcopy(yamlfast.safe_load(t))
     _create(expected, key, new, dict, list)      # raises the input errors; also the reference result
     node, rest = _locate(yamlio.load(t), key)
     lines = t.split("\n")
@@ -391,7 +391,7 @@ def add_value(text: str, key: str, new) -> str:
         body[0] = " " * dash + "- id: " + render_scalar(rest[0][1]) + "\n" + body[0]
         lines[at + 1:at + 1] = "\n".join(body).split("\n")
     out = "\n".join(lines)
-    if yaml.safe_load(out) != expected:
+    if yamlfast.safe_load(out) != expected:
         raise OpInputError(hand)
     for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
         if tag in ("equal", "insert"):
@@ -418,7 +418,7 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
         raise OpInputError(f"{key}: remove takes a top-level list element name[id]; a nested path (one field, or a list below an element) is not supported")
     if len(steps) != 2 or steps[1][0] != "id":
         raise OpInputError(f"{key}: remove needs a list element like name[id]; this is not one")
-    data = yaml.safe_load(t)
+    data = yamlfast.safe_load(t)
     element = walk(data, key)[0]                 # raises the "no key", "needs a list" and "no element with id" errors
     expected = copy.deepcopy(data)
     _, exp_list, _, exp_i = walk(expected, key)
@@ -447,7 +447,7 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
             first = j                            # the topmost comment line that begins with the id
         j -= 1
     out = "\n".join(lines[:first] + lines[last + 1:])
-    if yaml.safe_load(out) != expected:
+    if yamlfast.safe_load(out) != expected:
         raise OpInputError(hand)
     for tag, *_ in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
         if tag not in ("equal", "delete"):
@@ -473,7 +473,7 @@ def _edit_list(text: str, key: str, item, adding: bool) -> tuple[str, list, list
     crlf = "\r\n" in text
     t = text.replace("\r\n", "\n")
     hand = f"{key}: cannot change this list without rewriting other text; edit the file by hand"
-    data = yaml.safe_load(t)
+    data = yamlfast.safe_load(t)
     old = copy.deepcopy(get_value(data, key))             # raises the "no key" errors
     lines = t.split("\n")
     node, line, col, close = _one_line_list(lines, yamlio.load(t), key)
@@ -513,7 +513,7 @@ def _edit_list(text: str, key: str, item, adding: bool) -> tuple[str, list, list
     expected = copy.deepcopy(data)
     assign(expected, key, new)
     try:
-        same = yaml.safe_load(out) == expected
+        same = yamlfast.safe_load(out) == expected
     except yaml.YAMLError:
         same = False
     if not same:

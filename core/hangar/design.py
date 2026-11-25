@@ -8,7 +8,7 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any
 
-import yaml
+from . import yamlfast
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = REPO_ROOT / "schema" / "plane.schema.json"
@@ -130,7 +130,7 @@ def load_design(path: str | Path) -> Design:
     if p.is_dir():
         p = p / "plane.yaml"
     text = p.read_text()
-    data = json.loads(text) if p.suffix == ".json" else yaml.safe_load(text)
+    data = json.loads(text) if p.suffix == ".json" else yamlfast.safe_load(text)
     if not isinstance(data, dict):
         raise ValueError(f"{p}: top level must be a mapping")
     design = Design(data=data, path=p.resolve())
@@ -153,7 +153,7 @@ def load_standards() -> dict:
     data = _STANDARDS_CACHE.get(key)
     if data is None:
         _STANDARDS_CACHE.clear()
-        data = _STANDARDS_CACHE[key] = yaml.safe_load(STANDARDS_PATH.read_text())
+        data = _STANDARDS_CACHE[key] = yamlfast.safe_load(STANDARDS_PATH.read_text())
     return copy.deepcopy(data)
 
 

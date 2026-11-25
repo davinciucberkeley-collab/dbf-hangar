@@ -15,7 +15,7 @@ import yaml
 
 from . import op, OpResult, OpInputError
 from .. import design as design_mod
-from .. import pdledit
+from .. import pdledit, yamlfast
 from ..checks import validate
 from ..design import FAIL, load_design
 from ..ids import ID_RE
@@ -85,7 +85,7 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
         pairs.append((k.strip(), v))
     if len({k for k, _ in pairs}) != len(pairs):
         raise OpInputError("a key is given more than once")
-    before = yaml.safe_load(text)
+    before = yamlfast.safe_load(text)
     working, entries = text, []
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     for k, raw in pairs:
@@ -99,7 +99,7 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
             entries.append({"date": stamp, "key": k, "old": pdledit.render_flow(gone), "new": None, "why": why, "kind": kind})
             continue
         new = pdledit.parse_value(raw) if kind == "add" else pdledit.parse_set_value(raw)
-        data = yaml.safe_load(working)
+        data = yamlfast.safe_load(working)
         if pdledit.exists(data, k):
             if isinstance(new, (list, dict)):
                 raise OpInputError(f"{k}: already set; a list or mapping cannot replace an existing value")
@@ -114,11 +114,11 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
             pdledit.get_value(data, k)      # raises the "no key" error
         entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": kind})
     from ..geom.params import expression_errors
-    after = yaml.safe_load(working)
+    after = yamlfast.safe_load(working)
     fresh = [e for e in expression_errors(after) if e not in set(expression_errors(before))]
     if fresh:
         raise OpInputError("; ".join(f"{o}: {p}: {m}" for o, p, m in fresh))
-    pdledit.check_schema(before, yaml.safe_load(working), key)
+    pdledit.check_schema(before, yamlfast.safe_load(working), key)
     from ..geom.resolve import regeneration_report      # PDL 1.2: refuses the edit (nothing written) when a generated part fails
     regen = regeneration_report(text, working, plane)
     if regen is not None and regen["components"]:
@@ -132,7 +132,7 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
     if log_text and not log_text.endswith("\n"):
         log_text += eol
     combined = log_text + block
-    parsed = yaml.safe_load(combined)
+    parsed = yamlfast.safe_load(combined)
     if not isinstance(parsed, list) or len(parsed) < len(entries) or parsed[-len(entries):] != entries:
         raise OpInputError("CHANGELOG.yaml is not a YAML list; fix it by hand")
     plane.write_bytes(working.encode("utf-8"))
@@ -163,8 +163,8 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
 @op(name="design.diff", summary="List the keys whose values differ between two designs.",
     render=lambda r: "\n".join(f"{c['key']}: {c['a']!r} -> {c['b']!r}" for c in r.data["changes"]) or "no differences")
 def diff_op(a: str, b: str) -> OpResult:
-    fa = pdledit.flatten(yaml.safe_load(_text(_plane(a))))
-    fb = pdledit.flatten(yaml.safe_load(_text(_plane(b))))
+    fa = pdledit.flatten(yamlfast.safe_load(_text(_plane(a))))
+    fb = pdledit.flatten(yamlfast.safe_load(_text(_plane(b))))
     keys = list(fa) + [k for k in fb if k not in fa]
     changes = [{"key": k, "a": fa.get(k), "b": fb.get(k)} for k in keys
                if k not in fa or k not in fb or fa[k] != fb[k]]
@@ -198,14 +198,14 @@ def copy_op(src: str, new_id: str) -> OpResult:
 def sweep_op(path: str, key: str, *, values: list[str]) -> OpResult:
     plane = _plane(path)
     text = _text(plane)
-    before = yaml.safe_load(text)
+    before = yamlfast.safe_load(text)
     if not values:
         raise OpInputError("give at least one value")
     pdledit.get_value(before, key)
     pairs = []
     for raw in values:
         t = pdledit.patch_text(text, key, pdledit.parse_set_value(raw))
-        pdledit.check_schema(before, yaml.safe_load(t), key)
+        pdledit.check_schema(before, yamlfast.safe_load(t), key)
         pairs.append((raw, t))
     did = str(before.get("id", plane.parent.name))
     base = _sweep_root() / did
@@ -269,7 +269,7 @@ def _branch_slug(title: str, limit: int = 40) -> str:
 def propose_op(path: str, title: str) -> OpResult:
     plane = _plane(path)
     ddir = str(plane.parent.resolve())
-    did = str(yaml.safe_load(_text(plane))["id"])
+    did = str(yamlfast.safe_load(_text(plane))["id"])
     if not title.strip():
         raise OpInputError("title must not be empty")
     slug = _branch_slug(title)
