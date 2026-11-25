@@ -113,10 +113,9 @@ def _manifold(mesh: trimesh.Trimesh):
 
 
 PINCH_MM = 5e-4   # 0.5 micron: pulls coincident-but-distinct vertices apart (see _separate_pinches)
-_PAIR_PASS = True   # part_mesh turns the coincident-pair pass off for its first attempt (re-import identity)
 
 
-def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
+def _separate_pinches(vertices: np.ndarray, faces: np.ndarray, pair_pass: bool = True) -> np.ndarray:
     """A Manifold union of two bodies that touch only along an edge or at a point keeps two distinct vertices at the
     same position (valid topologically). An STL file cannot carry that: on reload the vertices merge and the shared
     edge then has four faces, so the mesh is no longer watertight. Every vertex that has a coincident partner is moved
@@ -142,7 +141,7 @@ def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     ok = pinched & (ln > 0)
     out = vertices.copy()
     out[ok] += PINCH_MM * d[ok] / ln[ok, None]
-    if not _PAIR_PASS:
+    if not pair_pass:
         return out
     key2 = np.round(out / 1e-6).astype(np.int64)
     _, inv2, cnt2 = np.unique(key2, axis=0, return_inverse=True, return_counts=True)
@@ -158,14 +157,14 @@ def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     return out
 
 
-def _from_manifold(man) -> trimesh.Trimesh:
+def _from_manifold(man, pair_pass: bool = True) -> trimesh.Trimesh:
     out = man.to_mesh()
     v = np.asarray(out.vert_properties)[:, :3].astype(float)
     f = np.asarray(out.tri_verts)
-    return trimesh.Trimesh(vertices=_separate_pinches(v, f), faces=f, process=False)
+    return trimesh.Trimesh(vertices=_separate_pinches(v, f, pair_pass), faces=f, process=False)
 
 
-def _boolean(op: str, meshes: list[trimesh.Trimesh]) -> trimesh.Trimesh:
+def _boolean(op: str, meshes: list[trimesh.Trimesh], pair_pass: bool = True) -> trimesh.Trimesh:
     import manifold3d as m
     mans = []
     for x in meshes:
@@ -177,11 +176,11 @@ def _boolean(op: str, meshes: list[trimesh.Trimesh]) -> trimesh.Trimesh:
         res = m.Manifold.batch_boolean(mans, m.OpType.Add)
     else:
         res = m.Manifold.batch_boolean(mans, m.OpType.Subtract)
-    return _from_manifold(res)
+    return _from_manifold(res, pair_pass)
 
 
 # ------------------------------------------------------------------ the three body kinds (local frame, mm)
-def _prism(s: dict) -> trimesh.Trimesh:
+def _prism(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     import manifold3d as m
     loops = [_despike([tuple(p) for p in _open(l)]) for l in s["loops"]]
     loops = [np.asarray(l, dtype=float) * 1000.0 for l in loops if len(l) >= 3]
@@ -198,7 +197,7 @@ def _prism(s: dict) -> trimesh.Trimesh:
     if cs.is_empty():
         raise GeometryError("prism cross-section is empty")
     man = m.Manifold.extrude(cs, abs(depth))
-    t = _from_manifold(man)
+    t = _from_manifold(man, pair_pass)
     v = t.vertices
     out = np.zeros_like(v)
     iu, iv = UV[s["axis"]]
@@ -208,7 +207,7 @@ def _prism(s: dict) -> trimesh.Trimesh:
     return _clean(t)
 
 
-def _revolve(s: dict) -> trimesh.Trimesh:
+def _revolve(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     k = AX[s["axis"]]
     i_ax, j_ax = [q for q in range(3) if q != k]
     prof = [tuple(p) for p in s["profile"]]
@@ -254,7 +253,7 @@ def _revolve(s: dict) -> trimesh.Trimesh:
     return _clean(trimesh.Trimesh(np.asarray(verts), np.asarray(faces), process=False))
 
 
-def _loft(s: dict) -> trimesh.Trimesh:
+def _loft(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     import manifold3d as m
     loops = []
     for _, loop in s["sections"]:
@@ -284,7 +283,7 @@ def _loft(s: dict) -> trimesh.Trimesh:
     return _clean(trimesh.Trimesh(np.asarray(verts), np.asarray(faces), process=False))
 
 
-def _mesh(s: dict) -> trimesh.Trimesh:
+def _mesh(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     """kind 'mesh' (fusionkit.Shape, the printed hub, D-207): a closed outward-wound triangle mesh, component-local metres -> mm."""
     verts = np.asarray(s["verts"], dtype=float).reshape(-1, 3) * 1000.0
     tris = np.asarray(s["tris"], dtype=int).reshape(-1, 3)
@@ -296,9 +295,9 @@ def _mesh(s: dict) -> trimesh.Trimesh:
 _KIND = {"prism": _prism, "revolve": _revolve, "loft": _loft, "mesh": _mesh}
 
 
-def body_mesh(shape: dict) -> trimesh.Trimesh:
+def body_mesh(shape: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     """One CAD body (shape_to_json dict, metres) as a closed solid in its component-local frame, millimetres."""
-    return _KIND[shape["kind"]](shape)
+    return _KIND[shape["kind"]](shape, pair_pass)
 
 
 def _place(mesh: trimesh.Trimesh, matrix) -> trimesh.Trimesh:
@@ -318,25 +317,20 @@ def _closed(mesh: trimesh.Trimesh) -> bool:
 def part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
     """First without the coincident-pair pass of _separate_pinches (keeps meshes that already rebuild closed byte-identical
     to earlier imports), then with it if that attempt fails."""
-    global _PAIR_PASS
-    _PAIR_PASS = False
     try:
-        return _part_mesh(comp)
+        return _part_mesh(comp, pair_pass=False)
     except GeometryError:
-        _PAIR_PASS = True
-        return _part_mesh(comp)
-    finally:
-        _PAIR_PASS = True
+        return _part_mesh(comp, pair_pass=True)
 
 
-def _part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
+def _part_mesh(comp: dict, pair_pass: bool = True) -> tuple[trimesh.Trimesh, dict]:
     """The part's solid in world mm: union of its bodies, minus its cuts. Returns (mesh, info).
     info: bodies, body_volume_ratio (mesh volume / the source's analytic volume per body), n_cuts."""
     M = comp["matrix"]
     local, ratios = [], []
     for i, b in enumerate(comp["bodies"]):
         try:
-            lm = body_mesh(b)
+            lm = body_mesh(b, pair_pass=pair_pass)
         except GeometryError as e:
             raise GeometryError(f"body {i} ({b.get('name', '')!r}, {b['kind']}): {e}") from e
         vols = comp.get("body_vol_m3")
@@ -346,11 +340,11 @@ def _part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
     cuts = []
     for shape, Mc in comp.get("cuts", []):
         try:
-            cuts.append(_place(body_mesh(shape), Mc))
+            cuts.append(_place(body_mesh(shape, pair_pass=pair_pass), Mc))
         except GeometryError:
             continue
     placed = [_place(lm, M) for lm in local]
-    base = placed[0] if len(placed) == 1 else _boolean("union", placed)
+    base = placed[0] if len(placed) == 1 else _boolean("union", placed, pair_pass=pair_pass)
     lo, hi = base.bounds
     near = [c for c in cuts if np.all(c.bounds[0] < hi) and np.all(c.bounds[1] > lo)]
     mesh = base
@@ -360,11 +354,11 @@ def _part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
         mesh = None
         for mode in ("batch", "sequential"):
             try:
-                cand = _boolean("difference", [base] + near) if mode == "batch" else None
+                cand = _boolean("difference", [base] + near, pair_pass=pair_pass) if mode == "batch" else None
                 if mode == "sequential":
                     cand = base
                     for cutter in near:
-                        cand = _boolean("difference", [cand, cutter])
+                        cand = _boolean("difference", [cand, cutter], pair_pass=pair_pass)
             except GeometryError:
                 continue
             cand = _clean(cand)

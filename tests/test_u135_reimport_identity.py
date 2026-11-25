@@ -16,16 +16,16 @@ def test_part_mesh_tries_without_pair_pass_first(monkeypatch):
     seen = []
     real = geo._part_mesh
 
-    def spy(comp):
-        seen.append(geo._PAIR_PASS)
-        return real(comp)
+    def spy(comp, pair_pass=True):
+        seen.append(pair_pass)
+        return real(comp, pair_pass)
 
     monkeypatch.setattr(geo, "_part_mesh", spy)
     import json
     from pathlib import Path
     comp = json.load(open(Path(__file__).resolve().parents[1] / "tests/fixtures/dbf-xmount-comp.json"))
     geo.part_mesh(comp)
-    assert seen == [False, True] and geo._PAIR_PASS is True
+    assert seen == [False, True]
 
 
 def test_fixture_needs_and_gets_the_pair_pass():
@@ -33,7 +33,7 @@ def test_fixture_needs_and_gets_the_pair_pass():
     from pathlib import Path
     comp = json.load(open(Path(__file__).resolve().parents[1] / "tests/fixtures/dbf-xmount-comp.json"))
     mesh, _ = geo.part_mesh(comp)  # first attempt (no pair pass) fails, the retry succeeds
-    assert geo._closed(mesh) and geo._PAIR_PASS is True
+    assert geo._closed(mesh)
 
 
 def test_canonical_leaves_clean_roundtrip_untouched():

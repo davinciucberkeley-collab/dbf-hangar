@@ -364,8 +364,9 @@ def _designs(paths, all_designs):
 def baseline_update_cmd(paths, all_designs):
     """Record the current known failures of each design in its baseline.json."""
     from .geom import overlay
-    if overlay.overlay_configured():
-        click.echo("note: CAD overlay ignored here (baselines and FEA results never use licensed files)", err=True)
+    note = overlay.ignored_note()
+    if note:
+        click.echo(note, err=True)
     with overlay.forced_off():
         _baseline_update_body(paths, all_designs)
 
@@ -433,8 +434,9 @@ def _renamed_from(folder: str, cur: dict, ref_baselines: dict[str, dict]) -> str
 def baseline_check_cmd(paths, all_designs, fmt, base_ref):
     """Compare each design with its baseline.json; exit 1 on regressions or a missing baseline."""
     from .geom import overlay
-    if overlay.overlay_configured():
-        click.echo("note: CAD overlay ignored here (baselines and FEA results never use licensed files)", err=True)
+    note = overlay.ignored_note()
+    if note:
+        click.echo(note, err=True)
     with overlay.forced_off():
         _baseline_check_body(paths, all_designs, fmt, base_ref)
 

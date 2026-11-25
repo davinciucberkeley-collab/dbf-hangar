@@ -607,6 +607,7 @@ def test_remove_refusals(tmp_concept_a):
     _refused(text, "attachments[E-MEC-HW-R1].location[0]", "remove by index is not supported")
     _refused(text, "mechanisms[elevon-r].driven[E-MEC-03]", "no key 'mechanisms'")
     _refused(text, "attachments", "like name[id]")
+    _refused(text, "attachments[E-MEC-HW-R1][x]", "named by a key")
     _refused(text, "flight.cl_max", "like name[id]")
     _refused(text, "flight[x]", "needs a list")
     _refused(text, "attachments[E-WNG-10]", "without rewriting other text")      # multi-line flow entry
