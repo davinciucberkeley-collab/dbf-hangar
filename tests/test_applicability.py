@@ -1,4 +1,4 @@
-"""U4.30-1: applicability from morphology; not-applicable SKIP rows stay out of baselines."""
+"""U12.1-1: applicability from morphology; not-applicable SKIP rows stay out of baselines."""
 from __future__ import annotations
 
 import copy

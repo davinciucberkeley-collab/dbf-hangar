@@ -1,4 +1,4 @@
-"""U4.41-1: a stabiliser split into fixed, elevator and rudder components counts once in tier 3."""
+"""U13.6-1: a stabiliser split into fixed, elevator and rudder components counts once in tier 3."""
 import copy
 from pathlib import Path
 

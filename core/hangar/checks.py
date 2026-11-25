@@ -728,7 +728,7 @@ def interference_rows(design: Design, std: dict, only: set[str] | None = None) -
 
 
 def _floating_rows(design: Design, meshes: dict, std: dict, cache: _PairCache | None = None) -> list[CheckResult]:
-    """U4.39: WARN for a part whose geometry touches no other part (within attach_tolerance_mm)."""
+    """U13.4: WARN for a part whose geometry touches no other part (within attach_tolerance_mm)."""
     tol = std["geometry"]["attach_tolerance_mm"]["value"]
     boxes = {}
     for c, ps in meshes.items():

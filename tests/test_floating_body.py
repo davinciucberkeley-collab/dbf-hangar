@@ -1,4 +1,4 @@
-"""U4.39-3: T1 warns when a part touches no other part (conventional designs only)."""
+"""U13.4-3: T1 warns when a part touches no other part (conventional designs only)."""
 import copy
 from pathlib import Path
 

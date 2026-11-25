@@ -1,4 +1,4 @@
-"""U4.41-6: the design apply file format, the motor propulsion block and the component types are documented, and the documented forms really work."""
+"""U13.6-6: the design apply file format, the motor propulsion block and the component types are documented, and the documented forms really work."""
 from __future__ import annotations
 
 import shutil

@@ -1,4 +1,4 @@
-"""U4.30-2: fixed-wing standards and the checks that read them (conventional designs only)."""
+"""U12.1-2: fixed-wing standards and the checks that read them (conventional designs only)."""
 from __future__ import annotations
 
 import copy

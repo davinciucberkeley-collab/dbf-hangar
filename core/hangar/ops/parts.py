@@ -1,4 +1,4 @@
-"""Real-parts library operations (U4.31): list and show knowledge/parts/ entries."""
+"""Real-parts library operations (U12.2): list and show knowledge/parts/ entries."""
 from __future__ import annotations
 
 from . import OpInputError, OpResult, op

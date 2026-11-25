@@ -1,4 +1,4 @@
-"""Named airfoil references: generated NACA 4-digit sections and files in knowledge/airfoils/ (U4.36)."""
+"""Named airfoil references: generated NACA 4-digit sections and files in knowledge/airfoils/ (U13.2)."""
 from __future__ import annotations
 
 import math

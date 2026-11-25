@@ -1,4 +1,4 @@
-"""U4.29 / T129: parameter expressions in positions, joint locations and pivots; design set reports new interference."""
+"""U11.1 / T129: parameter expressions in positions, joint locations and pivots; design set reports new interference."""
 from __future__ import annotations
 
 import shutil

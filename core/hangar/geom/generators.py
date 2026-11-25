@@ -1,4 +1,4 @@
-"""Registered geometry generators (U4.21: tube, mesh_file; U4.22 adds the aircraft ones)."""
+"""Registered geometry generators (U9.1: tube, mesh_file; U9.2 adds the aircraft ones)."""
 from __future__ import annotations
 
 import trimesh

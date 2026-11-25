@@ -136,7 +136,7 @@ def test_no_entry_copies_ten_words_from_a_file_it_cites():
                 assert run is None, f"{p.name} copies from {f}: {run!r}"
 
 
-# ---- T110 (U4.27): the 23 docs/research entries get the same structure and copy checks as the config-study entries ----
+# ---- T110 (U10.5): the 23 docs/research entries get the same structure and copy checks as the config-study entries ----
 RESEARCH = REPO_ROOT / "knowledge" / "research"
 RESEARCH_STEMS = ["aerodynamics", "airframe-materials", "avionics-autopilot", "benchmarks", "bom-savings", "budget-airframe",
                   "budget-avionics", "budget-energy-test", "budget-lift", "configurations", "electrical-architecture", "firmware",

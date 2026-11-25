@@ -1,4 +1,4 @@
-"""U4.36-8: a fixed-wing design built from a blank start with the CLI ops alone."""
+"""U13.2-8: a fixed-wing design built from a blank start with the CLI ops alone."""
 from __future__ import annotations
 
 import time

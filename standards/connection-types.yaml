@@ -1,7 +1,7 @@
 # Shared connection-type library for PDL attachments[].connection (T1.interfaces.connection_known).
 # Adapted from DBF-Combined redesign/interfaces/connection_types.json @ a93f14d (44 types, ids kept).
 # rating_basis: sourced | derived | placeholder (same meaning as attachment.rating_basis). source: a citation, or `pending`.
-# Types with rating_basis sourced have a value or stress from an opened source (U4.19); the rest stay placeholder / pending with the reason on the source line.
+# Types with rating_basis sourced have a value or stress from an opened source (U8.3); the rest stay placeholder / pending with the reason on the source line.
 # structural: false marks a type that locates a part but never carries its flight load; omitted means true.
 version: '0.1'
 wire_ampacity_a:

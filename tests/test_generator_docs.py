@@ -1,4 +1,4 @@
-"""Every generator parameter has a doc, and every numeric doc names its unit (U4.36)."""
+"""Every generator parameter has a doc, and every numeric doc names its unit (U13.2)."""
 import re
 
 import hangar.geom  # noqa: F401  (registers the generators)

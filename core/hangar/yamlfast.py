@@ -1,4 +1,4 @@
-"""Fast YAML loading for hangar (U4.35, D81)."""
+"""Fast YAML loading for hangar (U11.2, D81)."""
 import yaml
 
 _LOADER = getattr(yaml, "CSafeLoader", yaml.SafeLoader)

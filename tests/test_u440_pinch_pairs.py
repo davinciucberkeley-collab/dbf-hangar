@@ -1,4 +1,4 @@
-"""U4.40-3: exactly coincident vertex pairs left by _separate_pinches must not be welded by _clean."""
+"""U13.5-3: exactly coincident vertex pairs left by _separate_pinches must not be welded by _clean."""
 import json
 from pathlib import Path
 

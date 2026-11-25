@@ -1,4 +1,4 @@
-"""U4.37-4b: tail_surfaces and fin build fixed part, elevator or rudder (hand numbers from the brief)."""
+"""U13.3-4b: tail_surfaces and fin build fixed part, elevator or rudder (hand numbers from the brief)."""
 from __future__ import annotations
 
 from pathlib import Path

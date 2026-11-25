@@ -1,4 +1,4 @@
-"""U4.21: PDL 1.2 generator geometry, parameters, references, regeneration on design set (hand numbers from the brief)."""
+"""U9.1: PDL 1.2 generator geometry, parameters, references, regeneration on design set (hand numbers from the brief)."""
 from __future__ import annotations
 
 import copy

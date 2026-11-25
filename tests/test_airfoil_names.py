@@ -1,4 +1,4 @@
-"""U4.36-4: airfoil_file accepts nacaXXXX and knowledge/airfoils names."""
+"""U13.2-4: airfoil_file accepts nacaXXXX and knowledge/airfoils names."""
 from __future__ import annotations
 
 import shutil

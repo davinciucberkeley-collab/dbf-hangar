@@ -1,4 +1,4 @@
-"""U4.36-2: `plane design new --blank` makes a minimal valid design with no template data."""
+"""U13.2-2: `plane design new --blank` makes a minimal valid design with no template data."""
 from __future__ import annotations
 
 import shutil

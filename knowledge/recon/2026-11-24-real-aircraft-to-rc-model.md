@@ -1,4 +1,4 @@
-# Recon: turning any real aircraft into a scale-look RC design in PDL (U4.33, D77, D78)
+# Recon: turning any real aircraft into a scale-look RC design in PDL (U12.4, D77, D78)
 
 Question: which fields must a reference-aircraft fact sheet carry, which RC-scale adjustments apply, and which generators cover the most configurations. Sources opened this run are in `knowledge/sources/` (ids below). Not opened, so not cited: Model Aviation J-3 Cub scaling example (search snippet only), OpenVSP wiki pages (no geometry content), Moiz et al. 2018 (PDF unreadable here).
 

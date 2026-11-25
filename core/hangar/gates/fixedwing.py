@@ -1,4 +1,4 @@
-"""U4.30-2: fixed-wing checks (wing loading, cruise/stall ratio) for conventional designs; thresholds in standards/fixed-wing.yaml."""
+"""U12.1-2: fixed-wing checks (wing loading, cruise/stall ratio) for conventional designs; thresholds in standards/fixed-wing.yaml."""
 from __future__ import annotations
 
 from ..design import FAIL, PASS, SKIP, WARN, CheckResult

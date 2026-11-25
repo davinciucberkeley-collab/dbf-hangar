@@ -1,4 +1,4 @@
-"""U4.37: design.apply, a batch of plane.yaml edits with one regeneration pass."""
+"""U13.3: design.apply, a batch of plane.yaml edits with one regeneration pass."""
 from __future__ import annotations
 
 from datetime import datetime, timezone

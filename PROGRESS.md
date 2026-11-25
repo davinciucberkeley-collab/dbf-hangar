@@ -131,27 +131,27 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U8.1 | Team guide: how the team works in dbf-hangar (P189) | 4/5 | in progress | - |
-| U8.2 | Faster CI unit tests (T11; P194) | 3/3 | done | - |
+| U8.2 | Faster CI unit tests (T11; P194) | 3/3 | done | ACCEPT |
 | U8.3 | Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198) | 3/4 | in progress | - |
-| U8.4 | Process trim (D66; T112; P198) | 3/3 | done | - |
+| U8.4 | Process trim (D66; T112; P198) | 3/3 | done | ACCEPT |
 
 ### W9 Parametric geometry for the demo (D70)
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U9.1 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 3/3 | done | - |
-| U9.2 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 3/3 | done | - |
+| U9.1 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 3/3 | done | ACCEPT |
+| U9.2 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 3/3 | done | ACCEPT |
 
 ### W10 Freeze fixes and fresh-session findings
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U10.1 | Demo script and deck for Dec 2 (U14.1 Steps 2-3; D60, D70; P209) | 3/3 | done | - |
-| U10.2 | Fix batch during the freeze (T115, T105, T122, guide rule 9; D66) | 3/3 | done | - |
+| U10.1 | Demo script and deck for Dec 2 (U14.1 Steps 2-3; D60, D70; P209) | 3/3 | done | ACCEPT |
+| U10.2 | Fix batch during the freeze (T115, T105, T122, guide rule 9; D66) | 3/3 | done | ACCEPT |
 | U10.3 | Pose-aware cut pockets for generated parts (T121; D70 demo quality) [hard] | 1/3 | in progress | - |
-| U10.4 | Quality-of-life batch (audit W24-Au2; D71) | 3/3 | done | - |
-| U10.5 | Test and tidy follow-ups (T108, T109, T110, T123; D71) | 3/3 | done | - |
-| U10.6 | Findings from Tristan's fresh-session trial (T125, T126, T128; D74; P224) | 3/3 | done | - |
+| U10.4 | Quality-of-life batch (audit W24-Au2; D71) | 3/3 | done | ACCEPT |
+| U10.5 | Test and tidy follow-ups (T108, T109, T110, T123; D71) | 3/3 | done | ACCEPT |
+| U10.6 | Findings from Tristan's fresh-session trial (T125, T126, T128; D74; P224) | 3/3 | done | ACCEPT |
 
 ### W11 Parameter propagation and speed (D75, D81)
 
@@ -186,7 +186,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U14.1 | Dec 2 presentation package | 3/4 | in progress | - |
+| U14.1 | Dec 2 presentation package | 3/4 | in progress | ACCEPT |
 
 ## Ledger
 

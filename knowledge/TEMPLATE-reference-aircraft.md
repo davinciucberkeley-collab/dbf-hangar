@@ -32,7 +32,7 @@ Each table has columns: Field | Unit | Where to find it | Value | Source | Confi
 | root LE x from nose | m | three-view side | component position x |
 | incidence at root | deg | estimate | component rotation |
 | aileron/flap span and hinge fraction | m, fraction | three-view | `elevon_y`, `hinge_frac` |
-| struts: count, attach points | m | photo | `strut` (planned U4.32) |
+| struts: count, attach points | m | photo | `strut` (planned U12.3) |
 
 ## 2. Fuselage
 | Field | Unit | Where to find it | PDL parameter |
@@ -58,14 +58,14 @@ Each table has columns: Field | Unit | Where to find it | Value | Source | Confi
 | engine type and count | text, int | data sheet | `morphology.propulsion_count` |
 | prop plane position x, y, z per engine | m | three-view (front and top) | component position |
 | thrust line down/right angle | deg | estimate | component rotation |
-| nacelle or cowl: length, max width, max height | m | three-view | `nacelle` (planned U4.32) |
-| prop diameter, blade count, spinner length/diameter, rotation direction | m, int, m, cw/ccw | data sheet, photo | `propeller` (planned U4.32) |
+| nacelle or cowl: length, max width, max height | m | three-view | `nacelle` (planned U12.3) |
+| prop diameter, blade count, spinner length/diameter, rotation direction | m, int, m, cw/ccw | data sheet, photo | `propeller` (planned U12.3) |
 | rated power per engine | kW | data sheet | for scaling in section 7 |
 
 ## 5. Landing gear
 | Field | Unit | Where to find it | PDL parameter |
 |---|---|---|---|
-| arrangement; fixed or retractable | tricycle, taildragger, bicycle, skids | photo | `landing_gear` (planned U4.32) |
+| arrangement; fixed or retractable | tricycle, taildragger, bicycle, skids | photo | `landing_gear` (planned U12.3) |
 | wheel positions x, y; z at ground | m | three-view | placement |
 | wheel diameter, width | m | data sheet | wheel size |
 | track, wheelbase | m | data sheet | check |

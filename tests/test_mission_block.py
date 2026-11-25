@@ -1,4 +1,4 @@
-"""U4.30-3: the design-level optional `mission` block (schema + T0.mission row)."""
+"""U12.1-3: the design-level optional `mission` block (schema + T0.mission row)."""
 from __future__ import annotations
 
 import copy

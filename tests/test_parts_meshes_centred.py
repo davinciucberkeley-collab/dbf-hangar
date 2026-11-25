@@ -1,4 +1,4 @@
-"""U4.41-4: every meshed library part is one watertight body centred on its envelope."""
+"""U13.6-4: every meshed library part is one watertight body centred on its envelope."""
 from __future__ import annotations
 
 from pathlib import Path

@@ -1,4 +1,4 @@
-"""U4.21: hangar.geom kernel, materials, generator registry (hand numbers from the brief)."""
+"""U9.1: hangar.geom kernel, materials, generator registry (hand numbers from the brief)."""
 from __future__ import annotations
 
 import math
