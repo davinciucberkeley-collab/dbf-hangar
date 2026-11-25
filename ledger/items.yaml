@@ -3198,7 +3198,7 @@ items:
     due: '2026-12-05'
     units:
       - v1.1
-    evidence: 3a6b9d7 (standards pending lists gate-thresholds keys; CT-M3-SHCS-INSERT source already on main)
+    evidence: 3a6b9d7
     decided_in: ''
     updated: '2026-11-25'
   - id: T20
@@ -4538,7 +4538,7 @@ items:
     status: done
     due: '2026-12-15'
     units: []
-    evidence: e72f545 (_map_args maps only declared path args; W34-T check 11-25)
+    evidence: e72f545
     decided_in: ''
     updated: '2026-11-25'
   - id: T102
@@ -4703,7 +4703,7 @@ items:
     status: done
     due: '2026-12-15'
     units: []
-    evidence: ac3af45 (design new writes LF)
+    evidence: ac3af45
     decided_in: ''
     updated: '2026-11-25'
   - id: T112
