@@ -1027,6 +1027,7 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
     # so that it goes through the same lifting_surface_properties; it is not a geometry component.
     n_strip = a["planform_strip_count"]["value"]
     surfaces = []
+    derived_tails = []  # derived tail_surfaces stabilisers: counted only when a wing surface exists
     for c in design.components:
         if "lifting_surface" in c["geometry"]:
             ls_c = c
@@ -1054,7 +1055,10 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                           "position": [c["position"][0] + dx, c["position"][1] + dy, c["position"][2] + dz]}
                 p = lifting_surface_properties(pseudo, c_tf[c["id"]] if cruise_pose else None)
                 p["span_mm"] = gp["lifting_surface"]["span"]
+                derived_tails.append(c["id"])
         surfaces.append((c, ls_c, p))
+    if len(derived_tails) == len(surfaces):  # no wing surface: behave as without a derived tail
+        surfaces = []
     lifting = [(c, ls_c, p) for c, ls_c, p in surfaces if p["lifting"]]
     if lifting and design.data["morphology"]["lift"] != "multirotor":
         main_c, main_ls, main = max(lifting, key=lambda cp: cp[2]["area_mm2"])

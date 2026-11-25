@@ -65,9 +65,6 @@ def test_generated_planform_function():
 def test_unrelated_wing_side_still_fails_as_before():
     d = copy.deepcopy(BASE)
     _comp(d, "wing")["geometry"]["params"]["side"] = "right"
-    # the tail is now derived and would be the only lifting surface; drop it so that nothing is derived
-    d["components"] = [c for c in d["components"] if c["id"] != "tail"]
-    d["attachments"] = [a for a in d["attachments"] if a["id"] != "tail-fuse"]
     r = rows(d)["T3.stall"]
     assert r.status == "FAIL"
     assert "no lifting surface found" in r.message
@@ -88,3 +85,9 @@ def test_measured_equals_analytic_area():
     want = math.sqrt(2 * 0.610 * G / (RHO_DEFAULT * p["area_mm2"] / 1e6 * 1.2))
     got = rows(BASE)["T3.stall"].data["stall_mps"]
     assert got == pytest.approx(want, rel=0.01)
+
+
+def test_wing_plus_derived_tail_has_static_margin_row():
+    r = rows(BASE)
+    assert "T3.static_margin" in r
+    assert r["T3.static_margin"].status != "SKIP"
