@@ -975,7 +975,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.5: Importer fixes for Dillon's concept-a-reborn (D84) [hard]
 
-*Final dry run (f9698a0, no stand-ins): v1 import exit 0, 129 meshes, 41 FAIL (real design issues), ledger 55/5; F1 regression: re-import of the original a93f14d changes 3 of 113 concept-a meshes (sliver faces) -> reopened U13.5-3/4, fixing in place. Dillon's guide updated (B7, B8 are his decisions).*
+*Final dry run (f9698a0, no stand-ins): v1 import exit 0, 129 meshes, 41 FAIL (real design issues), ledger 55/5; F1 regression (3 of 113 concept-a meshes changed on re-import) fixed in place, merged d8011e0 (W31-R ACCEPT): re-import byte-identical; v1 X-mounts and WNG-001 still import closed. Dillon's guide updated (B7, B8 are his decisions).*
 
 *Progress: -1 types+cost 7cae771, -4 STL weld ef893b9, -3 X-mount c9b2539 merged; -2 changelog adb4fcb merged (ACCEPT after one reopen; v1 import 55 decisions, 5 duplicates) (briefs keep U4.40-* names).*
 
@@ -984,7 +984,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Briefs** (tactician W32-T) *(311c9f4: U13.5-1 types+cost (easy), -2 changelog import (hard), -3 X-mount pinch (hard), -4 STL weld (hard); guide updated)*
 - [x] **Step 2: Build** (W31-B) *(B1-B5)*
 - [x] **Step 3: Review** (W31-R); merge *(all ACCEPT; last adb4fcb; end-to-end dry run before sending the guide)*
-- [ ] **Step 4: Send the guide to Dillon** (Tristan)
+- [ ] **Step 4: Send the guide to Dillon** (Tristan) *(guide ready: plans/2026-11-20-standardization/u4.40/dillon-import-guide.md)*
 
 ### Unit U13.6: Rehearsal 2 gaps (D78) 
 
@@ -998,7 +998,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.7: Overnight follow-ups (T134, T136, T140, T141, T142, T143)
 
-**Scope:** baselines/hashes/validation never depend on the local CAD overlay (T136); pin the verdict-fixture date (T134); a pending criterion for servo-drives-mechanism (T140); remove in nested lists such as bom.items (T141); measure why the generated C172 wing area is 18 % low (T143; done: design gap, findings in u13.7/; follow-up T145 core fill -> brief U13.7-7); rename old U4.x brief files and references to wave ids after all std/u4.* branches merge (T142). Existing designs unchanged.
+**Scope:** baselines/hashes/validation never depend on the local CAD overlay (T136, merged 32d4a47); pin the verdict-fixture date (T134, merged 9c83f1f); a pending criterion for servo-drives-mechanism (T140, merged fc6760e); remove in nested lists such as bom.items (T141, merged bbf388a); measure why the generated C172 wing area is 18 % low (T143; done: design gap, findings in u13.7/; follow-up T145 core fill -> brief U13.7-7); rename old U4.x brief files and references to wave ids after all std/u4.* branches merge (T142). Existing designs unchanged.
 
 - [x] **Step 1: Briefs** (tactician W31-T) *(d7d251d: -1 overlay baselines (hard), -2 verdict date, -3 servo criterion, -4 nested remove (hard), -5 C172 wing area measure (likely a design gap: core + ailerons), -6 id rename (last, alone); default: std/u4.25-pockets stays parked (T121) and is excluded from the rename)*
 - [ ] **Step 2: Build** (W31-B)
