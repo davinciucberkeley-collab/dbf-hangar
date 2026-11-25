@@ -360,6 +360,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D91 | U17.1 inventory findings: 518 blocking rows (481 T4 manufacturing, 27 schema, 8 mtow, 2 connection types) have criteria that resolve to no threshold, and the fidelity count treats any source text but `pending`/`internal convention` as sourced | (a) add a core step to U17.1 that links those criteria to real keys so they count; (b) a `team constraint` counts as sourced only with a named owner and date (D88); scouts run packets 1, 6, 7, 2, 3, 4, 5, then 8, 9 | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D92 | Studio UI overhaul with a much better 3D viewer? | yes (Tristan P285, 2026-11-25): new wave W19; recon of best-in-class web CAD/model viewers, then an advisor-led UI spec, then briefs; the viewer must show U16.1's moving linkages, wheels and wires; no GrabCAD geometry in published builds (D83) | Tristan | 11-25 | decided (Tristan P285, 2026-11-25) |
 | D93 | U18.1 study decisions (u18.1/study.md section 7) | (1) missing OpenCAE inputs (motor kv/R/i0, prop data, battery IR, ESC, material E/nu/yield) go in a sidecar `designs/<id>/opencae-inputs.yaml`, no PDL bump; (2) a pass on estimated inputs stays PASS with `; OpenCAE basis estimate` appended; (3) four provisional thresholds in operations.yaml with `source: pending` (U17.1 sources them); (4) brief -3 stops if a key- or id-enumerating test fails; SU2 download and pip install approved by Tristan (P287); the conductor's `opencae setup su2 --yes` was blocked by the session's permission classifier, so Tristan runs it himself or adds a permission rule; qt_test already runs OpenCAE, so nothing waits on it | Tristan | 11-25 | decided (default, conductor 2026-11-25; installs approved Tristan P287) |
+| D94 | U18.2-U18.4 brief defaults (W34-T4, aec87ed) | C172S reference is a test fixture, not a design; AeroSandbox stays opt-in (not in pyproject or CI), dynamic modes SKIP without it; elevator travel is a standards default until a PDL elevator field (schema bump later); U18.4 reads declared lifting_surface tails only; tail-volume bands stay pending until a real source is opened (the in-repo MIT attribution is not in the MIT note) | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1119,7 +1120,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** run hangar's mass, aero and performance checks on the full-size Cessna 172S with published figures (POH / type certificate data: MTOW, wing area, span, stall speeds Vs/Vs0, cruise speed, rate of climb, CG range) entered as a reference design or fixture; compare each computed number with the published one and write the error; a test pins each within a stated tolerance (tolerances in standards with a source or `pending`). Findings say which checks are trustworthy and which are not.
 
-- [ ] **Step 1: Brief** (tactician W34-T4; scout W34-S for the published figures, opened sources only)
+- [x] **Step 1: Brief** (tactician W34-T4; scout W34-S for the published figures, opened sources only) *(aec87ed: scout -scout-c172 then -calibration (hard); C172S fixture in tests/fixtures, not designs/; tolerances in new standards/calibration.yaml, pending; default-CLmax stall error +30.7 % pinned as a finding)*
 - [ ] **Step 2: Build** (W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
 
@@ -1127,7 +1128,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** a fast analytic check for every winged design in CI: root bending moment at the design load factor (elliptic or Schrenk lift distribution), spar stress from the spar section (tube or generated spar params) and material allowables, tip deflection; safety factor against the sourced material yield; thresholds in standards with a source. FEA (U18.1 structure) stays the detailed check; a test compares both on one wing.
 
-- [ ] **Step 1: Brief** (tactician W34-T4)
+- [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -spar-bending (easy) + scout packet B (allowables); FEA comparison deferred to U18.3-2 after U18.1 merges)*
 - [ ] **Step 2: Build** (W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
 
@@ -1135,7 +1136,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** elevator deflection to trim at cruise and at stall speed vs its travel; horizontal and vertical tail volume coefficients vs sourced typical bands; dynamic modes (short period, phugoid, Dutch roll, spiral) from AeroSandbox or AVL with damping thresholds from a source (e.g. MIL-F-8785C levels) or `pending`. Fixed-wing and transition designs only.
 
-- [ ] **Step 1: Brief** (tactician W34-T4)
+- [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -1 tail volume, -2 trim, -3 dynamic modes (all hard) + scout packet A; AeroSandbox opt-in, not in CI (modes SKIP there); merge order U18.3-1, U18.4-1, -2, -3)*
 - [ ] **Step 2: Build** (builder-plus W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
 
