@@ -997,7 +997,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** baselines/hashes/validation never depend on the local CAD overlay (T136); pin the verdict-fixture date (T134); a pending criterion for servo-drives-mechanism (T140); remove in nested lists such as bom.items (T141); measure why the generated C172 wing area is 18 % low (T143); rename old U4.x brief files and references to wave ids after all std/u4.* branches merge (T142). Existing designs unchanged.
 
-- [ ] **Step 1: Briefs** (tactician W31-T)
+- [x] **Step 1: Briefs** (tactician W31-T) *(d7d251d: -1 overlay baselines (hard), -2 verdict date, -3 servo criterion, -4 nested remove (hard), -5 C172 wing area measure (likely a design gap: core + ailerons), -6 id rename (last, alone); default: std/u4.25-pockets stays parked (T121) and is excluded from the rename)*
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R, W31-R2); merge
 
