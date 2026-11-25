@@ -90,6 +90,58 @@ def mass_op(path: str) -> OpResult:
     return OpResult(True, mass_properties(_load(path)))
 
 
+def _bounds_line(e: dict) -> str:
+    def fmt(v):
+        return "[" + ", ".join(f"{x:.1f}" for x in v) + "]" if v is not None else "none"
+    head = f"{e['id']}  {e['type']}" if e.get("type") else e["id"]
+    if "error" in e:
+        return f"{head}  ERROR: {e['error']}"
+    if "point" in e:
+        return f"{head}  point={fmt(e['point'])}"
+    return f"{head}  min={fmt(e['min'])}  max={fmt(e['max'])}  size={fmt(e['size'])}"
+
+
+@op(name="design.bounds", summary="Bounding box of every component in the body frame (mm, neutral pose): min, max, size and centre; point masses give their point. Use it to place parts against each other.",
+    render=lambda r: "\n".join(
+        [_bounds_line(e) for e in r.data["components"]]
+        + [_bounds_line({"id": "overall", "type": "", **r.data["overall"]})
+           if r.data["overall"]["min"] is not None
+           else "overall  no geometry"]))
+def bounds_op(path: str) -> OpResult:
+    import numpy as np
+    from ..geometry import component_parts, is_point_mass
+
+    design = _load(path)
+    entries: list[dict] = []
+    for c in design.data["components"]:
+        cid, ctype = c["id"], c["type"]
+        if is_point_mass(c):
+            entries.append({"id": cid, "type": ctype, "point": [round(float(x), 3) for x in c["position"]]})
+            continue
+        try:
+            parts = component_parts(c, design.base_dir)
+            lo = np.min([m.bounds[0] for m in parts], axis=0)
+            hi = np.max([m.bounds[1] for m in parts], axis=0)
+        except Exception as e:  # noqa: BLE001 - one bad component must not fail the listing
+            entries.append({"id": cid, "type": ctype, "error": str(e)})
+            continue
+        lo_l = [round(float(x), 3) for x in lo]
+        hi_l = [round(float(x), 3) for x in hi]
+        entries.append({
+            "id": cid, "type": ctype, "min": lo_l, "max": hi_l,
+            "size": [round(float(b - a), 3) for a, b in zip(lo_l, hi_l)],
+            "center": [round((a + b) / 2, 3) for a, b in zip(lo_l, hi_l)],
+        })
+    boxes = [e for e in entries if "min" in e]
+    if boxes:
+        omin = [min(e["min"][i] for e in boxes) for i in range(3)]
+        omax = [max(e["max"][i] for e in boxes) for i in range(3)]
+        overall = {"min": omin, "max": omax, "size": [round(b - a, 3) for a, b in zip(omin, omax)]}
+    else:
+        overall = {"min": None, "max": None, "size": None}
+    return OpResult(True, {"components": entries, "overall": overall})
+
+
 @op(name="design.export", summary="Export a design to glb, stl, json or mjcf.", mutates=True,
     render=lambda r: "\n".join(r.data["files"]))
 def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out: Path) -> OpResult:

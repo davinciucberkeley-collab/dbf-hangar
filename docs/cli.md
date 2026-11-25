@@ -2,7 +2,7 @@
 
 # plane command reference
 
-63 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+64 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -166,6 +166,16 @@ Writes files.
 - `<path>`: str, required
 - `--edits`: path, required
 - `--why`: str, required
+
+### `plane design bounds`
+
+Bounding box of every component in the body frame (mm, neutral pose): min, max, size and centre; point masses give their point. Use it to place parts against each other.
+
+```
+plane design bounds <path>
+```
+
+- `<path>`: str, required
 
 ### `plane design copy`
 
