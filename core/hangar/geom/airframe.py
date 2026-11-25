@@ -55,21 +55,50 @@ register(Generator(
 
 
 # ------------------------------------------------------------------ landing_gear
+def _tyre_profile(d: float, w: float) -> list:
+    R, h = d / 2.0, w / 2.0
+    rec, rh = 0.2 * w, 0.5 * R
+    rc = min(0.35 * w, 0.5 * (R - rh))
+    pts = [(-h + rec, 0.0), (-h + rec, rh), (-h, rh), (-h, R - rc)]
+    for k in range(1, 7):
+        t = math.radians(180 - 15 * k)
+        pts.append((-h + rc + rc * math.cos(t), R - rc + rc * math.sin(t)))
+    pts.append((h - rc, R))
+    for k in range(1, 7):
+        t = math.radians(90 - 15 * k)
+        pts.append((h - rc + rc * math.cos(t), R - rc + rc * math.sin(t)))
+    pts += [(h, rh), (h - rec, rh), (h - rec, 0.0)]
+    return pts
+
+
+def _gear_wheel(p: dict, axle, w: float, d: float):
+    if p["wheel_shape"] == "tyre":
+        return kernel.revolve("y", axle, _tyre_profile(d, w))
+    return kernel.tube("y", axle, w, d)
+
+
 def _gear_build(p: dict, base_dir) -> list:
     wd, ww, ld = p["wheel_d"], p["wheel_w"], p["leg_d"]
     gz, az = p["ground_z"], p["attach_z"]
     parts = []
     axle_z = gz + wd / 2.0
     off = (az - axle_z) * math.tan(math.radians(p["leg_splay_deg"]))
+    n, pitch = p["main_wheels"], p["wheel_pitch"]
     for s in (-1, 1):
         axle = (p["main_x"], s * p["track"] / 2.0, axle_z)
         top = (p["main_x"], s * (p["track"] / 2.0 - off), az)
         parts.append(_segment(top, axle, ld, 0.0))
-        parts.append(kernel.tube("y", axle, ww, wd))
+        if n == 1:
+            parts.append(_gear_wheel(p, axle, ww, wd))
+        else:
+            for i in range(n):
+                ax = (p["main_x"] + (i - (n - 1) / 2.0) * pitch, axle[1], axle_z)
+                parts.append(_gear_wheel(p, ax, ww, wd))
+            parts.append(kernel.tube("x", axle, (n - 1) * pitch, ld))
     fw = p["front_wheel_d"] or wd
     axle = (p["front_x"], 0.0, gz + fw / 2.0)
-    parts.append(_segment((p["front_x"], 0.0, az), axle, p["front_leg_d"] or ld, 0.0))
-    parts.append(kernel.tube("y", axle, ww, fw))
+    parts.append(_segment((p["front_x"], 0.0, p.get("front_attach_z", az)), axle, p["front_leg_d"] or ld, 0.0))
+    parts.append(_gear_wheel(p, axle, ww, fw))
     return [kernel.union(parts)]
 
 
@@ -89,6 +118,10 @@ def _gear_check(p: dict) -> list[str]:
         errs.append("front_leg_d: must be <= the front wheel diameter")
     if not p["leg_splay_deg"] < 45:
         errs.append("leg_splay_deg: must be < 45")
+    if p["main_wheels"] > 1 and not p["wheel_pitch"] > p["wheel_d"]:
+        errs.append("wheel_pitch: must be > wheel_d when main_wheels > 1")
+    if "front_attach_z" in p and not p["front_attach_z"] - p["ground_z"] > fw:
+        errs.append("front_attach_z: must exceed ground_z by more than the front wheel diameter")
     return errs
 
 
@@ -105,5 +138,12 @@ register(Generator(
      "leg_splay_deg": ParamSpec("number", default=0.0, minimum=0),
      "front_x": ParamSpec("number", required=True, doc="nose wheel x (tricycle) or tail wheel x (taildragger)"),
      "front_wheel_d": ParamSpec("number", default=0.0, minimum=0, doc="0 = wheel_d"),
-     "front_leg_d": ParamSpec("number", default=0.0, minimum=0, doc="0 = leg_d")},
+     "front_leg_d": ParamSpec("number", default=0.0, minimum=0, doc="0 = leg_d"),
+     "main_wheels": ParamSpec("int", default=1, minimum=1, doc="main wheels in line per side, count"),
+     "wheel_pitch": ParamSpec("number", default=0.0, minimum=0,
+                              doc="x distance between neighbouring main wheel centres, mm"),
+     "wheel_shape": ParamSpec("choice", default="disc", choices=("disc", "tyre"),
+                              doc="disc = plain cylinder wheel; tyre = rounded tyre with recessed hub"),
+     "front_attach_z": ParamSpec("number", doc="z where the nose or tail leg top meets the airframe; "
+                                 "omitted = attach_z")},
     _gear_build, check=_gear_check))
