@@ -5245,3 +5245,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: D85
+    kind: decision
+    text: Mechanical fidelity of generated models (wheels as separate rotating parts on axles, servo-horn-pushrod-horn linkages that follow the motion kinematically, control surfaces that rotate about a true hinge without clipping) is a post-Dec 2 milestone, not v1.0; Dec 2 shows recognisable geometry and real parts placed sensibly
+    source: Tristan, P267, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: I2
+    kind: idea
+    text: 'Milestone after Dec 2: mechanical fidelity of generated models. Wheels as separate parts on axle joints (rolling), linkages solved kinematically (servo arm -> pushrod -> horn follows the surface), control surfaces on true hinge lines with gap/cut-outs so they never clip, verified by animating each mechanism through its range in Studio Physics mode (ties to R11)'
+    source: Tristan, P267, 2026-11-24
+    owner: Tristan
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
