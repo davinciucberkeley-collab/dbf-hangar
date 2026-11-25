@@ -973,6 +973,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.5: Importer fixes for Dillon's concept-a-reborn (D84) [hard]
 
+*Progress: -1 types+cost 7cae771, -4 STL weld ef893b9 merged; -2 changelog and -3 X-mount in review (briefs keep U4.40-* names).*
+
 **Scope:** from the W32-T dry run (u4.40/dryrun-log.md, 1ca356e): B1 STL write/reload loses watertightness (motor PRP-001-LL, wing WNG-001; `dbf.py` `_write_stl`/`_canonical`, `dbf_geometry._separate_pinches`); B2 PRP-006 X-mounts re-opened by `_clean` after union/cuts; B3 connection types CT-A-M3-CSK-MOTOR and CT-A-M3-BOLT-MOUNT missing from the importer and `standards/connection-types.yaml` (sourced or pending); B4 `calcs/concept_a.py` `bom_cost` lacks the `rship` input; B5 `changelog.py` skips decision rows whose first cell is not a bare id (D-212..D-261) and reports success with 0 imported; distinct ids for the four D-212 revisions. B7 (wing planform 71,618 vs 220,500 mm2, static margin 116 % MAC) goes to Dillon/advisor, linked with U13.6 item 6. Existing designs unchanged. Dillon's guide (u4.40/dillon-import-guide.md) is sent only after this merges.
 
 - [x] **Step 1: Briefs** (tactician W32-T) *(311c9f4: U13.5-1 types+cost (easy), -2 changelog import (hard), -3 X-mount pinch (hard), -4 STL weld (hard); guide updated)*
@@ -982,7 +984,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.6: Rehearsal 2 gaps (D78) 
 
-*Progress: -2 list values merged 81a4fe7.*
+*Progress: -2 list values 81a4fe7, -4 battery mesh bcbc953, -8 build-index --design 90c9496 merged (briefs keep U4.41-* names).*
 
 **Scope:** from rehearsal 2 (gap logs 2026-11-24): (1) document the `design apply` edit-file format and the `propulsion` block in the new-concept recipe; (2) `set`/`apply` accept list values (vectors) and remove a mid-list element; (3) a `design bounds` op (component bounding boxes, mm, body frame) and a `design render` PNG op so an agent can look at its model; (4) library meshes centred on their envelope (battery offset, stray lead stub); (5) T-tail and conventional tails: rudder/elevator clearance (T138); (6) investigate T3.static_margin on generated tails (C172 67.6 % MAC, A400M 150 % MAC; was +40.9 % with the hand wing): bug or real; (7) design-engineer guidance: never invent joint ratings or requirements to clear a check; leave them `placeholder` and report; (8) `build-index --design <id>` filter. Cut: not merged by Sat 11-28 18:00 -> after Dec 2.
 
