@@ -28,3 +28,8 @@ bom_verified_max_age_days:
   value: 30
   rule: "A BOM line's verified.date may be at most this many days old."
   source: internal convention
+servo_must_drive_mechanism:
+  value: true
+  rule: "On a conventional fixed-wing design every servo is the parent of the driver attachment of some mechanisms[] entry; T6.servo_undriven is a WARN for a servo that is not."
+  source: pending
+  note: "Team expectation from the control-surface recipe (docs/mechanisms.md); no external source yet. Report-only: the row is a WARN."
