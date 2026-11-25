@@ -29,7 +29,7 @@ electrical_rating_min_ratio:
 transition_stall_ratio_min:
   value: 1.2
   rule: "T3.transition_margin: the declared transition speed divided by the stall speed (T3.stall) must be at least this."
-  source: pending
+  source: pending  # no opened source (U17.1): no numeric transition-to-stall bound in any opened page
   note: "provisional: no extracted value"
 hover_wind_mps:
   value: 5
@@ -39,17 +39,17 @@ hover_wind_mps:
 wind_drag_coefficient:
   value: 1.2
   rule: "T3.control_authority: drag coefficient of the airframe in a hover wind (model input)."
-  source: pending
+  source: "std-u171-p2-purdue-lift-drag-notes (section 9.10, worked example liftdrag_01, PDF p. 4 (footer 997))"
   note: "provisional: bluff body"
 wind_moment_min_lever_fraction:
   value: 0.25
   rule: "T3.control_authority: the wind-force lever is at least this fraction of the hover-frame height (model input)."
-  source: pending
+  source: pending  # no opened source (U17.1): no normal-plate centre of pressure value in any opened page
   note: "provisional: fraction of the hover-frame height"
 pack_sag_fraction:
   value: 0.15
   rule: "T3.control_authority and T3.transition_margin: fractional pack voltage sag under hover load; motor thrust scales with voltage squared (model input)."
-  source: pending
+  source: pending  # no opened source (U17.1): no sag figure at any rated C in the opened datasheets
   note: "provisional: fractional pack voltage sag under hover load; thrust scales with voltage squared"
 propulsive_efficiency:
   value: 0.5
@@ -59,14 +59,34 @@ propulsive_efficiency:
 battery_usable_fraction:
   value: 0.8
   rule: "T3.endurance: fraction of the nameplate battery energy that may be used (model input)."
-  source: pending
+  source: "std-u171-p4-rchelicopterfun-lipo-batteries (section \"Discharging: THE 80% LIPO BATTERY RULE\"; 70 percent in \"Discharging: 80% Rule Caveat For Aggressive Flying\")"
   note: "provisional"
 lipo_nominal_cell_v:
   value: 3.7
   rule: "T3.endurance: nominal volts per LiPo cell, used to turn mAh into Wh (model input)."
-  source: pending
+  source: "std-u171-p4-gensace-lipo-guide (Gens Ace: sections \"Battery Voltage\" and \"Cell Configuration\")"
   note: "provisional"
 wire_pair_derate:
   value: 0.8
   rule: "T7.electrical_rating: derate applied to wire_ampacity_a for a bundled harness (model input)."
   source: Multicable reference table, bundling section (2-5 conductors), via knowledge/sources/std-wire-ampacity.md
+opencae_structure_sf_min:
+  value: 2.0
+  rule: "T2.opencae_structure_sf: OpenCAE structure safety factor (yield over the 99th-percentile stress at the load factor) must be at least this."
+  source: pending
+  note: "provisional: not yet sourced (D88); 2.0 is OpenCAE's own default requirement, README section 4"
+opencae_flight_max_tilt_deg_max:
+  value: 30
+  rule: "T2.opencae_flight: peak tilt after the simulated disturbance must be at most this many degrees."
+  source: pending
+  note: "provisional: not yet sourced (D88); 30 deg is OpenCAE's own default requirement, README section 4"
+opencae_cfd_ld_tolerance_fraction:
+  value: 0.25
+  rule: "T2.opencae_cfd_ld: |computed L/D - declared flight.cruise_ld| / declared must be at most this."
+  source: pending
+  note: "provisional: not yet sourced (D88); no source for the tolerance; OpenCAE says SU2 drag is indicative only"
+opencae_mass_cross_tolerance_g:
+  value: 1.0
+  rule: "T2.opencae_mass_cross: OpenCAE mass and `plane design mass` must agree within this many grams."
+  source: pending
+  note: "provisional: not yet sourced (D88); no source"

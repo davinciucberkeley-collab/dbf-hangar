@@ -18,8 +18,11 @@ from hangar.sim import joint_load_cases
 EXAMPLE_DIR = design_mod.DESIGNS_DIR / "example-tailsitter-wing"
 RECIPE_DIR = design_mod.REPO_ROOT / "tests" / "fixtures" / "mechanism-recipe"
 KEY = "components[{}].propulsion.max_thrust_n"
-# sha256 of the sorted (id, status, message) rows of an unmodified copy of example-tailsitter-wing, recorded on main
-MAIN_ROWS_SHA = "85104472fd161151aa3848d23b070464a5474ca52c977f701534cd3e2fc55a1a"  # U18.4-1: main hash 349ef48f...f25 plus one T3.tail_volume not-applicable SKIP row
+# sha256 of the sorted (id, status, message) rows of an unmodified copy of example-tailsitter-wing, recorded on main;
+# updated for U18.3 (one row added: T3.spar_bending, "no spar tube found", report-only)
+# re-recorded after U17.1 sourced wind_drag_coefficient (the "operations.yaml#wind_drag_coefficient" mentions dropped from T3.control_authority messages)
+# U18.4-1: one more row, T3.tail_volume not-applicable SKIP (rows minus it hash to the value above)
+MAIN_ROWS_SHA = "3679b4c78f99d94d4fc702895bef6b06d1124e7f24bd13536228c7a7ef2507ff"
 
 
 @pytest.fixture

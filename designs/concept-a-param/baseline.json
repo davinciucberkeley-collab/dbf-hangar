@@ -77,49 +77,49 @@
     {
       "check_id": "T1.kinematic_link",
       "example": "pose down (E-WNG-10 -21\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-009-r, wng-010-r",
-      "key": "T1.kinematic_link|pose down (E-WNG-10 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\"],\"pose\":\"pose down (E-WNG-10 -21\u00b0)\"}",
+      "key": "T1.kinematic_link|pose down (E-WNG-10 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-009-r, wng-010-r|{\"parts\":[\"mec-003-r\",\"mec-004-r\",\"wng-009-r\",\"wng-010-r\"],\"pose\":\"pose down (E-WNG-10 -21\u00b0)\",\"unchecked_pairs\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\"]}",
       "status": "SKIP"
     },
     {
       "check_id": "T1.kinematic_link",
       "example": "pose down (E-WNG-11 -21\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-009-l, wng-010-l",
-      "key": "T1.kinematic_link|pose down (E-WNG-11 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\"],\"pose\":\"pose down (E-WNG-11 -21\u00b0)\"}",
+      "key": "T1.kinematic_link|pose down (E-WNG-11 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-009-l, wng-010-l|{\"parts\":[\"mec-003-l\",\"mec-004-l\",\"wng-009-l\",\"wng-010-l\"],\"pose\":\"pose down (E-WNG-11 -21\u00b0)\",\"unchecked_pairs\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\"]}",
       "status": "SKIP"
     },
     {
       "check_id": "T1.kinematic_link",
       "example": "pose up (E-WNG-10 21\u00b0): 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-006-r, wng-009-r, wng-010-r",
-      "key": "T1.kinematic_link|pose up (E-WNG-10 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-006-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & wng-006-r\",\"mec-003-r & mec-004-r\"],\"pose\":\"pose up (E-WNG-10 21\u00b0)\"}",
+      "key": "T1.kinematic_link|pose up (E-WNG-10 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-006-r, wng-009-r, wng-010-r|{\"parts\":[\"mec-003-r\",\"mec-004-r\",\"wng-006-r\",\"wng-009-r\",\"wng-010-r\"],\"pose\":\"pose up (E-WNG-10 21\u00b0)\",\"unchecked_pairs\":[\"wng-009-r & wng-010-r\",\"mec-003-r & wng-006-r\",\"mec-003-r & mec-004-r\"]}",
       "status": "SKIP"
     },
     {
       "check_id": "T1.kinematic_link",
       "example": "pose up (E-WNG-11 21\u00b0): 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-006-l, wng-009-l, wng-010-l",
-      "key": "T1.kinematic_link|pose up (E-WNG-11 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-006-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & wng-006-l\",\"mec-003-l & mec-004-l\"],\"pose\":\"pose up (E-WNG-11 21\u00b0)\"}",
+      "key": "T1.kinematic_link|pose up (E-WNG-11 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, wng-006-l, wng-009-l, wng-010-l|{\"parts\":[\"mec-003-l\",\"mec-004-l\",\"wng-006-l\",\"wng-009-l\",\"wng-010-l\"],\"pose\":\"pose up (E-WNG-11 21\u00b0)\",\"unchecked_pairs\":[\"wng-009-l & wng-010-l\",\"mec-003-l & wng-006-l\",\"mec-003-l & mec-004-l\"]}",
       "status": "SKIP"
     },
     {
       "check_id": "T1.kinematic_link",
       "example": "sweep E-WNG-10 -6\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r",
-      "key": "T1.kinematic_link|sweep E-WNG-10 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\",\"mec-003-r & mec-005-r\"],\"pose\":\"sweep E-WNG-10 -6\u00b0\"}",
+      "key": "T1.kinematic_link|sweep E-WNG-10 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r|{\"parts\":[\"mec-003-r\",\"mec-004-r\",\"mec-005-r\",\"wng-009-r\",\"wng-010-r\"],\"pose\":\"sweep E-WNG-10 -6\u00b0\",\"unchecked_pairs\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\",\"mec-003-r & mec-005-r\"]}",
       "status": "SKIP"
     },
     {
       "check_id": "T1.kinematic_link",
       "example": "sweep E-WNG-10 9\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r",
-      "key": "T1.kinematic_link|sweep E-WNG-10 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r|{\"pair\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\",\"mec-003-r & mec-005-r\"],\"pose\":\"sweep E-WNG-10 9\u00b0\"}",
+      "key": "T1.kinematic_link|sweep E-WNG-10 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, mec-005-r, wng-009-r, wng-010-r|{\"parts\":[\"mec-003-r\",\"mec-004-r\",\"mec-005-r\",\"wng-009-r\",\"wng-010-r\"],\"pose\":\"sweep E-WNG-10 9\u00b0\",\"unchecked_pairs\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\",\"mec-003-r & mec-005-r\"]}",
       "status": "SKIP"
     },
     {
       "check_id": "T1.kinematic_link",
       "example": "sweep E-WNG-11 -6\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l",
-      "key": "T1.kinematic_link|sweep E-WNG-11 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\",\"mec-003-l & mec-005-l\"],\"pose\":\"sweep E-WNG-11 -6\u00b0\"}",
+      "key": "T1.kinematic_link|sweep E-WNG-11 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l|{\"parts\":[\"mec-003-l\",\"mec-004-l\",\"mec-005-l\",\"wng-009-l\",\"wng-010-l\"],\"pose\":\"sweep E-WNG-11 -6\u00b0\",\"unchecked_pairs\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\",\"mec-003-l & mec-005-l\"]}",
       "status": "SKIP"
     },
     {
       "check_id": "T1.kinematic_link",
       "example": "sweep E-WNG-11 9\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l",
-      "key": "T1.kinematic_link|sweep E-WNG-11 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l|{\"pair\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\",\"mec-003-l & mec-005-l\"],\"pose\":\"sweep E-WNG-11 9\u00b0\"}",
+      "key": "T1.kinematic_link|sweep E-WNG-11 #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: mec-003-l, mec-004-l, mec-005-l, wng-009-l, wng-010-l|{\"parts\":[\"mec-003-l\",\"mec-004-l\",\"mec-005-l\",\"wng-009-l\",\"wng-010-l\"],\"pose\":\"sweep E-WNG-11 9\u00b0\",\"unchecked_pairs\":[\"wng-009-l & wng-010-l\",\"mec-003-l & mec-004-l\",\"mec-003-l & mec-005-l\"]}",
       "status": "SKIP"
     },
     {

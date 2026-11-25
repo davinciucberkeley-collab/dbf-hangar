@@ -1,0 +1,20 @@
+# Tolerances for calibration against published aircraft figures (U18.2). `source: pending` means provisional.
+version: "0.1"
+
+calibration_tol_mass_fraction:
+  value: 0.005
+  rule: "computed mass vs published maximum takeoff mass, relative error allowed"
+  source: pending
+  note: "no published accuracy target for a conceptual mass sum; 0.5 % is the unit-conversion floor (kg vs lb rounding in the POH). Tristan/Dillon to confirm"
+
+calibration_tol_geometry_fraction:
+  value: 0.01
+  rule: "computed wing loading (mass over measured planform area) vs published, relative error allowed"
+  source: pending
+  note: "same reason; matches planform_match_tolerance_fraction 0.01 in design-standards.yaml"
+
+calibration_tol_stall_fraction:
+  value: 0.05
+  rule: "computed stall speed vs the published Vs1, relative error allowed, when flight.cl_max is set from the published stall speed"
+  source: pending
+  note: "a stall speed that comes back from the same CLmax it was derived from is a unit-and-formula check only; the default-CLmax error is reported separately in the findings"
