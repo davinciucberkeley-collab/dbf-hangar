@@ -885,7 +885,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U4.36: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
-*Progress: -4 airfoils a6b1839, -2 blank 9989382, -1 design add 969b242 merged (W31-R ACCEPT); parts A/B merged 899d9f8 (conductor keeps the two sub-gram receivers: the library is a catalogue, the design picks); C/D REJECT (fixing); -6 wing inboard building.*
+*Progress: -4 airfoils a6b1839, -2 blank 9989382, -1 design add 969b242 merged (W31-R ACCEPT); parts A/B merged 899d9f8 (conductor keeps the two sub-gram receivers: the library is a catalogue, the design picks); C/D REJECT (fixing); -6 wing inboard 84a63e2, -3 remove-last 65db7f2 merged.*
 
 **Scope:** from the C172 rehearsal (gap log 2026-11-24): (1) an op that appends list elements (components, attachments, bom lines) with id checks, also used by Studio edit; (2) `design new --blank` (minimal valid design: no components) and a light remove for many elements; (3) airfoils: NACA 4-digit generated on demand plus a small `knowledge/airfoils/` library, selectable by name; (4) `plane generators list/show` with each generator's params and units, and the team guide's "Starting a new concept" updated; (5) fixed-wing real parts (motor, ESC, servos, 2-blade props with spinner, receiver) in the library with vendor CAD where licensed, envelopes otherwise (scouts); (6) wing_panel multi-section (straight inboard + tapered outboard) if cheap. Existing designs unchanged.
 
@@ -898,6 +898,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** from the A400M rehearsal (PR #5, gap log 2026-11-24, 73 min, 1 FAIL left): (1) tier-3 aero sees generated lifting surfaces: planform derived from wing_panel and tail_surfaces params (no hand-copied `planform`), so stall and static margin include the tail; (2) batch editing: many edits applied with one regeneration and one interference pass (about 150 single calls took ~50 min at 30-70 s each); (3) `design propose --draft`, title kept as given, CHANGELOG entries of one batch compacted, working tree keeps the design; (4) geometry fidelity: fuselage_loft per-station centre z if not already supported, tail control surfaces split from fixed surfaces, landing_gear in-line multi-wheel mains; (5) docs: build-index/Studio how-to. Existing designs unchanged. Items not done by Sat 11-28 18:00 move to after Dec 2.
 
+*Progress: -2 batch apply merged ca54346 (W31-R ACCEPT; 20 edits 161 s vs 315 s single, loaded machine); -1 derived planform building.*
+
 - [x] **Step 1: Briefs** (tactician W31-T) *(1fbe834: -1 derived planform, -2 batch apply, -3 propose --draft, -4a/b/c optional fidelity, -5 Studio how-to; defaults taken: `design add` is the one documented way to create elements (set --kind add stays as a field-add); batch CHANGELOG logs count and keys, values in the git diff)*
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R); merge
@@ -906,7 +908,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** a git-ignored overlay folder (path from an env var or `opencae.local.json`-style local config, default `C:/Users/trist/parts-cad`) maps library part id -> local mesh (STL; STEP if trimesh can load it here) plus a placement transform (re-centre, orient to the part frame, mm); `plane parts show` reports overlay present/absent; geometry uses the overlay mesh when present, the committed envelope otherwise; mass and BOM always from the committed part; exports and build-index mark overlay-built outputs local-only and refuse to write them into tracked paths; CI never sees the overlay. Tristan's files: servo ES08MA STEP (MAII proxy), motor X2814 STL (1000 kV geometry); ESC and receiver have no CAD (envelopes stay).
 
-- [ ] **Step 1: Brief** (tactician W31-T)
+- [x] **Step 1: Brief** (tactician W31-T) *(6792d4a: -1 overlay core, -2 output guard; STEP needs cascadio (not installed) else STL; defaults: library motors shaft toward -x; servo transform tuned by Tristan from fit ratios; git-ignored viewer/data and .studio count as allowed local outputs)*
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R); merge
 
