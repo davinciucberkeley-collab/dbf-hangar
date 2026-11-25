@@ -350,6 +350,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D81 | Speed up design set? | profile a span change, then a mesh cache for the interference step if the profile confirms the double build; nothing else before Dec 2 | Tristan | 11-24 | decided (Tristan P235, 2026-11-24) |
 | D82 | Parts without vendor CAD? | dimension-accurate envelopes labelled representative for Dec 2; Tristan supplies real models for the demo's parts, agents swap them in with licence recorded | Tristan | 11-24 | decided (Tristan P236, 2026-11-24) |
 | D83 | GrabCAD models can't go on GitHub: how do they show? | local git-ignored CAD overlay on team PCs only; committed parts keep envelopes + source URL + licence; never in CI, public viewer or committed GLB | Tristan | 11-24 | decided (Tristan P237, 2026-11-24) |
+| D84 | Dillon's redesign/v1 concept-a vs hangar's edited concept-a? | Dillon's is the truth; he imports it as `concept-a-reborn` by PR with D-212..D-261 and a DaVinci reconnect record; hangar's edits not reapplied; DBF-Combined not archived yet | Tristan | 11-24 | decided (Tristan P263, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -713,6 +714,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W31-T, W31-S, W31-B, W31-R, W31-R2 | `tactician`, `scout`, `builder`/`builder-plus`, `reviewer` (two in parallel, P262) | Sonnet, Haiku, Haiku/Sonnet, Opus (fresh) | U4.36 (design authoring gaps from rehearsal 1) | `briefs/U4.36-*.md`, `knowledge/parts/` additions, branches `std/u4.36-*`, `reviews/2026-11-25-w31.md` | a fixed-wing design can be built from a blank start with the CLI alone; "### Verdict:" |
 | W32-S | `scout` | Haiku | T137 DaVinci hookup facts (R29, D3): Dillon's API guide, DBF-Combined docs (read-only source), live API GET-only | `knowledge/` source entries + `knowledge/research/davinci-api-facts.md`, branch `std/w32-davinci-facts` | every fact sourced; no POST/DELETE; token never printed |
 | W32-A | `advisor` | Opus | P259: DBF-Combined origin/redesign/v1 (Dillon's DaVinci-era concept-a) vs dbf-hangar PDL/designs/concept-a: what maps, what would be lost on import | gap report in `plans/2026-11-20-standardization/u4.40/combined-compat.md` (conductor commits) | every DBF-Combined artefact classified: maps / needs adapter / would be lost |
+| W32-T | `tactician` | Sonnet | D84: dry-run of the concept-a-reborn import from DBF-Combined origin/redesign/v1 in a scratch copy (no push), then Dillon's step-by-step guide | `plans/2026-11-20-standardization/u4.40/dillon-import-guide.md` | every command in the guide ran once in the dry run; issues listed with fixes |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 

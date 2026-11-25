@@ -29,13 +29,14 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | owner | open | next due |
 |---|---|---|
-| Dillon | 30 | 2026-12-08 |
+| Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
 | conductor | 21 | 2026-11-28 |
 
 ### Open items for teammates
 
+- T139 (Dillon, due 2026-11-28): Import concept-a from DBF-Combined origin/redesign/v1 as designs/concept-a-reborn via a PR, plus...
 - T2 (James, due 2026-11-29): James: harness install test (plan 6b) [triage 2026-11-21: James runs the harness install by 11-29;...
 - T63 (Dillon, due 2026-12-08): concept-a: 38 PETG parts assigned to jacobs-fdm, whose standard lists PLA only; confirm PETG at...
 - T64 (Dillon, due 2026-12-08): concept-a: CA (including foam-safe CA) declared on XPS fin fairings E-FIN-05..08 and 13..16;...
@@ -45,7 +46,6 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 - T73 (Dillon, due 2026-12-08): concept-a drop test: E-MEC-05 1.2 N and E-MEC-10 1.3 N peak vs 0.7 N rating (T2.sim_drop_loads...
 - T74 (Dillon, due 2026-12-08): concept-a drop test: E-WNG-20 1.8 N and E-WNG-21 1.8 N vs 1.4 N rating (T2.sim_drop_loads FAIL,...
 - T75 (Dillon, due 2026-12-08): concept-a T2.sim_rest FAIL: tailsitter tips 81 deg on its gear; widen the gear footprint or lower...
-- T76 (Dillon, due 2026-12-08): concept-a T3.static_margin FAIL 16.4% MAC (CG x=21 mm); move CG or confirm the target band
 - and 22 more in `ledger/items.yaml`
 
 ## Units by wave
@@ -190,9 +190,9 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 50 | 83 | 3 | 2 | 0 | 138 |
+| task | 50 | 83 | 3 | 3 | 0 | 139 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 269 | 285 |
+| decision | 12 | 0 | 0 | 4 | 270 | 286 |
 
 ## Overdue
 
