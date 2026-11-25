@@ -192,7 +192,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 53 | 83 | 3 | 3 | 0 | 142 |
+| task | 53 | 84 | 3 | 3 | 0 | 143 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 
