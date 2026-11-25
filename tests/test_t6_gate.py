@@ -138,3 +138,11 @@ def test_range_ends_zero_and_every_degree_are_sampled(monkeypatch):
     row, posed, _ = run_t6(monkeypatch, make_design(link=False, input_range=(-3.5, 7.5), joint_range=(-10, 40)), lambda pair, drv: 0.0)
     assert row.status == PASS
     assert sorted(set(posed)) == [-3.5, -3, -2, -1, 0, 1, 2, 3, 4, 5, 6, 7, 7.5]
+
+
+def test_link_row_names_parts_not_pair(monkeypatch):
+    row, _, rows = run_t6(monkeypatch, make_design(), lambda pair, drv: 5.0 if pair == {"rod", "horn"} else 0.0)
+    warn = rows["T6.link.flap_l"]
+    assert warn.data["link_pairs"] == [["horn", "rod"]]
+    assert warn.data["parts"] == ["horn", "rod"]
+    assert "pair" not in warn.data

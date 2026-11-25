@@ -90,7 +90,7 @@ def load_gate_thresholds() -> dict[str, dict]:
 
 def _import_gates() -> None:
     from .. import checks  # noqa: F401  (registers tiers 0 to 5)
-    from . import mechanisms, integration, sourcing, claims, discipline, fixedwing  # noqa: F401
+    from . import mechanisms, integration, sourcing, claims, discipline, fixedwing, spar  # noqa: F401
 
 
 def _report_only(rep: TierReport) -> None:

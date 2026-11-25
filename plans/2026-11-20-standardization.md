@@ -365,6 +365,10 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D96 | U16.1 brief defaults (W34-T5, 52e43ea) | S1 jam = no root, transmission angle < 10 deg or follower step > 10 deg per deg (two new `pending` thresholds, FAIL rows); T1 pose sweeps keep rigid rods for now; S2 wheels stay type landing_gear; S3 servo frames are estimates and the c172 wing servos are report-only (wing ~14 mm thick vs 24 mm servo), tail servos are the acceptance; S4 arm 6 mm / horn 13 mm layout defaults; export-hash check on every design | Tristan | 11-25 | decided (default, conductor 2026-11-25; confirmed Tristan P289) |
 | D97 | U19.1 brief decisions (W34-T6, 277de38) | B6 renames check-row keys (`pair` -> `unchecked_pairs` etc.) and refreshes concept-a and concept-a-param baselines in a second `migration:` commit with the `migration` label; joint rows resolve to parts through `parts.json` attachments (no check-row change); B5 adds two lines to edit.js; Physics tab folds into the timeline (B4); three pinned at 0.180.0 after a URL check | Tristan | 11-25 | decided (default, conductor 2026-11-25; confirmed Tristan P289) |
 | D98 | OpenCAE export: how are `pending` standards values and built-in defaults (air density 1.225) tagged in drone.json? (W34-R section 4) | as `estimate`, never `user`: an unsourced number may not support an OpenCAE pass; done in U18.1-3 together with the rows | Tristan | 11-25 | decided (default, conductor 2026-11-25; confirmed Tristan P289) |
+| D99 | How many agents at once? | at most 2 builders and 1 reviewer running at a time (Tristan P290, PC load); no new builder until two are running or fewer; W34-R finishes its current branch and stops, W34-R2 takes every later review and re-review | Tristan | 11-25 | superseded by Tristan P291 (2026-11-25): cap lifted while he is away; launch by free RAM (two reviewers, builders as memory allows) |
+| D100 | U17.1 step 2b briefs (e6c36eb): owners and relabelling | criteria brief builds now (+516 rows resolve, statuses unchanged); team-owner Part 1 builds after values merges with owner Tristan, date 2026-11-25 as a placeholder owner that Tristan confirms; Part 2 (relabel 7 `internal convention` values as team decisions, +51) is NOT built until Tristan decides each value himself, because an agent may not create a team decision; schema/mtow/connection keys stay `pending` | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D101 | U16.1 S6-S9 brief defaults (11653fa) | S6 ships hinge_style none/bevel (round deferred); S7 kinematic MJCF with gravity 0, ball joint at the rod end + connect loop; S8 wires Catmull-Rom tubes 1.5 mm, visual-only, bend radius deferred, library ports labelled estimates; S9 clevis/screw-head drawing rules (not standards) behind an opt-in `display` block; S9c hollow fuselage changes mass/CG so its showcase opt-in waits for Tristan | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D102 | U15.3: `design get/set` on generator designs still load trimesh because loading computes mass_g by building meshes | accept U15.3 as lazy imports only (`plane --help` 8.8 -> 3.5 s, outputs byte-identical); test 2 uses concept-a; a follow-up step U15.3-2 makes mass_g lazy (computed on first use) so get/set on parametric designs skip mesh building | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -800,6 +804,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-A2 | `advisor` | Opus | U19.1: audit of Studio (viewer/, core/hangar/studio.py) against the recon and Tristan's needs; UI spec | `plans/2026-11-20-standardization/u19.1/ui-spec.md` | ordered build steps sized for briefs, each Studio-visible |
 | W34-T6 | `tactician` | Sonnet | U19.1 briefs B0-B8 from `u19.1/ui-spec.md` | `briefs/U19.1-b<n>-*.md` | builder-ready bar; Playwright test per visible step |
 | W34-R2 | `reviewer` | Opus (fresh) | second W34 reviewer in parallel (queue too long for one) | sections in `reviews/2026-11-25-w34b.md` | "### Verdict:" per branch |
+| W34-R3 | `reviewer` | Opus (fresh) | third W34 reviewer in parallel (replaces W34-R, which finished; cap lifted P291) | sections in `reviews/2026-11-25-w34c.md` | "### Verdict:" per branch |
+| W34-A3 | `advisor` | Opus | U16.2 pockets refresh stopped (2 new T1.pocket sliver FAILs of 1-2 mm3 from many overlapping swept cutters; tier-1 84 s warm vs ~70 s) | diagnosis + recommended fix in `plans/2026-11-20-standardization/u16.2/diagnosis.md` | names the cause and one fix, who builds it |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -1065,8 +1071,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** an aileron, elevator or flap generated from a wing's planform today repeats the wing's span, chords and sweep in its own `geometry.params`, so a wing-only `design set ...span` leaves the surface stale (A400M: 8 new T1 hinge-overlap FAILs at span 1800, u4.2/demo-script.md Decisions 2). Make generated control surfaces derive their planform from the parent wing (reference the wing component's params, or a design `parameters:` entry, or a surface generator that reads the parent), so one wing change regenerates the surfaces and their hinges with no new FAIL. Document it in the new-concept recipe. Existing designs unchanged (byte-identical meshes and baselines) unless they opt in.
 
 - [x] **Step 1: Brief** (tactician W34-T) *(4efe4c6: hard; planform via `$wing_span_mm` clears the 8 FAIL with no code; hinges via new opt-in `hinge_from: generator`; tail hinges out of scope (follow-up))*
-- [ ] **Step 2: Build** (builder-plus W34-B)
-- [ ] **Step 3: Review** (W34-R); merge; check on a scratch copy of PR #8's a400m-rc that span 1800 gives no new FAIL
+- [x] **Step 2: Build** (builder-plus W34-B)
+- [x] **Step 3: Review** (W34-R); merge; check on a scratch copy of PR #8's a400m-rc that span 1800 gives no new FAIL *(merged cec9f41; W34-R2 REOPEN once (team-guide line order), ACCEPT)*
 
 ### Unit U15.2: Small fixes (T19, T111; T101 already fixed)
 
@@ -1083,13 +1089,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Brief** (tactician W34-T, with the importtime profile) *(4efe4c6: hard; trimesh 2.26 s of 2.63 s import; lazy proxy; merge after U15.1)*
 - [ ] **Step 2: Build** (builder-plus W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
+- [ ] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review
 
 ### Unit U16.1: 3D generation close to the real aircraft (I2; D85, D87) [hard]
 
 **Scope:** generated models carry real mechanical content, not only shapes: control surfaces on hinge joints driven by servo -> horn -> pushrod -> control horn linkages that move kinematically and do not clip; wheels as separate parts on axle joints that roll; library parts placed where they really go (servos in wing/fuselage bays, not floating); wires as routed harness geometry between real connectors; joints and fasteners visible in the model. Exported to Studio and MJCF so the mechanisms play. Step 1 decides the order; each later step is one brief. Existing designs unchanged unless they opt in. Rehearsals resume when Tristan judges the output close to the real deal (D87).
 
 - [x] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u16.1/recon.md`, `u16.1/design-note.md` *(build order S0 showcase c172-rc on main, S1 four-bar solve (rod posed server-side), S2 wheels on axles, S3 servos in bays, S4 linkage generator op, S5 = U16.2, S6 hinge gap/bevel, S7 mjcf-kinematic, S8 wires as tubes, S9 visual detail + x-ray; PDL 1.3 three optional fields; all opt-in, export sha256 unchanged on existing designs; D90)*
-- [x] **Step 2: Briefs** (tactician W34-T5) from the design note, S0 and S1 first *(52e43ea: S0 easy; S1-S4 hard, each with a designs-only Part B; S6-S9 outlines; PDL 1.3 opened by S1; chain S0 -> S1 -> S2 -> S3 -> S4; S0 check: c172-rc on main 0 FAIL / 26 WARN, baseline unchanged; D96)*
+- [x] **Step 2: Briefs** (tactician W34-T5) from the design note, S0 and S1 first *(52e43ea: S0 easy; S1-S4 hard, each with a designs-only Part B; S6-S9 outlines; PDL 1.3 opened by S1; chain S0 -> S1 -> S2 -> S3 -> S4; S0 check: c172-rc on main 0 FAIL / 26 WARN, baseline unchanged; D96)* *(S6-S9 re-briefed 11653fa: S6 hinge geometry, S7 mjcf-kinematic (prototype matches S1 hand angles to 4 decimals), S8 wires (after S1, S3, U19.1 B2), S9a clevis, S9b screws, S9c fuselage wall (Part B on Tristan's word); x-ray dropped (B3); D101)*
 - [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order *(S0 c172-rc showcase merged 75c5c2c (PR #12, W34-R ACCEPT); S1 four-bar building)*
 - [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
 
@@ -1110,7 +1117,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Inventory and packets** (tactician W34-T2) *(48791cb: 96 entries, 9 packets, 21 team decisions; 518 blocking rows have criteria that resolve to no threshold (D91); connection types move 0 rows (U8.3))*
 - [x] **Step 2: Sources** (scouts W34-S, up to 3 at a time; worktree C:/Users/trist/wt/u17.1, branch std/u17.1-sources) *(9 packets + a second pass with pdftotext for binary PDFs; about 45 source files; disagreements for the team: tip_angle_max_deg 30 vs ~15 deg tip-back, fw_static_margin_max 0.25 vs 0.05-0.15, wire_clearance_mm 5 vs 9.5-12.7 mm (AC 43.13-1B), LulzBot Z 256 vs 250 mm, attach/planform tolerances looser than printer accuracy, XPS 25 kg/m3 below the denser grades; hover-moment rows unsourced)*
-- [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus)
+- [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus) *(briefs e6c36eb: -criteria (hard) building; -team-owner Part 1 after values merges; Part 2 held for Tristan (D100))*
 - [ ] **Step 3: Values into standards; re-run; baselines** (W34-B)
 - [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
 
@@ -1119,7 +1126,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** OpenCAEModel main (11-24) ships an `opencae` CLI (`doctor`, `new`, `run --only mass,propulsion,structure,cfd,flight --json`, `iterate --set`, `status`) with evidence-status rules close to hangar's (estimate/datasheet/measured). Integrate it as an external GPL program: a hangar op exports a design to an OpenCAE drone project (drone.json from PDL propulsion, battery, ESC, materials, requirements; geometry from the GLB/STL export), runs `opencae run --json`, and maps results to check rows: propulsion current margins (motor, ESC, battery) and thrust-to-weight, structure safety factor (replacing or alongside the old opencae_runner FEA route), whole-aircraft CL/CD/LD from SU2 CFD, hover flight for VTOL/tailsitter. SKIP with the reason where OpenCAE or a solver is missing (CI). Results cached and hashed like FEA. No OpenCAE source copied (PROVENANCE row).
 
 - [x] **Step 1: Integration study and briefs** (tactician W34-T3) *(77414cd: study + fixtures; OpenCAE runs in qt_test; quad250 mass/prop 1.4 s, structure 27 s, flight 1.9 s, SU2 CFD 11 min; concept-a-param mass matches except 2 meshless point masses; briefs -1 cli (hard), -2 export (hard), -3 rows (hard, after -1), -4 ops (easy, after -1 and -2); D93)*
-- [ ] **Step 2: Build** (W34-B) *(-1 cli merged d2105bd (one REOPEN: Linux test), -2 export merged 2ba4033; -3 rows and -4 ops next)*
+- [ ] **Step 2: Build** (W34-B) *(-1 cli merged d2105bd (one REOPEN: Linux test), -2 export merged 2ba4033; -3 rows merged c0a851b (W34-R ACCEPT, D98); -4 ops building)*
 - [ ] **Step 3: Review** (W34-R); merge
 
 ### Unit U18.2: Calibration against a real aircraft (D89; P280)
@@ -1128,16 +1135,16 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Brief** (tactician W34-T4; scout W34-S for the published figures, opened sources only) *(aec87ed: scout -scout-c172 then -calibration (hard); C172S fixture in tests/fixtures, not designs/; tolerances in new standards/calibration.yaml, pending; default-CLmax stall error +30.7 % pinned as a finding)*
 *Unblocked 11-25 (second scout pass, PDF text via pdftotext): TCDS 3A12 Rev 84 (2015, Univair mirror) and the 172S handbook Rev 5 (2004, BEFA copy) read; sources on std/u18-sources. Neither confirmed as the current revision.*
-- [ ] **Step 2: Build** (W34-B)
-- [ ] **Step 3: Review** (W34-R); merge
+- [x] **Step 2: Build** (W34-B)
+- [x] **Step 3: Review** (W34-R); merge *(merged 5f694b3 with the C172S sources; W34-R2 REOPEN once (source assertion), ACCEPT; default CLmax 1.1 reads stall +18.4 % vs Vs1 (flaps up) and +30.7 % vs Vso (flaps 30); implied CLmax 1.54)*
 
 ### Unit U18.3: Wing spar bending by beam theory (D89; P280)
 
 **Scope:** a fast analytic check for every winged design in CI: root bending moment at the design load factor (elliptic or Schrenk lift distribution), spar stress from the spar section (tube or generated spar params) and material allowables, tip deflection; safety factor against the sourced material yield; thresholds in standards with a source. FEA (U18.1 structure) stays the detailed check; a test compares both on one wing.
 
 - [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -spar-bending (easy) + scout packet B (allowables); FEA comparison deferred to U18.3-2 after U18.1 merges)*
-- [ ] **Step 2: Build** (W34-B)
-- [ ] **Step 3: Review** (W34-R); merge
+- [x] **Step 2: Build** (W34-B)
+- [x] **Step 3: Review** (W34-R); merge *(merged 088ce2d; W34-R2 ACCEPT after the pinned-rows hash fix; CFRP/6061 allowables now sourced on std/u18-sources, wiring them into spar.yaml is a follow-up)*
 
 ### Unit U18.4: Trim and stability (D89; P280) [hard]
 
@@ -1155,7 +1162,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Recon and UI spec** (recon W34-X2, then advisor W34-A2): `u19.1/recon.md`, `u19.1/ui-spec.md` *(extend our three.js app; three panes (part tree, viewport + toolbar/view cube/apply bar/timeline, inspector); Apply via existing /api/op/design.set; steps B0 three upgrade + one renderer + split app.js, B1 lighting/edges, B2 tree + parts.json, B3 see inside, B4 explode + timeline, B5 move + apply, B6 part ids on check rows (core, first as its own PR), B7 layout, B8 measure + view cube; concept-a GLB 2.29 MB / 118k tris; D95)*
 - [x] **Step 2: Briefs** (tactician W34-T6) from the spec *(277de38: B6 part ids (easy, core, own PR), then B0 three 0.180 + split + Playwright, B1 look, B2 tree/inspector/parts.json, B3 see inside, B4 explode + timeline (Physics tab folds in), B5 move + apply, B6b colour by status, B7 layout, B8 measure + cube; strictly sequential after B0; D97)*
-- [ ] **Step 3: Build** (W34-B), one brief at a time
+- [ ] **Step 3: Build** (W34-B), one brief at a time *(B0 three 0.180 + split merged 335d304; B6 part ids merged 594c831 (PR #13, migration label); B1 look building)*
 - [ ] **Step 4: Review** (W34-R); merge; Tristan tries it in Studio
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)

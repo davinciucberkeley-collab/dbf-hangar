@@ -1,0 +1,32 @@
+# Cessna 172S reference fixture (U18.2). Not a design; used only by tests/test_calibration_c172.py.
+# Sources: std-textron-cessna-skyhawk-172s (area 16.17 m2, span 11.00 m, 2,550 lb), std-aopa-cessna-172-fact-sheet,
+# ref-c172-commons-3view (LE 1.94 m, tail 6.4 m, tail planform), std-faa-tcds-3a12-text (aft CG 47.3 in, MAC 58.8 in, LEMAC 25.9 in, p.29),
+# std-cessna-172s-poh (stall table p.124, 124 KTAS cruise p.2).
+schema_version: "1.0"
+id: c172s-calibration
+name: Cessna 172S calibration fixture
+status: concept
+morphology: {lift: fixed-wing, vtol_method: none}
+requirements: {mtow_g: 1157000, cruise_speed_mps: 63.79}
+root: loaded_aircraft
+components:
+  # rectangular wing of the published area, 11.00 m x 1.47 m = 16.17 m2 (real wing is tapered outboard)
+  - id: wing
+    type: wing
+    geometry: {lifting_surface: {span: 11000, root_chord: 1470, tip_chord: 1470}}
+    position: [1940, 0, 0]
+    mass_g: 1
+  - id: htail
+    type: tail_surface
+    geometry: {lifting_surface: {span: 3250, root_chord: 1200, tip_chord: 920, sweep_le_deg: 10}}
+    position: [6400, 0, 0]
+    mass_g: 1
+  # everything else lumped at the aft CG limit: 1940 + (47.3 - 25.9) / 58.8 * 1470 = 2475.0 mm
+  - id: loaded_aircraft
+    type: fuselage
+    geometry: {box: {size: [1000, 1000, 1000]}}
+    position: [2475.0, 0, 0]
+    mass_g: 1156998
+attachments:
+  - {id: wing-fus, parent: loaded_aircraft, child: wing, method: bolted, location: [2300, 0, 0], rated_load_n: 100000}
+  - {id: htail-fus, parent: loaded_aircraft, child: htail, method: bolted, location: [6400, 0, 0], rated_load_n: 10000}
