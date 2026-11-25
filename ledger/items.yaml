@@ -5300,3 +5300,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-25'
+  - id: T144
+    kind: task
+    text: 'design render: add tests for the overlay refusal into a tracked path and the missing-matplotlib message; consider shading fix for thin dark slivers in iso view'
+    source: reviews/2026-11-25-w31b.md §11
+    owner: conductor
+    status: open
+    due: '2026-12-09'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
