@@ -115,7 +115,7 @@ plane baseline update designs/concept-a-reborn
 plane baseline check designs/concept-a-reborn
 ```
 
-Expect `wrote ...\baseline.json (127 known)` (108 s), then `Result: pass`, `Unchanged: 127, Regressions: 0` (about 2 min). Before the check, `plane baseline check` reports `Missing baseline.json` with every row a regression: that is normal for a new design. A new design that is not fully accepted needs the baseline, or CI fails. Never use the baseline to hide a row that you could fix.
+Expect `wrote ...baseline.json (123 known)` (128 s), then `Result: pass`, `Known results: 123 (FAIL 41, SKIP 82). Unchanged: 123. Regressions: 0.` (131 s). If you changed the planform in step 6 the numbers differ; use what Claude prints. Before the check, `plane baseline check` reports `Missing baseline.json` with every row a regression: that is normal for a new design. A new design that is not fully accepted needs the baseline, or CI fails. Never use the baseline to hide a row that you could fix.
 
 ## Step 8. Decisions D-127, D-128 and D-212 to D-261 (13 seconds)
 
