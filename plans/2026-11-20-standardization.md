@@ -1142,6 +1142,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** a big UI improvement to Studio (viewer/, three.js 0.160 from CDN, core/hangar/studio.py), the 3D viewer first: lighting and materials (PBR, environment light, shadows, edge lines), part selection with highlight and a part tree, section/clipping planes and x-ray, measure tool, exploded view, standard views and a view cube, smooth orbit/pan/zoom with fit-to-selection, playing mechanisms (U16.1 linkages, wheels) with a timeline, check rows shown on the parts they concern (FAIL in red), and a cleaner layout for the other panels (scorecard, BOM, edit, compare). Performance on concept-a (100+ meshes). The public viewer build keeps working; Playwright tests for the click paths (install it in .venv if missing). Step 1 decides the order.
 
+**Must-haves (Tristan P286):** explode the view (slider, by assembly level); move parts by dragging them (view-only by default; an explicit Apply writes the new position through the edit op with `--why`, so the design and CHANGELOG change only on purpose; T1 re-runs on the moved part); see inside the plane (x-ray / transparent skin, section plane, hide/isolate) so internal parts such as the battery, ESC, servos and wires are visible and selectable.
+
 - [ ] **Step 1: Recon and UI spec** (recon W34-X2, then advisor W34-A2): `u19.1/recon.md`, `u19.1/ui-spec.md`
 - [ ] **Step 2: Briefs** (tactician) from the spec
 - [ ] **Step 3: Build** (W34-B), one brief at a time
