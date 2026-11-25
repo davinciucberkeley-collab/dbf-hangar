@@ -5,6 +5,7 @@ import yaml
 
 from . import OpInputError, OpResult, op
 from ..design import REPO_ROOT, STANDARDS_PATH
+from ..gates import load_gate_thresholds
 from ..gates.interfaces import load_connection_types
 
 KINDS = ("mechanical", "electrical", "thermal", "kinematic")
@@ -104,6 +105,10 @@ def pending() -> OpResult:
     for sec, key, rule in _rules():
         if rule["source"] == "pending":
             items.append({"key": key, "value": _value(rule), "blocking": key in BLOCKING_KEYS,
+                          "candidates": _candidates(key)})
+    for key, entry in load_gate_thresholds().items():
+        if isinstance(entry, dict) and entry.get("source") == "pending":
+            items.append({"key": key, "value": entry.get("value"), "blocking": False,
                           "candidates": _candidates(key)})
     for t in load_connection_types().values():
         if t["source"] == "pending":
