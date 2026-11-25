@@ -984,7 +984,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.6: Rehearsal 2 gaps (D78) 
 
-*Progress: -2 list values 81a4fe7, -4 battery mesh bcbc953, -8 build-index --design 90c9496 merged (briefs keep U4.41-* names).*
+*Progress: -2 list values 81a4fe7, -4 battery mesh bcbc953, -8 build-index --design 90c9496, -6 docs 1968b5a, -7 no-invention 77dad58 merged (briefs keep U4.41-* names).*
 
 **Scope:** from rehearsal 2 (gap logs 2026-11-24): (1) document the `design apply` edit-file format and the `propulsion` block in the new-concept recipe; (2) `set`/`apply` accept list values (vectors) and remove a mid-list element; (3) a `design bounds` op (component bounding boxes, mm, body frame) and a `design render` PNG op so an agent can look at its model; (4) library meshes centred on their envelope (battery offset, stray lead stub); (5) T-tail and conventional tails: rudder/elevator clearance (T138); (6) investigate T3.static_margin on generated tails (C172 67.6 % MAC, A400M 150 % MAC; was +40.9 % with the hand wing): bug or real; (7) design-engineer guidance: never invent joint ratings or requirements to clear a check; leave them `placeholder` and report; (8) `build-index --design <id>` filter. Cut: not merged by Sat 11-28 18:00 -> after Dec 2.
 
