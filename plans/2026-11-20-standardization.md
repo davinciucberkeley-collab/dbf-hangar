@@ -403,11 +403,11 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 
 | Wave | Dates (PT) | Units |
 |---|---|---|
-| W0 Seed, harness & ledger | Fri 11-20 → Sat 11-21 | U0.4 first, then U0.1, U0.2, U0.3 in parallel |
-| W1 Ops layer & PDL | Sat 11-21 → Mon 11-23 | U1.1 [hard], U1.2, U1.3 [hard], U1.4, U1.5 [hard], U1.6 |
-| W2 Gates, adapters, import, team ops | Mon 11-23 → Wed 11-25 | U2.1 [hard], U2.2, U2.3 [hard], U2.4, U2.5 [hard] |
+| W0 Seed, harness & ledger | Fri 11-20 (done 15:55; planned → Sat 11-21) | U0.4 first, then U0.1, U0.2, U0.3 in parallel |
+| W1 Ops layer & PDL | Fri 11-20 16:45 → 20:13 (planned Sat 11-21 → Mon 11-23) | U1.1 [hard], U1.2, U1.3 [hard], U1.4, U1.5 [hard], U1.6 |
+| W2 Gates, adapters, import, team ops | Fri 11-20 20:13 → 23:17 (planned Mon 11-23 → Wed 11-25) | U2.1 [hard], U2.2, U2.3 [hard], U2.4, U2.5 [hard] |
 | — async check-in (no meeting) | Wed 11-25 | `plane update publish` → link in the Drive doc |
-| W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
+| W3 One surface, skills, proof | Fri 11-20 23:17 → Sat 11-21 20:22 (planned Wed 11-25 → Sat 11-28) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
 | Freeze | Mon 11-30 18:00 | — |
 | W4 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
 | W5 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
