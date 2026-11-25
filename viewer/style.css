@@ -3,7 +3,7 @@
   --border: #d9dde5; --accent: #1f6feb; --accent-soft: #e3eeff;
   --pass: #17803d; --pass-bg: #def5e5; --fail: #c4261d; --fail-bg: #fde4e1;
   --warn: #9a6700; --warn-bg: #fff1c9; --skip: #6b7280; --skip-bg: #e8eaee;
-  --vp-bg: #e9ecf1; --cg: #f97316;
+  --vp-bg: #e9ecf1; --cg: #f97316; --edge: #27303f;
   --mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
   --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
@@ -13,8 +13,22 @@
     --border: #2b3140; --accent: #5b9dff; --accent-soft: #1c2b47;
     --pass: #4cc177; --pass-bg: #12301e; --fail: #ff7b72; --fail-bg: #3a1714;
     --warn: #e3b341; --warn-bg: #36290a; --skip: #98a1b0; --skip-bg: #232834;
-    --vp-bg: #11151c;
+    --vp-bg: #11151c; --edge: #c4cee0;
   }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1218; --panel: #171b23; --panel-2: #1f2430; --text: #e6e9ef; --muted: #8b93a3;
+  --border: #2b3140; --accent: #5b9dff; --accent-soft: #1c2b47;
+  --pass: #4cc177; --pass-bg: #12301e; --fail: #ff7b72; --fail-bg: #3a1714;
+  --warn: #e3b341; --warn-bg: #36290a; --skip: #98a1b0; --skip-bg: #232834;
+  --vp-bg: #11151c; --edge: #c4cee0;
+}
+:root[data-theme="light"] {
+  --bg: #f6f7f9; --panel: #ffffff; --panel-2: #eef0f4; --text: #1b1f27; --muted: #667085;
+  --border: #d9dde5; --accent: #1f6feb; --accent-soft: #e3eeff;
+  --pass: #17803d; --pass-bg: #def5e5; --fail: #c4261d; --fail-bg: #fde4e1;
+  --warn: #9a6700; --warn-bg: #fff1c9; --skip: #6b7280; --skip-bg: #e8eaee;
+  --vp-bg: #e9ecf1; --edge: #27303f;
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
@@ -60,6 +74,7 @@ body[data-mode=compare] .ab { display: flex; }
 
 #stage { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
 .toolbar { display: flex; align-items: center; gap: 12px; padding: 8px 12px; border-bottom: 1px solid var(--border); background: var(--panel); }
+#theme-toggle { margin-left: auto; }
 .seg { display: inline-flex; border: 1px solid var(--border); border-radius: 7px; overflow: hidden; }
 .seg button { background: none; border: 0; padding: 4px 14px; cursor: pointer; }
 .seg button.active { background: var(--accent); color: #fff; }
