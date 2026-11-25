@@ -52,3 +52,13 @@ When a `mechanisms` list already exists, add the mechanism entry with `plane des
 
 - `T6.undriven.<joint>`: an articulated joint that no mechanism drives.
 - `T6.servo_undriven.<servo>` (for conventional fixed-wing designs, from U4.39-2): a servo that no mechanism uses.
+
+## Splitting a wing into core and ailerons
+
+A wing split into a core and two ailerons is three components: the wing (`part: core`) and two `part: elevon` pieces (`side: right` and `side: left`), all with the same airfoil, span, chords and `elevon_y`.
+
+The pitfall: the core ends at `hinge_frac` of the chord everywhere, and the elevon pieces only cover `elevon_y`. Outside `elevon_y` the trailing part of the chord belongs to no component. For the C172 rehearsal (core to 0.72 chord) 28 % of the chord outside `elevon_y` is missing, so the measured wing area is 158,130 mm2 instead of 192,514 mm2 and stall speed and wing loading come out wrong.
+
+The fix: set `core_fill: outside` on the CORE component only (not on the elevon pieces). The core then runs full chord outside the `elevon_y` span, so core plus elevon pieces cover the whole planform (192,517 mm2 measured). The default `core_fill: off` changes nothing. `core_fill: outside` needs `part: core` and a valid `elevon_y`.
+
+Keep the two elevon pieces as `articulated` children of the wing: `T3` measures the planform from the core and its articulated children, so only then is the aileron area counted.

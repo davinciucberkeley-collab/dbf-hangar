@@ -147,6 +147,17 @@ def _build(p: dict, base_dir) -> list:
     else:
         ys = [0.0, side * ib, side * half] if ib > 0 else [0.0, side * half]
     core = _loft(unit, p, ys)
+    if part == "core" and p["core_fill"] == "outside":
+        y0, y1 = p["elevon_y"]
+        full_unit = _unit_loop(upper, lower, 0.0, 1.0)
+        fills = []
+        for s in ([1, -1] if side == 0 else [side]):
+            for a, b in [(0.0, y0), (y1, half)]:
+                if b - a > 1e-9:
+                    st = [s * a, s * b] + ([s * ib] if a < ib < b else [])
+                    fills.append(_loft(full_unit, p, st))
+        if fills:
+            core = kernel.union([core] + fills)
     if "bore_d" in p:
         lo, hi = core.bounds[0][1], core.bounds[1][1]
         cyl = kernel.tube("y", (p["bore_x"], (lo + hi) / 2.0, p["bore_z"]), (hi - lo) + 2.0, p["bore_d"])
@@ -180,6 +191,10 @@ def _check(p: dict) -> list[str]:
         y0, y1 = p["elevon_y"]
         if not 0 <= y0 < y1 <= p["span"] / 2.0:
             errs.append("elevon_y: need 0 <= y0 < y1 <= span/2")
+    if p["core_fill"] == "outside":
+        y0, y1 = p["elevon_y"]
+        if p["part"] != "core" or not 0 <= y0 < y1 <= p["span"] / 2.0:
+            errs.append("core_fill: outside needs part core and elevon_y with 0 <= y0 < y1 <= span/2")
     if p.get("placement", "none") != "none" and p.get("fuselage_height", 0) <= 0:
         errs.append("fuselage_height: must be > 0 when placement is high, mid or low")
     if not all(isinstance(f, str) for f in p["cut_files"]):
@@ -211,6 +226,7 @@ register(Generator(
      "part": ParamSpec("choice", default="full", choices=("full", "core", "elevon"), doc="full chord, core (leading edge to hinge_frac) or elevon (hinge_frac to trailing edge)"),
      "hinge_frac": ParamSpec("number", default=0.75, doc="hinge line as a fraction of the chord"),
      "elevon_y": ParamSpec("vec2", default=[0.0, 0.0], doc="[y0, y1] on |y|, mm"),
+     "core_fill": ParamSpec("choice", default="off", choices=("off", "outside"), doc="part core only: outside = full chord outside the elevon_y span, so the elevon pieces over elevon_y complete the wing; off = core to hinge_frac everywhere"),
      "side": ParamSpec("choice", default="both", choices=("both", "right", "left"), doc="half-span to build: both, right or left"),
      "bore_x": ParamSpec("number", doc="bore centre x, mm"), "bore_z": ParamSpec("number", doc="bore centre z, mm"), "bore_d": ParamSpec("number", doc="bore diameter, mm"),
      "cut_files": ParamSpec("list", default=[], doc="design-folder-relative closed-solid meshes subtracted from the core"),
