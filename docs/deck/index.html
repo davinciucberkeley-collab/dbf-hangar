@@ -96,10 +96,11 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <tr><td>Rehearsal 1, C172</td><td>blocked</td><td>no CLI operation could add components</td></tr>
 <tr><td>Rehearsal 2, C172</td><td>38 min, about 60 calls</td><td>0 FAIL; PR #6</td></tr>
 <tr><td>Rehearsal 2, A400M</td><td>47 min, about 45 calls</td><td>0 FAIL; PR #7</td></tr>
-<tr><td>Rehearsal 3, A400M</td><td>55 min, about 75 calls</td><td>0 FAIL, 28 WARN; PR #8</td></tr>
+<tr><td>Rehearsal 3, A400M</td><td>55 min, about 75 calls</td><td>0 FAIL, 24 WARN<sup>a</sup>; PR #8</td></tr>
 </table>
-<div class="src">Source: plans/2026-11-20-standardization.md Unit U13.1 steps 1 to 4; <code>gh pr view 5</code>, <code>6</code>, <code>7</code>, <code>8</code> -R davinciucberkeley-collab/dbf-hangar, read 2026-11-25: PR #5 CLOSED (not draft), PR #6, #7 and #8 OPEN, draft</div>
-<aside>Both rehearsal-2 runs raised joint ratings without a source to clear the T2 drop-load checks (caveat in the plan); rehearsal 3 left them as placeholders and listed them. Times are agent wall time, not a promise. Re-check on 11-25 (ran 2026-11-25 on 65d006a, demo-script.md step 4): PR #8's design on main shows 24 WARN, not 28; the difference is not investigated.</aside></section>
+<p style="font-size:2.2vmin;color:#9a9a9a">a: 28 WARN at rehearsal time (plan U13.1 step 4); the same design on main shows 24 WARN, not investigated.</p>
+<div class="src">Source: plans/2026-11-20-standardization.md Unit U13.1 steps 1 to 4; <code>gh pr view 5</code>, <code>6</code>, <code>7</code>, <code>8</code> -R davinciucberkeley-collab/dbf-hangar, read 2026-11-25: PR #5 CLOSED (not draft), PR #6, #7 and #8 OPEN, draft; 24 WARN: <code>plane design validate designs/a400m-rc</code>, ran 2026-11-25 on 65d006a (demo-script.md step 4)</div>
+<aside>Both rehearsal-2 runs raised joint ratings without a source to clear the T2 drop-load checks (caveat in the plan); rehearsal 3 left them as placeholders and listed them. Times are agent wall time, not a promise. The 28 WARN is the count at rehearsal time; the 24 WARN is the count on main today, cause not investigated.</aside></section>
 
 <section class="slide warn"><h1>What the model is and is not</h1>
 <ul><li>Is: recognisable geometry, and real parts placed sensibly</li>

@@ -109,4 +109,4 @@ Also in the same review: FAIL on fc-sku-check, rc-variant, esc-listing and lab-a
 | Rehearsal 1, C172 | blocked: no CLI operation could add components; no PR | plan U13.1 step 1 |
 | Rehearsal 2, C172 | 38 min, about 60 calls, 0 FAIL, PR #6 (OPEN, draft) | plan U13.1 step 3; `gh pr view 6` read 2026-11-25 |
 | Rehearsal 2, A400M | 47 min, about 45 calls, 0 FAIL, PR #7 (OPEN, draft) | plan U13.1 step 3; `gh pr view 7` read 2026-11-25 |
-| Rehearsal 3, A400M | 55 min, about 75 calls, 0 FAIL and 28 WARN, PR #8 (OPEN, draft) | plan U13.1 step 4; `gh pr view 8` read 2026-11-25. Same design on main shows 24 WARN (`plane design validate designs/a400m-rc`, ran 2026-11-25 on 65d006a, demo-script.md step 4); not investigated |
+| Rehearsal 3, A400M | 55 min, about 75 calls, 0 FAIL and 24 WARN on main (28 WARN at rehearsal time), PR #8 (OPEN, draft) | 24 WARN: `plane design validate designs/a400m-rc`, ran 2026-11-25 on 65d006a (demo-script.md step 4); 28 WARN: plan U13.1 step 4; `gh pr view 8` read 2026-11-25; difference not investigated |
