@@ -11,6 +11,7 @@ from . import edit
 from .. import pdledit, yamlfast
 
 _VERBS = ("set", "add", "append", "remove")
+_KIND = {"set": "modify", "add": "add", "append": "append", "remove": "remove"}
 
 
 def _parse_edits(edits: Path) -> list[tuple[str, str, object]]:
@@ -45,7 +46,7 @@ def _parse_edits(edits: Path) -> list[tuple[str, str, object]]:
     return out
 
 
-@op(name="design.apply", summary="Apply many edits from a YAML file (set / add / append / remove) in one atomic step: one schema check, one regeneration and one interference pass for the whole batch, one compact CHANGELOG entry.",
+@op(name="design.apply", summary="Apply many edits from a YAML file (set / add / append / remove) in one atomic step: one schema check, one regeneration and one interference pass for the whole batch, one compact CHANGELOG entry. The CHANGELOG entry lists each applied edit's key and kind (modify, add, append, remove), without values.",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def apply_op(path: str, *, edits: Path, why: str) -> OpResult:
     plane = edit._plane(path)
@@ -58,6 +59,7 @@ def apply_op(path: str, *, edits: Path, why: str) -> OpResult:
     counts = {"set": 0, "add": 0, "append": 0, "remove": 0}
     unchanged = 0
     keys = []
+    kinds = []
     for n, (verb, key, value) in enumerate(todo, 1):
         try:
             if verb == "set":
@@ -94,6 +96,7 @@ def apply_op(path: str, *, edits: Path, why: str) -> OpResult:
             raise OpInputError(f"edit {n}: {e}") from e
         counts[verb] += 1
         keys.append(key)
+        kinds.append(_KIND[verb])
     if working == text:
         return OpResult(True, {"count": 0, "unchanged": unchanged, "verbs": counts}, ["no changes"])
     from ..geom.params import expression_errors
@@ -107,7 +110,7 @@ def apply_op(path: str, *, edits: Path, why: str) -> OpResult:
     n = sum(counts.values())
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     entry = {"date": stamp, "kind": "batch", "key": "batch", "old": None, "new": None, "why": why,
-             "count": n, "keys": keys, "file": Path(edits).name}
+             "count": n, "keys": keys, "kinds": kinds, "file": Path(edits).name}
     log = edit._write_with_log(plane, text, working, [entry])
     msgs = [f"applied {n} edits ({counts['set']} set, {counts['add']} add, {counts['append']} append, "
             f"{counts['remove']} remove; {unchanged} unchanged)"]

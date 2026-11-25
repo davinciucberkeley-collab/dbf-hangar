@@ -138,3 +138,33 @@ def test_schema_error_refused(pair, tmp_path):
 
 def test_registered():
     assert "design.apply" in registry()
+
+
+def test_changelog_lists_each_kind(pair, tmp_path):
+    a, _ = pair
+    edits = [{"set": "components[center_body].mass_g", "value": 125}, {"append": "components", "value": COMP},
+             {"add": "flight.air_density_kgm3", "value": 1.2}, {"remove": "attachments[fc-mount]"}]
+    assert call("design.apply", path=str(a), edits=_file(tmp_path, edits), why="t").ok
+    e = yaml.safe_load((a / "CHANGELOG.yaml").read_text(encoding="utf-8"))[-1]
+    assert e["kinds"] == ["modify", "append", "add", "remove"]
+    assert len(e["keys"]) == len(e["kinds"]) == 4
+    assert e["keys"] == ["components[center_body].mass_g", "components", "flight.air_density_kgm3", "attachments[fc-mount]"]
+    assert e["count"] == 4
+    assert e["old"] is None and e["new"] is None
+
+
+def test_unchanged_edits_are_not_listed(pair, tmp_path):
+    a, _ = pair
+    cur = yaml.safe_load((a / "plane.yaml").read_text(encoding="utf-8"))
+    center = next(c for c in cur["components"] if c["id"] == "center_body")
+    edits = [{"set": "components[center_body].mass_g", "value": center["mass_g"]},
+             {"set": "components[center_body].mass_g", "value": 125}]
+    assert call("design.apply", path=str(a), edits=_file(tmp_path, edits), why="t").ok
+    e = yaml.safe_load((a / "CHANGELOG.yaml").read_text(encoding="utf-8"))[-1]
+    assert len(e["keys"]) == 1 and len(e["kinds"]) == 1
+    assert e["kinds"] == ["modify"]
+    assert e["count"] == 1
+
+
+def test_summary_mentions_kinds():
+    assert "kind" in registry()["design.apply"].summary

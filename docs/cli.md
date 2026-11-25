@@ -155,7 +155,7 @@ Writes files.
 
 ### `plane design apply`
 
-Apply many edits from a YAML file (set / add / append / remove) in one atomic step: one schema check, one regeneration and one interference pass for the whole batch, one compact CHANGELOG entry.
+Apply many edits from a YAML file (set / add / append / remove) in one atomic step: one schema check, one regeneration and one interference pass for the whole batch, one compact CHANGELOG entry. The CHANGELOG entry lists each applied edit's key and kind (modify, add, append, remove), without values.
 
 ```
 plane design apply <path> --edits <path> --why <str>
