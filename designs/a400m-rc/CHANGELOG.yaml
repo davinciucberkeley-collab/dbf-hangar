@@ -1,0 +1,4399 @@
+- date: '2026-11-25T00:10:17Z'
+  key: components[wing].mass_g
+  old: 180
+  new: 181
+  why: probe addressing
+  kind: modify
+- date: '2026-11-25T00:10:52Z'
+  key: attachments[fc-mount]
+  old: '{id: fc-mount, parent: center_body, child: flight_controller, method: bolted,
+    location: [200, 0, 28], embed_ok: true, rated_load_n: 5}'
+  new: null
+  why: strip template
+  kind: remove
+- date: '2026-11-25T00:10:58Z'
+  key: attachments[battery-bay]
+  old: '{id: battery-bay, parent: center_body, child: battery, method: clamp, location:
+    [140, 0, -27.5], embed_ok: true, rated_load_n: 80}'
+  new: null
+  why: strip template
+  kind: remove
+- date: '2026-11-25T00:11:08Z'
+  key: components[flight_controller]
+  old: '{id: flight_controller, type: flight_controller, geometry: {box: {size: [36,
+    36, 10]}}, position: [200, 0, 28], mass_g: 15, manufacturing: {method: purchased,
+    part_number: "Matek H743"}}'
+  new: null
+  why: strip template
+  kind: remove
+- date: '2026-11-25T00:11:24Z'
+  key: attachments[fin-r]
+  old: '{id: fin-r, parent: wing, child: fin_r, method: slot-tab, location: [300,
+    495, 0], embed_ok: true, rated_load_n: 80}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:11:32Z'
+  key: attachments[fin-l]
+  old: '{id: fin-l, parent: wing, child: fin_l, method: slot-tab, location: [300,
+    -495, 0], embed_ok: true, rated_load_n: 80}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:11:38Z'
+  key: attachments[prop-r]
+  old: '{id: prop-r, parent: motor_r, child: prop_r, method: press-fit, location:
+    [85, 250, 0], rated_load_n: 30}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:11:44Z'
+  key: attachments[prop-l]
+  old: '{id: prop-l, parent: motor_l, child: prop_l, method: press-fit, location:
+    [85, -250, 0], rated_load_n: 30}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:11:51Z'
+  key: attachments[motor-r]
+  old: '{id: motor-r, parent: mount_r, child: motor_r, method: bolted, location: [115,
+    250, 0], rated_load_n: 50}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:00Z'
+  key: attachments[motor-l]
+  old: '{id: motor-l, parent: mount_l, child: motor_l, method: bolted, location: [115,
+    -250, 0], rated_load_n: 50}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:06Z'
+  key: attachments[mount-r]
+  old: '{id: mount-r, parent: wing, child: mount_r, method: glued, location: [155,
+    250, 0], embed_ok: true, rated_load_n: 20}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:12Z'
+  key: attachments[mount-l]
+  old: '{id: mount-l, parent: wing, child: mount_l, method: glued, location: [155,
+    -250, 0], embed_ok: true, rated_load_n: 20}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:22Z'
+  key: components[battery]
+  old: '{id: battery, type: battery, geometry: {box: {size: [100, 35, 24]}}, position:
+    [140, 0, -27.5], mass_g: 250, manufacturing: {method: purchased, part_number:
+    "3S 2200mAh"}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:31Z'
+  key: components[fin_r]
+  old: '{id: fin_r, type: tail_surface, geometry: {lifting_surface: {span: 200, root_chord:
+    150, tip_chord: 100, sweep_le_deg: 30, mirrored: true, lifting: false}}, position:
+    [242, 500, 0], rotation_deg: [90, 0, 0], mass_g: 15, manufacturing: {method: laser-cut,
+    machine: jacobs-laser}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:39Z'
+  key: components[fin_l]
+  old: '{id: fin_l, type: tail_surface, description: "Wingtip fin, also the landing
+    leg in hover", geometry: {lifting_surface: {span: 200, root_chord: 150, tip_chord:
+    100, sweep_le_deg: 30, mirrored: true, lifting: false}}, position: [242, -500,
+    0], rotation_deg: [90, 0, 0], mass_g: 15, manufacturing: {method: laser-cut, machine:
+    jacobs-laser}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:47Z'
+  key: components[prop_r]
+  old: '{id: prop_r, type: propeller, geometry: {cylinder: {radius: 127, length: 10,
+    axis: x}}, position: [80, 250, 0], mass_g: 12, manufacturing: {method: purchased,
+    part_number: "APC 10x4.5"}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:53Z'
+  key: components[prop_l]
+  old: '{id: prop_l, type: propeller, description: "Swept disc of a 10x4.5 prop",
+    geometry: {cylinder: {radius: 127, length: 10, axis: x}}, position: [80, -250,
+    0], mass_g: 12, manufacturing: {method: purchased, part_number: "APC 10x4.5"}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:12:59Z'
+  key: components[motor_r]
+  old: '{id: motor_r, type: motor, geometry: {cylinder: {radius: 14, length: 30, axis:
+    x}}, position: [100, 250, 0], mass_g: 60, manufacturing: {method: purchased, part_number:
+    "2212 1000KV"}, propulsion: {max_thrust_n: 9.0, axis: [-1, 0, 0], role: both}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:13:05Z'
+  key: components[motor_l]
+  old: '{id: motor_l, type: motor, geometry: {cylinder: {radius: 14, length: 30, axis:
+    x}}, position: [100, -250, 0], mass_g: 60, manufacturing: {method: purchased,
+    part_number: "2212 1000KV"}, propulsion: {max_thrust_n: 9.0, axis: [-1, 0, 0],
+    role: both}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:13:12Z'
+  key: components[mount_r]
+  old: '{id: mount_r, type: structure, geometry: {box: {size: [45, 20, 20]}}, position:
+    [137, 250, 0], mass_g: 10, manufacturing: {method: laser-cut, machine: jacobs-laser}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:13:19Z'
+  key: components[mount_l]
+  old: '{id: mount_l, type: structure, geometry: {box: {size: [45, 20, 20]}}, position:
+    [137, -250, 0], mass_g: 10, manufacturing: {method: laser-cut, machine: jacobs-laser}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:13:24Z'
+  key: components[wing]
+  old: '{id: wing, type: wing, geometry: {lifting_surface: {span: 1000, root_chord:
+    250, tip_chord: 150, sweep_le_deg: 20, thickness_ratio: 0.12, airfoil: MH45}},
+    position: [60, 0, 0], mass_g: 181, manufacturing: {method: foamboard}}'
+  new: null
+  why: strip tailsitter template
+  kind: remove
+- date: '2026-11-25T00:17:02Z'
+  key: components[fuselage].type
+  old: null
+  new: fuselage
+  why: A400M fuselage, lofted from measured stations, scale 1/25
+  kind: add
+  regenerated:
+  - fuselage
+- date: '2026-11-25T00:17:02Z'
+  key: components[fuselage].description
+  old: null
+  new: A400M fuselage lofted from 9 measured stations at 1/25 scale
+  why: A400M fuselage, lofted from measured stations, scale 1/25
+  kind: add
+- date: '2026-11-25T00:17:02Z'
+  key: components[fuselage].geometry
+  old: null
+  new:
+    generator: fuselage_loft
+    params:
+      stations:
+      - - 116
+        - 144
+        - 164
+      - - 200
+        - 208
+        - 196
+      - - 320
+        - 226.8
+        - 200
+      - - 520
+        - 226.8
+        - 228
+      - - 800
+        - 226.8
+        - 230
+      - - 1040
+        - 226.8
+        - 180
+      - - 1180
+        - 220
+        - 144
+      - - 1280
+        - 196
+        - 136
+      - - 1516
+        - 120
+        - 80
+      shape: superellipse
+      exponent: 2.5
+      nose_length: 116
+      nose_shape: ellipsoid
+      tail_length: 40
+      tail_shape: cone
+      tail_upsweep_deg: 18.9
+      center_z: 0
+  why: A400M fuselage, lofted from measured stations, scale 1/25
+  kind: add
+- date: '2026-11-25T00:17:02Z'
+  key: components[fuselage].position
+  old: null
+  new:
+  - 0
+  - 0
+  - 0
+  why: A400M fuselage, lofted from measured stations, scale 1/25
+  kind: add
+- date: '2026-11-25T00:17:02Z'
+  key: components[fuselage].mass_g
+  old: null
+  new: 450
+  why: A400M fuselage, lofted from measured stations, scale 1/25
+  kind: add
+- date: '2026-11-25T00:17:02Z'
+  key: components[fuselage].manufacturing
+  old: null
+  new:
+    method: composite-layup
+  why: A400M fuselage, lofted from measured stations, scale 1/25
+  kind: add
+- date: '2026-11-25T00:17:25Z'
+  key: root
+  old: center_body
+  new: fuselage
+  why: A400M fuselage is the root part
+  kind: modify
+- date: '2026-11-25T00:17:33Z'
+  key: attachments[wing-body].parent
+  old: center_body
+  new: fuselage
+  why: re-parent template joint
+  kind: modify
+- date: '2026-11-25T00:17:41Z'
+  key: components[center_body]
+  old: '{id: center_body, type: fuselage, geometry: {box: {size: [300, 80, 80]}},
+    position: [150, 0, 0], mass_g: 120, manufacturing: {method: laser-cut, machine:
+    jacobs-laser}}'
+  new: null
+  why: template tailsitter body replaced by lofted A400M fuselage
+  kind: remove
+- date: '2026-11-25T00:18:02Z'
+  key: components[wing].type
+  old: null
+  new: wing
+  why: high wing from measured planform, 1/25 scale
+  kind: add
+  regenerated:
+  - wing
+- date: '2026-11-25T00:18:02Z'
+  key: components[wing].description
+  old: null
+  new: A400M wing at 1/25 from drawing measurements, anhedral -4 deg (measured -6,
+    no photo check), high placement
+  why: high wing from measured planform, 1/25 scale
+  kind: add
+- date: '2026-11-25T00:18:02Z'
+  key: components[wing].geometry
+  old: null
+  new:
+    generator: wing_panel
+    params:
+      airfoil_file: airfoils/naca2415.dat
+      span: 1696
+      root_chord: 318.4
+      tip_chord: 94.4
+      sweep_le_deg: 19.2
+      dihedral_deg: -4
+      placement: high
+      fuselage_height: 228
+      fuselage_center_z: 0
+      z_offset: -24
+  why: high wing from measured planform, 1/25 scale
+  kind: add
+- date: '2026-11-25T00:18:02Z'
+  key: components[wing].position
+  old: null
+  new:
+  - 520
+  - 0
+  - 0
+  why: high wing from measured planform, 1/25 scale
+  kind: add
+- date: '2026-11-25T00:18:02Z'
+  key: components[wing].mass_model
+  old: null
+  new:
+    density_g_cm3: 0.035
+    extra_g: 150
+  why: high wing from measured planform, 1/25 scale
+  kind: add
+- date: '2026-11-25T00:18:02Z'
+  key: components[wing].manufacturing
+  old: null
+  new:
+    method: hotwire-foam
+  why: high wing from measured planform, 1/25 scale
+  kind: add
+- date: '2026-11-25T00:18:10Z'
+  key: components[tail].type
+  old: null
+  new: tail_surface
+  why: T-tail from measured fin and tailplane, 1/25
+  kind: add
+  regenerated:
+  - tail
+- date: '2026-11-25T00:18:10Z'
+  key: components[tail].description
+  old: null
+  new: A400M T-tail at 1/25 swept fin and tailplane on top of the fin
+  why: T-tail from measured fin and tailplane, 1/25
+  kind: add
+- date: '2026-11-25T00:18:10Z'
+  key: components[tail].geometry
+  old: null
+  new:
+    generator: tail_surfaces
+    params:
+      layout: t
+      airfoil_file: airfoils/naca2415.dat
+      stab_span: 752
+      stab_root_chord: 216
+      stab_tip_chord: 20
+      stab_sweep_le_deg: 42
+      stab_x_le: 1468
+      fin_thickness: 33
+      fin_height: 352
+      fin_root_chord: 272
+      fin_tip_chord: 272
+      fin_sweep_le_deg: 33.7
+      fin_x_le: 1276
+      fin_z_root: 40
+  why: T-tail from measured fin and tailplane, 1/25
+  kind: add
+- date: '2026-11-25T00:18:10Z'
+  key: components[tail].position
+  old: null
+  new:
+  - 0
+  - 0
+  - 0
+  why: T-tail from measured fin and tailplane, 1/25
+  kind: add
+- date: '2026-11-25T00:18:10Z'
+  key: components[tail].mass_model
+  old: null
+  new:
+    density_g_cm3: 0.035
+    extra_g: 30
+  why: T-tail from measured fin and tailplane, 1/25
+  kind: add
+- date: '2026-11-25T00:18:10Z'
+  key: components[tail].manufacturing
+  old: null
+  new:
+    method: hotwire-foam
+  why: T-tail from measured fin and tailplane, 1/25
+  kind: add
+- date: '2026-11-25T00:18:50Z'
+  key: components[prop-il].type
+  old: null
+  new: propeller
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+  regenerated:
+  - prop-il
+- date: '2026-11-25T00:18:50Z'
+  key: components[prop-il].description
+  old: null
+  new: 8-blade scale propeller il
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:18:50Z'
+  key: components[prop-il].geometry
+  old: null
+  new:
+    generator: propeller
+    params:
+      blades: 8
+      diameter: 212
+      hub_d: 28
+      hub_length: 12
+      root_chord: 20
+      tip_chord: 14
+      pitch_deg: 20
+      spinner_length: 30
+      handed: cw
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:18:50Z'
+  key: components[prop-il].position
+  old: null
+  new:
+  - 482.4
+  - -277.2
+  - 36
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:18:50Z'
+  key: components[prop-il].mass_g
+  old: null
+  new: 20
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:18:50Z'
+  key: components[prop-il].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:19:17Z'
+  key: components[prop-ir].type
+  old: null
+  new: propeller
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+  regenerated:
+  - prop-ir
+- date: '2026-11-25T00:19:17Z'
+  key: components[prop-ir].description
+  old: null
+  new: 8-blade scale propeller ir
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:19:17Z'
+  key: components[prop-ir].geometry
+  old: null
+  new:
+    generator: propeller
+    params:
+      blades: 8
+      diameter: 212
+      hub_d: 28
+      hub_length: 12
+      root_chord: 20
+      tip_chord: 14
+      pitch_deg: 20
+      spinner_length: 30
+      handed: ccw
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:19:17Z'
+  key: components[prop-ir].position
+  old: null
+  new:
+  - 482.4
+  - 277.2
+  - 36
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:19:17Z'
+  key: components[prop-ir].mass_g
+  old: null
+  new: 20
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:19:17Z'
+  key: components[prop-ir].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:20:50Z'
+  key: components[nac-il].type
+  old: null
+  new: pod
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+  regenerated:
+  - nac-il
+- date: '2026-11-25T00:20:50Z'
+  key: components[nac-il].description
+  old: null
+  new: Engine nacelle il
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:20:50Z'
+  key: components[nac-il].geometry
+  old: null
+  new:
+    generator: nacelle
+    params:
+      length: 240
+      diameter: 57
+      nose_length: 40
+      tail_length: 80
+      nose_shape: ellipsoid
+      tail_end_frac: 0.3
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:20:50Z'
+  key: components[nac-il].position
+  old: null
+  new:
+  - 614.4
+  - -277.2
+  - 36
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:20:50Z'
+  key: components[nac-il].mass_g
+  old: null
+  new: 35
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:20:50Z'
+  key: components[nac-il].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:21:06Z'
+  key: components[motor-il].type
+  old: null
+  new: motor
+  why: one MN2212 library motor per engine
+  kind: add
+  regenerated:
+  - motor-il
+- date: '2026-11-25T00:21:06Z'
+  key: components[motor-il].description
+  old: null
+  new: Motor il
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:06Z'
+  key: components[motor-il].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: tmotor-mn2212-v2-kv780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:06Z'
+  key: components[motor-il].position
+  old: null
+  new:
+  - 512.4
+  - -277.2
+  - 36
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:06Z'
+  key: components[motor-il].mass_g
+  old: null
+  new: 65
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:06Z'
+  key: components[motor-il].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: T-Motor MN2212 V2.0 KV780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:06Z'
+  key: components[motor-il].propulsion
+  old: null
+  new:
+    max_thrust_n: 9
+    axis:
+    - -1
+    - 0
+    - 0
+    role: cruise
+    prop_diameter_mm: 212
+    spin: cw
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:19Z'
+  key: components[nac-ir].type
+  old: null
+  new: pod
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+  regenerated:
+  - nac-ir
+- date: '2026-11-25T00:21:19Z'
+  key: components[nac-ir].description
+  old: null
+  new: Engine nacelle ir
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:21:19Z'
+  key: components[nac-ir].geometry
+  old: null
+  new:
+    generator: nacelle
+    params:
+      length: 240
+      diameter: 57
+      nose_length: 40
+      tail_length: 80
+      nose_shape: ellipsoid
+      tail_end_frac: 0.3
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:21:19Z'
+  key: components[nac-ir].position
+  old: null
+  new:
+  - 614.4
+  - 277.2
+  - 36
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:21:19Z'
+  key: components[nac-ir].mass_g
+  old: null
+  new: 35
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:21:19Z'
+  key: components[nac-ir].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:21:33Z'
+  key: components[motor-ir].type
+  old: null
+  new: motor
+  why: one MN2212 library motor per engine
+  kind: add
+  regenerated:
+  - motor-ir
+- date: '2026-11-25T00:21:33Z'
+  key: components[motor-ir].description
+  old: null
+  new: Motor ir
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:33Z'
+  key: components[motor-ir].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: tmotor-mn2212-v2-kv780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:33Z'
+  key: components[motor-ir].position
+  old: null
+  new:
+  - 512.4
+  - 277.2
+  - 36
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:33Z'
+  key: components[motor-ir].mass_g
+  old: null
+  new: 65
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:33Z'
+  key: components[motor-ir].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: T-Motor MN2212 V2.0 KV780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:21:33Z'
+  key: components[motor-ir].propulsion
+  old: null
+  new:
+    max_thrust_n: 9
+    axis:
+    - -1
+    - 0
+    - 0
+    role: cruise
+    prop_diameter_mm: 212
+    spin: ccw
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:22:39Z'
+  key: components[nac-ol].type
+  old: null
+  new: pod
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+  regenerated:
+  - nac-ol
+- date: '2026-11-25T00:22:39Z'
+  key: components[nac-ol].description
+  old: null
+  new: Engine nacelle ol
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:22:39Z'
+  key: components[nac-ol].geometry
+  old: null
+  new:
+    generator: nacelle
+    params:
+      length: 240
+      diameter: 57
+      nose_length: 40
+      tail_length: 80
+      nose_shape: ellipsoid
+      tail_end_frac: 0.3
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:22:39Z'
+  key: components[nac-ol].position
+  old: null
+  new:
+  - 676
+  - -514
+  - 36
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:22:39Z'
+  key: components[nac-ol].mass_g
+  old: null
+  new: 35
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:22:39Z'
+  key: components[nac-ol].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:23:05Z'
+  key: components[motor-ol].type
+  old: null
+  new: motor
+  why: one MN2212 library motor per engine
+  kind: add
+  regenerated:
+  - motor-ol
+- date: '2026-11-25T00:23:05Z'
+  key: components[motor-ol].description
+  old: null
+  new: Motor ol
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:05Z'
+  key: components[motor-ol].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: tmotor-mn2212-v2-kv780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:05Z'
+  key: components[motor-ol].position
+  old: null
+  new:
+  - 568
+  - -514
+  - 36
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:05Z'
+  key: components[motor-ol].mass_g
+  old: null
+  new: 65
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:05Z'
+  key: components[motor-ol].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: T-Motor MN2212 V2.0 KV780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:05Z'
+  key: components[motor-ol].propulsion
+  old: null
+  new:
+    max_thrust_n: 9
+    axis:
+    - -1
+    - 0
+    - 0
+    role: cruise
+    prop_diameter_mm: 212
+    spin: ccw
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:22Z'
+  key: components[prop-ol].type
+  old: null
+  new: propeller
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+  regenerated:
+  - prop-ol
+- date: '2026-11-25T00:23:22Z'
+  key: components[prop-ol].description
+  old: null
+  new: 8-blade scale propeller ol
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:23:22Z'
+  key: components[prop-ol].geometry
+  old: null
+  new:
+    generator: propeller
+    params:
+      blades: 8
+      diameter: 212
+      hub_d: 28
+      hub_length: 12
+      root_chord: 20
+      tip_chord: 14
+      pitch_deg: 20
+      spinner_length: 30
+      handed: ccw
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:23:22Z'
+  key: components[prop-ol].position
+  old: null
+  new:
+  - 544
+  - -514
+  - 36
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:23:22Z'
+  key: components[prop-ol].mass_g
+  old: null
+  new: 20
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:23:22Z'
+  key: components[prop-ol].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:23:37Z'
+  key: components[nac-or].type
+  old: null
+  new: pod
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+  regenerated:
+  - nac-or
+- date: '2026-11-25T00:23:37Z'
+  key: components[nac-or].description
+  old: null
+  new: Engine nacelle or
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:23:37Z'
+  key: components[nac-or].geometry
+  old: null
+  new:
+    generator: nacelle
+    params:
+      length: 240
+      diameter: 57
+      nose_length: 40
+      tail_length: 80
+      nose_shape: ellipsoid
+      tail_end_frac: 0.3
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:23:37Z'
+  key: components[nac-or].position
+  old: null
+  new:
+  - 676
+  - 514
+  - 36
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:23:37Z'
+  key: components[nac-or].mass_g
+  old: null
+  new: 35
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:23:37Z'
+  key: components[nac-or].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: A400M engine nacelle 1/25 from measured width 1.42 m, length estimated
+  kind: add
+- date: '2026-11-25T00:23:51Z'
+  key: components[motor-or].type
+  old: null
+  new: motor
+  why: one MN2212 library motor per engine
+  kind: add
+  regenerated:
+  - motor-or
+- date: '2026-11-25T00:23:51Z'
+  key: components[motor-or].description
+  old: null
+  new: Motor or
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:51Z'
+  key: components[motor-or].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: tmotor-mn2212-v2-kv780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:51Z'
+  key: components[motor-or].position
+  old: null
+  new:
+  - 568
+  - 514
+  - 36
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:51Z'
+  key: components[motor-or].mass_g
+  old: null
+  new: 65
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:51Z'
+  key: components[motor-or].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: T-Motor MN2212 V2.0 KV780
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:23:51Z'
+  key: components[motor-or].propulsion
+  old: null
+  new:
+    max_thrust_n: 9
+    axis:
+    - -1
+    - 0
+    - 0
+    role: cruise
+    prop_diameter_mm: 212
+    spin: cw
+  why: one MN2212 library motor per engine
+  kind: add
+- date: '2026-11-25T00:24:11Z'
+  key: components[prop-or].type
+  old: null
+  new: propeller
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+  regenerated:
+  - prop-or
+- date: '2026-11-25T00:24:11Z'
+  key: components[prop-or].description
+  old: null
+  new: 8-blade scale propeller or
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:24:11Z'
+  key: components[prop-or].geometry
+  old: null
+  new:
+    generator: propeller
+    params:
+      blades: 8
+      diameter: 212
+      hub_d: 28
+      hub_length: 12
+      root_chord: 20
+      tip_chord: 14
+      pitch_deg: 20
+      spinner_length: 30
+      handed: cw
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:24:11Z'
+  key: components[prop-or].position
+  old: null
+  new:
+  - 544
+  - 514
+  - 36
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:24:11Z'
+  key: components[prop-or].mass_g
+  old: null
+  new: 20
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:24:11Z'
+  key: components[prop-or].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: 8-blade scale prop, diameter 5.3 m /25
+  kind: add
+- date: '2026-11-25T00:24:32Z'
+  key: components[motor-il].position[0]
+  old: 512.4
+  new: 506.4
+  why: close the 5 mm gap between prop hub and motor
+  kind: modify
+  regenerated:
+  - motor-il
+- date: '2026-11-25T00:24:43Z'
+  key: components[motor-ir].position[0]
+  old: 512.4
+  new: 506.4
+  why: close the 5 mm gap between prop hub and motor
+  kind: modify
+  regenerated:
+  - motor-ir
+- date: '2026-11-25T00:26:14Z'
+  key: components[gear].type
+  old: null
+  new: landing_gear
+  why: tricycle gear from measured wheel positions, 1/25
+  kind: add
+  regenerated:
+  - gear
+- date: '2026-11-25T00:26:14Z'
+  key: components[gear].description
+  old: null
+  new: Tricycle gear at 1/25 main track 252 mm wheelbase 508 mm
+  why: tricycle gear from measured wheel positions, 1/25
+  kind: add
+- date: '2026-11-25T00:26:14Z'
+  key: components[gear].geometry
+  old: null
+  new:
+    generator: landing_gear
+    params:
+      layout: tricycle
+      main_x: 716
+      track: 252
+      attach_z: -90
+      ground_z: -164
+      wheel_d: 44
+      wheel_w: 16
+      leg_d: 6
+      front_x: 208
+      front_wheel_d: 36
+      front_leg_d: 5
+  why: tricycle gear from measured wheel positions, 1/25
+  kind: add
+- date: '2026-11-25T00:26:14Z'
+  key: components[gear].position
+  old: null
+  new:
+  - 0
+  - 0
+  - 0
+  why: tricycle gear from measured wheel positions, 1/25
+  kind: add
+- date: '2026-11-25T00:26:14Z'
+  key: components[gear].mass_g
+  old: null
+  new: 60
+  why: tricycle gear from measured wheel positions, 1/25
+  kind: add
+- date: '2026-11-25T00:26:14Z'
+  key: components[gear].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: tricycle gear from measured wheel positions, 1/25
+  kind: add
+- date: '2026-11-25T00:26:28Z'
+  key: components[sponson-l].type
+  old: null
+  new: pod
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+  regenerated:
+  - sponson-l
+- date: '2026-11-25T00:26:28Z'
+  key: components[sponson-l].description
+  old: null
+  new: Main gear sponson l
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:28Z'
+  key: components[sponson-l].geometry
+  old: null
+  new:
+    generator: nacelle
+    params:
+      length: 320
+      diameter: 76
+      nose_length: 60
+      tail_length: 90
+      nose_shape: ellipsoid
+      tail_end_frac: 0.3
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:28Z'
+  key: components[sponson-l].position
+  old: null
+  new:
+  - 716
+  - -126
+  - -84
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:28Z'
+  key: components[sponson-l].mass_g
+  old: null
+  new: 40
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:28Z'
+  key: components[sponson-l].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:38Z'
+  key: components[sponson-r].type
+  old: null
+  new: pod
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+  regenerated:
+  - sponson-r
+- date: '2026-11-25T00:26:38Z'
+  key: components[sponson-r].description
+  old: null
+  new: Main gear sponson r
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:38Z'
+  key: components[sponson-r].geometry
+  old: null
+  new:
+    generator: nacelle
+    params:
+      length: 320
+      diameter: 76
+      nose_length: 60
+      tail_length: 90
+      nose_shape: ellipsoid
+      tail_end_frac: 0.3
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:38Z'
+  key: components[sponson-r].position
+  old: null
+  new:
+  - 716
+  - 126
+  - -84
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:38Z'
+  key: components[sponson-r].mass_g
+  old: null
+  new: 40
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:38Z'
+  key: components[sponson-r].manufacturing
+  old: null
+  new:
+    method: 3d-print-fdm
+  why: main gear sponson fairing 1/25, modelled with the nacelle generator
+  kind: add
+- date: '2026-11-25T00:26:50Z'
+  key: components[battery].type
+  old: null
+  new: battery
+  why: library part tattu-2300mah-4s-75c, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - battery
+- date: '2026-11-25T00:26:50Z'
+  key: components[battery].description
+  old: null
+  new: battery from library part tattu-2300mah-4s-75c
+  why: library part tattu-2300mah-4s-75c, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:26:50Z'
+  key: components[battery].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: tattu-2300mah-4s-75c
+  why: library part tattu-2300mah-4s-75c, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:26:50Z'
+  key: components[battery].position
+  old: null
+  new:
+  - 380
+  - 0
+  - -55
+  why: library part tattu-2300mah-4s-75c, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:26:50Z'
+  key: components[battery].mass_g
+  old: null
+  new: 270
+  why: library part tattu-2300mah-4s-75c, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:26:50Z'
+  key: components[battery].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: Tattu 2300 mAh 4S 75C XT60 270 g
+  why: library part tattu-2300mah-4s-75c, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:02Z'
+  key: components[battery].battery
+  old: null
+  new:
+    capacity_mah: 2300
+    cells_s: 4
+    max_discharge_c: 75
+  why: battery block from the library datasheet
+  kind: add
+- date: '2026-11-25T00:27:13Z'
+  key: components[esc].type
+  old: null
+  new: esc
+  why: library part speedybee-bls-35a-mini-v2-esc, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - esc
+- date: '2026-11-25T00:27:13Z'
+  key: components[esc].description
+  old: null
+  new: esc from library part speedybee-bls-35a-mini-v2-esc
+  why: library part speedybee-bls-35a-mini-v2-esc, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:13Z'
+  key: components[esc].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: speedybee-bls-35a-mini-v2-esc
+  why: library part speedybee-bls-35a-mini-v2-esc, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:13Z'
+  key: components[esc].position
+  old: null
+  new:
+  - 520
+  - 0
+  - -60
+  why: library part speedybee-bls-35a-mini-v2-esc, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:13Z'
+  key: components[esc].mass_g
+  old: null
+  new: 20
+  why: library part speedybee-bls-35a-mini-v2-esc, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:13Z'
+  key: components[esc].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: SpeedyBee BLS 35A Mini V2 4-in-1 ESC 20x20
+  why: library part speedybee-bls-35a-mini-v2-esc, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:32Z'
+  key: components[fc].type
+  old: null
+  new: flight_controller
+  why: library part holybro-kakute-f405-wing-mini, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - fc
+- date: '2026-11-25T00:27:32Z'
+  key: components[fc].description
+  old: null
+  new: fc from library part holybro-kakute-f405-wing-mini
+  why: library part holybro-kakute-f405-wing-mini, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:32Z'
+  key: components[fc].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: holybro-kakute-f405-wing-mini
+  why: library part holybro-kakute-f405-wing-mini, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:32Z'
+  key: components[fc].position
+  old: null
+  new:
+  - 600
+  - 0
+  - -60
+  why: library part holybro-kakute-f405-wing-mini, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:32Z'
+  key: components[fc].mass_g
+  old: null
+  new: 17
+  why: library part holybro-kakute-f405-wing-mini, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:32Z'
+  key: components[fc].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: Holybro Kakute F405 Wing Mini FC
+  why: library part holybro-kakute-f405-wing-mini, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:48Z'
+  key: components[rx].type
+  old: null
+  new: receiver
+  why: library part radiomaster-rp3-v2-elrs-rx, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - rx
+- date: '2026-11-25T00:27:48Z'
+  key: components[rx].description
+  old: null
+  new: rx from library part radiomaster-rp3-v2-elrs-rx
+  why: library part radiomaster-rp3-v2-elrs-rx, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:48Z'
+  key: components[rx].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: radiomaster-rp3-v2-elrs-rx
+  why: library part radiomaster-rp3-v2-elrs-rx, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:48Z'
+  key: components[rx].position
+  old: null
+  new:
+  - 700
+  - 0
+  - -70
+  why: library part radiomaster-rp3-v2-elrs-rx, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:48Z'
+  key: components[rx].mass_g
+  old: null
+  new: 4.6
+  why: library part radiomaster-rp3-v2-elrs-rx, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:27:48Z'
+  key: components[rx].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: Radiomaster RP3 V2 ELRS RX
+  why: library part radiomaster-rp3-v2-elrs-rx, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:10Z'
+  key: components[pitot].type
+  old: null
+  new: other
+  why: library part rmrc-ms4525-airspeed-pitot, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - pitot
+- date: '2026-11-25T00:28:10Z'
+  key: components[pitot].description
+  old: null
+  new: pitot from library part rmrc-ms4525-airspeed-pitot
+  why: library part rmrc-ms4525-airspeed-pitot, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:10Z'
+  key: components[pitot].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: rmrc-ms4525-airspeed-pitot
+  why: library part rmrc-ms4525-airspeed-pitot, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:10Z'
+  key: components[pitot].position
+  old: null
+  new:
+  - 250
+  - 0
+  - -40
+  why: library part rmrc-ms4525-airspeed-pitot, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:10Z'
+  key: components[pitot].mass_g
+  old: null
+  new: 3
+  why: library part rmrc-ms4525-airspeed-pitot, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:10Z'
+  key: components[pitot].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: RMRC MS4525 airspeed + pitot
+  why: library part rmrc-ms4525-airspeed-pitot, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:39Z'
+  key: components[gps].type
+  old: null
+  new: other
+  why: library part tbs-m10q-gps-qmc5883, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - gps
+- date: '2026-11-25T00:28:39Z'
+  key: components[gps].description
+  old: null
+  new: gps from library part tbs-m10q-gps-qmc5883
+  why: library part tbs-m10q-gps-qmc5883, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:39Z'
+  key: components[gps].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: tbs-m10q-gps-qmc5883
+  why: library part tbs-m10q-gps-qmc5883, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:39Z'
+  key: components[gps].position
+  old: null
+  new:
+  - 900
+  - 0
+  - 90
+  why: library part tbs-m10q-gps-qmc5883, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:39Z'
+  key: components[gps].mass_g
+  old: null
+  new: 13.5
+  why: library part tbs-m10q-gps-qmc5883, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:28:39Z'
+  key: components[gps].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: TBS M10Q GPS + QMC5883 compass
+  why: library part tbs-m10q-gps-qmc5883, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:04Z'
+  key: components[servo-al].type
+  old: null
+  new: servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - servo-al
+- date: '2026-11-25T00:29:04Z'
+  key: components[servo-al].description
+  old: null
+  new: servo-al from library part emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:04Z'
+  key: components[servo-al].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:04Z'
+  key: components[servo-al].position
+  old: null
+  new:
+  - 791
+  - -520
+  - 62
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:04Z'
+  key: components[servo-al].mass_g
+  old: null
+  new: 20.5
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:04Z'
+  key: components[servo-al].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: EMAX ES3054HV servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:20Z'
+  key: components[servo-ar].type
+  old: null
+  new: servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - servo-ar
+- date: '2026-11-25T00:29:20Z'
+  key: components[servo-ar].description
+  old: null
+  new: servo-ar from library part emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:20Z'
+  key: components[servo-ar].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:20Z'
+  key: components[servo-ar].position
+  old: null
+  new:
+  - 791
+  - 520
+  - 62
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:20Z'
+  key: components[servo-ar].mass_g
+  old: null
+  new: 20.5
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:20Z'
+  key: components[servo-ar].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: EMAX ES3054HV servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:39Z'
+  key: components[servo-el].type
+  old: null
+  new: servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - servo-el
+- date: '2026-11-25T00:29:39Z'
+  key: components[servo-el].description
+  old: null
+  new: servo-el from library part emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:39Z'
+  key: components[servo-el].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:39Z'
+  key: components[servo-el].position
+  old: null
+  new:
+  - 1330
+  - 20
+  - 0
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:39Z'
+  key: components[servo-el].mass_g
+  old: null
+  new: 20.5
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:39Z'
+  key: components[servo-el].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: EMAX ES3054HV servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:56Z'
+  key: components[servo-ru].type
+  old: null
+  new: servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+  regenerated:
+  - servo-ru
+- date: '2026-11-25T00:29:56Z'
+  key: components[servo-ru].description
+  old: null
+  new: servo-ru from library part emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:56Z'
+  key: components[servo-ru].geometry
+  old: null
+  new:
+    generator: library_part
+    params:
+      part: emax-es3054hv-servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:56Z'
+  key: components[servo-ru].position
+  old: null
+  new:
+  - 1330
+  - -20
+  - 0
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:56Z'
+  key: components[servo-ru].mass_g
+  old: null
+  new: 20.5
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:29:56Z'
+  key: components[servo-ru].manufacturing
+  old: null
+  new:
+    method: purchased
+    part_number: EMAX ES3054HV servo
+  why: library part emax-es3054hv-servo, placed from the fuselage layout
+  kind: add
+- date: '2026-11-25T00:30:26Z'
+  key: attachments[wing-body].location[0]
+  old: 150
+  new: 560
+  why: joint inside both wing root and fuselage
+  kind: modify
+- date: '2026-11-25T00:30:42Z'
+  key: attachments[wing-body].location[2]
+  old: 0
+  new: 100
+  why: joint inside both wing root and fuselage
+  kind: modify
+- date: '2026-11-25T00:30:57Z'
+  key: attachments[tail-body].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and tail; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:30:57Z'
+  key: attachments[tail-body].child
+  old: null
+  new: tail
+  why: joint between fuselage and tail; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:30:57Z'
+  key: attachments[tail-body].method
+  old: null
+  new: glued
+  why: joint between fuselage and tail; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:30:57Z'
+  key: attachments[tail-body].location
+  old: null
+  new:
+  - 1330
+  - 0
+  - 45
+  why: joint between fuselage and tail; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:30:57Z'
+  key: attachments[tail-body].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and tail; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:30:57Z'
+  key: attachments[tail-body].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and tail; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:30:57Z'
+  key: attachments[tail-body].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and tail; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:11Z'
+  key: attachments[gear-body].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and gear; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:11Z'
+  key: attachments[gear-body].child
+  old: null
+  new: gear
+  why: joint between fuselage and gear; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:11Z'
+  key: attachments[gear-body].method
+  old: null
+  new: bolted
+  why: joint between fuselage and gear; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:11Z'
+  key: attachments[gear-body].location
+  old: null
+  new:
+  - 208
+  - 0
+  - -95
+  why: joint between fuselage and gear; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:11Z'
+  key: attachments[gear-body].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and gear; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:11Z'
+  key: attachments[gear-body].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and gear; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:11Z'
+  key: attachments[gear-body].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and gear; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:27Z'
+  key: attachments[spons-l].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and sponson-l; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:27Z'
+  key: attachments[spons-l].child
+  old: null
+  new: sponson-l
+  why: joint between fuselage and sponson-l; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:27Z'
+  key: attachments[spons-l].method
+  old: null
+  new: glued
+  why: joint between fuselage and sponson-l; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:27Z'
+  key: attachments[spons-l].location
+  old: null
+  new:
+  - 716
+  - -110
+  - -90
+  why: joint between fuselage and sponson-l; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:27Z'
+  key: attachments[spons-l].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and sponson-l; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:27Z'
+  key: attachments[spons-l].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and sponson-l; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:27Z'
+  key: attachments[spons-l].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and sponson-l; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:43Z'
+  key: attachments[spons-r].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and sponson-r; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:43Z'
+  key: attachments[spons-r].child
+  old: null
+  new: sponson-r
+  why: joint between fuselage and sponson-r; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:43Z'
+  key: attachments[spons-r].method
+  old: null
+  new: glued
+  why: joint between fuselage and sponson-r; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:43Z'
+  key: attachments[spons-r].location
+  old: null
+  new:
+  - 716
+  - 110
+  - -90
+  why: joint between fuselage and sponson-r; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:43Z'
+  key: attachments[spons-r].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and sponson-r; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:43Z'
+  key: attachments[spons-r].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and sponson-r; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:43Z'
+  key: attachments[spons-r].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and sponson-r; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:31:55Z'
+  key: attachments[nac-il-wing].parent
+  old: null
+  new: wing
+  why: joint between wing and nac-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:55Z'
+  key: attachments[nac-il-wing].child
+  old: null
+  new: nac-il
+  why: joint between wing and nac-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:55Z'
+  key: attachments[nac-il-wing].method
+  old: null
+  new: glued
+  why: joint between wing and nac-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:55Z'
+  key: attachments[nac-il-wing].location
+  old: null
+  new:
+  - 690
+  - -277.2
+  - 58
+  why: joint between wing and nac-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:55Z'
+  key: attachments[nac-il-wing].embed_ok
+  old: null
+  new: true
+  why: joint between wing and nac-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:55Z'
+  key: attachments[nac-il-wing].rated_load_n
+  old: null
+  new: 10
+  why: joint between wing and nac-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:31:55Z'
+  key: attachments[nac-il-wing].rating_basis
+  old: null
+  new: placeholder
+  why: joint between wing and nac-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:14Z'
+  key: attachments[nac-ir-wing].parent
+  old: null
+  new: wing
+  why: joint between wing and nac-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:14Z'
+  key: attachments[nac-ir-wing].child
+  old: null
+  new: nac-ir
+  why: joint between wing and nac-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:14Z'
+  key: attachments[nac-ir-wing].method
+  old: null
+  new: glued
+  why: joint between wing and nac-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:14Z'
+  key: attachments[nac-ir-wing].location
+  old: null
+  new:
+  - 690
+  - 277.2
+  - 58
+  why: joint between wing and nac-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:14Z'
+  key: attachments[nac-ir-wing].embed_ok
+  old: null
+  new: true
+  why: joint between wing and nac-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:14Z'
+  key: attachments[nac-ir-wing].rated_load_n
+  old: null
+  new: 10
+  why: joint between wing and nac-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:14Z'
+  key: attachments[nac-ir-wing].rating_basis
+  old: null
+  new: placeholder
+  why: joint between wing and nac-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:32Z'
+  key: attachments[nac-ol-wing].parent
+  old: null
+  new: wing
+  why: joint between wing and nac-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:32Z'
+  key: attachments[nac-ol-wing].child
+  old: null
+  new: nac-ol
+  why: joint between wing and nac-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:32Z'
+  key: attachments[nac-ol-wing].method
+  old: null
+  new: glued
+  why: joint between wing and nac-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:32Z'
+  key: attachments[nac-ol-wing].location
+  old: null
+  new:
+  - 720
+  - -514
+  - 52
+  why: joint between wing and nac-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:32Z'
+  key: attachments[nac-ol-wing].embed_ok
+  old: null
+  new: true
+  why: joint between wing and nac-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:32Z'
+  key: attachments[nac-ol-wing].rated_load_n
+  old: null
+  new: 10
+  why: joint between wing and nac-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:32Z'
+  key: attachments[nac-ol-wing].rating_basis
+  old: null
+  new: placeholder
+  why: joint between wing and nac-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:51Z'
+  key: attachments[nac-or-wing].parent
+  old: null
+  new: wing
+  why: joint between wing and nac-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:51Z'
+  key: attachments[nac-or-wing].child
+  old: null
+  new: nac-or
+  why: joint between wing and nac-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:51Z'
+  key: attachments[nac-or-wing].method
+  old: null
+  new: glued
+  why: joint between wing and nac-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:51Z'
+  key: attachments[nac-or-wing].location
+  old: null
+  new:
+  - 720
+  - 514
+  - 52
+  why: joint between wing and nac-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:51Z'
+  key: attachments[nac-or-wing].embed_ok
+  old: null
+  new: true
+  why: joint between wing and nac-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:51Z'
+  key: attachments[nac-or-wing].rated_load_n
+  old: null
+  new: 10
+  why: joint between wing and nac-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:32:51Z'
+  key: attachments[nac-or-wing].rating_basis
+  old: null
+  new: placeholder
+  why: joint between wing and nac-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:10Z'
+  key: attachments[motor-il].parent
+  old: null
+  new: nac-il
+  why: joint between nac-il and motor-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:10Z'
+  key: attachments[motor-il].child
+  old: null
+  new: motor-il
+  why: joint between nac-il and motor-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:10Z'
+  key: attachments[motor-il].method
+  old: null
+  new: bolted
+  why: joint between nac-il and motor-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:10Z'
+  key: attachments[motor-il].location
+  old: null
+  new:
+  - 506.4
+  - -277.2
+  - 36
+  why: joint between nac-il and motor-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:10Z'
+  key: attachments[motor-il].embed_ok
+  old: null
+  new: true
+  why: joint between nac-il and motor-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:10Z'
+  key: attachments[motor-il].rated_load_n
+  old: null
+  new: 10
+  why: joint between nac-il and motor-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:10Z'
+  key: attachments[motor-il].rating_basis
+  old: null
+  new: placeholder
+  why: joint between nac-il and motor-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:24Z'
+  key: attachments[prop-il].parent
+  old: null
+  new: motor-il
+  why: joint between motor-il and prop-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:24Z'
+  key: attachments[prop-il].child
+  old: null
+  new: prop-il
+  why: joint between motor-il and prop-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:24Z'
+  key: attachments[prop-il].method
+  old: null
+  new: press-fit
+  why: joint between motor-il and prop-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:24Z'
+  key: attachments[prop-il].location
+  old: null
+  new:
+  - 488.2
+  - -277.2
+  - 36
+  why: joint between motor-il and prop-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:24Z'
+  key: attachments[prop-il].embed_ok
+  old: null
+  new: true
+  why: joint between motor-il and prop-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:24Z'
+  key: attachments[prop-il].rated_load_n
+  old: null
+  new: 10
+  why: joint between motor-il and prop-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:24Z'
+  key: attachments[prop-il].rating_basis
+  old: null
+  new: placeholder
+  why: joint between motor-il and prop-il; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:37Z'
+  key: attachments[motor-ir].parent
+  old: null
+  new: nac-ir
+  why: joint between nac-ir and motor-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:37Z'
+  key: attachments[motor-ir].child
+  old: null
+  new: motor-ir
+  why: joint between nac-ir and motor-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:37Z'
+  key: attachments[motor-ir].method
+  old: null
+  new: bolted
+  why: joint between nac-ir and motor-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:37Z'
+  key: attachments[motor-ir].location
+  old: null
+  new:
+  - 506.4
+  - 277.2
+  - 36
+  why: joint between nac-ir and motor-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:37Z'
+  key: attachments[motor-ir].embed_ok
+  old: null
+  new: true
+  why: joint between nac-ir and motor-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:37Z'
+  key: attachments[motor-ir].rated_load_n
+  old: null
+  new: 10
+  why: joint between nac-ir and motor-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:37Z'
+  key: attachments[motor-ir].rating_basis
+  old: null
+  new: placeholder
+  why: joint between nac-ir and motor-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:53Z'
+  key: attachments[prop-ir].parent
+  old: null
+  new: motor-ir
+  why: joint between motor-ir and prop-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:53Z'
+  key: attachments[prop-ir].child
+  old: null
+  new: prop-ir
+  why: joint between motor-ir and prop-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:53Z'
+  key: attachments[prop-ir].method
+  old: null
+  new: press-fit
+  why: joint between motor-ir and prop-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:53Z'
+  key: attachments[prop-ir].location
+  old: null
+  new:
+  - 488.2
+  - 277.2
+  - 36
+  why: joint between motor-ir and prop-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:53Z'
+  key: attachments[prop-ir].embed_ok
+  old: null
+  new: true
+  why: joint between motor-ir and prop-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:53Z'
+  key: attachments[prop-ir].rated_load_n
+  old: null
+  new: 10
+  why: joint between motor-ir and prop-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:33:53Z'
+  key: attachments[prop-ir].rating_basis
+  old: null
+  new: placeholder
+  why: joint between motor-ir and prop-ir; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:10Z'
+  key: attachments[motor-ol].parent
+  old: null
+  new: nac-ol
+  why: joint between nac-ol and motor-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:10Z'
+  key: attachments[motor-ol].child
+  old: null
+  new: motor-ol
+  why: joint between nac-ol and motor-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:10Z'
+  key: attachments[motor-ol].method
+  old: null
+  new: bolted
+  why: joint between nac-ol and motor-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:10Z'
+  key: attachments[motor-ol].location
+  old: null
+  new:
+  - 568
+  - -514
+  - 36
+  why: joint between nac-ol and motor-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:10Z'
+  key: attachments[motor-ol].embed_ok
+  old: null
+  new: true
+  why: joint between nac-ol and motor-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:10Z'
+  key: attachments[motor-ol].rated_load_n
+  old: null
+  new: 10
+  why: joint between nac-ol and motor-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:10Z'
+  key: attachments[motor-ol].rating_basis
+  old: null
+  new: placeholder
+  why: joint between nac-ol and motor-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:26Z'
+  key: attachments[prop-ol].parent
+  old: null
+  new: motor-ol
+  why: joint between motor-ol and prop-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:26Z'
+  key: attachments[prop-ol].child
+  old: null
+  new: prop-ol
+  why: joint between motor-ol and prop-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:26Z'
+  key: attachments[prop-ol].method
+  old: null
+  new: press-fit
+  why: joint between motor-ol and prop-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:26Z'
+  key: attachments[prop-ol].location
+  old: null
+  new:
+  - 549.8
+  - -514
+  - 36
+  why: joint between motor-ol and prop-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:26Z'
+  key: attachments[prop-ol].embed_ok
+  old: null
+  new: true
+  why: joint between motor-ol and prop-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:26Z'
+  key: attachments[prop-ol].rated_load_n
+  old: null
+  new: 10
+  why: joint between motor-ol and prop-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:26Z'
+  key: attachments[prop-ol].rating_basis
+  old: null
+  new: placeholder
+  why: joint between motor-ol and prop-ol; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:41Z'
+  key: attachments[motor-or].parent
+  old: null
+  new: nac-or
+  why: joint between nac-or and motor-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:41Z'
+  key: attachments[motor-or].child
+  old: null
+  new: motor-or
+  why: joint between nac-or and motor-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:41Z'
+  key: attachments[motor-or].method
+  old: null
+  new: bolted
+  why: joint between nac-or and motor-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:41Z'
+  key: attachments[motor-or].location
+  old: null
+  new:
+  - 568
+  - 514
+  - 36
+  why: joint between nac-or and motor-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:41Z'
+  key: attachments[motor-or].embed_ok
+  old: null
+  new: true
+  why: joint between nac-or and motor-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:41Z'
+  key: attachments[motor-or].rated_load_n
+  old: null
+  new: 10
+  why: joint between nac-or and motor-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:41Z'
+  key: attachments[motor-or].rating_basis
+  old: null
+  new: placeholder
+  why: joint between nac-or and motor-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:59Z'
+  key: attachments[prop-or].parent
+  old: null
+  new: motor-or
+  why: joint between motor-or and prop-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:59Z'
+  key: attachments[prop-or].child
+  old: null
+  new: prop-or
+  why: joint between motor-or and prop-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:59Z'
+  key: attachments[prop-or].method
+  old: null
+  new: press-fit
+  why: joint between motor-or and prop-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:59Z'
+  key: attachments[prop-or].location
+  old: null
+  new:
+  - 549.8
+  - 514
+  - 36
+  why: joint between motor-or and prop-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:59Z'
+  key: attachments[prop-or].embed_ok
+  old: null
+  new: true
+  why: joint between motor-or and prop-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:59Z'
+  key: attachments[prop-or].rated_load_n
+  old: null
+  new: 10
+  why: joint between motor-or and prop-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:34:59Z'
+  key: attachments[prop-or].rating_basis
+  old: null
+  new: placeholder
+  why: joint between motor-or and prop-or; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:14Z'
+  key: attachments[battery-bay].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and battery; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:14Z'
+  key: attachments[battery-bay].child
+  old: null
+  new: battery
+  why: joint between fuselage and battery; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:14Z'
+  key: attachments[battery-bay].method
+  old: null
+  new: clamp
+  why: joint between fuselage and battery; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:14Z'
+  key: attachments[battery-bay].location
+  old: null
+  new:
+  - 380
+  - 0
+  - -55
+  why: joint between fuselage and battery; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:14Z'
+  key: attachments[battery-bay].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and battery; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:14Z'
+  key: attachments[battery-bay].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and battery; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:14Z'
+  key: attachments[battery-bay].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and battery; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:29Z'
+  key: attachments[esc-mount].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and esc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:29Z'
+  key: attachments[esc-mount].child
+  old: null
+  new: esc
+  why: joint between fuselage and esc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:29Z'
+  key: attachments[esc-mount].method
+  old: null
+  new: bolted
+  why: joint between fuselage and esc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:29Z'
+  key: attachments[esc-mount].location
+  old: null
+  new:
+  - 520
+  - 0
+  - -60
+  why: joint between fuselage and esc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:29Z'
+  key: attachments[esc-mount].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and esc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:29Z'
+  key: attachments[esc-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and esc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:29Z'
+  key: attachments[esc-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and esc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:47Z'
+  key: attachments[fc-mount].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and fc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:47Z'
+  key: attachments[fc-mount].child
+  old: null
+  new: fc
+  why: joint between fuselage and fc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:47Z'
+  key: attachments[fc-mount].method
+  old: null
+  new: bolted
+  why: joint between fuselage and fc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:47Z'
+  key: attachments[fc-mount].location
+  old: null
+  new:
+  - 600
+  - 0
+  - -60
+  why: joint between fuselage and fc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:47Z'
+  key: attachments[fc-mount].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and fc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:47Z'
+  key: attachments[fc-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and fc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:35:47Z'
+  key: attachments[fc-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and fc; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:05Z'
+  key: attachments[rx-mount].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and rx; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:05Z'
+  key: attachments[rx-mount].child
+  old: null
+  new: rx
+  why: joint between fuselage and rx; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:05Z'
+  key: attachments[rx-mount].method
+  old: null
+  new: tape
+  why: joint between fuselage and rx; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:05Z'
+  key: attachments[rx-mount].location
+  old: null
+  new:
+  - 700
+  - 0
+  - -70
+  why: joint between fuselage and rx; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:05Z'
+  key: attachments[rx-mount].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and rx; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:05Z'
+  key: attachments[rx-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and rx; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:05Z'
+  key: attachments[rx-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and rx; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:25Z'
+  key: attachments[pitot-mount].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and pitot; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:25Z'
+  key: attachments[pitot-mount].child
+  old: null
+  new: pitot
+  why: joint between fuselage and pitot; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:25Z'
+  key: attachments[pitot-mount].method
+  old: null
+  new: tape
+  why: joint between fuselage and pitot; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:25Z'
+  key: attachments[pitot-mount].location
+  old: null
+  new:
+  - 250
+  - 0
+  - -40
+  why: joint between fuselage and pitot; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:25Z'
+  key: attachments[pitot-mount].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and pitot; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:25Z'
+  key: attachments[pitot-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and pitot; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:25Z'
+  key: attachments[pitot-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and pitot; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:45Z'
+  key: attachments[gps-mount].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and gps; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:45Z'
+  key: attachments[gps-mount].child
+  old: null
+  new: gps
+  why: joint between fuselage and gps; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:45Z'
+  key: attachments[gps-mount].method
+  old: null
+  new: tape
+  why: joint between fuselage and gps; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:45Z'
+  key: attachments[gps-mount].location
+  old: null
+  new:
+  - 900
+  - 0
+  - 90
+  why: joint between fuselage and gps; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:45Z'
+  key: attachments[gps-mount].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and gps; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:45Z'
+  key: attachments[gps-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and gps; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:36:45Z'
+  key: attachments[gps-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and gps; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:02Z'
+  key: attachments[servo-al-mount].parent
+  old: null
+  new: wing
+  why: joint between wing and servo-al; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:02Z'
+  key: attachments[servo-al-mount].child
+  old: null
+  new: servo-al
+  why: joint between wing and servo-al; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:02Z'
+  key: attachments[servo-al-mount].method
+  old: null
+  new: glued
+  why: joint between wing and servo-al; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:02Z'
+  key: attachments[servo-al-mount].location
+  old: null
+  new:
+  - 791
+  - -520
+  - 62
+  why: joint between wing and servo-al; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:02Z'
+  key: attachments[servo-al-mount].embed_ok
+  old: null
+  new: true
+  why: joint between wing and servo-al; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:02Z'
+  key: attachments[servo-al-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between wing and servo-al; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:02Z'
+  key: attachments[servo-al-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between wing and servo-al; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:19Z'
+  key: attachments[servo-ar-mount].parent
+  old: null
+  new: wing
+  why: joint between wing and servo-ar; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:19Z'
+  key: attachments[servo-ar-mount].child
+  old: null
+  new: servo-ar
+  why: joint between wing and servo-ar; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:19Z'
+  key: attachments[servo-ar-mount].method
+  old: null
+  new: glued
+  why: joint between wing and servo-ar; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:19Z'
+  key: attachments[servo-ar-mount].location
+  old: null
+  new:
+  - 791
+  - 520
+  - 62
+  why: joint between wing and servo-ar; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:19Z'
+  key: attachments[servo-ar-mount].embed_ok
+  old: null
+  new: true
+  why: joint between wing and servo-ar; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:19Z'
+  key: attachments[servo-ar-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between wing and servo-ar; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:19Z'
+  key: attachments[servo-ar-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between wing and servo-ar; load rating is a placeholder, nothing tested
+  kind: add
+- date: '2026-11-25T00:37:46Z'
+  key: attachments[servo-el-mount].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and servo-el; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:37:46Z'
+  key: attachments[servo-el-mount].child
+  old: null
+  new: servo-el
+  why: joint between fuselage and servo-el; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:37:46Z'
+  key: attachments[servo-el-mount].method
+  old: null
+  new: glued
+  why: joint between fuselage and servo-el; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:37:46Z'
+  key: attachments[servo-el-mount].location
+  old: null
+  new:
+  - 1330
+  - 20
+  - 0
+  why: joint between fuselage and servo-el; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:37:46Z'
+  key: attachments[servo-el-mount].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and servo-el; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:37:46Z'
+  key: attachments[servo-el-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and servo-el; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:37:46Z'
+  key: attachments[servo-el-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and servo-el; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:16Z'
+  key: attachments[servo-ru-mount].parent
+  old: null
+  new: fuselage
+  why: joint between fuselage and servo-ru; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:16Z'
+  key: attachments[servo-ru-mount].child
+  old: null
+  new: servo-ru
+  why: joint between fuselage and servo-ru; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:16Z'
+  key: attachments[servo-ru-mount].method
+  old: null
+  new: glued
+  why: joint between fuselage and servo-ru; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:16Z'
+  key: attachments[servo-ru-mount].location
+  old: null
+  new:
+  - 1330
+  - -20
+  - 0
+  why: joint between fuselage and servo-ru; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:16Z'
+  key: attachments[servo-ru-mount].embed_ok
+  old: null
+  new: true
+  why: joint between fuselage and servo-ru; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:16Z'
+  key: attachments[servo-ru-mount].rated_load_n
+  old: null
+  new: 10
+  why: joint between fuselage and servo-ru; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:16Z'
+  key: attachments[servo-ru-mount].rating_basis
+  old: null
+  new: placeholder
+  why: joint between fuselage and servo-ru; load rating is a placeholder, nothing
+    tested
+  kind: add
+- date: '2026-11-25T00:38:46Z'
+  key: name
+  old: 'Example twin-motor tailsitter flying wing (copy: a400m-rc)'
+  new: Airbus A400M Atlas, 1/25 scale RC model
+  why: name the aircraft; scale 1/25 chosen so the 5.3 m prop becomes 212 mm, close
+    to the 9 in APC library prop, and the span 1.70 m
+  kind: modify
+- date: '2026-11-25T00:39:02Z'
+  key: description
+  old: 'Swept flying wing with two tractor motors on leading-edge pods and wingtip
+    fins that double as landing legs. Foamboard and laser-cut ply, sized for the Jacobs
+    shop.
+
+    '
+  new: 1/25 scale model of the Airbus A400M Atlas. High wing, T-tail, four wing-mounted
+    nacelles with 8-blade scale propellers, sponson tricycle gear. Dimensions from
+    the Commons three-view in knowledge/reference-aircraft/a400m.md. Not built.
+  why: describe the model
+  kind: modify
+- date: '2026-11-25T00:39:21Z'
+  key: morphology.lift
+  old: flying-wing
+  new: fixed-wing
+  why: A400M is a conventional high-wing transport
+  kind: modify
+- date: '2026-11-25T00:39:21Z'
+  key: morphology.vtol_method
+  old: tailsitter
+  new: none
+  why: A400M is a conventional high-wing transport
+  kind: modify
+- date: '2026-11-25T00:39:21Z'
+  key: morphology.tail
+  old: none
+  new: t-tail
+  why: A400M is a conventional high-wing transport
+  kind: modify
+- date: '2026-11-25T00:39:21Z'
+  key: morphology.propulsion_count
+  old: 2
+  new: 4
+  why: A400M is a conventional high-wing transport
+  kind: modify
+- date: '2026-11-25T00:39:40Z'
+  key: requirements.mtow_g
+  old: 900
+  new: 2400
+  why: real-parts mass about 2.2 kg plus margin; scale-law mass 9.0 kg is not the
+    target (see s^3 note)
+  kind: modify
+- date: '2026-11-25T00:39:40Z'
+  key: requirements.stall_speed_max_mps
+  old: 9
+  new: 11
+  why: real-parts mass about 2.2 kg plus margin; scale-law mass 9.0 kg is not the
+    target (see s^3 note)
+  kind: modify
+- date: '2026-11-25T00:39:40Z'
+  key: requirements.cruise_speed_mps
+  old: 14
+  new: 18
+  why: real-parts mass about 2.2 kg plus margin; scale-law mass 9.0 kg is not the
+    target (see s^3 note)
+  kind: modify
+- date: '2026-11-25T00:39:40Z'
+  key: requirements.budget_usd
+  old: 250
+  new: 600
+  why: real-parts mass about 2.2 kg plus margin; scale-law mass 9.0 kg is not the
+    target (see s^3 note)
+  kind: modify
+- date: '2026-11-25T00:39:58Z'
+  key: requirements.transport_box_mm
+  old: null
+  new:
+  - 1900
+  - 700
+  - 650
+  why: fuselage 1.8 m plus tail 0.59 m high; wing 1.70 m span carried detached
+  kind: add
+- date: '2026-11-25T00:40:26Z'
+  key: mission.name
+  old: null
+  new: A400M 1/25 scale model
+  why: mission block for a scale model
+  kind: add
+- date: '2026-11-25T00:40:26Z'
+  key: mission.profile
+  old: null
+  new: scale-model
+  why: mission block for a scale model
+  kind: add
+- date: '2026-11-25T00:40:26Z'
+  key: mission.statement
+  old: null
+  new: Look and fly like the Airbus A400M at 1/25 scale
+  why: mission block for a scale model
+  kind: add
+- date: '2026-11-25T00:40:26Z'
+  key: mission.reference_aircraft
+  old: null
+  new: Airbus A400M
+  why: mission block for a scale model
+  kind: add
+- date: '2026-11-25T00:40:26Z'
+  key: mission.source
+  old: null
+  new: knowledge/reference-aircraft/a400m.md
+  why: mission block for a scale model
+  kind: add
+- date: '2026-11-25T00:40:48Z'
+  key: bom.items[motor].qty
+  old: null
+  new: 4
+  why: BOM line for motor, one line per part type
+  kind: add
+- date: '2026-11-25T00:40:48Z'
+  key: bom.items[motor].component_ids
+  old: null
+  new:
+  - motor-il
+  - motor-ir
+  - motor-ol
+  - motor-or
+  why: BOM line for motor, one line per part type
+  kind: add
+- date: '2026-11-25T00:40:48Z'
+  key: bom.items[motor].part_number
+  old: null
+  new: T-Motor MN2212 V2.0 KV780
+  why: BOM line for motor, one line per part type
+  kind: add
+- date: '2026-11-25T00:40:48Z'
+  key: bom.items[motor].supplier
+  old: null
+  new: TMotor
+  why: BOM line for motor, one line per part type
+  kind: add
+- date: '2026-11-25T00:40:48Z'
+  key: bom.items[motor].mass_g
+  old: null
+  new: 65
+  why: BOM line for motor, one line per part type
+  kind: add
+- date: '2026-11-25T00:40:48Z'
+  key: bom.items[motor].library_part
+  old: null
+  new: tmotor-mn2212-v2-kv780
+  why: BOM line for motor, one line per part type
+  kind: add
+- date: '2026-11-25T00:40:48Z'
+  key: bom.items[motor].url
+  old: null
+  new: https://store.tmotor.com/goods-388-MN2212-V20.html
+  why: BOM line for motor, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:15Z'
+  key: bom.items[battery].qty
+  old: null
+  new: 1
+  why: BOM line for battery, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:15Z'
+  key: bom.items[battery].component_ids
+  old: null
+  new:
+  - battery
+  why: BOM line for battery, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:15Z'
+  key: bom.items[battery].part_number
+  old: null
+  new: Tattu 2300 mAh 4S 75C XT60 270 g
+  why: BOM line for battery, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:15Z'
+  key: bom.items[battery].supplier
+  old: null
+  new: RMRC
+  why: BOM line for battery, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:15Z'
+  key: bom.items[battery].mass_g
+  old: null
+  new: 270
+  why: BOM line for battery, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:15Z'
+  key: bom.items[battery].library_part
+  old: null
+  new: tattu-2300mah-4s-75c
+  why: BOM line for battery, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:15Z'
+  key: bom.items[battery].url
+  old: null
+  new: https://www.readymaderc.com/products/details/tattu-2300-75c-4s1p-xt60
+  why: BOM line for battery, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:47Z'
+  key: bom.items[esc].qty
+  old: null
+  new: 1
+  why: BOM line for esc, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:47Z'
+  key: bom.items[esc].component_ids
+  old: null
+  new:
+  - esc
+  why: BOM line for esc, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:47Z'
+  key: bom.items[esc].part_number
+  old: null
+  new: SpeedyBee BLS 35A Mini V2 4-in-1 ESC 20x20
+  why: BOM line for esc, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:47Z'
+  key: bom.items[esc].supplier
+  old: null
+  new: RMRC
+  why: BOM line for esc, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:47Z'
+  key: bom.items[esc].mass_g
+  old: null
+  new: 20
+  why: BOM line for esc, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:47Z'
+  key: bom.items[esc].library_part
+  old: null
+  new: speedybee-bls-35a-mini-v2-esc
+  why: BOM line for esc, one line per part type
+  kind: add
+- date: '2026-11-25T00:41:47Z'
+  key: bom.items[esc].url
+  old: null
+  new: https://www.readymaderc.com/products/details/86873-speedybee-bls-35a-mini-v2-20x20-4-in-1-esc
+  why: BOM line for esc, one line per part type
+  kind: add
+- date: '2026-11-25T00:42:20Z'
+  key: bom.items[fc].qty
+  old: null
+  new: 1
+  why: BOM line for fc, one line per part type
+  kind: add
+- date: '2026-11-25T00:42:20Z'
+  key: bom.items[fc].component_ids
+  old: null
+  new:
+  - fc
+  why: BOM line for fc, one line per part type
+  kind: add
+- date: '2026-11-25T00:42:20Z'
+  key: bom.items[fc].part_number
+  old: null
+  new: Holybro Kakute F405 Wing Mini FC
+  why: BOM line for fc, one line per part type
+  kind: add
+- date: '2026-11-25T00:42:20Z'
+  key: bom.items[fc].supplier
+  old: null
+  new: RMRC
+  why: BOM line for fc, one line per part type
+  kind: add
+- date: '2026-11-25T00:42:20Z'
+  key: bom.items[fc].mass_g
+  old: null
+  new: 17
+  why: BOM line for fc, one line per part type
+  kind: add
+- date: '2026-11-25T00:42:20Z'
+  key: bom.items[fc].library_part
+  old: null
+  new: holybro-kakute-f405-wing-mini
+  why: BOM line for fc, one line per part type
+  kind: add
+- date: '2026-11-25T00:42:20Z'
+  key: bom.items[fc].url
+  old: null
+  new: https://www.readymaderc.com/products/details/87184-holybro-kakute-f405-wing-mini-flight-controller
+  why: BOM line for fc, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:04Z'
+  key: bom.items[rx].qty
+  old: null
+  new: 1
+  why: BOM line for rx, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:04Z'
+  key: bom.items[rx].component_ids
+  old: null
+  new:
+  - rx
+  why: BOM line for rx, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:04Z'
+  key: bom.items[rx].part_number
+  old: null
+  new: Radiomaster RP3 V2 ELRS RX
+  why: BOM line for rx, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:04Z'
+  key: bom.items[rx].supplier
+  old: null
+  new: RMRC
+  why: BOM line for rx, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:04Z'
+  key: bom.items[rx].mass_g
+  old: null
+  new: 4.6
+  why: BOM line for rx, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:04Z'
+  key: bom.items[rx].library_part
+  old: null
+  new: radiomaster-rp3-v2-elrs-rx
+  why: BOM line for rx, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:04Z'
+  key: bom.items[rx].url
+  old: null
+  new: https://www.readymaderc.com/products/details/85670-radiomaster-rp3-expresslrs-2-4ghz-nano-receiver-v2
+  why: BOM line for rx, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:50Z'
+  key: bom.items[pitot].qty
+  old: null
+  new: 1
+  why: BOM line for pitot, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:50Z'
+  key: bom.items[pitot].component_ids
+  old: null
+  new:
+  - pitot
+  why: BOM line for pitot, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:50Z'
+  key: bom.items[pitot].part_number
+  old: null
+  new: RMRC MS4525 airspeed + pitot
+  why: BOM line for pitot, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:50Z'
+  key: bom.items[pitot].supplier
+  old: null
+  new: RMRC
+  why: BOM line for pitot, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:50Z'
+  key: bom.items[pitot].mass_g
+  old: null
+  new: 3
+  why: BOM line for pitot, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:50Z'
+  key: bom.items[pitot].library_part
+  old: null
+  new: rmrc-ms4525-airspeed-pitot
+  why: BOM line for pitot, one line per part type
+  kind: add
+- date: '2026-11-25T00:43:50Z'
+  key: bom.items[pitot].url
+  old: null
+  new: https://www.readymaderc.com/products/details/rmrc-digital-air-speed-sensor-pixhawk-ii-2
+  why: BOM line for pitot, one line per part type
+  kind: add
+- date: '2026-11-25T00:44:31Z'
+  key: bom.items[gps].qty
+  old: null
+  new: 1
+  why: BOM line for gps, one line per part type
+  kind: add
+- date: '2026-11-25T00:44:31Z'
+  key: bom.items[gps].component_ids
+  old: null
+  new:
+  - gps
+  why: BOM line for gps, one line per part type
+  kind: add
+- date: '2026-11-25T00:44:31Z'
+  key: bom.items[gps].part_number
+  old: null
+  new: TBS M10Q GPS + QMC5883 compass
+  why: BOM line for gps, one line per part type
+  kind: add
+- date: '2026-11-25T00:44:31Z'
+  key: bom.items[gps].supplier
+  old: null
+  new: RMRC
+  why: BOM line for gps, one line per part type
+  kind: add
+- date: '2026-11-25T00:44:31Z'
+  key: bom.items[gps].mass_g
+  old: null
+  new: 13.5
+  why: BOM line for gps, one line per part type
+  kind: add
+- date: '2026-11-25T00:44:31Z'
+  key: bom.items[gps].library_part
+  old: null
+  new: tbs-m10q-gps-qmc5883
+  why: BOM line for gps, one line per part type
+  kind: add
+- date: '2026-11-25T00:44:31Z'
+  key: bom.items[gps].url
+  old: null
+  new: https://www.readymaderc.com/products/details/86501-tbs-m10q-gps-receiver-with-glonass
+  why: BOM line for gps, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:16Z'
+  key: bom.items[servo].qty
+  old: null
+  new: 4
+  why: BOM line for servo, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:16Z'
+  key: bom.items[servo].component_ids
+  old: null
+  new:
+  - servo-al
+  - servo-ar
+  - servo-el
+  - servo-ru
+  why: BOM line for servo, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:16Z'
+  key: bom.items[servo].part_number
+  old: null
+  new: EMAX ES3054HV servo
+  why: BOM line for servo, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:16Z'
+  key: bom.items[servo].supplier
+  old: null
+  new: RMRC
+  why: BOM line for servo, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:16Z'
+  key: bom.items[servo].mass_g
+  old: null
+  new: 20.5
+  why: BOM line for servo, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:16Z'
+  key: bom.items[servo].library_part
+  old: null
+  new: emax-es3054hv-servo
+  why: BOM line for servo, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:16Z'
+  key: bom.items[servo].url
+  old: null
+  new: https://www.readymaderc.com/products/details/85975-emax-es3054-hv-high-voltage-17g-metal-gear-digital-servo
+  why: BOM line for servo, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:56Z'
+  key: bom.items[fuselage].qty
+  old: null
+  new: 1
+  why: BOM line for fuselage, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:56Z'
+  key: bom.items[fuselage].component_ids
+  old: null
+  new:
+  - fuselage
+  why: BOM line for fuselage, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:56Z'
+  key: bom.items[fuselage].part_number
+  old: null
+  new: A400M-FUS-001 printed or glass shell, 9 lofted stations
+  why: BOM line for fuselage, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:56Z'
+  key: bom.items[fuselage].supplier
+  old: null
+  new: in-house
+  why: BOM line for fuselage, one line per part type
+  kind: add
+- date: '2026-11-25T00:45:56Z'
+  key: bom.items[fuselage].mass_g
+  old: null
+  new: 450
+  why: BOM line for fuselage, one line per part type
+  kind: add
+- date: '2026-11-25T00:46:46Z'
+  key: bom.items[wing].qty
+  old: null
+  new: 1
+  why: BOM line for wing, one line per part type
+  kind: add
+- date: '2026-11-25T00:46:46Z'
+  key: bom.items[wing].component_ids
+  old: null
+  new:
+  - wing
+  why: BOM line for wing, one line per part type
+  kind: add
+- date: '2026-11-25T00:46:46Z'
+  key: bom.items[wing].part_number
+  old: null
+  new: A400M-WNG-001 XPS foam wing, NACA 2415 section
+  why: BOM line for wing, one line per part type
+  kind: add
+- date: '2026-11-25T00:46:46Z'
+  key: bom.items[wing].supplier
+  old: null
+  new: in-house
+  why: BOM line for wing, one line per part type
+  kind: add
+- date: '2026-11-25T00:46:46Z'
+  key: bom.items[wing].mass_g
+  old: null
+  new: 434
+  why: BOM line for wing, one line per part type
+  kind: add
+- date: '2026-11-25T00:47:36Z'
+  key: bom.items[tail].qty
+  old: null
+  new: 1
+  why: BOM line for tail, one line per part type
+  kind: add
+- date: '2026-11-25T00:47:36Z'
+  key: bom.items[tail].component_ids
+  old: null
+  new:
+  - tail
+  why: BOM line for tail, one line per part type
+  kind: add
+- date: '2026-11-25T00:47:36Z'
+  key: bom.items[tail].part_number
+  old: null
+  new: A400M-TAL-001 foam T-tail
+  why: BOM line for tail, one line per part type
+  kind: add
+- date: '2026-11-25T00:47:36Z'
+  key: bom.items[tail].supplier
+  old: null
+  new: in-house
+  why: BOM line for tail, one line per part type
+  kind: add
+- date: '2026-11-25T00:47:36Z'
+  key: bom.items[tail].mass_g
+  old: null
+  new: 185
+  why: BOM line for tail, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:20Z'
+  key: bom.items[nacelle].qty
+  old: null
+  new: 4
+  why: BOM line for nacelle, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:20Z'
+  key: bom.items[nacelle].component_ids
+  old: null
+  new:
+  - nac-il
+  - nac-ir
+  - nac-ol
+  - nac-or
+  why: BOM line for nacelle, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:20Z'
+  key: bom.items[nacelle].part_number
+  old: null
+  new: A400M-NAC-001 printed nacelle
+  why: BOM line for nacelle, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:20Z'
+  key: bom.items[nacelle].supplier
+  old: null
+  new: in-house
+  why: BOM line for nacelle, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:20Z'
+  key: bom.items[nacelle].mass_g
+  old: null
+  new: 35
+  why: BOM line for nacelle, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:54Z'
+  key: bom.items[sponson].qty
+  old: null
+  new: 2
+  why: BOM line for sponson, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:54Z'
+  key: bom.items[sponson].component_ids
+  old: null
+  new:
+  - sponson-l
+  - sponson-r
+  why: BOM line for sponson, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:54Z'
+  key: bom.items[sponson].part_number
+  old: null
+  new: A400M-SPN-001 printed gear sponson
+  why: BOM line for sponson, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:54Z'
+  key: bom.items[sponson].supplier
+  old: null
+  new: in-house
+  why: BOM line for sponson, one line per part type
+  kind: add
+- date: '2026-11-25T00:48:54Z'
+  key: bom.items[sponson].mass_g
+  old: null
+  new: 40
+  why: BOM line for sponson, one line per part type
+  kind: add
+- date: '2026-11-25T00:49:38Z'
+  key: bom.items[prop].qty
+  old: null
+  new: 4
+  why: BOM line for prop, one line per part type
+  kind: add
+- date: '2026-11-25T00:49:38Z'
+  key: bom.items[prop].component_ids
+  old: null
+  new:
+  - prop-il
+  - prop-ir
+  - prop-ol
+  - prop-or
+  why: BOM line for prop, one line per part type
+  kind: add
+- date: '2026-11-25T00:49:38Z'
+  key: bom.items[prop].part_number
+  old: null
+  new: A400M-PRP-001 printed 8-blade scale propeller 212 mm
+  why: BOM line for prop, one line per part type
+  kind: add
+- date: '2026-11-25T00:49:38Z'
+  key: bom.items[prop].supplier
+  old: null
+  new: in-house
+  why: BOM line for prop, one line per part type
+  kind: add
+- date: '2026-11-25T00:49:38Z'
+  key: bom.items[prop].mass_g
+  old: null
+  new: 20
+  why: BOM line for prop, one line per part type
+  kind: add
+- date: '2026-11-25T00:50:21Z'
+  key: bom.items[gear].qty
+  old: null
+  new: 1
+  why: BOM line for gear, one line per part type
+  kind: add
+- date: '2026-11-25T00:50:21Z'
+  key: bom.items[gear].component_ids
+  old: null
+  new:
+  - gear
+  why: BOM line for gear, one line per part type
+  kind: add
+- date: '2026-11-25T00:50:21Z'
+  key: bom.items[gear].part_number
+  old: null
+  new: A400M-GER-001 tricycle gear (printed legs, wheels bought separately)
+  why: BOM line for gear, one line per part type
+  kind: add
+- date: '2026-11-25T00:50:21Z'
+  key: bom.items[gear].supplier
+  old: null
+  new: in-house
+  why: BOM line for gear, one line per part type
+  kind: add
+- date: '2026-11-25T00:50:21Z'
+  key: bom.items[gear].mass_g
+  old: null
+  new: 60
+  why: BOM line for gear, one line per part type
+  kind: add
+- date: '2026-11-25T00:51:04Z'
+  key: flight.cl_max
+  old: 1.0
+  new: 1.3
+  why: flap-less NACA 2415 wing, estimate
+  kind: modify
+- date: '2026-11-25T00:51:40Z'
+  key: flight.air_density_kgm3
+  old: null
+  new: 1.2
+  why: sea level air
+  kind: add
+- date: '2026-11-25T00:53:08Z'
+  key: schema_version
+  old: '1.0'
+  new: '1.2'
+  why: migrate to PDL 1.2 (plane design migrate)
+  kind: modify
+- date: '2026-11-25T00:57:17Z'
+  key: components[wing].planform
+  old: null
+  new:
+    lifting_surface:
+      span: 1696
+      root_chord: 318.4
+      tip_chord: 94.4
+      sweep_le_deg: 19.2
+      dihedral_deg: -4
+      thickness_ratio: 0.15
+      airfoil: NACA2415
+      mirrored: true
+      lifting: true
+    origin:
+    - 520
+    - 0
+    - 90
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[wing].manufacturing.machine
+  old: null
+  new: jacobs-hotwire
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[prop-il].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[prop-ir].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[prop-ol].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[prop-or].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[nac-il].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[nac-ir].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[nac-ol].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[nac-or].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[gear].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[sponson-l].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:57:17Z'
+  key: components[sponson-r].manufacturing.machine
+  old: null
+  new: jacobs-fdm
+  why: T3.stall found no lifting surface on the generated wing; give aero the same
+    planform
+  kind: add
+- date: '2026-11-25T00:59:35Z'
+  key: components[nac-il].position[1]
+  old: -277.2
+  new: -277.2
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+  regenerated:
+  - gear
+  - motor-il
+  - motor-ir
+  - motor-ol
+  - motor-or
+  - nac-il
+  - nac-ir
+  - nac-ol
+  - nac-or
+  - sponson-l
+  - sponson-r
+- date: '2026-11-25T00:59:35Z'
+  key: components[nac-il].position[0]
+  old: 614.4
+  new: 608.4
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[nac-ir].position[0]
+  old: 614.4
+  new: 608.4
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[nac-ol].position[0]
+  old: 676
+  new: 670
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[nac-or].position[0]
+  old: 676
+  new: 670
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[motor-il].position[0]
+  old: 506.4
+  new: 513.4
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[motor-ir].position[0]
+  old: 506.4
+  new: 513.4
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[motor-ol].position[0]
+  old: 568
+  new: 575
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[motor-or].position[0]
+  old: 568
+  new: 575
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-il].parent
+  old: motor-il
+  new: nac-il
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-il].embed_ok
+  old: true
+  new: false
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-il].location[0]
+  old: 488.2
+  new: 488.4
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-ir].parent
+  old: motor-ir
+  new: nac-ir
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-ir].embed_ok
+  old: true
+  new: false
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-ir].location[0]
+  old: 488.2
+  new: 488.4
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-ol].parent
+  old: motor-ol
+  new: nac-ol
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-ol].embed_ok
+  old: true
+  new: false
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-ol].location[0]
+  old: 549.8
+  new: 550
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-or].parent
+  old: motor-or
+  new: nac-or
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-or].embed_ok
+  old: true
+  new: false
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[prop-or].location[0]
+  old: 549.8
+  new: 550
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[nac-il-wing].location[0]
+  old: 690
+  new: 640
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[nac-il-wing].location[2]
+  old: 58
+  new: 62
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[nac-ir-wing].location[0]
+  old: 690
+  new: 640
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[nac-ir-wing].location[2]
+  old: 58
+  new: 62
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[sponson-l].position[1]
+  old: -126
+  new: -110
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[sponson-r].position[1]
+  old: 126
+  new: 110
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[spons-l].location[1]
+  old: -110
+  new: -85
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[spons-l].location[2]
+  old: -90
+  new: -86
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[spons-r].location[1]
+  old: 110
+  new: 85
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[spons-r].location[2]
+  old: -90
+  new: -86
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[gear].geometry.params.attach_z
+  old: -90
+  new: -122
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[gear].geometry.params.wheel_d
+  old: 44
+  new: 38
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: components[gear].geometry.params.front_wheel_d
+  old: 36
+  new: 34
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[gear-body].parent
+  old: fuselage
+  new: sponson-l
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[gear-body].location[0]
+  old: 208
+  new: 716
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[gear-body].location[1]
+  old: 0
+  new: -126
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[gear-body].location[2]
+  old: -95
+  new: -122
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[battery-bay].location[2]
+  old: -55
+  new: -73
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[fc-mount].location[2]
+  old: -60
+  new: -71
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T00:59:35Z'
+  key: attachments[rx-mount].location[2]
+  old: -70
+  new: -72
+  why: 'joints re-seated after first validate: motors fully inside nacelles, props
+    press-fit on the nacelle tip, library parts joined on their surface, gear leg
+    tops on the sponson bottom'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-il].position[1]
+  old: -277.2
+  new: -277.2
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+  regenerated:
+  - gear
+  - motor-il
+  - motor-ir
+  - motor-ol
+  - motor-or
+  - nac-il
+  - nac-ir
+  - nac-ol
+  - nac-or
+  - prop-il
+  - prop-ir
+  - prop-ol
+  - prop-or
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-il].position[0]
+  old: 608.4
+  new: 610.6
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[motor-il].position[0]
+  old: 513.4
+  new: 510.7
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-il].location[0]
+  old: 488.4
+  new: 490.6
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-ir].position[0]
+  old: 608.4
+  new: 610.6
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[motor-ir].position[0]
+  old: 513.4
+  new: 510.7
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-ir].location[0]
+  old: 488.4
+  new: 490.6
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-ol].position[0]
+  old: 670
+  new: 672.2
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[motor-ol].position[0]
+  old: 575
+  new: 572.3
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-ol].location[0]
+  old: 550
+  new: 552.8
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-or].position[0]
+  old: 670
+  new: 672.2
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[motor-or].position[0]
+  old: 575
+  new: 572.3
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-or].location[0]
+  old: 550
+  new: 552.8
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-il].geometry.params.nose_length
+  old: 40
+  new: 10
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[prop-il].geometry.params.hub_length
+  old: 12
+  new: 16
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-il].parent
+  old: nac-il
+  new: motor-il
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-ir].geometry.params.nose_length
+  old: 40
+  new: 10
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[prop-ir].geometry.params.hub_length
+  old: 12
+  new: 16
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-ir].parent
+  old: nac-ir
+  new: motor-ir
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-ol].geometry.params.nose_length
+  old: 40
+  new: 10
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[prop-ol].geometry.params.hub_length
+  old: 12
+  new: 16
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-ol].parent
+  old: nac-ol
+  new: motor-ol
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[nac-or].geometry.params.nose_length
+  old: 40
+  new: 10
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[prop-or].geometry.params.hub_length
+  old: 12
+  new: 16
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[prop-or].parent
+  old: nac-or
+  new: motor-or
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[gear].geometry.params.attach_z
+  old: -122
+  new: -120
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[battery-bay].location[0]
+  old: 380
+  new: 320
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[battery-bay].location[2]
+  old: -73
+  new: -55
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[rx-mount].location[1]
+  old: 0
+  new: -3.5
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: attachments[rx-mount].location[2]
+  old: -72
+  new: -71.5
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[wing].manufacturing.machine
+  old: jacobs-hotwire
+  new: jacobs-hand-tools
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[sponson-l].manufacturing.method
+  old: 3d-print-fdm
+  new: hand-cut
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[sponson-r].manufacturing.method
+  old: 3d-print-fdm
+  new: hand-cut
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[gear].manufacturing.method
+  old: 3d-print-fdm
+  new: hand-cut
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[sponson-l].manufacturing.machine
+  old: jacobs-fdm
+  new: jacobs-hand-tools
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[sponson-r].manufacturing.machine
+  old: jacobs-fdm
+  new: jacobs-hand-tools
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:04:20Z'
+  key: components[gear].manufacturing.machine
+  old: jacobs-fdm
+  new: jacobs-hand-tools
+  why: 'second validate pass: motor fully inside a shortened-nose nacelle with a 1.6
+    mm gap to the 16 mm prop hub; battery and rx joints on their real surfaces (library
+    meshes have grooves); sponsons and gear cannot print in one piece on a 256 mm
+    bed so they become shaped foam and wire'
+  kind: modify
+- date: '2026-11-25T01:05:24Z'
+  key: attachments[wing-body].rating_basis
+  old: null
+  new: placeholder
+  why: 125 N was the template value, not a measured capacity; marked placeholder rather
+    than tuned to pass
+  kind: add
+- date: '2026-11-25T01:05:51Z'
+  key: attachments[gear-body].location[2]
+  old: -122
+  new: -119
+  why: joint on the leg top and the sponson underside
+  kind: modify
+- date: '2026-11-25T01:06:56Z'
+  key: components[wing].manufacturing.method
+  old: hotwire-foam
+  new: hand-cut
+  why: XPS foam wing is shaped by hand tools; hotwire-foam has no machine entry that
+    accepts a machine key
+  kind: modify
