@@ -848,13 +848,13 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U4.32: Shape generators for common aircraft configurations (D77, D78) [hard]
 
-*Progress: U4.32-1..4 (fuselage, powerplant, airframe, tails) merged f81bffa (W29-R ACCEPT); -5 wing placement building.*
+*Progress: U4.32-1..4 merged f81bffa; -5 wing placement merged 73c9c46 (W29-R ACCEPT).*
 
 **Scope:** a general set, not one aircraft's: `nacelle` (engine nacelle/cowl loft), `propeller` (n-blade, scale-look, spinner), richer `fuselage_loft` (nose shapes, upswept tail cone, cabin), `strut` (wing struts), `landing_gear` (fixed/spring gear, wheels), tail layouts (conventional, T, V, H) from fin + wing_panel; high/mid/low wing placement; tests with hand-checked volumes. Must cover A400M and Cessna 172 without per-aircraft code.
 
 - [x] **Step 1: Brief** (tactician W29-T) *(54625cc: briefs U4.32-1 fuselage, -2 powerplant, -3 airframe, -4 tails (hard), -5 wing placement (easy); run in sequence)*
-- [ ] **Step 2: Build** (W29-B) *(see sub-briefs; merged so far noted at Step 3)*
-- [ ] **Step 3: Review** (W29-R); merge
+- [x] **Step 2: Build** (W29-B) *(see sub-briefs; merged so far noted at Step 3)*
+- [x] **Step 3: Review** (W29-R); merge *(all five ACCEPT; last merge 73c9c46)*
 
 ### Unit U4.33: Reference-aircraft research template (D77, D78)
 
