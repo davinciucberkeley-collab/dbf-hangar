@@ -1,4 +1,4 @@
-# U4.35 profile: `plane design set <copy of concept-a-param> parameters.span_mm --value 820`
+# U11.2 profile: `plane design set <copy of concept-a-param> parameters.span_mm --value 820`
 
 Main @ ef77e0d, 2026-11-24. Copy of `designs/concept-a-param` (192 KB plane.yaml, 8 designs in repo). Python 3.13 (miniforge), PyYAML has libyaml (`yaml.__with_libyaml__` is True), cProfile.
 Machine: 12 logical CPUs, 23 % CPU busy and 7 python processes (other agents), so "mostly idle, not idle".
@@ -37,4 +37,4 @@ Top own time: closest_point 2.74, boolean_manifold 2.21, rtree intersection 1.05
 - Do not build the mesh cache (already exists; second build is not where time goes).
 - Do the YAML fast loader: expected 16-17 s to about 13-14 s under the same load, meeting the target.
 - Interference (about half of the time) is real geometry work with no repeated inputs; leave it unless Tristan wants the target tighter (options then: run old and new passes in two threads, test first; not briefed).
-- Brief: `plans/2026-11-20-standardization/briefs/U4.35-speed.md`.
+- Brief: `plans/2026-11-20-standardization/briefs/U11.2-speed.md`.
