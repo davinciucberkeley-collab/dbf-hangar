@@ -3194,13 +3194,13 @@ items:
     text: 'standards.pending ignores gate-thresholds.yaml (misses wire_clearance_mm, blocking 12-08); CT-M3-SHCS-INSERT should cite the PETG test; nyloc ratings use bolt proof load, overstating printed-plastic joints [triage 2026-11-21: Make standards.pending read gate-thresholds.yaml; repoint CT-M3-SHCS-INSERT to the PETG test; rate printed-plastic nyloc joints by the weaker member, not bolt proof load]'
     source: reviews/2026-11-21-w2.md U2.2
     owner: Tristan
-    status: open
+    status: done
     due: '2026-12-05'
     units:
       - v1.1
-    evidence: ''
+    evidence: 3a6b9d7 (standards pending lists gate-thresholds keys; CT-M3-SHCS-INSERT source already on main)
     decided_in: ''
-    updated: '2026-11-21'
+    updated: '2026-11-25'
   - id: T20
     kind: task
     text: 'sim.drop height override: sim._build reads drop_height_m from standards internally; factor a drop_test(design, height_m) out of tier2_sim (tier2 behaviour identical) so the op can take --height-m [triage 2026-11-21: Factor drop_test(design, height_m) out of tier2_sim with identical tier2 behaviour; add --height-m to sim.drop]'
