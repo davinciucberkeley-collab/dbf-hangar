@@ -9,7 +9,7 @@ root: stab
 components:
   - {id: stab, type: tail_surface, geometry: {box: {size: [60, 200, 6]}}, position: [30, 0, 0], mass_g: 20, manufacturing: {method: foamboard}}
   - {id: elevator, type: tail_surface, geometry: {box: {size: [30, 200, 3]}}, position: [75, 0, 0], mass_g: 8, manufacturing: {method: foamboard}}
-  - {id: servo, type: servo, geometry: {generator: plate, params: {plane: xy, size: [23, 24], thickness: 11.5}}, position: [20, 0, -8.75], mass_g: 12, manufacturing: {method: purchased}}
+  - {id: servo, type: servo, geometry: {generator: plate, params: {plane: xy, size: [23, 24], thickness: 11.5}}, position: [20, 0, -8.25], mass_g: 12, manufacturing: {method: purchased}}
   - {id: arm, type: other, geometry: {generator: plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}, position: [20, 3, -15.25], mass_g: 1, manufacturing: {method: laser-cut, machine: jacobs-laser}}
   - {id: rod, type: other, geometry: {generator: strut, params: {start: [20, 6, -15.25], end: [73, 6, -15.25], diameter: 1.5}}, position: [0, 0, 0], mass_g: 1, manufacturing: {method: purchased}}
   - {id: horn, type: other, geometry: {generator: plate, params: {plane: xz, size: [4, 14.75], thickness: 1.5}}, position: [75, 6, -8.875], mass_g: 1, manufacturing: {method: laser-cut, machine: jacobs-laser}}
