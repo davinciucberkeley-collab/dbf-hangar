@@ -786,7 +786,7 @@ Writes files.
 Commands that are not registry operations (old forms and CLI-only commands):
 
 - `plane baseline`: Known-failure baselines: CI fails only on regressions.
-- `plane build-index`: Export glb, scorecard and mass for every design, then write index.json.
+- `plane build-index`: Export glb, scorecard and mass for every design (or only the --design ones), then write index.json.
 - `plane export`: Export PATH to glb, stl or json.
 - `plane import`: Import a design from another project.
 - `plane list`: List every design under designs/.
