@@ -142,6 +142,35 @@ def bounds_op(path: str) -> OpResult:
     return OpResult(True, {"components": entries, "overall": overall})
 
 
+@op(name="design.render", summary="Render the model to a PNG (top, side, front or iso view; headless; needs matplotlib). "
+    "A design that uses licensed CAD overlay parts may only be rendered to a local, untracked path.",
+    mutates=True, render=lambda r: "\n".join(r.data["files"]))
+def render_op(path: str, *, out: Path, view: Literal["top", "side", "front", "iso", "all"] = "iso",
+              size: int = 900) -> OpResult:
+    from ..geom import overlay
+    from ..render import VIEWS, render_png
+
+    design = _load(path)
+    if not 200 <= size <= 2000:
+        raise OpInputError(f"size must be 200..2000, got {size}")
+    out = Path(out)
+    if view == "all":
+        targets = [(v, out.with_name(f"{out.stem}-{v}.png")) for v in VIEWS]
+    elif view in VIEWS:
+        targets = [(view, out)]
+    else:
+        raise OpInputError("view must be one of top, side, front, iso, all")
+    files: list[str] = []
+    try:
+        for v, p in targets:
+            overlay.guard_output(p, design)
+            render_png(design, p, view=v, size=size)
+            files.append(str(p))
+    except (RuntimeError, ValueError) as e:
+        return OpResult(False, {}, [f"render failed: {e}"])
+    return OpResult(True, {"files": files}, changed_files=list(files))
+
+
 @op(name="design.export", summary="Export a design to glb, stl, json or mjcf.", mutates=True,
     render=lambda r: "\n".join(r.data["files"]))
 def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out: Path) -> OpResult:
