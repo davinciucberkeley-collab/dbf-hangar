@@ -5,6 +5,7 @@ import { h, fmt, getJSON } from '../lib.js';
 import { loadGLB, disposeModel } from './loader.js';
 import { prepareMesh, highlight } from './materials.js';
 import { pickAt } from './pick.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const mmToScene = ([x, y, z]) => new THREE.Vector3(x / 1000, z / 1000, -y / 1000); // body z-up mm -> glTF y-up m
@@ -17,8 +18,13 @@ export class Viewport {
     el.append(this.renderer.domElement);
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(35, 1, 0.01, 50);
-    this.scene.add(new THREE.HemisphereLight(0xffffff, 0x556070, 1.6));
-    const sun = new THREE.DirectionalLight(0xffffff, 2.2); sun.position.set(2, 3, 1.5); this.scene.add(sun);
+    this.renderer.toneMapping = THREE.NeutralToneMapping ?? THREE.ACESFilmicToneMapping; this.renderer.toneMappingExposure = 1.0;
+    this.renderer.shadowMap.enabled = true; this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    const pm = new THREE.PMREMGenerator(this.renderer), room = new RoomEnvironment();
+    this.scene.environment = pm.fromScene(room, 0.04).texture; this.scene.environmentIntensity = 0.8; room.dispose(); pm.dispose();
+    this.scene.add(new THREE.HemisphereLight(0xffffff, 0x556070, 0.35));
+    const sun = this.sun = new THREE.DirectionalLight(0xffffff, 1.8); sun.position.set(2, 3, 1.5); this.scene.add(sun);
+    sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.002;
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = false;
     this.controls.addEventListener('change', () => (this.dirty = true));
@@ -39,7 +45,12 @@ export class Viewport {
     this.applyTheme(); this.resize();
   }
   applyTheme() {
-    this.scene.background = new THREE.Color(cssVar('--vp-bg') || '#e9ecf1'); this.dirty = true;
+    this.scene.background = new THREE.Color(cssVar('--vp-bg') || '#e9ecf1');
+    const ec = this.edgeColor();
+    this.root.traverse((o) => { if (o.userData.isEdge) o.material.color.set(ec); });
+    this.dirty = true;
+  }
+  edgeColor() { return cssVar('--edge') || '#27303f';
   }
   resize() {
     if (this.dead) return;
@@ -74,7 +85,8 @@ export class Viewport {
       const box = new THREE.Box3().setFromObject(model);
       this.size = box.getSize(new THREE.Vector3()); this.center = box.getCenter(new THREE.Vector3());
       const diag = this.size.length() || 1;
-      this.root.add(this.makeGrid(box, diag));
+      const grid = this.makeGrid(box, diag); this.root.add(grid, this.makeGround(grid.position, diag));
+      this.setupSun(diag);
       const cgmm = design.cg_mm || mass?.cg_mm;
       if (cgmm) this.addCG(mmToScene(cgmm), diag);
       this.mountInfo = design;
@@ -95,6 +107,17 @@ export class Viewport {
     g.position.set(this.center.x, box.min.y - diag * 0.02, this.center.z);
     return g;
   }
+  makeGround(pos, diag) {
+    const g = new THREE.Mesh(new THREE.PlaneGeometry(diag * 2.4, diag * 2.4), new THREE.ShadowMaterial({ opacity: 0.22 }));
+    g.rotation.x = -Math.PI / 2; g.position.copy(pos); g.receiveShadow = true; g.renderOrder = -1;
+    return g;
+  }
+  setupSun(diag) {
+    const s = this.sun, c = s.shadow.camera;
+    c.left = c.bottom = -diag; c.right = c.top = diag; c.near = 0.01; c.far = diag * 6;
+    s.position.copy(this.center).add(new THREE.Vector3(0.4, 1, 0.3).normalize().multiplyScalar(diag * 2));
+    s.target.position.copy(this.center); s.target.updateMatrixWorld(); c.updateProjectionMatrix();
+  }
   addCG(p, diag) {
     const r = diag * 0.018;
     const mat = new THREE.MeshBasicMaterial({ color: 0xf97316, depthTest: false, transparent: true });
@@ -113,11 +136,14 @@ export class Viewport {
   highlight(ids) { highlight(this, ids); }
   info() {
     const i = this.renderer.info;
-    return { geometries: i.memory.geometries, textures: i.memory.textures, calls: i.render.calls, triangles: i.render.triangles, canvases: document.querySelectorAll('canvas').length, design: this.mountInfo?.id ?? null };
+    let edgeSegments = 0;
+    this.root.traverse((o) => { if (o.userData.isEdge) edgeSegments += o.geometry.getAttribute('position').count / 2; });
+    return { edgeSegments, geometries: i.memory.geometries, textures: i.memory.textures, calls: i.render.calls, triangles: i.render.triangles, canvases: document.querySelectorAll('canvas').length, design: this.mountInfo?.id ?? null };
   }
   dispose() {
     this.dead = true; this.ro.disconnect(); this.token = Symbol();
     disposeModel(this.root);
+    this.scene.environment?.dispose();
     this.renderer.dispose(); this.renderer.forceContextLoss(); this.renderer.domElement.remove();
     this.overlay.remove(); this.msg.remove(); this.legend.remove();
   }

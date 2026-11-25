@@ -19,7 +19,13 @@ const VP_NEEDED = { designs: ['main'], compare: ['a', 'b'], physics: ['phys'] };
 function getVp(name) {
   return (vps[name] ||= new Viewport($(VP_EL[name]), name === 'phys' ? {} : { onPick }));
 }
-const vpAccess = { get main() { return getVp('main'); }, get a() { return getVp('a'); }, get b() { return getVp('b'); }, get phys() { return getVp('phys'); } };
+// A mode callback that resumes after the user left its mode must not re-create a viewport: its getters throw StaleMode.
+class StaleMode extends Error {}
+let renderGen = 0;
+const vpAccessFor = (gen) => {
+  const get = (n) => { if (gen !== renderGen) throw new StaleMode(); return getVp(n); };
+  return { get main() { return get('main'); }, get a() { return get('a'); }, get b() { return get('b'); }, get phys() { return get('phys'); } };
+};
 let highlightIds = new Set();
 
 function setHighlight(ids) {
@@ -74,12 +80,13 @@ function assign(slot, id) {
 
 // ---------- modes / hash / init ----------
 async function renderMode() {
-  const id = state.mode, el = $('mode-' + id);
+  const id = state.mode, el = $('mode-' + id), gen = ++renderGen;
   delete el.dataset.ready;
   try {
-    const ctx = { state, el, h, fmt, getJSON, byId, vp: vpAccess, setHighlight, studio: state.index.studio === true };
+    const ctx = { state, el, h, fmt, getJSON, byId, vp: vpAccessFor(gen), setHighlight, studio: state.index.studio === true };
     await (await import('./modes/' + id + '.js')).default(ctx);
   } catch (e) {
+    if (e instanceof StaleMode) return;
     console.warn(e);
     el.append(h('div', { class: 'errbox' }, `${id}: ${e.message}`)); el.dataset.ready = 'error';
   }
@@ -107,6 +114,15 @@ function syncHash() {
 async function init() {
   (function loop() { requestAnimationFrame(loop); Object.values(vps).forEach((v) => v.tick()); })();
   matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => setTimeout(() => Object.values(vps).forEach((v) => v.applyTheme()), 0));
+  try { const t = localStorage.getItem('plane-theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch { /* ignore */ }
+  $('theme-toggle').onclick = () => {
+    const root = document.documentElement;
+    const cur = root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('plane-theme', next); } catch { /* ignore */ }
+    setTimeout(() => Object.values(vps).forEach((v) => v.applyTheme()), 0);
+  };
   $('modes').append(...MODES.map((m) => h('button', { 'data-mode': m, role: 'tab', onclick: () => setMode(m) }, LABELS[m])));
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };
   $('filter-vtol').onchange = (e) => { state.vtol = e.target.value; renderSidebar(); };
