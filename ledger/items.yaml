@@ -5294,10 +5294,10 @@ items:
     text: 'Recon: generated C172 wing area measures 18 % below the hand value (W31-R §20); find whether strip measurement, inboard_span or the airfoil scaling is off'
     source: reviews/2026-11-25-w31.md §20
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-09'
     units: []
-    evidence: ''
+    evidence: plans/2026-11-20-standardization/u13.7/c172-wing-area-findings.md
     decided_in: ''
     updated: '2026-11-25'
   - id: T144
@@ -5307,6 +5307,17 @@ items:
     owner: conductor
     status: open
     due: '2026-12-09'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T145
+    kind: task
+    text: 'wing_panel split usability: with part: core (0.72 chord) plus elevon pieces only over the aileron span, the trailing 28 % of the chord outside the aileron span belongs to no component (C172 rehearsal lost 18 % wing area). Make  full-chord outside the elevon span (opt-in or new part kind), or document the 3-piece layout in docs/mechanisms.md and the agent file'
+    source: plans/2026-11-20-standardization/u13.7/c172-wing-area-findings.md
+    owner: conductor
+    status: open
+    due: '2026-11-28'
     units: []
     evidence: ''
     decided_in: ''
