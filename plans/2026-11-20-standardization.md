@@ -1107,7 +1107,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** `cut_files` subtract the union of a neighbour's swept poses (mechanism range), so concept-a-param's 10 extra tier-1/T6 FAIL rows (wng-007 swept poses, mec-002 range ends, elevon collisions) disappear; concept-a-param's baseline refreshed in a separate designs-only commit; existing designs unchanged.
 
 - [x] **Step 1: Brief** (tactician W24-T) *(dcd6f1d: builds after U9.2 Part B and U10.2-g1fixes merge)*
-- [ ] **Step 1b: Refresh** (builder-plus W34-B2): merge main into std/u4.25-pockets (no force push), tests green, re-time tier-1 on concept-a-param
+- [ ] **Step 1b: Refresh** (builder-plus W34-B2): merge main into std/u4.25-pockets (no force push), tests green, re-time tier-1 on concept-a-param *(refresh stopped: 12 swept-pose rows gone but 2 T1.pocket slivers; W34-A3 diagnosis u16.2/diagnosis.md: float32 operands in manifold3d; fix = float64 operands for the cut_files difference (0 FAIL); tier 1 ~99 s loaded vs ~70 s budget (D73): Tristan decides relax to ~90 s / park for a core speed unit / keep out of v1; fix being built, merge waits)*
 - [ ] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71; D73 retry with W24-A convex hulls also missed: tier-1 98-111 s, planform -16.4 % FAIL; parked again, T121)*
 - [ ] **Step 3: Review** (W24-R); merge
 
