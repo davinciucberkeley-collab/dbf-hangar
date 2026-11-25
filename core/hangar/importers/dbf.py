@@ -22,7 +22,7 @@ from collections import deque
 from pathlib import Path
 
 import numpy as np
-import trimesh
+from .._lazy import trimesh
 
 from ..design import REPO_ROOT, load_standards
 from . import dbf_blocks as blk

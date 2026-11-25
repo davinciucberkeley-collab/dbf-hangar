@@ -29,7 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
-import trimesh
+from ._lazy import trimesh
 
 from .design import REPO_ROOT, CheckResult, Design, load_standards
 from .geom import overlay
