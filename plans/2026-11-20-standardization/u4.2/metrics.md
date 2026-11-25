@@ -1,4 +1,4 @@
-# Metrics slide (U4.2 Step 3): plan §2.1 with measured values, 2026-11-22 (W4-TE); sections B, C, E, G re-measured 2026-11-24 (W24-B4)
+# Metrics slide (U4.2 Step 3): plan §2.1 with measured values, 2026-11-22 (W4-TE); sections B, C, E, G re-measured 2026-11-24 (W24-B4); header re-dated 2026-11-25 (U14.1-1b), section H added
 
 Sources: WB = `reviews/2026-11-22-whole-branch.md` (reviewer W4-R1, main at dea6f2a, verdict REJECT with six blocking items; main has moved to 69d050f). W4 = `reviews/2026-11-22-w4.md`. "ran" = command run by W4-TE on a scratch clone of main at 69d050f. The 11-24 re-measure (W24-B4) ran on a fresh clone of main at b7b50cb, marked "ran 11-24". Targets are not shown as results.
 
@@ -101,3 +101,12 @@ Also in the same review: FAIL on fc-sku-check, rc-variant, esc-listing and lab-a
 | Fidelity | 99 of 691 blocking checks sourced (900 and 940 mm); 0 components have measured mass | ran 11-24 |
 | Tier 1 at 940 mm | PASS 161, FAIL 12, SKIP 8, WARN 0; `Fidelity: 0 of 181`; partial run (no Accepted line) | ran 11-24: `plane design validate designs/concept-a-param --tier 1` |
 | Open item | Pose-aware cut pockets make the copy match concept-a's FAIL set (U4.25, not merged 11-24) | ledger T121, D70 |
+
+## H. Rehearsal metrics (U14.1-1b, 2026-11-25; measured, not targets)
+| Run | Value | Source |
+|---|---|---|
+| Rehearsal 1, A400M | 73 min, about 150 calls, 1 FAIL, PR #5 (CLOSED, not draft) | plan U13.1 step 1; `gh pr view 5 -R davinciucberkeley-collab/dbf-hangar` read 2026-11-25 |
+| Rehearsal 1, C172 | blocked: no CLI operation could add components; no PR | plan U13.1 step 1 |
+| Rehearsal 2, C172 | 38 min, about 60 calls, 0 FAIL, PR #6 (OPEN, draft) | plan U13.1 step 3; `gh pr view 6` read 2026-11-25 |
+| Rehearsal 2, A400M | 47 min, about 45 calls, 0 FAIL, PR #7 (OPEN, draft) | plan U13.1 step 3; `gh pr view 7` read 2026-11-25 |
+| Rehearsal 3, A400M | 55 min, about 75 calls, 0 FAIL and 28 WARN, PR #8 (OPEN, draft) | plan U13.1 step 4; `gh pr view 8` read 2026-11-25. Same design on main shows 24 WARN (`plane design validate designs/a400m-rc`, ran 2026-11-25 on 65d006a, demo-script.md step 4); not investigated |
