@@ -1009,7 +1009,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.8: Rehearsal 4 gaps
 
-*Progress: -3 apply kinds merged 0975b0f.*
+*Progress: -5 scale props e97f92a, -3 apply kinds merged 0975b0f.*
 
 **Scope:** from rehearsal 4 (gap log 2026-11-25, PR #9): `propulsion.max_thrust_n` accepts `pending` when no source gives it (schema now forces a number, so agents write 1); BOM `verified.method` enum gains `webfetch`; `design apply` CHANGELOG records each edit's kind (add/modify/remove) inside the batch entry; wing_panel sweep semantics with inboard_span documented (or a sweep_outboard param); library props as n-blade scale props instead of solid discs; small servo for 1:10 wings in the library (scout). Existing designs unchanged.
 
