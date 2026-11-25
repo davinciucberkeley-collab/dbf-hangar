@@ -407,14 +407,20 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | — async check-in (no meeting) | Wed 11-25 | `plane update publish` → link in the Drive doc |
 | W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
 | Freeze | Mon 11-30 18:00 | — |
-| W4.1 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
-| W4.2 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
-| W4.3 Hardening and v1.1 batch 1 | Mon 11-23 | U4.8, U4.9, U4.10, U4.11 |
-| W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U4.12, U4.13, U4.14, U4.15, U4.16 |
-| W4.5 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U4.17, U4.18, U4.19, U4.20 |
-| W4.6 Parametric geometry for the demo (D70) | Tue 11-24 → Sun 11-29 | U4.21, U4.22 |
-| W4.7 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
+| W4 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
+| W5 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
+| W6 Hardening and v1.1 batch 1 | Mon 11-23 | U4.8, U4.9, U4.10, U4.11 |
+| W7 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U4.12, U4.13, U4.14, U4.15, U4.16 |
+| W8 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U4.17, U4.18, U4.19, U4.20 |
+| W9 Parametric geometry for the demo (D70) | Tue 11-24 | U4.21, U4.22 |
+| W10 Freeze fixes and fresh-session findings | Tue 11-24 | U4.23, U4.24, U4.25, U4.26, U4.27, U4.28 |
+| W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U4.29, U4.35 |
+| W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U4.30, U4.31, U4.32, U4.33, U4.38 |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U4.36, U4.37, U4.39, U4.34 |
+| W14 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
 | Present | **Wed 12-02** | demo + deck |
+
+**Wave names (Tue 11-24, Tristan P260/P261):** the former sub-waves W4.1-W4.7 are now W4-W9 and W14, and the later units are grouped as W10-W13; unit ids (U4.x) are unchanged so briefs, branches and commits still match. Agent ids such as W29-B are launch labels, not schedule waves.
 
 **Revised schedule (Mon 11-23 22:45, conductor; W0-W3 finished early, see archive):**
 
@@ -704,7 +710,9 @@ W4 wave rules (W3 lessons T41–T43):
 | W29-T, W29-B, W29-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.30 (checks by aircraft type + fixed-wing standards + per-design mission), U4.31 (real-parts library), U4.32 (nacelle/prop/nose generators) | `briefs/U4.3x-*.md`, branches `std/u4.3x-*`, `reviews/2026-11-24-w29.md` | each brief builder-ready; "### Verdict:" |
 | W29-G | `design-engineer` | Sonnet | U4.34 rehearsal: the Dec 1 prompt run on a branch for A400M and Cessna 172 | `reviews/2026-11-24-w29-rehearsal.md` | gaps listed; nothing merged |
 | W30-T, W30-B, W30-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.35 (profile a span change; mesh cache) | `plans/2026-11-20-standardization/u4.35/profile.md`, `briefs/U4.35-*.md`, branch `std/u4.35-*`, `reviews/2026-11-24-w30.md` | profile names where the seconds go; cached results byte-identical to uncached; "### Verdict:" |
-| W31-T, W31-S, W31-B, W31-R | `tactician`, `scout`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku, Haiku/Sonnet, Opus (fresh) | U4.36 (design authoring gaps from rehearsal 1) | `briefs/U4.36-*.md`, `knowledge/parts/` additions, branches `std/u4.36-*`, `reviews/2026-11-25-w31.md` | a fixed-wing design can be built from a blank start with the CLI alone; "### Verdict:" |
+| W31-T, W31-S, W31-B, W31-R, W31-R2 | `tactician`, `scout`, `builder`/`builder-plus`, `reviewer` (two in parallel, P262) | Sonnet, Haiku, Haiku/Sonnet, Opus (fresh) | U4.36 (design authoring gaps from rehearsal 1) | `briefs/U4.36-*.md`, `knowledge/parts/` additions, branches `std/u4.36-*`, `reviews/2026-11-25-w31.md` | a fixed-wing design can be built from a blank start with the CLI alone; "### Verdict:" |
+| W32-S | `scout` | Haiku | T137 DaVinci hookup facts (R29, D3): Dillon's API guide, DBF-Combined docs (read-only source), live API GET-only | `knowledge/` source entries + `knowledge/research/davinci-api-facts.md`, branch `std/w32-davinci-facts` | every fact sourced; no POST/DELETE; token never printed |
+| W32-A | `advisor` | Opus | P259: DBF-Combined origin/redesign/v1 (Dillon's DaVinci-era concept-a) vs dbf-hangar PDL/designs/concept-a: what maps, what would be lost on import | gap report in `plans/2026-11-20-standardization/u4.40/combined-compat.md` (conductor commits) | every DBF-Combined artefact classified: maps / needs adapter / would be lost |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
