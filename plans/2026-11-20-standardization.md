@@ -368,6 +368,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D99 | How many agents at once? | at most 2 builders and 1 reviewer running at a time (Tristan P290, PC load); no new builder until two are running or fewer; W34-R finishes its current branch and stops, W34-R2 takes every later review and re-review | Tristan | 11-25 | superseded by Tristan P291 (2026-11-25): cap lifted while he is away; launch by free RAM (two reviewers, builders as memory allows) |
 | D100 | U17.1 step 2b briefs (e6c36eb): owners and relabelling | criteria brief builds now (+516 rows resolve, statuses unchanged); team-owner Part 1 builds after values merges with owner Tristan, date 2026-11-25 as a placeholder owner that Tristan confirms; Part 2 (relabel 7 `internal convention` values as team decisions, +51) is NOT built until Tristan decides each value himself, because an agent may not create a team decision; schema/mtow/connection keys stay `pending` | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D101 | U16.1 S6-S9 brief defaults (11653fa) | S6 ships hinge_style none/bevel (round deferred); S7 kinematic MJCF with gravity 0, ball joint at the rod end + connect loop; S8 wires Catmull-Rom tubes 1.5 mm, visual-only, bend radius deferred, library ports labelled estimates; S9 clevis/screw-head drawing rules (not standards) behind an opt-in `display` block; S9c hollow fuselage changes mass/CG so its showcase opt-in waits for Tristan | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D102 | U15.3: `design get/set` on generator designs still load trimesh because loading computes mass_g by building meshes | accept U15.3 as lazy imports only (`plane --help` 8.8 -> 3.5 s, outputs byte-identical); test 2 uses concept-a; a follow-up step U15.3-2 makes mass_g lazy (computed on first use) so get/set on parametric designs skip mesh building | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1088,6 +1089,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Brief** (tactician W34-T, with the importtime profile) *(4efe4c6: hard; trimesh 2.26 s of 2.63 s import; lazy proxy; merge after U15.1)*
 - [ ] **Step 2: Build** (builder-plus W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
+- [ ] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review
 
 ### Unit U16.1: 3D generation close to the real aircraft (I2; D85, D87) [hard]
 
