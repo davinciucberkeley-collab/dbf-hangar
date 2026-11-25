@@ -51,15 +51,15 @@ def _fin_check(p: dict) -> list[str]:
 
 register(Generator(
     "fin",
-    {"plane_y": ParamSpec("number", default=0.0),
-     "thickness": ParamSpec("number", required=True, exclusive_minimum=0),
-     "root_chord": ParamSpec("number", required=True, exclusive_minimum=0),
-     "tip_chord": ParamSpec("number", required=True, exclusive_minimum=0),
-     "height": ParamSpec("number", required=True, doc="signed distance from the root along z"),
-     "x_le": ParamSpec("number", default=0.0),
-     "z_root": ParamSpec("number", default=0.0),
-     "sweep_le_deg": ParamSpec("number", default=0.0),
-     "part": ParamSpec("choice", default="full", choices=("full", "front", "rear")),
+    {"plane_y": ParamSpec("number", default=0.0, doc="fin mid-plane y position, mm"),
+     "thickness": ParamSpec("number", required=True, exclusive_minimum=0, doc="fin thickness, mm"),
+     "root_chord": ParamSpec("number", required=True, exclusive_minimum=0, doc="root chord along x, mm"),
+     "tip_chord": ParamSpec("number", required=True, exclusive_minimum=0, doc="tip chord along x, mm"),
+     "height": ParamSpec("number", required=True, doc="signed distance from the root along z, mm"),
+     "x_le": ParamSpec("number", default=0.0, doc="root leading-edge x, mm"),
+     "z_root": ParamSpec("number", default=0.0, doc="root z position, mm"),
+     "sweep_le_deg": ParamSpec("number", default=0.0, doc="leading-edge sweep angle, deg"),
+     "part": ParamSpec("choice", default="full", choices=("full", "front", "rear"), doc="whole fin, front part or rear part"),
      "hinge_frac": ParamSpec("number", default=0.7, doc="hinge line as a fraction of the local chord, ratio; the front part ends and the rear part starts there")},
     _fin_build, check=_fin_check))
 
@@ -101,10 +101,10 @@ def _plate_check(p: dict) -> list[str]:
 
 register(Generator(
     "plate",
-    {"plane": ParamSpec("choice", default="xy", choices=("xy", "xz", "yz")),
-     "size": ParamSpec("vec2", required=True),
-     "thickness": ParamSpec("number", required=True, exclusive_minimum=0),
-     "center": ParamSpec("vec3", default=[0.0, 0.0, 0.0]),
+    {"plane": ParamSpec("choice", default="xy", choices=("xy", "xz", "yz"), doc="plane the plate lies in; the normal is the third axis"),
+     "size": ParamSpec("vec2", required=True, doc="[u, v] outline size in the plane, mm"),
+     "thickness": ParamSpec("number", required=True, exclusive_minimum=0, doc="plate thickness along the normal, mm"),
+     "center": ParamSpec("vec3", default=[0.0, 0.0, 0.0], doc="plate centre, mm"),
      "holes": ParamSpec("list", default=[], doc="[u, v, d] from the plate centre")},
     _plate_build, check=_plate_check))
 
@@ -203,17 +203,17 @@ def _fuse_check(p: dict) -> list[str]:
 register(Generator(
     "fuselage_loft",
     {"stations": ParamSpec("list", required=True, doc="[x, width, height] or [x, width, height, dz] per station, mm; dz shifts that station centre in z"),
-     "shape": ParamSpec("choice", default="ellipse", choices=("ellipse", "rect", "superellipse")),
-     "center_y": ParamSpec("number", default=0.0),
-     "center_z": ParamSpec("number", default=0.0),
-     "nose_length": ParamSpec("number", default=0, minimum=0),
-     "tail_length": ParamSpec("number", default=0, minimum=0),
-     "nose_shape": ParamSpec("choice", default="cone", choices=("cone", "ellipsoid", "ogive")),
-     "tail_shape": ParamSpec("choice", default="cone", choices=("cone", "ellipsoid", "ogive")),
-     "tail_upsweep_deg": ParamSpec("number", default=0, minimum=0),
-     "tip_frac": ParamSpec("number", default=0.02),
-     "cap_rings": ParamSpec("int", default=8, minimum=2),
-     "exponent": ParamSpec("number", default=2.5),
+     "shape": ParamSpec("choice", default="ellipse", choices=("ellipse", "rect", "superellipse"), doc="section shape"),
+     "center_y": ParamSpec("number", default=0.0, doc="section centre y, mm"),
+     "center_z": ParamSpec("number", default=0.0, doc="section centre z, mm"),
+     "nose_length": ParamSpec("number", default=0, minimum=0, doc="nose cap length ahead of the first station, mm"),
+     "tail_length": ParamSpec("number", default=0, minimum=0, doc="tail cap length behind the last station, mm"),
+     "nose_shape": ParamSpec("choice", default="cone", choices=("cone", "ellipsoid", "ogive"), doc="nose cap profile"),
+     "tail_shape": ParamSpec("choice", default="cone", choices=("cone", "ellipsoid", "ogive"), doc="tail cap profile"),
+     "tail_upsweep_deg": ParamSpec("number", default=0, minimum=0, doc="tail centre-line upsweep angle, deg"),
+     "tip_frac": ParamSpec("number", default=0.02, doc="cap tip section size as a fraction of the end station"),
+     "cap_rings": ParamSpec("int", default=8, minimum=2, doc="rings per cap, count"),
+     "exponent": ParamSpec("number", default=2.5, doc="superellipse exponent (> 1), ratio"),
      "smooth_rings": ParamSpec("int", default=1, minimum=1, doc="1 = off (one ring per station, straight lofts); n > 1 = n rings per station interval, width, height and dz interpolated smoothly between stations, count")},
     _fuse_build, check=_fuse_check))
 
@@ -253,12 +253,12 @@ def _mount_check(p: dict) -> list[str]:
 
 register(Generator(
     "motor_mount",
-    {"plate_size": ParamSpec("vec2", required=True, doc="along y and z"),
-     "plate_t": ParamSpec("number", required=True, exclusive_minimum=0),
-     "bolt_pattern": ParamSpec("vec2", required=True, doc="[dy, dz], 4 holes"),
-     "bolt_d": ParamSpec("number", required=True, exclusive_minimum=0),
-     "sleeve_od": ParamSpec("number", required=True, exclusive_minimum=0),
-     "sleeve_id": ParamSpec("number", required=True, exclusive_minimum=0),
-     "sleeve_len": ParamSpec("number", required=True, exclusive_minimum=0),
-     "center": ParamSpec("vec3", default=[0.0, 0.0, 0.0], doc="centre of the plate back face")},
+    {"plate_size": ParamSpec("vec2", required=True, doc="along y and z, mm"),
+     "plate_t": ParamSpec("number", required=True, exclusive_minimum=0, doc="plate thickness along x, mm"),
+     "bolt_pattern": ParamSpec("vec2", required=True, doc="[dy, dz], 4 holes, mm"),
+     "bolt_d": ParamSpec("number", required=True, exclusive_minimum=0, doc="bolt hole diameter, mm"),
+     "sleeve_od": ParamSpec("number", required=True, exclusive_minimum=0, doc="sleeve outer diameter, mm"),
+     "sleeve_id": ParamSpec("number", required=True, exclusive_minimum=0, doc="sleeve bore diameter, mm"),
+     "sleeve_len": ParamSpec("number", required=True, exclusive_minimum=0, doc="sleeve length beyond the plate, mm"),
+     "center": ParamSpec("vec3", default=[0.0, 0.0, 0.0], doc="centre of the plate back face, mm")},
     _mount_build, check=_mount_check))
