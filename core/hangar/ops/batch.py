@@ -63,12 +63,20 @@ def apply_op(path: str, *, edits: Path, why: str) -> OpResult:
             if verb == "set":
                 data = yamlfast.safe_load(working)
                 old = pdledit.get_value(data, key)      # raises the "no key" error
-                if isinstance(value, (list, dict)):
-                    raise OpInputError("set takes a scalar; use add or append")
-                if old == value and type(old) is type(value):
+                if isinstance(value, dict):
+                    raise OpInputError("set takes a scalar or a list; use add or append")
+                if isinstance(value, list):
+                    if not isinstance(old, list):
+                        raise OpInputError(f"{key} is not a list")
+                    if old == value:
+                        unchanged += 1
+                        continue
+                    working = pdledit.replace_list(working, key, value)[0]
+                elif old == value and type(old) is type(value):
                     unchanged += 1
                     continue
-                working = pdledit.patch_text(working, key, value)
+                else:
+                    working = pdledit.patch_text(working, key, value)
             elif verb == "add":
                 if pdledit.exists(yamlfast.safe_load(working), key):
                     raise OpInputError(f"{key} is already set")

@@ -107,7 +107,7 @@ def test_shape_errors(pair, tmp_path):
              ([{"set": "components[wing].mass_g"}], None),
              ([{"frobnicate": "x", "value": 1}], None),
              ({"set": "components[wing].mass_g", "value": 1}, False),
-             ([{"set": "components[wing].position", "value": [1, 2, 3]}], "scalar")]
+             ([{"set": "components[wing].mass_g", "value": {"a": 1}}], "scalar or a list")]
     for edits, frag in cases:
         r = call("design.apply", path=str(a), edits=_file(tmp_path, edits), why="t")
         assert r.ok is False

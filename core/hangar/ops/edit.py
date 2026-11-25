@@ -59,7 +59,7 @@ def _list_edit_args(append, remove, value, also, kind):
     return append is not None, pdledit.parse_set_value(raw)
 
 
-@op(name="design.set", summary="Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml. Removing a list's only element leaves an empty list ([]).",
+@op(name="design.set", summary="Change, add or remove values (a [list] value replaces an existing one-line list, for example a position) in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml. Removing a list's only element leaves an empty list ([]).",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def set_op(path: str, key: str, *, value: str = None, why: str,
            kind: Literal["add", "subtract", "modify", "remove"] = "modify", also: list[str] = None,
@@ -97,6 +97,17 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
         if kind == "remove":
             working, gone = pdledit.remove_element(working, k)
             entries.append({"date": stamp, "key": k, "old": pdledit.render_flow(gone), "new": None, "why": why, "kind": kind})
+            continue
+        if kind == "modify" and raw.strip().startswith("[") and raw.strip().endswith("]"):
+            new = pdledit.parse_value(raw)
+            data = yamlfast.safe_load(working)
+            old = pdledit.get_value(data, k)
+            if not isinstance(old, list):
+                raise OpInputError(f"{k}: is not a list; give one scalar")
+            if len(pairs) == 1 and old == new:
+                return OpResult(True, {"key": k, "old": old, "new": new, "changed": False}, [f"{k}: unchanged"])
+            working, old, new = pdledit.replace_list(working, k, new)
+            entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": kind})
             continue
         new = pdledit.parse_value(raw) if kind == "add" else pdledit.parse_set_value(raw)
         data = yamlfast.safe_load(working)

@@ -427,9 +427,41 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
     del exp_list[exp_i]                          # the reference result for Verify 1
     root = yamlio.load(t)
     _, seq, _, i = walk(root, key)
-    if seq.fa.flow_style():
-        raise OpInputError(hand)
     lines = t.split("\n")
+    if seq.fa.flow_style():
+        line = seq.lc.item(0)[0]
+        if any(seq.lc.item(k)[0] != line for k in range(len(seq))):
+            raise OpInputError(hand)
+        cols = [seq.lc.item(k)[1] for k in range(len(seq))]
+        s = lines[line]
+        if s[cols[i]] in "{[":
+            end = _close_brace(s, cols[i]) + 1
+        else:
+            m = _TOKEN.match(s, cols[i])
+            end = m.end() if m else 0
+        if end <= cols[i]:
+            raise OpInputError(hand)
+        start = cols[i]
+        if len(seq) == 1:
+            op_ = s.rfind("[", 0, start)
+            start, end = op_ + 1, _close_brace(s, op_)
+        elif i + 1 < len(seq):
+            end = cols[i + 1]
+        else:
+            start = s.rfind(",", 0, start)
+        lines[line] = s[:start] + s[end:]
+        out = "\n".join(lines)
+        try:
+            same = yamlfast.safe_load(out) == expected
+        except yaml.YAMLError:
+            same = False
+        if not same:
+            raise OpInputError(hand)
+        for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+            if tag == "equal" or (tag == "replace" and i2 - i1 == 1 and j2 - j1 == 1 and i1 == line):
+                continue
+            raise OpInputError(f"{key}: removing would rewrite other lines; edit the file by hand")
+        return (out.replace("\n", "\r\n") if crlf else out), element
     start, col = seq.lc.item(i)
     body = lines[start].lstrip()
     if not body.startswith("- "):
@@ -524,6 +556,34 @@ def _edit_list(text: str, key: str, item, adding: bool, render=None) -> tuple[st
             start = lines[line].rfind(",", 0, start)       # the last entry and the separator before it
         edited = lines[line][:start] + lines[line][end:]
     lines[line] = edited
+    out = "\n".join(lines)
+    expected = copy.deepcopy(data)
+    assign(expected, key, new)
+    try:
+        same = yamlfast.safe_load(out) == expected
+    except yaml.YAMLError:
+        same = False
+    if not same:
+        raise OpInputError(hand)
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+        if tag == "equal" or (tag == "replace" and i2 - i1 == 1 and j2 - j1 == 1 and i1 == line):
+            continue
+        raise OpInputError(hand)
+    return (out.replace("\n", "\r\n") if crlf else out), old, new
+
+
+def replace_list(text: str, key: str, new: list) -> tuple[str, list, list]:
+    """Return (patched text, old list, new list): the one-line [list] at `key` replaced by `new`; only that line changes."""
+    if not isinstance(new, list) or not new:
+        raise OpInputError(f"{key}: new list must not be empty")
+    crlf = "\r\n" in text
+    t = text.replace("\r\n", "\n")
+    hand = f"{key}: cannot change this list without rewriting other text; edit the file by hand"
+    data = yamlfast.safe_load(t)
+    old = copy.deepcopy(get_value(data, key))
+    lines = t.split("\n")
+    _, line, col, close = _one_line_list(lines, yamlio.load(t), key)
+    lines[line] = lines[line][:col] + render_flow(new) + lines[line][close + 1:]
     out = "\n".join(lines)
     expected = copy.deepcopy(data)
     assign(expected, key, new)
