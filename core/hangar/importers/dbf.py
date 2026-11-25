@@ -109,6 +109,7 @@ CONN_METHOD = {
     "CT-TIE": ("zip-tie", ""),
     "CT-SERVO-SPLINE": ("bolted", "arm on a spline held by an M2 retaining screw: nearest enum is bolted"),
     "CT-PITOT-TUBING": ("press-fit", "push-on silicone tubing on a barb: nearest enum is press-fit"),
+    "CT-A-M3-CSK-MOTOR": ("bolted", ""), "CT-A-M3-BOLT-MOUNT": ("bolted", ""),
 }
 
 
