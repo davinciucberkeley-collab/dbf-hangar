@@ -5190,3 +5190,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: T137
+    kind: task
+    text: "DaVinci hookup prep (R29, D3): get API access details (who, which account, endpoint/docs, Claude connector?) and a pointer to DaVinci's test suite; then a scout documents the API and the test list in knowledge/ so a plan unit (adapter push/pull + call DaVinci tests as hangar check rows) can be written. May start before Dec 2"
+    source: Tristan, P253, 2026-11-24
+    owner: Tristan
+    status: open
+    due: '2026-11-27'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
