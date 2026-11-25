@@ -353,7 +353,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D84 | Dillon's redesign/v1 concept-a vs hangar's edited concept-a? | Dillon's is the truth; he imports it as `concept-a-reborn` by PR with D-212..D-261 and a DaVinci reconnect record; hangar's edits not reapplied; DBF-Combined not archived yet | Tristan | 11-24 | decided (Tristan P263, 2026-11-24) |
 | D85 | Mechanical fidelity of generated models (rolling wheels, kinematic linkages, non-clipping surfaces) for Dec 2? | no: post-Dec 2 milestone; Dec 2 shows recognisable geometry and real parts placed sensibly | Tristan | 11-24 | decided (Tristan P267, 2026-11-24) |
 | D86 | What does the Dec 2 demo actually show (shape, live change, overlay, prompt)? | decided at the Mon 11-30 dry run; until then the demo-script defaults stay provisional and the work is: keep improving the any-aircraft flow as much as possible | Tristan | 11-25 | decided (Tristan P278, 2026-11-25) |
-| D87 | Keep rehearsing the prompt flow? | no: rehearsals stop until 3D generation gives a model genuinely close to the real aircraft (real linkages, joints, parts, wires); mechanical fidelity (I2, D85) starts now as U13.12 instead of after Dec 2 | Tristan | 11-25 | decided (Tristan P279, 2026-11-25) |
+| D87 | Keep rehearsing the prompt flow? | no: rehearsals stop until 3D generation gives a model genuinely close to the real aircraft (real linkages, joints, parts, wires); mechanical fidelity (I2, D85) starts now as U16.1 instead of after Dec 2 | Tristan | 11-25 | decided (Tristan P279, 2026-11-25) |
 | D88 | Source the gates? | yes: every threshold in standards/*.yaml that is `pending` or an internal/team convention gets an opened external source (or a derivation from sourced values, written out), else stays `pending` with the reason; ranked by how many blocking check rows it drives; designs fixed, not thresholds; baselines refreshed in designs-only commits | Tristan | 11-25 | decided (Tristan P281, 2026-11-25) |
 | D89 | Use OpenCAE Studio's new `opencae` CLI (OpenCAEModel main, 11-24: mass, propulsion operating point and current margins, CalculiX structure, SU2/OpenFOAM whole-aircraft CFD, 6-DOF hover) for hangar's physics checks? | yes (default taken, conductor 11-25, Tristan P282 pointed at it): run it as an external GPL program through a hangar adapter (PDL -> drone.json + mesh, `opencae run --json` -> check rows); no OpenCAE source copied; SKIP where it is not installed (CI); CFD via SU2 lifts the plan section 8 'no CFD' line for this external route only | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan P282) |
 
@@ -419,11 +419,15 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W7 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U7.1, U7.2, U7.3, U7.4, U7.5 |
 | W8 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U8.1, U8.2, U8.3, U8.4 |
 | W9 Parametric geometry for the demo (D70) | Tue 11-24 | U9.1, U9.2 |
-| W10 Freeze fixes and fresh-session findings | Tue 11-24 | U10.1, U10.2, U10.3, U10.4, U10.5, U10.6 |
+| W10 Freeze fixes and fresh-session findings | Tue 11-24 | U10.1, U10.2, U10.4, U10.5, U10.6 |
 | W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U11.1, U11.2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U12.1, U12.2, U12.3, U12.4, U12.5 |
-| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8, U13.9 [hard], U13.10, U13.11 [hard], U13.12 [hard], U13.13, U13.14 [hard] |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8 |
 | W14 Presentation | Mon 11-30 → Wed 12-02 | U14.1 |
+| W15 Authoring gaps and speed (D86) | Wed 11-25 → Sat 11-28 | U15.1 [hard], U15.2, U15.3 [hard] |
+| W16 3D generation close to the real aircraft (D85, D87) | Wed 11-25 → after Dec 2 | U16.1 [hard], U16.2 [hard] |
+| W17 Sourced gates (D88) | Wed 11-25 → Sun 11-29 | U17.1 |
+| W18 Physics checks (D89) | Wed 11-25 → after Dec 2 | U18.1 [hard], U18.2, U18.3, U18.4 [hard] |
 | Present | **Wed 12-02** | demo + deck |
 
 **Unit ids by wave (Tue 11-24, Tristan P271):** units are numbered by the wave they run in (U5.x in W5 ... U14.x in W14). Briefs, branches, reviews, commits and code comments written before this change keep the old U4.x names; this table maps them.
@@ -767,18 +771,20 @@ W4 wave rules (W3 lessons T41–T43):
 | W32-T | `tactician` | Sonnet | D84: dry-run of the concept-a-reborn import from DBF-Combined origin/redesign/v1 in a scratch copy (no push), then Dillon's step-by-step guide | `plans/2026-11-20-standardization/u4.40/dillon-import-guide.md` | every command in the guide ran once in the dry run; issues listed with fixes |
 | W33-Au | `auditor` | Haiku | hourly overnight audits (R-c) | report in chat | 15 lines, fixes named |
 
-### 6n. Agent table for W34 (keep improving, D86)
+### 6n. Agent table for W34 (waves W15-W18: keep improving, D86-D89)
 
 | Agent | Role | Model | Input | Output | Pass criterion |
 |---|---|---|---|---|---|
-| W34-T | `tactician` | Sonnet | U13.9, U13.10, U13.11 (and rehearsal-5 gaps) | `briefs/U13.9-*.md`, `briefs/U13.10-*.md`, `briefs/U13.11-*.md` | builder-ready bar |
+| W34-T | `tactician` | Sonnet | U15.1, U15.2, U15.3 (and rehearsal-5 gaps) | `briefs/U15.1-*.md`, `briefs/U15.2-*.md`, `briefs/U15.3-*.md` | builder-ready bar |
 | W34-B | `builder` / `builder-plus` | Haiku / Sonnet | one brief each | branches `std/u13.9-*`, `std/u13.10-*`, `std/u13.11-*` | brief tests pass; CI green |
 | W34-R | `reviewer` | Opus (fresh) | every W34 branch | `reviews/2026-11-25-w34.md` | "### Verdict:" per branch |
-| W34-X | `recon` | Sonnet | U13.12: how others generate RC/aircraft CAD with real linkages, hinges, wheels on axles and routed wires (OpenVSP, CadQuery/build123d assemblies, FreeCAD Assembly4, RC kit CAD, MuJoCo/URDF practice) | `plans/2026-11-20-standardization/u13.12/recon.md` | 3-5 approaches ranked; only opened sources |
-| W34-A | `advisor` | Opus | U13.12: what the repo has (generators, PDL joints/mechanisms/harnesses, T1/T6/T7, MJCF export) vs a model close to the real aircraft; with W34-X's recon | `plans/2026-11-20-standardization/u13.12/design-note.md` | gap list, ordered build steps sized for briefs, what to cut |
-| W34-T2 | `tactician` | Sonnet | U13.13: inventory of every pending or convention-sourced threshold, ranked by blocking rows driven across all designs; scout packets | `plans/2026-11-20-standardization/u13.13/inventory.md`, `briefs/U13.13-*.md` | every threshold listed once with its rank and packet |
-| W34-S | `scout` (up to 3 in parallel) | Haiku | one U13.13 packet each | `knowledge/sources/` entries + a values table per packet in `u13.13/` | only opened sources; value, units, page/section quoted |
-| W34-T3 | `tactician` | Sonnet | U13.14: OpenCAE CLI integration study in a scratch clone of OpenCAEModel main (doctor, quad250 example, a hangar design exported to drone.json by hand) | `plans/2026-11-20-standardization/u13.14/study.md`, `briefs/U13.14-*.md` | every command run once; field mapping PDL -> drone.json complete or gaps named |
+| W34-X | `recon` | Sonnet | U16.1: how others generate RC/aircraft CAD with real linkages, hinges, wheels on axles and routed wires (OpenVSP, CadQuery/build123d assemblies, FreeCAD Assembly4, RC kit CAD, MuJoCo/URDF practice) | `plans/2026-11-20-standardization/u16.1/recon.md` | 3-5 approaches ranked; only opened sources |
+| W34-A | `advisor` | Opus | U16.1: what the repo has (generators, PDL joints/mechanisms/harnesses, T1/T6/T7, MJCF export) vs a model close to the real aircraft; with W34-X's recon | `plans/2026-11-20-standardization/u16.1/design-note.md` | gap list, ordered build steps sized for briefs, what to cut |
+| W34-T2 | `tactician` | Sonnet | U17.1: inventory of every pending or convention-sourced threshold, ranked by blocking rows driven across all designs; scout packets | `plans/2026-11-20-standardization/u17.1/inventory.md`, `briefs/U17.1-*.md` | every threshold listed once with its rank and packet |
+| W34-S | `scout` (up to 3 in parallel) | Haiku | one U17.1 packet each | `knowledge/sources/` entries + a values table per packet in `u17.1/` | only opened sources; value, units, page/section quoted |
+| W34-T3 | `tactician` | Sonnet | U18.1: OpenCAE CLI integration study in a scratch clone of OpenCAEModel main (doctor, quad250 example, a hangar design exported to drone.json by hand) | `plans/2026-11-20-standardization/u18.1/study.md`, `briefs/U18.1-*.md` | every command run once; field mapping PDL -> drone.json complete or gaps named |
+| W34-T4 | `tactician` | Sonnet | U18.2, U18.3, U18.4 (calibration, spar bending, trim and stability) | `briefs/U18.2-*.md`, `briefs/U18.3-*.md`, `briefs/U18.4-*.md` | builder-ready bar; every threshold sourced or `pending` |
+| W34-B2 | `builder-plus` | Sonnet | U16.2 step 1b: refresh std/u4.25-pockets onto main | the branch, merged with main, tests green, tier-1 time | no force push; T121 rows still gone |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -856,14 +862,6 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Briefs** (tactician W24-T) *(dcd6f1d: ci, text (light path: docstring-only core edits accepted by the conductor), g1fixes)*
 - [x] **Step 2: Build** (W24-B) *(text f93b9b9, g1fixes 977500f, ci 239a27c + 3af73b6)*
 - [x] **Step 3: Review** (W24-R); merge *(text, g1fixes ACCEPT merged 4d73f1a, 720aa25; ci REOPEN once (windows balance), ACCEPT merged bdbfbd2)*
-
-### Unit U10.3: Pose-aware cut pockets for generated parts (T121; D70 demo quality) [hard]
-
-**Scope:** `cut_files` subtract the union of a neighbour's swept poses (mechanism range), so concept-a-param's 10 extra tier-1/T6 FAIL rows (wng-007 swept poses, mec-002 range ends, elevon collisions) disappear; concept-a-param's baseline refreshed in a separate designs-only commit; existing designs unchanged.
-
-- [x] **Step 1: Brief** (tactician W24-T) *(dcd6f1d: builds after U9.2 Part B and U10.2-g1fixes merge)*
-- [ ] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71; D73 retry with W24-A convex hulls also missed: tier-1 98-111 s, planform -16.4 % FAIL; parked again, T121)*
-- [ ] **Step 3: Review** (W24-R); merge
 
 ### Unit U10.4: Quality-of-life batch (audit W24-Au2; D71)
 
@@ -960,7 +958,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
 - [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
 - [x] **Step 5: Fourth rehearsal** *(Wed 11-25 ~03:30: Cessna 172 from a blank design, ~35 min / ~45 calls, renders checked, 0 FAIL / 26 WARN, static margin 9.2 % MAC, wing area 100 %, draft PR #9 with all 6 CI jobs green; placeholders listed, nothing invented; gaps -> U13.8)*
-- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U13.12 delivers
+- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U16.1 delivers
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
@@ -1036,56 +1034,6 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 2: Build** (W31-B)
 - [x] **Step 3: Review** (W31-R, W31-R2); merge *(all ACCEPT; last 7ca06d3)*
 
-### Unit U13.9: Control surfaces follow their wing (T130; demo-script Issue 6) [hard]
-
-**Scope:** an aileron, elevator or flap generated from a wing's planform today repeats the wing's span, chords and sweep in its own `geometry.params`, so a wing-only `design set ...span` leaves the surface stale (A400M: 8 new T1 hinge-overlap FAILs at span 1800, u4.2/demo-script.md Decisions 2). Make generated control surfaces derive their planform from the parent wing (reference the wing component's params, or a design `parameters:` entry, or a surface generator that reads the parent), so one wing change regenerates the surfaces and their hinges with no new FAIL. Document it in the new-concept recipe. Existing designs unchanged (byte-identical meshes and baselines) unless they opt in.
-
-- [ ] **Step 1: Brief** (tactician W34-T)
-- [ ] **Step 2: Build** (builder-plus W34-B)
-- [ ] **Step 3: Review** (W34-R); merge; check on a scratch copy of PR #8's a400m-rc that span 1800 gives no new FAIL
-
-### Unit U13.10: Small fixes (T19, T111, T101)
-
-**Scope:** T19 `standards.pending` also reads gate-thresholds.yaml (wire_clearance_mm, wing_area_complete_min, servo_must_drive_mechanism; blocks the 12-08 flip) and CT-M3-SHCS-INSERT cites its source; T111 `plane design new/set` write LF on Windows; T101 bench `_map_args` maps only argument values that name parameters. No threshold or gate-behaviour change.
-
-- [ ] **Step 1: Briefs** (tactician W34-T)
-- [ ] **Step 2: Build** (builder W34-B)
-- [ ] **Step 3: Review** (W34-R); merge
-
-### Unit U13.11: Faster plane CLI start-up (T124) [hard]
-
-**Scope:** every agent call pays about 4.4 s of start-up (hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx). Measure with `python -X importtime`, lazy-import the heavy modules where the op does not need them, and report before/after for `plane --help`, `design get`, `design set`, `design validate --tier 1`. Outputs byte-identical; no behaviour change.
-
-- [ ] **Step 1: Brief** (tactician W34-T, with the importtime profile)
-- [ ] **Step 2: Build** (builder-plus W34-B)
-- [ ] **Step 3: Review** (W34-R); merge
-
-### Unit U13.12: 3D generation close to the real aircraft (I2; D85, D87) [hard]
-
-**Scope:** generated models carry real mechanical content, not only shapes: control surfaces on hinge joints driven by servo -> horn -> pushrod -> control horn linkages that move kinematically and do not clip; wheels as separate parts on axle joints that roll; library parts placed where they really go (servos in wing/fuselage bays, not floating); wires as routed harness geometry between real connectors; joints and fasteners visible in the model. Exported to Studio and MJCF so the mechanisms play. Step 1 decides the order; each later step is one brief. Existing designs unchanged unless they opt in. Rehearsals resume when Tristan judges the output close to the real deal (D87).
-
-- [ ] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u13.12/recon.md`, `u13.12/design-note.md`
-- [ ] **Step 2: Briefs** (tactician W34-T) from the design note
-- [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order
-- [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
-
-### Unit U13.13: Source every gate threshold (D88; T19, T82)
-
-**Scope:** list every threshold in standards/*.yaml whose source is `pending`, an internal convention or a team constraint (about 50 pending, about 45 convention, 11-25 count); rank them by how many blocking check rows they drive on all designs; scouts find opened sources (datasheets, standards such as FAA AC 43.13, MIL-HDBK-5/MMPDS, ASTM, manufacturer data, RC references with stated test conditions) per packet; a builder writes the sourced value or keeps `pending` with the reason; re-run all designs and report the fidelity line before/after and which rows changed. Standards and knowledge only; baselines refreshed in separate designs-only commits. James reads the values.
-
-- [ ] **Step 1: Inventory and packets** (tactician W34-T2)
-- [ ] **Step 2: Sources** (scouts W34-S, up to 3 at a time)
-- [ ] **Step 3: Values into standards; re-run; baselines** (W34-B)
-- [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
-
-### Unit U13.14: OpenCAE CLI as hangar's physics backend (D89; P282) [hard]
-
-**Scope:** OpenCAEModel main (11-24) ships an `opencae` CLI (`doctor`, `new`, `run --only mass,propulsion,structure,cfd,flight --json`, `iterate --set`, `status`) with evidence-status rules close to hangar's (estimate/datasheet/measured). Integrate it as an external GPL program: a hangar op exports a design to an OpenCAE drone project (drone.json from PDL propulsion, battery, ESC, materials, requirements; geometry from the GLB/STL export), runs `opencae run --json`, and maps results to check rows: propulsion current margins (motor, ESC, battery) and thrust-to-weight, structure safety factor (replacing or alongside the old opencae_runner FEA route), whole-aircraft CL/CD/LD from SU2 CFD, hover flight for VTOL/tailsitter. SKIP with the reason where OpenCAE or a solver is missing (CI). Results cached and hashed like FEA. No OpenCAE source copied (PROVENANCE row).
-
-- [ ] **Step 1: Integration study and briefs** (tactician W34-T3)
-- [ ] **Step 2: Build** (W34-B)
-- [ ] **Step 3: Review** (W34-R); merge
-
 ### Unit U14.1: Dec 2 presentation package
 
 *Deck updated for D77/D78 (merged 9b1110f): slides 8-10 new (any aircraft, rehearsals measured, honest limits), live-demo slide from the script; PR #8 CI green after U13.7-10.*
@@ -1096,6 +1044,91 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 2:** Live demo script (8 min), each step one command or click: `plane design new` from a template → `plane design set` a wing mass → `plane design validate` → Studio Physics mode playing the flap mechanism → `plane design propose` → the PR → `plane update publish` → the one link. Recorded backup video. *(rewritten for the A400M prompt flow, merged 7dc0054; live change = concept-a-param span (A400M span change left 8 overlap FAILs); every number cited)*
 - [x] **Step 3:** Metrics slide filled from §2.1 with measured values (not targets).
 - [ ] **Step 4:** Dry run Mon 11-30 evening; fix only what the dry run breaks.
+
+### Unit U15.1: Control surfaces follow their wing (T130; demo-script Issue 6) [hard]
+
+**Scope:** an aileron, elevator or flap generated from a wing's planform today repeats the wing's span, chords and sweep in its own `geometry.params`, so a wing-only `design set ...span` leaves the surface stale (A400M: 8 new T1 hinge-overlap FAILs at span 1800, u4.2/demo-script.md Decisions 2). Make generated control surfaces derive their planform from the parent wing (reference the wing component's params, or a design `parameters:` entry, or a surface generator that reads the parent), so one wing change regenerates the surfaces and their hinges with no new FAIL. Document it in the new-concept recipe. Existing designs unchanged (byte-identical meshes and baselines) unless they opt in.
+
+- [ ] **Step 1: Brief** (tactician W34-T)
+- [ ] **Step 2: Build** (builder-plus W34-B)
+- [ ] **Step 3: Review** (W34-R); merge; check on a scratch copy of PR #8's a400m-rc that span 1800 gives no new FAIL
+
+### Unit U15.2: Small fixes (T19, T111, T101)
+
+**Scope:** T19 `standards.pending` also reads gate-thresholds.yaml (wire_clearance_mm, wing_area_complete_min, servo_must_drive_mechanism; blocks the 12-08 flip) and CT-M3-SHCS-INSERT cites its source; T111 `plane design new/set` write LF on Windows; T101 bench `_map_args` maps only argument values that name parameters. No threshold or gate-behaviour change.
+
+- [ ] **Step 1: Briefs** (tactician W34-T)
+- [ ] **Step 2: Build** (builder W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U15.3: Faster plane CLI start-up (T124) [hard]
+
+**Scope:** every agent call pays about 4.4 s of start-up (hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx). Measure with `python -X importtime`, lazy-import the heavy modules where the op does not need them, and report before/after for `plane --help`, `design get`, `design set`, `design validate --tier 1`. Outputs byte-identical; no behaviour change.
+
+- [ ] **Step 1: Brief** (tactician W34-T, with the importtime profile)
+- [ ] **Step 2: Build** (builder-plus W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U16.1: 3D generation close to the real aircraft (I2; D85, D87) [hard]
+
+**Scope:** generated models carry real mechanical content, not only shapes: control surfaces on hinge joints driven by servo -> horn -> pushrod -> control horn linkages that move kinematically and do not clip; wheels as separate parts on axle joints that roll; library parts placed where they really go (servos in wing/fuselage bays, not floating); wires as routed harness geometry between real connectors; joints and fasteners visible in the model. Exported to Studio and MJCF so the mechanisms play. Step 1 decides the order; each later step is one brief. Existing designs unchanged unless they opt in. Rehearsals resume when Tristan judges the output close to the real deal (D87).
+
+- [ ] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u16.1/recon.md`, `u16.1/design-note.md`
+- [ ] **Step 2: Briefs** (tactician W34-T) from the design note
+- [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order
+- [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
+
+### Unit U16.2: Pose-aware cut pockets for generated parts (was U10.3; T121; D70; P284) [hard]
+
+*Moved from W10 on 11-25 (P284): the parked branch std/u4.25-pockets is 348 commits behind main (3 ahead). Refresh it onto main first, then re-measure against the tier-1 budget; U16.1's design note decides whether its approach (subtract swept poses) or real hinge geometry replaces it.*
+
+**Scope:** `cut_files` subtract the union of a neighbour's swept poses (mechanism range), so concept-a-param's 10 extra tier-1/T6 FAIL rows (wng-007 swept poses, mec-002 range ends, elevon collisions) disappear; concept-a-param's baseline refreshed in a separate designs-only commit; existing designs unchanged.
+
+- [x] **Step 1: Brief** (tactician W24-T) *(dcd6f1d: builds after U9.2 Part B and U10.2-g1fixes merge)*
+- [ ] **Step 1b: Refresh** (builder-plus W34-B2): merge main into std/u4.25-pockets (no force push), tests green, re-time tier-1 on concept-a-param
+- [ ] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71; D73 retry with W24-A convex hulls also missed: tier-1 98-111 s, planform -16.4 % FAIL; parked again, T121)*
+- [ ] **Step 3: Review** (W24-R); merge
+
+### Unit U17.1: Source every gate threshold (D88; T19, T82)
+
+**Scope:** list every threshold in standards/*.yaml whose source is `pending`, an internal convention or a team constraint (about 50 pending, about 45 convention, 11-25 count); rank them by how many blocking check rows they drive on all designs; scouts find opened sources (datasheets, standards such as FAA AC 43.13, MIL-HDBK-5/MMPDS, ASTM, manufacturer data, RC references with stated test conditions) per packet; a builder writes the sourced value or keeps `pending` with the reason; re-run all designs and report the fidelity line before/after and which rows changed. Standards and knowledge only; baselines refreshed in separate designs-only commits. James reads the values.
+
+- [ ] **Step 1: Inventory and packets** (tactician W34-T2)
+- [ ] **Step 2: Sources** (scouts W34-S, up to 3 at a time)
+- [ ] **Step 3: Values into standards; re-run; baselines** (W34-B)
+- [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
+
+### Unit U18.1: OpenCAE CLI as hangar's physics backend (D89; P282) [hard]
+
+**Scope:** OpenCAEModel main (11-24) ships an `opencae` CLI (`doctor`, `new`, `run --only mass,propulsion,structure,cfd,flight --json`, `iterate --set`, `status`) with evidence-status rules close to hangar's (estimate/datasheet/measured). Integrate it as an external GPL program: a hangar op exports a design to an OpenCAE drone project (drone.json from PDL propulsion, battery, ESC, materials, requirements; geometry from the GLB/STL export), runs `opencae run --json`, and maps results to check rows: propulsion current margins (motor, ESC, battery) and thrust-to-weight, structure safety factor (replacing or alongside the old opencae_runner FEA route), whole-aircraft CL/CD/LD from SU2 CFD, hover flight for VTOL/tailsitter. SKIP with the reason where OpenCAE or a solver is missing (CI). Results cached and hashed like FEA. No OpenCAE source copied (PROVENANCE row).
+
+- [ ] **Step 1: Integration study and briefs** (tactician W34-T3)
+- [ ] **Step 2: Build** (W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U18.2: Calibration against a real aircraft (D89; P280)
+
+**Scope:** run hangar's mass, aero and performance checks on the full-size Cessna 172S with published figures (POH / type certificate data: MTOW, wing area, span, stall speeds Vs/Vs0, cruise speed, rate of climb, CG range) entered as a reference design or fixture; compare each computed number with the published one and write the error; a test pins each within a stated tolerance (tolerances in standards with a source or `pending`). Findings say which checks are trustworthy and which are not.
+
+- [ ] **Step 1: Brief** (tactician W34-T4; scout W34-S for the published figures, opened sources only)
+- [ ] **Step 2: Build** (W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U18.3: Wing spar bending by beam theory (D89; P280)
+
+**Scope:** a fast analytic check for every winged design in CI: root bending moment at the design load factor (elliptic or Schrenk lift distribution), spar stress from the spar section (tube or generated spar params) and material allowables, tip deflection; safety factor against the sourced material yield; thresholds in standards with a source. FEA (U18.1 structure) stays the detailed check; a test compares both on one wing.
+
+- [ ] **Step 1: Brief** (tactician W34-T4)
+- [ ] **Step 2: Build** (W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
+
+### Unit U18.4: Trim and stability (D89; P280) [hard]
+
+**Scope:** elevator deflection to trim at cruise and at stall speed vs its travel; horizontal and vertical tail volume coefficients vs sourced typical bands; dynamic modes (short period, phugoid, Dutch roll, spiral) from AeroSandbox or AVL with damping thresholds from a source (e.g. MIL-F-8785C levels) or `pending`. Fixed-wing and transition designs only.
+
+- [ ] **Step 1: Brief** (tactician W34-T4)
+- [ ] **Step 2: Build** (builder-plus W34-B)
+- [ ] **Step 3: Review** (W34-R); merge
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

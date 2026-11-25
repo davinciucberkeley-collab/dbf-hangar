@@ -18,12 +18,16 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W7 Dec 2 prep, BOM, v1.1 batch 2, research import | 5 | 5 |
 | W8 Team adoption, CI, ratings, process | 4 | 2 |
 | W9 Parametric geometry for the demo (D70) | 2 | 2 |
-| W10 Freeze fixes and fresh-session findings | 6 | 5 |
+| W10 Freeze fixes and fresh-session findings | 5 | 5 |
 | W11 Parameter propagation and speed (D75, D81) | 2 | 2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | 5 | 5 |
-| W13 Rehearsal gaps and visual fidelity | 14 | 6 |
+| W13 Rehearsal gaps and visual fidelity | 8 | 6 |
 | W14 Presentation | 1 | 0 |
-| **all** | 70 | 58 |
+| W15 Authoring gaps and speed (D86) | 3 | 0 |
+| W16 3D generation close to the real aircraft (D85, D87) | 2 | 0 |
+| W17 Sourced gates (D88) | 1 | 0 |
+| W18 Physics checks (D89) | 4 | 0 |
+| **all** | 73 | 58 |
 
 ### Open ledger items by owner
 
@@ -148,7 +152,6 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 |---|---|---|---|---|
 | U10.1 | Demo script and deck for Dec 2 (U14.1 Steps 2-3; D60, D70; P209) | 3/3 | done | ACCEPT |
 | U10.2 | Fix batch during the freeze (T115, T105, T122, guide rule 9; D66) | 3/3 | done | ACCEPT |
-| U10.3 | Pose-aware cut pockets for generated parts (T121; D70 demo quality) [hard] | 1/3 | in progress | - |
 | U10.4 | Quality-of-life batch (audit W24-Au2; D71) | 3/3 | done | ACCEPT |
 | U10.5 | Test and tidy follow-ups (T108, T109, T110, T123; D71) | 3/3 | done | ACCEPT |
 | U10.6 | Findings from Tristan's fresh-session trial (T125, T126, T128; D74; P224) | 3/3 | done | ACCEPT |
@@ -182,18 +185,42 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U13.6 | Rehearsal 2 gaps (D78) | 3/3 | done | - |
 | U13.7 | Overnight follow-ups (T134, T136, T140, T141, T142, T143) | 3/3 | done | - |
 | U13.8 | Rehearsal 4 gaps | 3/3 | done | - |
-| U13.9 | Control surfaces follow their wing (T130; demo-script Issue 6) [hard] | 0/3 | not started | - |
-| U13.10 | Small fixes (T19, T111, T101) | 0/3 | not started | - |
-| U13.11 | Faster plane CLI start-up (T124) [hard] | 0/3 | not started | - |
-| U13.12 | 3D generation close to the real aircraft (I2; D85, D87) [hard] | 0/4 | not started | - |
-| U13.13 | Source every gate threshold (D88; T19, T82) | 0/4 | not started | - |
-| U13.14 | OpenCAE CLI as hangar's physics backend (D89; P282) [hard] | 0/3 | not started | - |
 
 ### W14 Presentation
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U14.1 | Dec 2 presentation package | 3/4 | in progress | ACCEPT |
+
+### W15 Authoring gaps and speed (D86)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U15.1 | Control surfaces follow their wing (T130; demo-script Issue 6) [hard] | 0/3 | not started | - |
+| U15.2 | Small fixes (T19, T111, T101) | 0/3 | not started | - |
+| U15.3 | Faster plane CLI start-up (T124) [hard] | 0/3 | not started | - |
+
+### W16 3D generation close to the real aircraft (D85, D87)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U16.1 | 3D generation close to the real aircraft (I2; D85, D87) [hard] | 0/4 | not started | - |
+| U16.2 | Pose-aware cut pockets for generated parts (was U10.3; T121; D70; P284) [hard] | 1/4 | in progress | - |
+
+### W17 Sourced gates (D88)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U17.1 | Source every gate threshold (D88; T19, T82) | 0/4 | not started | - |
+
+### W18 Physics checks (D89)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U18.1 | OpenCAE CLI as hangar's physics backend (D89; P282) [hard] | 0/3 | not started | - |
+| U18.2 | Calibration against a real aircraft (D89; P280) | 0/3 | not started | - |
+| U18.3 | Wing spar bending by beam theory (D89; P280) | 0/3 | not started | - |
+| U18.4 | Trim and stability (D89; P280) [hard] | 0/3 | not started | - |
 
 ## Ledger
 

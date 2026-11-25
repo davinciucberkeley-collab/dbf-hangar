@@ -4873,7 +4873,7 @@ items:
     updated: '2026-11-23'
   - id: T121
     kind: task
-    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)] [U10.3 parked on std/u4.25-pockets (D71): pose-aware pockets remove all 14 swept-pose FAIL rows, but concept-a-param tier-1 validate rises ~35 s -> ~62 s (budget 60.2 s); merge after Dec 2 with a relaxed budget or a faster boolean] [U10.3 parked again (2026-11-24): convex-hull pockets (W24-A) give tier-1 98-111 s and planform -16.4 % FAIL; the swept envelope of the wng-007 balance horns (21.9k mm3 each) cuts the core; v1.1 needs a pocket clipped to the horn's real install path (amodel ctx.seat) or a planform measure decision]"
+    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)] [U16.2 parked on std/u4.25-pockets (D71): pose-aware pockets remove all 14 swept-pose FAIL rows, but concept-a-param tier-1 validate rises ~35 s -> ~62 s (budget 60.2 s); merge after Dec 2 with a relaxed budget or a faster boolean] [U16.2 parked again (2026-11-24): convex-hull pockets (W24-A) give tier-1 98-111 s and planform -16.4 % FAIL; the swept envelope of the wng-007 balance horns (21.9k mm3 each) cuts the core; v1.1 needs a pocket clipped to the horn's real install path (amodel ctx.seat) or a planform measure decision]"
     source: W23-B3 2026-11-23 (U9.2 Part B)
     owner: conductor
     status: open
@@ -4895,7 +4895,7 @@ items:
     updated: '2026-11-24'
   - id: D71
     kind: decision
-    text: 'Overnight 2026-11-24 (Tristan P209/P210, defaults): the conductor takes decisions and approvals and merges to main after a fresh review and green CI (irreversible actions still wait); U10.3 pose-aware cut pockets merges only if reviewed and green by Sun 11-29; the 11-30 weekly entry is drafted, not published; when the queue is empty, run audits and quality-of-life improvements (fixes, docs, tests, small tooling) under the D66 light/full path rules'
+    text: 'Overnight 2026-11-24 (Tristan P209/P210, defaults): the conductor takes decisions and approvals and merges to main after a fresh review and green CI (irreversible actions still wait); U16.2 pose-aware cut pockets merges only if reviewed and green by Sun 11-29; the 11-30 weekly entry is drafted, not published; when the queue is empty, run audits and quality-of-life improvements (fixes, docs, tests, small tooling) under the D66 light/full path rules'
     source: Tristan, P209 and P210, 2026-11-24
     owner: Tristan
     status: decided
@@ -4939,7 +4939,7 @@ items:
     updated: '2026-11-24'
   - id: D73
     kind: decision
-    text: "U10.3 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match [Tristan P219: U10.3 uses W24-A's convex-hull pocket per moving cut part (as amodel/wing.py), not posed copies]"
+    text: "U16.2 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match [Tristan P219: U16.2 uses W24-A's convex-hull pocket per moving cut part (as amodel/wing.py), not posed copies]"
     source: Tristan, P214, 2026-11-24
     owner: Tristan
     status: decided
@@ -5258,13 +5258,13 @@ items:
     updated: '2026-11-24'
   - id: I2
     kind: idea
-    text: 'Milestone after Dec 2: mechanical fidelity of generated models. Wheels as separate parts on axle joints (rolling), linkages solved kinematically (servo arm -> pushrod -> horn follows the surface), control surfaces on true hinge lines with gap/cut-outs so they never clip, verified by animating each mechanism through its range in Studio Physics mode (ties to R11) [D87 (P279, 11-25): pulled forward, starts now as U13.12; rehearsals paused until it delivers.]'
+    text: 'Milestone after Dec 2: mechanical fidelity of generated models. Wheels as separate parts on axle joints (rolling), linkages solved kinematically (servo arm -> pushrod -> horn follows the surface), control surfaces on true hinge lines with gap/cut-outs so they never clip, verified by animating each mechanism through its range in Studio Physics mode (ties to R11) [D87 (P279, 11-25): pulled forward, starts now as U16.1; rehearsals paused until it delivers.]'
     source: Tristan, P267, 2026-11-24
     owner: Tristan
     status: open
     due: ''
     units:
-      - U13.12
+      - U16.1
     evidence: ''
     decided_in: ''
     updated: '2026-11-25'

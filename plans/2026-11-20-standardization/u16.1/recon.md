@@ -1,4 +1,4 @@
-# U13.12 recon (W34-X): how others model aircraft CAD with real mechanisms
+# U16.1 recon (W34-X): how others model aircraft CAD with real mechanisms
 
 Date: 2026-11-25. Author: recon. Only sources I opened are cited; all "checked" dates are 2026-11-25.
 
