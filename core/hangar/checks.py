@@ -29,6 +29,7 @@ from .gates import gate, run_gates
 from .gates.applicability import NEEDS, applicable, skip_row
 from .gates.fidelity import resolve_threshold
 from .mass import mass_properties
+from .propulsion import pending_motors, thrust_n
 from .migrate import KNOWN_VERSIONS
 
 G = 9.80665
@@ -844,9 +845,12 @@ def _upward_lift(design: Design, tf: dict[str, np.ndarray], up: np.ndarray) -> l
     for m in design.components:
         if m["type"] != "motor" or m["propulsion"].get("role", "both") not in ("lift", "both"):
             continue
+        t = thrust_n(m)
+        if t is None:  # pending: callers skip before this; never multiply the text
+            continue
         ax = tf[m["id"]][:3, :3] @ np.array(m["propulsion"]["axis"], dtype=float)
         ax = ax / np.linalg.norm(ax)
-        out.append((m, up * max(0.0, float(np.dot(ax, up))) * m["propulsion"]["max_thrust_n"]))
+        out.append((m, up * max(0.0, float(np.dot(ax, up))) * t))
     return out
 
 
@@ -899,7 +903,11 @@ def tier2_physics(design: Design, std: dict, mp: dict) -> TierReport:
 
     lift_motors = [c for c in design.components if c["type"] == "motor"
                    and c["propulsion"].get("role", "both") in ("lift", "both")]
-    if design.data["morphology"].get("vtol_method", "none") != "none" and lift_motors:
+    pend_lift = pending_motors(design, ("lift", "both"))
+    if design.data["morphology"].get("vtol_method", "none") != "none" and lift_motors and pend_lift:
+        res.append(CheckResult("T2.hover_moment", SKIP, f"hover moment not computed: max_thrust_n is pending for {pend_lift}",
+                               STD + "hover_moment_pass_ratio", {"pending": pend_lift}))
+    elif design.data["morphology"].get("vtol_method", "none") != "none" and lift_motors:
         hover_pose = design.data.get("flight", {}).get("hover_pose")
         h_ang = pose_angles(design, hover_pose)
         if hover_pose:  # CG, motor positions and thrust axes at the hover configuration
@@ -1175,16 +1183,21 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
 
     if design.data["morphology"].get("vtol_method", "none") != "none" or design.data["morphology"]["lift"] == "multirotor":
         hover_pose = flight.get("hover_pose")
-        h_tf = pose_transforms(design, pose_angles(design, hover_pose))
-        lift = _upward_lift(design, h_tf, _hover_up(design))
-        thrust = sum(float(np.linalg.norm(f)) for _, f in lift)
-        rated = sum(m["propulsion"]["max_thrust_n"] for m, _ in lift)
-        tw = thrust / weight_n if weight_n else 0
-        lim = a["hover_thrust_to_weight_min"]["value"]
-        res.append(CheckResult("T3.hover_tw", PASS if tw >= lim else FAIL,
-                               f"hover T/W {tw:.2f} (upward thrust {thrust:.1f} N of {rated:.1f} N rated; minimum {lim})"
-                               + (f" at pose {hover_pose}" if hover_pose else ""), STD + "hover_thrust_to_weight_min",
-                               {"thrust_to_weight": round(tw, 3), "band": "below" if tw < lim else "within"}))
+        pend = pending_motors(design, ("lift", "both"))
+        if pend:
+            res.append(CheckResult("T3.hover_tw", SKIP, f"hover T/W not computed: max_thrust_n is pending for {pend}",
+                                   STD + "hover_thrust_to_weight_min", {"pending": pend}))
+        else:
+            h_tf = pose_transforms(design, pose_angles(design, hover_pose))
+            lift = _upward_lift(design, h_tf, _hover_up(design))
+            thrust = sum(float(np.linalg.norm(f)) for _, f in lift)
+            rated = sum(thrust_n(m) for m, _ in lift)
+            tw = thrust / weight_n if weight_n else 0
+            lim = a["hover_thrust_to_weight_min"]["value"]
+            res.append(CheckResult("T3.hover_tw", PASS if tw >= lim else FAIL,
+                                   f"hover T/W {tw:.2f} (upward thrust {thrust:.1f} N of {rated:.1f} N rated; minimum {lim})"
+                                   + (f" at pose {hover_pose}" if hover_pose else ""), STD + "hover_thrust_to_weight_min",
+                                   {"thrust_to_weight": round(tw, 3), "band": "below" if tw < lim else "within"}))
     elif not applicable(design, "T3.hover_tw")[0]:
         res.append(skip_row("T3.hover_tw", applicable(design, "T3.hover_tw")[1], STD + "hover_thrust_to_weight_min"))
     return TierReport(3, "aero", res)

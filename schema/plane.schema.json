@@ -463,8 +463,16 @@
           "additionalProperties": false,
           "properties": {
             "max_thrust_n": {
-              "type": "number",
-              "exclusiveMinimum": 0
+              "anyOf": [
+                {
+                  "type": "number",
+                  "exclusiveMinimum": 0
+                },
+                {
+                  "const": "pending"
+                }
+              ],
+              "description": "Peak static thrust, N, from a datasheet or bench test; the text pending when no source exists (checks that need it are skipped)."
             },
             "axis": {
               "description": "Direction of the thrust FORCE on the aircraft (unit vector, body frame). Forward thrust is [-1,0,0] for tractors and pushers alike; hover lift at 0 deg pose is [0,0,1].",

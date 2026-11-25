@@ -304,7 +304,9 @@ def plan(design: Design, part_id: str, drop: dict | None = None) -> dict:
                        f"forces and moments from a static solve, x {ult} ultimate factor"}
     for name in ("landing", "thrust"):
         loads = []
-        for e in load_joints:
+        if drop.get(f"{name}_skipped"):  # e.g. max_thrust_n is pending: not computed, say why once
+            notes.append(f"{name}: {drop[f'{name}_skipped']}")
+        for e in ([] if drop.get(f"{name}_skipped") else load_joints):
             jl = drop.get(name, {}).get(e["joint"])
             if not jl:
                 notes.append(f"{name}: no joint load for {e['joint']}")
