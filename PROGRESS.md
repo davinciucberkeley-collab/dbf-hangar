@@ -36,7 +36,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 12 | 2026-11-27 |
-| conductor | 20 | 2026-11-26 |
+| conductor | 19 | 2026-11-26 |
 
 ### Open items for teammates
 
@@ -196,9 +196,9 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U15.1 | Control surfaces follow their wing (T130; demo-script Issue 6) [hard] | 0/3 | not started | - |
-| U15.2 | Small fixes (T19, T111, T101) | 0/3 | not started | - |
-| U15.3 | Faster plane CLI start-up (T124) [hard] | 0/3 | not started | - |
+| U15.1 | Control surfaces follow their wing (T130; demo-script Issue 6) [hard] | 1/3 | in progress | - |
+| U15.2 | Small fixes (T19, T111; T101 already fixed) | 1/3 | in progress | - |
+| U15.3 | Faster plane CLI start-up (T124) [hard] | 1/3 | in progress | - |
 
 ### W16 3D generation close to the real aircraft (D85, D87)
 
@@ -211,7 +211,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U17.1 | Source every gate threshold (D88; T19, T82) | 0/4 | not started | - |
+| U17.1 | Source every gate threshold (D88; T19, T82) | 1/5 | in progress | - |
 
 ### W18 Physics checks (D89)
 
@@ -227,7 +227,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 49 | 95 | 3 | 3 | 0 | 150 |
+| task | 48 | 96 | 3 | 3 | 0 | 150 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 

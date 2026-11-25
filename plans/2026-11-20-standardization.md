@@ -357,6 +357,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D88 | Source the gates? | yes: every threshold in standards/*.yaml that is `pending` or an internal/team convention gets an opened external source (or a derivation from sourced values, written out), else stays `pending` with the reason; ranked by how many blocking check rows it drives; designs fixed, not thresholds; baselines refreshed in designs-only commits | Tristan | 11-25 | decided (Tristan P281, 2026-11-25) |
 | D89 | Use OpenCAE Studio's new `opencae` CLI (OpenCAEModel main, 11-24: mass, propulsion operating point and current margins, CalculiX structure, SU2/OpenFOAM whole-aircraft CFD, 6-DOF hover) for hangar's physics checks? | yes (default taken, conductor 11-25, Tristan P282 pointed at it): run it as an external GPL program through a hangar adapter (PDL -> drone.json + mesh, `opencae run --json` -> check rows); no OpenCAE source copied; SKIP where it is not installed (CI); CFD via SU2 lifts the plan section 8 'no CFD' line for this external route only | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan P282) |
 | D90 | U16.1 showcase design and MJCF timing (design note u16.1/design-note.md)? | showcase = c172-rc (from rehearsal-4 PR #9), landed on main in a designs-only PR (S0); the kinematic MJCF export (S7) follows the Studio-visible steps and is not needed before Tristan judges D87 | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan may change) |
+| D91 | U17.1 inventory findings: 518 blocking rows (481 T4 manufacturing, 27 schema, 8 mtow, 2 connection types) have criteria that resolve to no threshold, and the fidelity count treats any source text but `pending`/`internal convention` as sourced | (a) add a core step to U17.1 that links those criteria to real keys so they count; (b) a `team constraint` counts as sourced only with a named owner and date (D88); scouts run packets 1, 6, 7, 2, 3, 4, 5, then 8, 9 | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1051,15 +1052,15 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** an aileron, elevator or flap generated from a wing's planform today repeats the wing's span, chords and sweep in its own `geometry.params`, so a wing-only `design set ...span` leaves the surface stale (A400M: 8 new T1 hinge-overlap FAILs at span 1800, u4.2/demo-script.md Decisions 2). Make generated control surfaces derive their planform from the parent wing (reference the wing component's params, or a design `parameters:` entry, or a surface generator that reads the parent), so one wing change regenerates the surfaces and their hinges with no new FAIL. Document it in the new-concept recipe. Existing designs unchanged (byte-identical meshes and baselines) unless they opt in.
 
-- [ ] **Step 1: Brief** (tactician W34-T)
+- [x] **Step 1: Brief** (tactician W34-T) *(4efe4c6: hard; planform via `$wing_span_mm` clears the 8 FAIL with no code; hinges via new opt-in `hinge_from: generator`; tail hinges out of scope (follow-up))*
 - [ ] **Step 2: Build** (builder-plus W34-B)
 - [ ] **Step 3: Review** (W34-R); merge; check on a scratch copy of PR #8's a400m-rc that span 1800 gives no new FAIL
 
-### Unit U15.2: Small fixes (T19, T111, T101)
+### Unit U15.2: Small fixes (T19, T111; T101 already fixed)
 
 **Scope:** T19 `standards.pending` also reads gate-thresholds.yaml (wire_clearance_mm, wing_area_complete_min, servo_must_drive_mechanism; blocks the 12-08 flip) and CT-M3-SHCS-INSERT cites its source; T111 `plane design new/set` write LF on Windows; T101 bench `_map_args` maps only argument values that name parameters. No threshold or gate-behaviour change.
 
-- [ ] **Step 1: Briefs** (tactician W34-T)
+- [x] **Step 1: Briefs** (tactician W34-T) *(4efe4c6: -1 pending reads gate-thresholds (T19), -2 design new writes LF (T111); T101 already fixed on main e72f545; T19 second half already on main)*
 - [ ] **Step 2: Build** (builder W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
 
@@ -1067,7 +1068,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** every agent call pays about 4.4 s of start-up (hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx). Measure with `python -X importtime`, lazy-import the heavy modules where the op does not need them, and report before/after for `plane --help`, `design get`, `design set`, `design validate --tier 1`. Outputs byte-identical; no behaviour change.
 
-- [ ] **Step 1: Brief** (tactician W34-T, with the importtime profile)
+- [x] **Step 1: Brief** (tactician W34-T, with the importtime profile) *(4efe4c6: hard; trimesh 2.26 s of 2.63 s import; lazy proxy; merge after U15.1)*
 - [ ] **Step 2: Build** (builder-plus W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
 
@@ -1095,8 +1096,9 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** list every threshold in standards/*.yaml whose source is `pending`, an internal convention or a team constraint (about 50 pending, about 45 convention, 11-25 count); rank them by how many blocking check rows they drive on all designs; scouts find opened sources (datasheets, standards such as FAA AC 43.13, MIL-HDBK-5/MMPDS, ASTM, manufacturer data, RC references with stated test conditions) per packet; a builder writes the sourced value or keeps `pending` with the reason; re-run all designs and report the fidelity line before/after and which rows changed. Standards and knowledge only; baselines refreshed in separate designs-only commits. James reads the values.
 
-- [ ] **Step 1: Inventory and packets** (tactician W34-T2)
-- [ ] **Step 2: Sources** (scouts W34-S, up to 3 at a time)
+- [x] **Step 1: Inventory and packets** (tactician W34-T2) *(48791cb: 96 entries, 9 packets, 21 team decisions; 518 blocking rows have criteria that resolve to no threshold (D91); connection types move 0 rows (U8.3))*
+- [ ] **Step 2: Sources** (scouts W34-S, up to 3 at a time; worktree C:/Users/trist/wt/u17.1, branch std/u17.1-sources)
+- [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus)
 - [ ] **Step 3: Values into standards; re-run; baselines** (W34-B)
 - [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
 

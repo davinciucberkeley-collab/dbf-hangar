@@ -4535,12 +4535,12 @@ items:
     text: 'W10-R non-blocking (U6.1 bench): _map_args maps option values and the key too (a --why/--value text naming an existing path fails a legit run); PLANE_BENCH_LOG not digest-pinned; SWEEP_ROOT still writes into the real repo; one paid bench run to probe shell redirection under Bash(plane *); tree_digest ignores empty folders (docstring) [merged e72f545 (W16-R); open: one paid bench run to probe shell redirection under Bash(plane *); declare path params on ops instead of PATH_PARAM_NAMES]'
     source: W10-R review 2026-11-23 (reviews/2026-11-23-w10.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: e72f545
+    evidence: e72f545 (_map_args maps only declared path args; W34-T check 11-25)
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-25'
   - id: T102
     kind: task
     text: 'W12-R non-blocking (T86): the failed-inner-module test should add a third call with the fault cleared (recovery covered only by a probe); comment that the rollback relies on Python dropping a failed module from sys.modules'
