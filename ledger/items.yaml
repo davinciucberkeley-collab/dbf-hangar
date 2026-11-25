@@ -5085,11 +5085,11 @@ items:
     text: Import Dillon's finalized concept-a CAD as a new design concept-a-final (copy of concept-a via plane design new --template concept-a; per-part STL meshes in the aircraft frame named after concept-a's parts; masses updated with plane design set; validate + baseline; PR lists which concept-a FAILs are cleared and which remain). concept-a itself untouched; PR touches only designs/concept-a-final/
     source: Tristan, 2026-11-24 (Dillon offered the finalized design)
     owner: Dillon
-    status: open
+    status: superseded
     due: ''
     units: []
-    evidence: ''
-    decided_in: ''
+    evidence: 'D84: concept-a-reborn import replaces concept-a-final'
+    decided_in: D84
     updated: '2026-11-24'
   - id: T132
     kind: task
@@ -5197,6 +5197,39 @@ items:
     owner: Tristan
     status: open
     due: '2026-11-27'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T138
+    kind: task
+    text: 'Split conventional tail: the rudder passes through the elevator (T1.interference FAIL 171 mm3); add an elevator cut-out (or rudder notch) option in tail_surfaces before a design uses both pieces'
+    source: reviews/2026-11-25-w31.md W31-R note on U4.37-4b
+    owner: conductor
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: D84
+    kind: decision
+    text: Dillon's DBF-Combined origin/redesign/v1 concept-a is the source of truth. He imports it into dbf-hangar as a new design concept-a-reborn through his own PR, together with decisions D-212..D-261 (ledger import) and a DaVinci reconnect record in knowledge/. Hangar's own edits to concept-a are not reapplied. DBF-Combined is not archived yet
+    source: Tristan, P263, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization/u4.40/combined-compat.md
+    decided_in: ''
+    updated: '2026-11-24'
+  - id: T139
+    kind: task
+    text: Import concept-a from DBF-Combined origin/redesign/v1 as designs/concept-a-reborn via a PR, plus decisions D-212..D-261 and the DaVinci reconnect record (D84); follow the guide the conductor sends
+    source: D84, 2026-11-24
+    owner: Dillon
+    status: open
+    due: '2026-11-28'
     units: []
     evidence: ''
     decided_in: ''

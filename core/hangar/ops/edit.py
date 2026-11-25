@@ -320,9 +320,9 @@ def _branch_slug(title: str, limit: int = 40) -> str:
     return cut.strip("-") or "change"
 
 
-@op(name="design.propose", summary="Commit a design change on a new branch, push it and open a PR against main.",
+@op(name="design.propose", summary="Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree.",
     mutates=True, render=lambda r: r.data["pr_url"])
-def propose_op(path: str, title: str) -> OpResult:
+def propose_op(path: str, title: str, *, draft: bool = False) -> OpResult:
     plane = _plane(path)
     ddir = str(plane.parent.resolve())
     did = str(yamlfast.safe_load(_text(plane))["id"])
@@ -341,9 +341,14 @@ def propose_op(path: str, title: str) -> OpResult:
         _run(["git", "-C", root, "add", "--", ddir], root)
         _run(["git", "-C", root, "commit", "-m", f"{subject}\n\n{OWNER_TRAILER}"], root)
         _run(["git", "-C", root, "push", "-u", "origin", branch], root)
-        out = _run([_gh(), "-R", GH_REPO, "pr", "create", "--head", branch, "--base", "main",
-                    "--title", subject, "--body", body], root)
+        argv = [_gh(), "-R", GH_REPO, "pr", "create", "--head", branch, "--base", "main",
+                "--title", title, "--body", body]
+        if draft:
+            argv.append("--draft")
+        out = _run(argv, root)
     finally:
         _run(["git", "-C", root, "switch", start], root)
     url = [l for l in out.splitlines() if l.strip()][-1].strip()
+    _run(["git", "-C", root, "checkout", branch, "--", ddir], root)
+    _run(["git", "-C", root, "reset", "-q", "--", ddir], root)
     return OpResult(True, {"pr_url": url, "branch": branch}, [url])

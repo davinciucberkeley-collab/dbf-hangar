@@ -350,6 +350,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D81 | Speed up design set? | profile a span change, then a mesh cache for the interference step if the profile confirms the double build; nothing else before Dec 2 | Tristan | 11-24 | decided (Tristan P235, 2026-11-24) |
 | D82 | Parts without vendor CAD? | dimension-accurate envelopes labelled representative for Dec 2; Tristan supplies real models for the demo's parts, agents swap them in with licence recorded | Tristan | 11-24 | decided (Tristan P236, 2026-11-24) |
 | D83 | GrabCAD models can't go on GitHub: how do they show? | local git-ignored CAD overlay on team PCs only; committed parts keep envelopes + source URL + licence; never in CI, public viewer or committed GLB | Tristan | 11-24 | decided (Tristan P237, 2026-11-24) |
+| D84 | Dillon's redesign/v1 concept-a vs hangar's edited concept-a? | Dillon's is the truth; he imports it as `concept-a-reborn` by PR with D-212..D-261 and a DaVinci reconnect record; hangar's edits not reapplied; DBF-Combined not archived yet | Tristan | 11-24 | decided (Tristan P263, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -407,14 +408,20 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | — async check-in (no meeting) | Wed 11-25 | `plane update publish` → link in the Drive doc |
 | W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
 | Freeze | Mon 11-30 18:00 | — |
-| W4.1 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
-| W4.2 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
-| W4.3 Hardening and v1.1 batch 1 | Mon 11-23 | U4.8, U4.9, U4.10, U4.11 |
-| W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U4.12, U4.13, U4.14, U4.15, U4.16 |
-| W4.5 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U4.17, U4.18, U4.19, U4.20 |
-| W4.6 Parametric geometry for the demo (D70) | Tue 11-24 → Sun 11-29 | U4.21, U4.22 |
-| W4.7 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
+| W4 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
+| W5 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
+| W6 Hardening and v1.1 batch 1 | Mon 11-23 | U4.8, U4.9, U4.10, U4.11 |
+| W7 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U4.12, U4.13, U4.14, U4.15, U4.16 |
+| W8 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U4.17, U4.18, U4.19, U4.20 |
+| W9 Parametric geometry for the demo (D70) | Tue 11-24 | U4.21, U4.22 |
+| W10 Freeze fixes and fresh-session findings | Tue 11-24 | U4.23, U4.24, U4.25, U4.26, U4.27, U4.28 |
+| W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U4.29, U4.35 |
+| W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U4.30, U4.31, U4.32, U4.33, U4.38 |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U4.36, U4.37, U4.39, U4.34 |
+| W14 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
 | Present | **Wed 12-02** | demo + deck |
+
+**Wave names (Tue 11-24, Tristan P260/P261):** the former sub-waves W4.1-W4.7 are now W4-W9 and W14, and the later units are grouped as W10-W13; unit ids (U4.x) are unchanged so briefs, branches and commits still match. Agent ids such as W29-B are launch labels, not schedule waves.
 
 **Revised schedule (Mon 11-23 22:45, conductor; W0-W3 finished early, see archive):**
 
@@ -704,8 +711,10 @@ W4 wave rules (W3 lessons T41–T43):
 | W29-T, W29-B, W29-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.30 (checks by aircraft type + fixed-wing standards + per-design mission), U4.31 (real-parts library), U4.32 (nacelle/prop/nose generators) | `briefs/U4.3x-*.md`, branches `std/u4.3x-*`, `reviews/2026-11-24-w29.md` | each brief builder-ready; "### Verdict:" |
 | W29-G | `design-engineer` | Sonnet | U4.34 rehearsal: the Dec 1 prompt run on a branch for A400M and Cessna 172 | `reviews/2026-11-24-w29-rehearsal.md` | gaps listed; nothing merged |
 | W30-T, W30-B, W30-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.35 (profile a span change; mesh cache) | `plans/2026-11-20-standardization/u4.35/profile.md`, `briefs/U4.35-*.md`, branch `std/u4.35-*`, `reviews/2026-11-24-w30.md` | profile names where the seconds go; cached results byte-identical to uncached; "### Verdict:" |
-| W31-T, W31-S, W31-B, W31-R | `tactician`, `scout`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku, Haiku/Sonnet, Opus (fresh) | U4.36 (design authoring gaps from rehearsal 1) | `briefs/U4.36-*.md`, `knowledge/parts/` additions, branches `std/u4.36-*`, `reviews/2026-11-25-w31.md` | a fixed-wing design can be built from a blank start with the CLI alone; "### Verdict:" |
+| W31-T, W31-S, W31-B, W31-R, W31-R2 | `tactician`, `scout`, `builder`/`builder-plus`, `reviewer` (two in parallel, P262) | Sonnet, Haiku, Haiku/Sonnet, Opus (fresh) | U4.36 (design authoring gaps from rehearsal 1) | `briefs/U4.36-*.md`, `knowledge/parts/` additions, branches `std/u4.36-*`, `reviews/2026-11-25-w31.md` | a fixed-wing design can be built from a blank start with the CLI alone; "### Verdict:" |
 | W32-S | `scout` | Haiku | T137 DaVinci hookup facts (R29, D3): Dillon's API guide, DBF-Combined docs (read-only source), live API GET-only | `knowledge/` source entries + `knowledge/research/davinci-api-facts.md`, branch `std/w32-davinci-facts` | every fact sourced; no POST/DELETE; token never printed |
+| W32-A | `advisor` | Opus | P259: DBF-Combined origin/redesign/v1 (Dillon's DaVinci-era concept-a) vs dbf-hangar PDL/designs/concept-a: what maps, what would be lost on import | gap report in `plans/2026-11-20-standardization/u4.40/combined-compat.md` (conductor commits) | every DBF-Combined artefact classified: maps / needs adapter / would be lost |
+| W32-T | `tactician` | Sonnet | D84: dry-run of the concept-a-reborn import from DBF-Combined origin/redesign/v1 in a scratch copy (no push), then Dillon's step-by-step guide | `plans/2026-11-20-standardization/u4.40/dillon-import-guide.md` | every command in the guide ran once in the dry run; issues listed with fixes |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -886,7 +895,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U4.36: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
-*Progress: -4 airfoils a6b1839, -2 blank 9989382, -1 design add 969b242 merged (W31-R ACCEPT); parts A/B merged 899d9f8 (conductor keeps the two sub-gram receivers: the library is a catalogue, the design picks); C/D merged 5f544cf; -6 wing inboard 84a63e2, -3 remove-last 65db7f2, -5 generators CLI bfc6341 merged.*
+*Progress: -4 airfoils a6b1839, -2 blank 9989382, -1 design add 969b242 merged (W31-R ACCEPT); parts A/B merged 899d9f8 (conductor keeps the two sub-gram receivers: the library is a catalogue, the design picks); C/D merged 5f544cf; -6 wing inboard 84a63e2, -3 remove-last 65db7f2, -5 generators CLI bfc6341, -8 blank-to-fixed-wing 352f11d merged.*
 
 **Scope:** from the C172 rehearsal (gap log 2026-11-24): (1) an op that appends list elements (components, attachments, bom lines) with id checks, also used by Studio edit; (2) `design new --blank` (minimal valid design: no components) and a light remove for many elements; (3) airfoils: NACA 4-digit generated on demand plus a small `knowledge/airfoils/` library, selectable by name; (4) `plane generators list/show` with each generator's params and units, and the team guide's "Starting a new concept" updated; (5) fixed-wing real parts (motor, ESC, servos, 2-blade props with spinner, receiver) in the library with vendor CAD where licensed, envelopes otherwise (scouts); (6) wing_panel multi-section (straight inboard + tapered outboard) if cheap. Existing designs unchanged.
 
@@ -899,7 +908,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** from the A400M rehearsal (PR #5, gap log 2026-11-24, 73 min, 1 FAIL left): (1) tier-3 aero sees generated lifting surfaces: planform derived from wing_panel and tail_surfaces params (no hand-copied `planform`), so stall and static margin include the tail; (2) batch editing: many edits applied with one regeneration and one interference pass (about 150 single calls took ~50 min at 30-70 s each); (3) `design propose --draft`, title kept as given, CHANGELOG entries of one batch compacted, working tree keeps the design; (4) geometry fidelity: fuselage_loft per-station centre z if not already supported, tail control surfaces split from fixed surfaces, landing_gear in-line multi-wheel mains; (5) docs: build-index/Studio how-to. Existing designs unchanged. Items not done by Sat 11-28 18:00 move to after Dec 2.
 
-*Progress: -2 batch apply merged ca54346 (W31-R ACCEPT; 20 edits 161 s vs 315 s single, loaded machine); -1 derived planform merged 899b619 (ACCEPT after one reopen; A400M static margin -6.7% FAIL -> +40.9% WARN).*
+*Progress: -2 batch apply merged ca54346 (W31-R ACCEPT; 20 edits 161 s vs 315 s single, loaded machine); -3 propose --draft a043894, -4b tails 2a4b2eb, -4a fuselage f722c0b, -4c gear 5e338e4 merged; -1 derived planform merged 899b619 (ACCEPT after one reopen; A400M static margin -6.7% FAIL -> +40.9% WARN).*
 
 - [x] **Step 1: Briefs** (tactician W31-T) *(1fbe834: -1 derived planform, -2 batch apply, -3 propose --draft, -4a/b/c optional fidelity, -5 Studio how-to; defaults taken: `design add` is the one documented way to create elements (set --kind add stays as a field-add); batch CHANGELOG logs count and keys, values in the git diff)*
 - [ ] **Step 2: Build** (W31-B)
@@ -914,6 +923,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 3: Review** (W31-R); merge *(ACCEPT; merged 6116330)*
 
 ### Unit U4.39: Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard]
+
+*Progress: -1 mechanism recipe merged 61bfbce; 4a/4b/4c merged (see U4.37).*
 
 **Scope:** from Tristan's look at the A400M in Studio: (1) wheels with tyre and hub, nose leg attaches (`front_attach_z`), in-line wheels (extends U4.37-4c); (2) tail control surfaces split (U4.37-4b as written); (3) mechanisms: a recipe (servo just ahead of the hinge line, horn from `plate`, pushrod from `strut`, `mechanisms[]` entry) in the docs and design-engineer guidance, plus a T6 WARN for a servo that drives no mechanism, and a WARN for a part body that touches nothing; (4) smoother fuselages: per-station dz plus opt-in smoothing (extends U4.37-4a). All opt-in: existing designs bit-identical (default taken). Out of scope for Dec 2, stated plainly: scale detailing (glazing, fairings, flap tracks, intakes/exhausts, airfoiled props, oleos/retracts, hollow shells, wiring). Cut: not merged by Sat 11-28 18:00 -> after Dec 2.
 

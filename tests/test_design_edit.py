@@ -172,10 +172,11 @@ def test_propose_runs_exact_git_and_gh_commands_without_network(tmp_example, tmp
     assert len(gh) == 1
     assert gh[0][:9] == ["gh-test", "-R", "davinciucberkeley-collab/dbf-hangar", "pr", "create",
                          "--head", branch, "--base", "main"]
-    assert "--title" in gh[0] and "design(example-tailsitter-wing): Lighter battery" in gh[0]
+    assert gh[0][gh[0].index("--title") + 1] == "Lighter battery" and "--draft" not in gh[0]
     commit = [c for c in calls if "commit" in c][0]
+    assert commit[-1].startswith("design(example-tailsitter-wing): Lighter battery")
     assert "Co-authored-by: Tristan Hottier <185231225+TristanHottier@users.noreply.github.com>" in commit[-1]
-    assert calls[-1] == ["git", "-C", str(tmp_path), "switch", "main"]      # back where we started
+    assert calls[-3:] == [["git", "-C", str(tmp_path), "switch", "main"], ["git", "-C", str(tmp_path), "checkout", branch, "--", str(tmp_example.resolve())], ["git", "-C", str(tmp_path), "reset", "-q", "--", str(tmp_example.resolve())]]
 
 
 def test_propose_resolves_a_relative_design_path(tmp_example, tmp_path, monkeypatch):

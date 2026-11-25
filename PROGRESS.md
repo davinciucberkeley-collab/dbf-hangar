@@ -12,27 +12,31 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W1 Ops layer & PDL | 6 | 6 |
 | W2 Gates, adapters, import, team ops | 5 | 5 |
 | W3 One surface, skills, proof | 6 | 6 |
-| W4.1 Whole-branch review and release prep | 1 | 1 |
-| W4.2 Overnight core fixes | 5 | 5 |
-| W4.3 Hardening and v1.1 batch 1 | 4 | 4 |
-| W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | 5 | 5 |
-| W4.5 Team adoption, CI, ratings, process | 4 | 2 |
-| W4.6 Parametric geometry for the demo (D70) | 2 | 2 |
-| W4.7 Presentation | 1 | 0 |
-| Other (no wave row) | 17 | 12 |
+| W4 Whole-branch review and release prep | 1 | 1 |
+| W5 Overnight core fixes | 5 | 5 |
+| W6 Hardening and v1.1 batch 1 | 4 | 4 |
+| W7 Dec 2 prep, BOM, v1.1 batch 2, research import | 5 | 5 |
+| W8 Team adoption, CI, ratings, process | 4 | 2 |
+| W9 Parametric geometry for the demo (D70) | 2 | 2 |
+| W10 Freeze fixes and fresh-session findings | 6 | 5 |
+| W11 Parameter propagation and speed (D75, D81) | 2 | 2 |
+| W12 Any-aircraft capabilities (D77-D79, D82, D83) | 5 | 5 |
+| W13 Rehearsal gaps and visual fidelity | 4 | 0 |
+| W14 Presentation | 1 | 0 |
 | **all** | 60 | 52 |
 
 ### Open ledger items by owner
 
 | owner | open | next due |
 |---|---|---|
-| Dillon | 30 | 2026-12-08 |
+| Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
-| conductor | 20 | 2026-11-28 |
+| conductor | 21 | 2026-11-28 |
 
 ### Open items for teammates
 
+- T139 (Dillon, due 2026-11-28): Import concept-a from DBF-Combined origin/redesign/v1 as designs/concept-a-reborn via a PR, plus...
 - T2 (James, due 2026-11-29): James: harness install test (plan 6b) [triage 2026-11-21: James runs the harness install by 11-29;...
 - T63 (Dillon, due 2026-12-08): concept-a: 38 PETG parts assigned to jacobs-fdm, whose standard lists PLA only; confirm PETG at...
 - T64 (Dillon, due 2026-12-08): concept-a: CA (including foam-safe CA) declared on XPS fin fairings E-FIN-05..08 and 13..16;...
@@ -42,7 +46,6 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 - T73 (Dillon, due 2026-12-08): concept-a drop test: E-MEC-05 1.2 N and E-MEC-10 1.3 N peak vs 0.7 N rating (T2.sim_drop_loads...
 - T74 (Dillon, due 2026-12-08): concept-a drop test: E-WNG-20 1.8 N and E-WNG-21 1.8 N vs 1.4 N rating (T2.sim_drop_loads FAIL,...
 - T75 (Dillon, due 2026-12-08): concept-a T2.sim_rest FAIL: tailsitter tips 81 deg on its gear; widen the gear footprint or lower...
-- T76 (Dillon, due 2026-12-08): concept-a T3.static_margin FAIL 16.4% MAC (CG x=21 mm); move CG or confirm the target band
 - and 22 more in `ledger/items.yaml`
 
 ## Units by wave
@@ -88,13 +91,13 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U3.5 | Discipline skills, scorecard and procedures (from §1c; not on the core path) | 3/3 | done | ACCEPT |
 | U3.6 | Discipline gates [hard] (from §1c; not on the core path) | 3/3 | done | ACCEPT |
 
-### W4.1 Whole-branch review and release prep
+### W4 Whole-branch review and release prep
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.1 | Whole-branch review, performance, release | 5/5 | done | ACCEPT |
 
-### W4.2 Overnight core fixes
+### W5 Overnight core fixes
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
@@ -104,7 +107,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.6 | bench.run agent id check (T89, from the W7-R T7 re-review; D51) | 3/3 | done | - |
 | U4.7 | List-entry edits and bench grader replay (T55, T54; D55, D56) | 3/3 | done | - |
 
-### W4.3 Hardening and v1.1 batch 1
+### W6 Hardening and v1.1 batch 1
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
@@ -113,7 +116,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.10 | v1.1 cleanup, first batch (T83, T86, T88, T90; P175) | 3/3 | done | - |
 | U4.11 | Recompute the 40 read_value claims (T28; D59 overrules D52) | 3/3 | done | - |
 
-### W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import
+### W7 Dec 2 prep, BOM, v1.1 batch 2, research import
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
@@ -123,7 +126,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.15 | v1.1 features (T95, T103, T67; P186) | 3/3 | done | - |
 | U4.16 | Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188) | 3/3 | done | - |
 
-### W4.5 Team adoption, CI, ratings, process
+### W8 Team adoption, CI, ratings, process
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
@@ -132,20 +135,14 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.19 | Source the joint ratings behind concept-a's SKIPs and drop failures (D67; T82; P198) | 3/4 | in progress | - |
 | U4.20 | Process trim (D66; T112; P198) | 3/3 | done | ACCEPT |
 
-### W4.6 Parametric geometry for the demo (D70)
+### W9 Parametric geometry for the demo (D70)
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U4.21 | Geometry kernel and PDL 1.2 (G1; D70) [hard] | 3/3 | done | ACCEPT |
 | U4.22 | First generators and a parametric copy of concept-a (G2; D70) [hard] | 3/3 | done | ACCEPT |
 
-### W4.7 Presentation
-
-| unit | title | done/total | status | review |
-|---|---|---|---|---|
-| U4.2 | Dec 2 presentation package | 2/4 | in progress | ACCEPT |
-
-### Unscheduled
+### W10 Freeze fixes and fresh-session findings
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
@@ -155,26 +152,47 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.26 | Quality-of-life batch (audit W24-Au2; D71) | 3/3 | done | ACCEPT |
 | U4.27 | Test and tidy follow-ups (T108, T109, T110, T123; D71) | 3/3 | done | ACCEPT |
 | U4.28 | Findings from Tristan's fresh-session trial (T125, T126, T128; D74; P224) | 3/3 | done | ACCEPT |
+
+### W11 Parameter propagation and speed (D75, D81)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 | U4.29 | Parameter changes propagate to attached parts (T129; D75) [hard] | 3/3 | done | - |
+| U4.35 | Speed up design set (D81) [hard] | 3/3 | done | - |
+
+### W12 Any-aircraft capabilities (D77-D79, D82, D83)
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 | U4.30 | Checks selected by aircraft type; fixed-wing standards; per-design mission (D77) [hard] | 3/3 | done | - |
 | U4.31 | Real-parts library (D77) | 3/3 | done | - |
 | U4.32 | Shape generators for common aircraft configurations (D77, D78) [hard] | 3/3 | done | - |
 | U4.33 | Reference-aircraft research template (D77, D78) | 3/3 | done | - |
-| U4.34 | Any-aircraft rehearsal (D77, D78) | 1/3 | in progress | - |
-| U4.35 | Speed up design set (D81) [hard] | 3/3 | done | - |
+| U4.38 | Local CAD overlay for licensed part models (D82, D83) [hard] | 3/3 | done | - |
+
+### W13 Rehearsal gaps and visual fidelity
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
 | U4.36 | Design authoring from a blank start (rehearsal 1 gaps; D78) [hard] | 1/4 | in progress | - |
 | U4.37 | A400M rehearsal gaps (D78) [hard] | 1/3 | in progress | - |
-| U4.38 | Local CAD overlay for licensed part models (D82, D83) [hard] | 3/3 | done | - |
 | U4.39 | Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard] | 1/3 | in progress | - |
+| U4.34 | Any-aircraft rehearsal (D77, D78) | 1/3 | in progress | - |
+
+### W14 Presentation
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U4.2 | Dec 2 presentation package | 2/4 | in progress | ACCEPT |
 
 ## Ledger
 
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 49 | 83 | 3 | 2 | 0 | 137 |
+| task | 50 | 83 | 3 | 3 | 0 | 139 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
-| decision | 12 | 0 | 0 | 4 | 269 | 285 |
+| decision | 12 | 0 | 0 | 4 | 270 | 286 |
 
 ## Overdue
 
