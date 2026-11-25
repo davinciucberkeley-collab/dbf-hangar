@@ -160,6 +160,62 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
     return OpResult(True, out, msgs, changed_files=[str(plane), str(log)])
 
 
+def _write_with_log(plane: Path, text: str, working: str, entries: list) -> Path:
+    """Write the patched plane.yaml and append `entries` to CHANGELOG.yaml (same list and line-ending handling as set_op)."""
+    log = plane.with_name("CHANGELOG.yaml")
+    eol = "\r\n" if "\r\n" in text else "\n"
+    log_text = _text(log) if log.exists() else ""
+    if log_text.strip() == "[]":
+        log_text = ""
+    block = yaml.safe_dump(entries, sort_keys=False, allow_unicode=True).replace("\n", eol)
+    if log_text and not log_text.endswith("\n"):
+        log_text += eol
+    combined = log_text + block
+    parsed = yaml.safe_load(combined)
+    if not isinstance(parsed, list) or len(parsed) < len(entries) or parsed[-len(entries):] != entries:
+        raise OpInputError("CHANGELOG.yaml is not a YAML list; fix it by hand")
+    plane.write_bytes(working.encode("utf-8"))
+    log.write_bytes(combined.encode("utf-8"))
+    return log
+
+
+@op(name="design.add", summary="Append one element ({id: ..., ...} as a one-line {mapping}) to a list such as components, attachments or bom.items (byte-preserving; id checked; the whole element is schema-checked before anything is written) and log it in CHANGELOG.yaml.",
+    mutates=True, render=lambda r: "\n".join(r.messages))
+def add_op(path: str, key: str, *, value: str, why: str) -> OpResult:
+    plane = _plane(path)
+    text = _text(plane)
+    if not why.strip():
+        raise OpInputError("why must not be empty")
+    element = pdledit.parse_value(value, allow_empty=True)     # e.g. geometry: {point_mass: {}}
+    if not isinstance(element, dict):
+        raise OpInputError("value must be a {mapping} with an id")
+    before = yaml.safe_load(text)
+    working, old, new = pdledit.append_element(text, key, element)
+    from ..geom.params import expression_errors
+    after = yaml.safe_load(working)
+    fresh = [e for e in expression_errors(after) if e not in set(expression_errors(before))]
+    if fresh:
+        raise OpInputError("; ".join(f"{o}: {p}: {m}" for o, p, m in fresh))
+    pdledit.check_schema(before, after, key)
+    from ..geom.resolve import regeneration_report
+    regen = regeneration_report(text, working, plane)
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    eid = element["id"]
+    entry = {"date": stamp, "key": f"{key}[{eid}]", "old": None, "new": element, "why": why, "kind": "add"}
+    if regen is not None and regen["components"]:
+        entry["regenerated"] = sorted(regen["components"])
+    log = _write_with_log(plane, text, working, [entry])
+    msgs = [f"{key}[{eid}]: added"]
+    if regen is not None and regen["components"]:
+        (m0, m1), (c0, c1) = regen["mass_g"], regen["cg_mm"]
+        fmt_cg = lambda c: " ".join(f"{x:.2f}" for x in c) if c else "n/a"
+        msgs.append(f"regenerated {', '.join(sorted(regen['components']))}: mass "
+                    f"{'n/a' if m0 is None else f'{m0:.1f}'} -> {'n/a' if m1 is None else f'{m1:.1f}'} g, "
+                    f"CG {fmt_cg(c0)} -> {fmt_cg(c1)} mm")
+    return OpResult(True, {"key": key, "id": eid, "index": len(old), "changed": True}, msgs,
+                    changed_files=[str(plane), str(log)])
+
+
 @op(name="design.diff", summary="List the keys whose values differ between two designs.",
     render=lambda r: "\n".join(f"{c['key']}: {c['a']!r} -> {c['b']!r}" for c in r.data["changes"]) or "no differences")
 def diff_op(a: str, b: str) -> OpResult:
