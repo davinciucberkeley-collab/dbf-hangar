@@ -5272,12 +5272,12 @@ items:
     text: Allow removing elements of nested lists such as bom.items (remove accepts top-level lists only)
     source: reviews/2026-11-25-w31.md §19
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-09'
     units: []
-    evidence: ''
+    evidence: bbf388a
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-25'
   - id: T142
     kind: task
     text: "After tonight's W31 reviews merge: rename the old U4.x ids to the wave ids (plan §6 mapping table) in brief file names (134) and their references in reviews/, docs/, knowledge/, tests/, core comments and .claude/agents (about 88 files), in one mechanical builder commit; commit messages, old branches and GitHub PR titles stay as they are; keep the mapping table"
@@ -5329,6 +5329,17 @@ items:
     owner: conductor
     status: open
     due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T147
+    kind: task
+    text: "test_design_edit.py:608: give it a concept-a case that hits the new 'named by a key' guard in nested remove"
+    source: reviews/2026-11-25-w31b.md §15
+    owner: conductor
+    status: open
+    due: '2026-12-09'
     units: []
     evidence: ''
     decided_in: ''
