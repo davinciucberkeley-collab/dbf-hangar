@@ -900,8 +900,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** from the C172 rehearsal (gap log 2026-11-24): (1) an op that appends list elements (components, attachments, bom lines) with id checks, also used by Studio edit; (2) `design new --blank` (minimal valid design: no components) and a light remove for many elements; (3) airfoils: NACA 4-digit generated on demand plus a small `knowledge/airfoils/` library, selectable by name; (4) `plane generators list/show` with each generator's params and units, and the team guide's "Starting a new concept" updated; (5) fixed-wing real parts (motor, ESC, servos, 2-blade props with spinner, receiver) in the library with vendor CAD where licensed, envelopes otherwise (scouts); (6) wing_panel multi-section (straight inboard + tapered outboard) if cheap. Existing designs unchanged.
 
 - [x] **Step 1: Briefs** (tactician W31-T) *(92ba76a: 9 briefs U4.36-1..9 + scout spec; defaults taken: no Studio add UI before Dec 2 (CLI/MCP only); blank design has a placeholder `datum` root; flag names and blank lines after remove unchanged; NACA 2412/0012 for the 172 is a modelling assumption until sourced)* and parts research (scouts W31-S)
-- [ ] **Step 2: Build** (W31-B)
-- [ ] **Step 3: Review** (W31-R); merge
+- [x] **Step 2: Build** (W31-B) *(U4.36-1..9 and parts A-D)*
+- [x] **Step 3: Review** (W31-R); merge *(all ACCEPT; last merge d1c156b)*
 - [ ] **Step 4: Second rehearsal** (U4.34)
 
 ### Unit U4.37: A400M rehearsal gaps (D78) [hard]
