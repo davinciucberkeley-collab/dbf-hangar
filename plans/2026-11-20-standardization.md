@@ -992,6 +992,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R); merge
 
+### Unit U13.7: Overnight follow-ups (T134, T136, T140, T141, T142, T143)
+
+**Scope:** baselines/hashes/validation never depend on the local CAD overlay (T136); pin the verdict-fixture date (T134); a pending criterion for servo-drives-mechanism (T140); remove in nested lists such as bom.items (T141); measure why the generated C172 wing area is 18 % low (T143); rename old U4.x brief files and references to wave ids after all std/u4.* branches merge (T142). Existing designs unchanged.
+
+- [ ] **Step 1: Briefs** (tactician W31-T)
+- [ ] **Step 2: Build** (W31-B)
+- [ ] **Step 3: Review** (W31-R, W31-R2); merge
+
 ### Unit U14.1: Dec 2 presentation package
 
 - [x] **Step 1:** Slides deck (Claude Slides artifact; download .pptx/PDF if needed): problem (15 interfaces, rules forgotten, code edits per design) → PDL → ops/CLI/MCP/Studio → gates T0–T8 → harness → PlaneBench results → what's next.

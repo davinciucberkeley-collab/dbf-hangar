@@ -23,7 +23,8 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | 5 | 5 |
 | W13 Rehearsal gaps and visual fidelity | 6 | 1 |
 | W14 Presentation | 1 | 0 |
-| **all** | 62 | 53 |
+| Other (no wave row) | 1 | 0 |
+| **all** | 63 | 53 |
 
 ### Open ledger items by owner
 
@@ -186,6 +187,12 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U14.1 | Dec 2 presentation package | 2/4 | in progress | - |
+
+### Unscheduled
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U13.7 | Overnight follow-ups (T134, T136, T140, T141, T142, T143) | 0/3 | not started | - |
 
 ## Ledger
 
