@@ -946,7 +946,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** from rehearsal 2 (gap logs 2026-11-24): (1) document the `design apply` edit-file format and the `propulsion` block in the new-concept recipe; (2) `set`/`apply` accept list values (vectors) and remove a mid-list element; (3) a `design bounds` op (component bounding boxes, mm, body frame) and a `design render` PNG op so an agent can look at its model; (4) library meshes centred on their envelope (battery offset, stray lead stub); (5) T-tail and conventional tails: rudder/elevator clearance (T138); (6) investigate T3.static_margin on generated tails (C172 67.6 % MAC, A400M 150 % MAC; was +40.9 % with the hand wing): bug or real; (7) design-engineer guidance: never invent joint ratings or requirements to clear a check; leave them `placeholder` and report; (8) `build-index --design <id>` filter. Cut: not merged by Sat 11-28 18:00 -> after Dec 2.
 
-- [ ] **Step 1: Briefs** (tactician W31-T)
+- [x] **Step 1: Briefs** (tactician W31-T) *(2d60023: static margin was a bug for split tails (stabiliser counted 3x): C172 59.9 % -> 7.8 %, A400M 150 % -> 59 % (real: needs CG/tail change); reborn 116 % is a different cause (mesh wing area), row data added to diagnose. Briefs -1 tail count, -2 list values, -3a bounds, -3b render, -4 battery mesh, -5 elevator-fin gap, -6 docs, -7 agent no-invention, -8 build-index filter. Default taken: matplotlib as an optional `render` extra)*
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R); merge
 
