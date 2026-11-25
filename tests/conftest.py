@@ -101,3 +101,9 @@ def pytest_collection_modifyitems(config, items):
     dropped = [it for it in items if it.nodeid not in mine]
     config.hook.pytest_deselected(items=dropped)
     items[:] = [it for it in items if it.nodeid in mine]
+
+
+@pytest.fixture(autouse=True)
+def _no_cad_overlay(monkeypatch):
+    """No test sees a real CAD overlay on any machine; the overlay tests override this."""
+    monkeypatch.setenv("PLANE_CAD_OVERLAY", "off")

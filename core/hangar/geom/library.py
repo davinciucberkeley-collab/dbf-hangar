@@ -67,8 +67,17 @@ def load_part(part_id: str) -> dict:
 
 
 def _build(p: dict, base_dir) -> list:
+    from . import overlay
     part = load_part(p["part"])
+    m = overlay.mesh(part["id"])
+    if m is not None:
+        return [m.copy()]
     return registry.build_component({"id": part["id"], "geometry": part["geometry"]}, part["_dir"])
+
+
+def _files(p: dict) -> list[str]:
+    from . import overlay
+    return overlay.cache_files(p["part"])
 
 
 def _check(p: dict) -> list[str]:
@@ -79,4 +88,4 @@ def _check(p: dict) -> list[str]:
 
 register(Generator("library_part",
                    {"part": ParamSpec("string", required=True, doc="id of a knowledge/parts/ entry")},
-                   _build, check=_check))
+                   _build, files=_files, check=_check))
