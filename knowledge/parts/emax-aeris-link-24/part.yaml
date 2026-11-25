@@ -1,0 +1,14 @@
+id: emax-aeris-link-24
+name: 'EMAX Aeris Link 2.4GHz ELRS receiver with micro T antenna'
+category: receiver
+vendor: EMAX
+part_number: 'AERIS24RX-0107001004'
+url: https://www.readymaderc.com/products/details/85572-emax-aeris-link-2-4ghz-expresslrs-receiver-with-micro-t-antenna
+mass_g: 0.6
+dimensions_mm: [15.0, 10.0, 2.0]
+cad_status: representative-envelope
+cad_source: 'retailer page: Dimensions 15x10x2 mm, weight 0.6 g without antenna; no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [15.0, 10.0], thickness: 2.0}

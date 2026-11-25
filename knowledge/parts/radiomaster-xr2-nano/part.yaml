@@ -1,0 +1,14 @@
+id: radiomaster-xr2-nano
+name: 'RadioMaster XR2 Nano 2.4GHz ELRS receiver'
+category: receiver
+vendor: RadioMaster
+part_number: 'HP0157-XR2'
+url: https://motionrc.com/products/radiomaster-xr2-nano-2-4ghz-elrs-receiver-hp0157-xr2
+mass_g: 0.8
+dimensions_mm: [16.0, 12.0, 6.0]
+cad_status: representative-envelope
+cad_source: 'retailer page: Dimensions 16 x 12 x 6 mm, weight 0.8 g (antenna inclusion not stated); no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [16.0, 12.0], thickness: 6.0}
