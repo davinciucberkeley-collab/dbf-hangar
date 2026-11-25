@@ -1,0 +1,332 @@
+- date: '2026-11-25T05:46:45Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: airframe, tail, gear, propulsion from c172 fact sheet at 1:9.2 scale
+  count: 18
+  keys:
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - root
+  - components[datum]
+  file: e1.yaml
+- date: '2026-11-25T05:49:24Z'
+  key: components[cowl].position[0]
+  old: 125
+  new: 131.5
+  why: test
+  kind: modify
+  regenerated:
+  - cowl
+- date: '2026-11-25T05:49:39Z'
+  key: components[strut-r].geometry.params.end[2]
+  old: 66
+  new: 88
+  why: test
+  kind: modify
+  regenerated:
+  - strut-r
+- date: '2026-11-25T05:50:17Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'fix positions found from exported bounds: cowl behind prop disc, gear leg
+    tops on fuselage side, battery/esc clear of motor'
+  count: 10
+  keys:
+  - components[fuselage].geometry.params.tail_length
+  - components[cowl].geometry.params.length
+  - components[cowl].geometry.params.nose_length
+  - components[prop].geometry.params.hub_d
+  - components[esc].position[0]
+  - components[esc].position[2]
+  - components[battery].position[0]
+  - components[gear].geometry.params.attach_z
+  - components[gear].geometry.params.leg_splay_deg
+  - components[strut-l].geometry.params.end[2]
+  file: e2.yaml
+- date: '2026-11-25T05:51:28Z'
+  key: components[strut-r].geometry.params.start[0]
+  old: 300
+  new: 330
+  why: clear gear leg
+  kind: modify
+  regenerated:
+  - strut-r
+- date: '2026-11-25T05:51:43Z'
+  key: components[strut-l].geometry.params.start[0]
+  old: 300
+  new: 330
+  why: clear gear leg
+  kind: modify
+  regenerated:
+  - strut-l
+- date: '2026-11-25T05:52:24Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: structural joints and control-surface hinges
+  count: 17
+  keys:
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  file: e3.yaml
+- date: '2026-11-25T05:54:04Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: four servo, arm, pushrod, horn, pin mechanisms (docs/mechanisms.md) for elevator,
+    rudder, ailerons
+  count: 44
+  keys:
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  file: e4.yaml
+- date: '2026-11-25T05:54:42Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: BOM lines for every component, library parts referenced
+  count: 1
+  keys:
+  - bom
+  file: e5.yaml
+- date: '2026-11-25T05:57:13Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: expect.ratio from the T6.ratio message
+  count: 4
+  keys:
+  - mechanisms[drive-e].expect[0].ratio
+  - mechanisms[drive-r].expect[0].ratio
+  - mechanisms[drive-ar].expect[0].ratio
+  - mechanisms[drive-al].expect[0].ratio
+  file: e6.yaml
+- date: '2026-11-25T06:02:03Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'fix T1/T2 findings: joint points on contact, prop joint not embedded, aft
+    fuselage ends ahead of elevator, fin root above fuselage, hinge range 20 deg,
+    joint ratings from drop-test peaks, battery in cabin'
+  count: 70
+  keys:
+  - components[motor].position[0]
+  - attachments[cowl-motor].location[0]
+  - attachments[cowl-motor].location[2]
+  - attachments[motor-prop].location[0]
+  - attachments[motor-prop].embed_ok
+  - attachments[fus-gear].location[1]
+  - attachments[fus-gear].rated_load_n
+  - components[battery].position[0]
+  - attachments[fus-battery].location[0]
+  - attachments[fus-battery].rated_load_n
+  - components[receiver].position[0]
+  - components[receiver].position[2]
+  - attachments[fus-receiver].location[0]
+  - attachments[fus-receiver].location[2]
+  - attachments[fus-wing].rated_load_n
+  - attachments[fus-cowl].rated_load_n
+  - attachments[tail-elev].location[0]
+  - attachments[tail-elev].articulation.pivot[0]
+  - components[tail].geometry.params.fin_z_root
+  - components[tail].geometry.params.fin_height
+  - components[elevator].geometry.params.fin_z_root
+  - components[elevator].geometry.params.fin_height
+  - components[rudder].geometry.params.fin_z_root
+  - components[rudder].geometry.params.fin_height
+  - components[fuselage].geometry.params.stations[8][0]
+  - components[fuselage].geometry.params.stations[8][1]
+  - components[fuselage].geometry.params.stations[8][2]
+  - components[fuselage].geometry.params.stations[8][3]
+  - components[fuselage].geometry.params.stations[9][0]
+  - components[fuselage].geometry.params.stations[9][1]
+  - components[fuselage].geometry.params.stations[9][2]
+  - components[fuselage].geometry.params.stations[9][3]
+  - components[servo-r].position[1]
+  - components[arm-r].position[1]
+  - components[rod-r].geometry.params.start[1]
+  - components[rod-r].geometry.params.end[1]
+  - components[horn-r].geometry.params.size[1]
+  - components[horn-r].position[1]
+  - components[pin-r].position[1]
+  - attachments[fix-servo-r].location[1]
+  - attachments[servo-arm-r].location[1]
+  - attachments[servo-arm-r].articulation.pivot[1]
+  - attachments[arm-rod-r].location[1]
+  - attachments[horn-pin-r].location[1]
+  - attachments[wing-ail-r].articulation.range_deg[0]
+  - attachments[wing-ail-r].articulation.range_deg[1]
+  - attachments[wing-ail-l].articulation.range_deg[0]
+  - attachments[wing-ail-l].articulation.range_deg[1]
+  - attachments[tail-elev].articulation.range_deg[0]
+  - attachments[tail-elev].articulation.range_deg[1]
+  - attachments[tail-rudder].articulation.range_deg[0]
+  - attachments[tail-rudder].articulation.range_deg[1]
+  - attachments[servo-arm-e].articulation.range_deg[0]
+  - attachments[servo-arm-e].articulation.range_deg[1]
+  - mechanisms[drive-e].input_range_deg[0]
+  - mechanisms[drive-e].input_range_deg[1]
+  - attachments[servo-arm-r].articulation.range_deg[0]
+  - attachments[servo-arm-r].articulation.range_deg[1]
+  - mechanisms[drive-r].input_range_deg[0]
+  - mechanisms[drive-r].input_range_deg[1]
+  - attachments[servo-arm-ar].articulation.range_deg[0]
+  - attachments[servo-arm-ar].articulation.range_deg[1]
+  - mechanisms[drive-ar].input_range_deg[0]
+  - mechanisms[drive-ar].input_range_deg[1]
+  - attachments[servo-arm-al].articulation.range_deg[0]
+  - attachments[servo-arm-al].articulation.range_deg[1]
+  - mechanisms[drive-al].input_range_deg[0]
+  - mechanisms[drive-al].input_range_deg[1]
+  - attachments
+  - attachments
+  file: e7.yaml
+- date: '2026-11-25T06:03:16Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'battery envelope is a 124 x 124 x 36 slab: stand it on edge in the cabin;
+    receiver aft of it; rudder horn fully contains its pin'
+  count: 7
+  keys:
+  - components[battery].rotation_deg
+  - components[battery].position[2]
+  - attachments[fus-battery].location[2]
+  - components[receiver].position[0]
+  - attachments[fus-receiver].location[0]
+  - components[horn-r].geometry.params.size[1]
+  - components[horn-r].position[1]
+  file: e8.yaml
+- date: '2026-11-25T06:03:47Z'
+  key: attachments[fus-battery].location[2]
+  old: 0
+  new: 31
+  why: library battery mesh is two packs with a gap at its centre; joint on one pack
+  kind: modify
+- date: '2026-11-25T06:06:50Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: battery in its mesh orientation (107 mm pack across the cabin), aft fuselage
+    lowered so rudder clears it, joint ratings from drop-test peaks, aileron hinge
+    butt overlap while rotating
+  count: 19
+  keys:
+  - components[battery].rotation_deg[0]
+  - components[battery].position[0]
+  - components[battery].position[1]
+  - attachments[fus-battery].location[0]
+  - attachments[fus-battery].location[1]
+  - attachments[fus-battery].location[2]
+  - components[tail].geometry.params.fin_z_root
+  - components[tail].geometry.params.fin_height
+  - components[elevator].geometry.params.fin_z_root
+  - components[elevator].geometry.params.fin_height
+  - components[rudder].geometry.params.fin_z_root
+  - components[rudder].geometry.params.fin_height
+  - components[fuselage].geometry.params.stations[8][3]
+  - components[fuselage].geometry.params.stations[9][3]
+  - attachments[fus-cowl].rated_load_n
+  - attachments[cowl-motor].rated_load_n
+  - mechanisms[drive-r].expect[0].ratio
+  - attachments[wing-ail-r].embed_ok
+  - attachments[wing-ail-l].embed_ok
+  file: e9.yaml
+- date: '2026-11-25T06:16:50Z'
+  key: name
+  old: c172-rc
+  new: Cessna 172 Skyhawk RC (1:9.2, 1.2 m span)
+  why: real name instead of blank id
+  kind: modify
+- date: '2026-11-25T06:17:06Z'
+  key: description
+  old: 'Blank start: one placeholder root component `datum` (a 1 g point mass). Add
+    the real root component, point `root` at it, then remove `datum`.'
+  new: 'RC scale model of a Cessna 172S, 1:9.17 (1.2 m span): high strut-braced wing
+    NACA 2412 with separate ailerons, conventional tail with split elevator and rudder,
+    tricycle gear, 2-blade prop with spinner. Dimensions from knowledge/reference-aircraft/c172.md
+    (three-view measured); SunnySky X2814 900 kV, APC 10x6E, EMAX ES08MA II servos.'
+  why: describe the concept
+  kind: modify
