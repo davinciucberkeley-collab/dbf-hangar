@@ -101,7 +101,20 @@ def _sides(p) -> list[int]:
     return {"both": [0], "right": [1], "left": [-1]}[p["side"]]
 
 
+def _placement_z(p) -> float:
+    """Extra z of the root datum for placement high (fuselage top), mid (centre) or low (bottom); none adds 0.0."""
+    mode = p.get("placement", "none")
+    if mode == "high":
+        return p["fuselage_center_z"] + p["fuselage_height"] / 2.0
+    if mode == "mid":
+        return p["fuselage_center_z"]
+    if mode == "low":
+        return p["fuselage_center_z"] - p["fuselage_height"] / 2.0
+    return 0.0
+
+
 def _build(p: dict, base_dir) -> list:
+    p = {**p, "z_offset": p["z_offset"] + _placement_z(p)}
     upper, lower = read_airfoil(Path(base_dir) / p["airfoil_file"])
     half = p["span"] / 2.0
     part = p["part"]
@@ -148,6 +161,8 @@ def _check(p: dict) -> list[str]:
         y0, y1 = p["elevon_y"]
         if not 0 <= y0 < y1 <= p["span"] / 2.0:
             errs.append("elevon_y: need 0 <= y0 < y1 <= span/2")
+    if p.get("placement", "none") != "none" and p.get("fuselage_height", 0) <= 0:
+        errs.append("fuselage_height: must be > 0 when placement is high, mid or low")
     if not all(isinstance(f, str) for f in p["cut_files"]):
         errs.append("cut_files: must be a list of strings")
     def _bad_pose(e):
@@ -169,6 +184,10 @@ register(Generator(
      "dihedral_deg": ParamSpec("number", default=0.0),
      "twist_tip_deg": ParamSpec("number", default=0.0, doc="positive = nose up at the tip"),
      "z_offset": ParamSpec("number", default=0.0, doc="airfoil datum shift, mm"),
+     "placement": ParamSpec("choice", default="none", choices=("none", "high", "mid", "low"),
+                            doc="root chord datum at the fuselage top (high), centre (mid) or bottom (low)"),
+     "fuselage_height": ParamSpec("number", default=0.0, minimum=0, doc="fuselage height, mm (placement)"),
+     "fuselage_center_z": ParamSpec("number", default=0.0, doc="fuselage centre z, mm (placement)"),
      "part": ParamSpec("choice", default="full", choices=("full", "core", "elevon")),
      "hinge_frac": ParamSpec("number", default=0.75),
      "elevon_y": ParamSpec("vec2", default=[0.0, 0.0], doc="[y0, y1] on |y|"),
