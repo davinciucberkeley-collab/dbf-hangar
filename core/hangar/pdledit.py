@@ -416,10 +416,10 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
     steps = parse_key(key)
     if steps[-1][0] == "index":
         raise OpInputError(f"{key}: remove by index is not supported; address the element by id, like name[id]")
-    if len(steps) > 2:
-        raise OpInputError(f"{key}: remove takes a top-level list element name[id]; a nested path (one field, or a list below an element) is not supported")
-    if len(steps) != 2 or steps[1][0] != "id":
+    if steps[-1][0] != "id":
         raise OpInputError(f"{key}: remove needs a list element like name[id]; this is not one")
+    if len(steps) < 2 or steps[-2][0] != "key":
+        raise OpInputError(f"{key}: remove needs a list named by a key, like bom.items[id]")
     data = yamlfast.safe_load(t)
     element = walk(data, key)[0]                 # raises the "no key", "needs a list" and "no element with id" errors
     expected = copy.deepcopy(data)
@@ -475,15 +475,16 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
     else:
         last = _block_end(lines, start, len(lines[start]) - len(body), False)
     first = start
-    mine = re.compile(r"#\s*" + re.escape(str(steps[1][1])) + r"(?![A-Za-z0-9_-])")
+    mine = re.compile(r"#\s*" + re.escape(str(steps[-1][1])) + r"(?![A-Za-z0-9_-])")
     j = start - 1
     while j >= 0 and lines[j].lstrip().startswith("#"):
         if mine.match(lines[j].lstrip()):
             first = j                            # the topmost comment line that begins with the id
         j -= 1
     if len(seq) == 1:                            # the only element: the header becomes `name: []`
-        name = steps[0][1]
-        h = root.lc.key(name)[0]
+        list_key = key[: key.rindex("[")]
+        _, mapping, _, name = walk(root, list_key)
+        h = mapping.lc.key(name)[0]
         m = re.match(r"^(\s*" + re.escape(str(name)) + r":)\s*(#.*)?$", lines[h])
         if not m:
             raise OpInputError(hand)
