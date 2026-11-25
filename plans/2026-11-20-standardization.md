@@ -802,6 +802,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-T6 | `tactician` | Sonnet | U19.1 briefs B0-B8 from `u19.1/ui-spec.md` | `briefs/U19.1-b<n>-*.md` | builder-ready bar; Playwright test per visible step |
 | W34-R2 | `reviewer` | Opus (fresh) | second W34 reviewer in parallel (queue too long for one) | sections in `reviews/2026-11-25-w34b.md` | "### Verdict:" per branch |
 | W34-R3 | `reviewer` | Opus (fresh) | third W34 reviewer in parallel (replaces W34-R, which finished; cap lifted P291) | sections in `reviews/2026-11-25-w34c.md` | "### Verdict:" per branch |
+| W34-A3 | `advisor` | Opus | U16.2 pockets refresh stopped (2 new T1.pocket sliver FAILs of 1-2 mm3 from many overlapping swept cutters; tier-1 84 s warm vs ~70 s) | diagnosis + recommended fix in `plans/2026-11-20-standardization/u16.2/diagnosis.md` | names the cause and one fix, who builds it |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
