@@ -1090,7 +1090,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u16.1/recon.md`, `u16.1/design-note.md` *(build order S0 showcase c172-rc on main, S1 four-bar solve (rod posed server-side), S2 wheels on axles, S3 servos in bays, S4 linkage generator op, S5 = U16.2, S6 hinge gap/bevel, S7 mjcf-kinematic, S8 wires as tubes, S9 visual detail + x-ray; PDL 1.3 three optional fields; all opt-in, export sha256 unchanged on existing designs; D90)*
 - [x] **Step 2: Briefs** (tactician W34-T5) from the design note, S0 and S1 first *(52e43ea: S0 easy; S1-S4 hard, each with a designs-only Part B; S6-S9 outlines; PDL 1.3 opened by S1; chain S0 -> S1 -> S2 -> S3 -> S4; S0 check: c172-rc on main 0 FAIL / 26 WARN, baseline unchanged; D96)*
-- [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order
+- [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order *(S0 c172-rc showcase merged 75c5c2c (PR #12, W34-R ACCEPT); S1 four-bar building)*
 - [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
 
 ### Unit U16.2: Pose-aware cut pockets for generated parts (was U10.3; T121; D70; P284) [hard]
