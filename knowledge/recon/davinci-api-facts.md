@@ -5,7 +5,7 @@ authors: W32-S scout (Haiku 5.5), from the sources listed
 year: 2026
 url: multiple (see Sources)
 type: website
-retrieved: DATE
+retrieved: 2026-11-24
 verified: true
 ---
 
