@@ -1329,6 +1329,8 @@ def _tier2(ctx):
     rep.results.extend(tier2_sim(ctx.design, ctx.std, ctx.mp))
     from .fea import tier2_fea
     rep.results.extend(tier2_fea(ctx.design))
+    from .opencae_rows import tier2_opencae
+    rep.results.extend(tier2_opencae(ctx.design))
     return rep
 
 
