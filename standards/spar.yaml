@@ -10,11 +10,11 @@ spar_reserve_factor_min:
   rule: "T3.spar_bending: reserve factor = material allowable / (limit stress x ultimate_factor) must be at least this"
   source: "definition: at 1.0 the ultimate load (limit x design-standards.yaml#ultimate_factor 1.5, STANAG 4703 UL2.3) is just carried; the margin is the 1.5 factor itself, so no second factor is added"
 spar_material_allowable_mpa:
-  value: {petg-printed: 12.6}
+  value: {petg-printed: 12.6, cfrp-tube: 1379}
   rule: "Stress a spar tube of this material id (mass_model.material, else component.material) may reach at ultimate load, MPa"
-  source: "design-standards.yaml#fea_allowable_printed_petg_mpa (UltiMaker PETG TDS v1.00, mean minus one standard deviation of the weakest printed direction)"
-  note: "only materials with a sourced value are listed, on purpose. cfrp-tube: pending (needs the tube maker's tensile/flexural strength with test conditions). al-6061-t6: pending (needs MMPDS or MIL-HDBK-5 yield, S-basis). Add a material here only with an opened source."
+  source: "petg-printed: design-standards.yaml#fea_allowable_printed_petg_mpa (UltiMaker PETG TDS v1.00, mean minus one standard deviation of the weakest printed direction); cfrp-tube: knowledge/sources/part-cfrp-tube-datasheet.md (Goodwinds carbon tube minimum properties, p. 1), flexural strength minimum 200 ksi x 6.894757 = 1379 MPa"
+  note: "only materials with a sourced value are listed, on purpose. cfrp-tube: flexural, minimum, test standard not stated in the source (it is a bending allowable, not a design allowable). al-6061-t6: pending (no 6061 id in materials.yaml; the Aluminum Association Table 12.1 minimum yield 35.0 ksi = 241.3 MPa is a specified limit, not MMPDS basis, and is not used here). Add a material here only with an opened source."
 spar_material_modulus_mpa:
-  value: {petg-printed: 1939}
+  value: {petg-printed: 1939, cfrp-tube: 127532}
   rule: "Young's modulus of a spar tube material id, MPa, for tip deflection"
-  source: "design-standards.yaml#fea_material_printed_petg youngs_modulus_mpa (UltiMaker PETG TDS v1.00 tensile modulus XY)"
+  source: "petg-printed: design-standards.yaml#fea_material_printed_petg youngs_modulus_mpa (UltiMaker PETG TDS v1.00 tensile modulus XY); cfrp-tube: knowledge/sources/part-cfrp-tube-datasheet.md (Goodwinds, p. 1), flexural modulus minimum 18.5 msi x 6894.757 = 127532 MPa (the sheet prints 127 GPa; flexural, not tensile, test standard not stated)"
