@@ -209,6 +209,21 @@ def build_index_cmd(out_dir):
     from .index import design_entry, error_entry, index_extras
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
+    from .geom import overlay
+    ok, why = overlay.output_allowed(out)
+    if not ok:
+        used = {}
+        for p in list_designs():
+            try:
+                d = load_design(p)
+            except Exception:  # noqa: BLE001
+                continue
+            parts = overlay.design_overlay_parts(d)
+            if parts:
+                used[str(d.data.get("id", p.parent.name))] = parts
+        if used:
+            _fail("designs use licensed CAD overlay parts (" + "; ".join(f"{k}: {', '.join(v)}" for k, v in used.items())
+                  + f"); build-index --out must point outside the repository or at an ignored folder ({why})")
     entries = []
     for p in list_designs():
         fallback_id = p.parent.name

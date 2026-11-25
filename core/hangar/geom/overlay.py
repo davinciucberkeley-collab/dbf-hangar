@@ -6,6 +6,7 @@ from __future__ import annotations
 import importlib.util
 import json
 import os
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -180,3 +181,65 @@ def cache_files(part_id: str) -> list[str]:
         pass
     return out
 
+
+class OverlayOutputRefused(RuntimeError):
+    """An output built from licensed overlay parts was aimed at a tracked or unignored repository path."""
+
+
+def design_overlay_parts(design) -> list[str]:
+    """Sorted unique library part ids used by the design whose overlay is present. Never raises."""
+    ids = set()
+    try:
+        for c in design.components:
+            g = c.get("geometry") or {}
+            pid = (g.get("params") or {}).get("part")
+            if g.get("generator") == "library_part" and isinstance(pid, str):
+                try:
+                    if status(pid)["state"] == "present":
+                        ids.add(pid)
+                except Exception:  # noqa: BLE001
+                    pass
+    except Exception:  # noqa: BLE001
+        return []
+    return sorted(ids)
+
+
+def output_allowed(path) -> tuple[bool, str]:
+    p = Path(path).resolve()
+    root = Path(REPO_ROOT).resolve()
+    if p != root and root not in p.parents:
+        return True, "outside the repository"
+
+    def git(*args) -> int:
+        return subprocess.run(["git", "-C", str(root), *args, "--", str(p)], capture_output=True).returncode
+
+    try:
+        if git("ls-files", "--error-unmatch") == 0:
+            return False, "tracked by git"
+        rc = git("check-ignore", "-q")
+    except OSError:
+        return False, "cannot ask git; refusing"
+    if rc == 0:
+        return True, "git-ignored"
+    if rc == 1:
+        return False, "inside the repository and not git-ignored"
+    return False, "cannot ask git; refusing"
+
+
+def guard_output(path, design) -> list[str]:
+    ids = design_overlay_parts(design)
+    if not ids:
+        return []
+    ok, why = output_allowed(path)
+    if not ok:
+        raise OverlayOutputRefused(
+            f"{path}: this design uses licensed CAD overlay parts ({', '.join(ids)}); outputs built from them stay "
+            f"local-only and may not be written to a tracked or unignored path in the repository ({why}). Use a "
+            "folder outside the repository, or an ignored one such as viewer/data/ or .studio/.")
+    p = Path(path)
+    folder = p if (p.is_dir() or not p.suffix) else p.parent
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "LOCAL-ONLY-cad-overlay.txt").write_text(
+        f"Built from licensed CAD overlay parts: {', '.join(ids)}. Local use only (non-commercial, internal). "
+        "Do not commit, upload or publish this folder.\n", encoding="utf-8")
+    return ids

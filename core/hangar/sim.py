@@ -138,7 +138,9 @@ def build_mjcf(design: Design) -> str:
 
 
 def export_mjcf(design: Design, out_path) -> Path:
+    from .geom import overlay
     out = Path(out_path)
+    overlay.guard_output(out, design)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(build_mjcf(design))
     return out
