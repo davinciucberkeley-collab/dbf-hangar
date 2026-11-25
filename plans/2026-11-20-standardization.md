@@ -702,6 +702,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W29-T, W29-B, W29-R | `tactician`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku/Sonnet, Opus (fresh) | U4.30 (checks by aircraft type + fixed-wing standards + per-design mission), U4.31 (real-parts library), U4.32 (nacelle/prop/nose generators) | `briefs/U4.3x-*.md`, branches `std/u4.3x-*`, `reviews/2026-11-24-w29.md` | each brief builder-ready; "### Verdict:" |
 | W29-G | `design-engineer` | Sonnet | U4.34 rehearsal: the Dec 1 prompt run on a branch for A400M and Cessna 172 | `reviews/2026-11-24-w29-rehearsal.md` | gaps listed; nothing merged |
 | W30-T, W30-B, W30-R | `tactician`, `builder-plus`, `reviewer` | Sonnet, Sonnet, Opus (fresh) | U4.35 (profile a span change; mesh cache) | `plans/2026-11-20-standardization/u4.35/profile.md`, `briefs/U4.35-*.md`, branch `std/u4.35-*`, `reviews/2026-11-24-w30.md` | profile names where the seconds go; cached results byte-identical to uncached; "### Verdict:" |
+| W31-T, W31-S, W31-B, W31-R | `tactician`, `scout`, `builder`/`builder-plus`, `reviewer` | Sonnet, Haiku, Haiku/Sonnet, Opus (fresh) | U4.36 (design authoring gaps from rehearsal 1) | `briefs/U4.36-*.md`, `knowledge/parts/` additions, branches `std/u4.36-*`, `reviews/2026-11-25-w31.md` | a fixed-wing design can be built from a blank start with the CLI alone; "### Verdict:" |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -868,7 +869,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** after U4.30-U4.33 merge (and T129), a design-engineer session runs the Dec 1 prompt on a branch exactly as Tristan will, for A400M and for Cessna 172, and lists every gap; fixes go back into U4.30-U4.32; nothing from the rehearsal merges. Cut rule: rehearsal passes by Sun 11-29 12:00 or the demo falls back to concept-a-param.
 
-- [ ] **Step 1: Rehearsal** (design-engineer W29-G)
+- [x] **Step 1: Rehearsal** (design-engineer W29-G) *(C172: blocked — no CLI op adds components; no blank start; no airfoil source; gaps -> U4.36)*
 - [ ] **Step 2: Gap fixes** (W29-B)
 - [ ] **Step 3: Second rehearsal**
 
@@ -879,6 +880,15 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Profile and brief** (tactician W30-T) *(5a34cab, ec99a85: span change 16-17 s; meshes already cached per process (double build ~1.5 s, mesh cache dropped); interference old+new ~8 s, needed for new/cleared; pure-Python YAML loader ~3.5 s -> brief U4.35-speed (libyaml CSafeLoader), expected 13-14 s)*
 - [ ] **Step 2: Build** (builder-plus W30-B)
 - [ ] **Step 3: Review** (W30-R); merge
+
+### Unit U4.36: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
+
+**Scope:** from the C172 rehearsal (gap log 2026-11-24): (1) an op that appends list elements (components, attachments, bom lines) with id checks, also used by Studio edit; (2) `design new --blank` (minimal valid design: no components) and a light remove for many elements; (3) airfoils: NACA 4-digit generated on demand plus a small `knowledge/airfoils/` library, selectable by name; (4) `plane generators list/show` with each generator's params and units, and the team guide's "Starting a new concept" updated; (5) fixed-wing real parts (motor, ESC, servos, 2-blade props with spinner, receiver) in the library with vendor CAD where licensed, envelopes otherwise (scouts); (6) wing_panel multi-section (straight inboard + tapered outboard) if cheap. Existing designs unchanged.
+
+- [ ] **Step 1: Briefs** (tactician W31-T) and parts research (scouts W31-S)
+- [ ] **Step 2: Build** (W31-B)
+- [ ] **Step 3: Review** (W31-R); merge
+- [ ] **Step 4: Second rehearsal** (U4.34)
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 
