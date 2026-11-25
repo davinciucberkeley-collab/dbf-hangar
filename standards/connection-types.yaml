@@ -207,6 +207,7 @@ connection_types:
   rating_basis: sourced
   source: 'std-u171-p5-amass-catalogue-as150u-sh35 (PDF p. 28, "Specifications" table, AS150U column)'
   rated_current_a: 75
+  note: "U17.1: 75 A is a MAX rating printed for 8 AWG at temperature rise below 85 C, 500 V DC; the table does not label it continuous or peak."
 - id: CT-MR30
   kind: electrical
   method: connector
@@ -221,6 +222,7 @@ connection_types:
   rating_basis: sourced
   source: 'std-u171-p5-amass-catalogue-as150u-sh35 (PDF p. 20, "Specifications" table, SH3.5 and SH4.0U columns; lowest marked value, size not resolved)'
   rated_current_a: 30
+  note: "U17.1: 30 A and 45 A are MAX ratings (SH3.5 14 AWG; SH4.0U 12 AWG; rise below 85 C, 500 V DC). The 30 A holds only if the fitted size is SH3.5; E1 size is unresolved."
 - id: CT-SOLDER-PHASE
   kind: electrical
   method: soldered

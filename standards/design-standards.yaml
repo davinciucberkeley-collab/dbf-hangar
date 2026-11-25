@@ -119,6 +119,7 @@ aero:
     value: 0.9
     rule: Lift-slope multiplier for lifting surfaces other than the main wing in the neutral point estimate (dynamic pressure and interference loss).
     source: "std-u171-p2-hamburg-empennage-sizing (section 11.1, parameter list after eq. (11.19), PDF p. 5; definition eq. (11.6), PDF p. 4)"
+    note: "U17.1: the source covers the tail dynamic-pressure ratio only; the interference loss in this key's rule has no source term, so agreement is for the dynamic-pressure term only."
   lateral_cg_max_fraction_span:
     value: 0.02
     rule: "|CG y| no more than this fraction of the main-wing span."
