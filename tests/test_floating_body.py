@@ -64,3 +64,9 @@ def test_lonely_design():
     hits = {r[0]: r for r in rows(data)}
     assert hits["T1.floating.stab"][1] == "WARN"
     assert "no other part" in hits["T1.floating.stab"][2]
+
+
+def test_part_fully_inside_another_is_touching():
+    data = copy.deepcopy(BASE)
+    _comp(data, "pin")["position"] = [30, 40, 0]   # a tiny part buried in the stab, no surface within tolerance
+    assert [h for h in _floating(data) if h[0] == "T1.floating.pin"] == []

@@ -727,7 +727,7 @@ def interference_rows(design: Design, std: dict, only: set[str] | None = None) -
     return [r for r in res if r.status == FAIL]
 
 
-def _floating_rows(design: Design, meshes: dict, std: dict) -> list[CheckResult]:
+def _floating_rows(design: Design, meshes: dict, std: dict, cache: _PairCache | None = None) -> list[CheckResult]:
     """U4.39: WARN for a part whose geometry touches no other part (within attach_tolerance_mm)."""
     tol = std["geometry"]["attach_tolerance_mm"]["value"]
     boxes = {}
@@ -735,6 +735,8 @@ def _floating_rows(design: Design, meshes: dict, std: dict) -> list[CheckResult]
         if ps:
             bs = np.array([p.bounds for p in ps])
             boxes[c] = (bs[:, 0, :].min(axis=0), bs[:, 1, :].max(axis=0))
+    cache = cache or _PairCache()
+    tf = {c: np.eye(4) for c in meshes}
     out: list[CheckResult] = []
     for c in [x["id"] for x in design.components]:
         if c not in boxes:
@@ -742,13 +744,14 @@ def _floating_rows(design: Design, meshes: dict, std: dict) -> list[CheckResult]
         lo, hi = boxes[c]
         gaps = {o: float(np.linalg.norm(np.maximum(0.0, np.maximum(boxes[o][0] - hi, lo - boxes[o][1]))))
                 for o in sorted(boxes) if o != c}
-        cands = [o for o, g in gaps.items() if np.all(boxes[o][0] <= hi + tol) and
+        cands = [o for o, g in sorted(gaps.items(), key=lambda kv: (kv[1], kv[0])) if np.all(boxes[o][0] <= hi + tol) and
                  np.all(boxes[o][1] >= lo - tol)]
-        if any(_min_distance(meshes[c], meshes[o], tol) <= tol for o in cands):
+        if any(cache.overlap(meshes, tf, c, o) > 0 for o in cands) or \
+                any(cache.gap(meshes, tf, c, o, tol) <= tol for o in cands):
             continue
         if gaps:
             n = min(gaps, key=lambda o: (gaps[o], o))
-            d = _min_distance(meshes[c], meshes[n])
+            d = cache.gap(meshes, tf, c, n)
             at, gap = f"{d:.1f} mm", round(d, 3)
         else:
             n, at, gap = "none", "no other part", None
@@ -786,13 +789,13 @@ def tier1_geometry(design: Design, std: dict) -> TierReport:
                            f"not attached to '{root}' (would fall off): {loose}" if loose
                            else f"all {len(all_ids)} components connect to '{root}'",
                            STD + "attach_tolerance_mm", {"parts": loose}))
-    if NEEDS["conventional"](design.data["morphology"]):
-        res += _floating_rows(design, meshes, std)
     from .gates.interfaces import connection_known_results   # U1.6: only when an attachment names a connection
     res += connection_known_results(design)
 
     identity = {cid: np.eye(4) for cid in all_ids}
     cache = _PairCache()
+    if NEEDS["conventional"](design.data["morphology"]):
+        res += _floating_rows(design, meshes, std, cache)
     res += _contact_and_clash_checks(design, std, meshes, identity, atts, cache)
     res += _pocket_checks(design, std, meshes, cache)
     res += _point_mass_checks(design, std, meshes, atts)
