@@ -1211,6 +1211,8 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
 # ---------------------------------------------------------------- tier 4
 SHEET_METHODS = {"laser-cut", "waterjet", "cnc-router"}
 MFG = "manufacturing.yaml"
+MFG_FREE = MFG + "#machine_optional_methods"
+MFG_FREE = MFG + "#machine_optional_methods"
 
 
 def _obb_extents(parts: list[trimesh.Trimesh]) -> list[float]:
@@ -1239,20 +1241,21 @@ def tier4_manufacturing(design: Design) -> TierReport:
         return TierReport(4, "manufacturing", [CheckResult("T4.capabilities", SKIP, "standards/manufacturing.yaml not written yet", MFG)])
     caps = yaml.safe_load(path.read_text()) or {}
     machines = {m["id"]: m for m in caps.get("machines", [])}
-    free_methods = set(caps.get("machine_optional_methods", []))
+    mom = caps.get("machine_optional_methods", {})
+    free_methods = set(mom.get("value", []) if isinstance(mom, dict) else mom)
     all_methods = {m for mm in machines.values() for m in mm.get("methods", [])} | free_methods
     res = []
     for c in design.components:
         mf = c.get("manufacturing")
         if not mf:
-            res.append(CheckResult("T4.method", FAIL, f"{c['id']}: no manufacturing method", MFG, {"component": c["id"]}))
+            res.append(CheckResult("T4.method", FAIL, f"{c['id']}: no manufacturing method", MFG_FREE, {"component": c["id"]}))
             continue
         method, mid = mf["method"], mf.get("machine")
         if mid is None:
             if method in free_methods:
-                res.append(CheckResult("T4.method", PASS, f"{c['id']}: {method}", MFG))
+                res.append(CheckResult("T4.method", PASS, f"{c['id']}: {method}", MFG_FREE))
             elif method not in all_methods:
-                res.append(CheckResult("T4.method", FAIL, f"{c['id']}: no available machine does {method}", MFG,
+                res.append(CheckResult("T4.method", FAIL, f"{c['id']}: no available machine does {method}", MFG_FREE,
                                        {"component": c["id"]}))
             else:
                 res.append(CheckResult("T4.machine", FAIL,
