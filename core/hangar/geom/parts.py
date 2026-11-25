@@ -22,6 +22,11 @@ def _is_triple(h) -> bool:
         isinstance(x, (int, float)) and not isinstance(x, bool) for x in h)
 
 
+def _is_station(h) -> bool:
+    return isinstance(h, (list, tuple)) and len(h) in (3, 4) and all(
+        isinstance(x, (int, float)) and not isinstance(x, bool) for x in h)
+
+
 # ------------------------------------------------------------------ fin
 def _fin_build(p: dict, base_dir) -> list:
     h, t = p["height"], p["thickness"]
@@ -128,26 +133,50 @@ def _cap_scale(shape: str, t: float, tip: float) -> float:
     return max(tip, f)
 
 
+def _dz(s) -> float:
+    return s[3] if len(s) == 4 else 0.0
+
+
+def _smooth_stations(st: list, n: int) -> list:
+    from scipy.interpolate import PchipInterpolator
+    xs = [s[0] for s in st]
+    cw = PchipInterpolator(xs, [s[1] for s in st])
+    ch = PchipInterpolator(xs, [s[2] for s in st])
+    cd = PchipInterpolator(xs, [_dz(s) for s in st])
+    out = []
+    for a, b in zip(st, st[1:]):
+        for k in range(n):
+            x = a[0] + (b[0] - a[0]) * k / n
+            out.append([x, float(cw(x)), float(ch(x)), float(cd(x))])
+    out.append([st[-1][0], st[-1][1], st[-1][2], _dz(st[-1])])
+    return out
+
+
 def _fuse_build(p: dict, base_dir) -> list:
     cy, cz = p["center_y"], p["center_z"]
     shape, ex = p["shape"], p["exponent"]
     st = p["stations"]
+    caps = (st[0], st[-1])
+    if p["smooth_rings"] > 1:
+        st = _smooth_stations(st, p["smooth_rings"])
     n, tip = p["cap_rings"], p["tip_frac"]
     secs = []
     if p["nose_length"] > 0:
-        x0, w0, h0 = st[0]
+        x0, w0, h0 = caps[0][:3]
+        czn = cz + _dz(caps[0])
         for k in range(n):
             s = _cap_scale(p["nose_shape"], k / n, tip)
-            secs.append((x0 - p["nose_length"] * (1 - k / n), _fuse_loop(shape, ex, cy, cz, w0 * s, h0 * s)))
-    for x, w, h in st:
-        secs.append((x, _fuse_loop(shape, ex, cy, cz, w, h)))
+            secs.append((x0 - p["nose_length"] * (1 - k / n), _fuse_loop(shape, ex, cy, czn, w0 * s, h0 * s)))
+    for q in st:
+        secs.append((q[0], _fuse_loop(shape, ex, cy, cz + _dz(q), q[1], q[2])))
     if p["tail_length"] > 0:
-        xl, wl, hl = st[-1]
+        xl, wl, hl = caps[1][:3]
+        czt = cz + _dz(caps[1])
         tn = math.tan(math.radians(p["tail_upsweep_deg"]))
         for k in range(1, n + 1):
             s = _cap_scale(p["tail_shape"], 1 - k / n, tip)
             x = xl + p["tail_length"] * k / n
-            secs.append((x, _fuse_loop(shape, ex, cy, cz + (x - xl) * tn, wl * s, hl * s)))
+            secs.append((x, _fuse_loop(shape, ex, cy, czt + (x - xl) * tn, wl * s, hl * s)))
     return [kernel.loft("x", secs)]
 
 
@@ -155,8 +184,8 @@ def _fuse_check(p: dict) -> list[str]:
     st = p["stations"]
     if len(st) < 2:
         return ["stations: need at least 2"]
-    if not all(_is_triple(s) for s in st):
-        return ["stations: each station must be [x, width, height]"]
+    if not all(_is_station(s) for s in st):
+        return ["stations: each station must be [x, width, height] or [x, width, height, dz]"]
     errs = []
     if any(b[0] <= a[0] for a, b in zip(st, st[1:])):
         errs.append("stations: x must be strictly increasing")
@@ -173,7 +202,7 @@ def _fuse_check(p: dict) -> list[str]:
 
 register(Generator(
     "fuselage_loft",
-    {"stations": ParamSpec("list", required=True, doc="[x, width, height] per station"),
+    {"stations": ParamSpec("list", required=True, doc="[x, width, height] or [x, width, height, dz] per station, mm; dz shifts that station centre in z"),
      "shape": ParamSpec("choice", default="ellipse", choices=("ellipse", "rect", "superellipse")),
      "center_y": ParamSpec("number", default=0.0),
      "center_z": ParamSpec("number", default=0.0),
@@ -184,7 +213,8 @@ register(Generator(
      "tail_upsweep_deg": ParamSpec("number", default=0, minimum=0),
      "tip_frac": ParamSpec("number", default=0.02),
      "cap_rings": ParamSpec("int", default=8, minimum=2),
-     "exponent": ParamSpec("number", default=2.5)},
+     "exponent": ParamSpec("number", default=2.5),
+     "smooth_rings": ParamSpec("int", default=1, minimum=1, doc="1 = off (one ring per station, straight lofts); n > 1 = n rings per station interval, width, height and dz interpolated smoothly between stations, count")},
     _fuse_build, check=_fuse_check))
 
 
