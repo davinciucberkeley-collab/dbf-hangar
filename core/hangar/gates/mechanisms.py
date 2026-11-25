@@ -408,7 +408,7 @@ def tier6_mechanisms(ctx) -> TierReport | None:
             if row.status == PASS:
                 pairs = ", ".join(f"{a} & {b}" for a, b in row.data["link_pairs"])
                 res.append(CheckResult(f"T6.link.{m['id']}", PASS, f"mechanism {m['id']}: four_bar link checked with the rod "
-                                       f"posed on the horn pin: " + pairs, CRIT, {"pair": row.data["link_pairs"]}))
+                                       f"posed on the horn pin: " + pairs, CRIT, {"link_pairs": row.data["link_pairs"], "parts": sorted({i for p in row.data["link_pairs"] for i in p})}))
         elif row.data.get("link_pairs"):
             res.append(CheckResult(f"T6.link.{m['id']}", WARN, f"mechanism {m['id']}: not checked (pinned by declared link): "
                                    + ", ".join(f"{a} & {b}" for a, b in row.data["link_pairs"]), CRIT, {"link_pairs": row.data["link_pairs"], "parts": sorted({i for p in row.data["link_pairs"] for i in p})}))
