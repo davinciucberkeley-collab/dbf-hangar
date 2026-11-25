@@ -72,3 +72,20 @@ def test_new_ids_match_the_ledger_pattern(run):
     schema = json.loads((REPO_ROOT / "schema" / "ledger.schema.json").read_text(encoding="utf-8"))
     pat = re.compile(schema["$defs"]["item"]["properties"]["id"]["pattern"])
     assert led.items and all(pat.match(i.id) for i in led.items)
+
+
+def test_proposed_rows_are_open_not_decided(tmp_path):
+    # D-127 and D-128 carry "(PROPOSED)" in the id cell: imported under the bare id, status open;
+    # the unmarked D-129 stays decided (derivation: 3 rows -> changelog 3, no skips).
+    p = tmp_path / "dbf" / "redesign" / "params"
+    p.mkdir(parents=True)
+    (p / "CHANGE-LOG.md").write_text(
+        "| ID | Decision |\n|---|---|\n"
+        "| **D-127 (PROPOSED)** | proposed one |\n"
+        "| **D-128 (PROPOSED, awaiting review)** | proposed two |\n"
+        "| **D-129** | settled |\n", encoding="utf-8", newline="\n")
+    out = import_decisions(tmp_path / "dbf", tmp_path / "items.yaml", log=lambda m: None)
+    led = Ledger(tmp_path / "items.yaml")
+    assert out["changelog"] == 3 and out["skipped"] == 0
+    assert led.get("D-127").status == "open" and led.get("D-128").status == "open"
+    assert led.get("D-129").status == "decided"

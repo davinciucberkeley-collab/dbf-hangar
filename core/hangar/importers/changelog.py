@@ -71,7 +71,7 @@ def import_decisions(dbf_root, ledger_path, log=print) -> dict:
             continue
         seen.add(did)
         add(Item(id=did, kind="decision", text=_clean(f"{rest} {cells[1]}"), source=f"CHANGE-LOG#{did}", owner="",
-                 status="decided", due="", units=[],
+                 status="open" if rest.upper().startswith("(PROPOSED") else "decided", due="", units=[],
                  evidence=f"DBF-Combined redesign/params/CHANGE-LOG.md @ {short}", decided_in="", updated=today),
             "changelog")
 
