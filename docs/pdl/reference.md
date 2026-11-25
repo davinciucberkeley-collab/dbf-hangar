@@ -140,6 +140,7 @@ Type: array of number
 | `location` | `vec3` | yes | Joint point in body frame (mm). Must lie on or inside both parts (within tolerance). |
 | `embed_ok` | boolean |  | true if the child is meant to pass into the parent (spar into slot, motor into pod). |
 | `kinematic_link` | boolean |  | v0.4. true if the child is moved by a linkage the schema does not model (e.g. a servo pushrod driven by an elevon horn). Tier-1 pose and sweep interference skips pairs of this child with a part moved by that pose and reports them as one WARN per pose (T1.kinematic_link). Static (0 deg) checks are unchanged. |
+| `hinge_from` | `generator` |  | v1.2, optional. generator = the resolved location, articulation.pivot and articulation.axis come from the child's wing_panel hinge line (part elevon, side left or right) and follow its parameters; the values written here are a placeholder. An aileron, flap or elevon hinge follows a wing change this way. |
 | `rated_load_n` | number | yes |  |
 | `rating_basis` | one of `sourced`, `derived`, `placeholder` |  | v0.4. Where rated_load_n comes from. sourced: a published or tested capacity. derived: an allowable times measured geometry. placeholder: no capacity in the source; the value is not a capacity, and tier-2 load checks skip this joint (never PASS or FAIL it). |
 | `articulation` | object |  | v0.2. The joint moves. Rotation applies to the CHILD side: the child and everything attached downstream of it (reached from the child without crossing back through this joint). 0 deg = the geometry as written. |

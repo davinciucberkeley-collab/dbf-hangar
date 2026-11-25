@@ -236,3 +236,22 @@ register(Generator(
      "cut_files": ParamSpec("list", default=[], doc="design-folder-relative closed-solid meshes subtracted from the core"),
      "cut_poses": ParamSpec("list", default=[], doc="derived by the resolver from the neighbours' positions; do not write")},
     _build, files=lambda p: ([] if airfoil.is_named(p["airfoil_file"]) else [p["airfoil_file"]]) + list(p["cut_files"]), check=_check))
+
+
+def hinge_line(params: dict, base_dir) -> tuple[list[float], list[float]]:
+    """Two points (component-local frame, mm) of the hinge line of a wing_panel elevon, at elevon_y[0] and elevon_y[1] (signed by side)."""
+    from hangar.geom.registry import fill_defaults, get
+    p = fill_defaults(get("wing_panel"), params)
+    if p["part"] != "elevon" or p["side"] == "both":
+        raise GeometryError("hinge_from: child must be a wing_panel part elevon with side left or right")
+    p = {**p, "z_offset": p["z_offset"] + _placement_z(p)}
+    upper, lower = load_airfoil(p["airfoil_file"], base_dir)
+    h = p["hinge_frac"]
+    zm = float(_interp(upper, np.array([h]))[0] + _interp(lower, np.array([h]))[0]) / 2
+    s = -1 if p["side"] == "left" else 1
+    y0, y1 = p["elevon_y"]
+    pts = []
+    for y in (s * y0, s * y1):
+        (x, z), = _place(np.array([[h, zm]]), p, y)
+        pts.append([x, y, z])
+    return pts[0], pts[1]
