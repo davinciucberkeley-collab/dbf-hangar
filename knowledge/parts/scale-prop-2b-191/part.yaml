@@ -1,0 +1,14 @@
+id: scale-prop-2b-191
+name: Scale propeller, 2 blades, 191 mm (generator model, printed)
+category: propeller
+vendor: none (parametric model, printed in PETG)
+part_number: n/a
+url: https://github.com/davinciucberkeley-collab/dbf-hangar/blob/main/knowledge/reference-aircraft/c172.md
+mass_g: 5.7
+dimensions_mm: [35.0, 191.0, 14.0]
+cad_status: representative-envelope
+cad_source: "propeller generator, parameters: diameter 191 mm = 1.91 m x 0.1 (c172.md section 4, 172R published figure); root chord 14 mm, tip chord 8 mm, hub 14 x 10 mm and spinner 25 mm are ESTIMATES (rehearsal 4, c172-rc); mass = generated volume x PETG 1.27 g/cm3"
+verified: {by: W31-B52, date: '2026-11-25', method: computed}
+geometry:
+  generator: propeller
+  params: {blades: 2, diameter: 191, hub_d: 14, hub_length: 10, root_chord: 14, tip_chord: 8, spinner_length: 25}

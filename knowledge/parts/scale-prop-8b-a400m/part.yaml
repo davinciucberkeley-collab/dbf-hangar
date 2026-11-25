@@ -1,0 +1,14 @@
+id: scale-prop-8b-a400m
+name: Scale propeller, 8 blades, 212 mm at 1:25 (generator model, printed)
+category: propeller
+vendor: none (parametric model, printed in PETG)
+part_number: n/a
+url: https://github.com/davinciucberkeley-collab/dbf-hangar/blob/main/knowledge/reference-aircraft/a400m.md
+mass_g: 13.0
+dimensions_mm: [35.0, 212.0, 212.0]
+cad_status: representative-envelope
+cad_source: "propeller generator, parameters: diameter 212 mm = 5.3 m / 25 (scale 1:25; a400m.md section 4: diameter 5.3 m, 8 blades, published); blades 8 from the sheet; root chord 14 mm, tip chord 8 mm are ESTIMATES (copied from scale-prop-2b-191, not scaled to the 8-blade diameter); hub 14 x 10 mm is an ESTIMATE; spinner 25 mm is an ESTIMATE (spinner length not on the sheet); mass = generated volume x PETG 1.27 g/cm3"
+verified: {by: W31-B52, date: '2026-11-25', method: computed}
+geometry:
+  generator: propeller
+  params: {blades: 8, diameter: 212, hub_d: 14, hub_length: 10, root_chord: 14, tip_chord: 8, spinner_length: 25}
