@@ -1106,7 +1106,8 @@
           "enum": [
             "browser",
             "datasheet",
-            "in-hand"
+            "in-hand",
+            "webfetch"
           ]
         },
         "evidence": {

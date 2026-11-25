@@ -211,7 +211,7 @@ v1.0. Who verified a BOM line, when and how.
 |---|---|---|---|
 | `by` | string | yes |  |
 | `date` | string | yes | Quote the date in YAML so it stays a string. |
-| `method` | one of `browser`, `datasheet`, `in-hand` | yes |  |
+| `method` | one of `browser`, `datasheet`, `in-hand`, `webfetch` | yes |  |
 | `evidence` | string |  |  |
 
 ### `bom_item`
