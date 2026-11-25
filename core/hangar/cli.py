@@ -165,7 +165,7 @@ def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
     while lines and lines[0].startswith("#"):  # drop the template's file header (e.g. "GENERATED: edit the importer")
         lines.pop(0)
     head = f"# Copied from designs/{template} by `plane new`; edit freely.\n"
-    (target_dir / "plane.yaml").write_text(head + "".join(lines))
+    (target_dir / "plane.yaml").write_bytes((head + "".join(lines)).encode("utf-8"))
     return target_dir / "plane.yaml"
 
 
