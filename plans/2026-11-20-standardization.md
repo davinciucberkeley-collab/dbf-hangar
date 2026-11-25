@@ -1123,7 +1123,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** run hangar's mass, aero and performance checks on the full-size Cessna 172S with published figures (POH / type certificate data: MTOW, wing area, span, stall speeds Vs/Vs0, cruise speed, rate of climb, CG range) entered as a reference design or fixture; compare each computed number with the published one and write the error; a test pins each within a stated tolerance (tolerances in standards with a source or `pending`). Findings say which checks are trustworthy and which are not.
 
 - [x] **Step 1: Brief** (tactician W34-T4; scout W34-S for the published figures, opened sources only) *(aec87ed: scout -scout-c172 then -calibration (hard); C172S fixture in tests/fixtures, not designs/; tolerances in new standards/calibration.yaml, pending; default-CLmax stall error +30.7 % pinned as a finding)*
-*Blocked 11-25: FAA DRS serves TCDS 3A12 only through a JS app (no text for a fetch) and Textron's site has no 172S POH link; needs a browser-rendered TCDS or a readable 172S POH PDF from Tristan (scout files left unverified on std/u18-sources).*
+*Unblocked 11-25 (second scout pass, PDF text via pdftotext): TCDS 3A12 Rev 84 (2015, Univair mirror) and the 172S handbook Rev 5 (2004, BEFA copy) read; sources on std/u18-sources. Neither confirmed as the current revision.*
 - [ ] **Step 2: Build** (W34-B)
 - [ ] **Step 3: Review** (W34-R); merge
 
