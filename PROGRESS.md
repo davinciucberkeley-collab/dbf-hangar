@@ -212,7 +212,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U17.1 | Source every gate threshold (D88; T19, T82) | 2/5 | in progress | - |
+| U17.1 | Source every gate threshold (D88; T19, T82) | 3/5 | in progress | - |
 
 ### W18 Physics checks (D89)
 
