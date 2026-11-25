@@ -109,7 +109,8 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <li>Ratings and prices are placeholders, not invented</li>
 <li>The static margin check does not model the fuselage</li></ul>
 <div class="src">Source: plans/2026-11-20-standardization.md §3, decisions D82, D83, D85; gap logs of rehearsal 2 and 3 as on the PR #7 and PR #8 pages (<code>gh pr view 7</code>, <code>gh pr view 8</code>, read 2026-11-25); fuselage note in the scorecard: ran 2026-11-25 on 65d006a (demo-script.md step 4)</div>
-<aside>D85 (Tristan P267): mechanical fidelity is not in the Dec 2 scope. Envelopes are representative, not vendor geometry (D82). The overlay is off on stage, so the numbers match CI (demo-script Decision 3). Scorecard static margin is 23.4 % MAC with "fuselage effect not modelled"; a hand estimate of about 7.5 % by the rehearsal-3 agent is not a model number.</aside></section>
+<aside>D85 (Tristan P267): mechanical fidelity is not in the Dec 2 scope. Envelopes are representative, not vendor geometry (D82). The overlay is off on stage, so the numbers match CI (demo-script Decision 3). Scorecard static margin is 23.4 % MAC with "fuselage effect not modelled"; a hand estimate of about 7.5 % by the rehearsal-3 agent is not a model number.
+PR #8 CI (gh pr checks 8, read 2026-11-25): validate shard 1 fails on ubuntu and windows, shards 2 and 3 pass. Cause: design-enumerating tests hard-coded the design set; fixed on main by U13.7-10 (1139dd0). PR #8 is based on 8d18034, older than main. Say it plainly: a do-not-merge rehearsal PR.</aside></section>
 
 <section class="slide"><h1>Parametric geometry: a demonstration</h1>
 <ul><li>One shared parameter drives the parts: <code>parameters.span_mm</code> 900 -&gt; 940</li>
@@ -188,7 +189,7 @@ Studio: start 15 minutes early; three.js loads from a CDN, so the room needs int
 <li>Landing gear drop test not done: landing_load_factor stays pending until T113 is measured</li>
 <li>No mass-gate number: the standards say 2.6 and 2.7 kg (D32, T12)</li>
 <li>U13.5 step 4 not done: the import guide is not yet sent to Dillon (Tristan)</li>
-<li>U13.7 steps 2 and 3 (build, review, merge) are not ticked: U13.7-8 and U13.7-9 are on main (5fd6604, d5dbb99); U13.7-10 (tests that hard-code the design list, PR #8 CI) is in review</li>
+<li>U13.7 steps 2 and 3 are not ticked, but U13.7-8, -9 and -10 are on main (5fd6604, d5dbb99, 1139dd0; -10 fixes the PR #8 CI failure); U13.7-6 (brief id rename) is pending</li>
 </ul>
 <div class="src">Source: ledger T113, T114, T12, D32 (open, ran 2026-11-25 on 5c6a0ba); plans/2026-11-20-standardization.md U13.5 and U13.7; R1, R12, R14, R17, R31 done (merge d24b6df, ledger 11-24); metrics.md sections D and F; 64 = SKIP rows of T2.joint_load (32) and T2.sim_drop_loads (32) in <code>plane design validate designs/concept-a --tier all --json</code> (ran 2026-11-24 on b7b50cb)</div>
 <aside>Ledger 2026-11-25 (5c6a0ba): T113, T114, T116-T119 and T121 are all still open, so none is removed here; a closed item is removed, not kept. If asked for a mass limit, say the sources disagree and the team has to pick. Requirements R1, R12, R14, R17 and R31 are closed by the concept-a re-import (merge d24b6df; T24 done in the ledger on 11-24). This supersedes the D33 open-gap wording (D72).</aside></section>
