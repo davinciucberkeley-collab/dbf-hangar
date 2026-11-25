@@ -218,7 +218,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U18.1 | OpenCAE CLI as hangar's physics backend (D89; P282) [hard] | 0/3 | not started | - |
+| U18.1 | OpenCAE CLI as hangar's physics backend (D89; P282) [hard] | 1/3 | in progress | - |
 | U18.2 | Calibration against a real aircraft (D89; P280) | 0/3 | not started | - |
 | U18.3 | Wing spar bending by beam theory (D89; P280) | 0/3 | not started | - |
 | U18.4 | Trim and stability (D89; P280) [hard] | 0/3 | not started | - |
