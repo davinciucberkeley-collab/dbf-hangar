@@ -81,3 +81,7 @@ Exports of a design that uses an overlay part (GLB, STL, MJCF, Studio data) refu
 unless git ignores it (`viewer/data/`, `.studio/`); git itself is asked, and a tracked path is always refused.
 Allowed outputs get a `LOCAL-ONLY-cad-overlay.txt` marker, and the index entry carries `local_only` (the part ids).
 `plane build-index --out` for such a design must use a folder outside the repository or an ignored one.
+
+## Baselines and FEA
+
+Shared numbers never depend on one machine's licensed files. `plane baseline update`, `plane baseline check`, FEA runs and FEA hashes force the overlay off, so they give exactly the numbers CI gets. When an overlay is configured, the baseline commands print one line to stderr: `note: CAD overlay ignored here (baselines and FEA results never use licensed files)`.
