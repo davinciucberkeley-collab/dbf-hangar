@@ -220,6 +220,10 @@ To look at a design, run `plane studio`: it serves the app on http://127.0.0.1:8
 A new design shows up in Studio as soon as `designs/<id>/plane.yaml` exists. `plane validate <id> --tier all` prints the same scorecard without a browser.
 For one design use `plane build-index --design <id> --out <folder>`; designs using the local CAD overlay must be built outside the repo or into a git-ignored folder (docs/cad-overlay.md); `plane design render <path>` writes quick PNG views.
 
+### Control surfaces and servos
+
+A control surface only counts for tier 6 when a `mechanisms[]` entry joins its servo, arm, pushrod and horn. The recipe, the numbers T6 checks and the usual failures are in `docs/mechanisms.md`; its worked example is `tests/fixtures/mechanism-recipe/plane.yaml`. In short: servo just ahead of the hinge line; arm and horn from `plate`; pushrod from `strut`; the surface hinge and the servo arm are articulated attachments; the pushrod end at the arm is a `kinematic_link` attachment; the horn end is a small pin part joined to the horn; then one `mechanisms[]` entry with `link: {driver_end, follower_end}`. Add the parts with `plane design add`, read the real lever ratio from the `T6.ratio` message and write it as `expect`. A servo that no mechanism uses shows as `T6.servo_undriven.<id>` (WARN) on conventional fixed-wing designs.
+
 ## 5. Task: gate work
 
 Needs: setup A

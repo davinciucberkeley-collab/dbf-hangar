@@ -969,18 +969,18 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** from Tristan's look at the A400M in Studio: (1) wheels with tyre and hub, nose leg attaches (`front_attach_z`), in-line wheels (extends U13.3-4c); (2) tail control surfaces split (U13.3-4b as written); (3) mechanisms: a recipe (servo just ahead of the hinge line, horn from `plate`, pushrod from `strut`, `mechanisms[]` entry) in the docs and design-engineer guidance, plus a T6 WARN for a servo that drives no mechanism, and a WARN for a part body that touches nothing; (4) smoother fuselages: per-station dz plus opt-in smoothing (extends U13.3-4a). All opt-in: existing designs bit-identical (default taken). Out of scope for Dec 2, stated plainly: scale detailing (glazing, fairings, flap tracks, intakes/exhausts, airfoiled props, oleos/retracts, hollow shells, wiring). Cut: not merged by Sat 11-28 18:00 -> after Dec 2.
 
 - [x] **Step 1: Briefs** (tactician W31-T: amend 4a, 4c; new mechanism brief) *(070163a: U13.4-1 recipe, -2 servo-undriven WARN, -3 floating-body WARN (optional), -4 team guide, -5 design-engineer agent file; 4a gains smooth_rings, 4c gains wheel_shape tyre + front_attach_z; default taken: the recipe uses a pin part at the horn end, validator unchanged before Dec 2)*
-- [ ] **Step 2: Build** (W31-B) *(merged: -1 recipe, -2 servo WARN, -5 agent file, 4a/4b/4c; open: -4 team guide mechanisms section, -3 floating-body WARN (optional))*
+- [ ] **Step 2: Build** (W31-B) *(merged: -1 recipe, -2 servo WARN, -5 agent file, 4a/4b/4c; -4 team guide mechanisms 67ff0d2; open: -3 floating-body WARN (optional, building))*
 - [ ] **Step 3: Review** (W31-R); merge
 
 ### Unit U13.5: Importer fixes for Dillon's concept-a-reborn (D84) [hard]
 
-*Progress: -1 types+cost 7cae771, -4 STL weld ef893b9, -3 X-mount c9b2539 merged; -2 changelog REJECT once (PROPOSED rows), fixing (briefs keep U4.40-* names).*
+*Progress: -1 types+cost 7cae771, -4 STL weld ef893b9, -3 X-mount c9b2539 merged; -2 changelog adb4fcb merged (ACCEPT after one reopen; v1 import 55 decisions, 5 duplicates) (briefs keep U4.40-* names).*
 
 **Scope:** from the W32-T dry run (u4.40/dryrun-log.md, 1ca356e): B1 STL write/reload loses watertightness (motor PRP-001-LL, wing WNG-001; `dbf.py` `_write_stl`/`_canonical`, `dbf_geometry._separate_pinches`); B2 PRP-006 X-mounts re-opened by `_clean` after union/cuts; B3 connection types CT-A-M3-CSK-MOTOR and CT-A-M3-BOLT-MOUNT missing from the importer and `standards/connection-types.yaml` (sourced or pending); B4 `calcs/concept_a.py` `bom_cost` lacks the `rship` input; B5 `changelog.py` skips decision rows whose first cell is not a bare id (D-212..D-261) and reports success with 0 imported; distinct ids for the four D-212 revisions. B7 (wing planform 71,618 vs 220,500 mm2, static margin 116 % MAC) goes to Dillon/advisor, linked with U13.6 item 6. Existing designs unchanged. Dillon's guide (u4.40/dillon-import-guide.md) is sent only after this merges.
 
 - [x] **Step 1: Briefs** (tactician W32-T) *(311c9f4: U13.5-1 types+cost (easy), -2 changelog import (hard), -3 X-mount pinch (hard), -4 STL weld (hard); guide updated)*
-- [ ] **Step 2: Build** (W31-B)
-- [ ] **Step 3: Review** (W31-R); merge
+- [x] **Step 2: Build** (W31-B) *(B1-B5)*
+- [x] **Step 3: Review** (W31-R); merge *(all ACCEPT; last adb4fcb; end-to-end dry run before sending the guide)*
 - [ ] **Step 4: Send the guide to Dillon** (Tristan)
 
 ### Unit U13.6: Rehearsal 2 gaps (D78) 
@@ -997,7 +997,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** baselines/hashes/validation never depend on the local CAD overlay (T136); pin the verdict-fixture date (T134); a pending criterion for servo-drives-mechanism (T140); remove in nested lists such as bom.items (T141); measure why the generated C172 wing area is 18 % low (T143); rename old U4.x brief files and references to wave ids after all std/u4.* branches merge (T142). Existing designs unchanged.
 
-- [ ] **Step 1: Briefs** (tactician W31-T)
+- [x] **Step 1: Briefs** (tactician W31-T) *(d7d251d: -1 overlay baselines (hard), -2 verdict date, -3 servo criterion, -4 nested remove (hard), -5 C172 wing area measure (likely a design gap: core + ailerons), -6 id rename (last, alone); default: std/u4.25-pockets stays parked (T121) and is excluded from the rename)*
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R, W31-R2); merge
 
