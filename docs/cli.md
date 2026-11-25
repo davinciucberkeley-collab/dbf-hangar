@@ -75,7 +75,7 @@ plane bom list <path>
 
 ### `plane bom verify`
 
-Record that someone verified a BOM line (browser, datasheet or in-hand). Records only; the CLI never scrapes a shop.
+Record that someone verified a BOM line (browser, datasheet, in-hand or webfetch). Records only; the CLI never scrapes a shop.
 
 ```
 plane bom verify <path> <item> <method> <evidence> <by>
@@ -85,7 +85,7 @@ Writes files.
 
 - `<path>`: str, required
 - `<item>`: str, required
-- `<method>`: choice, one of browser, datasheet, in-hand, required
+- `<method>`: choice, one of browser, datasheet, in-hand, webfetch, required
 - `<evidence>`: str, required
 - `<by>`: str, required
 

@@ -34,10 +34,10 @@ def _load(path: str):
     return p, text, data, items
 
 
-@op(name="bom.verify", summary="Record that someone verified a BOM line (browser, datasheet or in-hand). Records only; "
-                               "the CLI never scrapes a shop.",
+@op(name="bom.verify", summary="Record that someone verified a BOM line (browser, datasheet, in-hand or webfetch). "
+                               "Records only; the CLI never scrapes a shop.",
     mutates=True, render=lambda r: r.data["line"])
-def verify_op(path: str, item: str, method: Literal["browser", "datasheet", "in-hand"], evidence: str,
+def verify_op(path: str, item: str, method: Literal["browser", "datasheet", "in-hand", "webfetch"], evidence: str,
               by: str) -> OpResult:
     if not evidence.strip() or not by.strip():
         raise OpInputError("evidence and by must not be empty")
