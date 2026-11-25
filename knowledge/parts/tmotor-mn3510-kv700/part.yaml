@@ -1,0 +1,14 @@
+id: tmotor-mn3510-kv700
+name: 'Motor MN3510 KV700 (T-Motor MN3510 fixed-wing listing, KV700 variant)'
+category: motor
+vendor: T-Motor
+part_number: 'MN3510 KV700'
+url: https://store.tmotor.com/goods.php?id=337
+mass_g: 97.0
+dimensions_mm: [28.5, 41.8, 41.8]
+cad_status: representative-envelope
+cad_source: 'vendor store page, Motor Dimensions row (phi 41.8 x 28.5 mm); mass = Weight Excluding Cables 97 g; cable 600 mm excluded; no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: tube
+  params: {axis: x, length: 28.5, outer_d: 41.8}

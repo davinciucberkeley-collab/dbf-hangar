@@ -1,0 +1,14 @@
+id: radiomaster-er5a
+name: 'RadioMaster ER5A 2.4GHz 5ch ELRS PWM receiver'
+category: receiver
+vendor: RadioMaster
+part_number: 'RMS-ER5A'
+url: https://www.readymaderc.com/products/details/radiomaster-er5a-24ghz-5ch-elrs-pwm-receiver
+mass_g: 6.6
+dimensions_mm: [37.0, 19.0, 13.0]
+cad_status: representative-envelope
+cad_source: 'retailer page: Dimensions 37*19*13 mm, weight 6.6 g (antenna inclusion not stated); no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [37.0, 19.0], thickness: 13.0}

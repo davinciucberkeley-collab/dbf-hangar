@@ -1,0 +1,14 @@
+id: hobbywing-platinum-pro-40a-v4
+name: 'Hobbywing Platinum Pro 40A V4 (HW30215001)'
+category: esc
+vendor: Hobbywing
+part_number: '30215001'
+url: https://www.readymaderc.com/products/details/hobby-wing-platinum-pro-40a-v4-esc-bec
+mass_g: 47.0
+dimensions_mm: [48.0, 30.0, 15.4]
+cad_status: representative-envelope
+cad_source: 'retailer page (not vendor): Dimensions 48x30x15.4 mm, weight 47 g; no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [48.0, 30.0], thickness: 15.4}

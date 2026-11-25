@@ -1,0 +1,14 @@
+id: freewing-md31093-500
+name: 'Freewing 9g digital hybrid metal gear servo MD31093-500'
+category: servo
+vendor: Freewing
+part_number: 'MD31093-500'
+url: https://motionrc.com/eu/products/freewing-9g-digital-hybrid-metal-gear-servo-with-500mm-19-6-lead-md31093-500
+mass_g: 13.0
+dimensions_mm: [23.5, 12.2, 26.4]
+cad_status: representative-envelope
+cad_source: 'vendor product page: Dimensions 23.5 x 12.2 x 26.4 mm, weight 13 g; no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [23.5, 12.2], thickness: 26.4}

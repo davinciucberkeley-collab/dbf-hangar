@@ -1,0 +1,14 @@
+id: emax-es08maii-metal
+name: 'EMAX ES08MA II 12g analog metal gear servo'
+category: servo
+vendor: EMAX
+part_number: 'EMX-SV-0275'
+url: https://amainhobbies.com/emax-es08maii-12g-analog-metal-gear-servo-emx-sv-0275/p667829
+mass_g: 12.0
+dimensions_mm: [23.0, 11.5, 24.0]
+cad_status: representative-envelope
+cad_source: 'retailer page (not vendor): Dimensions 23 x 11.5 x 24 mm, weight 12 g; no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [23.0, 11.5], thickness: 24.0}

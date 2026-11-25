@@ -1,0 +1,14 @@
+id: freewing-2836-3300kv-mo028363
+name: 'Freewing 2836-3300Kv brushless outrunner MO028363'
+category: motor
+vendor: Freewing
+part_number: 'MO028363'
+url: https://motionrc.com/products/freewing-2836-3300kv-brushless-outrunner-motor-mo028363
+mass_g: 85.0
+dimensions_mm: [74.0, 28.0, 28.0]
+cad_status: representative-envelope
+cad_source: 'vendor product page: Overall Length 74 mm and motor diameter 28 mm; mass 85 g (leads inclusion not found); no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: tube
+  params: {axis: x, length: 74.0, outer_d: 28.0}
