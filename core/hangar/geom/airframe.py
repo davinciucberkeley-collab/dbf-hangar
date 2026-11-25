@@ -47,10 +47,10 @@ def _strut_check(p: dict) -> list[str]:
 
 register(Generator(
     "strut",
-    {"start": ParamSpec("vec3", required=True),
-     "end": ParamSpec("vec3", required=True),
-     "diameter": ParamSpec("number", required=True, exclusive_minimum=0, doc="thickness"),
-     "chord": ParamSpec("number", default=0.0, minimum=0, doc="0 = round, else elliptical section chord")},
+    {"start": ParamSpec("vec3", required=True, doc="start point x, y, z, mm"),
+     "end": ParamSpec("vec3", required=True, doc="end point x, y, z, mm"),
+     "diameter": ParamSpec("number", required=True, exclusive_minimum=0, doc="thickness, mm"),
+     "chord": ParamSpec("number", default=0.0, minimum=0, doc="0 = round, else elliptical section chord, mm")},
     _strut_build, check=_strut_check))
 
 
@@ -94,16 +94,16 @@ def _gear_check(p: dict) -> list[str]:
 
 register(Generator(
     "landing_gear",
-    {"layout": ParamSpec("choice", default="tricycle", choices=("tricycle", "taildragger")),
-     "main_x": ParamSpec("number", required=True),
-     "track": ParamSpec("number", required=True, exclusive_minimum=0, doc="distance between main wheel centres"),
-     "attach_z": ParamSpec("number", required=True, doc="z where the leg tops meet the airframe"),
-     "ground_z": ParamSpec("number", required=True),
-     "wheel_d": ParamSpec("number", required=True, exclusive_minimum=0),
-     "wheel_w": ParamSpec("number", required=True, exclusive_minimum=0),
-     "leg_d": ParamSpec("number", required=True, exclusive_minimum=0),
-     "leg_splay_deg": ParamSpec("number", default=0.0, minimum=0),
-     "front_x": ParamSpec("number", required=True, doc="nose wheel x (tricycle) or tail wheel x (taildragger)"),
-     "front_wheel_d": ParamSpec("number", default=0.0, minimum=0, doc="0 = wheel_d"),
-     "front_leg_d": ParamSpec("number", default=0.0, minimum=0, doc="0 = leg_d")},
+    {"layout": ParamSpec("choice", default="tricycle", choices=("tricycle", "taildragger"), doc="gear layout"),
+     "main_x": ParamSpec("number", required=True, doc="main wheel axle x, mm"),
+     "track": ParamSpec("number", required=True, exclusive_minimum=0, doc="distance between main wheel centres, mm"),
+     "attach_z": ParamSpec("number", required=True, doc="z where the leg tops meet the airframe, mm"),
+     "ground_z": ParamSpec("number", required=True, doc="ground contact z, mm"),
+     "wheel_d": ParamSpec("number", required=True, exclusive_minimum=0, doc="wheel diameter, mm"),
+     "wheel_w": ParamSpec("number", required=True, exclusive_minimum=0, doc="wheel width, mm"),
+     "leg_d": ParamSpec("number", required=True, exclusive_minimum=0, doc="leg diameter, mm"),
+     "leg_splay_deg": ParamSpec("number", default=0.0, minimum=0, doc="outward leg splay from vertical, deg"),
+     "front_x": ParamSpec("number", required=True, doc="nose wheel x (tricycle) or tail wheel x (taildragger), mm"),
+     "front_wheel_d": ParamSpec("number", default=0.0, minimum=0, doc="0 = wheel_d, mm"),
+     "front_leg_d": ParamSpec("number", default=0.0, minimum=0, doc="0 = leg_d, mm")},
     _gear_build, check=_gear_check))
