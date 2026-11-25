@@ -12,7 +12,7 @@ The importer on `main` cannot import v1 yet. Do not start until Tristan tells yo
 | B2 | PRP-006 X-mount (4 parts) is not closed after union and cuts | `dbf_geometry.part_mesh` | same stop at `PRP-006-LL` | open (builder-plus) |
 | B3 | Connection types `CT-A-M3-CSK-MOTOR`, `CT-A-M3-BOLT-MOUNT` unknown | `importers/dbf.py`, `standards/connection-types.yaml` | import stops: `KeyError: 'CT-A-M3-CSK-MOTOR'` | open (builder) |
 | B4 | `bom_cost` has no `rship` input | `core/hangar/calcs/concept_a.py` | 3 cost claims FAIL with a TypeError | open (builder) |
-| B5 | Decision import skips D-212 to D-261 | `core/hangar/importers/changelog.py` | `plane ledger import-dbf` reports success and adds nothing | open (builder-plus) |
+| B5 | Decision import skips D-212 to D-261 | `core/hangar/importers/changelog.py` | `plane ledger import-dbf` reports success and adds nothing | open, brief U4.40-2 (builder-plus) |
 | B6 | Extract has no `.git`, so the commit is recorded empty | importer | harmless; PROVENANCE must name d83b26f by hand (step 9) | open (minor) |
 | B7 | v1 wing planform does not match the declared planform (see step 6) | design decision | `T3.planform_matches_geometry` FAIL, static margin 116 % | needs you |
 
@@ -125,7 +125,7 @@ Ask Tristan first (O4 and O11: only he adds ledger items; D84 allows this import
 plane ledger import-dbf <scratch>/dbf ledger/items.yaml
 ```
 
-Expect JSON: `changelog` about 53 (D-212, its three revisions, D-213 to D-261), `decisions_md: 0`, `skipped` about 187 (already present, including D-209 to D-211: no duplicates), `duplicates` 4 (repeated rows in the source). The dry run, before B5, printed `changelog: 0`: if you see 0 again the fix is not in. Check:
+Expect JSON: `changelog` 53 (D-212 and its three revisions D-212b, D-212c, D-212d, then D-213 to D-261), `decisions_md: 0`, `skipped` 187 (already present, including D-209 to D-211: no duplicates), `duplicates` 4 (repeated rows in the source). The dry run, before B5, printed `changelog: 0`: if you see 0 again the fix is not in. Check:
 - `git diff --stat ledger/items.yaml` shows only added lines; no existing id changed;
 - `plane ledger check` exits 0;
 - then run `plane progress --write` and keep the changed `PROGRESS.md` in the same commit (CLAUDE.md rule; CI runs `plane progress --check` whenever `ledger/` changes).
