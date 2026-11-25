@@ -5305,10 +5305,10 @@ items:
     text: 'design render: add tests for the overlay refusal into a tracked path and the missing-matplotlib message; consider shading fix for thin dark slivers in iso view'
     source: reviews/2026-11-25-w31b.md §11
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-09'
     units: []
-    evidence: ''
+    evidence: d5dbb99
     decided_in: ''
     updated: '2026-11-25'
   - id: T145
@@ -5338,10 +5338,10 @@ items:
     text: "test_design_edit.py:608: give it a concept-a case that hits the new 'named by a key' guard in nested remove"
     source: reviews/2026-11-25-w31b.md §15
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-09'
     units: []
-    evidence: ''
+    evidence: d5dbb99
     decided_in: ''
     updated: '2026-11-25'
   - id: T148
@@ -5349,9 +5349,9 @@ items:
     text: Overlay stderr note fires whenever ~/parts-cad exists, even with no manifest; print it only when at least one manifest is present. Also replace the importer's _PAIR_PASS module flag with a parameter
     source: reviews/2026-11-25-w31.md §25, §27
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-09'
     units: []
-    evidence: ''
+    evidence: d5dbb99
     decided_in: ''
     updated: '2026-11-25'
