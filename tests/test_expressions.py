@@ -8,11 +8,12 @@ import pytest
 import trimesh
 import yaml
 
-from hangar.design import DESIGNS_DIR, load_design, load_standards
+from hangar.design import DESIGNS_DIR, REPO_ROOT, load_design, load_standards
 from hangar.geom import params as params_mod
 from hangar.geom.params import ExprError, evaluate, find_references, resolve_references
 from hangar.checks import tier0_schema
 from hangar.ops import call
+from testutil import LEGACY_DESIGNS
 
 GEN = Path(__file__).parent / "fixtures" / "pdl-gen"
 REPO = Path(__file__).resolve().parent.parent
@@ -249,16 +250,19 @@ def test_converted_concept_a_param_resolves_identically_at_900(tmp_path):
 
 def test_designs_without_expressions_resolve_unchanged():
     n = 0
-    for folder in sorted(DESIGNS_DIR.iterdir()):
+    for name in LEGACY_DESIGNS:
+        folder = DESIGNS_DIR / name
         p = folder / "plane.yaml"
-        if folder.name == "concept-a-param" or not p.is_file():
+        if not p.is_file():
             continue
         text = p.read_text(encoding="utf-8")
         if "parameters" in yaml.safe_load(text):
             continue
         assert load_design(folder).data == yaml.safe_load(text), folder.name
         n += 1
-    assert n >= 4
+    assert n >= 1
+    if DESIGNS_DIR == REPO_ROOT / "designs":
+        assert n == len(LEGACY_DESIGNS)
     data = load_design(GEN).data
     rod = next(c for c in data["components"] if c["id"] == "rod")
     assert rod["geometry"]["params"]["length"] == 100
