@@ -88,7 +88,8 @@ def _place(unit: np.ndarray, p: dict, y: float) -> list[tuple[float, float]]:
     xq = 0.25 * c
     x2 = xq + (x - xq) * math.cos(t) + z * math.sin(t)
     z2 = z * math.cos(t) - (x - xq) * math.sin(t)
-    x2 = x2 + ay * math.tan(math.radians(p["sweep_le_deg"]))
+    lead = ay if p.get("sweep_reference", "root") == "root" else max(0.0, ay - ib)
+    x2 = x2 + lead * math.tan(math.radians(p["sweep_le_deg"]))
     z2 = z2 + ay * math.tan(math.radians(p["dihedral_deg"])) + p["z_offset"]
     return list(zip(x2.tolist(), z2.tolist()))
 
@@ -179,6 +180,8 @@ def _check(p: dict) -> list[str]:
     errs = []
     if p.get("inboard_span", 0.0) >= p["span"] / 2.0:
         errs.append("inboard_span: must be < span/2")
+    if p.get("sweep_reference", "root") == "outboard_le" and not p.get("inboard_span", 0.0) > 0:
+        errs.append("sweep_reference: outboard_le needs inboard_span > 0")
     if not 0 < p["hinge_frac"] < 1:
         errs.append("hinge_frac: must be in (0, 1)")
     given = [k for k in ("bore_x", "bore_z", "bore_d") if k in p]
@@ -214,8 +217,9 @@ register(Generator(
      "span": ParamSpec("number", required=True, exclusive_minimum=0, doc="tip to tip, mm"),
      "root_chord": ParamSpec("number", required=True, exclusive_minimum=0, doc="root chord, mm"),
      "tip_chord": ParamSpec("number", required=True, exclusive_minimum=0, doc="tip chord, mm"),
-     "inboard_span": ParamSpec("number", default=0.0, minimum=0, doc="mm per side along |y| over which the chord stays root_chord; the taper to tip_chord runs from there to the tip; 0 = one taper from the root. Sweep, dihedral and twist stay linear in |y| from the root."),
-     "sweep_le_deg": ParamSpec("number", default=0.0, doc="leading-edge sweep angle, deg"),
+     "inboard_span": ParamSpec("number", default=0.0, minimum=0, doc="mm per side along |y| over which the chord stays root_chord; the taper to tip_chord runs from there to the tip; 0 = one taper from the root. Sweep starts at the root unless sweep_reference is outboard_le; dihedral and twist always start at the root."),
+     "sweep_le_deg": ParamSpec("number", default=0.0, doc="leading-edge sweep angle, deg; measured from the root across the whole half span (the inboard_span rectangle is swept too) unless sweep_reference is outboard_le"),
+     "sweep_reference": ParamSpec("choice", default="root", choices=("root", "outboard_le"), doc="where the leading-edge sweep starts: root = from the root chord across the whole half span (default); outboard_le = from the end of the inboard_span rectangle, so the inboard leading edge is straight"),
      "dihedral_deg": ParamSpec("number", default=0.0, doc="dihedral angle, deg"),
      "twist_tip_deg": ParamSpec("number", default=0.0, doc="positive = nose up at the tip, deg"),
      "z_offset": ParamSpec("number", default=0.0, doc="airfoil datum shift, mm"),
