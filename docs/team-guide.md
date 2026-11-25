@@ -217,8 +217,8 @@ Use this to make a design, change it, compare it and hand it over.
 
 To look at a design, run `plane studio`: it serves the app on http://127.0.0.1:8765 (`--port` changes it, `--no-browser` keeps the browser closed), builds the designs it needs and caches them in `.studio/`, and lets you edit, validate and compare point and click on the same files. No `build-index` is needed for Studio.
 `plane build-index --out viewer/data` is for the static copy of the viewer (the GitHub Pages build runs it): it exports every design under `designs/` (mesh, scorecard, mass) and writes `index.json`, and it took about 5 minutes for 11 designs on 2026-11-24. `viewer/data/` is a build output and is gitignored.
-A new design shows up in Studio as soon as `designs/<id>/plane.yaml` exists. `plane validate <id> --tier all` prints the same scorecard without a browser.
-For one design use `plane build-index --design <id> --out <folder>`; designs using the local CAD overlay must be built outside the repo or into a git-ignored folder (docs/cad-overlay.md); `plane design render <path>` writes quick PNG views.
+A new design shows up in Studio as soon as `designs/<id>/plane.yaml` exists. `plane design validate designs/<id> --tier all` prints the same scorecard without a browser.
+For one design use `plane build-index --design <id> --out <folder>`; designs using the local CAD overlay must be built outside the repo or into a git-ignored folder (docs/cad-overlay.md); `plane design render <path> --out <file.png>` writes quick PNG views.
 
 ### Control surfaces and servos
 
