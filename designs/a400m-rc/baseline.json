@@ -1,0 +1,654 @@
+{
+  "accepted": false,
+  "design_id": "a400m-rc",
+  "known": [
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of ele-hinge (25\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: elevator, horn-ele, rod-ele",
+      "key": "T1.kinematic_link|range max of ele-hinge (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: elevator, horn-ele, rod-ele|{\"pair\":[\"rod-ele & elevator\",\"rod-ele & horn-ele\"],\"pose\":\"range max of ele-hinge (25\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of l-hinge (20\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: aileron-l, horn-l, rod-l",
+      "key": "T1.kinematic_link|range max of l-hinge (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: aileron-l, horn-l, rod-l|{\"pair\":[\"rod-l & aileron-l\",\"rod-l & horn-l\"],\"pose\":\"range max of l-hinge (20\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of r-hinge (20\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: aileron-r, horn-r, rod-r",
+      "key": "T1.kinematic_link|range max of r-hinge (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: aileron-r, horn-r, rod-r|{\"pair\":[\"rod-r & aileron-r\",\"rod-r & horn-r\"],\"pose\":\"range max of r-hinge (20\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of rud-hinge (15\u00b0): 1 pair(s) not checked \u2014 linkage path not modelled: rod-rud, rudder",
+      "key": "T1.kinematic_link|range max of rud-hinge (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: rod-rud, rudder|{\"pair\":[\"rudder & rod-rud\"],\"pose\":\"range max of rud-hinge (15\u00b0)\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep ele-hinge 5\u00b0: 3 pair(s) not checked \u2014 linkage path not modelled: elevator, horn-ele, pin-ele, rod-ele",
+      "key": "T1.kinematic_link|sweep ele-hinge #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: elevator, horn-ele, pin-ele, rod-ele|{\"pair\":[\"rod-ele & elevator\",\"rod-ele & horn-ele\",\"rod-ele & pin-ele\"],\"pose\":\"sweep ele-hinge 5\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep ele-hinge 20\u00b0: 2 pair(s) not checked \u2014 linkage path not modelled: elevator, horn-ele, rod-ele",
+      "key": "T1.kinematic_link|sweep ele-hinge #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: elevator, horn-ele, rod-ele|{\"pair\":[\"rod-ele & elevator\",\"rod-ele & horn-ele\"],\"pose\":\"sweep ele-hinge 20\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep l-hinge 15\u00b0: 2 pair(s) not checked \u2014 linkage path not modelled: aileron-l, horn-l, rod-l",
+      "key": "T1.kinematic_link|sweep l-hinge #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: aileron-l, horn-l, rod-l|{\"pair\":[\"rod-l & aileron-l\",\"rod-l & horn-l\"],\"pose\":\"sweep l-hinge 15\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep r-hinge 15\u00b0: 2 pair(s) not checked \u2014 linkage path not modelled: aileron-r, horn-r, rod-r",
+      "key": "T1.kinematic_link|sweep r-hinge #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: aileron-r, horn-r, rod-r|{\"pair\":[\"rod-r & aileron-r\",\"rod-r & horn-r\"],\"pose\":\"sweep r-hinge 15\u00b0\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "battery-fus: carries 11.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|battery-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"battery-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "ele-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|ele-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "ele-hinge: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|ele-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "ele-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|ele-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "ele-horn: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|ele-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "ele-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|ele-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "ele-servo: carries 0.7 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|ele-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "esc-fus: carries 0.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|esc-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"esc-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fc-fus: carries 0.8 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fc-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"fc-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-fus: carries 5.3 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-spl: carries 5.3 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-spl: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-spl\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-spr: carries 5.3 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-spr: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-spr\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gps-fus: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gps-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"gps-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "l-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|l-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "l-hinge: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|l-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "l-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|l-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "l-horn: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|l-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "l-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|l-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "l-servo: carries 0.7 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|l-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "mot-il-nac: carries 3.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|mot-il-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-il-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "mot-ir-nac: carries 3.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|mot-ir-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-ir-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "mot-ol-nac: carries 3.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|mot-ol-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-ol-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "mot-or-nac: carries 3.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|mot-or-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-or-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "nac-il-wing: carries 3.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|nac-il-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-il-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "nac-ir-wing: carries 3.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|nac-ir-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-ir-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "nac-ol-wing: carries 3.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|nac-ol-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-ol-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "nac-or-wing: carries 3.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|nac-or-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-or-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "pitot-fus: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|pitot-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"pitot-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "prop-il-mot: carries 0.5 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|prop-il-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-il-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "prop-ir-mot: carries 0.5 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|prop-ir-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-ir-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "prop-ol-mot: carries 0.5 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|prop-ol-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-ol-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "prop-or-mot: carries 0.5 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|prop-or-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-or-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "r-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|r-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "r-hinge: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|r-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "r-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|r-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "r-horn: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|r-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "r-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|r-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "r-servo: carries 0.7 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|r-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "rud-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|rud-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "rud-hinge: carries 0.8 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|rud-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "rud-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|rud-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "rud-horn: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|rud-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "rud-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|rud-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "rud-servo: carries 0.7 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|rud-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "rx-fus: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|rx-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"rx-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "sponson-l-fus: carries 1.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|sponson-l-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"sponson-l-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "sponson-r-fus: carries 1.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|sponson-r-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"sponson-r-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-fus: carries 5.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-fus: carries 23.6 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "battery-fus: carries 35.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|battery-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"battery-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "ele-arm-rod: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|ele-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "ele-hinge: carries 0.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|ele-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "ele-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|ele-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "ele-horn: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|ele-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "ele-servo-arm: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|ele-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "ele-servo: carries 2.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|ele-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"ele-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "esc-fus: carries 4.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|esc-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"esc-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fc-fus: carries 4.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fc-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"fc-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-fus: carries 189.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-spl: carries 12.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-spl: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-spl\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-spr: carries 12.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-spr: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-spr\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gps-fus: carries 3.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gps-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"gps-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "l-arm-rod: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|l-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "l-hinge: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|l-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "l-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|l-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "l-horn: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|l-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "l-servo-arm: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|l-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "l-servo: carries 2.8 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|l-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"l-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "mot-il-nac: carries 10.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|mot-il-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-il-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "mot-ir-nac: carries 10.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|mot-ir-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-ir-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "mot-ol-nac: carries 10.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|mot-ol-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-ol-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "mot-or-nac: carries 9.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|mot-or-nac: carries # N; rating is a placeholder, not checked|{\"joint\":\"mot-or-nac\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "nac-il-wing: carries 11.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|nac-il-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-il-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "nac-ir-wing: carries 11.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|nac-ir-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-ir-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "nac-ol-wing: carries 11.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|nac-ol-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-ol-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "nac-or-wing: carries 10.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|nac-or-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"nac-or-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "pitot-fus: carries 0.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|pitot-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"pitot-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "prop-il-mot: carries 1.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|prop-il-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-il-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "prop-ir-mot: carries 1.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|prop-ir-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-ir-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "prop-ol-mot: carries 1.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|prop-ol-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-ol-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "prop-or-mot: carries 1.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|prop-or-mot: carries # N; rating is a placeholder, not checked|{\"joint\":\"prop-or-mot\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "r-arm-rod: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|r-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "r-hinge: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|r-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "r-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|r-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "r-horn: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|r-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "r-servo-arm: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|r-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "r-servo: carries 2.8 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|r-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"r-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "rud-arm-rod: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|rud-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "rud-hinge: carries 3.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|rud-hinge: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-hinge\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "rud-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|rud-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "rud-horn: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|rud-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-horn\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "rud-servo-arm: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|rud-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "rud-servo: carries 2.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|rud-servo: carries # N; rating is a placeholder, not checked|{\"joint\":\"rud-servo\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "rx-fus: carries 1.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|rx-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"rx-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "sponson-l-fus: carries 10.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|sponson-l-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"sponson-l-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "sponson-r-fus: carries 11.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|sponson-r-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"sponson-r-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-fus: carries 19.8 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-fus\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-fus: carries 71.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-fus: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-fus\"}",
+      "status": "SKIP"
+    }
+  ],
+  "schema": 1,
+  "tiers_run": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}

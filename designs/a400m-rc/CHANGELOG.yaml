@@ -1,0 +1,529 @@
+- date: '2026-11-25T08:19:35Z'
+  key: root
+  old: datum
+  new: fuselage
+  why: real root
+  kind: modify
+- date: '2026-11-25T08:19:57Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'A400M 1:25: fuselage, wing, T-tail split into fixed/elevator/rudder'
+  count: 10
+  keys:
+  - name
+  - description
+  - morphology.tail
+  - morphology.propulsion_count
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components[datum]
+  file: base.yaml
+- date: '2026-11-25T08:20:19Z'
+  key: components[wing].position
+  old:
+  - 520
+  - 0
+  - 0
+  new:
+  - 520
+  - 0
+  - -24
+  why: wing root upper surface to the fuselage top (7.0 m above ground in the drawing);
+    placement high puts the chord line, not the upper surface, at the top
+  kind: modify
+  regenerated:
+  - wing
+- date: '2026-11-25T08:23:51Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: propulsion, gear, electronics
+  count: 44
+  keys:
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  file: part2.yaml
+- date: '2026-11-25T08:25:48Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'fix T1: motors fully inside nacelles, props not embedded, sponson contact,
+    joint points on the part surface'
+  count: 28
+  keys:
+  - components[nacelle-il].geometry.params.nose_length
+  - components[nacelle-ir].geometry.params.nose_length
+  - components[nacelle-ol].geometry.params.nose_length
+  - components[nacelle-or].geometry.params.nose_length
+  - components[nacelle-il].position
+  - components[nacelle-ir].position
+  - components[nacelle-ol].position
+  - components[nacelle-or].position
+  - components[prop-il].position
+  - components[prop-ir].position
+  - components[prop-ol].position
+  - components[prop-or].position
+  - components[sponson-l].position
+  - components[sponson-r].position
+  - attachments[sponson-l-fus].location
+  - attachments[sponson-r-fus].location
+  - attachments[fc-fus].location
+  - attachments[rx-fus].location
+  - attachments
+  - attachments
+  - attachments[prop-il-mot]
+  - attachments[prop-ir-mot]
+  - attachments[prop-ol-mot]
+  - attachments[prop-or-mot]
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  file: fix1.yaml
+- date: '2026-11-25T08:26:39Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'T1: tail root clear of the fuselage top, props clear of nacelles, rx joint
+    on the board'
+  count: 11
+  keys:
+  - components[tail-fixed].geometry.params.fin_z_root
+  - components[tail-fixed].geometry.params.fin_height
+  - components[elevator].geometry.params.fin_z_root
+  - components[elevator].geometry.params.fin_height
+  - components[rudder].geometry.params.fin_z_root
+  - components[rudder].geometry.params.fin_height
+  - components[prop-il].position
+  - components[prop-ir].position
+  - components[prop-ol].position
+  - components[prop-or].position
+  - attachments[rx-fus].location
+  file: fix2.yaml
+- date: '2026-11-25T08:27:32Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'T1: fin root sits on the fuselage top line'
+  count: 7
+  keys:
+  - components[tail-fixed].geometry.params.fin_z_root
+  - components[tail-fixed].geometry.params.fin_height
+  - components[elevator].geometry.params.fin_z_root
+  - components[elevator].geometry.params.fin_height
+  - components[rudder].geometry.params.fin_z_root
+  - components[rudder].geometry.params.fin_height
+  - attachments[tail-fus].location
+  file: fix3.yaml
+- date: '2026-11-25T08:28:25Z'
+  key: attachments[tail-fus].location
+  old:
+  - 1500
+  - 0
+  - 115
+  new:
+  - 1462
+  - 0
+  - 113.4
+  why: joint on the fixed part (x<1466 hinge line) at the fuselage top line
+  kind: modify
+- date: '2026-11-25T08:29:04Z'
+  key: components[rudder].geometry.params.fin_z_root
+  old: 115
+  new: 117
+  why: rudder base 2 mm above the fuselage top line so the moving rudder does not
+    clip the fuselage (943 mm3 overlap)
+  kind: modify
+  regenerated:
+  - rudder
+- date: '2026-11-25T08:29:04Z'
+  key: components[rudder].geometry.params.fin_height
+  old: 277
+  new: 275
+  why: rudder base 2 mm above the fuselage top line so the moving rudder does not
+    clip the fuselage (943 mm3 overlap)
+  kind: modify
+- date: '2026-11-25T08:31:50Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'elevator: servo, arm, pushrod, horn, pin, hinge, mechanism (docs/mechanisms.md
+    recipe)'
+  count: 14
+  keys:
+  - components[rudder].geometry.params.fin_z_root
+  - components[rudder].geometry.params.fin_height
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  file: mech1.yaml
+- date: '2026-11-25T08:32:52Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'rudder: servo, arm, pushrod, horn, pin, hinge, mechanism; elevator gap 5 mm
+    so the elevator clears the rudder at full deflection'
+  count: 13
+  keys:
+  - components[elevator].geometry.params.elevator_fin_gap
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  file: mech2.yaml
+- date: '2026-11-25T08:34:27Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'rudder: bottom gap and top below the elevator so it clears the fuselage and
+    elevator at full deflection; aligned LE with the fixed fin; horn moved out of
+    the rudder'
+  count: 5
+  keys:
+  - components[rudder].geometry.params.fin_z_root
+  - components[rudder].geometry.params.fin_height
+  - components[rudder].geometry.params.fin_x_le
+  - components[horn-rud].position
+  - attachments[rud-horn].location
+  file: fix4.yaml
+- date: '2026-11-25T08:35:04Z'
+  key: attachments[rud-hinge].articulation.range_deg
+  old:
+  - -25
+  - 25
+  new:
+  - -15
+  - 15
+  why: blunt hinge face overlaps the fixed fin 3% at 25 deg; rudder travel is an unsourced
+    model choice, 15 deg clears
+  kind: modify
+- date: '2026-11-25T08:36:17Z'
+  key: mechanisms[elevator-drive].expect
+  old: null
+  new:
+  - attachment: ele-hinge
+    ratio: 1.0
+  why: 'probe: read the geometry ratio from T6.ratio, then replace'
+  kind: add
+- date: '2026-11-25T08:36:29Z'
+  key: mechanisms[rudder-drive].expect
+  old: null
+  new:
+  - attachment: rud-hinge
+    ratio: 1.0
+  why: 'probe: read the geometry ratio from T6.ratio, then replace'
+  kind: add
+- date: '2026-11-25T08:37:15Z'
+  key: mechanisms[elevator-drive].expect
+  old:
+  - attachment: ele-hinge
+    ratio: 1.0
+  new:
+  - attachment: ele-hinge
+    ratio: 0.33
+  why: ratio from T6.ratio geometry message (0.325)
+  kind: modify
+- date: '2026-11-25T08:37:29Z'
+  key: mechanisms[rudder-drive].expect
+  old:
+  - attachment: rud-hinge
+    ratio: 1.0
+  new:
+  - attachment: rud-hinge
+    ratio: -0.28
+  why: ratio from T6.ratio geometry message (-0.277)
+  kind: modify
+- date: '2026-11-25T08:39:40Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: battery from the part number (Tattu 2300 mAh 4S 75C); moved aft to bring the
+    CG from 37% to the target static margin 12% MAC (CG x ~779 mm, NP 806 mm)
+  count: 3
+  keys:
+  - components[battery].battery
+  - components[battery].position
+  - attachments[battery-fus].location
+  file: cg1.yaml
+- date: '2026-11-25T08:41:53Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'render check: the aft top line dipped below the fin root; keep the top line
+    level (7.0 m) and let only the underside sweep up, as in the drawing'
+  count: 1
+  keys:
+  - components[fuselage].geometry.params.stations
+  file: fuse2.yaml
+- date: '2026-11-25T08:43:40Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'BOM: every component in a line, library parts by id, in-house parts described
+    without invented costs'
+  count: 1
+  keys:
+  - bom
+  file: bom.yaml
+- date: '2026-11-25T08:45:41Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'ailerons: wing core plus two elevon-part panels (control surfaces for roll)'
+  count: 4
+  keys:
+  - components[wing].geometry.params.part
+  - components[wing].geometry.params.elevon_y
+  - components
+  - components
+  file: ail1.yaml
+- date: '2026-11-25T08:47:05Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: aileron servos and linkages (docs/mechanisms.md recipe), right and left
+  count: 24
+  keys:
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - mechanisms
+  file: ail2.yaml
+- date: '2026-11-25T08:48:00Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'aileron up-travel limited: the blunt hinge face overlaps the wing core 5%
+    at -25 deg; travel is an unsourced model choice'
+  count: 2
+  keys:
+  - attachments[r-hinge].articulation.range_deg
+  - attachments[l-hinge].articulation.range_deg
+  file: ail3.yaml
+- date: '2026-11-25T08:49:11Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: try the aileron hinge pivot nearer the lower surface to stop up-travel clipping
+  count: 4
+  keys:
+  - attachments[r-hinge].articulation.pivot
+  - attachments[l-hinge].articulation.pivot
+  - attachments[r-hinge].location
+  - attachments[l-hinge].location
+  file: ail4.yaml
+- date: '2026-11-25T08:50:38Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: try the aileron hinge pivot nearer the upper surface
+  count: 6
+  keys:
+  - attachments[r-hinge].articulation.pivot
+  - attachments[l-hinge].articulation.pivot
+  - attachments[r-hinge].location
+  - attachments[l-hinge].location
+  - attachments[r-hinge].articulation.range_deg
+  - attachments[l-hinge].articulation.range_deg
+  file: ail5.yaml
+- date: '2026-11-25T08:51:44Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: aileron hinge pivot at mid-thickness, travel +-20 deg (model choice)
+  count: 6
+  keys:
+  - attachments[r-hinge].articulation.pivot
+  - attachments[l-hinge].articulation.pivot
+  - attachments[r-hinge].location
+  - attachments[l-hinge].location
+  - attachments[r-hinge].articulation.range_deg
+  - attachments[l-hinge].articulation.range_deg
+  file: ail6.yaml
+- date: '2026-11-25T08:52:35Z'
+  key: attachments[r-hinge].articulation.range_deg
+  old:
+  - -20
+  - 20
+  new:
+  - -15
+  - 20
+  why: 'up-travel -15 deg: the blunt hinge face clips the wing core 2% at -20 deg;
+    travel is an unsourced model choice'
+  kind: modify
+- date: '2026-11-25T08:52:35Z'
+  key: attachments[l-hinge].articulation.range_deg
+  old:
+  - -20
+  - 20
+  new:
+  - -15
+  - 20
+  why: 'up-travel -15 deg: the blunt hinge face clips the wing core 2% at -20 deg;
+    travel is an unsourced model choice'
+  kind: modify
+- date: '2026-11-25T08:54:26Z'
+  key: mechanisms[aileron-r-drive].expect
+  old: null
+  new:
+  - attachment: r-hinge
+    ratio: 1.0
+  why: 'probe: read the geometry ratio from T6.ratio, then replace'
+  kind: add
+- date: '2026-11-25T08:54:40Z'
+  key: mechanisms[aileron-l-drive].expect
+  old: null
+  new:
+  - attachment: l-hinge
+    ratio: 1.0
+  why: 'probe: read the geometry ratio from T6.ratio, then replace'
+  kind: add
+- date: '2026-11-25T08:55:40Z'
+  key: mechanisms[aileron-r-drive].expect
+  old:
+  - attachment: r-hinge
+    ratio: 1.0
+  new:
+  - attachment: r-hinge
+    ratio: 0.36
+  why: ratio from T6.ratio geometry message (0.363)
+  kind: modify
+- date: '2026-11-25T08:55:55Z'
+  key: mechanisms[aileron-l-drive].expect
+  old:
+  - attachment: l-hinge
+    ratio: 1.0
+  new:
+  - attachment: l-hinge
+    ratio: -0.36
+  why: ratio from T6.ratio geometry message (-0.363)
+  kind: modify
+- date: '2026-11-25T08:58:01Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: BOM lines cover the aileron servos, ailerons and linkages
+  count: 8
+  keys:
+  - bom.items[b09-servo].qty
+  - bom.items[b09-servo].component_ids
+  - bom.items[b11-wing].qty
+  - bom.items[b11-wing].part_number
+  - bom.items[b11-wing].component_ids
+  - bom.items[b16-linkage].qty
+  - bom.items[b16-linkage].part_number
+  - bom.items[b16-linkage].component_ids
+  file: bom2.yaml
+- date: '2026-11-25T09:01:57Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'CG target x ~790 mm: physical static margin ~7% of the 228 mm unsplit MAC
+    (NP 806 mm), and inside the 5-25% band on the split-wing reading of T3.static_margin'
+  count: 2
+  keys:
+  - components[battery].position
+  - attachments[battery-fus].location
+  file: cg2.yaml
