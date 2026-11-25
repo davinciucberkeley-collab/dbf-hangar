@@ -1009,13 +1009,13 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.8: Rehearsal 4 gaps
 
-*Progress: -1 pending thrust 1b12bfc, -5 scale props e97f92a, -3 apply kinds merged 0975b0f.*
+*Progress: -2 webfetch c003443, servo scout 9008347 (4 sub-micro servos, none reaches 1.5 kg-cm), -4 sweep reference 7ca06d3, -1 pending thrust 1b12bfc, -5 scale props e97f92a, -3 apply kinds merged 0975b0f.*
 
 **Scope:** from rehearsal 4 (gap log 2026-11-25, PR #9): `propulsion.max_thrust_n` accepts `pending` when no source gives it (schema now forces a number, so agents write 1); BOM `verified.method` enum gains `webfetch`; `design apply` CHANGELOG records each edit's kind (add/modify/remove) inside the batch entry; wing_panel sweep semantics with inboard_span documented (or a sweep_outboard param); library props as n-blade scale props instead of solid discs; small servo for 1:10 wings in the library (scout). Existing designs unchanged.
 
 - [x] **Step 1: Briefs** (tactician W31-T) *(147b035: -1 pending thrust (hard), -2 BOM webfetch, -3 apply kinds, -4 wing sweep reference (hard), -5 scale props + servo scout; defaults taken: a webfetch stamp counts like other verification methods; generator-built library props carry vendor none, verified.method computed, a repo reference URL)*
-- [ ] **Step 2: Build** (W31-B)
-- [ ] **Step 3: Review** (W31-R, W31-R2); merge
+- [x] **Step 2: Build** (W31-B)
+- [x] **Step 3: Review** (W31-R, W31-R2); merge *(all ACCEPT; last 7ca06d3)*
 
 ### Unit U14.1: Dec 2 presentation package
 
