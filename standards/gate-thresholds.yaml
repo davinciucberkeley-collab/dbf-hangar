@@ -39,3 +39,13 @@ wing_area_complete_min:
   rule: "T3.wing_area_complete: the measured planform area of a generated core wing divided by the area its wing_panel params give must be at least this; below it the wing has uncovered chord (a WARN)."
   source: pending
   note: "Strip measurement agrees with the params within 0.1 % on a complete wing (U13.7-5 findings); 0.97 leaves room for sweep and airfoil tip effects; internal expectation, no external source."
+four_bar_min_transmission_deg:
+  value: 10.0
+  rule: "T6.mechanism with kinematics: four_bar FAILs (jam) when the transmission angle between the pushrod and the horn arm falls below this at any input."
+  source: pending
+  note: "Provisional; no published source opened (U16.1 S1). 90 deg is the ideal, 0 deg a dead point."
+four_bar_max_follower_step_deg:
+  value: 10.0
+  rule: "T6.mechanism with kinematics: four_bar FAILs (branch flip) when the solved follower angle changes by more than this between two consecutive 1 degree input steps."
+  source: pending
+  note: "Provisional; no published source opened (U16.1 S1)."

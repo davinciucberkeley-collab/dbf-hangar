@@ -1,7 +1,7 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://github.com/REPLACE_ME/aircraft-platform/schema/plane.schema.json",
-  "title": "Plane Design Language v1.2",
+  "title": "Plane Design Language v1.3",
   "description": "Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, seconds. Body frame: origin at the nose datum, +x aft, +y starboard (right), +z up.",
   "type": "object",
   "required": [
@@ -24,9 +24,10 @@
         "0.4",
         "1.0",
         "1.1",
-        "1.2"
+        "1.2",
+        "1.3"
       ],
-      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields). 1.1 adds the optional motor fields propulsion.spin, propulsion.torque_per_thrust_m and propulsion.torque_per_thrust_m_source (prop reaction torque, used by the yaw row of T3.control_authority); 0.1-1.0 files validate unchanged. 1.2 adds optional geometry generators (component.geometry {generator, params}), the design-level parameters block with \"$name\" references in geometry params, planform, position and rotation_deg, and component.mass_model (mass from generated volume x density, instead of mass_g); 0.1-1.1 files validate unchanged."
+      "description": "0.2 adds optional attachment.articulation and flight.hover_pose / flight.cruise_pose; 0.3 adds optional component.cavities; 0.4 adds the point_mass geometry (mass at a point, no extent), attachment.kinematic_link, attachment.rating_basis and component.planform; 0.1-0.3 files validate unchanged. 1.0 adds the optional blocks files, bom, wiring, mechanisms, transport, assembly, component.provenance and requirements.transport_box_mm (PDL v1.0, docs/pdl/reference.md); 0.1-0.4 files validate unchanged. 1.0 also adds the optional attachment.connection and attachment.seat and the D21 gate inputs (component.battery, propulsion.max_current_a, propulsion.prop_diameter_mm, flight.cruise_ld, flight.transition_speed_mps with their `_source` fields). 1.1 adds the optional motor fields propulsion.spin, propulsion.torque_per_thrust_m and propulsion.torque_per_thrust_m_source (prop reaction torque, used by the yaw row of T3.control_authority); 0.1-1.0 files validate unchanged. 1.2 adds optional geometry generators (component.geometry {generator, params}), the design-level parameters block with \"$name\" references in geometry params, planform, position and rotation_deg, and component.mass_model (mass from generated volume x density, instead of mass_g); 0.1-1.1 files validate unchanged. 1.3 adds the optional mechanisms[].kinematics (ratio or four_bar: the follower angle and the rod pose are solved from the linkage geometry); 0.1-1.2 files validate unchanged."
     },
     "id": {
       "$ref": "#/$defs/slug"
@@ -1256,6 +1257,13 @@
         "driver": {
           "type": "string",
           "description": "Attachment id."
+        },
+        "kinematics": {
+          "enum": [
+            "ratio",
+            "four_bar"
+          ],
+          "description": "v1.3, optional, default ratio. ratio = the follower angle is the declared expect ratio x input (as before). four_bar = the follower angle is solved so that the distance from the link.driver_end point on the arm to the link.follower_end point in the horn stays constant (rod length), and the rod is drawn pinned between them; needs link, exactly one driven attachment and the same attachment in expect; input_range_deg must contain 0."
         },
         "driven": {
           "type": "array",

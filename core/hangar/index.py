@@ -16,7 +16,7 @@ import yaml
 from . import fea
 from .checks import validate
 from .export import export_glb
-from .gates.mechanisms import _atts, _clamp, _input_range, simulate_mechanism
+from .gates.mechanisms import _atts, _clamp, _input_range, link_overrides, simulate_mechanism
 from .geometry import articulated_attachments, att_label, is_point_mass, pose_transforms
 from .mass import mass_properties
 
@@ -52,9 +52,10 @@ def mechanism_sweeps(design) -> dict | None:
         steps = []
         for st in simulate_mechanism(design, mech)["steps"]:
             drv = _clamp(st["input_deg"], atts[mech["driver"]]["articulation"]["range_deg"])
-            tf = pose_transforms(design, {mech["driver"]: drv, **st["followers"]})
+            ov = link_overrides(design, mech, st["input_deg"], next(iter(st["followers"].values()))) if mech.get("kinematics") == "four_bar" else None
+            tf = pose_transforms(design, {mech["driver"]: drv, **st["followers"]}, ov)
             steps.append({"input_deg": st["input_deg"], "followers": st["followers"],
-                          "transforms": {cid: np.round(t, 6).ravel().tolist() for cid, t in tf.items()
+                          "transforms": {cid: np.round(t, 12 if ov else 6).ravel().tolist() for cid, t in tf.items()
                                          if cid not in skip and not np.allclose(t, np.eye(4))}})
         out.append({"id": mech["id"], "driver": mech["driver"], "driven": list(mech["driven"]),
                     "input_range_deg": list(_input_range(design, mech)), "steps": steps})
