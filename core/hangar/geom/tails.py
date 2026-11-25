@@ -5,7 +5,7 @@ component-local frame. Separate elevator / rudder surfaces are not modelled.
 """
 from __future__ import annotations
 
-from hangar.geom import kernel, registry
+from hangar.geom import airfoil, kernel, registry
 from hangar.geom.registry import Generator, ParamSpec, register
 
 _FIN_KEYS = ("fin_thickness", "fin_height", "fin_root_chord", "fin_tip_chord")
@@ -55,7 +55,7 @@ def _check(p: dict) -> list[str]:
 register(Generator(
     "tail_surfaces",
     {"layout": ParamSpec("choice", default="conventional", choices=("conventional", "t", "v", "h")),
-     "airfoil_file": ParamSpec("string", required=True, doc="design-folder-relative airfoil .dat"),
+     "airfoil_file": ParamSpec("string", required=True, doc="design-folder-relative airfoil .dat, or a name: nacaXXXX (4-digit, generated) or a file in knowledge/airfoils/ without .dat (e.g. s5010)"),
      "stab_span": ParamSpec("number", required=True, exclusive_minimum=0, doc="tip to tip (horizontal projection for v)"),
      "stab_root_chord": ParamSpec("number", required=True, exclusive_minimum=0),
      "stab_tip_chord": ParamSpec("number", required=True, exclusive_minimum=0),
@@ -70,4 +70,4 @@ register(Generator(
      "fin_sweep_le_deg": ParamSpec("number", default=0.0),
      "fin_x_le": ParamSpec("number", default=0.0),
      "fin_z_root": ParamSpec("number", default=0.0)},
-    _build, files=lambda p: [p["airfoil_file"]], check=_check))
+    _build, files=lambda p: [] if airfoil.is_named(p["airfoil_file"]) else [p["airfoil_file"]], check=_check))

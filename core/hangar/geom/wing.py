@@ -17,7 +17,7 @@ from pathlib import Path
 import numpy as np
 import trimesh
 
-from hangar.geom import kernel
+from hangar.geom import airfoil, kernel
 from hangar.geom.kernel import GeometryError
 from hangar.geom.registry import Generator, ParamSpec, register
 
@@ -33,6 +33,10 @@ def read_airfoil(path) -> tuple[np.ndarray, np.ndarray]:
             rows.append((float(nums[0]), float(nums[1])))
     if len(rows) < 3:
         raise GeometryError(f"{path}: no airfoil coordinates")
+    return split_airfoil(rows, path)
+
+
+def split_airfoil(rows, path="airfoil") -> tuple[np.ndarray, np.ndarray]:
     if rows[0][0] > 1.5:                                  # Lednicer: counts line, upper LE->TE, lower LE->TE
         nu, nl = int(rows[0][0]), int(rows[0][1])
         up, lo = rows[1:1 + nu], rows[1 + nu:1 + nu + nl]
@@ -44,6 +48,13 @@ def read_airfoil(path) -> tuple[np.ndarray, np.ndarray]:
     pts = np.array([((x - x0) / c, y / c) for x, y in rows])
     le = int(np.argmin(pts[:, 0]))
     return pts[:le + 1][::-1].copy(), pts[le:].copy()
+
+
+def load_airfoil(ref, base_dir) -> tuple[np.ndarray, np.ndarray]:
+    if airfoil.is_named(ref):
+        kind, v = airfoil.resolve(ref)
+        return split_airfoil(v) if kind == "rows" else read_airfoil(v)
+    return read_airfoil(Path(base_dir) / ref)
 
 
 def _interp(side: np.ndarray, xs: np.ndarray) -> np.ndarray:
@@ -115,7 +126,7 @@ def _placement_z(p) -> float:
 
 def _build(p: dict, base_dir) -> list:
     p = {**p, "z_offset": p["z_offset"] + _placement_z(p)}
-    upper, lower = read_airfoil(Path(base_dir) / p["airfoil_file"])
+    upper, lower = load_airfoil(p["airfoil_file"], base_dir)
     half = p["span"] / 2.0
     part = p["part"]
     hinge = p["hinge_frac"]
@@ -176,7 +187,7 @@ def _check(p: dict) -> list[str]:
 
 register(Generator(
     "wing_panel",
-    {"airfoil_file": ParamSpec("string", required=True, doc="design-folder-relative airfoil .dat"),
+    {"airfoil_file": ParamSpec("string", required=True, doc="design-folder-relative airfoil .dat, or a name: nacaXXXX (4-digit, generated) or a file in knowledge/airfoils/ without .dat (e.g. s5010)"),
      "span": ParamSpec("number", required=True, exclusive_minimum=0, doc="tip to tip, mm"),
      "root_chord": ParamSpec("number", required=True, exclusive_minimum=0),
      "tip_chord": ParamSpec("number", required=True, exclusive_minimum=0),
@@ -195,4 +206,4 @@ register(Generator(
      "bore_x": ParamSpec("number"), "bore_z": ParamSpec("number"), "bore_d": ParamSpec("number"),
      "cut_files": ParamSpec("list", default=[], doc="design-folder-relative closed-solid meshes subtracted from the core"),
      "cut_poses": ParamSpec("list", default=[], doc="derived by the resolver from the neighbours' positions; do not write")},
-    _build, files=lambda p: [p["airfoil_file"]] + list(p["cut_files"]), check=_check))
+    _build, files=lambda p: ([] if airfoil.is_named(p["airfoil_file"]) else [p["airfoil_file"]]) + list(p["cut_files"]), check=_check))
