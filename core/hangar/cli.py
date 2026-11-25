@@ -204,16 +204,24 @@ def new_blank_design(new_id: str) -> Path:
 @cli.command("build-index")
 @click.option("--out", "out_dir", type=click.Path(file_okay=False), required=True,
               help="Directory to write per-design artifacts and index.json into.")
-def build_index_cmd(out_dir):
-    """Export glb, scorecard and mass for every design, then write index.json."""
+@click.option("--design", "wanted", multiple=True, help="Design folder name to build (repeatable); default: every design.")
+def build_index_cmd(out_dir, wanted):
+    """Export glb, scorecard and mass for every design (or only the --design ones), then write index.json."""
     from .index import design_entry, error_entry, index_extras
+    designs = list_designs()
+    if wanted:
+        names = {p.parent.name for p in designs}
+        missing = [w for w in wanted if w not in names]
+        if missing:
+            _fail(f"unknown design(s): {', '.join(missing)}; have: {', '.join(sorted(names))}")
+        designs = [p for p in designs if p.parent.name in wanted]
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     from .geom import overlay
     ok, why = overlay.output_allowed(out)
     if not ok:
         used = {}
-        for p in list_designs():
+        for p in designs:
             try:
                 d = load_design(p)
             except Exception:  # noqa: BLE001
@@ -225,7 +233,7 @@ def build_index_cmd(out_dir):
             _fail("designs use licensed CAD overlay parts (" + "; ".join(f"{k}: {', '.join(v)}" for k, v in used.items())
                   + f"); build-index --out must point outside the repository or at an ignored folder ({why})")
     entries = []
-    for p in list_designs():
+    for p in designs:
         fallback_id = p.parent.name
         try:
             design = load_design(p)
