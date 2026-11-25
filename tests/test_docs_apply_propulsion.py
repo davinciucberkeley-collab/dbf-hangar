@@ -20,7 +20,7 @@ def test_guide_has_the_three_bullets():
     for needle in (
         "plane design apply <path> --edits <file.yaml>",
         "{append: components",
-        "{add: mechanisms",
+        "docs/mechanisms.md",
         "propulsion: {max_thrust_n: 12, axis: [-1, 0, 0], role: cruise, max_current_a: 18, prop_diameter_mm: 254}",
         "there is no `control_surface` type",
     ):
@@ -34,7 +34,7 @@ def test_guide_has_the_three_bullets():
     assert all(lines[i].startswith("- ") for i in range(airfoils[0] + 1, airfoils[0] + 4))
     assert airfoils[0] < gate
     assert any("plane design apply <path> --edits <file.yaml>" in lines[i] for i in range(airfoils[0] + 1, airfoils[0] + 4))
-    assert any("{add: mechanisms" in lines[i] for i in range(airfoils[0] + 1, airfoils[0] + 4))
+    assert any("docs/mechanisms.md" in lines[i] for i in range(airfoils[0] + 1, airfoils[0] + 4))
     assert any("there is no `control_surface` type" in lines[i] for i in range(airfoils[0] + 1, airfoils[0] + 4))
 
 
