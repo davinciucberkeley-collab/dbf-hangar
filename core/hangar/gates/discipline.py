@@ -11,6 +11,7 @@ from . import discipline_check
 from .applicability import applicable, skip_row
 from .fidelity import resolve_threshold
 from .interfaces import load_connection_types
+from ..propulsion import pending_motors, thrust_n
 
 OPS, LOADS, CT = "operations.yaml", "load-cases.yaml", "connection-types.yaml"
 
@@ -60,6 +61,12 @@ def _lift_motors(design) -> list[dict]:
             and c.get("propulsion", {}).get("role", "both") in ("lift", "both")]
 
 
+def _pending_why(design) -> str:
+    """Reason text when a lift motor's thrust is pending (hover quantities are not computed), else ''."""
+    ids = pending_motors(design, ("lift", "both"))
+    return f"max_thrust_n is pending for {ids}" if ids else ""
+
+
 def _vtol(design) -> bool:
     m = design.data["morphology"]
     return m.get("vtol_method", "none") != "none" or m["lift"] == "multirotor"
@@ -70,6 +77,8 @@ def _hover(ctx) -> dict | None:
     from ..geometry import pose_angles, pose_transforms, posed_component_parts
     from ..mass import mass_properties
     design, note = ctx.design, []
+    if _pending_why(design):
+        return None
     up = _hover_up(design)
     hover_pose = design.data.get("flight", {}).get("hover_pose")
     h_ang = pose_angles(design, hover_pose)
@@ -77,13 +86,13 @@ def _hover(ctx) -> dict | None:
     tf = pose_transforms(design, h_ang)
     posed = posed_component_parts(design, h_ang)
     lift = _upward_lift(design, tf, up)
-    f = {m["id"]: float(np.linalg.norm(force)) / m["propulsion"]["max_thrust_n"] for m, force in lift}
+    f = {m["id"]: float(np.linalg.norm(force)) / thrust_n(m) for m, force in lift}
     if not f or sum(f.values()) <= 1e-9:
         return None
     sag = _std(OPS, "pack_sag_fraction", note)
     weight = mp["mass_g"] / 1000 * _g()
     thrust = weight / sum(f.values())
-    tmax = {m["id"]: m["propulsion"]["max_thrust_n"] * (1 - sag) ** 2 for m, _ in lift}
+    tmax = {m["id"]: thrust_n(m) * (1 - sag) ** 2 for m, _ in lift}
     return {"mp": mp, "up": up, "tf": tf, "posed": posed, "lift": lift, "T": thrust, "Tmax": tmax, "f": f, "note": note}
 
 
@@ -185,6 +194,8 @@ def control_authority(ctx, rep) -> list[CheckResult]:
         return [skip_row(cid, why, crit)]
     if not _lift_motors(design) or not _vtol(design):
         return [_skip(cid, "not applicable: no lift motors or vtol_method none", crit)]
+    if _pending_why(design):
+        return [_skip(cid, _pending_why(design), crit)]
     try:
         h = _hover(ctx)
         if h is None:
@@ -296,6 +307,9 @@ def transition_margin(ctx, rep) -> list[CheckResult]:
     except _Missing as e:
         res.append(_skip(cid, f"speed margin: {e} missing", crit_a, {"parts": ["transition_speed"]}))
     # Row B: hover thrust fraction at entry
+    if _pending_why(design):
+        res.append(_skip(cid, f"entry thrust fraction: {_pending_why(design)}", crit))
+        return res
     try:
         h = _hover(ctx)
         if h is None:
@@ -332,6 +346,8 @@ def endurance(ctx, rep) -> list[CheckResult]:
         e_hover = e_cruise = 0.0
         phases = []
         if _vtol(design):
+            if _pending_why(design):
+                return [_skip(cid, f"hover energy not computed: {_pending_why(design)}", crit)]
             h = _hover(ctx)
             if h is not None:
                 note += h["note"]

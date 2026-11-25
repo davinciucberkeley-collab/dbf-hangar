@@ -95,7 +95,7 @@ Type: array of number
 | `manufacturing.cost_usd` | number |  |  |
 | `provenance` | `provenance` |  |  |
 | `propulsion` | object |  | Motors only. |
-| `propulsion.max_thrust_n` | number | yes |  |
+| `propulsion.max_thrust_n` | any | yes | Peak static thrust, N, from a datasheet or bench test; the text pending when no source exists (checks that need it are skipped). |
 | `propulsion.axis` | `vec3` | yes | Direction of the thrust FORCE on the aircraft (unit vector, body frame). Forward thrust is [-1,0,0] for tractors and pushers alike; hover lift at 0 deg pose is [0,0,1]. |
 | `propulsion.role` | one of `lift`, `cruise`, `both` |  |  |
 | `propulsion.max_current_a` | number |  | peak current at max_thrust_n, from a datasheet or bench test |
