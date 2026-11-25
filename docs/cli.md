@@ -263,16 +263,17 @@ Writes files.
 
 ### `plane design propose`
 
-Commit a design change on a new branch, push it and open a PR against main.
+Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree.
 
 ```
-plane design propose <path> <title>
+plane design propose <path> <title> [--draft]
 ```
 
 Writes files.
 
 - `<path>`: str, required
 - `<title>`: str, required
+- `--draft`: bool, optional
 
 ### `plane design set`
 
