@@ -998,13 +998,13 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U13.7: Overnight follow-ups (T134, T136, T140, T141, T142, T143)
 
-*Progress: -1 overlay baselines 32d4a47, -2 verdict date 9c83f1f, -3 servo criterion fc6760e, -4 nested remove bbf388a, -5 C172 wing area (finding), -7 core_fill 4120bad, -8 wing-area WARN 5fd6604, -9 small follow-ups d5dbb99, -10 new-design PRs pass CI 1139dd0 merged; -6 id rename pending.*
+*Progress: -1 overlay baselines 32d4a47, -2 verdict date 9c83f1f, -3 servo criterion fc6760e, -4 nested remove bbf388a, -5 C172 wing area (finding), -7 core_fill 4120bad, -8 wing-area WARN 5fd6604, -9 small follow-ups d5dbb99, -10 new-design PRs pass CI 1139dd0 merged; -6 id rename  merged.*
 
 **Scope:** baselines/hashes/validation never depend on the local CAD overlay (T136, merged 32d4a47); pin the verdict-fixture date (T134, merged 9c83f1f); a pending criterion for servo-drives-mechanism (T140, merged fc6760e); remove in nested lists such as bom.items (T141, merged bbf388a); measure why the generated C172 wing area is 18 % low (T143; done: design gap, findings in u13.7/; follow-up T145 core fill merged 4120bad; rehearsal-3 A400M static margin 23.4 % -> 7.4 % with core_fill; T3.wing_area_complete WARN merged 5fd6604); rename old U4.x brief files and references to wave ids after all std/u4.* branches merge (T142). Existing designs unchanged.
 
 - [x] **Step 1: Briefs** (tactician W31-T) *(d7d251d: -1 overlay baselines (hard), -2 verdict date, -3 servo criterion, -4 nested remove (hard), -5 C172 wing area measure (likely a design gap: core + ailerons), -6 id rename (last, alone); default: std/u4.25-pockets stays parked (T121) and is excluded from the rename)*
-- [ ] **Step 2: Build** (W31-B)
-- [ ] **Step 3: Review** (W31-R, W31-R2); merge
+- [x] **Step 2: Build** (W31-B)
+- [x] **Step 3: Review** (W31-R, W31-R2); merge *(all ACCEPT; last )*
 
 ### Unit U14.1: Dec 2 presentation package
 
