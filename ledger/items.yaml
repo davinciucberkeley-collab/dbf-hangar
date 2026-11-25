@@ -5313,7 +5313,7 @@ items:
     updated: '2026-11-25'
   - id: T145
     kind: task
-    text: 'wing_panel split usability: with part: core (0.72 chord) plus elevon pieces only over the aileron span, the trailing 28 % of the chord outside the aileron span belongs to no component (C172 rehearsal lost 18 % wing area). Make  full-chord outside the elevon span (opt-in or new part kind), or document the 3-piece layout in docs/mechanisms.md and the agent file'
+    text: 'wing_panel split usability: with part: core (0.72 chord) plus elevon pieces only over the aileron span, the trailing 28 % of the chord outside the aileron span belongs to no component (C172 rehearsal lost 18 % wing area). Make part: core full-chord outside the elevon span (opt-in or a new part kind), or document the 3-piece layout in docs/mechanisms.md and the agent file'
     source: plans/2026-11-20-standardization/u13.7/c172-wing-area-findings.md
     owner: conductor
     status: open
