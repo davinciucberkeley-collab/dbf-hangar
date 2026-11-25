@@ -81,7 +81,8 @@ def _unit_loop(upper, lower, x0: float, x1: float) -> np.ndarray:
 def _place(unit: np.ndarray, p: dict, y: float) -> list[tuple[float, float]]:
     half = p["span"] / 2.0
     ay = abs(y)
-    c = p["root_chord"] + (p["tip_chord"] - p["root_chord"]) * ay / half
+    ib = p.get("inboard_span", 0.0)
+    c = p["root_chord"] if ay <= ib else p["root_chord"] + (p["tip_chord"] - p["root_chord"]) * (ay - ib) / (half - ib)
     x, z = unit[:, 0] * c, unit[:, 1] * c
     t = math.radians(p["twist_tip_deg"] * ay / half)
     xq = 0.25 * c
@@ -130,16 +131,21 @@ def _build(p: dict, base_dir) -> list:
     half = p["span"] / 2.0
     part = p["part"]
     hinge = p["hinge_frac"]
+    ib = p.get("inboard_span", 0.0)
     if part == "elevon":
         unit = _unit_loop(upper, lower, hinge, 1.0)
         y0, y1 = p["elevon_y"]
         out = []
         for s in ([1, -1] if p["side"] == "both" else _sides(p)):
-            out.append(_loft(unit, p, [s * y0, s * y1]))
+            st = [s * y0, s * y1] + ([s * ib] if y0 < ib < y1 else [])
+            out.append(_loft(unit, p, st))
         return out
     unit = _unit_loop(upper, lower, 0.0, 1.0 if part == "full" else hinge)
     side = _sides(p)[0]
-    ys = [-half, 0.0, half] if side == 0 else [0.0, side * half]
+    if side == 0:
+        ys = [-half, -ib, 0.0, ib, half] if ib > 0 else [-half, 0.0, half]
+    else:
+        ys = [0.0, side * ib, side * half] if ib > 0 else [0.0, side * half]
     core = _loft(unit, p, ys)
     if "bore_d" in p:
         lo, hi = core.bounds[0][1], core.bounds[1][1]
@@ -160,6 +166,8 @@ def _build(p: dict, base_dir) -> list:
 
 def _check(p: dict) -> list[str]:
     errs = []
+    if p.get("inboard_span", 0.0) >= p["span"] / 2.0:
+        errs.append("inboard_span: must be < span/2")
     if not 0 < p["hinge_frac"] < 1:
         errs.append("hinge_frac: must be in (0, 1)")
     given = [k for k in ("bore_x", "bore_z", "bore_d") if k in p]
@@ -191,6 +199,7 @@ register(Generator(
      "span": ParamSpec("number", required=True, exclusive_minimum=0, doc="tip to tip, mm"),
      "root_chord": ParamSpec("number", required=True, exclusive_minimum=0),
      "tip_chord": ParamSpec("number", required=True, exclusive_minimum=0),
+     "inboard_span": ParamSpec("number", default=0.0, minimum=0, doc="mm per side along |y| over which the chord stays root_chord; the taper to tip_chord runs from there to the tip; 0 = one taper from the root. Sweep, dihedral and twist stay linear in |y| from the root."),
      "sweep_le_deg": ParamSpec("number", default=0.0),
      "dihedral_deg": ParamSpec("number", default=0.0),
      "twist_tip_deg": ParamSpec("number", default=0.0, doc="positive = nose up at the tip"),
