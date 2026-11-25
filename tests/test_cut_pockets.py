@@ -176,6 +176,13 @@ def test_designs_without_a_wing_panel_get_no_pocket_row():
 
 def test_concept_a_param_pockets_unchanged():
     design = load_design(REPO / "designs" / "concept-a-param")
-    assert "cut_poses" not in design.component("wng-001")["geometry"]["params"]
+    assert not any("matrix" in e for e in design.component("wng-001")["geometry"]["params"].get("cut_poses", []))  # swept poses (matrices) are expected, U16.2
     (row,) = _rows(design)
     assert row.status == "PASS"
+
+
+def test_f64_operand_has_float64_tolerance():
+    import trimesh
+    from hangar.importers.dbf_geometry import _manifold
+    box = trimesh.creation.box(extents=(40, 20, 10))
+    assert _manifold(box, f64=True).get_tolerance() < 1e-9 < _manifold(box).get_tolerance()

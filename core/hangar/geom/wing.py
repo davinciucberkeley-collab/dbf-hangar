@@ -182,7 +182,7 @@ def _build(p: dict, base_dir) -> list:
             cuts.append(moved)
     hit = [m for m in cuts if np.all(m.bounds[0] < core.bounds[1]) and np.all(m.bounds[1] > core.bounds[0])]
     if hit:
-        core = kernel.difference(core, hit)
+        core = kernel.difference(core, hit, f64=True)   # float64 operands: no float32 film in the pocket walls
     return [core]
 
 

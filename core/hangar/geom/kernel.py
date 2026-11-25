@@ -92,8 +92,8 @@ def union(meshes) -> Mesh:
     return require_solid(_boolean("union", meshes), "union")
 
 
-def difference(base: Mesh, tools) -> Mesh:
+def difference(base: Mesh, tools, f64: bool = False) -> Mesh:
     tools = list(tools)
     if not tools:
         return require_solid(base, "difference")
-    return require_solid(_boolean("difference", [base, *tools]), "difference")
+    return require_solid(_boolean("difference", [base, *tools], f64=f64), "difference")
