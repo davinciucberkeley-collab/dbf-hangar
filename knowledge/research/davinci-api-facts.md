@@ -140,7 +140,7 @@ Satisfied state: requirement objects have a satisfied field and satisfactionOutO
 - Faceted (mesh-based) CAD, not a solid B-rep [dbf-combined-davinci-api-summary] s5.
 
 ## 7. Cost facts
-- Usage endpoint, live 2026-11-24: amountUsd 0, eventCount 0, asOf null [davinci-live-reads-2026-11-24]. DBF notes: amountUsd 49.060351, 1,093 events, asOf 2026-11-09 [dbf-combined-davinci-findings] s7-8. These disagree; see section 10.
+- Usage endpoint, live 2026-11-24: amountUsd 0, eventCount 0, asOf null [davinci-live-reads-2026-11-24]. DBF notes: amountUsd 49.060351, 1,093 events, asOf 2026-11-09 [dbf-combined-davinci-findings] s7-8. These disagree; resolved in section 10.
 - invokeTool: no LLM charge per spec [davinci-openapi-v2].
 - Object creation: an embedding charge under one cent each, per the billing page as quoted in DBF notes [dbf-combined-davinci-api-summary] s4 (secondary). The balance did not visibly change across the imports (same source).
 - Storage is the main cost driver. The 1 GB limit was hit, then raised to 50 GB [dbf-combined-davinci-api-summary] s4-5 (secondary; not checked via API). Concept A storage read 1,056,091,993 bytes [davinci-live-reads-2026-11-24].
@@ -172,7 +172,7 @@ Satisfied state: requirement objects have a satisfied field and satisfactionOutO
 | CAD geometry | geometry (kind step) per part | the part |
 
 ## 10. Discrepancies and open items (facts only)
-- Usage: live 2026-11-24 read is 0 / 0 events / asOf null [davinci-live-reads-2026-11-24]; DBF notes read $49.060351 / 1,093 events / asOf 2026-11-09 [dbf-combined-davinci-findings]. Not resolved here.
+- Usage: live 2026-11-24 read is 0 / 0 events / asOf null [davinci-live-reads-2026-11-24]; DBF notes read $49.060351 / 1,093 events / asOf 2026-11-09 [dbf-combined-davinci-findings]. RESOLVED (Tristan, chat 2026-11-24): Tristan and Dillon use separate API keys on separate accounts while working on the same project, so /usage reports only the token owner's account. The two readings are from different accounts, not a conflict in one account's data. Source: Tristan, chat 2026-11-24 (not a DaVinci document).
 - Tree objectCount 652, but 651 nodes returned [davinci-live-reads-2026-11-24]. Not explained.
 - The 131-part 3-D import (2026-11-23) was in API Test, now deleted; the Concept A snapshot shows 6 part objects [dbf-combined-davinci-import-2026-11-23] vs [davinci-live-reads-2026-11-24].
 - Geometry count 261 on the snapshot. The DBF notes imply 129 part STEPs + 129 assembly copies + whole-aircraft STEPs; this is an inference, not checked object by object.
