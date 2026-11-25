@@ -12,8 +12,9 @@ import yaml
 from jsonschema import Draft202012Validator
 from ruamel.yaml import YAML
 
-from . import yamlio
+from . import yamlfast, yamlio
 from .design import SCHEMA_PATH
+from .ids import ID_RE
 from .ops import OpInputError
 
 _SEG = re.compile(r"^([A-Za-z_][A-Za-z0-9_-]*)((?:\[[^\[\]]+\])*)$")
@@ -99,7 +100,7 @@ def assign(data, key: str, new) -> None:
 
 def parse_scalar(raw: str):
     try:
-        v = yaml.safe_load(raw)
+        v = yamlfast.safe_load(raw)
     except yaml.YAMLError as e:
         raise OpInputError(f"cannot read value {raw!r}: {e}") from e
     if isinstance(v, (dict, list)):
@@ -123,17 +124,18 @@ def _no_empty(v, raw: str) -> None:
             _no_empty(x, raw)
 
 
-def parse_value(raw: str):
+def parse_value(raw: str, allow_empty: bool = False):
     """Scalar as parse_scalar does; or, when raw.strip() starts with '[' and ends with ']' (or '{' ... '}'), the parsed list or mapping."""
     s = raw.strip()
     if (s.startswith("[") and s.endswith("]")) or (s.startswith("{") and s.endswith("}")):
         try:
-            v = yaml.safe_load(s)
+            v = yamlfast.safe_load(s)
         except yaml.YAMLError as e:
             raise OpInputError(f"cannot read value {raw!r}: {e}") from e
         if not isinstance(v, (list, dict)):
             raise OpInputError(f"cannot read value {raw!r}: not a list or mapping")
-        _no_empty(v, raw)
+        if not allow_empty:
+            _no_empty(v, raw)
         return v
     return parse_scalar(raw)
 
@@ -167,7 +169,7 @@ def render_scalar(v) -> str:
             raise OpInputError("value must be finite")
         return repr(v)
     if isinstance(v, str):
-        if re.fullmatch(r"[A-Za-z0-9_./-]+", v) and yaml.safe_load(v) == v:
+        if re.fullmatch(r"[A-Za-z0-9_./-]+", v) and yamlfast.safe_load(v) == v:
             return v
         return json.dumps(v, ensure_ascii=False)
     raise OpInputError(f"unsupported value type {type(v).__name__}")
@@ -193,10 +195,10 @@ def patch_text(text: str, key: str, new) -> str:
             raise OpInputError(f"{key}: cannot find the value's text in the file")
         end = m.end()
     patched = text[:pos] + render_scalar(new) + text[end:]
-    expected = copy.deepcopy(yaml.safe_load(text))
+    expected = copy.deepcopy(yamlfast.safe_load(text))
     assign(expected, key, new)
     try:
-        same = yaml.safe_load(patched) == expected
+        same = yamlfast.safe_load(patched) == expected
     except yaml.YAMLError:
         same = False
     if not same:
@@ -355,7 +357,7 @@ def add_value(text: str, key: str, new) -> str:
     """
     crlf = "\r\n" in text
     t = text.replace("\r\n", "\n")
-    expected = copy.deepcopy(yaml.safe_load(t))
+    expected = copy.deepcopy(yamlfast.safe_load(t))
     _create(expected, key, new, dict, list)      # raises the input errors; also the reference result
     node, rest = _locate(yamlio.load(t), key)
     lines = t.split("\n")
@@ -391,7 +393,7 @@ def add_value(text: str, key: str, new) -> str:
         body[0] = " " * dash + "- id: " + render_scalar(rest[0][1]) + "\n" + body[0]
         lines[at + 1:at + 1] = "\n".join(body).split("\n")
     out = "\n".join(lines)
-    if yaml.safe_load(out) != expected:
+    if yamlfast.safe_load(out) != expected:
         raise OpInputError(hand)
     for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
         if tag in ("equal", "insert"):
@@ -414,19 +416,52 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
     steps = parse_key(key)
     if steps[-1][0] == "index":
         raise OpInputError(f"{key}: remove by index is not supported; address the element by id, like name[id]")
-    if len(steps) > 2:
-        raise OpInputError(f"{key}: remove takes a top-level list element name[id]; a nested path (one field, or a list below an element) is not supported")
-    if len(steps) != 2 or steps[1][0] != "id":
+    if steps[-1][0] != "id":
         raise OpInputError(f"{key}: remove needs a list element like name[id]; this is not one")
-    data = yaml.safe_load(t)
+    if len(steps) < 2 or steps[-2][0] != "key":
+        raise OpInputError(f"{key}: remove needs a list named by a key, like bom.items[id]")
+    data = yamlfast.safe_load(t)
     element = walk(data, key)[0]                 # raises the "no key", "needs a list" and "no element with id" errors
     expected = copy.deepcopy(data)
     _, exp_list, _, exp_i = walk(expected, key)
     del exp_list[exp_i]                          # the reference result for Verify 1
-    _, seq, _, i = walk(yamlio.load(t), key)
-    if seq.fa.flow_style():
-        raise OpInputError(hand)
+    root = yamlio.load(t)
+    _, seq, _, i = walk(root, key)
     lines = t.split("\n")
+    if seq.fa.flow_style():
+        line = seq.lc.item(0)[0]
+        if any(seq.lc.item(k)[0] != line for k in range(len(seq))):
+            raise OpInputError(hand)
+        cols = [seq.lc.item(k)[1] for k in range(len(seq))]
+        s = lines[line]
+        if s[cols[i]] in "{[":
+            end = _close_brace(s, cols[i]) + 1
+        else:
+            m = _TOKEN.match(s, cols[i])
+            end = m.end() if m else 0
+        if end <= cols[i]:
+            raise OpInputError(hand)
+        start = cols[i]
+        if len(seq) == 1:
+            op_ = s.rfind("[", 0, start)
+            start, end = op_ + 1, _close_brace(s, op_)
+        elif i + 1 < len(seq):
+            end = cols[i + 1]
+        else:
+            start = s.rfind(",", 0, start)
+        lines[line] = s[:start] + s[end:]
+        out = "\n".join(lines)
+        try:
+            same = yamlfast.safe_load(out) == expected
+        except yaml.YAMLError:
+            same = False
+        if not same:
+            raise OpInputError(hand)
+        for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+            if tag == "equal" or (tag == "replace" and i2 - i1 == 1 and j2 - j1 == 1 and i1 == line):
+                continue
+            raise OpInputError(f"{key}: removing would rewrite other lines; edit the file by hand")
+        return (out.replace("\n", "\r\n") if crlf else out), element
     start, col = seq.lc.item(i)
     body = lines[start].lstrip()
     if not body.startswith("- "):
@@ -440,14 +475,26 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
     else:
         last = _block_end(lines, start, len(lines[start]) - len(body), False)
     first = start
-    mine = re.compile(r"#\s*" + re.escape(str(steps[1][1])) + r"(?![A-Za-z0-9_-])")
+    mine = re.compile(r"#\s*" + re.escape(str(steps[-1][1])) + r"(?![A-Za-z0-9_-])")
     j = start - 1
     while j >= 0 and lines[j].lstrip().startswith("#"):
         if mine.match(lines[j].lstrip()):
             first = j                            # the topmost comment line that begins with the id
         j -= 1
+    if len(seq) == 1:                            # the only element: the header becomes `name: []`
+        list_key = key[: key.rindex("[")]
+        _, mapping, _, name = walk(root, list_key)
+        h = mapping.lc.key(name)[0]
+        m = re.match(r"^(\s*" + re.escape(str(name)) + r":)\s*(#.*)?$", lines[h])
+        if not m:
+            raise OpInputError(hand)
+        header = m.group(1) + " []" + (("  " + m.group(2)) if m.group(2) else "")
+        out = "\n".join(lines[:h] + [header] + lines[h + 1:first] + lines[last + 1:])
+        if yamlfast.safe_load(out) != expected:
+            raise OpInputError(hand)
+        return (out.replace("\n", "\r\n") if crlf else out), element
     out = "\n".join(lines[:first] + lines[last + 1:])
-    if yaml.safe_load(out) != expected:
+    if yamlfast.safe_load(out) != expected:
         raise OpInputError(hand)
     for tag, *_ in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
         if tag not in ("equal", "delete"):
@@ -469,23 +516,24 @@ def _one_line_list(lines: list[str], root, key: str):
     return value, line, col, close
 
 
-def _edit_list(text: str, key: str, item, adding: bool) -> tuple[str, list, list]:
+def _edit_list(text: str, key: str, item, adding: bool, render=None) -> tuple[str, list, list]:
+    render = render or render_scalar
     crlf = "\r\n" in text
     t = text.replace("\r\n", "\n")
     hand = f"{key}: cannot change this list without rewriting other text; edit the file by hand"
-    data = yaml.safe_load(t)
+    data = yamlfast.safe_load(t)
     old = copy.deepcopy(get_value(data, key))             # raises the "no key" errors
     lines = t.split("\n")
     node, line, col, close = _one_line_list(lines, yamlio.load(t), key)
     if adding:
         new = old + [item]
         if not lines[line][col + 1:close].strip():
-            edited = lines[line][:col + 1] + render_scalar(item) + lines[line][close:]
+            edited = lines[line][:col + 1] + render(item) + lines[line][close:]
         else:
             inside = lines[line][col + 1:close]
             tail = inside[len(inside.rstrip()):]               # the spaces before ']' stay where they were
             head = lines[line][:close - len(tail)]
-            edited = head + (" " if head.endswith(",") else ", ") + render_scalar(item) + tail + lines[line][close:]
+            edited = head + (" " if head.endswith(",") else ", ") + render(item) + tail + lines[line][close:]
     else:
         hits = [i for i, x in enumerate(old) if x == item and type(x) is type(item)]
         if not hits:
@@ -513,7 +561,35 @@ def _edit_list(text: str, key: str, item, adding: bool) -> tuple[str, list, list
     expected = copy.deepcopy(data)
     assign(expected, key, new)
     try:
-        same = yaml.safe_load(out) == expected
+        same = yamlfast.safe_load(out) == expected
+    except yaml.YAMLError:
+        same = False
+    if not same:
+        raise OpInputError(hand)
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+        if tag == "equal" or (tag == "replace" and i2 - i1 == 1 and j2 - j1 == 1 and i1 == line):
+            continue
+        raise OpInputError(hand)
+    return (out.replace("\n", "\r\n") if crlf else out), old, new
+
+
+def replace_list(text: str, key: str, new: list) -> tuple[str, list, list]:
+    """Return (patched text, old list, new list): the one-line [list] at `key` replaced by `new`; only that line changes."""
+    if not isinstance(new, list) or not new:
+        raise OpInputError(f"{key}: new list must not be empty")
+    crlf = "\r\n" in text
+    t = text.replace("\r\n", "\n")
+    hand = f"{key}: cannot change this list without rewriting other text; edit the file by hand"
+    data = yamlfast.safe_load(t)
+    old = copy.deepcopy(get_value(data, key))
+    lines = t.split("\n")
+    _, line, col, close = _one_line_list(lines, yamlio.load(t), key)
+    lines[line] = lines[line][:col] + render_flow(new) + lines[line][close + 1:]
+    out = "\n".join(lines)
+    expected = copy.deepcopy(data)
+    assign(expected, key, new)
+    try:
+        same = yamlfast.safe_load(out) == expected
     except yaml.YAMLError:
         same = False
     if not same:
@@ -528,6 +604,67 @@ def _edit_list(text: str, key: str, item, adding: bool) -> tuple[str, list, list
 def append_item(text: str, key: str, item) -> tuple[str, list, list]:
     """Return (patched text, old list, new list): scalar `item` added at the end of the one-line [list] at `key`; only that line changes."""
     return _edit_list(text, key, item, True)
+
+
+def append_element(text: str, key: str, element: dict) -> tuple[str, list, list]:
+    """Return (patched text, old list, new list): the mapping `element` (with a unique id) added at the end of the list at `key`.
+
+    A block list gets the new lines directly after its last element (a one-line flow entry stays one line); a one-line
+    [list] gets the element as one more {mapping} entry on that line. Nothing else is re-emitted.
+    """
+    if any(kind != "key" for kind, _ in parse_key(key)):
+        raise OpInputError(f"{key}: name the list by its key")
+    if not isinstance(element, dict) or not element or not isinstance(element.get("id"), str) or not ID_RE.fullmatch(element["id"]):
+        raise OpInputError(f"{key}: element needs a string id matching {ID_RE.pattern}")
+    crlf = "\r\n" in text
+    t = text.replace("\r\n", "\n")
+    data = yaml.safe_load(t)
+    try:
+        old = get_value(data, key)
+    except OpInputError as e:
+        raise OpInputError(f"{key}: no such list; create it first with: design set {key} --kind add --value '[{{...}}]'") from e
+    if not isinstance(old, list):
+        raise OpInputError(f"{key}: is not a list")
+    if any(isinstance(x, dict) and x.get("id") == element["id"] for x in old):
+        raise OpInputError(f"{key}: id '{element['id']}' already exists")
+    old = copy.deepcopy(old)
+    new = old + [element]
+    node, _parent, _how, _ref = walk(yamlio.load(t), key)
+    if node.fa.flow_style() or not node:
+        out, _, _ = _edit_list(t, key, element, True, render_flow)
+        return (out.replace("\n", "\r\n") if crlf else out), old, new
+    hand = f"{key}: cannot add this element without rewriting other text; edit the file by hand"
+    lines = t.split("\n")
+    start = node.lc.item(len(node) - 1)[0]
+    dash = len(lines[start]) - len(lines[start].lstrip())
+    if not lines[start].lstrip().startswith("- "):
+        raise OpInputError(hand)
+    at = _block_end(lines, start, dash, False)
+    pad = " " * dash
+    if isinstance(node[-1], dict) and node[-1].fa.flow_style():
+        added = [f"{pad}- {render_flow(element)}"]
+    else:
+        added = [f"{pad}- id: {render_scalar(element['id'])}"]
+        for k, v in element.items():
+            if k == "id":
+                continue
+            if not isinstance(k, str) or not _KEY.fullmatch(k):
+                raise OpInputError(f"unsupported mapping key {k!r}")
+            added.append(f"{pad}  {k}: {render_flow(v)}")
+    lines[at + 1:at + 1] = added
+    out = "\n".join(lines)
+    expected = copy.deepcopy(data)
+    assign(expected, key, new)
+    try:
+        same = yaml.safe_load(out) == expected
+    except yaml.YAMLError:
+        same = False
+    if not same:
+        raise OpInputError(hand)
+    for tag, *_ in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+        if tag not in ("equal", "insert"):
+            raise OpInputError(f"{key}: adding would rewrite other lines; edit the file by hand")
+    return (out.replace("\n", "\r\n") if crlf else out), old, new
 
 
 def remove_item(text: str, key: str, item) -> tuple[str, list, list]:

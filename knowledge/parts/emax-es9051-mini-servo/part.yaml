@@ -1,0 +1,14 @@
+id: emax-es9051-mini-servo
+name: 'EMAX ES9051 4.1g digital mini servo'
+category: servo
+vendor: EMAX
+part_number: 'ES9051'
+url: https://www.readymaderc.com/products/details/emax-es9051-4-3g-digital-mini-servo
+mass_g: 4.1
+dimensions_mm: [19.74, 8.34, 23.25]
+cad_status: representative-envelope
+cad_source: 'retailer page (not vendor): ReadyMadeRC spec block, 19.74 x 8.34 x 23.25 mm, weight 4.1 g (lead not stated); page title says 4.3 g; no CAD link on page. ServoDatabase (aggregator) gives 4.3 g and 19.8 x 8.9 x 23.1 mm, not used for the envelope'
+verified: {by: W31-S3, date: '2026-11-25', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [19.74, 8.34], thickness: 23.25}

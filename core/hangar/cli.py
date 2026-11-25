@@ -165,20 +165,75 @@ def new_design(new_id: str, template: str = DEFAULT_TEMPLATE) -> Path:
     while lines and lines[0].startswith("#"):  # drop the template's file header (e.g. "GENERATED: edit the importer")
         lines.pop(0)
     head = f"# Copied from designs/{template} by `plane new`; edit freely.\n"
-    (target_dir / "plane.yaml").write_text(head + "".join(lines))
+    (target_dir / "plane.yaml").write_bytes((head + "".join(lines)).encode("utf-8"))
     return target_dir / "plane.yaml"
+
+
+BLANK_DESIGN_TEXT = """# Blank design from `plane design new --blank`. Add parts with `plane design add`, change values with `plane design set`.
+schema_version: "1.2"
+id: <id>
+name: "<id>"
+status: concept
+description: "Blank start: one placeholder root component `datum` (a 1 g point mass). Add the real root component, point `root` at it, then remove `datum`."
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: datum
+components:
+  - id: datum
+    type: other
+    geometry: {point_mass: {}}
+    position: [0, 0, 0]
+    mass_g: 1
+attachments: []
+"""
+
+
+def new_blank_design(new_id: str) -> Path:
+    """Write designs/NEW_ID/plane.yaml only: a minimal valid design with one placeholder root `datum`; return its path."""
+    if not ID_RE.fullmatch(new_id):
+        raise ValueError(f"invalid id {new_id!r}: use lowercase letters, digits, - and _")
+    target_dir = DESIGNS_DIR / new_id
+    if target_dir.exists():
+        raise ValueError(f"design {new_id!r} already exists")
+    target_dir.mkdir(parents=True)
+    path = target_dir / "plane.yaml"
+    path.write_bytes(BLANK_DESIGN_TEXT.replace("<id>", new_id).encode("utf-8"))
+    return path
 
 
 @cli.command("build-index")
 @click.option("--out", "out_dir", type=click.Path(file_okay=False), required=True,
               help="Directory to write per-design artifacts and index.json into.")
-def build_index_cmd(out_dir):
-    """Export glb, scorecard and mass for every design, then write index.json."""
+@click.option("--design", "wanted", multiple=True, help="Design folder name to build (repeatable); default: every design.")
+def build_index_cmd(out_dir, wanted):
+    """Export glb, scorecard and mass for every design (or only the --design ones), then write index.json."""
     from .index import design_entry, error_entry, index_extras
+    designs = list_designs()
+    if wanted:
+        names = {p.parent.name for p in designs}
+        missing = [w for w in wanted if w not in names]
+        if missing:
+            _fail(f"unknown design(s): {', '.join(missing)}; have: {', '.join(sorted(names))}")
+        designs = [p for p in designs if p.parent.name in wanted]
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
+    from .geom import overlay
+    ok, why = overlay.output_allowed(out)
+    if not ok:
+        used = {}
+        for p in designs:
+            try:
+                d = load_design(p)
+            except Exception:  # noqa: BLE001
+                continue
+            parts = overlay.design_overlay_parts(d)
+            if parts:
+                used[str(d.data.get("id", p.parent.name))] = parts
+        if used:
+            _fail("designs use licensed CAD overlay parts (" + "; ".join(f"{k}: {', '.join(v)}" for k, v in used.items())
+                  + f"); build-index --out must point outside the repository or at an ignored folder ({why})")
     entries = []
-    for p in list_designs():
+    for p in designs:
         fallback_id = p.parent.name
         try:
             design = load_design(p)
@@ -308,6 +363,15 @@ def _designs(paths, all_designs):
 @click.option("--all", "all_designs", is_flag=True, help="Every design under designs/.")
 def baseline_update_cmd(paths, all_designs):
     """Record the current known failures of each design in its baseline.json."""
+    from .geom import overlay
+    note = overlay.ignored_note()
+    if note:
+        click.echo(note, err=True)
+    with overlay.forced_off():
+        _baseline_update_body(paths, all_designs)
+
+
+def _baseline_update_body(paths, all_designs):
     refused = False
     for design in _designs(paths, all_designs):
         folder = design.path.parent
@@ -369,6 +433,15 @@ def _renamed_from(folder: str, cur: dict, ref_baselines: dict[str, dict]) -> str
               help="Git ref (e.g. origin/main) to compare committed baselines with, for growth, renames and new designs.")
 def baseline_check_cmd(paths, all_designs, fmt, base_ref):
     """Compare each design with its baseline.json; exit 1 on regressions or a missing baseline."""
+    from .geom import overlay
+    note = overlay.ignored_note()
+    if note:
+        click.echo(note, err=True)
+    with overlay.forced_off():
+        _baseline_check_body(paths, all_designs, fmt, base_ref)
+
+
+def _baseline_check_body(paths, all_designs, fmt, base_ref):
     ref_baselines, ref_designs = baselines_at_ref(base_ref) if base_ref else ({}, set())
     reports = []
     for design in _designs(paths, all_designs):

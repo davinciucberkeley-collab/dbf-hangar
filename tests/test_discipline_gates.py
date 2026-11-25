@@ -456,7 +456,7 @@ def test_explain_discipline_id():
 
 
 def test_gate_list_has_15_rows():
-    assert call("gate.list").data["count"] == 15
+    assert call("gate.list").data["count"] == 18
 
 
 # ---- concept-a (D21 values in memory; on disk once the design PR lands) ----

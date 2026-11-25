@@ -32,6 +32,7 @@ import numpy as np
 import trimesh
 
 from .design import REPO_ROOT, CheckResult, Design, load_standards
+from .geom import overlay
 from .geometry import component_parts
 
 STD = "design-standards.yaml#"
@@ -213,6 +214,11 @@ def part_inputs_fingerprint(design: Design, part_id: str) -> bytes:
 
 
 def part_hash(design: Design, part_id: str) -> str:
+    with overlay.forced_off():
+        return _part_hash(design, part_id)
+
+
+def _part_hash(design: Design, part_id: str) -> str:
     """Everything the result depends on: this part's inputs in the design file, the mesh files of the part and of every component, the standards values FEA reads and the runner."""
     h = hashlib.sha256()
     h.update(part_inputs_fingerprint(design, part_id))
@@ -298,7 +304,9 @@ def plan(design: Design, part_id: str, drop: dict | None = None) -> dict:
                        f"forces and moments from a static solve, x {ult} ultimate factor"}
     for name in ("landing", "thrust"):
         loads = []
-        for e in load_joints:
+        if drop.get(f"{name}_skipped"):  # e.g. max_thrust_n is pending: not computed, say why once
+            notes.append(f"{name}: {drop[f'{name}_skipped']}")
+        for e in ([] if drop.get(f"{name}_skipped") else load_joints):
             jl = drop.get(name, {}).get(e["joint"])
             if not jl:
                 notes.append(f"{name}: no joint load for {e['joint']}")
@@ -354,6 +362,12 @@ def result_path(design: Design, part_id: str) -> Path:
 
 def run(design: Design, part_id: str, opencae: dict | None = None, keep_project: bool = True,
         log=print, drop: dict | None = None) -> dict:
+    with overlay.forced_off():
+        return _run(design, part_id, opencae, keep_project, log, drop)
+
+
+def _run(design: Design, part_id: str, opencae: dict | None = None, keep_project: bool = True,
+         log=print, drop: dict | None = None) -> dict:
     """Plan, run OpenCAE, judge, and write designs/<id>/fea/<part>.json. Returns that record."""
     oc = opencae or find_opencae()
     if not oc["found"]:
@@ -448,6 +462,11 @@ def judge(meta: dict, res: dict) -> dict:
 
 # ------------------------------------------------------------------ scorecard
 def tier2_fea(design: Design) -> list[CheckResult]:
+    with overlay.forced_off():
+        return _tier2_fea(design)
+
+
+def _tier2_fea(design: Design) -> list[CheckResult]:
     """Report stored OpenCAE results (never runs OpenCAE): one row per checked part, one summary row for the rest."""
     parts = eligible_parts(design)
     if not parts:

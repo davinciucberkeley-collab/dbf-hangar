@@ -1,0 +1,14 @@
+id: hobbywing-flyfun-30a-mini-v5
+name: 'Hobbywing FlyFun 30A Mini V5'
+category: esc
+vendor: Hobbywing
+part_number: '30202307'
+url: https://www.hobbywing.com/en/products/flyfun-v5-series17
+mass_g: 23.0
+dimensions_mm: [37.0, 17.0, 5.0]
+cad_status: representative-envelope
+cad_source: 'vendor FlyFun V5 series page: Dimensions 37x17x5 mm, weight 23 g (axes not labelled on page); no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [37.0, 17.0], thickness: 5.0}

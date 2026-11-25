@@ -1,0 +1,14 @@
+id: towerpro-mg90s
+name: 'TowerPro MG90S metal gear servo 90 degree'
+category: servo
+vendor: TowerPro
+part_number: 'TP-MG90S'
+url: https://www.readymaderc.com/products/details/86506-towerpro-mg90s-metal-gear-servo-90-degree-rotation
+mass_g: 13.4
+dimensions_mm: [22.8, 12.2, 28.5]
+cad_status: representative-envelope
+cad_source: 'retailer page (not vendor): Dimensions 22.8 x 12.2 x 28.5 mm, weight 13.4 g; no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [22.8, 12.2], thickness: 28.5}

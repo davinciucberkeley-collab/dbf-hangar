@@ -35,6 +35,8 @@ def to_scene(design: Design) -> trimesh.Scene:
 
 
 def export_glb(design: Design, out: str | Path) -> Path:
+    from .geom import overlay
+    overlay.guard_output(out, design)
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_bytes(to_scene(design).export(file_type="glb"))
@@ -43,6 +45,8 @@ def export_glb(design: Design, out: str | Path) -> Path:
 
 def export_stl(design: Design, out_dir: str | Path) -> list[Path]:
     """One STL per component, in mm, for manufacturing."""
+    from .geom import overlay
+    overlay.guard_output(out_dir, design)
     out_dir = Path(out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
     paths = []

@@ -1,4 +1,4 @@
-"""U4.26: error messages say what to do next (audit W24-Au2)."""
+"""U10.4: error messages say what to do next (audit W24-Au2)."""
 from __future__ import annotations
 
 import json

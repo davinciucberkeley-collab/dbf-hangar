@@ -1,0 +1,14 @@
+id: feetech-fs0307-sub-micro-servo
+name: 'FEETECH FS0307 sub-micro servo 4.4g'
+category: servo
+vendor: FEETECH (sold by Pololu as item 3420)
+part_number: 'FS0307'
+url: https://www.pololu.com/product/3420
+mass_g: 4.4
+dimensions_mm: [20.0, 8.3, 17.3]
+cad_status: representative-envelope
+cad_source: 'distributor page https://www.pololu.com/product/3420/specs (Size: 20.0 x 8.3 x 17.3 mm, tabs not stated; mass 4.4 g, lead not stated); same size on https://core-electronics.com.au/feetech-sub-micro-servo-fs0307.html; no CAD link found'
+verified: {by: W31-S3, date: '2026-11-25', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [20.0, 8.3], thickness: 17.3}

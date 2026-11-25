@@ -373,7 +373,7 @@ def test_every_fail_or_skip_names_its_subject_or_is_design_level(tmp_path):
         card = validate(load_design(path))
         for t in card.tiers:
             for r in t.results:
-                if r.status not in (FAIL, SKIP) or is_blocking(r.check_id, r.status, r.message):
+                if r.status not in (FAIL, SKIP) or r.not_applicable or is_blocking(r.check_id, r.status, r.message):
                     continue
                 if any(k in r.data for k in SUBJECT_KEYS) or r.check_id in DESIGN_LEVEL:
                     continue

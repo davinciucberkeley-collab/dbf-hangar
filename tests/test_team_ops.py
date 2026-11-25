@@ -57,10 +57,10 @@ def test_ledger_add_set_check(root):
 
 def test_ledger_set_updates_due_units_and_note_on_an_open_item(root):  # T52
     call("ledger.add", kind="task", text="x", source="t", due="2026-12-01")
-    r = call("ledger.set", item_id="T1", status="open", due="2026-12-15", units="U4.3, v1.1", note="triage 2026-11-23: keep")
+    r = call("ledger.set", item_id="T1", status="open", due="2026-12-15", units="U5.1, v1.1", note="triage 2026-11-23: keep")
     assert r.ok, r.messages
     item = ledger.Ledger(root / "ledger" / "items.yaml").get("T1")
-    assert (item.status, item.due, item.units, item.text) == ("open", "2026-12-15", ["U4.3", "v1.1"], "x [triage 2026-11-23: keep]")
+    assert (item.status, item.due, item.units, item.text) == ("open", "2026-12-15", ["U5.1", "v1.1"], "x [triage 2026-11-23: keep]")
 
 
 def test_ledger_set_without_the_new_options_keeps_due_units_text(root):  # T52

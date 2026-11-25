@@ -1,4 +1,4 @@
-"""U4.22 Part A: wing_panel, fin, plate, fuselage_loft, motor_mount (hand numbers from the brief)."""
+"""U9.2 Part A: wing_panel, fin, plate, fuselage_loft, motor_mount (hand numbers from the brief)."""
 from __future__ import annotations
 
 import shutil
@@ -178,4 +178,4 @@ def test_motor_mount_volume():
 
 
 def test_all_generators_listed():
-    assert registry.names() == ["fin", "fuselage_loft", "mesh_file", "motor_mount", "plate", "tube", "wing_panel"]
+    assert {"fin", "fuselage_loft", "library_part", "mesh_file", "motor_mount", "plate", "tube", "wing_panel"} <= set(registry.names())

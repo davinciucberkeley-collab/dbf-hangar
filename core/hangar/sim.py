@@ -14,6 +14,7 @@ import numpy as np
 from .design import Design, CheckResult, PASS, FAIL, WARN, SKIP
 from .geometry import component_parts
 from .mass import component_cg
+from .propulsion import pending_motors
 
 G = 9.81
 STD = "design-standards.yaml#"
@@ -138,7 +139,9 @@ def build_mjcf(design: Design) -> str:
 
 
 def export_mjcf(design: Design, out_path) -> Path:
+    from .geom import overlay
     out = Path(out_path)
+    overlay.guard_output(out, design)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(build_mjcf(design))
     return out
@@ -327,7 +330,12 @@ def joint_load_cases(design: Design) -> dict:
                 out["landing"][welds[k][2].get("id") or welds[k][1]] = record(k, F_w, T_w, R)
 
     # thrust: a static solve (MuJoCo's soft welds do not settle under steady thrust on this model)
-    out["thrust"] = _static_joint_loads(design, cg, welds)
+    pend = pending_motors(design)
+    if pend:  # an unknown thrust is not computed (never taken as 0 or 1)
+        out["thrust"] = {}
+        out["thrust_skipped"] = f"max_thrust_n is pending for {pend}"
+    else:
+        out["thrust"] = _static_joint_loads(design, cg, welds)
     return out
 
 

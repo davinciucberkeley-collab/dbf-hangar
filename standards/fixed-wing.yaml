@@ -1,0 +1,22 @@
+# Thresholds for conventional fixed-wing designs (vtol_method none). Every entry needs a source; `source: pending` means provisional.
+# Kept apart from design-standards.yaml because core/hangar/fea.py hashes that file (D13, U2.3).
+# Criterion links look like: fixed-wing.yaml#<key>
+version: "0.1"
+wing_loading_max_g_dm2:
+  value: 100.0
+  rule: "T3.wing_loading: mass divided by the main-wing planform area must be at most this, g/dm^2 (conventional fixed-wing designs only)"
+  source: pending
+  note: "provisional scale-RC figure; Tristan or Dillon to confirm against a scale-RC reference (U12.4 research)"
+fw_static_margin_min:
+  value: 0.05
+  rule: "T3.static_margin lower bound for a conventional fixed-wing design (fraction of MAC)"
+  source: "MIT 16.01 design rules (knowledge/sources/std-mit-unified-desrules.md), same figure as design-standards.yaml aero.static_margin.min"
+fw_static_margin_max:
+  value: 0.25
+  rule: "upper bound of the same band"
+  source: pending
+  note: "trainers and scale high-wing models sit above the 0.15 used for flying wings; provisional"
+cruise_to_stall_ratio_min:
+  value: 1.3
+  rule: "T3.cruise_stall_ratio: requirements.cruise_speed_mps divided by the T3.stall stall speed must be at least this"
+  source: "team constraint, DBF-Combined params-A req.cruise_ratio 1.3 (as quoted in designs/concept-a/plane.yaml requirements)"

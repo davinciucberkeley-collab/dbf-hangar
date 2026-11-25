@@ -7,6 +7,7 @@ This file only points. Read what applies before acting.
 - Designs are data (`designs/<id>/plane.yaml`, PDL). Change them with `plane design set`, never by editing code. A PR that touches `designs/` must not touch `core/` (except the `migration` label).
 - Use the `plane` CLI / MCP for every operation; don't reimplement validation, mass, export or analysis logic.
 - Thresholds live only in `standards/*.yaml`, each with a source or `pending`. Fix the design, not the threshold.
+- The program's mission is the VTOL demonstrator brief: `knowledge/concepts/judging-mission-and-learning.md` (decision D74). "DBF" here means the DaVinci DBF capstone, not UC Berkeley's DBF competition team.
 - Imports from other repos are adapted, not copied, and recorded in `PROVENANCE.md`.
 - Research goes into `knowledge/` through its templates. Cite only sources you opened.
 - `PROGRESS.md` is generated: after ticking plan boxes, adding review verdicts or changing the ledger, run `plane progress --write` in the same commit.

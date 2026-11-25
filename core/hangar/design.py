@@ -10,10 +10,12 @@ from typing import Any
 
 import yaml
 
+from . import yamlfast
+
 REPO_ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_PATH = REPO_ROOT / "schema" / "plane.schema.json"
 STANDARDS_PATH = REPO_ROOT / "standards" / "design-standards.yaml"
-DESIGNS_DIR_ENV = "PLANE_DESIGNS_DIR"      # U4.8 (T91): the bench grader points this at the run's workspace designs/ folder
+DESIGNS_DIR_ENV = "PLANE_DESIGNS_DIR"      # U6.1 (T91): the bench grader points this at the run's workspace designs/ folder
 DESIGNS_DIR = Path(os.environ[DESIGNS_DIR_ENV]) if os.environ.get(DESIGNS_DIR_ENV) else REPO_ROOT / "designs"
 
 PASS, FAIL, WARN, SKIP = "PASS", "FAIL", "WARN", "SKIP"
@@ -53,6 +55,11 @@ class CheckResult:
     criterion: str = ""    # link into standards/, e.g. "design-standards.yaml#static_margin"
     data: dict = field(default_factory=dict)
 
+    @property
+    def not_applicable(self) -> bool:
+        """A SKIP row for a check that does not apply to the design's morphology (D77); not a result."""
+        return self.status == SKIP and bool(self.data.get("not_applicable"))
+
 
 @dataclass
 class TierReport:
@@ -62,7 +69,9 @@ class TierReport:
 
     @property
     def status(self) -> str:
-        s = [r.status for r in self.results]
+        s = [r.status for r in self.results if not r.not_applicable]
+        if not s and self.results:
+            return SKIP
         if FAIL in s:
             return FAIL
         if not s or SKIP in s:
@@ -86,12 +95,12 @@ class Scorecard:
     @property
     def clean(self) -> bool:
         """No FAIL/SKIP among the tiers that ran."""
-        return all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
+        return all(r.status not in (FAIL, SKIP) or r.not_applicable for t in self.tiers for r in t.results)
 
     @property
     def accepted(self) -> bool:
         """Full-run verdict only: a partial run (max_tier < 9) is never accepted."""
-        return not self.partial and all(r.status not in (FAIL, SKIP) for t in self.tiers for r in t.results)
+        return not self.partial and all(r.status not in (FAIL, SKIP) or r.not_applicable for t in self.tiers for r in t.results)
 
     def to_dict(self) -> dict:
         d = {
@@ -130,7 +139,7 @@ def load_design(path: str | Path) -> Design:
     if p.is_dir():
         p = p / "plane.yaml"
     text = p.read_text()
-    data = json.loads(text) if p.suffix == ".json" else yaml.safe_load(text)
+    data = json.loads(text) if p.suffix == ".json" else yamlfast.safe_load(text)
     if not isinstance(data, dict):
         raise ValueError(f"{p}: top level must be a mapping")
     design = Design(data=data, path=p.resolve())

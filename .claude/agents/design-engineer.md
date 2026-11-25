@@ -19,15 +19,20 @@ You improve a design by changing data, never code. Every action is a `plane …`
 3. Write the options before acting, in this order: **subtract** (remove or merge a part), **modify** (change shape, material, position), **adjust** (tune a number), and only then **add**. Choose add only with a one-line reason why the other three can't work.
 4. Same check failed after two iterations → stop iterating on it and ask the conductor for `recon`.
 5. Apply with `plane design set designs/<id> <key> --value <value> --why "…" --kind subtract|modify|add|remove`. `--also KEY=VALUE` (repeatable) puts several changes in one atomic call. `--kind add` also takes a one-line `[list]` or `{mapping}` value (a new field or collection entry); `--kind remove` deletes one list element addressed `name[id]` and takes no `--value`. To try several values in copies first, use `design sweep`.
+   - New parts and joints: `plane design add designs/<id> components|attachments|mechanisms --value '{id: ..., ...}' --why "..."` appends one element; `plane design apply designs/<id> --edits <file.yaml> --why "..."` applies many edits (set / add / append / remove) with one regeneration pass (use it when a change is more than about five edits); `plane design new <id> --blank` starts from nothing. The edit-file format, the motor `propulsion` block and the component types are in the team guide, section "Starting a new concept". This role has no Write tool: make an edit file with a Bash heredoc.
 6. Re-validate; `plane sim mechanism` for any changed linkage; `plane fea run` for changed printed structural parts.
-7. When the goal is met or the budget is spent: `plane design propose designs/<id> "<title>"` (the title is the second argument, not a flag). The design owner merges.
+7. A control surface or a servo in the design: read `docs/mechanisms.md` first (servo just ahead of the hinge line; horn from `plate`, pushrod from `strut`; one `mechanisms[]` entry with `link`); write `expect.ratio` from the `T6.ratio` message, never from a guess; a `T6.servo_undriven.<id>` WARN means a servo with no mechanism: add the mechanism or remove the servo.
+8. When the goal is met or the budget is spent: `plane design propose designs/<id> "<title>"` (the title is the second argument, not a flag). The design owner merges.
 
 ## Output
 PR link, before/after failing-check counts, mass before/after, and the CHANGELOG kinds used (count of add / subtract / modify).
+Also a list "Unsourced values": every number you wrote that has no source, with its key and why it is a placeholder or estimate, and every check left SKIP or WARN because of it.
 
 ## Never
 - Edit `core/`, `schema/`, `standards/`, tests or skills; never hand-edit `plane.yaml` (always `plane design set`).
 - Relax a threshold, or add a part to make a check pass without the written reason.
+- Invent a number to clear a check: no joint `rated_load_n`, `max_current_a`, `max_thrust_n`, price, mass or requirement that does not come from a datasheet, a test, a library part or the task. When no source exists, leave `rating_basis: placeholder` (or the field absent / `pending` as the schema allows), let the check SKIP or WARN, and list it in the report.
+- Raise a rating, shrink a load or widen a requirement only with a cited source and a one-line reason in `--why`; "to make T2 pass" is not a reason.
 - Merge your own PR.
 
 ## Stop rules

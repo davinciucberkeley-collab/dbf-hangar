@@ -1,0 +1,14 @@
+id: tmotor-mn2212-v2-kv780
+name: Motor MN2212 V2.0 KV780 (LL)
+category: motor
+vendor: TMotor
+part_number: T-Motor MN2212 V2.0 KV780
+url: https://store.tmotor.com/goods-388-MN2212-V20.html
+mass_g: 65.0
+dimensions_mm: [37.4, 27.4, 27.4]
+cad_status: representative-envelope
+cad_source: cylinder envelope from the oriented bounding box of designs/concept-a/meshes/prp-001-ll.stl
+verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: browser}
+geometry:
+  generator: tube
+  params: {axis: x, length: 37.4, outer_d: 27.4}

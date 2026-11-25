@@ -1,0 +1,14 @@
+id: sunnysky-x2814-v3-900kv
+name: 'SunnySky X Series V3 X2814 900KV'
+category: motor
+vendor: SunnySky
+part_number: 'SS-XV3-X2814-900'
+url: https://www.readymaderc.com/products/details/sunny-sky-x-series-v3-x2814-brushless-motor-900kv
+mass_g: 108.0
+dimensions_mm: [36.0, 28.0, 28.0]
+cad_status: representative-envelope
+cad_source: 'retailer page: Body Length 36 mm (excludes shaft; shaft length not found) and stator diameter 28 mm; mass 108 g (leads inclusion not found); no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: tube
+  params: {axis: x, length: 36.0, outer_d: 28.0}

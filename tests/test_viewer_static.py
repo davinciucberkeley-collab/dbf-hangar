@@ -250,7 +250,7 @@ def test_studio_edit_save_validate_propose(browser, studio_base, monkeypatch):
     assert page.inner_text('a[data-testid="pr-link"]') == URL
     assert any(c[-2:] == ["design/example-tailsitter-wing/lighter-wing-foam"]
                or ("switch" in c and "-c" in c and "design/example-tailsitter-wing/lighter-wing-foam" in c) for c in calls)
-    assert any("--title" in c and "design(example-tailsitter-wing): Lighter wing foam" in c for c in calls)
+    assert any("--title" in c and c[c.index("--title") + 1] == "Lighter wing foam" for c in calls)
     assert errors == []
     page.close()
 

@@ -153,7 +153,13 @@ def test_bom_verify_inserts_block_stamp(root, bom_design):
 def test_bom_verify_errors(bom_design):
     assert call("bom.verify", path=bom_design, item="motor-a", method="browser", evidence="https://example.com/m", by="ana").ok
     assert call("bom.verify", path=bom_design, item="motor-a", method="browser", evidence="e", by="ana").exit_code == 2
-    assert call("bom.verify", path=bom_design, item="prop-c", method="browser", evidence="e", by="ana").exit_code == 2
+    assert call("bom.verify", path=bom_design, item="prop-c", method="browser", evidence="e", by="ana").ok
+    p = Path(bom_design) / "plane.yaml"
+    p.write_bytes(p.read_bytes() + b"    - {id: wash-d,\n       qty: 1}\n")
+    before = p.read_bytes()
+    r = call("bom.verify", path=bom_design, item="wash-d", method="browser", evidence="e", by="ana")
+    assert r.exit_code == 2 and any("edit the file by hand" in m for m in r.messages)
+    assert p.read_bytes() == before
     assert call("bom.verify", path=bom_design, item="zzz", method="browser", evidence="e", by="ana").exit_code == 2
     assert call("bom.verify", path=bom_design, item="servo-b", method="guess", evidence="e", by="ana").exit_code == 2
     assert call("bom.verify", path=bom_design, item="servo-b", method="browser", evidence="", by="ana").exit_code == 2

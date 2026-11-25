@@ -2,7 +2,7 @@
 
 # plane command reference
 
-55 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+65 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -75,7 +75,7 @@ plane bom list <path>
 
 ### `plane bom verify`
 
-Record that someone verified a BOM line (browser, datasheet or in-hand). Records only; the CLI never scrapes a shop.
+Record that someone verified a BOM line (browser, datasheet, in-hand or webfetch). Records only; the CLI never scrapes a shop.
 
 ```
 plane bom verify <path> <item> <method> <evidence> <by>
@@ -85,7 +85,7 @@ Writes files.
 
 - `<path>`: str, required
 - `<item>`: str, required
-- `<method>`: choice, one of browser, datasheet, in-hand, required
+- `<method>`: choice, one of browser, datasheet, in-hand, webfetch, required
 - `<evidence>`: str, required
 - `<by>`: str, required
 
@@ -137,6 +137,45 @@ plane claim list <path>
 - `<path>`: str, required
 
 ## design
+
+### `plane design add`
+
+Append one element ({id: ..., ...} as a one-line {mapping}) to a list such as components, attachments or bom.items (byte-preserving; id checked; the whole element is schema-checked before anything is written) and log it in CHANGELOG.yaml.
+
+```
+plane design add <path> <key> --value <str> --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `<key>`: str, required
+- `--value`: str, required
+- `--why`: str, required
+
+### `plane design apply`
+
+Apply many edits from a YAML file (set / add / append / remove) in one atomic step: one schema check, one regeneration and one interference pass for the whole batch, one compact CHANGELOG entry. The CHANGELOG entry lists each applied edit's key and kind (modify, add, append, remove), without values.
+
+```
+plane design apply <path> --edits <path> --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `--edits`: path, required
+- `--why`: str, required
+
+### `plane design bounds`
+
+Bounding box of every component in the body frame (mm, neutral pose): min, max, size and centre; point masses give their point. Use it to place parts against each other.
+
+```
+plane design bounds <path>
+```
+
+- `<path>`: str, required
 
 ### `plane design copy`
 
@@ -220,33 +259,50 @@ Writes files.
 
 ### `plane design new`
 
-Create a design from a template.
+Create a design from a template, or with blank=True a minimal valid blank design (no template data).
 
 ```
-plane design new <new-id> [--template <str>]
+plane design new <new-id> [--template <str>] [--blank]
 ```
 
 Writes files.
 
 - `<new-id>`: str, required
 - `--template`: str, optional
+- `--blank`: bool, optional
 
 ### `plane design propose`
 
-Commit a design change on a new branch, push it and open a PR against main.
+Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree.
 
 ```
-plane design propose <path> <title>
+plane design propose <path> <title> [--draft]
 ```
 
 Writes files.
 
 - `<path>`: str, required
 - `<title>`: str, required
+- `--draft`: bool, optional
+
+### `plane design render`
+
+Render the model to a PNG (top, side, front or iso view; headless; needs matplotlib). A design that uses licensed CAD overlay parts may only be rendered to a local, untracked path.
+
+```
+plane design render <path> --out <path> [--view <choice>] [--size <int>]
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `--out`: path, required
+- `--view`: choice, one of top, side, front, iso, all, optional
+- `--size`: int, optional
 
 ### `plane design set`
 
-Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml.
+Change, add or remove values (a [list] value replaces an existing one-line list, for example a position) in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] or a.b[id] for a nested list and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml. Removing a list's only element leaves an empty list ([]).
 
 ```
 plane design set <path> <key> [--value <str>] --why <str> [--kind <choice>] [--also <list[str]>] [--append <str>] [--remove <str>]
@@ -360,6 +416,26 @@ List the registered gates (tier, blocking, needs, criterion).
 ```
 plane gate list
 ```
+
+## generators
+
+### `plane generators list`
+
+List the geometry generators a component can use (geometry: {generator: <name>, params: {...}}).
+
+```
+plane generators list
+```
+
+### `plane generators show`
+
+Show one geometry generator's parameters (name, kind, required, default, bounds, choices, doc).
+
+```
+plane generators show <name>
+```
+
+- `<name>`: str, required
 
 ## idea
 
@@ -520,6 +596,62 @@ List every operation and its parameters.
 plane ops list
 ```
 
+## parts
+
+### `plane parts list`
+
+List the real-parts library (knowledge/parts/).
+
+```
+plane parts list [--category <str>]
+```
+
+- `--category`: str, optional
+
+### `plane parts show`
+
+Show one real-parts library record.
+
+```
+plane parts show <id>
+```
+
+- `<id>`: str, required
+
+## reference
+
+### `plane reference measure`
+
+Measure one view of a PNG in metres from one known dimension; returns per-column and per-row stations of the ink outline.
+
+```
+plane reference measure <image> --known-axis <str> --known-m <float> [--box <str>] [--rotate-deg <float>] [--ignore-cols <str>] [--ignore-rows <str>] [--stations <int>] [--threshold <int>] [--dark-on-light]
+```
+
+- `<image>`: str, required
+- `--known-axis`: str, required
+- `--known-m`: float, required
+- `--box`: str, optional
+- `--rotate-deg`: float, optional
+- `--ignore-cols`: str, optional
+- `--ignore-rows`: str, optional
+- `--stations`: int, optional
+- `--threshold`: int, optional
+- `--dark-on-light`: bool, optional
+
+### `plane reference views`
+
+Find the separate drawings (views) in a PNG: tight ink boxes in reading order.
+
+```
+plane reference views <image> [--threshold <int>] [--dark-on-light] [--min-gap <int>]
+```
+
+- `<image>`: str, required
+- `--threshold`: int, optional
+- `--dark-on-light`: bool, optional
+- `--min-gap`: int, optional
+
 ## research
 
 ### `plane research check`
@@ -679,7 +811,7 @@ Writes files.
 Commands that are not registry operations (old forms and CLI-only commands):
 
 - `plane baseline`: Known-failure baselines: CI fails only on regressions.
-- `plane build-index`: Export glb, scorecard and mass for every design, then write index.json.
+- `plane build-index`: Export glb, scorecard and mass for every design (or only the --design ones), then write index.json.
 - `plane export`: Export PATH to glb, stl or json.
 - `plane import`: Import a design from another project.
 - `plane list`: List every design under designs/.

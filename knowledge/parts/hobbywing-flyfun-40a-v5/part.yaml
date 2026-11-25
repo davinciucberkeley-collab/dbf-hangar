@@ -1,0 +1,14 @@
+id: hobbywing-flyfun-40a-v5
+name: 'Hobbywing FlyFun 40A V5 (HW30214002)'
+category: esc
+vendor: Hobbywing
+part_number: '30214002'
+url: https://hobbiesdirect.com.au/products/hobbywing-flyfun-40a-v5-series-brushless-esc-30214002-28207
+mass_g: 44.0
+dimensions_mm: [47.0, 28.0, 14.0]
+cad_status: representative-envelope
+cad_source: 'retailer page (not vendor): Dimensions 47x28x14 mm, weight 44 g; no CAD link on page'
+verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [47.0, 28.0], thickness: 14.0}

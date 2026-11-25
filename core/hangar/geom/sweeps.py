@@ -11,7 +11,7 @@ MERGE_MM = 0.05   # poses whose transforms move no vertex of the cutter by more 
 
 def swept_cut_poses(data: dict, cut_files: list[str], base_dir: Path, wing_id: str | None = None) -> list[dict]:
     """[{"file", "matrices"}] sorted by file: for each cut file whose component moves, the non-identity body-frame
-    transforms (3 top rows of the 4x4, row-major, round 9) over the T1 configurations and the T6 mechanism poses.
+    wing-frame transforms inv(wing) @ pose @ cutter placement (3 top rows of the 4x4, row-major, round 9) over the T1 configurations and the T6 mechanism poses.
     `data` is the resolved-reference design dict. A cutter that never moves yields no entry. When `wing_id` itself
     moves in some configuration the pockets would not be static: returns []."""
     from hangar.checks import _configurations
@@ -32,7 +32,10 @@ def swept_cut_poses(data: dict, cut_files: list[str], base_dir: Path, wing_id: s
     step = load_standards()["geometry"]["articulation_sweep_step_deg"]["value"]
     configs = [ang for _, ang in _configurations(design, step)]
     configs += mechanism_pose_angles(design, load_gate_thresholds()["mechanism_contact_step_deg"]["value"])
+    from hangar.geometry import _transform
     eye = np.eye(4)
+    comp = {c["id"]: c for c in data.get("components") or [] if isinstance(c, dict) and "id" in c}
+    w_inv = np.linalg.inv(_transform(comp[wing_id])) if wing_id in comp else eye
     found: dict[str, dict[tuple, list[float]]] = {f: {} for f in wanted}
     for ang in configs:
         tf = pose_transforms(design, ang)
@@ -43,7 +46,7 @@ def swept_cut_poses(data: dict, cut_files: list[str], base_dir: Path, wing_id: s
                 t = tf[cid]
                 if np.allclose(t, eye, atol=1e-9):
                     continue
-                row = [round(float(x), 9) + 0.0 for x in t[:3].ravel()]
+                row = [round(float(x), 9) + 0.0 for x in (w_inv @ t @ _transform(comp[cid]))[:3].ravel()]
                 found[f].setdefault(tuple(row), row)
     return [{"file": f, "matrices": merge_poses(list(found[f].values()), _vertices(Path(base_dir) / f))}
             for f in sorted(found) if found[f]]

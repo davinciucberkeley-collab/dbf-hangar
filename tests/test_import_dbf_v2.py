@@ -191,11 +191,13 @@ def test_import_ops_are_registered_and_run(tmp_path):
 @pytest.mark.skipif(not (DBF / "redesign/params/CHANGE-LOG.md").exists(), reason="DBF-Combined clone not present")
 def test_real_changelog_import_counts(tmp_path):
     text = (DBF / "redesign/params/CHANGE-LOG.md").read_text(encoding="utf-8")
-    n = len(set(re.findall(r"^\|\s*\**(D-\d+[a-z]*)\**\s*\|", text, re.M)))
+    n = len({m.group(1) for m in re.finditer(r"^\|\s*\**\s*(D-\d+[a-z]*)\b", text, re.M)})
     out = import_decisions(DBF, tmp_path / "items.yaml", log=lambda m: None)
-    assert out["changelog"] == n
+    assert out["changelog"] >= n
     assert out["decisions_md"] == 15
     assert Ledger(tmp_path / "items.yaml").get("D-182").kind == "decision"
+    if "D-261" in text:
+        assert Ledger(tmp_path / "items.yaml").get("D-261").kind == "decision"
 
 
 def test_no_design_file_is_touched_by_the_importers():

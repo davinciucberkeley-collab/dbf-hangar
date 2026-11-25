@@ -24,8 +24,12 @@ from .design import (Design, CheckResult, TierReport, Scorecard, SCHEMA_PATH, RE
 from .geometry import (component_parts, lifting_surface_properties, articulated_attachments, att_label,
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
+from .geom.planform import analytic_wing_area, counted_tail_ids, generated_planform
 from .gates import gate, run_gates
+from .gates.applicability import NEEDS, applicable, skip_row
+from .gates.fidelity import resolve_threshold
 from .mass import mass_properties
+from .propulsion import pending_motors, thrust_n
 from .migrate import KNOWN_VERSIONS
 
 G = 9.80665
@@ -56,20 +60,31 @@ def _tier0_v12(design: Design) -> list[CheckResult]:
                                ("mass_model", bool(mm_comps))) if u]
         res.append(CheckResult("T0.version", FAIL, f"{' / '.join(used)} need schema_version \"1.2\"", sch))
     if has_params or gen_comps:
-        from .geom.params import find_references, _is_num
+        from .geom.params import find_references, expression_errors, _is_num
         params = src.get("parameters") if isinstance(src.get("parameters"), dict) else {}
         refs = find_references(src)
         bad = [(cid, path, name) for cid, path, name in refs if name not in params]
+        def who(owner):
+            if owner.startswith("attachments["):
+                aid = owner[len("attachments["):-1]
+                return f"attachment {aid}", {"attachment": aid}
+            return f"component {owner}", {"component": owner}
+
         for cid, path, name in bad:
+            label, dat = who(cid)
             res.append(CheckResult("T0.parameters", FAIL,
-                                   f"component {cid}: {path} references ${name}, which is not in parameters",
-                                   sch, {"component": cid}))
+                                   f"{label}: {path} references ${name}, which is not in parameters", sch, dat))
         nonnum = [(cid, path, name) for cid, path, name in refs if name in params and not _is_num(params[name])]
         for cid, path, name in nonnum:
+            label, dat = who(cid)
             res.append(CheckResult("T0.parameters", FAIL,
-                                   f"component {cid}: {path} references ${name}, whose value {params[name]!r} is not a number",
-                                   sch, {"component": cid}))
-        if has_params and not bad and not nonnum:
+                                   f"{label}: {path} references ${name}, whose value {params[name]!r} is not a number",
+                                   sch, dat))
+        exprs = expression_errors(src)
+        for owner, path, msg in exprs:
+            label, dat = who(owner)
+            res.append(CheckResult("T0.parameters", FAIL, f"{label}: {path}: {msg}", sch, dat))
+        if has_params and not bad and not nonnum and not exprs:
             res.append(CheckResult("T0.parameters", PASS, f"{len(params)} parameters, {len(refs)} references resolved", sch))
     from .geom import registry
     by_id = {c.get("id"): c for c in design.data.get("components", []) if isinstance(c, dict)}
@@ -169,6 +184,7 @@ def tier0_schema(design: Design) -> TierReport:
                             ("components[].provenance", any("provenance" in c for c in d.get("components", []))),
                             ("attachments[].connection/seat", any("connection" in a or "seat" in a for a in d.get("attachments", []))),
                             ("requirements.transport_box_mm", "transport_box_mm" in d.get("requirements", {})),
+                            ("mission", "mission" in d),
                             ("D21 fields (components[].battery, propulsion.max_current_a, propulsion.prop_diameter_mm, "
                              "flight.cruise_ld, flight.transition_speed_mps)",
                              any("battery" in c or any(k in c.get("propulsion", {}) for k in ("max_current_a", "prop_diameter_mm"))
@@ -206,6 +222,10 @@ def tier0_schema(design: Design) -> TierReport:
     if design.data.get("root") not in known:
         res.append(CheckResult("T0.root", FAIL, f"root '{design.data.get('root')}' is not a component",
                                "schema/plane.schema.json", {"parts": [str(design.data.get("root"))]}))
+    if "mission" in d and not errors:
+        m = d["mission"]
+        res.append(CheckResult("T0.mission", PASS, f"mission: {m['name']} (profile {m['profile']})",
+                               "schema/plane.schema.json"))
     return TierReport(0, "schema", res)
 
 
@@ -432,7 +452,7 @@ def _motor_prop_path(design: Design, motor: str, atts: list[dict], max_intermedi
 
 
 def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict, atts: list[dict],
-                              cache: _PairCache | None = None) -> list[CheckResult]:
+                              cache: _PairCache | None = None, only: set[str] | None = None) -> list[CheckResult]:
     """Attachment contact / overlap / containment, motor-prop pairing and interference for ONE configuration.
     `meshes` holds solid components only (point masses, schema 0.4, are absent); `cache` shares results between
     configurations (see _PairCache)."""
@@ -455,6 +475,8 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
     for a in atts:
         p, c = a["parent"], a["child"]
         attached_pairs.add(frozenset((p, c)))
+        if only is not None and p not in only and c not in only:
+            continue
         label = a.get("id") or f"{p}->{c}"
         ptype, ctype = design.component(p)["type"], design.component(c)["type"]
         embed = a.get("embed_ok", False)
@@ -522,7 +544,7 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
         res.append(r)
 
     # every motor must drive an attached propeller (so a mislabelled prop leaves its motor prop-less)
-    for comp in design.components:
+    for comp in ([] if only is not None else design.components):
         if "propulsion" not in comp:
             continue
         path = _motor_prop_path(design, comp["id"], atts, chain_max)
@@ -548,6 +570,8 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
     clashes = []
     for a_, b_ in _broad_phase(meshes):
         if frozenset((a_, b_)) in attached_pairs:
+            continue
+        if only is not None and a_ not in only and b_ not in only:
             continue
         if (a_ in linked and b_ in moved) or (b_ in linked and a_ in moved):
             unchecked.append((a_, b_))
@@ -656,6 +680,88 @@ def _point_mass_checks(design: Design, std: dict, meshes: dict, atts: list[dict]
     return res
 
 
+def _pocket_checks(design: Design, std: dict, meshes: dict, cache: _PairCache) -> list[CheckResult]:
+    """T1.pocket: a part a wing_panel is cut for (or attached to) must not sit in the wing's uncut core."""
+    from .geom.resolve import is_generated
+    limit = std["geometry"]["interference_max_mm3"]["value"]
+    tf = {cid: np.eye(4) for cid in meshes}
+    atts = design.data.get("attachments", [])
+    out: list[CheckResult] = []
+    for w in design.components:
+        wid = w["id"]
+        g = w.get("geometry")
+        if not is_generated(w) or g["generator"] != "wing_panel" or wid not in meshes:
+            continue
+        cut_files = (g.get("params") or {}).get("cut_files") or []
+        if not cut_files:
+            continue
+        linked = {a["child"] if a["parent"] == wid else a["parent"] for a in atts if wid in (a["parent"], a["child"])}
+        fails = []
+        for c in sorted(design.components, key=lambda x: x["id"]):
+            cid = c["id"]
+            if cid == wid or cid not in meshes or is_generated(c):
+                continue
+            mg = c.get("geometry")
+            listed = isinstance(mg, dict) and isinstance(mg.get("mesh"), dict) and mg["mesh"].get("file") in cut_files
+            if not listed and cid not in linked:
+                continue
+            v = cache.overlap(meshes, tf, wid, cid)
+            if v > limit:
+                msg = (f"{cid}: {v:.0f} mm^3 of it sits in uncut core of {wid}; its pocket is not cut where the part is now"
+                       if listed else
+                       f"{cid}: {v:.0f} mm^3 of it sits in uncut core of {wid}; it is attached to {wid} but its mesh file "
+                       f"is not in {wid}'s cut_files")
+                fails.append(CheckResult("T1.pocket", FAIL, msg, STD + "interference_max_mm3",
+                                         {"part": cid, "core": wid, "volume_mm3": round(v, 1), "listed": bool(listed)}))
+        out += fails or [CheckResult("T1.pocket", PASS, f"{wid}: no part it is cut for or attached to sits in uncut core",
+                                     STD + "interference_max_mm3")]
+    return out
+
+
+def interference_rows(design: Design, std: dict, only: set[str] | None = None) -> list[CheckResult]:
+    """FAIL rows of the neutral-pose contact, overlap and interference checks (tier 1, no articulation poses), restricted to parts in `only`."""
+    all_ids = [c["id"] for c in design.components]
+    meshes = {c["id"]: component_parts(c, design.base_dir) for c in design.components if not is_point_mass(c)}
+    atts = design.data.get("attachments", [])
+    identity = {cid: np.eye(4) for cid in all_ids}
+    res = _contact_and_clash_checks(design, std, meshes, identity, atts, _PairCache(), only=only)
+    return [r for r in res if r.status == FAIL]
+
+
+def _floating_rows(design: Design, meshes: dict, std: dict, cache: _PairCache | None = None) -> list[CheckResult]:
+    """U13.4: WARN for a part whose geometry touches no other part (within attach_tolerance_mm)."""
+    tol = std["geometry"]["attach_tolerance_mm"]["value"]
+    boxes = {}
+    for c, ps in meshes.items():
+        if ps:
+            bs = np.array([p.bounds for p in ps])
+            boxes[c] = (bs[:, 0, :].min(axis=0), bs[:, 1, :].max(axis=0))
+    cache = cache or _PairCache()
+    tf = {c: np.eye(4) for c in meshes}
+    out: list[CheckResult] = []
+    for c in [x["id"] for x in design.components]:
+        if c not in boxes:
+            continue
+        lo, hi = boxes[c]
+        gaps = {o: float(np.linalg.norm(np.maximum(0.0, np.maximum(boxes[o][0] - hi, lo - boxes[o][1]))))
+                for o in sorted(boxes) if o != c}
+        cands = [o for o, g in sorted(gaps.items(), key=lambda kv: (kv[1], kv[0])) if np.all(boxes[o][0] <= hi + tol) and
+                 np.all(boxes[o][1] >= lo - tol)]
+        if any(cache.overlap(meshes, tf, c, o) > 0 for o in cands) or \
+                any(cache.gap(meshes, tf, c, o, tol) <= tol for o in cands):
+            continue
+        if gaps:
+            n = min(gaps, key=lambda o: (gaps[o], o))
+            d = cache.gap(meshes, tf, c, n)
+            at, gap = f"{d:.1f} mm", round(d, 3)
+        else:
+            n, at, gap = "none", "no other part", None
+        out.append(CheckResult(f"T1.floating.{c}", WARN,
+                               f"{c} touches no other part (nearest: {n} at {at}; tolerance {tol} mm)",
+                               STD + "attach_tolerance_mm", {"part": c, "nearest": n, "gap_mm": gap}))
+    return out
+
+
 def tier1_geometry(design: Design, std: dict) -> TierReport:
     all_ids = [c["id"] for c in design.components]
     # point masses (schema 0.4) have no mesh: they count for connectivity and mass, not for any geometry check
@@ -689,7 +795,10 @@ def tier1_geometry(design: Design, std: dict) -> TierReport:
 
     identity = {cid: np.eye(4) for cid in all_ids}
     cache = _PairCache()
+    if NEEDS["conventional"](design.data["morphology"]):
+        res += _floating_rows(design, meshes, std, cache)
     res += _contact_and_clash_checks(design, std, meshes, identity, atts, cache)
+    res += _pocket_checks(design, std, meshes, cache)
     res += _point_mass_checks(design, std, meshes, atts)
 
     # articulated joints: the same contact / overlap / interference checks in every configuration
@@ -736,9 +845,12 @@ def _upward_lift(design: Design, tf: dict[str, np.ndarray], up: np.ndarray) -> l
     for m in design.components:
         if m["type"] != "motor" or m["propulsion"].get("role", "both") not in ("lift", "both"):
             continue
+        t = thrust_n(m)
+        if t is None:  # pending: callers skip before this; never multiply the text
+            continue
         ax = tf[m["id"]][:3, :3] @ np.array(m["propulsion"]["axis"], dtype=float)
         ax = ax / np.linalg.norm(ax)
-        out.append((m, up * max(0.0, float(np.dot(ax, up))) * m["propulsion"]["max_thrust_n"]))
+        out.append((m, up * max(0.0, float(np.dot(ax, up))) * t))
     return out
 
 
@@ -791,7 +903,11 @@ def tier2_physics(design: Design, std: dict, mp: dict) -> TierReport:
 
     lift_motors = [c for c in design.components if c["type"] == "motor"
                    and c["propulsion"].get("role", "both") in ("lift", "both")]
-    if design.data["morphology"].get("vtol_method", "none") != "none" and lift_motors:
+    pend_lift = pending_motors(design, ("lift", "both"))
+    if design.data["morphology"].get("vtol_method", "none") != "none" and lift_motors and pend_lift:
+        res.append(CheckResult("T2.hover_moment", SKIP, f"hover moment not computed: max_thrust_n is pending for {pend_lift}",
+                               STD + "hover_moment_pass_ratio", {"pending": pend_lift}))
+    elif design.data["morphology"].get("vtol_method", "none") != "none" and lift_motors:
         hover_pose = design.data.get("flight", {}).get("hover_pose")
         h_ang = pose_angles(design, hover_pose)
         if hover_pose:  # CG, motor positions and thrust axes at the hover configuration
@@ -824,6 +940,9 @@ def tier2_physics(design: Design, std: dict, mp: dict) -> TierReport:
                                    f"({ratio:.0%} of a {lever * 100:g} cm thrust offset)" + at_pose,
                                    STD + "hover_moment_pass_ratio",
                                    {"moment_nm": round(imbalance, 3)}))
+    elif not applicable(design, "T2.hover_moment")[0]:
+        res.append(skip_row("T2.hover_moment", applicable(design, "T2.hover_moment")[1],
+                            STD + "hover_moment_pass_ratio"))
     return TierReport(2, "physics", res)
 
 
@@ -952,6 +1071,9 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
     # so that it goes through the same lifting_surface_properties; it is not a geometry component.
     n_strip = a["planform_strip_count"]["value"]
     surfaces = []
+    derived_tails = []  # derived tail_surfaces stabilisers: counted only when a wing surface exists
+    core_wings = []  # (id, measured area, analytic area) of measured core wings
+    counted = counted_tail_ids(design.components)
     for c in design.components:
         if "lifting_surface" in c["geometry"]:
             ls_c = c
@@ -965,8 +1087,40 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                                gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
                                control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
         else:
-            continue
+            gp = generated_planform(c)
+            if gp is None or ("lifting_surface" in gp and c["id"] not in counted):
+                continue
+            ls_c = c
+            if gp.get("measured"):
+                p = strip_planform(_planform_parts(design, c)[1], c["id"], n=n_strip,
+                                   gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
+                                   control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
+                analytic = analytic_wing_area(c)
+                if analytic:
+                    core_wings.append((c["id"], p["area_mm2"], analytic))
+            else:
+                dx, dy, dz = gp["offset"]
+                pseudo = {**c, "geometry": {"lifting_surface": gp["lifting_surface"]},
+                          "position": [c["position"][0] + dx, c["position"][1] + dy, c["position"][2] + dz]}
+                p = lifting_surface_properties(pseudo, c_tf[c["id"]] if cruise_pose else None)
+                p["span_mm"] = gp["lifting_surface"]["span"]
+                derived_tails.append(c["id"])
         surfaces.append((c, ls_c, p))
+    if len(derived_tails) == len(surfaces):  # no wing surface: behave as without a derived tail
+        surfaces = []
+    if core_wings:
+        wmin = resolve_threshold("gate-thresholds.yaml#" + "wing_area_complete_min")["value"]
+        for wid, m, an in core_wings:
+            ok = m / an >= wmin
+            res.append(CheckResult(
+                "T3.wing_area_complete", PASS if ok else WARN,
+                f"{wid}: planform complete ({m / an:.1%} of the {an:.0f} mm2 the wing_panel params give)" if ok else
+                f"{wid}: measured planform {m:.0f} mm2 is only {m / an:.1%} of the {an:.0f} mm2 the wing_panel params "
+                "give; the chord behind hinge_frac outside the control surfaces belongs to no component (set "
+                "core_fill: outside on the core, or add trailing pieces); wing area, MAC and the neutral point are off",
+                "gate-thresholds.yaml#wing_area_complete_min",
+                {"component": wid, "measured_mm2": round(m, 1), "analytic_mm2": round(an, 1),
+                 "ratio": round(m / an, 4)}))
     lifting = [(c, ls_c, p) for c, ls_c, p in surfaces if p["lifting"]]
     if lifting and design.data["morphology"]["lift"] != "multirotor":
         main_c, main_ls, main = max(lifting, key=lambda cp: cp[2]["area_mm2"])
@@ -997,14 +1151,27 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
             num += k * p["x_ac_mm"]; den += k
         x_np = num / den
         sm = (x_np - mp["cg_mm"][0]) / main["mac_mm"]
-        lo, hi = a["static_margin"]["min"], a["static_margin"]["max"]
-        st = PASS if lo <= sm <= hi else FAIL
+        conv = NEEDS["conventional"](design.data["morphology"])
+        if conv:
+            lo = resolve_threshold("fixed-wing.yaml#fw_static_margin_min")["value"]
+            hi = resolve_threshold("fixed-wing.yaml#fw_static_margin_max")["value"]
+            sm_crit = "fixed-wing.yaml#fw_static_margin_min"
+        else:
+            lo, hi = a["static_margin"]["min"], a["static_margin"]["max"]
+            sm_crit = STD + "static_margin"
+        st = PASS if lo <= sm <= hi else WARN if (conv and sm > hi) else FAIL
         sm_band = "below" if sm < lo else "above" if sm > hi else "within"
         res.append(CheckResult("T3.static_margin", st,
                                f"{sm:.1%} MAC (NP x={x_np:.0f} mm, CG x={mp['cg_mm'][0]:.0f} mm; target {lo:.0%}-{hi:.0%}; "
                                "fuselage effect not modelled)"
+                               + ("; provisional band (fw_static_margin_max pending)" if conv else "")
                                + (f" (mesh wing: chord measured at {n_strip} stations)" if main_from_planform else ""),
-                               STD + "static_margin", {"static_margin": round(sm, 4), "x_np_mm": round(x_np, 1), "band": sm_band}))
+                               sm_crit, {"static_margin": round(sm, 4), "x_np_mm": round(x_np, 1), "band": sm_band,
+                                "surfaces": [{"id": c["id"], "area_mm2": round(p["area_mm2"], 1),
+                                              "x_ac_mm": round(p["x_ac_mm"], 1),
+                                              "source": "derived" if c["id"] in derived_tails
+                                              else "declared" if "lifting_surface" in c["geometry"] or "planform" in c
+                                              else "measured"} for c, _ls, p in lifting]}))
         lat = abs(mp["cg_mm"][1]) / main["span_mm"]
         lim = a["lateral_cg_max_fraction_span"]["value"]
         res.append(CheckResult("T3.lateral_cg", PASS if lat <= lim else FAIL,
@@ -1016,16 +1183,23 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
 
     if design.data["morphology"].get("vtol_method", "none") != "none" or design.data["morphology"]["lift"] == "multirotor":
         hover_pose = flight.get("hover_pose")
-        h_tf = pose_transforms(design, pose_angles(design, hover_pose))
-        lift = _upward_lift(design, h_tf, _hover_up(design))
-        thrust = sum(float(np.linalg.norm(f)) for _, f in lift)
-        rated = sum(m["propulsion"]["max_thrust_n"] for m, _ in lift)
-        tw = thrust / weight_n if weight_n else 0
-        lim = a["hover_thrust_to_weight_min"]["value"]
-        res.append(CheckResult("T3.hover_tw", PASS if tw >= lim else FAIL,
-                               f"hover T/W {tw:.2f} (upward thrust {thrust:.1f} N of {rated:.1f} N rated; minimum {lim})"
-                               + (f" at pose {hover_pose}" if hover_pose else ""), STD + "hover_thrust_to_weight_min",
-                               {"thrust_to_weight": round(tw, 3), "band": "below" if tw < lim else "within"}))
+        pend = pending_motors(design, ("lift", "both"))
+        if pend:
+            res.append(CheckResult("T3.hover_tw", SKIP, f"hover T/W not computed: max_thrust_n is pending for {pend}",
+                                   STD + "hover_thrust_to_weight_min", {"pending": pend}))
+        else:
+            h_tf = pose_transforms(design, pose_angles(design, hover_pose))
+            lift = _upward_lift(design, h_tf, _hover_up(design))
+            thrust = sum(float(np.linalg.norm(f)) for _, f in lift)
+            rated = sum(thrust_n(m) for m, _ in lift)
+            tw = thrust / weight_n if weight_n else 0
+            lim = a["hover_thrust_to_weight_min"]["value"]
+            res.append(CheckResult("T3.hover_tw", PASS if tw >= lim else FAIL,
+                                   f"hover T/W {tw:.2f} (upward thrust {thrust:.1f} N of {rated:.1f} N rated; minimum {lim})"
+                                   + (f" at pose {hover_pose}" if hover_pose else ""), STD + "hover_thrust_to_weight_min",
+                                   {"thrust_to_weight": round(tw, 3), "band": "below" if tw < lim else "within"}))
+    elif not applicable(design, "T3.hover_tw")[0]:
+        res.append(skip_row("T3.hover_tw", applicable(design, "T3.hover_tw")[1], STD + "hover_thrust_to_weight_min"))
     return TierReport(3, "aero", res)
 
 
@@ -1155,6 +1329,8 @@ def _tier2(ctx):
     rep.results.extend(tier2_sim(ctx.design, ctx.std, ctx.mp))
     from .fea import tier2_fea
     rep.results.extend(tier2_fea(ctx.design))
+    from .opencae_rows import tier2_opencae
+    rep.results.extend(tier2_opencae(ctx.design))
     return rep
 
 

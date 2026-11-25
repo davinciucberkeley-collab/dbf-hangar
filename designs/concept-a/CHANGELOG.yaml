@@ -572,3 +572,67 @@
   new: 3
   why: 'T94: BOM-A.csv qty already includes the spare'
   kind: modify
+- date: '2026-11-24T21:24:13Z'
+  key: mission
+  old: null
+  new:
+    name: VTOL demonstrator
+    profile: vtol-demonstrator
+    source: knowledge/concepts/judging-mission-and-learning.md
+  why: 'U4.30: each design states its mission; concept A keeps the VTOL demonstrator
+    (D74)'
+  kind: add
+- date: '2026-11-24T21:25:44Z'
+  key: bom.items[p01].library_part
+  old: null
+  new: tmotor-mn2212-v2-kv780
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[p02].library_part
+  old: null
+  new: apc-9x4-5mr-prop
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[p04].library_part
+  old: null
+  new: speedybee-bls-35a-mini-v2-esc
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[w01].library_part
+  old: null
+  new: tattu-2300mah-4s-75c
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[v02].library_part
+  old: null
+  new: radiomaster-rp3-v2-elrs-rx
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[v03].library_part
+  old: null
+  new: holybro-kakute-f405-wing-mini
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[v04].library_part
+  old: null
+  new: tbs-m10q-gps-qmc5883
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[v05].library_part
+  old: null
+  new: rmrc-ms4525-airspeed-pitot
+  why: 'U4.31: BOM line carries its library part'
+  kind: add
+- date: '2026-11-24T21:26:05Z'
+  key: bom.items[m01].library_part
+  old: null
+  new: emax-es3054hv-servo
+  why: 'U4.31: BOM line carries its library part'
+  kind: add

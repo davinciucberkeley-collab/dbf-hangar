@@ -70,13 +70,17 @@ def validate_op(path: str, tier: Literal["0", "1", "2", "3", "4", "5", "6", "7",
     card = validate(design, max_tier=9 if tier == "all" else int(tier))
     data = {**card.to_dict(), "markdown": card.to_markdown()}
     ok = bool(card.clean and (card.accepted or card.partial))
-    messages, skipped = [], []
+    messages, skipped, n_a = [], [], []
     for t in card.tiers:
         for r in t.results:
+            if r.not_applicable:
+                n_a.append(f"{r.check_id}: {r.message}")
+                continue
             if r.status in (FAIL, SKIP):
                 messages.append(f"{r.check_id} {r.status}: {r.message}")
             if r.status == SKIP:
                 skipped.append(f"{r.check_id}: {r.message}")
+    data["not_applicable"] = n_a
     return OpResult(ok, data, messages, skipped=skipped)
 
 
@@ -84,6 +88,87 @@ def validate_op(path: str, tier: Literal["0", "1", "2", "3", "4", "5", "6", "7",
     render=lambda r: json.dumps(r.data, indent=2, default=str))
 def mass_op(path: str) -> OpResult:
     return OpResult(True, mass_properties(_load(path)))
+
+
+def _bounds_line(e: dict) -> str:
+    def fmt(v):
+        return "[" + ", ".join(f"{x:.1f}" for x in v) + "]" if v is not None else "none"
+    head = f"{e['id']}  {e['type']}" if e.get("type") else e["id"]
+    if "error" in e:
+        return f"{head}  ERROR: {e['error']}"
+    if "point" in e:
+        return f"{head}  point={fmt(e['point'])}"
+    return f"{head}  min={fmt(e['min'])}  max={fmt(e['max'])}  size={fmt(e['size'])}"
+
+
+@op(name="design.bounds", summary="Bounding box of every component in the body frame (mm, neutral pose): min, max, size and centre; point masses give their point. Use it to place parts against each other.",
+    render=lambda r: "\n".join(
+        [_bounds_line(e) for e in r.data["components"]]
+        + [_bounds_line({"id": "overall", "type": "", **r.data["overall"]})
+           if r.data["overall"]["min"] is not None
+           else "overall  no geometry"]))
+def bounds_op(path: str) -> OpResult:
+    import numpy as np
+    from ..geometry import component_parts, is_point_mass
+
+    design = _load(path)
+    entries: list[dict] = []
+    for c in design.data["components"]:
+        cid, ctype = c["id"], c["type"]
+        if is_point_mass(c):
+            entries.append({"id": cid, "type": ctype, "point": [round(float(x), 3) for x in c["position"]]})
+            continue
+        try:
+            parts = component_parts(c, design.base_dir)
+            lo = np.min([m.bounds[0] for m in parts], axis=0)
+            hi = np.max([m.bounds[1] for m in parts], axis=0)
+        except Exception as e:  # noqa: BLE001 - one bad component must not fail the listing
+            entries.append({"id": cid, "type": ctype, "error": str(e)})
+            continue
+        lo_l = [round(float(x), 3) for x in lo]
+        hi_l = [round(float(x), 3) for x in hi]
+        entries.append({
+            "id": cid, "type": ctype, "min": lo_l, "max": hi_l,
+            "size": [round(float(b - a), 3) for a, b in zip(lo_l, hi_l)],
+            "center": [round((a + b) / 2, 3) for a, b in zip(lo_l, hi_l)],
+        })
+    boxes = [e for e in entries if "min" in e]
+    if boxes:
+        omin = [min(e["min"][i] for e in boxes) for i in range(3)]
+        omax = [max(e["max"][i] for e in boxes) for i in range(3)]
+        overall = {"min": omin, "max": omax, "size": [round(b - a, 3) for a, b in zip(omin, omax)]}
+    else:
+        overall = {"min": None, "max": None, "size": None}
+    return OpResult(True, {"components": entries, "overall": overall})
+
+
+@op(name="design.render", summary="Render the model to a PNG (top, side, front or iso view; headless; needs matplotlib). "
+    "A design that uses licensed CAD overlay parts may only be rendered to a local, untracked path.",
+    mutates=True, render=lambda r: "\n".join(r.data["files"]))
+def render_op(path: str, *, out: Path, view: Literal["top", "side", "front", "iso", "all"] = "iso",
+              size: int = 900) -> OpResult:
+    from ..geom import overlay
+    from ..render import VIEWS, render_png
+
+    design = _load(path)
+    if not 200 <= size <= 2000:
+        raise OpInputError(f"size must be 200..2000, got {size}")
+    out = Path(out)
+    if view == "all":
+        targets = [(v, out.with_name(f"{out.stem}-{v}.png")) for v in VIEWS]
+    elif view in VIEWS:
+        targets = [(view, out)]
+    else:
+        raise OpInputError("view must be one of top, side, front, iso, all")
+    files: list[str] = []
+    try:
+        for v, p in targets:
+            overlay.guard_output(p, design)
+            render_png(design, p, view=v, size=size)
+            files.append(str(p))
+    except (RuntimeError, ValueError) as e:
+        return OpResult(False, {}, [f"render failed: {e}"])
+    return OpResult(True, {"files": files}, changed_files=list(files))
 
 
 @op(name="design.export", summary="Export a design to glb, stl, json or mjcf.", mutates=True,
@@ -106,13 +191,16 @@ def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out:
     return OpResult(True, {"files": paths}, changed_files=list(paths))
 
 
-@op(name="design.new", summary="Create a design from a template.", mutates=True, render=lambda r: r.data["path"])
-def new_op(new_id: str, *, template: str = "example-tailsitter-wing") -> OpResult:
-    from ..cli import new_design
+@op(name="design.new", summary="Create a design from a template, or with blank=True a minimal valid blank design (no template data).",
+    mutates=True, render=lambda r: r.data["path"])
+def new_op(new_id: str, *, template: str = "example-tailsitter-wing", blank: bool = False) -> OpResult:
+    from ..cli import new_blank_design, new_design
+    if blank and template != "example-tailsitter-wing":
+        raise OpInputError("--blank and --template exclude each other")
     if not ID_RE.fullmatch(new_id):
         raise OpInputError(f"invalid id {new_id!r}: must match {ID_RE.pattern}")
     try:
-        p = new_design(new_id, template)
+        p = new_blank_design(new_id) if blank else new_design(new_id, template)
     except ValueError as e:
         raise OpInputError(str(e)) from e
     return OpResult(True, {"path": str(p)}, changed_files=[str(p)])

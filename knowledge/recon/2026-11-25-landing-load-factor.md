@@ -1,4 +1,4 @@
-# Recon: `structure.landing_load_factor` (U4.19 step 2, D67, D6, T82)
+# Recon: `structure.landing_load_factor` (U8.3 step 2, D67, D6, T82)
 
 Question: which value can a source already in `knowledge/sources/` back, or does the key stay `pending`? All seven source files were read in this run.
 

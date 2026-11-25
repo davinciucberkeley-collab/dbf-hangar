@@ -512,7 +512,7 @@ def test_reimport_is_stable(dbf_root, tmp_path):     # running the importer twic
 **Interfaces:**
 - Consumes: `import_concept(dbf_root, concept="A", out_dir=None, log=print) -> Path` (`importers/dbf.py:239`), the `design.set` op (`ops/edit.py:38`), `claim.import-dbf` (`ops/import_dbf.py:16`), `fea.run` (`ops/fea.py:27`), `bom.cost` (`ops/bom.py:88`), `assembly.animate` (`ops/assembly.py:16`)
 - Produces: `dbf_blocks.bom_block(root: Path, concept: str, parts_csv: dict[str, dict], commit8: str) -> str`; `files_block(mesh_ids: list[str], commit8: str) -> str`; `wiring_block(edges: list[dict], wire_ids: set[str], commit8: str) -> str`; `transport_block(component_ids: list[str]) -> str`; `assembly_block(steps: list[dict], component_ids: list[str]) -> str`; `dbf_geometry._KIND["mesh"]`; `dbf._retention_n(edge: dict) -> float | None`. Each `*_block` returns YAML text for one top-level key (column 0, ends with a newline).
-- Closes: R1, R12, R14, R17, R31 (data gaps, criteria in Part D); ledger T24, T53; the BOM half of T62 becomes runnable. *(R31 did not close here: animate failed at step 44, T72; closed by U4.3 T72, D53)*
+- Closes: R1, R12, R14, R17, R31 (data gaps, criteria in Part D); ledger T24, T53; the BOM half of T62 becomes runnable. *(R31 did not close here: animate failed at step 44, T72; closed by U5.1 T72, D53)*
 
 - [x] **Step 1: Failing tests** (core PR): `test_mesh_kind_volume_in_mm3`, `test_retention_n_ignores_non_numeric`, `test_conn_method_knows_pitot_tubing`, `test_bom_block_*` (3), `test_files_block_lists_every_mesh`, `test_wiring_block_*` (2), `test_transport_block_one_group`, `test_assembly_block_*` (3), `test_dump_exposes_assembly_steps` (skipif DBF clone missing)
 - [x] **Step 2: Run** → FAIL
@@ -607,79 +607,79 @@ Not a code unit; it tests everything above.
 - [x] **Step 4:** Docs: `README.md` ≤ 80 lines pointing to `docs/pdl/`, `docs/cli.md` (generated from `ops list`), `standards/agents.md`. Tag `v1.0.0`; Pages deploys.
 - [x] **Step 5:** verification-before-completion: paste `pytest -q`, `plane baseline check --all`, `plane ledger report`, `plane tools doctor` outputs into `reviews/2026-11-30-v1.0.md`.
 
-### Unit U4.3: Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision)
+### Unit U5.1: Overnight core fixes (D51; ledger tasks agents can close without a design or standards decision)
 
 **Scope:** T72 (assembly animate skips non-drawable proxy steps; closes R31), T52 (`plane ledger set` sets due, units, note), T58 (`design set --value` with ": "), T17 (bom.py exits 2 on bad input; ingest de-dup), T26 (`gate explain` exact check id), T28 (held for v1.1, D52), T68 (knowledge copy check). Core and tests only: no `designs/`, no `standards/` threshold change. One branch per task `std/u4.3-<task>`, merged to main after review (D30, D47).
 
-- [x] **Step 1: Briefs** (tactician W5-T; T28 held, D52; T57 needs none, closed): `plans/2026-11-20-standardization/briefs/U4.3-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
+- [x] **Step 1: Briefs** (tactician W5-T; T28 held, D52; T57 needs none, closed): `plans/2026-11-20-standardization/briefs/U5.1-<task>.md`, each builder-ready (R-a dry run, R-b tests against base)
 - [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t72 7c9e406, t58 48a15f8, t68 1f47011, t17 f4443ce, t52 ca0fedb, t26 c1fb8f7)*
 - [x] **Step 3: Review** W5-R; merge; tasks set done with the merge commit; R31 done if T72 merges. (T57 added after audit 2 if the flake recurred.) *(all six ACCEPT, reviews/2026-11-23-w5.md; merged; last 11beb6f; follow-ups T83-T85)*
 
-### Unit U4.4: Overnight core fixes, round 2 (D51)
+### Unit U5.2: Overnight core fixes, round 2 (D51)
 
-**Scope:** T84 (flaky `test_propose_link_survives_real_git_side_effects` 404), T85 (U4.3 small follow-ups), T15 (T7 point-mass rows SKIP, not PASS), T21 (one exit-code rule for a missing tool, D37), T23 (fea.py/mcp.md polish), T3 (ops registry retry after a failed import), T20 (`sim drop --height-m`). Core, tests and docs only; no `designs/`, no `standards/` change, no CI workflow change. Not in scope: T11 (workflow), T16 (FEA hash change would stale concept-a results), T83 (agent file).
+**Scope:** T84 (flaky `test_propose_link_survives_real_git_side_effects` 404), T85 (U5.1 small follow-ups), T15 (T7 point-mass rows SKIP, not PASS), T21 (one exit-code rule for a missing tool, D37), T23 (fea.py/mcp.md polish), T3 (ops registry retry after a failed import), T20 (`sim drop --height-m`). Core, tests and docs only; no `designs/`, no `standards/` change, no CI workflow change. Not in scope: T11 (workflow), T16 (FEA hash change would stale concept-a results), T83 (agent file).
 
-- [x] **Step 1: Briefs** (tactician W6-T; all seven, T84 [hard]; T20 after T21): `briefs/U4.4-<task>.md`, builder-ready (R-a, R-b)
+- [x] **Step 1: Briefs** (tactician W6-T; all seven, T84 [hard]; T20 after T21): `briefs/U5.2-<task>.md`, builder-ready (R-a, R-b)
 - [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t84 2e16152, t21 0f3efc8, t3 ff3d60a, t23 eb780b9, t85 0f4fde5, t15 8cc6e53, t20 1645724)*
 - [x] **Step 3: Review** W6-R; merge; tasks set done with the merge commit *(all seven ACCEPT, reviews/2026-11-23-w6.md; last merge d563766; follow-ups T86, T87)*
 
-### Unit U4.5: Overnight core fixes, round 3 (D51)
+### Unit U5.3: Overnight core fixes, round 3 (D51)
 
 **Scope:** T7 (Studio `/api/op` path confinement to the repo's designs/ and tmp outputs) [hard], T86 and T87 (W6-R follow-ups), T83 (`gate explain` for FAIL-only ids; design-engineer doc line), T50 (`design migrate` writes a CHANGELOG entry), T54 (bench grader protects designs/; newline), T55 (pdledit flow-list append/remove). Core, tests, docs and agent docs only; no `designs/`, `standards/` or CI workflow change.
 
-- [x] **Step 1: Briefs** (tactician W7-T): `briefs/U4.5-<task>.md`, builder-ready (R-a, R-b) *(six briefs; T55 not briefed: flow-list key syntax undefined, needs Tristan; T54 newline half only; T86 four of six sub-items; T83 table holds T1.attachment_contact only)*
+- [x] **Step 1: Briefs** (tactician W7-T): `briefs/U5.3-<task>.md`, builder-ready (R-a, R-b) *(six briefs; T55 not briefed: flow-list key syntax undefined, needs Tristan; T54 newline half only; T86 four of six sub-items; T83 table holds T1.attachment_contact only)*
 - [x] **Step 2: Build** one builder per brief (builder-plus for [hard]); at most 2 at once (memory) *(t54 c3bf979, t50 8dc23ca, t87 bf71e18, t83 34a715a, t86 2c57859, t7 cefea52)*
 - [x] **Step 3: Review** W7-R; merge; tasks set done with the merge commit *(six ACCEPT, T7 after one REOPEN (D54); reviews/2026-11-23-w7.md; last merge ab0ad38; T54 T83 T86 stay open for undone halves; T55 not briefed; T89 follow-up)*
 
-### Unit U4.6: bench.run agent id check (T89, from the W7-R T7 re-review; D51)
+### Unit U5.4: bench.run agent id check (T89, from the W7-R T7 re-review; D51)
 
 **Scope:** T89 only: `bench.run` checks `agent` (and `task` if it names a file) against the id rule in the op, so CLI, MCP and Studio are all covered; `ID_RE` defined once and matched exactly (fullmatch). Core and tests only.
 
-- [x] **Step 1: Brief** (tactician W8-T): `briefs/U4.6-t89.md` *(easy; mcp_server.py _ID_RE and morph.py ID_RE left out of scope)*
+- [x] **Step 1: Brief** (tactician W8-T): `briefs/U5.4-t89.md` *(easy; mcp_server.py _ID_RE and morph.py ID_RE left out of scope)*
 - [x] **Step 2: Build** (builder W8-B) *(e3f4eda)*
 - [x] **Step 3: Review** (reviewer W8-R); merge; T89 done *(ACCEPT, reviews/2026-11-23-w8.md; merged 798fc37; follow-up T90)*
 
-### Unit U4.7: List-entry edits and bench grader replay (T55, T54; D55, D56)
+### Unit U5.5: List-entry edits and bench grader replay (T55, T54; D55, D56)
 
 **Scope:** T55: `plane design set <path> --append X` / `--remove X` on one-line flow lists (D55). T54 grader half: the bench grader snapshots the design, logs every `plane` command of the run, replays the log on a fresh copy and fails the run when `designs/` differs (D56). Core and tests only.
 
-- [x] **Step 1: Briefs** (tactician W9-T): `briefs/U4.7-t55.md`, `briefs/U4.7-t54.md` *(7aaeecc; t55 easy, t54 hard)*
+- [x] **Step 1: Briefs** (tactician W9-T): `briefs/U5.5-t55.md`, `briefs/U5.5-t54.md` *(7aaeecc; t55 easy, t54 hard)*
 - [x] **Step 2: Build** (W9-B, one per brief) *(t55 0215d10 builder; t54 27ae9ea builder-plus)*
 - [x] **Step 3: Review** (reviewer W9-R); merge; T55, T54 done *(both ACCEPT, reviews/2026-11-23-w9.md; merged 99fc961, 41aa2a8; follow-ups T92, T93)*
 
-### Unit U4.8: Bench grader hardening (T91, T92, T93; P175)
+### Unit U6.1: Bench grader hardening (T91, T92, T93; P175)
 
 **Scope:** T91 ops that write under `DESIGNS_DIR` write into the run's workspace, not the repo; T92 pin the pre-run snapshot (hash in memory or separate temp dir) and replay only an allow-list of ops; T93 the minor W9-R items (workspace path mapping, unwritable log path, `--append` spacing, `--remove` of a mapping, `pass` at edit.py:62). Core and tests only.
 
-- [x] **Step 1: Briefs** (tactician W10-T): `briefs/U4.8-*.md` *(d207730: U4.8-bench hard, U4.8-edit easy; no shared files)*
+- [x] **Step 1: Briefs** (tactician W10-T): `briefs/U6.1-*.md` *(d207730: U6.1-bench hard, U6.1-edit easy; no shared files)*
 - [x] **Step 2: Build** (W10-B, one per brief; at most 2 at once) *(bench c703281 builder-plus; edit dd0d83f builder)*
 - [x] **Step 3: Review** (reviewer W10-R); merge; T91, T92, T93 done *(edit ACCEPT merged ea7c0f5; bench REOPEN once (-- before verb, validate --out), ACCEPT on re-review, merged 58df639; follow-ups T101)*
 
-### Unit U4.9: Yaw authority fix and concept-a battery harness (T37, T60; D57, D58)
+### Unit U6.2: Yaw authority fix and concept-a battery harness (T37, T60; D57, D58)
 
 **Scope:** T37: advisor W11-A picks the `T3.control_authority` yaw fix (D58), tactician briefs it, builder-plus builds it (core and tests only). T60: design-engineer W11-G sets concept-a `hrn-bat` to 10 AWG with `plane design set` (designs only, D57) and reports the gates before and after. Separate branches; the T60 branch touches no `core/`.
 
-- [x] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U4.9-t37.md` *(pick: `briefs/U4.9-t37-advice.md`, D58; brief f234a51, hard; baseline unchanged)*
+- [x] **Step 1:** Advisor pick and brief (W11-A, W11-T): `briefs/U6.2-t37.md` *(pick: `briefs/U6.2-t37-advice.md`, D58; brief f234a51, hard; baseline unchanged)*
 - [x] **Step 2:** Build T37 (W11-B); T60 design change (W11-G) *(t37 b3049cd builder-plus, baseline unchanged; t60 07969fd 10 AWG, D57 amended)*
 - [x] **Step 3: Review** (reviewer W11-R); merge; T37, T60 done *(T37 ACCEPT merged 2c41f6f; T60 REOPEN once (reimport test pinned 14 AWG), ACCEPT on re-review, merged 7c3b87a; follow-ups T98, T99)*
 
-### Unit U4.10: v1.1 cleanup, first batch (T83, T86, T88, T90; P175)
+### Unit U6.3: v1.1 cleanup, first batch (T83, T86, T88, T90; P175)
 
 **Scope:** T83 explain the remaining FAIL-only check ids; T86 T3 nested-import rollback and the mixed point-mass/mesh harness test; T88 move `PROP_CHAIN_MAX_INTERMEDIATE` to `standards/*.yaml` with a source or `pending`; T90 one shared `hangar/ids.py` `ID_RE` with fullmatch in mcp_server.py and morph.py, Studio message wording. T28 stays held until after Dec 2 (D52); T67 and the T4-T19 items come in a later batch.
 
-- [x] **Step 1: Briefs** (tactician W12-T): `briefs/U4.10-*.md` *(four easy briefs, landed in 285d9e4; order: T88+T90, then T83 before T86)*
+- [x] **Step 1: Briefs** (tactician W12-T): `briefs/U6.3-*.md` *(four easy briefs, landed in 285d9e4; order: T88+T90, then T83 before T86)*
 - [x] **Step 2: Build** (W12-B, one per brief; at most 2 at once) *(t88 9c8375a, t90 018f74e, t83 e7efc5c, t86 4a1263f; all builder)*
 - [x] **Step 3: Review** (reviewer W12-R); merge; T83, T86, T88, T90 done *(T83, T88 ACCEPT merged 8c720eb, 34d21b2; T86, T90 REOPEN once, ACCEPT on re-review, merged 7741d29, a4894dc; follow-ups T100, T102)*
 
-### Unit U4.11: Recompute the 40 read_value claims (T28; D59 overrules D52)
+### Unit U6.4: Recompute the 40 read_value claims (T28; D59 overrules D52)
 
-**Scope:** register `read_value` (brief `U4.3-t28.md`, refreshed on current main), core and tests only; then, on a separate branch, refresh concept-a claim statuses through the CLI if they are stored in `designs/` and update the deck (`docs/deck/index.html`) and `u4.2/metrics.md`/`deck-outline.md` lines that say the claims are not recomputed, with the measured PASS/FAIL counts.
+**Scope:** register `read_value` (brief `U5.1-t28.md`, refreshed on current main), core and tests only; then, on a separate branch, refresh concept-a claim statuses through the CLI if they are stored in `designs/` and update the deck (`docs/deck/index.html`) and `u4.2/metrics.md`/`deck-outline.md` lines that say the claims are not recomputed, with the measured PASS/FAIL counts.
 
-- [x] **Step 1: Brief** (tactician W13-T): `briefs/U4.11-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
+- [x] **Step 1: Brief** (tactician W13-T): `briefs/U6.4-t28.md` (core) and the docs/designs follow-up steps *(0c113a6; measured: 40 SKIP -> 40 PASS, 0 FAIL; baseline 40 improvements, refresh in part 2; stale deck totals T97 go into part 2)*
 - [x] **Step 2: Build** (W13-B): core branch, then the docs/designs branch *(core e03fc2b, W13-R ACCEPT, merged b8b03cc, T28 done; docs 0f84a10/64e851d/7728d83 merged 57a3a40)*
 - [x] **Step 3: Review** (reviewer W13-R); merge; T28 done *(core ACCEPT; part 2 REOPEN once (slide title), ACCEPT; reviews/2026-11-23-w13.md; T97 done; follow-ups T103, T104)*
 
-### Unit U4.12: Dec 2 prep: demo re-run on current main, claims wording sweep (U4.2 Step 2, T104; P186)
+### Unit U7.1: Dec 2 prep: demo re-run on current main, claims wording sweep (U14.1 Step 2, T104; P186)
 
 **Scope:** re-run every step of `u4.2/demo-script.md` on a scratch clone of current main (never `designs/`) and update expected outputs, wall times and fallbacks; brief and build T104 (README.md, docs/cli.md wording per D60). The backup video stays with Tristan.
 
@@ -688,31 +688,31 @@ Not a code unit; it tests everything above.
 - [x] **Step 3: Review** (reviewer W14-R); merge; T104 done *(T104 ACCEPT, merged c7a5dc7 with windows red only on the T84 race (W14-A diagnosis); demo re-run REOPEN once, ACCEPT 7540ad7; follow-up T105)*
 - [x] **Step 4:** T84 reopened in place: Studio stores DESIGNS_DIR/DATA_DIR/CACHE_FILE at construction so leaked workers cannot touch another test's sandbox (W14-A); brief W14-T2, build W14-B2 (builder-plus), review W14-R *(38bb968, W14-R ACCEPT, windows CI green, merged afcc8d2; T84 done; follow-up T109)*
 
-### Unit U4.13: BOM spares double count (T94; P186)
+### Unit U7.2: BOM spares double count (T94; P186)
 
 **Scope:** importer `importers/dbf_blocks.py:27` stops adding spares to a qty that already includes them (core + tests); then a designs-only branch sets concept-a P01 qty 5 and M01 qty 3 with `plane design set` (BOM lines total $1262.50) and refreshes any test that pins the old quantities.
 
-- [x] **Step 1: Brief** (tactician W15-T): `briefs/U4.13-t94.md` *(d4407ec; only P01 and M01 have spares)*
+- [x] **Step 1: Brief** (tactician W15-T): `briefs/U7.2-t94.md` *(d4407ec; only P01 and M01 have spares)*
 - [x] **Step 2: Build** (W15-B): core branch, then designs branch *(core d5bcda9, W15-R ACCEPT, merged df2d19e; designs 50aeb72/b70291a merged be51625)*
 - [x] **Step 3: Review** (reviewer W15-R); merge; T94 done *(both parts ACCEPT, reviews/2026-11-24-w15.md; BOM $1262.50)*
 
-### Unit U4.14: v1.1 cleanup, second batch (T99, T100, T101, T102; P186)
+### Unit U7.3: v1.1 cleanup, second batch (T99, T100, T101, T102; P186)
 
 **Scope:** the non-blocking follow-ups of W10-R to W12-R: yaw SKIP text and control-moment data key (T99); T83 guard beyond checks.py, scorecard criterion form, T1.motor_has_prop criterion, research.py SLUG_RE fullmatch, ID_RE imports from hangar.ids (T100); bench path mapping of option values, PLANE_BENCH_LOG pinning, SWEEP_ROOT redirect, tree_digest docstring (T101; the paid redirection probe stays open); T86 recovery test and comment (T102).
 
-- [x] **Step 1: Briefs** (tactician W16-T): `briefs/U4.14-*.md` *(bb136c4: four easy briefs; T99 before U4.15 T95; T101 before T100; T99 untrimmed-yaw criterion deferred to U4.15; paid probe stays open)*
+- [x] **Step 1: Briefs** (tactician W16-T): `briefs/U7.3-*.md` *(bb136c4: four easy briefs; T99 before U7.4 T95; T101 before T100; T99 untrimmed-yaw criterion deferred to U7.4; paid probe stays open)*
 - [x] **Step 2: Build** (W16-B, at most 2 at once) *(t99 5ec7d16, t102 297f94e, t101 579406a (brief amendment 1: patch extracted mechanically), t100 4946c8a; all builder)*
 - [x] **Step 3: Review** (reviewer W16-R); merge; T99-T102 done *(T99, T102, T100 ACCEPT merged 9fb1a6b, 790249e, 672bc11; T101 REOPEN once (--template path), ACCEPT, merged e72f545; T101 stays open for the paid redirection probe)*
 
-### Unit U4.15: v1.1 features (T95, T103, T67; P186)
+### Unit U7.4: v1.1 features (T95, T103, T67; P186)
 
 **Scope:** T95 prop reaction torque in PDL (optional `propulsion.spin`, `propulsion.torque_per_thrust_m` with `_source`; schema minor 1.0 -> 1.1) and its use in T3.control_authority yaw; T103 a distinct status or marker for stored-result (read_value) claims; T67 ops `bom.list`, `morph.list`, `idea.list` (davinci push/pull only if the adapter supports it, else stays open).
 
-- [x] **Step 1: Briefs** (tactician W17-T): `briefs/U4.15-*.md` *(32336a4: t95 hard (patch A/B by T99), t103 easy (read flag on PASS), t67 easy (3 list ops); D61; leftovers T106, T107)*
+- [x] **Step 1: Briefs** (tactician W17-T): `briefs/U7.4-*.md` *(32336a4: t95 hard (patch A/B by T99), t103 easy (read flag on PASS), t67 easy (3 list ops); D61; leftovers T106, T107)*
 - [x] **Step 2: Build** (W17-B, at most 2 at once) *(t103 8b71ce1, t67 712ed3b builder; t95 7385e97 builder-plus, patch B)*
 - [x] **Step 3: Review** (reviewer W17-R); merge; T95, T103, T67 done *(all ACCEPT, reviews/2026-11-24-w17.md; merged e3c5b99, f9463d4, dce451a; follow-ups T107, T108)*
 
-### Unit U4.16: Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188)
+### Unit U7.5: Knowledge import of DBF-Combined docs/research (U2.2-3; D28 deferred, D62 runs it now; P188)
 
 **Scope:** turn DBF-Combined `docs/research/` (23 files @ a93f14da) into `knowledge/` entries through the existing templates (same pattern as U2.2-2, merged dc8902a): adapted not copied (the knowledge copy check must pass), each entry linked to its morph-chart cell where one fits, each source file listed in `PROVENANCE.md`; only sources actually opened are cited. Knowledge and provenance files only; no core/, designs/, standards/.
 

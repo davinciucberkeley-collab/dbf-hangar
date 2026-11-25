@@ -344,7 +344,7 @@ def test_run_replays_the_agent_commands_and_fails_a_direct_edit(direct_edit, fak
         assert r.data["passed"] is True and r.data["score"] == 1.0 and record["messages"] == []
 
 
-# ---- U4.8 (T91, T92, T93): designs dir in the workspace, pinned snapshot, replay allow-list, path mapping, unwritable log ----
+# ---- U6.1 (T91, T92, T93): designs dir in the workspace, pinned snapshot, replay allow-list, path mapping, unwritable log ----
 def _log_rows(log, *rows):
     log.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8", newline="\n")
 

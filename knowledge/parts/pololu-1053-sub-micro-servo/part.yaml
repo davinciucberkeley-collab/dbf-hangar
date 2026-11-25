@@ -1,0 +1,14 @@
+id: pololu-1053-sub-micro-servo
+name: 'Sub-Micro Servo 3.7g (Pololu item 1053, discontinued)'
+category: servo
+vendor: Pololu (distributor; manufacturer not stated)
+part_number: '1053'
+url: https://www.pololu.com/product/1053
+mass_g: 3.7
+dimensions_mm: [20.2, 8.5, 20.2]
+cad_status: representative-envelope
+cad_source: 'distributor page https://www.pololu.com/product/1053 (main page, size row): 20.2 x 8.5 x 20.2 mm, axis labels not stated; mass 3.7 g without the lead; page lists Resources (0), no CAD'
+verified: {by: W31-S3, date: '2026-11-25', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [20.2, 8.5], thickness: 20.2}

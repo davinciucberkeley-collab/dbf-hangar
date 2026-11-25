@@ -1,0 +1,32 @@
+schema_version: "1.2"
+id: derived-planform
+name: "derived planform fixture"
+status: concept
+description: "fuselage, wing_panel wing and tail_surfaces tail, no planform"
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+requirements: {mtow_g: 2000, cruise_speed_mps: 20, stall_speed_max_mps: 12}
+flight: {cl_max: 1.2}
+root: fuselage
+components:
+  - id: fuselage
+    type: fuselage
+    geometry: {generator: fuselage_loft, params: {stations: [[0, 60, 60], [150, 120, 130], [450, 100, 110], [800, 30, 30]], nose_length: 60, tail_length: 100}}
+    position: [0, 0, 0]
+    mass_g: 300
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: wing
+    type: wing
+    geometry: {generator: wing_panel, params: {airfoil_file: airfoils/diamond.dat, span: 1200, root_chord: 200, tip_chord: 140, z_offset: 40}}
+    position: [200, 0, 0]
+    mass_g: 250
+    manufacturing: {method: foamboard}
+  - id: tail
+    type: tail_surface
+    geometry: {generator: tail_surfaces, params: {airfoil_file: airfoils/diamond.dat, stab_span: 400, stab_root_chord: 120, stab_tip_chord: 90, fin_thickness: 4, fin_height: 140, fin_root_chord: 130, fin_tip_chord: 80}}
+    position: [750, 0, 0]
+    mass_g: 60
+    manufacturing: {method: foamboard}
+attachments:
+  - {id: wing-fuse, parent: fuselage, child: wing, method: glued, location: [250, 0, 40], embed_ok: true, rated_load_n: 100}
+  - {id: tail-fuse, parent: fuselage, child: tail, method: glued, location: [750, 0, 0], embed_ok: true, rated_load_n: 30}

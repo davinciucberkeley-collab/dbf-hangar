@@ -1,4 +1,4 @@
-"""U4.21: PDL 1.2 generator geometry, parameters, references, regeneration on design set (hand numbers from the brief)."""
+"""U9.1: PDL 1.2 generator geometry, parameters, references, regeneration on design set (hand numbers from the brief)."""
 from __future__ import annotations
 
 import copy
@@ -10,7 +10,7 @@ import trimesh
 import yaml
 
 from hangar.checks import tier0_schema
-from hangar.design import DESIGNS_DIR, Design, load_design
+from hangar.design import DESIGNS_DIR, REPO_ROOT, Design, load_design
 from hangar.export import export_glb, export_stl, to_scene
 from hangar.fea import part_hash
 from hangar.geom.params import find_references, resolve_references
@@ -18,6 +18,7 @@ from hangar.geom.resolve import resolve_design_data
 from hangar.geometry import component_parts
 from hangar.mass import mass_properties
 from hangar.ops import call
+from testutil import LEGACY_DESIGNS
 
 FIXTURES = Path(__file__).parent / "fixtures"
 GEN = FIXTURES / "pdl-gen"
@@ -129,22 +130,15 @@ def test_tier0_reference_and_generator_failures(mut, check, needle):
     assert any(needle in m for m in hits), hits
 
 
-GENERATOR_DESIGNS = {"concept-a-param"}      # the only committed design that uses generators (U4.22); every other folder is an old design
-
-
 def test_old_designs_untouched():
-    folders = sorted(p.parent for p in DESIGNS_DIR.glob("*/plane.yaml")) + [FIXTURES / "concept-a-frozen"]
-    skipped = [f for f in folders if f.name in GENERATOR_DESIGNS]      # skipped by name, never by what load_design detects (T123)
-    assert {f.name for f in skipped} == GENERATOR_DESIGNS
-    checked = 0
+    folders = [DESIGNS_DIR / n for n in LEGACY_DESIGNS if (DESIGNS_DIR / n / "plane.yaml").is_file()] + [FIXTURES / "concept-a-frozen"]
     for f in folders:
-        if f in skipped:
-            continue
-        checked += 1
         d = load_design(f)
         assert d.raw is None and d.resolve_errors == {}, f
         assert not any(r.check_id in ("T0.parameters", "T0.generator") for r in tier0_schema(d).results), f
-    assert checked == len(folders) - len(skipped) and checked >= 8
+    assert len(folders) >= 2
+    if DESIGNS_DIR == REPO_ROOT / "designs":
+        assert len(folders) == len(LEGACY_DESIGNS) + 1
 
 
 def test_design_set_parameter_regenerates(tmp_path):

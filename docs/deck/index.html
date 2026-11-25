@@ -14,6 +14,9 @@ code{font-family:Consolas,monospace;background:#2a2a2a;padding:0 .25em;border-ra
 .src{position:absolute;left:7vw;right:14vw;bottom:3vh;font-size:1.8vmin;color:#9a9a9a}
 #ctr{position:fixed;right:3vw;bottom:3vh;font-size:2vmin;color:#9a9a9a}
 .warn h1{color:#ff7a59}
+table{border-collapse:collapse;width:100%;font-size:3.1vmin;margin:1vh 0}
+th,td{border-bottom:1px solid #444;padding:.6vh 1.2vw;text-align:left;vertical-align:top}
+th{color:#ffd24a}
 aside{display:none}
 body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom:0;max-height:38vh;overflow:auto;background:#000d;color:#cfe;padding:1.5vh 3vw;font-size:2.2vmin;line-height:1.35;border-top:2px solid #ffd24a}
 @media print{
@@ -66,11 +69,11 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <aside>Every set writes a CHANGELOG entry with old value, new value and a reason. Designs-only PRs never touch core/.</aside></section>
 
 <section class="slide"><h1>One operation, three surfaces</h1>
-<ul><li>One <code>@op</code> registry: 55 ops registered</li>
+<ul><li>One <code>@op</code> registry: 65 ops registered</li>
 <li>CLI, MCP and Studio are generated from it</li>
 <li>Gap (M2): not fully generated. 4 hand-written MCP tools, Studio-only routes, CLI-only commands</li></ul>
-<div class="src">Source: reviews/2026-11-22-whole-branch.md:49; metrics.md M2 (ran <code>plane ops list</code>, 55 lines, 11-24)</div>
-<aside>Be upfront: M2 is the one metric rated GAP.</aside></section>
+<div class="src">Source: reviews/2026-11-22-whole-branch.md:49; metrics.md M2; ran 2026-11-25 on 5c6a0ba: <code>plane ops list</code> = 65 lines (55 on 11-24), <code>grep -c "@mcp.tool" core/hangar/mcp_server.py</code> = 4</div>
+<aside>Be upfront: M2 is the one metric rated GAP. Op count: 55 on 11-24, 65 on 11-25 (fresh clone of 5c6a0ba); the 4 hand-written MCP tools are unchanged.</aside></section>
 
 <section class="slide"><h1>Plane Studio</h1>
 <ul><li>One app, six modes</li>
@@ -79,27 +82,60 @@ body.notes .slide.on aside{display:block;position:absolute;left:0;right:0;bottom
 <div class="src">Source: viewer/README.md; viewer/app.js:9; metrics.md M3</div>
 <aside>Pages link: https://davinciucberkeley-collab.github.io/dbf-hangar/. Caveat: R11 "drag it around" is not built; Physics replays analytic sweeps (D43, v1.1).</aside></section>
 
+<section class="slide"><h1>Any aircraft from a prompt</h1>
+<ul><li>Blank start: <code>plane design new &lt;id&gt; --blank</code>, then <code>plane generators list</code>, <code>plane design add</code>, <code>plane design apply</code></li>
+<li>Real parts: <code>plane parts list</code>; the library has envelopes and licence notes</li>
+<li>Checks chosen by aircraft type, plus renders: <code>plane design render</code>, <code>plane design bounds</code></li></ul>
+<div class="src">Source: docs/team-guide.md "Starting a new concept"; core/hangar/gates/applicability.py (checks by lift and vtol type); plan §3 D77, D78; <code>plane ops list</code> = 65 lines (ran 2026-11-25 on 5c6a0ba)</div>
+<aside>The capability is D77 and D78: any real aircraft, rehearsed on the A400M and the Cessna 172, and both were built this way (slide 9). Mechanical fidelity is out of scope (D85); slide 10 says what the model is and is not.</aside></section>
+
+<section class="slide"><h1>Rehearsals, measured (measured, not targets)</h1>
+<table>
+<tr><th>Run</th><th>Time and calls</th><th>Result</th></tr>
+<tr><td>Rehearsal 1, A400M</td><td>73 min, about 150 calls</td><td>1 FAIL; PR #5</td></tr>
+<tr><td>Rehearsal 1, C172</td><td>blocked</td><td>no CLI operation could add components</td></tr>
+<tr><td>Rehearsal 2, C172</td><td>38 min, about 60 calls</td><td>0 FAIL; PR #6</td></tr>
+<tr><td>Rehearsal 2, A400M</td><td>47 min, about 45 calls</td><td>0 FAIL; PR #7</td></tr>
+<tr><td>Rehearsal 3, A400M</td><td>55 min, about 75 calls</td><td>0 FAIL, 24 WARN<sup>a</sup>; PR #8</td></tr>
+</table>
+<p style="font-size:2.2vmin;color:#9a9a9a">a: 28 WARN at rehearsal time (plan U13.1 step 4); the same design on main shows 24 WARN, not investigated.</p>
+<div class="src">Source: plans/2026-11-20-standardization.md Unit U13.1 steps 1 to 4; <code>gh pr view 5</code>, <code>6</code>, <code>7</code>, <code>8</code> -R davinciucberkeley-collab/dbf-hangar, read 2026-11-25: PR #5 CLOSED (not draft), PR #6, #7 and #8 OPEN, draft; 24 WARN: <code>plane design validate designs/a400m-rc</code>, ran 2026-11-25 on 65d006a (demo-script.md step 4)</div>
+<aside>Both rehearsal-2 runs raised joint ratings without a source to clear the T2 drop-load checks (caveat in the plan); rehearsal 3 left them as placeholders and listed them. Times are agent wall time, not a promise. The 28 WARN is the count at rehearsal time; the 24 WARN is the count on main today, cause not investigated.</aside></section>
+
+<section class="slide warn"><h1>What the model is and is not</h1>
+<ul><li>Is: recognisable geometry, and real parts placed sensibly</li>
+<li>Is not: rolling wheels, or kinematic linkage checking beyond the T6 recipe</li>
+<li>Control surfaces can clip at large deflection (rehearsal 3 gap 2)</li>
+<li>Parts without vendor CAD are labelled envelopes (D82); licensed CAD only in a local overlay (D83), never in CI or the public viewer</li>
+<li>Ratings and prices are placeholders, not invented</li>
+<li>The static margin check does not model the fuselage</li></ul>
+<div class="src">Source: plans/2026-11-20-standardization.md §3, decisions D82, D83, D85; gap logs of rehearsal 2 and 3 as on the PR #7 and PR #8 pages (<code>gh pr view 7</code>, <code>gh pr view 8</code>, read 2026-11-25); fuselage note in the scorecard: ran 2026-11-25 on 65d006a (demo-script.md step 4)</div>
+<aside>D85 (Tristan P267): mechanical fidelity is not in the Dec 2 scope. Envelopes are representative, not vendor geometry (D82). The overlay is off on stage, so the numbers match CI (demo-script Decision 3). Scorecard static margin is 23.4 % MAC with "fuselage effect not modelled"; a hand estimate of about 7.5 % by the rehearsal-3 agent is not a model number.
+PR #8 CI (gh pr checks 8, read 2026-11-25): validate shard 1 fails on ubuntu and windows, shards 2 and 3 pass. Cause: design-enumerating tests hard-coded the design set; fixed on main by U13.7-10 (1139dd0). PR #8 is based on 8d18034, older than main. Say it plainly: a do-not-merge rehearsal PR.</aside></section>
+
 <section class="slide"><h1>Parametric geometry: a demonstration</h1>
 <ul><li>One shared parameter drives the parts: <code>parameters.span_mm</code> 900 -&gt; 940</li>
 <li>Regenerates the wing core and spar; mass 1272.99 -&gt; 1279.79 g, CG x 21.35 -&gt; 21.65 mm</li>
 <li>4 parts generated (wing, spar, two fin tubes); about 100 stay imported meshes</li>
 <li>Honest: <code>concept-a-param</code> has 14 new FAIL rows from neutral-pose pockets (T121) and lacks concept-a's 4 cge stress FAILs (fea/ not copied): 20 FAIL vs concept-a's 10</li></ul>
 <div class="src">Source: designs/concept-a-param/README.md (lines 3-4, 45, 47-48); <code>plane design mass</code> and <code>plane design validate</code> on 11-24 (demo-script.md step 6); ledger D70, T121</div>
-<aside>A demonstration, not a design flow: G1 kernel and G2 generators only. The static margin is still a FAIL at 15.6% (concept-a 16.4%, the copy 15.7% at 900 mm). At 940 mm the full validate shows 19 FAIL (measured 11-24). Layout, sizing and joint rules are the roadmap (slide 17).</aside></section>
+<aside>A demonstration, not a design flow: G1 kernel and G2 generators only. The static margin is still a FAIL at 15.6% (concept-a 16.4%, the copy 15.7% at 900 mm). At 940 mm the full validate shows 19 FAIL (measured 11-24). Layout, sizing and joint rules are the roadmap (slide 20).</aside></section>
 
-<section class="slide"><h1>Live demo</h1>
-<ul><li>Example template: new, set, validate, fix</li>
-<li>Parametric step: span 900 to 940, regenerated parts, validate</li>
-<li>concept-a in Physics (elevon-r)</li>
-<li>Show PR #3 (no live propose)</li>
-<li>Publish the 11-30 week</li>
-<li>The one link. Launch Studio 15 minutes early</li></ul>
-<div class="src">Source: plans/2026-11-20-standardization/u4.2/demo-script.md (D46)</div>
+<section class="slide"><h1>Live demo: a pre-built run and one live change</h1>
+<ul><li>0:00-0:45 One CLI and one app; a prompt can build a real aircraft model (D77, D78)</li>
+<li>0:45-1:30 The prompt on screen, pasted, not run: rehearsal 3 took 55 min and about 75 calls</li>
+<li>1:30-2:15 PR #8 page: draft, do not merge; checks are the same CI as any PR</li>
+<li>2:15-4:15 Studio on the pre-built <code>a400m-rc</code>: rotate, scorecard, BOM, renders</li>
+<li>4:15-6:15 One live change: <code>concept-a-param</code> span 900 to 940 mm (D75), set and tier-1 validate</li>
+<li>6:15-7:15 Honest limits (slide 10)</li>
+<li>7:15-8:00 The one link</li></ul>
+<div class="src">Source: plans/2026-11-20-standardization/u4.2/demo-script.md (U14.1-2, 8 minutes; re-run ran 2026-11-25 on 65d006a); times are its Min column; PR #8 read with <code>gh pr view 8</code> on 2026-11-25</div>
 <aside>
-Flow (D46): template new, set, validate, fix; parametric span step; Physics on concept-a (elevon-r; elevon-l is in the click path only); PR #3; publish; the one Pages link.
-Decided (D46): show PR #3 (merged e2504d2), no live propose; publish the 11-30 week, whose updates/ entry must be merged to main before the demo, or the URL returns 404 (demo-script Issue 4); Tristan records the backup video at the 11-30 dry run.
-Studio: start 15 minutes early; a cold start is slow, never cold in the room. three.js loads from a CDN, so the room needs internet. Check that plane resolves on the demo laptop (Issue 6 in the script).
-Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside></section>
+Decided (demo-script Decision 1): the pre-built run (PR #8's designs/a400m-rc in a warm Studio) plus ONE short live change; the real run takes 55 min, far over the 8-minute slot.
+Live change: the A400M wing span failed its rule (8 new tier-1 FAILs, aileron hinge overlap), so the live change is the concept-a-param span step (D75). Measured on 65d006a: set 23.4 s, mass 7.3 s, tier-1 validate 40.1 s, total 70.8 s. The live check shows 12 FAILs; the full run prepared before the room has 18 (41.7 s).
+Fallbacks (demo-script ladder): 1 Studio or the clone cold or slow: show the PNG renders and the PR #8 page. 2 Live change fails or takes over about 90 s: skip to honest limits. 3 Prompt story fails: stay on the span step. 4 No internet: the recorded video (not recorded yet; Tristan records it at the 11-30 dry run).
+Studio: start 15 minutes early; three.js loads from a CDN, so the room needs internet. Overlay off (PLANE_CAD_OVERLAY=off). Do not say the demo was run live end to end: it is a pre-built run plus one live change.
+</aside></section>
 
 <section class="slide"><h1>Gates, tiers 0 to 9, and how sourced they are</h1>
 <ul><li>Schema, geometry, physics, aero, manufacturing, standards, mechanisms, integration, sourcing, claims</li>
@@ -117,19 +153,19 @@ Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside>
 
 <section class="slide"><h1>The harness</h1>
 <ul><li>10 agent roles in <code>.claude/agents/</code>; hooks enforce them</li>
-<li>Ledger: 438 items, 61 open, 0 overdue (all kinds: 40 rulings, 123 tasks, 1 idea, 274 decisions)</li>
+<li>Ledger: 477 items, 64 open, 0 overdue (all kinds: 40 rulings, 148 tasks, 2 ideas, 287 decisions)</li>
 <li><code>plane ledger report</code> before a meeting</li>
 <li>Weekly <code>plane update publish</code> (3.0 s, 11-22 run)</li></ul>
-<div class="src">Source: <code>ls .claude/agents</code> = 10; <code>plane ledger report</code>, 2026-11-24</div>
-<aside>Ledger counts move as items are added or closed; these are the live values on 2026-11-24.</aside></section>
+<div class="src">Source: <code>ls .claude/agents | wc -l</code> = 10; <code>plane ledger report</code>: ran 2026-11-25 on 5c6a0ba (fresh clone; 438 items and 61 open on 11-24)</div>
+<aside>Ledger counts move as items are added or closed; these are the live values on 2026-11-25 (overdue: none; open prompts: 0).</aside></section>
 
 <section class="slide"><h1>v1.0 facts and speed</h1>
 <ul><li><code>v1.0.0</code> tagged at <code>55fedae</code></li>
-<li>concept-a iteration loop: 120.9 s to 56.9 s (quiet, warm)</li>
-<li>78.9 s cold; results byte-identical</li>
-<li>60 s target met by about 3 s: thin</li></ul>
-<div class="src">Source: reviews/2026-11-22-w4.md:94-108; metrics.md M9</div>
-<aside>Medians of 3 quiet runs each. A loaded machine took 113.5 s. A fresh clone took 83 s cold. On 11-24 a full concept-a validate took 82.6 s (JSON run).</aside></section>
+<li>concept-a iteration loop (<code>design set</code> then <code>validate</code>): 120.9 s before, 56.0 s now</li>
+<li>Span change on a copy of concept-a-param (900 to 820 mm, <code>design set</code>): 18.6 s</li>
+<li>60 s target met by about 4 s: thin</li></ul>
+<div class="src">Source: reviews/2026-11-22-w4.md:94-108 (120.9 s before, 11-22); ran 2026-11-25 on 5c6a0ba, median of 3 runs: concept-a loop 56.0 s (set 5.5 s plus validate 49.9 s medians; totals 71.1, 56.0, 52.8 s), concept-a-param span set 18.6 s (17.5, 20.7, 18.6 s); tag: <code>git rev-parse --short v1.0.0^{commit}</code> = 55fedae, re-run 2026-11-25</div>
+<aside>Medians of 3 runs each, 2026-11-25, fresh clone of 5c6a0ba, <code>PLANE_CAD_OVERLAY=off</code>: concept-a <code>design set requirements.cruise_speed_mps</code> 17 to 18, then <code>plane design validate designs/concept-a</code> (default tiers, exit 1 as before). Validate alone: 65.6, 49.9, 48.9 s. The machine was not idle: 7 python.exe processes were running and were not stopped. Older values, not re-measured: 11-22 cold 78.9 s, loaded 113.5 s, fresh clone cold 83 s (reviews/2026-11-22-w4.md); 11-24 full concept-a validate 82.6 s (JSON run).</aside></section>
 
 <section class="slide warn"><h1>Caveat: PlaneBench 7 of 9</h1>
 <ul><li>7 of 9 runs passed, but mass-cut-10 was gamed</li>
@@ -153,9 +189,11 @@ Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside>
 <li>Joint ratings are placeholders: 64 joint checks SKIP; per-joint ratings are the first v1.1 task (T114)</li>
 <li>Landing gear drop test not done: landing_load_factor stays pending until T113 is measured</li>
 <li>No mass-gate number: the standards say 2.6 and 2.7 kg (D32, T12)</li>
+<li>U13.5 step 4 not done: the import guide is not yet sent to Dillon (Tristan)</li>
+<li>U13.7 steps 2 and 3 are not ticked, but U13.7-8, -9 and -10 are on main (5fd6604, d5dbb99, 1139dd0; -10 fixes the PR #8 CI failure); U13.7-6 (brief id rename) is pending</li>
 </ul>
-<div class="src">Source: ledger T113, T114, T12, D32; R1, R12, R14, R17, R31 done (merge d24b6df, ledger 11-24); metrics.md sections D and F; 64 = SKIP rows of T2.joint_load (32) and T2.sim_drop_loads (32) in <code>plane design validate designs/concept-a --tier all --json</code> (11-24)</div>
-<aside>If asked for a mass limit, say the sources disagree and the team has to pick. Requirements R1, R12, R14, R17 and R31 are closed by the concept-a re-import (merge d24b6df; T24 done in the ledger on 11-24). This supersedes the D33 open-gap wording (D72).</aside></section>
+<div class="src">Source: ledger T113, T114, T12, D32 (open, ran 2026-11-25 on 5c6a0ba); plans/2026-11-20-standardization.md U13.5 and U13.7; R1, R12, R14, R17, R31 done (merge d24b6df, ledger 11-24); metrics.md sections D and F; 64 = SKIP rows of T2.joint_load (32) and T2.sim_drop_loads (32) in <code>plane design validate designs/concept-a --tier all --json</code> (ran 2026-11-24 on b7b50cb)</div>
+<aside>Ledger 2026-11-25 (5c6a0ba): T113, T114, T116-T119 and T121 are all still open, so none is removed here; a closed item is removed, not kept. If asked for a mass limit, say the sources disagree and the team has to pick. Requirements R1, R12, R14, R17 and R31 are closed by the concept-a re-import (merge d24b6df; T24 done in the ledger on 11-24). This supersedes the D33 open-gap wording (D72).</aside></section>
 
 <section class="slide"><h1>Roadmap</h1>
 <ul><li>First: per-joint ratings from sourced stresses (T114), then joint selection rules (T118)</li>
@@ -163,7 +201,7 @@ Time plan: 7:45, see demo-script.md (step 7 shortened, PR steps merged).</aside>
 <li>Full flow: explore, propose 5 cards, human picks, build, gates (G7, T119)</li>
 <li>Pose-aware pockets (T121); gear drop test (T113)</li>
 <li>Still open from v1.0: SITL and Blender adapters (T9), mass-gate decision (T12)</li></ul>
-<div class="src">Source: ledger T9, T12, T113, T114, T116-T119, T121 (statuses checked 11-24); plan section 3 (D70)</div>
+<div class="src">Source: ledger T9, T12, T113, T114, T116-T119, T121 (statuses ran 2026-11-25 on 5c6a0ba: all open); plan section 3 (D70)</div>
 <aside>G5 (concept cards) was optional and is not started. Old v1.1 list items kept in the aside: T49 jam ratio (open), T37 yaw authority (ledger status done; the yaw row is a WARN "not judged"); other v1.1 tasks as in the previous deck notes (T3, T18, T23, T7, T16, T31, T19, T26, T17, T52, T53, T55, T11). Ledger 11-24: T24, T54 and T37 are marked done and are not listed as open.</aside></section>
 <div id="ctr"></div>
 <script>

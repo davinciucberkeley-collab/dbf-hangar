@@ -21,7 +21,7 @@ SUBJECT_KEYS = ("component", "joint", "pair", "parts", "pose", "machine", "claim
 DESIGN_LEVEL = frozenset({
     "T3.mass", "T3.stall", "T3.static_margin", "T3.lateral_cg", "T3.hover_tw", "T3.planform_matches_geometry",
     "T2.hover_moment", "T2.sim_rest", "T2.sim_stable",
-    "T3.control_authority", "T3.transition_margin", "T3.endurance",
+    "T3.control_authority", "T3.transition_margin", "T3.endurance", "T3.spar_bending",
     "T5.part107_mass", "T5.registration",
     "T0.version",
 })
@@ -101,6 +101,7 @@ def snapshot(scorecard: Scorecard) -> dict:
     """FAIL and SKIP results of a scorecard, one entry per key (worse status wins, duplicates get a count).
 
     T0 results and crashed or blocked tiers are never entries; they are listed under "blocking" instead.
+    SKIP rows flagged not_applicable (the check does not apply to the design's morphology) are left out.
     """
     found: dict[str, dict[str, Any]] = {}
     blocking = [{"check_id": r.check_id, "status": r.status, "message": r.message}
@@ -108,6 +109,8 @@ def snapshot(scorecard: Scorecard) -> dict:
     for tier in scorecard.tiers:
         for r in tier.results:
             if r.status not in (FAIL, SKIP) or is_blocking(r.check_id, r.status, r.message):
+                continue
+            if r.status == SKIP and r.not_applicable:
                 continue
             key = result_key(r.check_id, r.message, r.data)
             entry = found.get(key)

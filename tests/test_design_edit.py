@@ -172,10 +172,11 @@ def test_propose_runs_exact_git_and_gh_commands_without_network(tmp_example, tmp
     assert len(gh) == 1
     assert gh[0][:9] == ["gh-test", "-R", "davinciucberkeley-collab/dbf-hangar", "pr", "create",
                          "--head", branch, "--base", "main"]
-    assert "--title" in gh[0] and "design(example-tailsitter-wing): Lighter battery" in gh[0]
+    assert gh[0][gh[0].index("--title") + 1] == "Lighter battery" and "--draft" not in gh[0]
     commit = [c for c in calls if "commit" in c][0]
+    assert commit[-1].startswith("design(example-tailsitter-wing): Lighter battery")
     assert "Co-authored-by: Tristan Hottier <185231225+TristanHottier@users.noreply.github.com>" in commit[-1]
-    assert calls[-1] == ["git", "-C", str(tmp_path), "switch", "main"]      # back where we started
+    assert calls[-3:] == [["git", "-C", str(tmp_path), "switch", "main"], ["git", "-C", str(tmp_path), "checkout", branch, "--", str(tmp_example.resolve())], ["git", "-C", str(tmp_path), "reset", "-q", "--", str(tmp_example.resolve())]]
 
 
 def test_propose_resolves_a_relative_design_path(tmp_example, tmp_path, monkeypatch):
@@ -602,14 +603,16 @@ def test_remove_refusals(tmp_concept_a):
     text = _plane_text(tmp_concept_a)
     _refused(text, "attachments[E-NOPE]", "no element with id")
     _refused(text, "attachments[0]", "remove by index is not supported")
-    _refused(text, "attachments[E-MEC-HW-R1].location", "a nested path")
+    _refused(text, "attachments[E-MEC-HW-R1].location", "like name[id]")
     _refused(text, "attachments[E-MEC-HW-R1].location[0]", "remove by index is not supported")
-    _refused(text, "mechanisms[elevon-r].driven[E-MEC-03]", "a nested path")
+    _refused(text, "mechanisms[elevon-r].driven[E-MEC-03]", "no key 'mechanisms'")
     _refused(text, "attachments", "like name[id]")
+    _refused(text, "attachments[E-MEC-HW-R1][x]", "named by a key")
     _refused(text, "flight.cl_max", "like name[id]")
     _refused(text, "flight[x]", "needs a list")
     _refused(text, "attachments[E-WNG-10]", "without rewriting other text")      # multi-line flow entry
-    _refused("attachments:\n  - {id: a, parent: x, child: y}\n", "attachments[a]", "without rewriting other text")  # would empty the list
+    # removing a list's only element leaves `attachments: []` now (U13.2-3; tests/test_design_remove_last.py)
+    assert pdledit.remove_element("attachments:\n  - {id: a, parent: x, child: y}\n", "attachments[a]")[0] == "attachments: []\n"
 
 
 def test_remove_op_input_errors_write_nothing(tmp_concept_a):
@@ -620,7 +623,7 @@ def test_remove_op_input_errors_write_nothing(tmp_concept_a):
             (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1]=1"]), "takes no value"),
             (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1]"]), "--also needs KEY=VALUE"),
             (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-NOPE]="]), "no element with id"),
-            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1].location="]), "a nested path")):
+            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1].location="]), "like name[id]")):
         r = call("design.set", path=str(tmp_concept_a), kind="remove", why="t", **kw)
         assert r.ok is False and needle in " ".join(r.messages), (kw, r.messages)
         assert _bytes(tmp_concept_a) == before
@@ -796,7 +799,7 @@ def test_remove_leaves_the_other_entries_exactly_as_written(tmp_example):
         assert p.read_bytes() == raw.replace(AUTHORS_ONE.encode(), f"authors: {want}".encode()), (body, rm)
 
 
-# ---- U4.8 (T93): --append keeps the spaces before ']'; --remove refuses a mapping or list like --append ----
+# ---- U6.1 (T93): --append keeps the spaces before ']'; --remove refuses a mapping or list like --append ----
 def test_append_keeps_the_spaces_before_the_closing_bracket(tmp_example):
     p = tmp_example / "plane.yaml"
     raw = p.read_bytes()
@@ -857,3 +860,42 @@ def test_two_sweeps_in_the_same_second_and_process_get_distinct_folders(tmp_exam
     assert a.data["sweep_dir"] != b.data["sweep_dir"]
     assert (Path(a.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
     assert (Path(b.data["sweep_dir"]) / "1" / "plane.yaml").is_file()
+
+
+def test_branch_slug_cuts_at_a_word_boundary():
+    cases = {
+        "New test design from concept-a-param span change": "new-test-design-from-concept-a-param",
+        "Lighter battery": "lighter-battery",
+        "a" * 50: "a" * 40,
+        "x" * 39 + " yy": "x" * 39,
+        "!!!": "change",
+        "w" * 19 + " " + "w" * 20: "w" * 19 + "-" + "w" * 20,
+    }
+    for t, want in cases.items():
+        got = edit._branch_slug(t)
+        assert got == want, (t, got)
+        assert len(got) <= 40
+
+
+def test_propose_branch_name_is_cut_at_a_word(tmp_example, tmp_path, monkeypatch):
+    calls: list[list[str]] = []
+
+    def fake_run(argv, cwd):
+        calls.append(list(argv))
+        if "--show-toplevel" in argv:
+            return str(tmp_path) + "\n"
+        if "status" in argv:
+            return " M designs/example-tailsitter-wing/plane.yaml\n"
+        if "--abbrev-ref" in argv:
+            return "main\n"
+        if "create" in argv:
+            return "https://github.com/o/r/pull/8\n"
+        return ""
+
+    monkeypatch.setattr(edit, "_run", fake_run)
+    monkeypatch.setenv("HANGAR_GH", "gh-test")
+    r = call("design.propose", path=str(tmp_example), title="New test design from concept-a-param span change")
+    assert r.ok, r.messages
+    branch = "design/example-tailsitter-wing/new-test-design-from-concept-a-param"
+    assert r.data["branch"] == branch
+    assert ["git", "-C", str(tmp_path), "switch", "-c", branch] in calls

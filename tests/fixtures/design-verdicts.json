@@ -1,0 +1,115 @@
+{
+ "_recorded": {
+  "today": "2026-11-24",
+  "how": "run_gates(load_design(designs/<id>), 9, today=<today>) on origin/main; regenerate with the snippet in tests/test_applicability.py after the 2026-12-08 report-only flip"
+ },
+ "c0-a1": {
+  "accepted": false,
+  "tiers": {
+   "0": "PASS",
+   "1": "FAIL",
+   "2": "FAIL",
+   "3": "FAIL",
+   "4": "PASS",
+   "5": "PASS",
+   "7": "WARN",
+   "8": "WARN"
+  }
+ },
+ "c0-a2": {
+  "accepted": false,
+  "tiers": {
+   "0": "PASS",
+   "1": "FAIL",
+   "2": "FAIL",
+   "3": "WARN",
+   "4": "PASS",
+   "5": "PASS",
+   "7": "WARN",
+   "8": "WARN"
+  }
+ },
+ "c0-a3": {
+  "accepted": false,
+  "tiers": {
+   "0": "PASS",
+   "1": "FAIL",
+   "2": "FAIL",
+   "3": "FAIL",
+   "4": "PASS",
+   "5": "PASS",
+   "7": "WARN",
+   "8": "WARN"
+  }
+ },
+ "c0-lift-cruise": {
+  "accepted": false,
+  "tiers": {
+   "0": "PASS",
+   "1": "FAIL",
+   "2": "FAIL",
+   "3": "FAIL",
+   "4": "PASS",
+   "5": "PASS",
+   "7": "WARN",
+   "8": "WARN"
+  }
+ },
+ "concept-a": {
+  "accepted": false,
+  "tiers": {
+   "0": "PASS",
+   "1": "SKIP",
+   "2": "FAIL",
+   "3": "FAIL",
+   "4": "PASS",
+   "5": "PASS",
+   "6": "WARN",
+   "7": "WARN",
+   "8": "WARN",
+   "9": "PASS"
+  }
+ },
+ "concept-a-param": {
+  "accepted": false,
+  "tiers": {
+   "0": "PASS",
+   "1": "FAIL",
+   "2": "FAIL",
+   "3": "FAIL",
+   "4": "PASS",
+   "5": "PASS",
+   "6": "FAIL",
+   "7": "WARN",
+   "8": "WARN",
+   "9": "PASS"
+  }
+ },
+ "example-tailsitter-wing": {
+  "accepted": true,
+  "tiers": {
+   "0": "PASS",
+   "1": "PASS",
+   "2": "WARN",
+   "3": "WARN",
+   "4": "PASS",
+   "5": "PASS",
+   "7": "WARN",
+   "8": "WARN"
+  }
+ },
+ "tiltwing-cakir": {
+  "accepted": false,
+  "tiers": {
+   "0": "PASS",
+   "1": "FAIL",
+   "2": "FAIL",
+   "3": "FAIL",
+   "4": "FAIL",
+   "5": "PASS",
+   "6": "WARN",
+   "7": "WARN",
+   "8": "WARN"
+  }
+ }
+}

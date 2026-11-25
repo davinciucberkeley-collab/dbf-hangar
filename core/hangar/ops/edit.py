@@ -15,7 +15,7 @@ import yaml
 
 from . import op, OpResult, OpInputError
 from .. import design as design_mod
-from .. import pdledit
+from .. import pdledit, yamlfast
 from ..checks import validate
 from ..design import FAIL, load_design
 from ..ids import ID_RE
@@ -59,7 +59,7 @@ def _list_edit_args(append, remove, value, also, kind):
     return append is not None, pdledit.parse_set_value(raw)
 
 
-@op(name="design.set", summary="Change, add or remove values in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml.",
+@op(name="design.set", summary="Change, add or remove values (a [list] value replaces an existing one-line list, for example a position) in plane.yaml (byte-preserving; --kind add also takes one-line [list] or {mapping} values; --kind remove deletes one list element addressed name[id] or a.b[id] for a nested list and takes no value; --also KEY=VALUE for more pairs in one atomic call, KEY= for remove; --append X or --remove X adds one scalar entry to, or removes the first entry equal to X from, a one-line [list] value) and log them in CHANGELOG.yaml. Removing a list's only element leaves an empty list ([]).",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def set_op(path: str, key: str, *, value: str = None, why: str,
            kind: Literal["add", "subtract", "modify", "remove"] = "modify", also: list[str] = None,
@@ -85,7 +85,7 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
         pairs.append((k.strip(), v))
     if len({k for k, _ in pairs}) != len(pairs):
         raise OpInputError("a key is given more than once")
-    before = yaml.safe_load(text)
+    before = yamlfast.safe_load(text)
     working, entries = text, []
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     for k, raw in pairs:
@@ -98,8 +98,19 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
             working, gone = pdledit.remove_element(working, k)
             entries.append({"date": stamp, "key": k, "old": pdledit.render_flow(gone), "new": None, "why": why, "kind": kind})
             continue
+        if kind == "modify" and raw.strip().startswith("[") and raw.strip().endswith("]"):
+            new = pdledit.parse_value(raw)
+            data = yamlfast.safe_load(working)
+            old = pdledit.get_value(data, k)
+            if not isinstance(old, list):
+                raise OpInputError(f"{k}: is not a list; give one scalar")
+            if len(pairs) == 1 and old == new:
+                return OpResult(True, {"key": k, "old": old, "new": new, "changed": False}, [f"{k}: unchanged"])
+            working, old, new = pdledit.replace_list(working, k, new)
+            entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": kind})
+            continue
         new = pdledit.parse_value(raw) if kind == "add" else pdledit.parse_set_value(raw)
-        data = yaml.safe_load(working)
+        data = yamlfast.safe_load(working)
         if pdledit.exists(data, k):
             if isinstance(new, (list, dict)):
                 raise OpInputError(f"{k}: already set; a list or mapping cannot replace an existing value")
@@ -113,7 +124,12 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
         else:
             pdledit.get_value(data, k)      # raises the "no key" error
         entries.append({"date": stamp, "key": k, "old": old, "new": new, "why": why, "kind": kind})
-    pdledit.check_schema(before, yaml.safe_load(working), key)
+    from ..geom.params import expression_errors
+    after = yamlfast.safe_load(working)
+    fresh = [e for e in expression_errors(after) if e not in set(expression_errors(before))]
+    if fresh:
+        raise OpInputError("; ".join(f"{o}: {p}: {m}" for o, p, m in fresh))
+    pdledit.check_schema(before, yamlfast.safe_load(working), key)
     from ..geom.resolve import regeneration_report      # PDL 1.2: refuses the edit (nothing written) when a generated part fails
     regen = regeneration_report(text, working, plane)
     if regen is not None and regen["components"]:
@@ -127,7 +143,7 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
     if log_text and not log_text.endswith("\n"):
         log_text += eol
     combined = log_text + block
-    parsed = yaml.safe_load(combined)
+    parsed = yamlfast.safe_load(combined)
     if not isinstance(parsed, list) or len(parsed) < len(entries) or parsed[-len(entries):] != entries:
         raise OpInputError("CHANGELOG.yaml is not a YAML list; fix it by hand")
     plane.write_bytes(working.encode("utf-8"))
@@ -142,17 +158,80 @@ def set_op(path: str, key: str, *, value: str = None, why: str,
                     f"{'n/a' if m0 is None else f'{m0:.1f}'} -> {'n/a' if m1 is None else f'{m1:.1f}'} g, "
                     f"CG {fmt_cg(c0)} -> {fmt_cg(c1)} mm")
         out["regenerated"] = regen
+    inter = regen["interference"] if regen is not None else None
+    if inter and (inter["moved"] or inter["joints"]):
+        msgs.append(f"moved {len(inter['moved'])} part(s), {len(inter['joints'])} joint(s); interference: "
+                    f"{len(inter['new'])} new, {len(inter['cleared'])} cleared")
+        msgs += [f"new interference: {r['message']}" for r in inter["new"]]
+        msgs += [f"cleared: {r['message']}" for r in inter["cleared"]]
+        out["interference"] = inter
     if regen is not None and regen["failing"]:       # parts that already failed and still fail: reported, never a reason to refuse
         msgs += [f"still failing (not caused by this edit): {cid}: {m}" for cid, m in sorted(regen["failing"].items())]
         out["still_failing"] = regen["failing"]
     return OpResult(True, out, msgs, changed_files=[str(plane), str(log)])
 
 
+def _write_with_log(plane: Path, text: str, working: str, entries: list) -> Path:
+    """Write the patched plane.yaml and append `entries` to CHANGELOG.yaml (same list and line-ending handling as set_op)."""
+    log = plane.with_name("CHANGELOG.yaml")
+    eol = "\r\n" if "\r\n" in text else "\n"
+    log_text = _text(log) if log.exists() else ""
+    if log_text.strip() == "[]":
+        log_text = ""
+    block = yaml.safe_dump(entries, sort_keys=False, allow_unicode=True).replace("\n", eol)
+    if log_text and not log_text.endswith("\n"):
+        log_text += eol
+    combined = log_text + block
+    parsed = yaml.safe_load(combined)
+    if not isinstance(parsed, list) or len(parsed) < len(entries) or parsed[-len(entries):] != entries:
+        raise OpInputError("CHANGELOG.yaml is not a YAML list; fix it by hand")
+    plane.write_bytes(working.encode("utf-8"))
+    log.write_bytes(combined.encode("utf-8"))
+    return log
+
+
+@op(name="design.add", summary="Append one element ({id: ..., ...} as a one-line {mapping}) to a list such as components, attachments or bom.items (byte-preserving; id checked; the whole element is schema-checked before anything is written) and log it in CHANGELOG.yaml.",
+    mutates=True, render=lambda r: "\n".join(r.messages))
+def add_op(path: str, key: str, *, value: str, why: str) -> OpResult:
+    plane = _plane(path)
+    text = _text(plane)
+    if not why.strip():
+        raise OpInputError("why must not be empty")
+    element = pdledit.parse_value(value, allow_empty=True)     # e.g. geometry: {point_mass: {}}
+    if not isinstance(element, dict):
+        raise OpInputError("value must be a {mapping} with an id")
+    before = yaml.safe_load(text)
+    working, old, new = pdledit.append_element(text, key, element)
+    from ..geom.params import expression_errors
+    after = yaml.safe_load(working)
+    fresh = [e for e in expression_errors(after) if e not in set(expression_errors(before))]
+    if fresh:
+        raise OpInputError("; ".join(f"{o}: {p}: {m}" for o, p, m in fresh))
+    pdledit.check_schema(before, after, key)
+    from ..geom.resolve import regeneration_report
+    regen = regeneration_report(text, working, plane)
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    eid = element["id"]
+    entry = {"date": stamp, "key": f"{key}[{eid}]", "old": None, "new": element, "why": why, "kind": "add"}
+    if regen is not None and regen["components"]:
+        entry["regenerated"] = sorted(regen["components"])
+    log = _write_with_log(plane, text, working, [entry])
+    msgs = [f"{key}[{eid}]: added"]
+    if regen is not None and regen["components"]:
+        (m0, m1), (c0, c1) = regen["mass_g"], regen["cg_mm"]
+        fmt_cg = lambda c: " ".join(f"{x:.2f}" for x in c) if c else "n/a"
+        msgs.append(f"regenerated {', '.join(sorted(regen['components']))}: mass "
+                    f"{'n/a' if m0 is None else f'{m0:.1f}'} -> {'n/a' if m1 is None else f'{m1:.1f}'} g, "
+                    f"CG {fmt_cg(c0)} -> {fmt_cg(c1)} mm")
+    return OpResult(True, {"key": key, "id": eid, "index": len(old), "changed": True}, msgs,
+                    changed_files=[str(plane), str(log)])
+
+
 @op(name="design.diff", summary="List the keys whose values differ between two designs.",
     render=lambda r: "\n".join(f"{c['key']}: {c['a']!r} -> {c['b']!r}" for c in r.data["changes"]) or "no differences")
 def diff_op(a: str, b: str) -> OpResult:
-    fa = pdledit.flatten(yaml.safe_load(_text(_plane(a))))
-    fb = pdledit.flatten(yaml.safe_load(_text(_plane(b))))
+    fa = pdledit.flatten(yamlfast.safe_load(_text(_plane(a))))
+    fb = pdledit.flatten(yamlfast.safe_load(_text(_plane(b))))
     keys = list(fa) + [k for k in fb if k not in fa]
     changes = [{"key": k, "a": fa.get(k), "b": fb.get(k)} for k in keys
                if k not in fa or k not in fb or fa[k] != fb[k]]
@@ -186,14 +265,14 @@ def copy_op(src: str, new_id: str) -> OpResult:
 def sweep_op(path: str, key: str, *, values: list[str]) -> OpResult:
     plane = _plane(path)
     text = _text(plane)
-    before = yaml.safe_load(text)
+    before = yamlfast.safe_load(text)
     if not values:
         raise OpInputError("give at least one value")
     pdledit.get_value(before, key)
     pairs = []
     for raw in values:
         t = pdledit.patch_text(text, key, pdledit.parse_set_value(raw))
-        pdledit.check_schema(before, yaml.safe_load(t), key)
+        pdledit.check_schema(before, yamlfast.safe_load(t), key)
         pairs.append((raw, t))
     did = str(before.get("id", plane.parent.name))
     base = _sweep_root() / did
@@ -241,15 +320,26 @@ def _run(argv: list[str], cwd: str) -> str:
     return p.stdout
 
 
-@op(name="design.propose", summary="Commit a design change on a new branch, push it and open a PR against main.",
+def _branch_slug(title: str, limit: int = 40) -> str:
+    """Kebab-case slug of `title`, at most `limit` characters, cut at a word boundary (a single longer word is cut hard)."""
+    full = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")
+    if len(full) <= limit:
+        return full or "change"
+    cut = full[:limit]
+    if full[limit] != "-" and "-" in cut:
+        cut = cut[:cut.rindex("-")]
+    return cut.strip("-") or "change"
+
+
+@op(name="design.propose", summary="Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree.",
     mutates=True, render=lambda r: r.data["pr_url"])
-def propose_op(path: str, title: str) -> OpResult:
+def propose_op(path: str, title: str, *, draft: bool = False) -> OpResult:
     plane = _plane(path)
     ddir = str(plane.parent.resolve())
-    did = str(yaml.safe_load(_text(plane))["id"])
+    did = str(yamlfast.safe_load(_text(plane))["id"])
     if not title.strip():
         raise OpInputError("title must not be empty")
-    slug = re.sub(r"[^a-z0-9]+", "-", title.lower()).strip("-")[:40].strip("-") or "change"
+    slug = _branch_slug(title)
     branch = f"design/{did}/{slug}"
     subject = f"design({did}): {title}"
     root = _run(["git", "-C", ddir, "rev-parse", "--show-toplevel"], ddir).strip()
@@ -262,9 +352,14 @@ def propose_op(path: str, title: str) -> OpResult:
         _run(["git", "-C", root, "add", "--", ddir], root)
         _run(["git", "-C", root, "commit", "-m", f"{subject}\n\n{OWNER_TRAILER}"], root)
         _run(["git", "-C", root, "push", "-u", "origin", branch], root)
-        out = _run([_gh(), "-R", GH_REPO, "pr", "create", "--head", branch, "--base", "main",
-                    "--title", subject, "--body", body], root)
+        argv = [_gh(), "-R", GH_REPO, "pr", "create", "--head", branch, "--base", "main",
+                "--title", title, "--body", body]
+        if draft:
+            argv.append("--draft")
+        out = _run(argv, root)
     finally:
         _run(["git", "-C", root, "switch", start], root)
     url = [l for l in out.splitlines() if l.strip()][-1].strip()
+    _run(["git", "-C", root, "checkout", branch, "--", ddir], root)
+    _run(["git", "-C", root, "reset", "-q", "--", ddir], root)
     return OpResult(True, {"pr_url": url, "branch": branch}, [url])

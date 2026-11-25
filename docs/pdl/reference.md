@@ -30,6 +30,12 @@ Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, se
 | `requirements.endurance_min` | number |  |  |
 | `requirements.budget_usd` | number |  |  |
 | `requirements.transport_box_mm` | array of number |  | v1.0. Transport box inner size [length, width, height] in mm. |
+| `mission` | object |  | v1.0. What this design is for. Numbers the gates judge against stay in `requirements` and `flight`. |
+| `mission.name` | string | yes |  |
+| `mission.profile` | one of `vtol-demonstrator`, `scale-model`, `trainer`, `utility`, `other` | yes |  |
+| `mission.statement` | string |  |  |
+| `mission.reference_aircraft` | string |  | The real aircraft a scale model copies, e.g. 'Airbus A400M'. |
+| `mission.source` | string |  | repo-relative path of the knowledge/ entry that states the mission. |
 | `flight` | object |  | Operating point used by tier-3 checks. |
 | `flight.cl_max` | number |  |  |
 | `flight.air_density_kgm3` | number |  |  |
@@ -89,7 +95,7 @@ Type: array of number
 | `manufacturing.cost_usd` | number |  |  |
 | `provenance` | `provenance` |  |  |
 | `propulsion` | object |  | Motors only. |
-| `propulsion.max_thrust_n` | number | yes |  |
+| `propulsion.max_thrust_n` | any | yes | Peak static thrust, N, from a datasheet or bench test; the text pending when no source exists (checks that need it are skipped). |
 | `propulsion.axis` | `vec3` | yes | Direction of the thrust FORCE on the aircraft (unit vector, body frame). Forward thrust is [-1,0,0] for tractors and pushers alike; hover lift at 0 deg pose is [0,0,1]. |
 | `propulsion.role` | one of `lift`, `cruise`, `both` |  |  |
 | `propulsion.max_current_a` | number |  | peak current at max_thrust_n, from a datasheet or bench test |
@@ -134,6 +140,7 @@ Type: array of number
 | `location` | `vec3` | yes | Joint point in body frame (mm). Must lie on or inside both parts (within tolerance). |
 | `embed_ok` | boolean |  | true if the child is meant to pass into the parent (spar into slot, motor into pod). |
 | `kinematic_link` | boolean |  | v0.4. true if the child is moved by a linkage the schema does not model (e.g. a servo pushrod driven by an elevon horn). Tier-1 pose and sweep interference skips pairs of this child with a part moved by that pose and reports them as one WARN per pose (T1.kinematic_link). Static (0 deg) checks are unchanged. |
+| `hinge_from` | `generator` |  | v1.2, optional. generator = the resolved location, articulation.pivot and articulation.axis come from the child's wing_panel hinge line (part elevon, side left or right) and follow its parameters; the values written here are a placeholder. An aileron, flap or elevon hinge follows a wing change this way. |
 | `rated_load_n` | number | yes |  |
 | `rating_basis` | one of `sourced`, `derived`, `placeholder` |  | v0.4. Where rated_load_n comes from. sourced: a published or tested capacity. derived: an allowable times measured geometry. placeholder: no capacity in the source; the value is not a capacity, and tier-2 load checks skip this joint (never PASS or FAIL it). |
 | `articulation` | object |  | v0.2. The joint moves. Rotation applies to the CHILD side: the child and everything attached downstream of it (reached from the child without crossing back through this joint). 0 deg = the geometry as written. |
@@ -205,7 +212,7 @@ v1.0. Who verified a BOM line, when and how.
 |---|---|---|---|
 | `by` | string | yes |  |
 | `date` | string | yes | Quote the date in YAML so it stays a string. |
-| `method` | one of `browser`, `datasheet`, `in-hand` | yes |  |
+| `method` | one of `browser`, `datasheet`, `in-hand`, `webfetch` | yes |  |
 | `evidence` | string |  |  |
 
 ### `bom_item`
@@ -223,6 +230,7 @@ v1.0. One bill-of-materials line.
 | `unit_cost_usd` | number |  |  |
 | `mass_g` | number |  |  |
 | `verified` | `bom_verified` |  |  |
+| `library_part` | `slug` |  | id of a knowledge/parts/ entry; T8 checks it exists. |
 
 ### `bom`
 
