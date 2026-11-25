@@ -179,7 +179,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.39 | Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard] | 1/3 | in progress | - |
 | U4.34 | Any-aircraft rehearsal (D77, D78) | 3/3 | done | - |
 | U4.41 | Rehearsal 2 gaps (D78) | 1/3 | in progress | - |
-| U4.40 | Importer fixes for Dillon's concept-a-reborn (D84) [hard] | 0/4 | not started | - |
+| U4.40 | Importer fixes for Dillon's concept-a-reborn (D84) [hard] | 1/4 | in progress | - |
 
 ### W14 Presentation
 

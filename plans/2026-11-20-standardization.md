@@ -937,7 +937,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** from the W32-T dry run (u4.40/dryrun-log.md, 1ca356e): B1 STL write/reload loses watertightness (motor PRP-001-LL, wing WNG-001; `dbf.py` `_write_stl`/`_canonical`, `dbf_geometry._separate_pinches`); B2 PRP-006 X-mounts re-opened by `_clean` after union/cuts; B3 connection types CT-A-M3-CSK-MOTOR and CT-A-M3-BOLT-MOUNT missing from the importer and `standards/connection-types.yaml` (sourced or pending); B4 `calcs/concept_a.py` `bom_cost` lacks the `rship` input; B5 `changelog.py` skips decision rows whose first cell is not a bare id (D-212..D-261) and reports success with 0 imported; distinct ids for the four D-212 revisions. B7 (wing planform 71,618 vs 220,500 mm2, static margin 116 % MAC) goes to Dillon/advisor, linked with U4.41 item 6. Existing designs unchanged. Dillon's guide (u4.40/dillon-import-guide.md) is sent only after this merges.
 
-- [ ] **Step 1: Briefs** (tactician W32-T)
+- [x] **Step 1: Briefs** (tactician W32-T) *(311c9f4: U4.40-1 types+cost (easy), -2 changelog import (hard), -3 X-mount pinch (hard), -4 STL weld (hard); guide updated)*
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R); merge
 - [ ] **Step 4: Send the guide to Dillon** (Tristan)
