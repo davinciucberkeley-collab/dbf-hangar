@@ -1,4 +1,4 @@
-"""U4.37-3: design.propose --draft, title kept as given, design kept in the working tree."""
+"""U13.3-3: design.propose --draft, title kept as given, design kept in the working tree."""
 from __future__ import annotations
 
 import subprocess

@@ -1,4 +1,4 @@
-"""U4.36-3: removing a list's only element leaves an empty list."""
+"""U13.2-3: removing a list's only element leaves an empty list."""
 from __future__ import annotations
 
 import shutil

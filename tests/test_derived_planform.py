@@ -1,4 +1,4 @@
-"""U4.37-1: tier 3 reads generated wing_panel wings and tail_surfaces tails without a declared planform."""
+"""U13.3-1: tier 3 reads generated wing_panel wings and tail_surfaces tails without a declared planform."""
 import copy
 import math
 from pathlib import Path

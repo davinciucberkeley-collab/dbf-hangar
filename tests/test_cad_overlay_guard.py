@@ -1,4 +1,4 @@
-"""U4.38-2: overlay-built outputs are local-only and refused on tracked paths (synthetic overlay, temp git repos)."""
+"""U12.5-2: overlay-built outputs are local-only and refused on tracked paths (synthetic overlay, temp git repos)."""
 from __future__ import annotations
 
 import copy

@@ -1,4 +1,4 @@
-"""U4.35: libyaml loader gives the same data and the same design.set results."""
+"""U11.2: libyaml loader gives the same data and the same design.set results."""
 from __future__ import annotations
 
 import json

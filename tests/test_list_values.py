@@ -1,4 +1,4 @@
-"""U4.41-2: set/apply replace a list value; remove a mid-list element of a one-line list."""
+"""U13.6-2: set/apply replace a list value; remove a mid-list element of a one-line list."""
 from __future__ import annotations
 
 import difflib

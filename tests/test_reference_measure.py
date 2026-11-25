@@ -1,4 +1,4 @@
-"""U4.33 step 3: reference.views and reference.measure on synthetic PNGs."""
+"""U12.4 step 3: reference.views and reference.measure on synthetic PNGs."""
 from __future__ import annotations
 
 import math

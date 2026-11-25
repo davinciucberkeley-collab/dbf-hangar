@@ -1,4 +1,4 @@
-"""U4.41 (3b): design.render writes headless PNG views."""
+"""U13.6 (3b): design.render writes headless PNG views."""
 from __future__ import annotations
 
 from pathlib import Path

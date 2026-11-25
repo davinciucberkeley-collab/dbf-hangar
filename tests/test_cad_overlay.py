@@ -1,4 +1,4 @@
-"""U4.38-1: local CAD overlay loader, config, parts show status, library_part geometry (synthetic meshes only)."""
+"""U12.5-1: local CAD overlay loader, config, parts show status, library_part geometry (synthetic meshes only)."""
 from __future__ import annotations
 
 import copy

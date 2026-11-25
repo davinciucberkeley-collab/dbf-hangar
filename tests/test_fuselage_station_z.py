@@ -1,4 +1,4 @@
-"""U4.37-4a / U4.39: fuselage_loft per-station centre z and opt-in smooth_rings."""
+"""U13.3-4a / U13.4: fuselage_loft per-station centre z and opt-in smooth_rings."""
 from __future__ import annotations
 
 import math

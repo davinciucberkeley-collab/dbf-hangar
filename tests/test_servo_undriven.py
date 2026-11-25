@@ -1,4 +1,4 @@
-"""U4.39-2: T6 warns when a servo drives no mechanism."""
+"""U13.4-2: T6 warns when a servo drives no mechanism."""
 import copy
 from pathlib import Path
 

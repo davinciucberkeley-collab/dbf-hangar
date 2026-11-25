@@ -6,7 +6,7 @@ wing_loading_max_g_dm2:
   value: 100.0
   rule: "T3.wing_loading: mass divided by the main-wing planform area must be at most this, g/dm^2 (conventional fixed-wing designs only)"
   source: pending
-  note: "provisional scale-RC figure; Tristan or Dillon to confirm against a scale-RC reference (U4.33 research)"
+  note: "provisional scale-RC figure; Tristan or Dillon to confirm against a scale-RC reference (U12.4 research)"
 fw_static_margin_min:
   value: 0.05
   rule: "T3.static_margin lower bound for a conventional fixed-wing design (fraction of MAC)"

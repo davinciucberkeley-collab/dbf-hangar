@@ -1,4 +1,4 @@
-"""U4.28: wing_panel pockets follow the neighbours' current placement; T1.pocket flags a part in uncut core."""
+"""U10.6: wing_panel pockets follow the neighbours' current placement; T1.pocket flags a part in uncut core."""
 from __future__ import annotations
 
 import shutil

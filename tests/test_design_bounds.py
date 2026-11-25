@@ -1,4 +1,4 @@
-"""U4.41: plane design bounds lists every component's bounding box in the body frame."""
+"""U13.6: plane design bounds lists every component's bounding box in the body frame."""
 from __future__ import annotations
 
 import copy

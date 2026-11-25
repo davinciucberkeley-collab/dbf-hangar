@@ -1,4 +1,4 @@
-"""U4.22 Part A: wing_panel, fin, plate, fuselage_loft, motor_mount (hand numbers from the brief)."""
+"""U9.2 Part A: wing_panel, fin, plate, fuselage_loft, motor_mount (hand numbers from the brief)."""
 from __future__ import annotations
 
 import shutil

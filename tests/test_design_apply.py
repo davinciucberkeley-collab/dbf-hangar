@@ -1,4 +1,4 @@
-"""U4.37-2: design.apply runs a batch of edits with one regeneration pass."""
+"""U13.3-2: design.apply runs a batch of edits with one regeneration pass."""
 from __future__ import annotations
 
 import shutil

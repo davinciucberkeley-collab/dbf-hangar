@@ -1,4 +1,4 @@
-"""U4.41: the design-engineer never invents ratings, requirements or thresholds to clear a check."""
+"""U13.6: the design-engineer never invents ratings, requirements or thresholds to clear a check."""
 from __future__ import annotations
 
 import shutil

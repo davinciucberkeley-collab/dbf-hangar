@@ -1,4 +1,4 @@
-"""U4.40-4: an STL written by the importer reloads watertight even when the mesh holds coincident vertex pairs."""
+"""U13.5-4: an STL written by the importer reloads watertight even when the mesh holds coincident vertex pairs."""
 import numpy as np
 import pytest
 import trimesh

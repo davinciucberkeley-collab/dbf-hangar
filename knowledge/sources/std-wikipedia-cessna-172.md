@@ -19,5 +19,5 @@ Encyclopedia article with a general-characteristics and performance block. The s
 - 172R: never-exceed 163 kn IAS; cruise 122 kn; stall 47 kn (power off, flaps down); range 696 nmi; service ceiling 13,500 ft; climb 721 fpm. (172R specifications section)
 
 ## How we could use it
-- Second source for span and length (two-source rule), and the propeller diameter and blade count for the `propeller` generator (planned U4.32), with the 172R caveat.
+- Second source for span and length (two-source rule), and the propeller diameter and blade count for the `propeller` generator (planned U12.3), with the 172R caveat.
 - Do not use the 172R mass or speed values for the 172S sheet.

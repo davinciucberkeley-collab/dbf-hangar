@@ -1,4 +1,4 @@
-"""U4.32-1: fuselage_loft nose and tail caps, upsweep, super-ellipse (hand formulas from the brief)."""
+"""U12.3-1: fuselage_loft nose and tail caps, upsweep, super-ellipse (hand formulas from the brief)."""
 from __future__ import annotations
 
 import math

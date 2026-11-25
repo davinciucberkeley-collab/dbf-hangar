@@ -1,4 +1,4 @@
-"""plane generators list / show read the geometry generator registry (U4.36)."""
+"""plane generators list / show read the geometry generator registry (U13.2)."""
 from __future__ import annotations
 
 from hangar.geom import registry as greg

@@ -1,4 +1,4 @@
-"""U4.31-1: real-parts library loader, library_part generator, T8 library rows, parts ops."""
+"""U12.2-1: real-parts library loader, library_part generator, T8 library rows, parts ops."""
 from __future__ import annotations
 
 import copy

@@ -1,4 +1,4 @@
-"""Local CAD overlay (U4.38, D82/D83): licensed part models that replace a library part's geometry on this machine only.
+"""Local CAD overlay (U12.5, D82/D83): licensed part models that replace a library part's geometry on this machine only.
 
 Mass, BOM and part.yaml always come from the committed part; the overlay changes geometry only. Nothing is written."""
 from __future__ import annotations

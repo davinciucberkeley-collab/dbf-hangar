@@ -611,7 +611,7 @@ def test_remove_refusals(tmp_concept_a):
     _refused(text, "flight.cl_max", "like name[id]")
     _refused(text, "flight[x]", "needs a list")
     _refused(text, "attachments[E-WNG-10]", "without rewriting other text")      # multi-line flow entry
-    # removing a list's only element leaves `attachments: []` now (U4.36-3; tests/test_design_remove_last.py)
+    # removing a list's only element leaves `attachments: []` now (U13.2-3; tests/test_design_remove_last.py)
     assert pdledit.remove_element("attachments:\n  - {id: a, parent: x, child: y}\n", "attachments[a]")[0] == "attachments: []\n"
 
 
@@ -799,7 +799,7 @@ def test_remove_leaves_the_other_entries_exactly_as_written(tmp_example):
         assert p.read_bytes() == raw.replace(AUTHORS_ONE.encode(), f"authors: {want}".encode()), (body, rm)
 
 
-# ---- U4.8 (T93): --append keeps the spaces before ']'; --remove refuses a mapping or list like --append ----
+# ---- U6.1 (T93): --append keeps the spaces before ']'; --remove refuses a mapping or list like --append ----
 def test_append_keeps_the_spaces_before_the_closing_bracket(tmp_example):
     p = tmp_example / "plane.yaml"
     raw = p.read_bytes()

@@ -1,4 +1,4 @@
-"""U4.24 G1 follow-ups (T122): S2, S4, S5, S6, S7."""
+"""U10.2 G1 follow-ups (T122): S2, S4, S5, S6, S7."""
 from __future__ import annotations
 
 import shutil

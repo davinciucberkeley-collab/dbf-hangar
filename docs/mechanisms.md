@@ -51,7 +51,7 @@ When a `mechanisms` list already exists, add the mechanism entry with `plane des
 ## 6. Warnings
 
 - `T6.undriven.<joint>`: an articulated joint that no mechanism drives.
-- `T6.servo_undriven.<servo>` (for conventional fixed-wing designs, from U4.39-2): a servo that no mechanism uses.
+- `T6.servo_undriven.<servo>` (for conventional fixed-wing designs, from U13.4-2): a servo that no mechanism uses.
 
 ## Splitting a wing into core and ailerons
 

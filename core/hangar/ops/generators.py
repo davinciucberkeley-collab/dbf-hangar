@@ -1,4 +1,4 @@
-"""Read-only view of the generator registry (U4.36)."""
+"""Read-only view of the generator registry (U13.2)."""
 from __future__ import annotations
 
 from . import op, OpResult, OpInputError

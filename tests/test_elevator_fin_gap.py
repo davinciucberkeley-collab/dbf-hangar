@@ -1,4 +1,4 @@
-"""U4.41-5: tail_surfaces elevator_fin_gap keeps the elevator clear of the fin (hand numbers from the brief)."""
+"""U13.6-5: tail_surfaces elevator_fin_gap keeps the elevator clear of the fin (hand numbers from the brief)."""
 from __future__ import annotations
 
 from pathlib import Path

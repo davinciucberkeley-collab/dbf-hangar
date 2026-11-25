@@ -1,4 +1,4 @@
-"""U4.32-4: tail_surfaces generator (hand numbers from the brief)."""
+"""U12.3-4: tail_surfaces generator (hand numbers from the brief)."""
 from __future__ import annotations
 
 import math

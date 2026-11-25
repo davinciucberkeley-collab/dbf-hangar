@@ -1,4 +1,4 @@
-"""U4.39-1: the servo, horn and pushrod recipe in docs/mechanisms.md stays verified."""
+"""U13.4-1: the servo, horn and pushrod recipe in docs/mechanisms.md stays verified."""
 import copy
 from pathlib import Path
 
