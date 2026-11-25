@@ -41,7 +41,8 @@ def verify_op(path: str, item: str, method: Literal["browser", "datasheet", "in-
               by: str) -> OpResult:
     if not evidence.strip() or not by.strip():
         raise OpInputError("evidence and by must not be empty")
-    p, text, data, items = _load(path)
+    p, _, data, items = _load(path)
+    text = p.read_bytes().decode("utf-8")  # raw bytes keep CRLF; read_text would normalise it
     index = next((i for i, it in enumerate(items) if isinstance(it, dict) and it.get("id") == item), None)
     if index is None:
         raise OpInputError(f"no bom item {item!r}")
@@ -52,39 +53,44 @@ def verify_op(path: str, item: str, method: Literal["browser", "datasheet", "in-
         raise OpInputError(f"{item} already verified by {existing.get('by')} on {existing.get('date')}; edit by hand")
 
     ruamel_root = YAML().load(text)
-    start = ruamel_root["bom"]["items"].lc.item(index)[0]
-    lines = text.splitlines(keepends=True)
-    if lines[start].lstrip().startswith("- {"):
-        raise OpInputError("flow-style bom line; edit by hand")
-    eol = "\r\n" if "\r\n" in text else "\n"
-    dash = len(lines[start]) - len(lines[start].lstrip())
-    last = start
-    for n in range(start + 1, len(lines)):
-        stripped = lines[n].strip()
-        if not stripped:
-            continue
-        indent = len(lines[n]) - len(lines[n].lstrip())
-        if indent <= dash:
-            break
-        if not stripped.startswith("#"):
-            last = n
-
+    items_node = ruamel_root["bom"]["items"]
+    flow = bool(items_node.fa.flow_style() or items_node[index].fa.flow_style())
     today = date.today().isoformat()
-    new = (" " * (dash + 2) + f"verified: {{by: {json.dumps(by)}, date: \"{today}\", method: {method}, "
-           f"evidence: {json.dumps(evidence)}}}")
-    if not lines[last].endswith("\n"):
-        lines[last] = lines[last] + eol
-    lines.insert(last + 1, new + eol)
-    patched = "".join(lines)
+    want = {"by": by, "date": today, "method": method, "evidence": evidence}
+    if flow:
+        patched = pdledit.add_value(text, f"bom.items[{item}].verified", want)
+        line = pdledit.render_flow(want)
+    else:
+        start = items_node.lc.item(index)[0]
+        lines = text.splitlines(keepends=True)
+        eol = "\r\n" if "\r\n" in text else "\n"
+        dash = len(lines[start]) - len(lines[start].lstrip())
+        last = start
+        for n in range(start + 1, len(lines)):
+            stripped = lines[n].strip()
+            if not stripped:
+                continue
+            indent = len(lines[n]) - len(lines[n].lstrip())
+            if indent <= dash:
+                break
+            if not stripped.startswith("#"):
+                last = n
+
+        new = (" " * (dash + 2) + f"verified: {{by: {json.dumps(by)}, date: \"{today}\", method: {method}, "
+               f"evidence: {json.dumps(evidence)}}}")
+        if not lines[last].endswith("\n"):
+            lines[last] = lines[last] + eol
+        lines.insert(last + 1, new + eol)
+        patched = "".join(lines)
+        line = new.strip()
 
     after = yaml.safe_load(patched)
-    want = {"by": by, "date": today, "method": method, "evidence": evidence}
     if after["bom"]["items"][index].get("verified") != want:
         raise OpInputError("verification stamp did not round-trip as written")
     pdledit.check_schema(data, after, f"bom[{item}].verified")
     p.write_bytes(patched.encode("utf-8"))
     shown = rel(repo_root().resolve(), p.resolve()) if p.resolve().is_relative_to(repo_root().resolve()) else str(path)
-    return OpResult(True, {"path": shown, "item": item, "line": new.strip()}, changed_files=[shown])
+    return OpResult(True, {"path": shown, "item": item, "line": line}, changed_files=[shown])
 
 
 @op(name="bom.cost", summary="Total cost of a design's BOM and which lines lack a cost or a verification.",
