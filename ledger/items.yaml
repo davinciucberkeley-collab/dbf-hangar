@@ -5366,3 +5366,14 @@ items:
     evidence: 43b72ce
     decided_in: ''
     updated: '2026-11-25'
+  - id: T150
+    kind: task
+    text: "Process: the reviewer's test selection missed tests/test_team_ops_b.py (bom verify), and the conductor merged U13.8-6 without reading the CI conclusion (it was 'failure'); main red until the follow-up fix. Merge script must check conclusion == success before merging"
+    source: conductor, 2026-11-25 ~05:30
+    owner: conductor
+    status: open
+    due: '2026-11-26'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
