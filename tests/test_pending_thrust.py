@@ -19,7 +19,7 @@ EXAMPLE_DIR = design_mod.DESIGNS_DIR / "example-tailsitter-wing"
 RECIPE_DIR = design_mod.REPO_ROOT / "tests" / "fixtures" / "mechanism-recipe"
 KEY = "components[{}].propulsion.max_thrust_n"
 # sha256 of the sorted (id, status, message) rows of an unmodified copy of example-tailsitter-wing, recorded on main
-MAIN_ROWS_SHA = "349ef48f092c9e51da8d7a06a1e2ceaadae717cb53d3b49432ece743713e6f25"
+MAIN_ROWS_SHA = "85104472fd161151aa3848d23b070464a5474ca52c977f701534cd3e2fc55a1a"  # U18.4-1: main hash 349ef48f...f25 plus one T3.tail_volume not-applicable SKIP row
 
 
 @pytest.fixture
