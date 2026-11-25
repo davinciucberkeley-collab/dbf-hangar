@@ -1118,7 +1118,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Inventory and packets** (tactician W34-T2) *(48791cb: 96 entries, 9 packets, 21 team decisions; 518 blocking rows have criteria that resolve to no threshold (D91); connection types move 0 rows (U8.3))*
 - [x] **Step 2: Sources** (scouts W34-S, up to 3 at a time; worktree C:/Users/trist/wt/u17.1, branch std/u17.1-sources) *(9 packets + a second pass with pdftotext for binary PDFs; about 45 source files; disagreements for the team: tip_angle_max_deg 30 vs ~15 deg tip-back, fw_static_margin_max 0.25 vs 0.05-0.15, wire_clearance_mm 5 vs 9.5-12.7 mm (AC 43.13-1B), LulzBot Z 256 vs 250 mm, attach/planform tolerances looser than printer accuracy, XPS 25 kg/m3 below the denser grades; hover-moment rows unsourced)*
 - [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus) *(briefs e6c36eb: -criteria (hard) building; -team-owner Part 1 after values merges; Part 2 held for Tristan (D100))*
-- [ ] **Step 3: Values into standards; re-run; baselines** (W34-B)
+- [x] **Step 3: Values into standards; re-run; baselines** (W34-B) *(merged 0f67f27: 8 entries sourced, no value changed, fidelity +1 per design; disagreements listed for Tristan)*
 - [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
 
 ### Unit U18.1: OpenCAE CLI as hangar's physics backend (D89; P282) [hard]
@@ -1162,7 +1162,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Recon and UI spec** (recon W34-X2, then advisor W34-A2): `u19.1/recon.md`, `u19.1/ui-spec.md` *(extend our three.js app; three panes (part tree, viewport + toolbar/view cube/apply bar/timeline, inspector); Apply via existing /api/op/design.set; steps B0 three upgrade + one renderer + split app.js, B1 lighting/edges, B2 tree + parts.json, B3 see inside, B4 explode + timeline, B5 move + apply, B6 part ids on check rows (core, first as its own PR), B7 layout, B8 measure + view cube; concept-a GLB 2.29 MB / 118k tris; D95)*
 - [x] **Step 2: Briefs** (tactician W34-T6) from the spec *(277de38: B6 part ids (easy, core, own PR), then B0 three 0.180 + split + Playwright, B1 look, B2 tree/inspector/parts.json, B3 see inside, B4 explode + timeline (Physics tab folds in), B5 move + apply, B6b colour by status, B7 layout, B8 measure + cube; strictly sequential after B0; D97)*
-- [ ] **Step 3: Build** (W34-B), one brief at a time *(B0 three 0.180 + split merged 335d304; B6 part ids merged 594c831 (PR #13, migration label); B1 look building)*
+- [ ] **Step 3: Build** (W34-B), one brief at a time *(B0 three 0.180 + split merged 335d304; B6 part ids merged 594c831 (PR #13, migration label); B1 look merged b7e3ade; B2 tree/inspector next)*
 - [ ] **Step 4: Review** (W34-R); merge; Tristan tries it in Studio
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
