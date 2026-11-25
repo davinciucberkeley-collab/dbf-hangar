@@ -356,6 +356,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D87 | Keep rehearsing the prompt flow? | no: rehearsals stop until 3D generation gives a model genuinely close to the real aircraft (real linkages, joints, parts, wires); mechanical fidelity (I2, D85) starts now as U16.1 instead of after Dec 2 | Tristan | 11-25 | decided (Tristan P279, 2026-11-25) |
 | D88 | Source the gates? | yes: every threshold in standards/*.yaml that is `pending` or an internal/team convention gets an opened external source (or a derivation from sourced values, written out), else stays `pending` with the reason; ranked by how many blocking check rows it drives; designs fixed, not thresholds; baselines refreshed in designs-only commits | Tristan | 11-25 | decided (Tristan P281, 2026-11-25) |
 | D89 | Use OpenCAE Studio's new `opencae` CLI (OpenCAEModel main, 11-24: mass, propulsion operating point and current margins, CalculiX structure, SU2/OpenFOAM whole-aircraft CFD, 6-DOF hover) for hangar's physics checks? | yes (default taken, conductor 11-25, Tristan P282 pointed at it): run it as an external GPL program through a hangar adapter (PDL -> drone.json + mesh, `opencae run --json` -> check rows); no OpenCAE source copied; SKIP where it is not installed (CI); CFD via SU2 lifts the plan section 8 'no CFD' line for this external route only | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan P282) |
+| D90 | U16.1 showcase design and MJCF timing (design note u16.1/design-note.md)? | showcase = c172-rc (from rehearsal-4 PR #9), landed on main in a designs-only PR (S0); the kinematic MJCF export (S7) follows the Studio-visible steps and is not needed before Tristan judges D87 | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan may change) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -785,6 +786,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-T3 | `tactician` | Sonnet | U18.1: OpenCAE CLI integration study in a scratch clone of OpenCAEModel main (doctor, quad250 example, a hangar design exported to drone.json by hand) | `plans/2026-11-20-standardization/u18.1/study.md`, `briefs/U18.1-*.md` | every command run once; field mapping PDL -> drone.json complete or gaps named |
 | W34-T4 | `tactician` | Sonnet | U18.2, U18.3, U18.4 (calibration, spar bending, trim and stability) | `briefs/U18.2-*.md`, `briefs/U18.3-*.md`, `briefs/U18.4-*.md` | builder-ready bar; every threshold sourced or `pending` |
 | W34-B2 | `builder-plus` | Sonnet | U16.2 step 1b: refresh std/u4.25-pockets onto main | the branch, merged with main, tests green, tier-1 time | no force push; T121 rows still gone |
+| W34-T5 | `tactician` | Sonnet | U16.1 briefs S0-S9 from `u16.1/design-note.md`, S0 and S1 first | `briefs/U16.1-s<n>-*.md` | builder-ready bar; export sha256 check in every brief |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -1073,8 +1075,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** generated models carry real mechanical content, not only shapes: control surfaces on hinge joints driven by servo -> horn -> pushrod -> control horn linkages that move kinematically and do not clip; wheels as separate parts on axle joints that roll; library parts placed where they really go (servos in wing/fuselage bays, not floating); wires as routed harness geometry between real connectors; joints and fasteners visible in the model. Exported to Studio and MJCF so the mechanisms play. Step 1 decides the order; each later step is one brief. Existing designs unchanged unless they opt in. Rehearsals resume when Tristan judges the output close to the real deal (D87).
 
-- [ ] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u16.1/recon.md`, `u16.1/design-note.md`
-- [ ] **Step 2: Briefs** (tactician W34-T) from the design note
+- [x] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u16.1/recon.md`, `u16.1/design-note.md` *(build order S0 showcase c172-rc on main, S1 four-bar solve (rod posed server-side), S2 wheels on axles, S3 servos in bays, S4 linkage generator op, S5 = U16.2, S6 hinge gap/bevel, S7 mjcf-kinematic, S8 wires as tubes, S9 visual detail + x-ray; PDL 1.3 three optional fields; all opt-in, export sha256 unchanged on existing designs; D90)*
+- [ ] **Step 2: Briefs** (tactician W34-T5) from the design note, S0 and S1 first
 - [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order
 - [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
 

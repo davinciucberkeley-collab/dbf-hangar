@@ -204,7 +204,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U16.1 | 3D generation close to the real aircraft (I2; D85, D87) [hard] | 0/4 | not started | - |
+| U16.1 | 3D generation close to the real aircraft (I2; D85, D87) [hard] | 1/4 | in progress | - |
 | U16.2 | Pose-aware cut pockets for generated parts (was U10.3; T121; D70; P284) [hard] | 1/4 | in progress | - |
 
 ### W17 Sourced gates (D88)
