@@ -8,6 +8,8 @@ from dataclasses import dataclass, field, asdict
 from pathlib import Path
 from typing import Any
 
+import yaml
+
 from . import yamlfast
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -153,7 +155,7 @@ def load_standards() -> dict:
     data = _STANDARDS_CACHE.get(key)
     if data is None:
         _STANDARDS_CACHE.clear()
-        data = _STANDARDS_CACHE[key] = yamlfast.safe_load(STANDARDS_PATH.read_text())
+        data = _STANDARDS_CACHE[key] = yaml.safe_load(STANDARDS_PATH.read_text())
     return copy.deepcopy(data)
 
 
