@@ -54,3 +54,21 @@ def test_part_mesh_byte_identical_to_main():
     assert len(mesh.vertices) == 1253 and len(mesh.faces) == 2654
     digest = hashlib.sha256(mesh.vertices.tobytes() + mesh.faces.tobytes()).hexdigest()
     assert digest == "5a128d9ce354c02db9169612a0d3edd00b02f41230474d4dab58f40ea1049a05"
+
+
+def test_first_attempt_never_runs_the_pair_pass_for_any_body(monkeypatch):
+    # the old module flag was off for the whole first attempt, bodies included (prism/revolve/loft call the pass too)
+    seen = []
+    real = geo._separate_pinches
+
+    def spy(vertices, faces, pair_pass=True):
+        seen.append(pair_pass)
+        return real(vertices, faces, pair_pass)
+
+    monkeypatch.setattr(geo, "_separate_pinches", spy)
+    comp = json.load(open(FIXTURE))
+    try:
+        geo._part_mesh(comp, pair_pass=False)
+    except geo.GeometryError:
+        pass
+    assert seen and not any(seen)

@@ -180,7 +180,7 @@ def _boolean(op: str, meshes: list[trimesh.Trimesh], pair_pass: bool = True) -> 
 
 
 # ------------------------------------------------------------------ the three body kinds (local frame, mm)
-def _prism(s: dict) -> trimesh.Trimesh:
+def _prism(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     import manifold3d as m
     loops = [_despike([tuple(p) for p in _open(l)]) for l in s["loops"]]
     loops = [np.asarray(l, dtype=float) * 1000.0 for l in loops if len(l) >= 3]
@@ -197,7 +197,7 @@ def _prism(s: dict) -> trimesh.Trimesh:
     if cs.is_empty():
         raise GeometryError("prism cross-section is empty")
     man = m.Manifold.extrude(cs, abs(depth))
-    t = _from_manifold(man)
+    t = _from_manifold(man, pair_pass)
     v = t.vertices
     out = np.zeros_like(v)
     iu, iv = UV[s["axis"]]
@@ -207,7 +207,7 @@ def _prism(s: dict) -> trimesh.Trimesh:
     return _clean(t)
 
 
-def _revolve(s: dict) -> trimesh.Trimesh:
+def _revolve(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     k = AX[s["axis"]]
     i_ax, j_ax = [q for q in range(3) if q != k]
     prof = [tuple(p) for p in s["profile"]]
@@ -253,7 +253,7 @@ def _revolve(s: dict) -> trimesh.Trimesh:
     return _clean(trimesh.Trimesh(np.asarray(verts), np.asarray(faces), process=False))
 
 
-def _loft(s: dict) -> trimesh.Trimesh:
+def _loft(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     import manifold3d as m
     loops = []
     for _, loop in s["sections"]:
@@ -283,7 +283,7 @@ def _loft(s: dict) -> trimesh.Trimesh:
     return _clean(trimesh.Trimesh(np.asarray(verts), np.asarray(faces), process=False))
 
 
-def _mesh(s: dict) -> trimesh.Trimesh:
+def _mesh(s: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     """kind 'mesh' (fusionkit.Shape, the printed hub, D-207): a closed outward-wound triangle mesh, component-local metres -> mm."""
     verts = np.asarray(s["verts"], dtype=float).reshape(-1, 3) * 1000.0
     tris = np.asarray(s["tris"], dtype=int).reshape(-1, 3)
@@ -295,9 +295,9 @@ def _mesh(s: dict) -> trimesh.Trimesh:
 _KIND = {"prism": _prism, "revolve": _revolve, "loft": _loft, "mesh": _mesh}
 
 
-def body_mesh(shape: dict) -> trimesh.Trimesh:
+def body_mesh(shape: dict, pair_pass: bool = True) -> trimesh.Trimesh:
     """One CAD body (shape_to_json dict, metres) as a closed solid in its component-local frame, millimetres."""
-    return _KIND[shape["kind"]](shape)
+    return _KIND[shape["kind"]](shape, pair_pass)
 
 
 def _place(mesh: trimesh.Trimesh, matrix) -> trimesh.Trimesh:
@@ -330,7 +330,7 @@ def _part_mesh(comp: dict, pair_pass: bool = True) -> tuple[trimesh.Trimesh, dic
     local, ratios = [], []
     for i, b in enumerate(comp["bodies"]):
         try:
-            lm = body_mesh(b)
+            lm = body_mesh(b, pair_pass=pair_pass)
         except GeometryError as e:
             raise GeometryError(f"body {i} ({b.get('name', '')!r}, {b['kind']}): {e}") from e
         vols = comp.get("body_vol_m3")
@@ -340,7 +340,7 @@ def _part_mesh(comp: dict, pair_pass: bool = True) -> tuple[trimesh.Trimesh, dic
     cuts = []
     for shape, Mc in comp.get("cuts", []):
         try:
-            cuts.append(_place(body_mesh(shape), Mc))
+            cuts.append(_place(body_mesh(shape, pair_pass=pair_pass), Mc))
         except GeometryError:
             continue
     placed = [_place(lm, M) for lm in local]
