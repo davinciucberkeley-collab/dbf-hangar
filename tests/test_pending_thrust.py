@@ -20,7 +20,8 @@ RECIPE_DIR = design_mod.REPO_ROOT / "tests" / "fixtures" / "mechanism-recipe"
 KEY = "components[{}].propulsion.max_thrust_n"
 # sha256 of the sorted (id, status, message) rows of an unmodified copy of example-tailsitter-wing, recorded on main;
 # updated for U18.3 (one row added: T3.spar_bending, "no spar tube found", report-only)
-MAIN_ROWS_SHA = "85aa9894ec3707ddb3fb54ae1b23b4c530cda51b3b5f1b0df9e7ac84281b980d"
+# re-recorded after U17.1 sourced wind_drag_coefficient (the "operations.yaml#wind_drag_coefficient" mentions dropped from T3.control_authority messages)
+MAIN_ROWS_SHA = "c2059848702cb55c48c7e952cb3105f7bf28997e828e8fc14c89b742f701d10c"
 
 
 @pytest.fixture
