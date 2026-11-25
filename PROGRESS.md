@@ -19,8 +19,8 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W4.5 Team adoption, CI, ratings, process | 4 | 2 |
 | W4.6 Parametric geometry for the demo (D70) | 2 | 2 |
 | W4.7 Presentation | 1 | 0 |
-| Other (no wave row) | 16 | 12 |
-| **all** | 59 | 52 |
+| Other (no wave row) | 17 | 12 |
+| **all** | 60 | 52 |
 
 ### Open ledger items by owner
 
@@ -165,6 +165,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U4.36 | Design authoring from a blank start (rehearsal 1 gaps; D78) [hard] | 1/4 | in progress | - |
 | U4.37 | A400M rehearsal gaps (D78) [hard] | 1/3 | in progress | - |
 | U4.38 | Local CAD overlay for licensed part models (D82, D83) [hard] | 3/3 | done | - |
+| U4.39 | Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard] | 0/3 | not started | - |
 
 ## Ledger
 
