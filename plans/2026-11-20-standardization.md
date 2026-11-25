@@ -895,7 +895,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U4.36: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
-*Progress: -4 airfoils a6b1839, -2 blank 9989382, -1 design add 969b242 merged (W31-R ACCEPT); parts A/B merged 899d9f8 (conductor keeps the two sub-gram receivers: the library is a catalogue, the design picks); C/D merged 5f544cf; -6 wing inboard 84a63e2, -3 remove-last 65db7f2, -5 generators CLI bfc6341, -8 blank-to-fixed-wing 352f11d merged.*
+*Progress: -4 airfoils a6b1839, -2 blank 9989382, -1 design add 969b242 merged (W31-R ACCEPT); parts A/B merged 899d9f8 (conductor keeps the two sub-gram receivers: the library is a catalogue, the design picks); C/D merged 5f544cf; -6 wing inboard 84a63e2, -3 remove-last 65db7f2, -5 generators CLI bfc6341, -8 blank-to-fixed-wing 352f11d, -7 generator docs 8b1d95d, -9 team guide d1c156b merged.*
 
 **Scope:** from the C172 rehearsal (gap log 2026-11-24): (1) an op that appends list elements (components, attachments, bom lines) with id checks, also used by Studio edit; (2) `design new --blank` (minimal valid design: no components) and a light remove for many elements; (3) airfoils: NACA 4-digit generated on demand plus a small `knowledge/airfoils/` library, selectable by name; (4) `plane generators list/show` with each generator's params and units, and the team guide's "Starting a new concept" updated; (5) fixed-wing real parts (motor, ESC, servos, 2-blade props with spinner, receiver) in the library with vendor CAD where licensed, envelopes otherwise (scouts); (6) wing_panel multi-section (straight inboard + tapered outboard) if cheap. Existing designs unchanged.
 
