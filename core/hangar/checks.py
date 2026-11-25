@@ -24,7 +24,7 @@ from .design import (Design, CheckResult, TierReport, Scorecard, SCHEMA_PATH, RE
 from .geometry import (component_parts, lifting_surface_properties, articulated_attachments, att_label,
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
-from .geom.planform import generated_planform
+from .geom.planform import counted_tail_ids, generated_planform
 from .gates import gate, run_gates
 from .gates.applicability import NEEDS, applicable, skip_row
 from .gates.fidelity import resolve_threshold
@@ -1028,6 +1028,7 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
     n_strip = a["planform_strip_count"]["value"]
     surfaces = []
     derived_tails = []  # derived tail_surfaces stabilisers: counted only when a wing surface exists
+    counted = counted_tail_ids(design.components)
     for c in design.components:
         if "lifting_surface" in c["geometry"]:
             ls_c = c
@@ -1042,7 +1043,7 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                                control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
         else:
             gp = generated_planform(c)
-            if gp is None:
+            if gp is None or ("lifting_surface" in gp and c["id"] not in counted):
                 continue
             ls_c = c
             if gp.get("measured"):
@@ -1104,7 +1105,12 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                                "fuselage effect not modelled)"
                                + ("; provisional band (fw_static_margin_max pending)" if conv else "")
                                + (f" (mesh wing: chord measured at {n_strip} stations)" if main_from_planform else ""),
-                               sm_crit, {"static_margin": round(sm, 4), "x_np_mm": round(x_np, 1), "band": sm_band}))
+                               sm_crit, {"static_margin": round(sm, 4), "x_np_mm": round(x_np, 1), "band": sm_band,
+                                "surfaces": [{"id": c["id"], "area_mm2": round(p["area_mm2"], 1),
+                                              "x_ac_mm": round(p["x_ac_mm"], 1),
+                                              "source": "derived" if c["id"] in derived_tails
+                                              else "declared" if "lifting_surface" in c["geometry"] or "planform" in c
+                                              else "measured"} for c, _ls, p in lifting]}))
         lat = abs(mp["cg_mm"][1]) / main["span_mm"]
         lim = a["lateral_cg_max_fraction_span"]["value"]
         res.append(CheckResult("T3.lateral_cg", PASS if lat <= lim else FAIL,
