@@ -227,7 +227,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U19.1 | Studio UI overhaul and a better 3D viewer (D92; P285) [hard] | 0/4 | not started | - |
+| U19.1 | Studio UI overhaul and a better 3D viewer (D92; P285) [hard] | 1/4 | in progress | - |
 
 ## Ledger
 

@@ -361,6 +361,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D92 | Studio UI overhaul with a much better 3D viewer? | yes (Tristan P285, 2026-11-25): new wave W19; recon of best-in-class web CAD/model viewers, then an advisor-led UI spec, then briefs; the viewer must show U16.1's moving linkages, wheels and wires; no GrabCAD geometry in published builds (D83) | Tristan | 11-25 | decided (Tristan P285, 2026-11-25) |
 | D93 | U18.1 study decisions (u18.1/study.md section 7) | (1) missing OpenCAE inputs (motor kv/R/i0, prop data, battery IR, ESC, material E/nu/yield) go in a sidecar `designs/<id>/opencae-inputs.yaml`, no PDL bump; (2) a pass on estimated inputs stays PASS with `; OpenCAE basis estimate` appended; (3) four provisional thresholds in operations.yaml with `source: pending` (U17.1 sources them); (4) brief -3 stops if a key- or id-enumerating test fails; SU2 download and pip install approved by Tristan (P287); the conductor's `opencae setup su2 --yes` was blocked by the session's permission classifier, so Tristan runs it himself or adds a permission rule; qt_test already runs OpenCAE, so nothing waits on it | Tristan | 11-25 | decided (default, conductor 2026-11-25; installs approved Tristan P287) |
 | D94 | U18.2-U18.4 brief defaults (W34-T4, aec87ed) | C172S reference is a test fixture, not a design; AeroSandbox stays opt-in (not in pyproject or CI), dynamic modes SKIP without it; elevator travel is a standards default until a PDL elevator field (schema bump later); U18.4 reads declared lifting_surface tails only; tail-volume bands stay pending until a real source is opened (the in-repo MIT attribution is not in the MIT note) | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D95 | U19.1 spec decisions | three.js stays on the pinned CDN (spec default; vendoring into viewer/vendor is the fallback if the demo room has no network); Playwright installed locally in .venv (`pip install -e .[dev]`, `playwright install chromium`) as a brief step (installs approved, Tristan P287); U16.1 S9 drops its x-ray item (B3 covers it) | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -794,6 +795,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-T5 | `tactician` | Sonnet | U16.1 briefs S0-S9 from `u16.1/design-note.md`, S0 and S1 first | `briefs/U16.1-s<n>-*.md` | builder-ready bar; export sha256 check in every brief |
 | W34-X2 | `recon` | Sonnet | U19.1: how best-in-class browser CAD/3D model viewers work (Onshape, Autodesk Viewer/APS, xeokit, three.js editor, Google model-viewer, Babylon.js sandbox, Shapr3D/Fusion web, OpenVSP viewer, MuJoCo web) | `plans/2026-11-20-standardization/u19.1/recon.md` | 3-5 ranked approaches per feature; only opened sources |
 | W34-A2 | `advisor` | Opus | U19.1: audit of Studio (viewer/, core/hangar/studio.py) against the recon and Tristan's needs; UI spec | `plans/2026-11-20-standardization/u19.1/ui-spec.md` | ordered build steps sized for briefs, each Studio-visible |
+| W34-T6 | `tactician` | Sonnet | U19.1 briefs B0-B8 from `u19.1/ui-spec.md` | `briefs/U19.1-b<n>-*.md` | builder-ready bar; Playwright test per visible step |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -1146,8 +1148,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Must-haves (Tristan P286):** explode the view (slider, by assembly level); move parts by dragging them (view-only by default; an explicit Apply writes the new position through the edit op with `--why`, so the design and CHANGELOG change only on purpose; T1 re-runs on the moved part); see inside the plane (x-ray / transparent skin, section plane, hide/isolate) so internal parts such as the battery, ESC, servos and wires are visible and selectable.
 
-- [ ] **Step 1: Recon and UI spec** (recon W34-X2, then advisor W34-A2): `u19.1/recon.md`, `u19.1/ui-spec.md`
-- [ ] **Step 2: Briefs** (tactician) from the spec
+- [x] **Step 1: Recon and UI spec** (recon W34-X2, then advisor W34-A2): `u19.1/recon.md`, `u19.1/ui-spec.md` *(extend our three.js app; three panes (part tree, viewport + toolbar/view cube/apply bar/timeline, inspector); Apply via existing /api/op/design.set; steps B0 three upgrade + one renderer + split app.js, B1 lighting/edges, B2 tree + parts.json, B3 see inside, B4 explode + timeline, B5 move + apply, B6 part ids on check rows (core, first as its own PR), B7 layout, B8 measure + view cube; concept-a GLB 2.29 MB / 118k tris; D95)*
+- [ ] **Step 2: Briefs** (tactician W34-T6) from the spec
 - [ ] **Step 3: Build** (W34-B), one brief at a time
 - [ ] **Step 4: Review** (W34-R); merge; Tristan tries it in Studio
 
