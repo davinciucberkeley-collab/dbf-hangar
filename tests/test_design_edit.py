@@ -603,9 +603,9 @@ def test_remove_refusals(tmp_concept_a):
     text = _plane_text(tmp_concept_a)
     _refused(text, "attachments[E-NOPE]", "no element with id")
     _refused(text, "attachments[0]", "remove by index is not supported")
-    _refused(text, "attachments[E-MEC-HW-R1].location", "a nested path")
+    _refused(text, "attachments[E-MEC-HW-R1].location", "like name[id]")
     _refused(text, "attachments[E-MEC-HW-R1].location[0]", "remove by index is not supported")
-    _refused(text, "mechanisms[elevon-r].driven[E-MEC-03]", "a nested path")
+    _refused(text, "mechanisms[elevon-r].driven[E-MEC-03]", "no key 'mechanisms'")
     _refused(text, "attachments", "like name[id]")
     _refused(text, "flight.cl_max", "like name[id]")
     _refused(text, "flight[x]", "needs a list")
@@ -622,7 +622,7 @@ def test_remove_op_input_errors_write_nothing(tmp_concept_a):
             (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1]=1"]), "takes no value"),
             (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1]"]), "--also needs KEY=VALUE"),
             (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-NOPE]="]), "no element with id"),
-            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1].location="]), "a nested path")):
+            (dict(key="attachments[E-MEC-HW-R1]", also=["attachments[E-MEC-HW-L1].location="]), "like name[id]")):
         r = call("design.set", path=str(tmp_concept_a), kind="remove", why="t", **kw)
         assert r.ok is False and needle in " ".join(r.messages), (kw, r.messages)
         assert _bytes(tmp_concept_a) == before
