@@ -348,6 +348,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D78 | Is the demo capability A400M-only? | no: any real aircraft (A400M, Cessna 172, ...); general research template, generator set and parts library; rehearsal on two unseen aircraft (A400M, Cessna 172) | Tristan | 11-24 | decided (Tristan P229, 2026-11-24) |
 | D79 | U4.29: attached-part positions relative to the parent frame, or parameter expressions? | expressions resolved at regeneration; interference reported, never refused (W28-A design) | conductor | 11-24 | decided (default, 2026-11-24) |
 | D81 | Speed up design set? | profile a span change, then a mesh cache for the interference step if the profile confirms the double build; nothing else before Dec 2 | Tristan | 11-24 | decided (Tristan P235, 2026-11-24) |
+| D82 | Parts without vendor CAD? | dimension-accurate envelopes labelled representative for Dec 2; Tristan supplies real models for the demo's parts, agents swap them in with licence recorded | Tristan | 11-24 | decided (Tristan P236, 2026-11-24) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
