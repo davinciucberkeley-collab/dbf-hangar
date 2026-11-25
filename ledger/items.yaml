@@ -5140,12 +5140,12 @@ items:
     text: Pin the date in tests/fixtures/design-verdicts.json checks and regenerate the fixture at the 2026-12-08 report-only flip (W29-R note on U12.1-2)
     source: reviews/2026-11-24-w29.md, 2026-11-24
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: 9c83f1f
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-25'
   - id: D82
     kind: decision
     text: Library parts without vendor CAD use dimension-accurate envelopes labelled representative-envelope for Dec 2; Tristan supplies real 3D models for the parts the demo uses, and agents swap them in with licence recorded
@@ -5318,6 +5318,17 @@ items:
     owner: conductor
     status: open
     due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T146
+    kind: task
+    text: 'After the 2026-12-08 report-only flip (hand edit to standards/gates.yaml): regenerate tests/fixtures/design-verdicts.json as its docstring describes'
+    source: reviews/2026-11-25-w31b.md §14
+    owner: conductor
+    status: open
+    due: '2026-12-08'
     units: []
     evidence: ''
     decided_in: ''
