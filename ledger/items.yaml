@@ -3403,13 +3403,13 @@ items:
     updated: '2026-11-21'
   - id: T35
     kind: task
-    text: "PlaneBench: Sonnet and Opus passed mass-cut-10 and fix-static-margin by editing mass_g alone (gaming); task prompts invite it; reword the caveat in bench/results/2026-11-21.md (reviewer wording) and never present 7/9 as 'agents can cut mass' (U4.2 slide); protect designs/ in the grader before the next round; bench.py write newline=\\n [triage 2026-11-21: caveat and slide wording only (U4.2); grader protection and newline split to a v1.1 task]"
+    text: "PlaneBench: Sonnet and Opus passed mass-cut-10 and fix-static-margin by editing mass_g alone (gaming); task prompts invite it; reword the caveat in bench/results/2026-11-21.md (reviewer wording) and never present 7/9 as 'agents can cut mass' (U14.1 slide); protect designs/ in the grader before the next round; bench.py write newline=\\n [triage 2026-11-21: caveat and slide wording only (U14.1); grader protection and newline split to a v1.1 task]"
     source: reviews/2026-11-21-w3.md U3.3 Part B (W3-R2)
     owner: ''
     status: done
     due: '2026-11-30'
     units:
-      - U4.2
+      - U14.1
     evidence: 19b4f57
     decided_in: ''
     updated: '2026-11-22'
@@ -4235,7 +4235,7 @@ items:
     updated: '2026-11-23'
   - id: T82
     kind: task
-    text: "standards/connection-types.yaml: CT-TAPE-FOAM, CT-TAPE-HINGE, CT-EPOXY, CT-GEL-PAD, CT-STRAP-VELCRO have no rated_load_n, and 63 concept-a joints carry derived ratings pending a sourced value (107 T2.joint_rf WARN, report-only to 12-08); source ratings with citations [U4.19 merged 2bcd1d8: CT-EPOXY, CT-CA, CT-TAPE-HINGE sourced (stress notes), CT-TAPE-FOAM/STRAP-VELCRO/HATCH-HL notes; 28 types still pending; James to review values (reviews/2026-11-25-w21.md 'For James')]"
+    text: "standards/connection-types.yaml: CT-TAPE-FOAM, CT-TAPE-HINGE, CT-EPOXY, CT-GEL-PAD, CT-STRAP-VELCRO have no rated_load_n, and 63 concept-a joints carry derived ratings pending a sourced value (107 T2.joint_rf WARN, report-only to 12-08); source ratings with citations [U8.3 merged 2bcd1d8: CT-EPOXY, CT-CA, CT-TAPE-HINGE sourced (stress notes), CT-TAPE-FOAM/STRAP-VELCRO/HATCH-HL notes; 28 types still pending; James to review values (reviews/2026-11-25-w21.md 'For James')]"
     source: W4-G3c triage 2026-11-23 (U2.5d 3c, dbf8439)
     owner: James
     status: open
@@ -4246,7 +4246,7 @@ items:
     updated: '2026-11-23'
   - id: D52
     kind: decision
-    text: 'U4.3: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U4.3-t28.md kept ready [overruled by D59 (Tristan, P182)]'
+    text: 'U5.1: T28 brief (register read_value) held for v1.1; D34 stands, the 40 concept-a claims stay SKIP; brief U5.1-t28.md kept ready [overruled by D59 (Tristan, P182)]'
     source: conductor under D51, 2026-11-23 (W5-T report)
     owner: Tristan
     status: decided
@@ -4279,7 +4279,7 @@ items:
     updated: '2026-11-23'
   - id: T85
     kind: task
-    text: "U4.3 small follow-ups: ledger set --due accepts 2026-13-45 (format-only check); bom cost crashes on non-numeric unit_cost_usd; sweep still parses ': ' values the old way; add an R31 guard test through assembly.animate"
+    text: "U5.1 small follow-ups: ledger set --due accepts 2026-13-45 (format-only check); bom cost crashes on non-numeric unit_cost_usd; sweep still parses ': ' values the old way; add an R31 guard test through assembly.animate"
     source: W5-R review 2026-11-23 (reviews/2026-11-23-w5.md)
     owner: conductor
     status: done
@@ -4334,7 +4334,7 @@ items:
     updated: '2026-11-23'
   - id: D54
     kind: decision
-    text: "U4.5 T7: Studio /api/op refuses the 'out' parameter and fea.setup's executable path outright (no Studio client sends them; /api/fea-setup stays the Studio route); design.new template must be a bare id; ledger.seed plan refused (W7-R REOPEN questions A and B)"
+    text: "U5.3 T7: Studio /api/op refuses the 'out' parameter and fea.setup's executable path outright (no Studio client sends them; /api/fea-setup stays the Studio route); design.new template must be a bare id; ledger.seed plan refused (W7-R REOPEN questions A and B)"
     source: conductor under D51, 2026-11-23
     owner: Tristan
     status: decided
@@ -4389,8 +4389,8 @@ items:
     updated: '2026-11-23'
   - id: T91
     kind: task
-    text: 'bench: ops that write under design.DESIGNS_DIR (e.g. design new) write to the real repo during a bench run and its replay; DESIGNS_DIR comes from the package location, not the workspace (W9-T finding, U4.7-t54)'
-    source: W9-T 2026-11-23 (briefs/U4.7-t54.md)
+    text: 'bench: ops that write under design.DESIGNS_DIR (e.g. design new) write to the real repo during a bench run and its replay; DESIGNS_DIR comes from the package location, not the workspace (W9-T finding, U5.5-t54)'
+    source: W9-T 2026-11-23 (briefs/U5.5-t54.md)
     owner: conductor
     status: done
     due: '2026-12-15'
@@ -4400,7 +4400,7 @@ items:
     updated: '2026-11-23'
   - id: T92
     kind: task
-    text: 'W9-R major follow-ups (U4.7 T54): pin the bench snapshot (in-memory hash in run_op or a separate mkdtemp; bench.py:133 docstring overstates) and check in one real run whether shell redirection is allowed under Bash(plane *); replay only an allow-list of ops (a logged bench run / fea run / paths outside ws are replayed unconfined; related T91)'
+    text: 'W9-R major follow-ups (U5.5 T54): pin the bench snapshot (in-memory hash in run_op or a separate mkdtemp; bench.py:133 docstring overstates) and check in one real run whether shell redirection is allowed under Bash(plane *); replay only an allow-list of ops (a logged bench run / fea run / paths outside ws are replayed unconfined; related T91)'
     source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
     status: done
@@ -4411,7 +4411,7 @@ items:
     updated: '2026-11-23'
   - id: T93
     kind: task
-    text: "W9-R minor follow-ups (U4.7): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62 [edit items merged ea7c0f5 (W10-R); bench items reopened with std/u4.8-bench]"
+    text: "W9-R minor follow-ups (U5.5): bench.py:196 maps the workspace path by string replace (8.3 names, case, ../<run_id>); unwritable PLANE_BENCH_LOG crashes plane with a traceback; --append drops the space before ']'; --remove of a mapping says 'not in the list' instead of refusing; empty pass at edit.py:62 [edit items merged ea7c0f5 (W10-R); bench items reopened with std/u4.8-bench]"
     source: W9-R review 2026-11-23 (reviews/2026-11-23-w9.md)
     owner: conductor
     status: done
@@ -4456,7 +4456,7 @@ items:
   - id: T95
     kind: task
     text: 'v1.1: prop reaction torque in PDL (optional propulsion.spin cw/ccw and propulsion.torque_per_thrust_m with _source; schema 1.0 -> 1.1 minor) so T3.control_authority yaw can be judged without cant (D58 fix b, deferred; concept-a source DBF-Combined sitl/a_plant.py KQ 0.0204 m)'
-    source: W11-A advice 2026-11-23 (briefs/U4.9-t37-advice.md)
+    source: W11-A advice 2026-11-23 (briefs/U6.2-t37-advice.md)
     owner: conductor
     status: done
     due: '2026-12-15'
@@ -4467,7 +4467,7 @@ items:
   - id: T96
     kind: task
     text: 'concept-a: all four motor cants turn the same way (pinwheel, from CAD amodel/common.py motor_R), but SITL a_plant.py and CALC-A-YAW assume cant alternates with spin; as drawn hover leaves ~1.06 N*m untrimmed yaw, more than reaction torque (~0.27 N*m) can trim. Either CAD/plane.yaml or the build is wrong; design team decides'
-    source: W11-A advice 2026-11-23 (briefs/U4.9-t37-advice.md)
+    source: W11-A advice 2026-11-23 (briefs/U6.2-t37-advice.md)
     owner: Dillon
     status: open
     due: '2026-12-08'
@@ -4488,8 +4488,8 @@ items:
     updated: '2026-11-23'
   - id: T97
     kind: task
-    text: 'Deck and metrics quote stale validate totals (PASS 531, SKIP 102, WARN 9, FAIL 4; fidelity 134 of 635) from an earlier tree: docs/deck/index.html:85, u4.2/metrics.md:16,25, demo-script.md:47; re-measure on main after U4.11 part 1 and update in the U4.11 docs branch'
-    source: W13-T 2026-11-23 (briefs/U4.11-t28.md flag)
+    text: 'Deck and metrics quote stale validate totals (PASS 531, SKIP 102, WARN 9, FAIL 4; fidelity 134 of 635) from an earlier tree: docs/deck/index.html:85, u4.2/metrics.md:16,25, demo-script.md:47; re-measure on main after U6.4 part 1 and update in the U6.4 docs branch'
+    source: W13-T 2026-11-23 (briefs/U6.4-t28.md flag)
     owner: conductor
     status: done
     due: '2026-11-30'
@@ -4521,7 +4521,7 @@ items:
     updated: '2026-11-23'
   - id: T100
     kind: task
-    text: "W12-R follow-ups (U4.10): T83 guard scans only checks.py (ids from gates/*.py not covered); scorecard lacks manufacturing.yaml without '#' as a criterion form; T1.motor_has_prop still cites embed_max_fraction_of_child; ops/research.py:25 SLUG_RE.match trailing-newline hole; after U4.8 switch bench.py, design.py, edit.py to import ID_RE from hangar.ids"
+    text: "W12-R follow-ups (U6.3): T83 guard scans only checks.py (ids from gates/*.py not covered); scorecard lacks manufacturing.yaml without '#' as a criterion form; T1.motor_has_prop still cites embed_max_fraction_of_child; ops/research.py:25 SLUG_RE.match trailing-newline hole; after U6.1 switch bench.py, design.py, edit.py to import ID_RE from hangar.ids"
     source: W12-R review 2026-11-23 (reviews/2026-11-23-w12.md)
     owner: conductor
     status: done
@@ -4532,7 +4532,7 @@ items:
     updated: '2026-11-23'
   - id: T101
     kind: task
-    text: 'W10-R non-blocking (U4.8 bench): _map_args maps option values and the key too (a --why/--value text naming an existing path fails a legit run); PLANE_BENCH_LOG not digest-pinned; SWEEP_ROOT still writes into the real repo; one paid bench run to probe shell redirection under Bash(plane *); tree_digest ignores empty folders (docstring) [merged e72f545 (W16-R); open: one paid bench run to probe shell redirection under Bash(plane *); declare path params on ops instead of PATH_PARAM_NAMES]'
+    text: 'W10-R non-blocking (U6.1 bench): _map_args maps option values and the key too (a --why/--value text naming an existing path fails a legit run); PLANE_BENCH_LOG not digest-pinned; SWEEP_ROOT still writes into the real repo; one paid bench run to probe shell redirection under Bash(plane *); tree_digest ignores empty folders (docstring) [merged e72f545 (W16-R); open: one paid bench run to probe shell redirection under Bash(plane *); declare path params on ops instead of PATH_PARAM_NAMES]'
     source: W10-R review 2026-11-23 (reviews/2026-11-23-w10.md)
     owner: conductor
     status: open
@@ -4576,7 +4576,7 @@ items:
     updated: '2026-11-23'
   - id: T104
     kind: task
-    text: "D60 wording sweep outside U4.11: README.md:55 ('recomputed from the design's values on every check') and docs/cli.md:86 / claim check summary ('Recompute every claim') overstate the 40 read_value claims; say stored results are read from source and checked against limits (W13-R part 2)"
+    text: "D60 wording sweep outside U6.4: README.md:55 ('recomputed from the design's values on every check') and docs/cli.md:86 / claim check summary ('Recompute every claim') overstate the 40 read_value claims; say stored results are read from source and checked against limits (W13-R part 2)"
     source: W13-R review 2026-11-23 (reviews/2026-11-23-w13.md Part 2)
     owner: conductor
     status: done
@@ -4609,8 +4609,8 @@ items:
     updated: '2026-11-23'
   - id: T106
     kind: task
-    text: 'concept-a: apply the U4.15-t95 follow-up (propulsion.spin and torque_per_thrust_m with source, schema 1.1) after Dec 2 and after T96, per D61; confirm motor letters against CAD; baseline accept in the same commit; update deck/metrics FAIL counts'
-    source: W17-T 2026-11-24 (briefs/U4.15-t95.md follow-up)
+    text: 'concept-a: apply the U7.4-t95 follow-up (propulsion.spin and torque_per_thrust_m with source, schema 1.1) after Dec 2 and after T96, per D61; confirm motor letters against CAD; baseline accept in the same commit; update deck/metrics FAIL counts'
+    source: W17-T 2026-11-24 (briefs/U7.4-t95.md follow-up)
     owner: conductor
     status: open
     due: '2026-12-15'
@@ -4620,8 +4620,8 @@ items:
     updated: '2026-11-23'
   - id: T107
     kind: task
-    text: 'v1.1 leftovers from U4.15 briefing: davinci push/pull ops once the adapter is real (D3; T67 covers only the list ops); T103 second half (link the 40 read_value inputs to design-computed values); T99 part 3 (criterion for untrimmed yaw at equal thrust, needs a pending threshold in standards/operations.yaml); docs/deck/index.html:49 says 51 ops (52 now, 55 after T67)'
-    source: W17-T 2026-11-24 (briefs/U4.15-*.md)
+    text: 'v1.1 leftovers from U7.4 briefing: davinci push/pull ops once the adapter is real (D3; T67 covers only the list ops); T103 second half (link the 40 read_value inputs to design-computed values); T99 part 3 (criterion for untrimmed yaw at equal thrust, needs a pending threshold in standards/operations.yaml); docs/deck/index.html:49 says 51 ops (52 now, 55 after T67)'
+    source: W17-T 2026-11-24 (briefs/U7.4-*.md)
     owner: conductor
     status: open
     due: '2026-12-15'
@@ -4631,7 +4631,7 @@ items:
     updated: '2026-11-23'
   - id: T108
     kind: task
-    text: 'W17-R non-blocking (U4.15): test_reaction_torque_fields_reject_bad_values passes without the change (assert the message names the field); _reaction treats 0 as missing (schema forbids 0, harmless); claim check note counts only PASS read rows (a FAIL/STALE read claim is not in the note); idea.list reads only LF front matter'
+    text: 'W17-R non-blocking (U7.4): test_reaction_torque_fields_reject_bad_values passes without the change (assert the message names the field); _reaction treats 0 as missing (schema forbids 0, harmless); claim check note counts only PASS read rows (a FAIL/STALE read claim is not in the note); idea.list reads only LF front matter'
     source: W17-R review 2026-11-24 (reviews/2026-11-24-w17.md)
     owner: conductor
     status: done
@@ -4653,7 +4653,7 @@ items:
     updated: '2026-11-24'
   - id: D62
     kind: decision
-    text: 'Run the remaining knowledge import now: DBF-Combined docs/research/ (23 files, deferred by D28 to U2.2-3) becomes U4.16; the D35/D42 config-study import already ran (dc8902a, 50 entries)'
+    text: 'Run the remaining knowledge import now: DBF-Combined docs/research/ (23 files, deferred by D28 to U2.2-3) becomes U7.5; the D35/D42 config-study import already ran (dc8902a, 50 entries)'
     source: Tristan, P188, 2026-11-24 ('D35, run the import now')
     owner: Tristan
     status: decided
@@ -4664,7 +4664,7 @@ items:
     updated: '2026-11-23'
   - id: T110
     kind: task
-    text: 'tests/test_knowledge.py covers only knowledge/concepts/ (exactly 50 config-study entries, sources under redesign/config-study/): widen the copy check and structure checks to knowledge/research/ and docs/research/ sources after U4.16 merges (W18-T)'
+    text: 'tests/test_knowledge.py covers only knowledge/concepts/ (exactly 50 config-study entries, sources under redesign/config-study/): widen the copy check and structure checks to knowledge/research/ and docs/research/ sources after U7.5 merges (W18-T)'
     source: W18-T 2026-11-24 (briefs/U2.2-3-research-import.md)
     owner: conductor
     status: done
@@ -4676,12 +4676,12 @@ items:
   - id: D63
     kind: decision
     text: 'Team workflow defaults for the team guide (W19-T O1-O11): teammates added as write collaborators (no forks); teammates never push to main, every teammate change is a PR (D30 stays Tristan/conductor only); Tristan merges, Dillon approves design PRs (R25), James advises on test/standards PRs, merge commits, branch protection requiring CI recommended; each teammate task is a ledger task they cite, teammates never edit plans/, ledger/, reviews/, PROGRESS.md; teammates do not run the conductor flow (design-engineer, recon, scout, plain sessions); hooks stay on, HANGAR_ALLOW_STOP=1 escape; branches std/<topic> for core/tests/standards/knowledge and design/<id>/<slug> for designs (never bare design/<id>); teammates keep their git author plus the repo-owner trailer; concept-a changes only via design set + PR, no re-import without telling Dillon; Python 3.12 recommended; weekly update entries per branch, only Tristan adds ledger items [O12: std/gate-<name> branches may touch core/hangar/gates/, checks.py, standards/, knowledge/, tests/; baseline.json in a second designs-only commit; new gates start report-only. O13: Desktop chat setup optional, set up once with Tristan; Code tab counts as full setup after three first-run checks (amendment 1, 05e114d)]'
-    source: conductor defaults on W19-T open decisions O1-O11, 2026-11-24 (briefs/U4.17-team-guide.md)
+    source: conductor defaults on W19-T open decisions O1-O11, 2026-11-24 (briefs/U8.1-team-guide.md)
     owner: Tristan
     status: decided
     due: ''
     units: []
-    evidence: plans/2026-11-20-standardization/briefs/U4.17-team-guide.md
+    evidence: plans/2026-11-20-standardization/briefs/U8.1-team-guide.md
     decided_in: ''
     updated: '2026-11-23'
   - id: D64
@@ -4719,18 +4719,18 @@ items:
     updated: '2026-11-23'
   - id: D65
     kind: decision
-    text: 'CI speed (U4.18) defaults, full coverage kept: shard unit tests 3 ways per OS (check names become validate (os, shard); branch protection is not on yet); no not-slow subset on std/** pushes; PROGRESS.md/ledger-only commits skip validate but progress.yml runs the ledger and progress tests; every main push runs full validate; cancel-in-progress only on std/** and PRs'
-    source: conductor defaults on W20-T D1-D5, 2026-11-25 (briefs/U4.18-ci-speed.md)
+    text: 'CI speed (U8.2) defaults, full coverage kept: shard unit tests 3 ways per OS (check names become validate (os, shard); branch protection is not on yet); no not-slow subset on std/** pushes; PROGRESS.md/ledger-only commits skip validate but progress.yml runs the ledger and progress tests; every main push runs full validate; cancel-in-progress only on std/** and PRs'
+    source: conductor defaults on W20-T D1-D5, 2026-11-25 (briefs/U8.2-ci-speed.md)
     owner: Tristan
     status: decided
     due: ''
     units: []
-    evidence: plans/2026-11-20-standardization/briefs/U4.18-ci-speed.md
+    evidence: plans/2026-11-20-standardization/briefs/U8.2-ci-speed.md
     decided_in: ''
     updated: '2026-11-23'
   - id: D66
     kind: decision
-    text: "Feature freeze until Dec 2 after U4.18: only teammate-run fixes, rating sourcing (U4.19), deck work and process trim (U4.20). Light path: text/docs fixes under ~20 lines = one builder + one reviewer glance, no tactician; data-only design changes via plane design set = CI + Dillon's approval; full tactician/builder/fresh-reviewer path kept for gates, bench, security, schema. Teammates work from a ledger task with their name (no plan unit). Agent gate allows Claude Code built-in read-only subagents (T112). Plan trimmed: finished units archived, one-page summary for readers"
+    text: "Feature freeze until Dec 2 after U8.2: only teammate-run fixes, rating sourcing (U8.3), deck work and process trim (U8.4). Light path: text/docs fixes under ~20 lines = one builder + one reviewer glance, no tactician; data-only design changes via plane design set = CI + Dillon's approval; full tactician/builder/fresh-reviewer path kept for gates, bench, security, schema. Teammates work from a ledger task with their name (no plan unit). Agent gate allows Claude Code built-in read-only subagents (T112). Plan trimmed: finished units archived, one-page summary for readers"
     source: Tristan, P198 (approved item 4), 2026-11-25
     owner: Tristan
     status: decided
@@ -4763,7 +4763,7 @@ items:
     updated: '2026-11-23'
   - id: D68
     kind: decision
-    text: "U4.19 option C: this week source the adhesive/tape and strap/hinge stresses into the connection-type library (notes) and keep landing_load_factor pending (T113 gear-travel drop test); the 64 joint SKIPs stay, labelled 'rating not given per joint'; option B (per-joint contact area x sourced stress, schema field + gate change) is the first v1.1 task after Dec 2"
+    text: "U8.3 option C: this week source the adhesive/tape and strap/hinge stresses into the connection-type library (notes) and keep landing_load_factor pending (T113 gear-travel drop test); the 64 joint SKIPs stay, labelled 'rating not given per joint'; option B (per-joint contact area x sourced stress, schema field + gate change) is the first v1.1 task after Dec 2"
     source: Tristan, P199, 2026-11-25
     owner: Tristan
     status: decided
@@ -4785,7 +4785,7 @@ items:
     updated: '2026-11-23'
   - id: T115
     kind: task
-    text: "W20-R follow-ups (U4.18): add tests/test_standards.py::test_no_blocking_threshold_is_pending_without_a_decision to the progress.yml step so ledger-only commits keep that check (D65 'none that drop coverage'); rebalance _HEAVY with the windows shard times (shard 2 235 s vs 86-100 s); pin or key the playwright cache on the installed version; a renamed heavy test silently falls back to round-robin; measure progress.yml on the first ledger-only push"
+    text: "W20-R follow-ups (U8.2): add tests/test_standards.py::test_no_blocking_threshold_is_pending_without_a_decision to the progress.yml step so ledger-only commits keep that check (D65 'none that drop coverage'); rebalance _HEAVY with the windows shard times (shard 2 235 s vs 86-100 s); pin or key the playwright cache on the installed version; a renamed heavy test silently falls back to round-robin; measure progress.yml on the first ledger-only push"
     source: W20-R review 2026-11-25 (reviews/2026-11-25-w20.md)
     owner: conductor
     status: done
@@ -4807,7 +4807,7 @@ items:
     updated: '2026-11-23'
   - id: D70
     kind: decision
-    text: "Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide [U4.22 Part B conductor calls: CG y residue 0.12 mm accepted (y bound 0.15 mm); density by the brief's rule 0.03499; concept-a-param carries 10 extra tier-1/T6 FAIL rows (cut pockets follow the neutral pose only), baselined and listed in its README] [correction (W23-R): concept-a-param has 14 new FAIL rows (wng-007 8 interference + 2 overlap, mec-002 2, T6 elevon 2) and lacks concept-a's 4 cge stress FAILs because fea/ was not copied; net 20 vs 10]"
+    text: "Parametric geometry for the Dec 2 demo (overrides the D66 freeze for this work only): G1 geometry kernel hangar.geom + PDL 1.2 (component geometry {generator, params}, design-level parameters block, regeneration on design set) and G2 first generators (wing_panel, tube, fin, plate, fuselage_loft, motor_mount; mesh_file fallback); G5 concept cards only if capacity. Demo: one parameter change regenerates geometry, mass and CG on a parametric copy of concept-a (which parameter is not important; span was only an example). G3 layout, G4 AeroSandbox sizing, G6 joint selection, G7 full-design flow are v1.1 and a roadmap slide [U9.2 Part B conductor calls: CG y residue 0.12 mm accepted (y bound 0.15 mm); density by the brief's rule 0.03499; concept-a-param carries 10 extra tier-1/T6 FAIL rows (cut pockets follow the neutral pose only), baselined and listed in its README] [correction (W23-R): concept-a-param has 14 new FAIL rows (wng-007 8 interference + 2 overlap, mec-002 2, T6 elevon 2) and lacks concept-a's 4 cge stress FAILs because fea/ was not copied; net 20 vs 10]"
     source: Tristan, P200, 2026-11-25
     owner: Tristan
     status: decided
@@ -4862,7 +4862,7 @@ items:
     updated: '2026-11-23'
   - id: T120
     kind: task
-    text: 'Tristan: after U4.20-b merges, put ~/.claude/agents/Explore.md (no tools line) in place, ask it to write a file, expect the agent gate to block Write/Edit (confirms Claude Code fills agent_type in subagent hook events); then delete the file. Conductor reminds Tristan at merge (P204) [Tristan live check 2026-11-23 (P207): Explore launch allowed, Write refused with the D69 message, gate-test.txt stayed 0 bytes]'
+    text: 'Tristan: after U8.4-b merges, put ~/.claude/agents/Explore.md (no tools line) in place, ask it to write a file, expect the agent gate to block Write/Edit (confirms Claude Code fills agent_type in subagent hook events); then delete the file. Conductor reminds Tristan at merge (P204) [Tristan live check 2026-11-23 (P207): Explore launch allowed, Write refused with the D69 message, gate-test.txt stayed 0 bytes]'
     source: W22-A advice; Tristan P204, 2026-11-23
     owner: Tristan
     status: done
@@ -4873,8 +4873,8 @@ items:
     updated: '2026-11-23'
   - id: T121
     kind: task
-    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)] [U4.25 parked on std/u4.25-pockets (D71): pose-aware pockets remove all 14 swept-pose FAIL rows, but concept-a-param tier-1 validate rises ~35 s -> ~62 s (budget 60.2 s); merge after Dec 2 with a relaxed budget or a faster boolean] [U4.25 parked again (2026-11-24): convex-hull pockets (W24-A) give tier-1 98-111 s and planform -16.4 % FAIL; the swept envelope of the wng-007 balance horns (21.9k mm3 each) cuts the core; v1.1 needs a pocket clipped to the horn's real install path (amodel ctx.seat) or a planform measure decision]"
-    source: W23-B3 2026-11-23 (U4.22 Part B)
+    text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)] [U10.3 parked on std/u4.25-pockets (D71): pose-aware pockets remove all 14 swept-pose FAIL rows, but concept-a-param tier-1 validate rises ~35 s -> ~62 s (budget 60.2 s); merge after Dec 2 with a relaxed budget or a faster boolean] [U10.3 parked again (2026-11-24): convex-hull pockets (W24-A) give tier-1 98-111 s and planform -16.4 % FAIL; the swept envelope of the wng-007 balance horns (21.9k mm3 each) cuts the core; v1.1 needs a pocket clipped to the horn's real install path (amodel ctx.seat) or a planform measure decision]"
+    source: W23-B3 2026-11-23 (U9.2 Part B)
     owner: conductor
     status: open
     due: '2026-12-15'
@@ -4895,7 +4895,7 @@ items:
     updated: '2026-11-24'
   - id: D71
     kind: decision
-    text: 'Overnight 2026-11-24 (Tristan P209/P210, defaults): the conductor takes decisions and approvals and merges to main after a fresh review and green CI (irreversible actions still wait); U4.25 pose-aware cut pockets merges only if reviewed and green by Sun 11-29; the 11-30 weekly entry is drafted, not published; when the queue is empty, run audits and quality-of-life improvements (fixes, docs, tests, small tooling) under the D66 light/full path rules'
+    text: 'Overnight 2026-11-24 (Tristan P209/P210, defaults): the conductor takes decisions and approvals and merges to main after a fresh review and green CI (irreversible actions still wait); U10.3 pose-aware cut pockets merges only if reviewed and green by Sun 11-29; the 11-30 weekly entry is drafted, not published; when the queue is empty, run audits and quality-of-life improvements (fixes, docs, tests, small tooling) under the D66 light/full path rules'
     source: Tristan, P209 and P210, 2026-11-24
     owner: Tristan
     status: decided
@@ -4906,7 +4906,7 @@ items:
     updated: '2026-11-24'
   - id: T123
     kind: task
-    text: 'W23-R non-blocking (U4.22): test_old_designs_untouched should skip concept-a-param by name or require >= 8 old folders; wing-core test should assert no neutral-pose attachment-overlap row names wng-001; concept-a-param baseline was recorded without fea/, so running plane fea on it brings the 4 cge stress FAILs back'
+    text: 'W23-R non-blocking (U9.2): test_old_designs_untouched should skip concept-a-param by name or require >= 8 old folders; wing-core test should assert no neutral-pose attachment-overlap row names wng-001; concept-a-param baseline was recorded without fea/, so running plane fea on it brings the 4 cge stress FAILs back'
     source: W23-R review 2026-11-23 (reviews/2026-11-23-w23.md)
     owner: conductor
     status: done
@@ -4918,7 +4918,7 @@ items:
   - id: D72
     kind: decision
     text: "D33's 'show R1, R12, R14, R17, R31 as open gaps on Dec 2' is overtaken: the concept-a re-import (d24b6df) closed them, and T24, T54, T37 are done; the deck shows ledger truth (done with evidence)"
-    source: conductor on W24-R U4.23 finding, 2026-11-24 (D71)
+    source: conductor on W24-R U10.1 finding, 2026-11-24 (D71)
     owner: Tristan
     status: decided
     due: ''
@@ -4939,7 +4939,7 @@ items:
     updated: '2026-11-24'
   - id: D73
     kind: decision
-    text: "U4.25 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match [Tristan P219: U4.25 uses W24-A's convex-hull pocket per moving cut part (as amodel/wing.py), not posed copies]"
+    text: "U10.3 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match [Tristan P219: U10.3 uses W24-A's convex-hull pocket per moving cut part (as amodel/wing.py), not posed copies]"
     source: Tristan, P214, 2026-11-24
     owner: Tristan
     status: decided
@@ -5016,7 +5016,7 @@ items:
     updated: '2026-11-24'
   - id: D75
     kind: decision
-    text: "Build T129 parametric propagation before the Dec 2 demo (overrides the freeze for this work): expressions in references, positions relative to the parent part's attachment frame, interference reported after regeneration; merge only if reviewed and CI-green by Sun 11-29 12:00, else it stays on its branch and goes on the roadmap slide [mechanism changed per W28-A: expressions in positions, attachment locations and pivots (option b), not parent-relative frames (option a, v1.1); cut pockets following moved parts stays in U4.28 (T125, already building) and U4.29 builds on it]"
+    text: "Build T129 parametric propagation before the Dec 2 demo (overrides the freeze for this work): expressions in references, positions relative to the parent part's attachment frame, interference reported after regeneration; merge only if reviewed and CI-green by Sun 11-29 12:00, else it stays on its branch and goes on the roadmap slide [mechanism changed per W28-A: expressions in positions, attachment locations and pivots (option b), not parent-relative frames (option a, v1.1); cut pockets following moved parts stays in U10.6 (T125, already building) and U11.1 builds on it]"
     source: Tristan, P226, 2026-11-24
     owner: Tristan
     status: decided
@@ -5071,7 +5071,7 @@ items:
     updated: '2026-11-24'
   - id: D79
     kind: decision
-    text: U4.29 positions of attached parts are written as parameter expressions (e.g. $span_mm/2 - 40) resolved at regeneration, not as positions relative to the parent's attachment frame; interference is reported after a change, never refused (advisor W28-A design)
+    text: U11.1 positions of attached parts are written as parameter expressions (e.g. $span_mm/2 - 40) resolved at regeneration, not as positions relative to the parent's attachment frame; interference is reported after a change, never refused (advisor W28-A design)
     source: conductor default, W28-A design, 2026-11-24
     owner: Tristan
     status: decided
@@ -5137,7 +5137,7 @@ items:
     updated: '2026-11-24'
   - id: T134
     kind: task
-    text: Pin the date in tests/fixtures/design-verdicts.json checks and regenerate the fixture at the 2026-12-08 report-only flip (W29-R note on U4.30-2)
+    text: Pin the date in tests/fixtures/design-verdicts.json checks and regenerate the fixture at the 2026-12-08 report-only flip (W29-R note on U12.1-2)
     source: reviews/2026-11-24-w29.md, 2026-11-24
     owner: conductor
     status: open
@@ -5182,7 +5182,7 @@ items:
   - id: T136
     kind: task
     text: 'Keep overlay out of shared numbers: baselines, FEA hashes and validation results written on a machine with the CAD overlay must be produced with PLANE_CAD_OVERLAY=off (or the overlay must be ignored by baseline/hash writers)'
-    source: reviews/2026-11-25-w31.md W31-R note on U4.38
+    source: reviews/2026-11-25-w31.md W31-R note on U12.5
     owner: conductor
     status: open
     due: '2026-11-28'
@@ -5204,7 +5204,7 @@ items:
   - id: T138
     kind: task
     text: 'Split conventional tail: the rudder passes through the elevator (T1.interference FAIL 171 mm3); add an elevator cut-out (or rudder notch) option in tail_surfaces before a design uses both pieces'
-    source: reviews/2026-11-25-w31.md W31-R note on U4.37-4b
+    source: reviews/2026-11-25-w31.md W31-R note on U13.3-4b
     owner: conductor
     status: open
     due: '2026-11-28'
@@ -5237,7 +5237,7 @@ items:
   - id: T140
     kind: task
     text: Add a sourced or pending criterion for 'every servo drives a mechanism' to standards/ and point T6.servo_undriven at it (it cites mechanism_ratio_tol today)
-    source: reviews/2026-11-25-w31b.md W31-R2 note on U4.39-2
+    source: reviews/2026-11-25-w31b.md W31-R2 note on U13.4-2
     owner: conductor
     status: open
     due: '2026-12-09'
