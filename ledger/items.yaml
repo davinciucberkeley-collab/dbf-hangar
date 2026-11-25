@@ -5267,3 +5267,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: T141
+    kind: task
+    text: Allow removing elements of nested lists such as bom.items (remove accepts top-level lists only)
+    source: reviews/2026-11-25-w31.md §19
+    owner: conductor
+    status: open
+    due: '2026-12-09'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
