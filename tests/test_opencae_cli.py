@@ -70,7 +70,7 @@ def test_solver_status_fixture_no_openfoam_no_su2(tmp_path):
 
 def test_solver_status_finds_su2_in_home(tmp_path):
     doc = _doctor_fixture()
-    exe = tmp_path / ".opencae" / "solvers" / "SU2-v8.1.0" / "bin" / "SU2_CFD.exe"
+    exe = tmp_path / ".opencae" / "solvers" / "SU2-v8.1.0" / "bin" / oc._su2_exe_name()
     exe.parent.mkdir(parents=True)
     exe.write_text("")
     assert oc.solver_status(doc, environ={}, home=tmp_path)["cfd"][0] is True

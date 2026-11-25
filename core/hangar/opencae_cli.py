@@ -52,7 +52,7 @@ def find_cli(python: str | None = None, root: str | None = None) -> dict:
     cfg = {}
     if fea.CONFIG_FILE.exists():
         try:
-            cfg = json.loads(fea.CONFIG_FILE.read_text())
+            cfg = json.loads(fea.CONFIG_FILE.read_text(encoding="utf-8"))
         except json.JSONDecodeError:
             cfg = {}
         if not isinstance(cfg, dict):
