@@ -1,0 +1,895 @@
+{
+ "format": "opencae-drone/1",
+ "name": "concept-a-param",
+ "type": "tailsitter",
+ "engine": "generic",
+ "geometry": {
+  "file": "airframe.stl",
+  "units": "mm",
+  "forward": "-x",
+  "up": "+z"
+ },
+ "roles": {
+  "motor": [
+   "motor_*"
+  ],
+  "prop": [
+   "prop_*"
+  ],
+  "battery": [
+   "battery"
+  ],
+  "wing": [
+   "wing_*"
+  ],
+  "fin": [
+   "fin_*"
+  ],
+  "landing": [
+   "landing_*"
+  ],
+  "arm": [
+   "arm_*"
+  ],
+  "frame": [
+   "frame_*"
+  ],
+  "electronics": [
+   "electronics_*"
+  ]
+ },
+ "mass": {
+  "parts": {
+   "frame_avn_001": {
+    "value": 8.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "electronics_avn_002": {
+    "value": 17.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "electronics_avn_003": {
+    "value": 4.6,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_avn_004": {
+    "value": 13.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_avn_005": {
+    "value": 3.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_avn_006": {
+    "value": 5.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_avn_007": {
+    "value": 1.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_avn_008": {
+    "value": 9.6,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_avn_009_s": {
+    "value": 0.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_avn_009_t": {
+    "value": 0.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_001": {
+    "value": 18.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "arm_cge_002_a": {
+    "value": 30.6,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "arm_cge_002_b": {
+    "value": 30.6,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_003_ll": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_003_lr": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_003_ul": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_003_ur": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "arm_cge_004": {
+    "value": 8.1,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_005_l": {
+    "value": 6.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_005_r": {
+    "value": 6.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_006": {
+    "value": 2.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_007_l": {
+    "value": 1.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_007_r": {
+    "value": 1.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_cge_008": {
+    "value": 3.8,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_009_ll": {
+    "value": 0.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_009_lr": {
+    "value": 0.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_009_ul": {
+    "value": 0.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_009_ur": {
+    "value": 0.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_010_c": {
+    "value": 0.44,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_010_ll": {
+    "value": 0.18,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_010_lr": {
+    "value": 0.17,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_010_ul": {
+    "value": 0.17,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_cge_010_ur": {
+    "value": 0.18,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_001_l": {
+    "value": 27.0659,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_001_r": {
+    "value": 27.0659,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_002_l": {
+    "value": 14.1,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_002_r": {
+    "value": 14.1,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_003_l": {
+    "value": 3.2,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_003_r": {
+    "value": 3.2,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "fin_fin_004_l": {
+    "value": 8.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "fin_fin_004_r": {
+    "value": 8.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_005_l": {
+    "value": 1.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_fin_005_r": {
+    "value": 1.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "fin_fin_006_l": {
+    "value": 0.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "fin_fin_006_r": {
+    "value": 0.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_001_ll": {
+    "value": 1.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_001_lr": {
+    "value": 1.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_001_ul": {
+    "value": 1.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_001_ur": {
+    "value": 1.4,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_002_ll": {
+    "value": 0.7,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_002_lr": {
+    "value": 0.7,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_002_ul": {
+    "value": 0.7,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "landing_ger_002_ur": {
+    "value": 0.7,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hrn_002": {
+    "value": 8.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hrn_003_l": {
+    "value": 1.71,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hrn_003_r": {
+    "value": 1.71,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hrn_004_ll": {
+    "value": 1.25,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hrn_004_lr": {
+    "value": 0.97,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hrn_004_ul": {
+    "value": 0.77,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hrn_004_ur": {
+    "value": 1.05,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hwc_001": {
+    "value": 2.97,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hwc_002_l": {
+    "value": 0.27,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hwc_002_r": {
+    "value": 0.27,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_hwc_003": {
+    "value": 0.41,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "electronics_mec_001_l": {
+    "value": 20.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "electronics_mec_001_r": {
+    "value": 20.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_002_l": {
+    "value": 1.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_002_r": {
+    "value": 1.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_003_l": {
+    "value": 0.97,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_003_r": {
+    "value": 0.97,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_004_l": {
+    "value": 1.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_004_r": {
+    "value": 1.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_005_l": {
+    "value": 0.03,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_mec_005_r": {
+    "value": 0.03,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "motor_prp_001_ll": {
+    "value": 65.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "motor_prp_001_lr": {
+    "value": 65.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "motor_prp_001_ul": {
+    "value": 65.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "motor_prp_001_ur": {
+    "value": 65.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "prop_prp_002_ll": {
+    "value": 11.06,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "prop_prp_002_lr": {
+    "value": 11.06,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "prop_prp_002_ul": {
+    "value": 11.06,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "prop_prp_002_ur": {
+    "value": 11.06,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "electronics_prp_003": {
+    "value": 20.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_004_ll": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_004_lr": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_004_ul": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_004_ur": {
+    "value": 4.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_005_ll": {
+    "value": 2.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_005_lr": {
+    "value": 2.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_005_ul": {
+    "value": 2.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_prp_005_ur": {
+    "value": 2.9,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "battery": {
+    "value": 270.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_pwr_002": {
+    "value": 5.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_pwr_003": {
+    "value": 3.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "wing_wng_001": {
+    "value": 100.0967,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_002": {
+    "value": 49.6208,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_003_c": {
+    "value": 1.2,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_004_l": {
+    "value": 1.2,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_004_r": {
+    "value": 1.2,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_005_l": {
+    "value": 1.2,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_005_r": {
+    "value": 1.2,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "fin_wng_006_l": {
+    "value": 6.7,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "fin_wng_006_r": {
+    "value": 6.7,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_007_l": {
+    "value": 13.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_007_r": {
+    "value": 13.3,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_008_ll": {
+    "value": 3.8,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_008_lu": {
+    "value": 3.8,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_008_rl": {
+    "value": 3.8,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "frame_wng_008_ru": {
+    "value": 3.8,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_wng_009_l": {
+    "value": 2.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_wng_009_r": {
+    "value": 2.0,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_wng_010_l": {
+    "value": 0.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   },
+   "other_wng_010_r": {
+    "value": 0.5,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   }
+  },
+  "payload_g": {
+   "value": 0,
+   "unit": "g",
+   "status": "user",
+   "source": "none"
+  }
+ },
+ "propulsion": {
+  "rotors": "auto",
+  "motor": {
+   "kv": {
+    "value": 780,
+    "unit": "rpm/V",
+    "status": "estimate",
+    "source": "component description MN2212 KV780"
+   },
+   "r_ohm": {
+    "value": 0.12,
+    "unit": "ohm",
+    "status": "estimate",
+    "source": "scratch study value"
+   },
+   "i0_a": {
+    "value": 0.5,
+    "unit": "A",
+    "status": "estimate",
+    "source": "scratch study value"
+   },
+   "i_max_a": {
+    "value": 11.2,
+    "unit": "A",
+    "status": "estimate",
+    "source": "plane.yaml propulsion.max_current_a"
+   },
+   "mass_g": {
+    "value": 65,
+    "unit": "g",
+    "status": "estimate",
+    "source": "plane.yaml mass_g"
+   }
+  },
+  "prop": {
+   "diameter_in": {
+    "value": 9,
+    "unit": "in",
+    "status": "estimate",
+    "source": "plane.yaml prop_diameter_mm 228.6"
+   },
+   "pitch_in": {
+    "value": 4.5,
+    "unit": "in",
+    "status": "estimate",
+    "source": "APC 9x4.5"
+   },
+   "ct": {
+    "value": 0.11,
+    "unit": "",
+    "status": "estimate",
+    "source": "scratch study value"
+   },
+   "cp": {
+    "value": 0.045,
+    "unit": "",
+    "status": "estimate",
+    "source": "scratch study value"
+   }
+  },
+  "battery": {
+   "cells": {
+    "value": 4,
+    "unit": "",
+    "status": "estimate",
+    "source": "scratch study value"
+   },
+   "capacity_mah": {
+    "value": 2300,
+    "unit": "mAh",
+    "status": "estimate",
+    "source": "plane.yaml battery"
+   },
+   "c_rating": {
+    "value": 75,
+    "unit": "",
+    "status": "estimate",
+    "source": "scratch study value"
+   },
+   "r_int_mohm_per_cell": {
+    "value": 8,
+    "unit": "mohm",
+    "status": "estimate",
+    "source": "scratch study value"
+   },
+   "usable_fraction": {
+    "value": 0.8,
+    "unit": "",
+    "status": "estimate",
+    "source": "scratch study value"
+   }
+  },
+  "esc": {
+   "i_cont_a": {
+    "value": 35,
+    "unit": "A",
+    "status": "estimate",
+    "source": "description: 35A"
+   },
+   "efficiency": {
+    "value": 0.95,
+    "unit": "",
+    "status": "estimate",
+    "source": "scratch study value"
+   }
+  }
+ },
+ "aero": {
+  "cruise_speed_ms": {
+   "value": 17,
+   "unit": "m/s",
+   "status": "user",
+   "source": "plane.yaml requirements.cruise_speed_mps"
+  },
+  "alpha_deg": {
+   "value": 0,
+   "unit": "deg",
+   "status": "estimate",
+   "source": "scratch study value"
+  }
+ },
+ "mission": {
+  "hover_s": {
+   "value": 240,
+   "unit": "s",
+   "status": "user",
+   "source": "scratch"
+  },
+  "cruise_s": {
+   "value": 0,
+   "unit": "s",
+   "status": "user",
+   "source": "scratch"
+  },
+  "payload_g": {
+   "value": 0,
+   "unit": "g",
+   "status": "user",
+   "source": "none"
+  }
+ },
+ "environment": {
+  "rho": {
+   "value": 1.2,
+   "unit": "kg/m3",
+   "status": "user",
+   "source": "plane.yaml flight.air_density_kgm3"
+  },
+  "g": {
+   "value": 9.80665,
+   "unit": "m/s2",
+   "status": "user",
+   "source": "standard gravity"
+  }
+ },
+ "analyses": {
+  "cfd": {
+   "enabled": false
+  },
+  "structure": {
+   "enabled": false
+  },
+  "flight": {
+   "enabled": false
+  }
+ }
+}
