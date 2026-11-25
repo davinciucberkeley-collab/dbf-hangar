@@ -220,16 +220,17 @@ Writes files.
 
 ### `plane design new`
 
-Create a design from a template.
+Create a design from a template, or with blank=True a minimal valid blank design (no template data).
 
 ```
-plane design new <new-id> [--template <str>]
+plane design new <new-id> [--template <str>] [--blank]
 ```
 
 Writes files.
 
 - `<new-id>`: str, required
 - `--template`: str, optional
+- `--blank`: bool, optional
 
 ### `plane design propose`
 

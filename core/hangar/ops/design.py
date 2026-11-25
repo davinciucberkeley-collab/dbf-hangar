@@ -110,13 +110,16 @@ def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out:
     return OpResult(True, {"files": paths}, changed_files=list(paths))
 
 
-@op(name="design.new", summary="Create a design from a template.", mutates=True, render=lambda r: r.data["path"])
-def new_op(new_id: str, *, template: str = "example-tailsitter-wing") -> OpResult:
-    from ..cli import new_design
+@op(name="design.new", summary="Create a design from a template, or with blank=True a minimal valid blank design (no template data).",
+    mutates=True, render=lambda r: r.data["path"])
+def new_op(new_id: str, *, template: str = "example-tailsitter-wing", blank: bool = False) -> OpResult:
+    from ..cli import new_blank_design, new_design
+    if blank and template != "example-tailsitter-wing":
+        raise OpInputError("--blank and --template exclude each other")
     if not ID_RE.fullmatch(new_id):
         raise OpInputError(f"invalid id {new_id!r}: must match {ID_RE.pattern}")
     try:
-        p = new_design(new_id, template)
+        p = new_blank_design(new_id) if blank else new_design(new_id, template)
     except ValueError as e:
         raise OpInputError(str(e)) from e
     return OpResult(True, {"path": str(p)}, changed_files=[str(p)])
