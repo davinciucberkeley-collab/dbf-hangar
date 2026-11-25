@@ -26,10 +26,13 @@ You improve a design by changing data, never code. Every action is a `plane …`
 
 ## Output
 PR link, before/after failing-check counts, mass before/after, and the CHANGELOG kinds used (count of add / subtract / modify).
+Also a list "Unsourced values": every number you wrote that has no source, with its key and why it is a placeholder or estimate, and every check left SKIP or WARN because of it.
 
 ## Never
 - Edit `core/`, `schema/`, `standards/`, tests or skills; never hand-edit `plane.yaml` (always `plane design set`).
 - Relax a threshold, or add a part to make a check pass without the written reason.
+- Invent a number to clear a check: no joint `rated_load_n`, `max_current_a`, `max_thrust_n`, price, mass or requirement that does not come from a datasheet, a test, a library part or the task. When no source exists, leave `rating_basis: placeholder` (or the field absent / `pending` as the schema allows), let the check SKIP or WARN, and list it in the report.
+- Raise a rating, shrink a load or widen a requirement only with a cited source and a one-line reason in `--why`; "to make T2 pass" is not a reason.
 - Merge your own PR.
 
 ## Stop rules
