@@ -113,10 +113,9 @@ def _manifold(mesh: trimesh.Trimesh):
 
 
 PINCH_MM = 5e-4   # 0.5 micron: pulls coincident-but-distinct vertices apart (see _separate_pinches)
-_PAIR_PASS = True   # part_mesh turns the coincident-pair pass off for its first attempt (re-import identity)
 
 
-def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
+def _separate_pinches(vertices: np.ndarray, faces: np.ndarray, pair_pass: bool = True) -> np.ndarray:
     """A Manifold union of two bodies that touch only along an edge or at a point keeps two distinct vertices at the
     same position (valid topologically). An STL file cannot carry that: on reload the vertices merge and the shared
     edge then has four faces, so the mesh is no longer watertight. Every vertex that has a coincident partner is moved
@@ -142,7 +141,7 @@ def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     ok = pinched & (ln > 0)
     out = vertices.copy()
     out[ok] += PINCH_MM * d[ok] / ln[ok, None]
-    if not _PAIR_PASS:
+    if not pair_pass:
         return out
     key2 = np.round(out / 1e-6).astype(np.int64)
     _, inv2, cnt2 = np.unique(key2, axis=0, return_inverse=True, return_counts=True)
@@ -158,14 +157,14 @@ def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     return out
 
 
-def _from_manifold(man) -> trimesh.Trimesh:
+def _from_manifold(man, pair_pass: bool = True) -> trimesh.Trimesh:
     out = man.to_mesh()
     v = np.asarray(out.vert_properties)[:, :3].astype(float)
     f = np.asarray(out.tri_verts)
-    return trimesh.Trimesh(vertices=_separate_pinches(v, f), faces=f, process=False)
+    return trimesh.Trimesh(vertices=_separate_pinches(v, f, pair_pass), faces=f, process=False)
 
 
-def _boolean(op: str, meshes: list[trimesh.Trimesh]) -> trimesh.Trimesh:
+def _boolean(op: str, meshes: list[trimesh.Trimesh], pair_pass: bool = True) -> trimesh.Trimesh:
     import manifold3d as m
     mans = []
     for x in meshes:
@@ -177,7 +176,7 @@ def _boolean(op: str, meshes: list[trimesh.Trimesh]) -> trimesh.Trimesh:
         res = m.Manifold.batch_boolean(mans, m.OpType.Add)
     else:
         res = m.Manifold.batch_boolean(mans, m.OpType.Subtract)
-    return _from_manifold(res)
+    return _from_manifold(res, pair_pass)
 
 
 # ------------------------------------------------------------------ the three body kinds (local frame, mm)
@@ -318,18 +317,13 @@ def _closed(mesh: trimesh.Trimesh) -> bool:
 def part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
     """First without the coincident-pair pass of _separate_pinches (keeps meshes that already rebuild closed byte-identical
     to earlier imports), then with it if that attempt fails."""
-    global _PAIR_PASS
-    _PAIR_PASS = False
     try:
-        return _part_mesh(comp)
+        return _part_mesh(comp, pair_pass=False)
     except GeometryError:
-        _PAIR_PASS = True
-        return _part_mesh(comp)
-    finally:
-        _PAIR_PASS = True
+        return _part_mesh(comp, pair_pass=True)
 
 
-def _part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
+def _part_mesh(comp: dict, pair_pass: bool = True) -> tuple[trimesh.Trimesh, dict]:
     """The part's solid in world mm: union of its bodies, minus its cuts. Returns (mesh, info).
     info: bodies, body_volume_ratio (mesh volume / the source's analytic volume per body), n_cuts."""
     M = comp["matrix"]
@@ -350,7 +344,7 @@ def _part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
         except GeometryError:
             continue
     placed = [_place(lm, M) for lm in local]
-    base = placed[0] if len(placed) == 1 else _boolean("union", placed)
+    base = placed[0] if len(placed) == 1 else _boolean("union", placed, pair_pass=pair_pass)
     lo, hi = base.bounds
     near = [c for c in cuts if np.all(c.bounds[0] < hi) and np.all(c.bounds[1] > lo)]
     mesh = base
@@ -360,11 +354,11 @@ def _part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
         mesh = None
         for mode in ("batch", "sequential"):
             try:
-                cand = _boolean("difference", [base] + near) if mode == "batch" else None
+                cand = _boolean("difference", [base] + near, pair_pass=pair_pass) if mode == "batch" else None
                 if mode == "sequential":
                     cand = base
                     for cutter in near:
-                        cand = _boolean("difference", [cand, cutter])
+                        cand = _boolean("difference", [cand, cutter], pair_pass=pair_pass)
             except GeometryError:
                 continue
             cand = _clean(cand)

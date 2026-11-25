@@ -49,6 +49,24 @@ def overlay_configured() -> bool:
     return _configured_root() is not None
 
 
+def manifest_count() -> int:
+    """Part folders with an overlay.yaml under the configured root (describes the machine, ignores forced_off)."""
+    root = _configured_root()
+    if root is None:
+        return 0
+    try:
+        return sum(1 for p in root.glob("*/overlay.yaml") if p.is_file())
+    except OSError:
+        return 0
+
+
+def ignored_note() -> str | None:
+    """The stderr note for the baseline commands, or None when no manifest exists (an empty folder is no overlay)."""
+    if manifest_count() > 0:
+        return "note: CAD overlay ignored here (baselines and FEA results never use licensed files)"
+    return None
+
+
 @contextlib.contextmanager
 def forced_off():
     """Ignore the overlay inside the block (nesting allowed; restored on exceptions)."""
