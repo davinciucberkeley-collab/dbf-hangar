@@ -124,13 +124,13 @@ def _build(p: dict, base_dir) -> list:
     cuts = []
     for f in p["cut_files"]:
         m = _load_cut(base_dir, f)
-        pts = [np.asarray(m.vertices, dtype=float)]
-        for row in poses.get(f, []):
-            t = np.array(row, dtype=float).reshape(3, 4)
-            pts.append(pts[0] @ t[:, :3].T + t[:, 3])
-        if len(pts) > 1:                                  # one convex pocket over the whole sweep (as amodel/wing.py)
-            m = kernel.require_solid(trimesh.convex.convex_hull(np.vstack(pts)), f"{f} swept hull")
         cuts.append(m)
+        for row in poses.get(f, []):
+            t = np.eye(4)
+            t[:3] = np.array(row, dtype=float).reshape(3, 4)
+            moved = m.copy()
+            moved.apply_transform(t)
+            cuts.append(moved)
     hit = [m for m in cuts if np.all(m.bounds[0] < core.bounds[1]) and np.all(m.bounds[1] > core.bounds[0])]
     if hit:
         core = kernel.difference(core, hit)

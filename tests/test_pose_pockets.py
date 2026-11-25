@@ -38,15 +38,15 @@ def _stage(tmp_path):
     box((20, 30, 10), (100, 0, 0)).export(tmp_path / "cutter.stl")
 
 
-def test_cut_poses_hull_over_neutral_and_posed(tmp_path):
+def test_cut_poses_union_with_neutral(tmp_path):
     _stage(tmp_path)
     p = wing(root_chord=200, tip_chord=200, cut_files=["cutter.stl"],
              cut_poses=[{"file": "cutter.stl", "matrices": [[1, 0, 0, 35, 0, 1, 0, 0, 0, 0, 1, 0]]}])
     (m,) = _build(p, tmp_path)
-    assert vol(m) == pytest.approx(700000 - 16500, rel=1e-6)
+    assert vol(m) == pytest.approx(700000 - 12000, rel=1e-6)
     p["cut_poses"] = [{"file": "cutter.stl", "matrices": [[0, -1, 0, 100, 1, 0, 0, -100, 0, 0, 1, 0]]}]
     (m,) = _build(p, tmp_path)
-    assert vol(m) == pytest.approx(691500, rel=1e-6)
+    assert vol(m) == pytest.approx(692000, rel=1e-6)
 
 
 def test_cut_poses_default_is_empty_and_unchanged(tmp_path):
@@ -156,21 +156,3 @@ def test_merged_poses_cover_every_sampled_pose(tmp_path):
         assert max(float(np.abs(k - v).max()) for k in kept) == pytest.approx(ext, abs=1e-6)   # extremes kept
         assert len(kept) <= len(configs)
     assert n_all > 0
-
-
-def test_hull_pocket_covers_union_of_posed_copies():
-    import numpy as np
-    from hangar.geom import kernel
-    b = box((20, 30, 10), (100, 0, 0))
-    copies = [b]
-    for deg in (0, 15, 30, 45, 60, 75, 90):
-        c = b.copy()
-        a = np.radians(deg)
-        t = np.eye(4)
-        t[:2, :2] = [[np.cos(a), -np.sin(a)], [np.sin(a), np.cos(a)]]
-        t[:2, 3] = np.array([100, 0]) - t[:2, :2] @ np.array([100, 0])
-        c.apply_transform(t)
-        copies.append(c)
-    import trimesh
-    hull = trimesh.convex.convex_hull(np.vstack([c.vertices for c in copies]))
-    assert abs(hull.volume) >= abs(kernel.union(copies).volume) - 1e-6
