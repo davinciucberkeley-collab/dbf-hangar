@@ -1008,6 +1008,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 ### Unit U14.1: Dec 2 presentation package
 
+*Deck updated for D77/D78 (merged 9b1110f): slides 8-10 new (any aircraft, rehearsals measured, honest limits), live-demo slide from the script; PR #8 CI green after U13.7-10.*
+
 *Briefs 96c27aa: U14.1-2 demo script (A400M prompt flow), U14.1-1b deck update. Defaults taken for Tristan to confirm in the morning: demo = pre-built PR #8 plus one live change (A400M wing span if set + tier-1 validate < 60 s on a fresh clone with no new FAIL, else the concept-a-param span step, D75); CAD overlay off on stage (one optional local click); prompt text = the tactician's proposal ending "do not invent ratings, prices or requirements".*
 
 - [x] **Step 1:** Slides deck (Claude Slides artifact; download .pptx/PDF if needed): problem (15 interfaces, rules forgotten, code edits per design) → PDL → ops/CLI/MCP/Studio → gates T0–T8 → harness → PlaneBench results → what's next.
