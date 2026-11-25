@@ -1,0 +1,14 @@
+id: apc-10x7e-prop
+name: Prop APC 10x7E thin electric (2-blade)
+category: propeller
+vendor: APC Propellers
+part_number: LP10070E
+url: https://www.apcprop.com/product/10x7e/
+mass_g: 20.13
+dimensions_mm: [10.16, 254.0, 254.0]
+cad_status: representative-envelope
+cad_source: "APC product page https://www.apcprop.com/product/10x7e/ spec table: Propeller Diameter 10 in (254.0 mm, from the pitch/diameter table); Hub Thickness 0.40 in (10.16 mm) used as axial x; Product Weight 0.71 oz (20.13 g, converted). Hub thickness is the only axial value the page gives; blade-tip axial extent not stated. No CAD link on the page; not downloaded"
+verified: {by: W31-S2, date: '2026-11-24', method: webfetch}
+geometry:
+  generator: tube
+  params: {axis: x, length: 10.16, outer_d: 254.0}
