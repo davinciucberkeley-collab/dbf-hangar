@@ -146,3 +146,14 @@ def test_point_masses_are_listed_not_exported(tmp_path):
     assert res["point_masses"] == ["hrd_x"] and "hrd_x" not in res["solids"]
     assert "other_hrd_x" not in (tmp_path / "a.stl").read_text(encoding="ascii")
     assert "other_hrd_x" not in _spec(d)["mass"]["parts"]
+
+
+def test_pending_standards_and_defaults_are_estimates(tmp_path):
+    """D98: a pending-source standards value and a built-in default are `estimate`, never `user`."""
+    d = _design(tmp_path)
+    s = _spec(d)
+    assert s["propulsion"]["battery"]["usable_fraction"]["status"] == "estimate"     # source pending
+    assert s["environment"]["rho"]["status"] == "estimate"                           # built-in 1.225
+    assert s["mission"]["hover_s"]["status"] == "user"                               # sourced standards value
+    d.data.setdefault("flight", {})["air_density_kgm3"] = 1.1
+    assert _spec(d)["environment"]["rho"]["status"] == "user"                        # declared by the design

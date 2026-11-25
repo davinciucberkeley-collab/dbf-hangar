@@ -70,3 +70,23 @@ wire_pair_derate:
   value: 0.8
   rule: "T7.electrical_rating: derate applied to wire_ampacity_a for a bundled harness (model input)."
   source: Multicable reference table, bundling section (2-5 conductors), via knowledge/sources/std-wire-ampacity.md
+opencae_structure_sf_min:
+  value: 2.0
+  rule: "T2.opencae_structure_sf: OpenCAE structure safety factor (yield over the 99th-percentile stress at the load factor) must be at least this."
+  source: pending
+  note: "provisional: not yet sourced (D88); 2.0 is OpenCAE's own default requirement, README section 4"
+opencae_flight_max_tilt_deg_max:
+  value: 30
+  rule: "T2.opencae_flight: peak tilt after the simulated disturbance must be at most this many degrees."
+  source: pending
+  note: "provisional: not yet sourced (D88); 30 deg is OpenCAE's own default requirement, README section 4"
+opencae_cfd_ld_tolerance_fraction:
+  value: 0.25
+  rule: "T2.opencae_cfd_ld: |computed L/D - declared flight.cruise_ld| / declared must be at most this."
+  source: pending
+  note: "provisional: not yet sourced (D88); no source for the tolerance; OpenCAE says SU2 drag is indicative only"
+opencae_mass_cross_tolerance_g:
+  value: 1.0
+  rule: "T2.opencae_mass_cross: OpenCAE mass and `plane design mass` must agree within this many grams."
+  source: pending
+  note: "provisional: not yet sourced (D88); no source"

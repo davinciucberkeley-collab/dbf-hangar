@@ -14,7 +14,7 @@ import trimesh
 import yaml
 
 from .design import Design
-from .gates.discipline import OPS, _entry
+from .gates.discipline import OPS, _crit, _entry
 from .geom import overlay
 from .geometry import component_parts, is_point_mass
 from .mass import mass_properties
@@ -66,6 +66,11 @@ def solid_name(component: dict) -> str:
         return "battery"
     role = ROLE_BY_TYPE.get(component["type"], "other")
     return role + "_" + re.sub(r"[^a-z0-9]", "_", str(component["id"]).lower())
+
+
+def _std_status(file: str, key: str) -> str:
+    """D98: a standards value whose source is pending is an `estimate`; a sourced one is `user`."""
+    return "estimate" if _crit(file, key)[1] else "user"
 
 
 def mass_status(component: dict) -> str:
@@ -161,7 +166,7 @@ def drone_spec(design: Design, inputs: dict, analyses: tuple[str, ...], solvers:
             if field in battery["battery"]:
                 bat[key] = _num(battery["battery"][field], unit, st,
                                 f"plane.yaml components[{battery['id']}].battery.{field}")
-    bat["usable_fraction"] = _num(_entry(OPS, "battery_usable_fraction")["value"], "", "user",
+    bat["usable_fraction"] = _num(_entry(OPS, "battery_usable_fraction")["value"], "", _std_status(OPS, "battery_usable_fraction"),
                                   "standards/operations.yaml#battery_usable_fraction")
     bat["r_int_mohm_per_cell"] = side("propulsion.battery.r_int_mohm_per_cell")
 
@@ -187,14 +192,14 @@ def drone_spec(design: Design, inputs: dict, analyses: tuple[str, ...], solvers:
         "aero": {"cruise_speed_ms": None if cruise is None else _num(cruise, "m/s", "user",
                                                                      "plane.yaml requirements.cruise_speed_mps"),
                  "alpha_deg": _num(0, "deg", "estimate", "default")},
-        "mission": {"hover_s": _num(_entry(OPS, "mission_hover_min")["value"] * 60, "s", "user",
+        "mission": {"hover_s": _num(_entry(OPS, "mission_hover_min")["value"] * 60, "s", _std_status(OPS, "mission_hover_min"),
                                     "standards/operations.yaml#mission_hover_min"),
-                    "cruise_s": _num(_entry(OPS, "mission_cruise_min")["value"] * 60, "s", "user",
+                    "cruise_s": _num(_entry(OPS, "mission_cruise_min")["value"] * 60, "s", _std_status(OPS, "mission_cruise_min"),
                                      "standards/operations.yaml#mission_cruise_min"),
                     "payload_g": payload},
-        "environment": {"rho": _num(flight.get("air_density_kgm3", 1.225), "kg/m3", "user",
+        "environment": {"rho": _num(flight.get("air_density_kgm3", 1.225), "kg/m3", "user" if "air_density_kgm3" in flight else "estimate",
                                     "plane.yaml flight.air_density_kgm3" if "air_density_kgm3" in flight else "default"),
-                        "g": _num(9.80665, "m/s2", "user", "default")},
+                        "g": _num(9.80665, "m/s2", "estimate", "default")},
     }
     if inputs["materials"]:
         spec["materials"] = inputs["materials"]
@@ -202,11 +207,12 @@ def drone_spec(design: Design, inputs: dict, analyses: tuple[str, ...], solvers:
         spec["role_materials"] = inputs["role_materials"]
     spec["analyses"] = {
         "structure": {"enabled": "structure" in analyses and bool(solvers["ccx"][0]),
-                      "load_factor": _num(uf, "", "user", "standards/design-standards.yaml#ultimate_factor")},
+                      "load_factor": _num(uf, "", _std_status("design-standards.yaml", "ultimate_factor"),
+                                             "standards/design-standards.yaml#ultimate_factor")},
         "cfd": {"enabled": "cfd" in analyses and bool(solvers["cfd"][0]), "solver": "auto", "preset": "coarse",
                 "iterations": 300},
         "flight": {"enabled": "flight" in analyses and dtype != "fixed_wing",
-                   "disturbance_deg": _num(15, "deg", "user", "default")},
+                   "disturbance_deg": _num(15, "deg", "estimate", "default")},
     }
     return spec
 
