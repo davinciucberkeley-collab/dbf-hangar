@@ -407,14 +407,20 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | — async check-in (no meeting) | Wed 11-25 | `plane update publish` → link in the Drive doc |
 | W3 One surface, skills, proof | Wed 11-25 → Sat 11-28 (Thu 11-26 Thanksgiving, light) | U3.1 [hard], U3.2, U3.3, U3.4, U3.5, U3.6 [hard] |
 | Freeze | Mon 11-30 18:00 | — |
-| W4.1 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
-| W4.2 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
-| W4.3 Hardening and v1.1 batch 1 | Mon 11-23 | U4.8, U4.9, U4.10, U4.11 |
-| W4.4 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U4.12, U4.13, U4.14, U4.15, U4.16 |
-| W4.5 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U4.17, U4.18, U4.19, U4.20 |
-| W4.6 Parametric geometry for the demo (D70) | Tue 11-24 → Sun 11-29 | U4.21, U4.22 |
-| W4.7 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
+| W4 Whole-branch review and release prep | Sat 11-21 → Sun 11-22 | U4.1 |
+| W5 Overnight core fixes | Sun 11-22 → Mon 11-23 | U4.3, U4.4, U4.5, U4.6, U4.7 |
+| W6 Hardening and v1.1 batch 1 | Mon 11-23 | U4.8, U4.9, U4.10, U4.11 |
+| W7 Dec 2 prep, BOM, v1.1 batch 2, research import | Mon 11-23 | U4.12, U4.13, U4.14, U4.15, U4.16 |
+| W8 Team adoption, CI, ratings, process | Mon 11-23 → Tue 11-24 | U4.17, U4.18, U4.19, U4.20 |
+| W9 Parametric geometry for the demo (D70) | Tue 11-24 | U4.21, U4.22 |
+| W10 Freeze fixes and fresh-session findings | Tue 11-24 | U4.23, U4.24, U4.25, U4.26, U4.27, U4.28 |
+| W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U4.29, U4.35 |
+| W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U4.30, U4.31, U4.32, U4.33, U4.38 |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U4.36, U4.37, U4.39, U4.34 |
+| W14 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
 | Present | **Wed 12-02** | demo + deck |
+
+**Wave names (Tue 11-24, Tristan P260/P261):** the former sub-waves W4.1-W4.7 are now W4-W9 and W14, and the later units are grouped as W10-W13; unit ids (U4.x) are unchanged so briefs, branches and commits still match. Agent ids such as W29-B are launch labels, not schedule waves.
 
 **Revised schedule (Mon 11-23 22:45, conductor; W0-W3 finished early, see archive):**
 
