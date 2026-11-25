@@ -15,7 +15,7 @@ connection_types:
   method: fastened
   spec: M2 self-tapping or machine screw into printed/plastic boss (servo ears)
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): no pull-out value into printed or plastic boss found
 # rated_load_n: ultimate pull-out or tensile N (std-ct-fasteners, std-ct-straps-hinges-thermal); omitted = no opened source
 - id: CT-M3-SHCS-INSERT
   kind: mechanical
@@ -47,19 +47,19 @@ connection_types:
   method: fastened
   spec: bolt-on prop adapter, 3 x M2.5 SHCS on a 15 mm circle into the motor bell, pilot on the shaft
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): torque only (ISO 898-7); no axial load found
 - id: CT-PROP-NUT
   kind: mechanical
   method: fastened
   spec: M6x1 nut and washer clamp the prop hub on the adapter post (field joint)
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): APC gives hand-tight only; no joint torque; per-bolt M6 values only
 - id: CT-SERVO-SPLINE
   kind: mechanical
   method: fastened
   spec: servo arm on the output spline, M2 retaining screw
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): spline or M2 retention value not found; stall torque is a servo property
 - id: CT-EPOXY
   kind: mechanical
   method: bonded
@@ -79,7 +79,7 @@ connection_types:
   method: clamped
   spec: printed split clamp around round tube, closed by fasteners listed in the joint stack
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): no slip load for a printed split clamp found
 - id: CT-STRAP-VELCRO
   kind: mechanical
   method: strapped
@@ -125,7 +125,7 @@ connection_types:
   method: taped
   spec: packing-tape skin or cover, spanwise strips, 10 % overlap
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): 3M TDS PDFs blocked (HTTP 403); no tensile or adhesion value opened
 - id: CT-TAPE-FOAM
   kind: mechanical
   method: taped
@@ -204,8 +204,8 @@ connection_types:
   kind: electrical
   method: connector
   spec: Amass AS150U anti-spark pair (battery main; 70 A continuous, 140 A momentary per maker; packs re-terminated, D-32)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-u171-p5-amass-catalogue-as150u-sh35 (PDF p. 28, "Specifications" table, AS150U column)'
   rated_current_a: 75
 - id: CT-MR30
   kind: electrical
@@ -218,26 +218,27 @@ connection_types:
   kind: electrical
   method: connector
   spec: 3 x gold bullet connectors, motor phases (size per E1)
-  rating_basis: placeholder
-  source: pending
+  rating_basis: sourced
+  source: 'std-u171-p5-amass-catalogue-as150u-sh35 (PDF p. 20, "Specifications" table, SH3.5 and SH4.0U columns; lowest marked value, size not resolved)'
+  rated_current_a: 30
 - id: CT-SOLDER-PHASE
   kind: electrical
   method: soldered
   spec: soldered motor phase wires, heat-shrink
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): IPC J-STD-001J contents show no ampacity or derating section
 - id: CT-SOLDER-DC
   kind: electrical
   method: soldered
   spec: soldered DC power joint, heat-shrink
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): IPC J-STD-001J contents show no ampacity or derating section
 - id: CT-SERVO-JR
   kind: electrical
   method: connector
   spec: JR/Futaba 3-pin servo connector
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): no JR or Futaba maker rating found; hobby guide is not JR-specific
 - id: CT-JST-GH-4
   kind: electrical
   method: connector
@@ -281,28 +282,28 @@ connection_types:
   method: fastened
   spec: 'concept A: 4 x M2.5 SHCS through 2.9 mm clearance holes in the printed motor cup into the T-Motor MN2212 base (4-M2.5 on a 19 x 16 mm rectangle, T-Motor drawing)'
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): torque only; no axial or screw-in-plastic load found
 - id: CT-A-PROP-ADAPTER
   kind: mechanical
   method: fastened
   spec: 'concept A: T-Motor MN2212 prop adapter (Phi19 x 4.5 flange, M5 stud) on the bell top, 2 x M3 at 12 mm pitch (Phi3.2 holes, Phi5.7 counterbore), Phi4 shaft bore (T-Motor drawing)'
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): T-Motor adapter joint rating not found; per-bolt M3 and M5 values only
 - id: CT-A-PROP-NUT
   kind: mechanical
   method: fastened
   spec: 'concept A: APC hub with its adapter ring (ID 5 mm, EST) on the M5 stud of the T-Motor adapter, clamped by an M5 spinner nut Phi12 x 16 (field joint); replaces the M6x1 text of CT-PROP-NUT, which is the K09-L meaning'
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): APC gives M6x1 hand-tight only; no M5 spinner-nut joint rating found
 - id: CT-A-M3-CSK-MOTOR
   kind: mechanical
   method: fastened
   spec: 'concept A (T-083): SunnySky X2216 base on its X-mount, 4 x M3 countersunk (supplied) through the mount Phi 3.2 / Phi 5.7 countersink into the motor base 4-M3x0.5 depth 2.8 on the 19 / 16 pattern (SunnySky drawing X2216); added from DBF-Combined redesign/interfaces/connection_types.json @ d83b26f, no rating opened'
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): SunnySky mount pattern and joint rating not found; head size and per-bolt values only
 - id: CT-A-M3-BOLT-MOUNT
   kind: mechanical
   method: fastened
   spec: 'concept A (T-083): SunnySky X-mount on the printed motor cup plate, 4 x M3x14 SHCS through the mount Phi 3.1 (34 mm spans) and 3.4 mm plate holes, M3 nyloc behind the plate; added from DBF-Combined redesign/interfaces/connection_types.json @ d83b26f, no rating opened'
   rating_basis: placeholder
-  source: pending
+  source: pending  # no opened source (U17.1): nyloc torque and plate pull-through not found; per-bolt M3 values only
