@@ -4,7 +4,7 @@ You do this in a Claude Code session (Setup A in `docs/team-guide.md`). You talk
 
 ## Blockers at the top (read first)
 
-The importer on `main` cannot import v1 yet. Do not start until Tristan tells you B1 to B5 are merged. Status on 2026-11-24: all five OPEN, named as builder tasks in `dryrun-log.md`; the conductor schedules them.
+The importer on `main` cannot import v1 yet. Do not start until Tristan tells you B1 to B5 are merged. Status on 2026-11-24: all five OPEN; briefs written (unit U4.40, step 1 done), build and review pending. Briefs in `plans/2026-11-20-standardization/briefs/`: B3 + B4 = `U4.40-1.md` (branch `std/u4.40-types-cost`), B5 = `U4.40-2.md` (`std/u4.40-changelog-ids`), B2 = `U4.40-3.md` (`std/u4.40-pinch-pairs`), B1 = `U4.40-4.md` (`std/u4.40-stl-weld`, which also holds the real-data acceptance of the set). Order 1, 2, 3, 4. Details of each finding: `dryrun-log.md`.
 
 | # | What | Where | Effect if not fixed | Status |
 |---|---|---|---|---|
