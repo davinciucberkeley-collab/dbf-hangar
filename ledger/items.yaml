@@ -5168,3 +5168,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: D83
+    kind: decision
+    text: GrabCAD models (non-commercial, internal use, no re-upload) never enter git, CI, the public viewer or any committed GLB. A local, git-ignored CAD overlay folder supplies real meshes for library parts on team PCs only; committed library parts keep dimension-accurate envelopes plus the source URL and licence note; a design built with the overlay renders real CAD in local Studio
+    source: Tristan, P237, 2026-11-24
+    owner: Tristan
+    status: decided
+    due: ''
+    units: []
+    evidence: plans/2026-11-20-standardization.md
+    decided_in: ''
+    updated: '2026-11-24'
