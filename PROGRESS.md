@@ -21,14 +21,14 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W10 Freeze fixes and fresh-session findings | 5 | 5 |
 | W11 Parameter propagation and speed (D75, D81) | 2 | 2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | 5 | 5 |
-| W13 Rehearsal gaps and visual fidelity | 8 | 6 |
+| W13 Rehearsal gaps and visual fidelity | 8 | 7 |
 | W14 Presentation | 1 | 0 |
 | W15 Authoring gaps and speed (D86) | 3 | 1 |
 | W16 3D generation close to the real aircraft (D85, D87) | 2 | 0 |
 | W17 Sourced gates (D88) | 1 | 0 |
 | W18 Physics checks (D89) | 4 | 0 |
 | W19 Studio UI and 3D viewer (D92) | 1 | 0 |
-| **all** | 74 | 59 |
+| **all** | 74 | 60 |
 
 ### Open ledger items by owner
 
@@ -182,7 +182,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U13.2 | Design authoring from a blank start (rehearsal 1 gaps; D78) [hard] | 4/4 | done | - |
 | U13.3 | A400M rehearsal gaps (D78) [hard] | 3/3 | done | - |
 | U13.4 | Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard] | 3/3 | done | - |
-| U13.5 | Importer fixes for Dillon's concept-a-reborn (D84) [hard] | 3/4 | in progress | - |
+| U13.5 | Importer fixes for Dillon's concept-a-reborn (D84) [hard] | 4/4 | done | - |
 | U13.6 | Rehearsal 2 gaps (D78) | 3/3 | done | - |
 | U13.7 | Overnight follow-ups (T134, T136, T140, T141, T142, T143) | 3/3 | done | - |
 | U13.8 | Rehearsal 4 gaps | 3/3 | done | - |
