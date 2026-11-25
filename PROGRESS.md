@@ -199,7 +199,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 |---|---|---|---|---|
 | U15.1 | Control surfaces follow their wing (T130; demo-script Issue 6) [hard] | 3/3 | done | - |
 | U15.2 | Small fixes (T19, T111; T101 already fixed) | 3/3 | done | - |
-| U15.3 | Faster plane CLI start-up (T124) [hard] | 1/3 | in progress | - |
+| U15.3 | Faster plane CLI start-up (T124) [hard] | 1/4 | in progress | - |
 
 ### W16 3D generation close to the real aircraft (D85, D87)
 
