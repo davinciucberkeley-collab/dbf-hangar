@@ -20,3 +20,4 @@ discipline_checks:
   - {id: T7.electrical_rating,   tier: 7, blocking: false, criterion: "connection-types.yaml#wire_ampacity_a"}
   - {id: T3.wing_loading,        tier: 3, blocking: false, criterion: "fixed-wing.yaml#wing_loading_max_g_dm2"}
   - {id: T3.cruise_stall_ratio,  tier: 3, blocking: false, criterion: "fixed-wing.yaml#cruise_to_stall_ratio_min"}
+  - {id: T3.tail_volume,         tier: 3, blocking: false, criterion: "stability.yaml#tail_volume_h_min"}
