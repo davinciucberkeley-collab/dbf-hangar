@@ -23,12 +23,12 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | 5 | 5 |
 | W13 Rehearsal gaps and visual fidelity | 8 | 6 |
 | W14 Presentation | 1 | 0 |
-| W15 Authoring gaps and speed (D86) | 3 | 0 |
+| W15 Authoring gaps and speed (D86) | 3 | 1 |
 | W16 3D generation close to the real aircraft (D85, D87) | 2 | 0 |
 | W17 Sourced gates (D88) | 1 | 0 |
 | W18 Physics checks (D89) | 4 | 0 |
 | W19 Studio UI and 3D viewer (D92) | 1 | 0 |
-| **all** | 74 | 58 |
+| **all** | 74 | 59 |
 
 ### Open ledger items by owner
 
@@ -37,7 +37,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
-| conductor | 19 | 2026-11-26 |
+| conductor | 18 | 2026-11-26 |
 
 ### Open items for teammates
 
@@ -198,7 +198,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U15.1 | Control surfaces follow their wing (T130; demo-script Issue 6) [hard] | 1/3 | in progress | - |
-| U15.2 | Small fixes (T19, T111; T101 already fixed) | 1/3 | in progress | - |
+| U15.2 | Small fixes (T19, T111; T101 already fixed) | 3/3 | done | - |
 | U15.3 | Faster plane CLI start-up (T124) [hard] | 1/3 | in progress | - |
 
 ### W16 3D generation close to the real aircraft (D85, D87)
@@ -234,7 +234,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 47 | 97 | 3 | 3 | 0 | 150 |
+| task | 46 | 98 | 3 | 3 | 0 | 150 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 

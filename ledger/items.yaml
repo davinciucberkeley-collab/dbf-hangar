@@ -4700,12 +4700,12 @@ items:
     text: plane design new/set write CRLF in the working copy on Windows (W19-R newcomer walkthrough); .gitattributes normalises on commit but the working file differs; write with newline LF
     source: W19-R review 2026-11-24 (reviews/2026-11-24-w19.md)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: ac3af45 (design new writes LF)
     decided_in: ''
-    updated: '2026-11-23'
+    updated: '2026-11-25'
   - id: T112
     kind: task
     text: agent gate refuses Claude Code built-in subagents (e.g. Explore) for every session, teammates included; decide whether built-ins are allowed or listed in the plan's agent table (W19-R)

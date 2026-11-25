@@ -364,6 +364,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D95 | U19.1 spec decisions | three.js stays on the pinned CDN (spec default; vendoring into viewer/vendor is the fallback if the demo room has no network); Playwright installed locally in .venv (`pip install -e .[dev]`, `playwright install chromium`) as a brief step (installs approved, Tristan P287); U16.1 S9 drops its x-ray item (B3 covers it) | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D96 | U16.1 brief defaults (W34-T5, 52e43ea) | S1 jam = no root, transmission angle < 10 deg or follower step > 10 deg per deg (two new `pending` thresholds, FAIL rows); T1 pose sweeps keep rigid rods for now; S2 wheels stay type landing_gear; S3 servo frames are estimates and the c172 wing servos are report-only (wing ~14 mm thick vs 24 mm servo), tail servos are the acceptance; S4 arm 6 mm / horn 13 mm layout defaults; export-hash check on every design | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D97 | U19.1 brief decisions (W34-T6, 277de38) | B6 renames check-row keys (`pair` -> `unchecked_pairs` etc.) and refreshes concept-a and concept-a-param baselines in a second `migration:` commit with the `migration` label; joint rows resolve to parts through `parts.json` attachments (no check-row change); B5 adds two lines to edit.js; Physics tab folds into the timeline (B4); three pinned at 0.180.0 after a URL check | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D98 | OpenCAE export: how are `pending` standards values and built-in defaults (air density 1.225) tagged in drone.json? (W34-R section 4) | as `estimate`, never `user`: an unsourced number may not support an OpenCAE pass; done in U18.1-3 together with the rows | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1072,8 +1073,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** T19 `standards.pending` also reads gate-thresholds.yaml (wire_clearance_mm, wing_area_complete_min, servo_must_drive_mechanism; blocks the 12-08 flip) and CT-M3-SHCS-INSERT cites its source; T111 `plane design new/set` write LF on Windows; T101 bench `_map_args` maps only argument values that name parameters. No threshold or gate-behaviour change.
 
 - [x] **Step 1: Briefs** (tactician W34-T) *(4efe4c6: -1 pending reads gate-thresholds (T19), -2 design new writes LF (T111); T101 already fixed on main e72f545; T19 second half already on main)*
-- [ ] **Step 2: Build** (builder W34-B) *(-1 pending-gates merged 3a6b9d7 (W34-R ACCEPT); -2 LF in review)*
-- [ ] **Step 3: Review** (W34-R); merge
+- [x] **Step 2: Build** (builder W34-B) *(-1 pending-gates merged 3a6b9d7; -2 LF merged ac3af45 (W34-R ACCEPT))*
+- [x] **Step 3: Review** (W34-R); merge
 
 ### Unit U15.3: Faster plane CLI start-up (T124) [hard]
 
@@ -1118,7 +1119,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** OpenCAEModel main (11-24) ships an `opencae` CLI (`doctor`, `new`, `run --only mass,propulsion,structure,cfd,flight --json`, `iterate --set`, `status`) with evidence-status rules close to hangar's (estimate/datasheet/measured). Integrate it as an external GPL program: a hangar op exports a design to an OpenCAE drone project (drone.json from PDL propulsion, battery, ESC, materials, requirements; geometry from the GLB/STL export), runs `opencae run --json`, and maps results to check rows: propulsion current margins (motor, ESC, battery) and thrust-to-weight, structure safety factor (replacing or alongside the old opencae_runner FEA route), whole-aircraft CL/CD/LD from SU2 CFD, hover flight for VTOL/tailsitter. SKIP with the reason where OpenCAE or a solver is missing (CI). Results cached and hashed like FEA. No OpenCAE source copied (PROVENANCE row).
 
 - [x] **Step 1: Integration study and briefs** (tactician W34-T3) *(77414cd: study + fixtures; OpenCAE runs in qt_test; quad250 mass/prop 1.4 s, structure 27 s, flight 1.9 s, SU2 CFD 11 min; concept-a-param mass matches except 2 meshless point masses; briefs -1 cli (hard), -2 export (hard), -3 rows (hard, after -1), -4 ops (easy, after -1 and -2); D93)*
-- [ ] **Step 2: Build** (W34-B)
+- [ ] **Step 2: Build** (W34-B) *(-1 cli merged d2105bd (one REOPEN: Linux test), -2 export merged 2ba4033; -3 rows and -4 ops next)*
 - [ ] **Step 3: Review** (W34-R); merge
 
 ### Unit U18.2: Calibration against a real aircraft (D89; P280)
