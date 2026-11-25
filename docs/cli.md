@@ -2,7 +2,7 @@
 
 # plane command reference
 
-61 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+63 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -390,6 +390,26 @@ List the registered gates (tier, blocking, needs, criterion).
 ```
 plane gate list
 ```
+
+## generators
+
+### `plane generators list`
+
+List the geometry generators a component can use (geometry: {generator: <name>, params: {...}}).
+
+```
+plane generators list
+```
+
+### `plane generators show`
+
+Show one geometry generator's parameters (name, kind, required, default, bounds, choices, doc).
+
+```
+plane generators show <name>
+```
+
+- `<name>`: str, required
 
 ## idea
 
