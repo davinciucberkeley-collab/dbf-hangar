@@ -2,7 +2,7 @@
 
 # plane command reference
 
-59 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+60 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -137,6 +137,21 @@ plane claim list <path>
 - `<path>`: str, required
 
 ## design
+
+### `plane design add`
+
+Append one element ({id: ..., ...} as a one-line {mapping}) to a list such as components, attachments or bom.items (byte-preserving; id checked; the whole element is schema-checked before anything is written) and log it in CHANGELOG.yaml.
+
+```
+plane design add <path> <key> --value <str> --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `<key>`: str, required
+- `--value`: str, required
+- `--why`: str, required
 
 ### `plane design copy`
 
