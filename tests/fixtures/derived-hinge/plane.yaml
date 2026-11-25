@@ -1,0 +1,34 @@
+schema_version: "1.2"
+id: derived-hinge
+name: "derived hinge fixture"
+status: concept
+description: "wing core and two ailerons built from shared parameters; each aileron hinge is derived from the aileron generator"
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: wing
+parameters:
+  span_mm: 1000
+  root_chord_mm: 200
+  tip_chord_mm: 100
+components:
+  - id: wing
+    type: wing
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: "$span_mm", root_chord: "$root_chord_mm", tip_chord: "$tip_chord_mm", sweep_le_deg: 10, dihedral_deg: 3, part: core, side: both, elevon_y: [200, 350]}}
+    position: [100, 0, 0]
+    mass_g: 100
+    manufacturing: {method: hotwire-foam}
+  - id: aileron-r
+    type: wing
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: "$span_mm", root_chord: "$root_chord_mm", tip_chord: "$tip_chord_mm", sweep_le_deg: 10, dihedral_deg: 3, part: elevon, side: right, elevon_y: [200, 350]}}
+    position: [100, 0, 0]
+    mass_g: 20
+    manufacturing: {method: hotwire-foam}
+  - id: aileron-l
+    type: wing
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: "$span_mm", root_chord: "$root_chord_mm", tip_chord: "$tip_chord_mm", sweep_le_deg: 10, dihedral_deg: 3, part: elevon, side: left, elevon_y: [200, 350]}}
+    position: [100, 0, 0]
+    mass_g: 20
+    manufacturing: {method: hotwire-foam}
+attachments:
+  - {id: hinge-r, parent: wing, child: aileron-r, method: hinge, location: [250, 275, 10], rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [250, 275, 10], axis: [0, 1, 0], range_deg: [-10, 10]}}
+  - {id: hinge-l, parent: wing, child: aileron-l, method: hinge, location: [250, -275, 10], rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [250, -275, 10], axis: [0, 1, 0], range_deg: [-10, 10]}}
