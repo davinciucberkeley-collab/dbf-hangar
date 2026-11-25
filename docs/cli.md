@@ -2,7 +2,7 @@
 
 # plane command reference
 
-60 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+61 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -151,6 +151,20 @@ Writes files.
 - `<path>`: str, required
 - `<key>`: str, required
 - `--value`: str, required
+- `--why`: str, required
+
+### `plane design apply`
+
+Apply many edits from a YAML file (set / add / append / remove) in one atomic step: one schema check, one regeneration and one interference pass for the whole batch, one compact CHANGELOG entry.
+
+```
+plane design apply <path> --edits <path> --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `--edits`: path, required
 - `--why`: str, required
 
 ### `plane design copy`
