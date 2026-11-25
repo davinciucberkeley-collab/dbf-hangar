@@ -354,6 +354,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D85 | Mechanical fidelity of generated models (rolling wheels, kinematic linkages, non-clipping surfaces) for Dec 2? | no: post-Dec 2 milestone; Dec 2 shows recognisable geometry and real parts placed sensibly | Tristan | 11-24 | decided (Tristan P267, 2026-11-24) |
 | D86 | What does the Dec 2 demo actually show (shape, live change, overlay, prompt)? | decided at the Mon 11-30 dry run; until then the demo-script defaults stay provisional and the work is: keep improving the any-aircraft flow as much as possible | Tristan | 11-25 | decided (Tristan P278, 2026-11-25) |
 | D87 | Keep rehearsing the prompt flow? | no: rehearsals stop until 3D generation gives a model genuinely close to the real aircraft (real linkages, joints, parts, wires); mechanical fidelity (I2, D85) starts now as U13.12 instead of after Dec 2 | Tristan | 11-25 | decided (Tristan P279, 2026-11-25) |
+| D88 | Source the gates? | yes: every threshold in standards/*.yaml that is `pending` or an internal/team convention gets an opened external source (or a derivation from sourced values, written out), else stays `pending` with the reason; ranked by how many blocking check rows it drives; designs fixed, not thresholds; baselines refreshed in designs-only commits | Tristan | 11-25 | decided (Tristan P281, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -420,7 +421,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W10 Freeze fixes and fresh-session findings | Tue 11-24 | U10.1, U10.2, U10.3, U10.4, U10.5, U10.6 |
 | W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U11.1, U11.2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U12.1, U12.2, U12.3, U12.4, U12.5 |
-| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8, U13.9 [hard], U13.10, U13.11 [hard], U13.12 [hard] |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U13.1, U13.2, U13.3, U13.4, U13.5, U13.6, U13.7, U13.8, U13.9 [hard], U13.10, U13.11 [hard], U13.12 [hard], U13.13 |
 | W14 Presentation | Mon 11-30 → Wed 12-02 | U14.1 |
 | Present | **Wed 12-02** | demo + deck |
 
@@ -774,6 +775,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-R | `reviewer` | Opus (fresh) | every W34 branch | `reviews/2026-11-25-w34.md` | "### Verdict:" per branch |
 | W34-X | `recon` | Sonnet | U13.12: how others generate RC/aircraft CAD with real linkages, hinges, wheels on axles and routed wires (OpenVSP, CadQuery/build123d assemblies, FreeCAD Assembly4, RC kit CAD, MuJoCo/URDF practice) | `plans/2026-11-20-standardization/u13.12/recon.md` | 3-5 approaches ranked; only opened sources |
 | W34-A | `advisor` | Opus | U13.12: what the repo has (generators, PDL joints/mechanisms/harnesses, T1/T6/T7, MJCF export) vs a model close to the real aircraft; with W34-X's recon | `plans/2026-11-20-standardization/u13.12/design-note.md` | gap list, ordered build steps sized for briefs, what to cut |
+| W34-T2 | `tactician` | Sonnet | U13.13: inventory of every pending or convention-sourced threshold, ranked by blocking rows driven across all designs; scout packets | `plans/2026-11-20-standardization/u13.13/inventory.md`, `briefs/U13.13-*.md` | every threshold listed once with its rank and packet |
+| W34-S | `scout` (up to 3 in parallel) | Haiku | one U13.13 packet each | `knowledge/sources/` entries + a values table per packet in `u13.13/` | only opened sources; value, units, page/section quoted |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
@@ -1063,6 +1066,15 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 2: Briefs** (tactician W34-T) from the design note
 - [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order
 - [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
+
+### Unit U13.13: Source every gate threshold (D88; T19, T82)
+
+**Scope:** list every threshold in standards/*.yaml whose source is `pending`, an internal convention or a team constraint (about 50 pending, about 45 convention, 11-25 count); rank them by how many blocking check rows they drive on all designs; scouts find opened sources (datasheets, standards such as FAA AC 43.13, MIL-HDBK-5/MMPDS, ASTM, manufacturer data, RC references with stated test conditions) per packet; a builder writes the sourced value or keeps `pending` with the reason; re-run all designs and report the fidelity line before/after and which rows changed. Standards and knowledge only; baselines refreshed in separate designs-only commits. James reads the values.
+
+- [ ] **Step 1: Inventory and packets** (tactician W34-T2)
+- [ ] **Step 2: Sources** (scouts W34-S, up to 3 at a time)
+- [ ] **Step 3: Values into standards; re-run; baselines** (W34-B)
+- [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
 
 ### Unit U14.1: Dec 2 presentation package
 

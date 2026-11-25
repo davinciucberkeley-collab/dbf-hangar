@@ -21,9 +21,9 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W10 Freeze fixes and fresh-session findings | 6 | 5 |
 | W11 Parameter propagation and speed (D75, D81) | 2 | 2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | 5 | 5 |
-| W13 Rehearsal gaps and visual fidelity | 12 | 6 |
+| W13 Rehearsal gaps and visual fidelity | 13 | 6 |
 | W14 Presentation | 1 | 0 |
-| **all** | 68 | 58 |
+| **all** | 69 | 58 |
 
 ### Open ledger items by owner
 
@@ -186,6 +186,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | U13.10 | Small fixes (T19, T111, T101) | 0/3 | not started | - |
 | U13.11 | Faster plane CLI start-up (T124) [hard] | 0/3 | not started | - |
 | U13.12 | 3D generation close to the real aircraft (I2; D85, D87) [hard] | 0/4 | not started | - |
+| U13.13 | Source every gate threshold (D88; T19, T82) | 0/4 | not started | - |
 
 ### W14 Presentation
 
