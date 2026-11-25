@@ -5360,9 +5360,9 @@ items:
     text: design add writes BOM lines in flow style, and bom verify refuses flow-style lines ('edit by hand'), so a BOM line an agent adds cannot be verified through the CLI; make bom verify handle flow-style lines (or design add emit block style for bom.items)
     source: U13.8-2 builder stop, 2026-11-25
     owner: conductor
-    status: open
+    status: done
     due: '2026-11-28'
     units: []
-    evidence: ''
+    evidence: 43b72ce
     decided_in: ''
     updated: '2026-11-25'
