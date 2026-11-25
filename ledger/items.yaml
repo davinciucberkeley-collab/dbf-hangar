@@ -5201,3 +5201,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: T138
+    kind: task
+    text: 'Split conventional tail: the rudder passes through the elevator (T1.interference FAIL 171 mm3); add an elevator cut-out (or rudder notch) option in tail_surfaces before a design uses both pieces'
+    source: reviews/2026-11-25-w31.md W31-R note on U4.37-4b
+    owner: conductor
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
