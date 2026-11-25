@@ -24,7 +24,7 @@ from .design import (Design, CheckResult, TierReport, Scorecard, SCHEMA_PATH, RE
 from .geometry import (component_parts, lifting_surface_properties, articulated_attachments, att_label,
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
-from .geom.planform import counted_tail_ids, generated_planform
+from .geom.planform import analytic_wing_area, counted_tail_ids, generated_planform
 from .gates import gate, run_gates
 from .gates.applicability import NEEDS, applicable, skip_row
 from .gates.fidelity import resolve_threshold
@@ -727,6 +727,40 @@ def interference_rows(design: Design, std: dict, only: set[str] | None = None) -
     return [r for r in res if r.status == FAIL]
 
 
+def _floating_rows(design: Design, meshes: dict, std: dict, cache: _PairCache | None = None) -> list[CheckResult]:
+    """U4.39: WARN for a part whose geometry touches no other part (within attach_tolerance_mm)."""
+    tol = std["geometry"]["attach_tolerance_mm"]["value"]
+    boxes = {}
+    for c, ps in meshes.items():
+        if ps:
+            bs = np.array([p.bounds for p in ps])
+            boxes[c] = (bs[:, 0, :].min(axis=0), bs[:, 1, :].max(axis=0))
+    cache = cache or _PairCache()
+    tf = {c: np.eye(4) for c in meshes}
+    out: list[CheckResult] = []
+    for c in [x["id"] for x in design.components]:
+        if c not in boxes:
+            continue
+        lo, hi = boxes[c]
+        gaps = {o: float(np.linalg.norm(np.maximum(0.0, np.maximum(boxes[o][0] - hi, lo - boxes[o][1]))))
+                for o in sorted(boxes) if o != c}
+        cands = [o for o, g in sorted(gaps.items(), key=lambda kv: (kv[1], kv[0])) if np.all(boxes[o][0] <= hi + tol) and
+                 np.all(boxes[o][1] >= lo - tol)]
+        if any(cache.overlap(meshes, tf, c, o) > 0 for o in cands) or \
+                any(cache.gap(meshes, tf, c, o, tol) <= tol for o in cands):
+            continue
+        if gaps:
+            n = min(gaps, key=lambda o: (gaps[o], o))
+            d = cache.gap(meshes, tf, c, n)
+            at, gap = f"{d:.1f} mm", round(d, 3)
+        else:
+            n, at, gap = "none", "no other part", None
+        out.append(CheckResult(f"T1.floating.{c}", WARN,
+                               f"{c} touches no other part (nearest: {n} at {at}; tolerance {tol} mm)",
+                               STD + "attach_tolerance_mm", {"part": c, "nearest": n, "gap_mm": gap}))
+    return out
+
+
 def tier1_geometry(design: Design, std: dict) -> TierReport:
     all_ids = [c["id"] for c in design.components]
     # point masses (schema 0.4) have no mesh: they count for connectivity and mass, not for any geometry check
@@ -760,6 +794,8 @@ def tier1_geometry(design: Design, std: dict) -> TierReport:
 
     identity = {cid: np.eye(4) for cid in all_ids}
     cache = _PairCache()
+    if NEEDS["conventional"](design.data["morphology"]):
+        res += _floating_rows(design, meshes, std, cache)
     res += _contact_and_clash_checks(design, std, meshes, identity, atts, cache)
     res += _pocket_checks(design, std, meshes, cache)
     res += _point_mass_checks(design, std, meshes, atts)
@@ -1028,6 +1064,7 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
     n_strip = a["planform_strip_count"]["value"]
     surfaces = []
     derived_tails = []  # derived tail_surfaces stabilisers: counted only when a wing surface exists
+    core_wings = []  # (id, measured area, analytic area) of measured core wings
     counted = counted_tail_ids(design.components)
     for c in design.components:
         if "lifting_surface" in c["geometry"]:
@@ -1050,6 +1087,9 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                 p = strip_planform(_planform_parts(design, c)[1], c["id"], n=n_strip,
                                    gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
                                    control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
+                analytic = analytic_wing_area(c)
+                if analytic:
+                    core_wings.append((c["id"], p["area_mm2"], analytic))
             else:
                 dx, dy, dz = gp["offset"]
                 pseudo = {**c, "geometry": {"lifting_surface": gp["lifting_surface"]},
@@ -1060,6 +1100,19 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
         surfaces.append((c, ls_c, p))
     if len(derived_tails) == len(surfaces):  # no wing surface: behave as without a derived tail
         surfaces = []
+    if core_wings:
+        wmin = resolve_threshold("gate-thresholds.yaml#" + "wing_area_complete_min")["value"]
+        for wid, m, an in core_wings:
+            ok = m / an >= wmin
+            res.append(CheckResult(
+                "T3.wing_area_complete", PASS if ok else WARN,
+                f"{wid}: planform complete ({m / an:.1%} of the {an:.0f} mm2 the wing_panel params give)" if ok else
+                f"{wid}: measured planform {m:.0f} mm2 is only {m / an:.1%} of the {an:.0f} mm2 the wing_panel params "
+                "give; the chord behind hinge_frac outside the control surfaces belongs to no component (set "
+                "core_fill: outside on the core, or add trailing pieces); wing area, MAC and the neutral point are off",
+                "gate-thresholds.yaml#wing_area_complete_min",
+                {"component": wid, "measured_mm2": round(m, 1), "analytic_mm2": round(an, 1),
+                 "ratio": round(m / an, 4)}))
     lifting = [(c, ls_c, p) for c, ls_c, p in surfaces if p["lifting"]]
     if lifting and design.data["morphology"]["lift"] != "multirotor":
         main_c, main_ls, main = max(lifting, key=lambda cp: cp[2]["area_mm2"])

@@ -3,6 +3,7 @@
 Mass, BOM and part.yaml always come from the committed part; the overlay changes geometry only. Nothing is written."""
 from __future__ import annotations
 
+import contextlib
 import importlib.util
 import json
 import os
@@ -22,9 +23,10 @@ _MESH_EXT = (".stl", ".obj", ".ply", ".off")
 _STEP_EXT = (".step", ".stp")
 _UNITS = {"mm": 1.0, "m": 1000.0, "in": 25.4}
 _CACHE: dict = {}
+_FORCED = 0
 
 
-def overlay_root() -> Path | None:
+def _configured_root() -> Path | None:
     env = os.environ.get(CONFIG_ENV)
     if env is not None:
         root = None if env.strip().lower() in ("", "off") else Path(env)
@@ -37,6 +39,43 @@ def overlay_root() -> Path | None:
     else:
         root = Path.home() / "parts-cad"
     return root if root is not None and root.is_dir() else None
+
+
+def overlay_root() -> Path | None:
+    return None if _FORCED else _configured_root()
+
+
+def overlay_configured() -> bool:
+    return _configured_root() is not None
+
+
+def manifest_count() -> int:
+    """Part folders with an overlay.yaml under the configured root (describes the machine, ignores forced_off)."""
+    root = _configured_root()
+    if root is None:
+        return 0
+    try:
+        return sum(1 for p in root.glob("*/overlay.yaml") if p.is_file())
+    except OSError:
+        return 0
+
+
+def ignored_note() -> str | None:
+    """The stderr note for the baseline commands, or None when no manifest exists (an empty folder is no overlay)."""
+    if manifest_count() > 0:
+        return "note: CAD overlay ignored here (baselines and FEA results never use licensed files)"
+    return None
+
+
+@contextlib.contextmanager
+def forced_off():
+    """Ignore the overlay inside the block (nesting allowed; restored on exceptions)."""
+    global _FORCED
+    _FORCED += 1
+    try:
+        yield
+    finally:
+        _FORCED -= 1
 
 
 def _empty(state: str, **kw) -> dict:

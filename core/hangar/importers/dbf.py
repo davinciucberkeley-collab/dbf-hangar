@@ -164,7 +164,10 @@ def _separate_coincident(v: np.ndarray, faces: np.ndarray, step: float = 6e-4) -
 def _canonical(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     """Same solid, canonical vertex and face order (the boolean kernel's output order is not guaranteed stable)."""
     v = np.round(mesh.vertices.astype(np.float32).astype(np.float64), 6)
-    v = _separate_coincident(v, mesh.faces)
+    reload = trimesh.Trimesh(v.copy(), mesh.faces.copy(), process=False)
+    reload.merge_vertices()
+    if not (reload.is_watertight and reload.volume > 0):  # only meshes that fail the round trip need separating
+        v = _separate_coincident(v, mesh.faces)
     order = np.lexsort(v.T[::-1])
     inv = np.empty_like(order)
     inv[order] = np.arange(len(order))

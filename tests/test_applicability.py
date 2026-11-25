@@ -87,14 +87,26 @@ def test_tier_status_ignores_not_applicable_rows():
 
 
 def test_design_verdicts_unchanged_against_main():
+    """Verdicts are recorded for a pinned date (fixture key _recorded). To regenerate after a standards flip: for each design id in the fixture, run_gates(load_design(DESIGNS_DIR / id), 9, today=<recorded date>) and write {"accepted": sc.accepted, "tiers": {str(t.tier): t.status for t in sc.tiers}}; review the diff by hand."""
     import json
-    from hangar.checks import validate
     from hangar.design import DESIGNS_DIR, load_design
     want = json.loads((FIX / "design-verdicts.json").read_text(encoding="utf-8"))
+    rec = want.pop("_recorded")
+    today = datetime.date.fromisoformat(rec["today"])
     for name, exp in want.items():
-        sc = validate(load_design(DESIGNS_DIR / name))
+        sc = run_gates(load_design(DESIGNS_DIR / name), 9, today=today)
         assert {str(t.tier): t.status for t in sc.tiers} == exp["tiers"], name
         assert sc.accepted == exp["accepted"], name
+
+
+def test_verdict_fixture_records_its_date():
+    import json
+    from hangar.design import DESIGNS_DIR
+    want = json.loads((FIX / "design-verdicts.json").read_text(encoding="utf-8"))
+    rec = want.pop("_recorded")
+    assert datetime.date.fromisoformat(rec["today"])
+    # every recorded design still exists; a NEW design needs no entry (the verdict test below iterates the fixture only)
+    assert set(want) <= {p.name for p in DESIGNS_DIR.iterdir() if (p / "plane.yaml").is_file()}
 
 
 def test_validate_op_leaves_not_applicable_out_of_messages():

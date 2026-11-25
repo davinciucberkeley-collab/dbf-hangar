@@ -9,6 +9,7 @@ from ..design import FAIL, PASS, SKIP, WARN, CheckResult, Design, TierReport
 from . import gate, load_gate_thresholds
 
 CRIT = "gate-thresholds.yaml#mechanism_ratio_tol"
+SERVO_CRIT = "gate-thresholds.yaml#servo_must_drive_mechanism"
 
 
 def _clamp(x: float, rng) -> float:
@@ -237,5 +238,5 @@ def tier6_mechanisms(ctx) -> TierReport | None:
                 res.append(ratio)
     res += [CheckResult(f"T6.servo_undriven.{c}", WARN,
                         f"servo {c} is not the driver of any mechanism (no mechanisms[] entry has a driver attachment whose parent is {c}); see docs/mechanisms.md",
-                        CRIT, {"servo": c}) for c in idle]
+                        SERVO_CRIT, {"servo": c}) for c in idle]
     return TierReport(6, "mechanisms", res)

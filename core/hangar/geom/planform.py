@@ -47,3 +47,19 @@ def counted_tail_ids(components: list[dict]) -> set[str]:
                           c.get("position"), c.get("rotation_deg")], sort_keys=True, default=str)
         groups.setdefault(sig, []).append((_PART_PRIORITY.get(p["part"], 3), i, c["id"]))
     return {min(members)[2] for members in groups.values()}
+
+
+def analytic_wing_area(component: dict) -> float | None:
+    """Planform area the wing_panel params give (both sides) for a core wing, else None."""
+    try:
+        g = component.get("geometry") or {}
+        if g.get("generator") != "wing_panel" or component.get("type") != "wing":
+            return None
+        p = fill_defaults(get("wing_panel"), g.get("params") or {})
+        if p["side"] != "both" or p["part"] != "core":
+            return None
+        ib = p.get("inboard_span") or 0.0
+        root, tip, half = p["root_chord"], p["tip_chord"], p["span"] / 2
+        return 2 * (root * ib + (root + tip) / 2 * (half - ib))
+    except Exception:
+        return None
