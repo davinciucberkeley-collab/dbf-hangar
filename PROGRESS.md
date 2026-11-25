@@ -186,7 +186,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U14.1 | Dec 2 presentation package | 2/4 | in progress | - |
+| U14.1 | Dec 2 presentation package | 3/4 | in progress | - |
 
 ## Ledger
 

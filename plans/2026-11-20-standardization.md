@@ -1009,7 +1009,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 *Briefs 96c27aa: U14.1-2 demo script (A400M prompt flow), U14.1-1b deck update. Defaults taken for Tristan to confirm in the morning: demo = pre-built PR #8 plus one live change (A400M wing span if set + tier-1 validate < 60 s on a fresh clone with no new FAIL, else the concept-a-param span step, D75); CAD overlay off on stage (one optional local click); prompt text = the tactician's proposal ending "do not invent ratings, prices or requirements".*
 
 - [x] **Step 1:** Slides deck (Claude Slides artifact; download .pptx/PDF if needed): problem (15 interfaces, rules forgotten, code edits per design) → PDL → ops/CLI/MCP/Studio → gates T0–T8 → harness → PlaneBench results → what's next.
-- [ ] **Step 2:** Live demo script (8 min), each step one command or click: `plane design new` from a template → `plane design set` a wing mass → `plane design validate` → Studio Physics mode playing the flap mechanism → `plane design propose` → the PR → `plane update publish` → the one link. Recorded backup video.
+- [x] **Step 2:** Live demo script (8 min), each step one command or click: `plane design new` from a template → `plane design set` a wing mass → `plane design validate` → Studio Physics mode playing the flap mechanism → `plane design propose` → the PR → `plane update publish` → the one link. Recorded backup video. *(rewritten for the A400M prompt flow, merged 7dc0054; live change = concept-a-param span (A400M span change left 8 overlap FAILs); every number cited)*
 - [x] **Step 3:** Metrics slide filled from §2.1 with measured values (not targets).
 - [ ] **Step 4:** Dry run Mon 11-30 evening; fix only what the dry run breaks.
 
