@@ -5234,3 +5234,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-24'
+  - id: T140
+    kind: task
+    text: Add a sourced or pending criterion for 'every servo drives a mechanism' to standards/ and point T6.servo_undriven at it (it cites mechanism_ratio_tol today)
+    source: reviews/2026-11-25-w31b.md W31-R2 note on U4.39-2
+    owner: conductor
+    status: open
+    due: '2026-12-09'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'

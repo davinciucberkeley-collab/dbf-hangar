@@ -32,7 +32,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
-| conductor | 21 | 2026-11-28 |
+| conductor | 22 | 2026-11-28 |
 
 ### Open items for teammates
 
@@ -190,7 +190,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 50 | 83 | 3 | 3 | 0 | 139 |
+| task | 51 | 83 | 3 | 3 | 0 | 140 |
 | idea | 0 | 0 | 1 | 0 | 0 | 1 |
 | decision | 12 | 0 | 0 | 4 | 270 | 286 |
 
