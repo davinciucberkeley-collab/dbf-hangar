@@ -363,6 +363,14 @@ def _designs(paths, all_designs):
 @click.option("--all", "all_designs", is_flag=True, help="Every design under designs/.")
 def baseline_update_cmd(paths, all_designs):
     """Record the current known failures of each design in its baseline.json."""
+    from .geom import overlay
+    if overlay.overlay_configured():
+        click.echo("note: CAD overlay ignored here (baselines and FEA results never use licensed files)", err=True)
+    with overlay.forced_off():
+        _baseline_update_body(paths, all_designs)
+
+
+def _baseline_update_body(paths, all_designs):
     refused = False
     for design in _designs(paths, all_designs):
         folder = design.path.parent
@@ -424,6 +432,14 @@ def _renamed_from(folder: str, cur: dict, ref_baselines: dict[str, dict]) -> str
               help="Git ref (e.g. origin/main) to compare committed baselines with, for growth, renames and new designs.")
 def baseline_check_cmd(paths, all_designs, fmt, base_ref):
     """Compare each design with its baseline.json; exit 1 on regressions or a missing baseline."""
+    from .geom import overlay
+    if overlay.overlay_configured():
+        click.echo("note: CAD overlay ignored here (baselines and FEA results never use licensed files)", err=True)
+    with overlay.forced_off():
+        _baseline_check_body(paths, all_designs, fmt, base_ref)
+
+
+def _baseline_check_body(paths, all_designs, fmt, base_ref):
     ref_baselines, ref_designs = baselines_at_ref(base_ref) if base_ref else ({}, set())
     reports = []
     for design in _designs(paths, all_designs):
