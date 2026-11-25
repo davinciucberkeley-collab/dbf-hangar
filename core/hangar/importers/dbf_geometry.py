@@ -113,6 +113,7 @@ def _manifold(mesh: trimesh.Trimesh):
 
 
 PINCH_MM = 5e-4   # 0.5 micron: pulls coincident-but-distinct vertices apart (see _separate_pinches)
+_PAIR_PASS = True   # part_mesh turns the coincident-pair pass off for its first attempt (re-import identity)
 
 
 def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
@@ -141,6 +142,8 @@ def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     ok = pinched & (ln > 0)
     out = vertices.copy()
     out[ok] += PINCH_MM * d[ok] / ln[ok, None]
+    if not _PAIR_PASS:
+        return out
     key2 = np.round(out / 1e-6).astype(np.int64)
     _, inv2, cnt2 = np.unique(key2, axis=0, return_inverse=True, return_counts=True)
     inv2 = np.asarray(inv2).reshape(-1)
@@ -313,6 +316,20 @@ def _closed(mesh: trimesh.Trimesh) -> bool:
 
 
 def part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
+    """First without the coincident-pair pass of _separate_pinches (keeps meshes that already rebuild closed byte-identical
+    to earlier imports), then with it if that attempt fails."""
+    global _PAIR_PASS
+    _PAIR_PASS = False
+    try:
+        return _part_mesh(comp)
+    except GeometryError:
+        _PAIR_PASS = True
+        return _part_mesh(comp)
+    finally:
+        _PAIR_PASS = True
+
+
+def _part_mesh(comp: dict) -> tuple[trimesh.Trimesh, dict]:
     """The part's solid in world mm: union of its bodies, minus its cuts. Returns (mesh, info).
     info: bodies, body_volume_ratio (mesh volume / the source's analytic volume per body), n_cuts."""
     M = comp["matrix"]
