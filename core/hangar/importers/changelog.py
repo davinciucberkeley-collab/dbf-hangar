@@ -55,14 +55,22 @@ def import_decisions(dbf_root, ledger_path, log=print) -> dict:
         cells = cells[1:-1] if line.rstrip().endswith("|") else cells[1:]
         if len(cells) < 2:
             continue
-        did = cells[0].replace("*", "").strip()
-        if not re.match(r"^D-\d+[a-z]*$", did):
+        first = cells[0].replace("*", "").strip()
+        m = re.match(r"^D-(\d+[a-z]*)\b(.*)$", first)
+        if not m:
+            if re.match(r"^[A-Za-z]+-\d+", first):
+                log(f"row without a D-number skipped: {first[:60]}")
             continue
+        did = f"D-{m.group(1)}"
+        rest = m.group(2).strip()
+        rev = re.match(r"^rev (\d+)( minors)?", rest)
+        if rev and not did[-1].isalpha():
+            did += chr((97 if rev.group(2) else 96) + int(rev.group(1)))
         if did in seen:
             counts["duplicates"] += 1
             continue
         seen.add(did)
-        add(Item(id=did, kind="decision", text=_clean(cells[1]), source=f"CHANGE-LOG#{did}", owner="",
+        add(Item(id=did, kind="decision", text=_clean(f"{rest} {cells[1]}"), source=f"CHANGE-LOG#{did}", owner="",
                  status="decided", due="", units=[],
                  evidence=f"DBF-Combined redesign/params/CHANGE-LOG.md @ {short}", decided_in="", updated=today),
             "changelog")
