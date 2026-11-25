@@ -24,6 +24,7 @@ from .design import (Design, CheckResult, TierReport, Scorecard, SCHEMA_PATH, RE
 from .geometry import (component_parts, lifting_surface_properties, articulated_attachments, att_label,
                        downstream_ids, posed_component_parts, pose_transforms, pose_angles, is_point_mass,
                        lifting_surface_halves, rotation_matrix, strip_planform)
+from .geom.planform import generated_planform
 from .gates import gate, run_gates
 from .gates.applicability import NEEDS, applicable, skip_row
 from .gates.fidelity import resolve_threshold
@@ -1039,7 +1040,20 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
                                gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
                                control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
         else:
-            continue
+            gp = generated_planform(c)
+            if gp is None:
+                continue
+            ls_c = c
+            if gp.get("measured"):
+                p = strip_planform(_planform_parts(design, c)[1], c["id"], n=n_strip,
+                                   gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
+                                   control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
+            else:
+                dx, dy, dz = gp["offset"]
+                pseudo = {**c, "geometry": {"lifting_surface": gp["lifting_surface"]},
+                          "position": [c["position"][0] + dx, c["position"][1] + dy, c["position"][2] + dz]}
+                p = lifting_surface_properties(pseudo, c_tf[c["id"]] if cruise_pose else None)
+                p["span_mm"] = gp["lifting_surface"]["span"]
         surfaces.append((c, ls_c, p))
     lifting = [(c, ls_c, p) for c, ls_c, p in surfaces if p["lifting"]]
     if lifting and design.data["morphology"]["lift"] != "multirotor":
