@@ -6,11 +6,11 @@ Fixture `tests/fixtures/c172s/plane.yaml` with `tests/test_calibration_c172.py` 
 |---|---|---|---|---|---|
 | mass | 1,157,000 g = 2,550 lb (std-faa-tcds-3a12-text p.29) | 1,157,000 g | 0.0 % | calibration_tol_mass_fraction (pending) | trustworthy |
 | wing area | 16.17 m2 (std-textron-cessna-skyhawk-172s) | 16.17 m2 (input: rectangular 11.00 x 1.47 m) | 0.0 %, equal by construction | calibration_tol_geometry_fraction (pending) | trustworthy |
-| wing loading | 715.5 g/dm2 (derived from the two rows above) | 715.52 g/dm2 | 0.0 %; fixed-wing.yaml limit 100 g/dm2 gives WARN above | calibration_tol_geometry_fraction (pending) | trustworthy only with measured input |
+| wing loading | 14.7 lb/sq ft = 717.7 g/dm2 (std-cessna-172s-poh PDF p.15) | 715.52 g/dm2 | -0.3 %; fixed-wing.yaml limit 100 g/dm2 gives WARN above | calibration_tol_geometry_fraction (pending) | trustworthy only with measured input |
 | stall Vs1 (default CLmax 1.1) | 53 KCAS = 27.27 m/s (std-cessna-172s-poh p.124) | 32.27 m/s | +18.4 % | none (pinned as known finding) | not trustworthy |
 | stall Vs1 (CLmax 1.54) | 27.27 m/s | 27.27 m/s | +0.0 % (CLmax 1.54 is implied by Vs1, so a formula check only) | calibration_tol_stall_fraction (pending) | trustworthy only with measured input |
 | stall Vso (default CLmax 1.1) | 48 KCAS (flaps 30) = 24.69 m/s (p.124) | 32.27 m/s | +30.7 % | none | not trustworthy |
-| cruise/stall ratio (default CLmax) | 63.79 / 27.27 = 2.34 (124 KTAS, p.2, over Vs1) | 1.98 | -15.5 % | none | not trustworthy |
+| cruise/stall ratio (default CLmax) | 63.79 / 27.27 = 2.34 (124 KTAS, p.2, over Vs1; mixes true and calibrated speed) | 1.98 | -15.5 % | none | not trustworthy |
 | neutral point | none published | 2639.5 mm (fixture frame; hand calc 2639.5) | not comparable | none | not trustworthy |
 | CG margin at aft limit 47.3 in (36.4 % MAC) | aft limit inside the envelope (std-faa-tcds-3a12-text p.29) | static margin +11.2 % MAC (NP x 2640 mm, CG x 2475 mm), PASS | not comparable (no published NP) | none | not trustworthy |
 | rate of climb | 730 fpm (std-cessna-172s-poh p.2) | no check | n/a | none | not computed |
@@ -19,7 +19,7 @@ Fixture `tests/fixtures/c172s/plane.yaml` with `tests/test_calibration_c172.py` 
 
 ## Trustworthy
 - Mass sum against the maximum takeoff mass: error 0.0 % (unit conversion only).
-- Wing loading arithmetic: 715.52 g/dm2, error 0.0 % against mass over planform area.
+- Wing loading: 715.52 g/dm2, error -0.3 % against the published 717.7 g/dm2.
 - Stall formula with a measured CLmax: +0.0 % (it uses the value it was derived from, so only units and formula are tested).
 
 ## Not trustworthy and why

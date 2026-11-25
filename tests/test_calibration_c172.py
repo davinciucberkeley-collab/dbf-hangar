@@ -8,6 +8,7 @@ import pytest
 import yaml
 
 from hangar import calibration
+from hangar.gates.fidelity import resolve_threshold
 from hangar.design import PASS, WARN, Design
 from test_discipline_gates import rows, run
 
@@ -81,6 +82,7 @@ def test_cg_inside_published_range():
 def test_tolerance_keys_exist_with_source():
     for key in calibration.KEYS:
         value, pending = calibration.tolerance(key)
+        assert resolve_threshold(f"calibration.yaml#{key}")["source"]
         assert isinstance(value, float) and isinstance(pending, bool)
     with pytest.raises(KeyError):
         calibration.tolerance("nope")
