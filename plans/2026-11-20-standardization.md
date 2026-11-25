@@ -898,7 +898,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** from the A400M rehearsal (PR #5, gap log 2026-11-24, 73 min, 1 FAIL left): (1) tier-3 aero sees generated lifting surfaces: planform derived from wing_panel and tail_surfaces params (no hand-copied `planform`), so stall and static margin include the tail; (2) batch editing: many edits applied with one regeneration and one interference pass (about 150 single calls took ~50 min at 30-70 s each); (3) `design propose --draft`, title kept as given, CHANGELOG entries of one batch compacted, working tree keeps the design; (4) geometry fidelity: fuselage_loft per-station centre z if not already supported, tail control surfaces split from fixed surfaces, landing_gear in-line multi-wheel mains; (5) docs: build-index/Studio how-to. Existing designs unchanged. Items not done by Sat 11-28 18:00 move to after Dec 2.
 
-*Progress: -2 batch apply merged ca54346 (W31-R ACCEPT; 20 edits 161 s vs 315 s single, loaded machine); -1 derived planform building.*
+*Progress: -2 batch apply merged ca54346 (W31-R ACCEPT; 20 edits 161 s vs 315 s single, loaded machine); -1 derived planform merged 899b619 (ACCEPT after one reopen; A400M static margin -6.7% FAIL -> +40.9% WARN).*
 
 - [x] **Step 1: Briefs** (tactician W31-T) *(1fbe834: -1 derived planform, -2 batch apply, -3 propose --draft, -4a/b/c optional fidelity, -5 Studio how-to; defaults taken: `design add` is the one documented way to create elements (set --kind add stays as a field-add); batch CHANGELOG logs count and keys, values in the git diff)*
 - [ ] **Step 2: Build** (W31-B)
@@ -909,8 +909,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** a git-ignored overlay folder (path from an env var or `opencae.local.json`-style local config, default `C:/Users/trist/parts-cad`) maps library part id -> local mesh (STL; STEP if trimesh can load it here) plus a placement transform (re-centre, orient to the part frame, mm); `plane parts show` reports overlay present/absent; geometry uses the overlay mesh when present, the committed envelope otherwise; mass and BOM always from the committed part; exports and build-index mark overlay-built outputs local-only and refuse to write them into tracked paths; CI never sees the overlay. Tristan's files: servo ES08MA STEP (MAII proxy), motor X2814 STL (1000 kV geometry); ESC and receiver have no CAD (envelopes stay).
 
 - [x] **Step 1: Brief** (tactician W31-T) *(6792d4a: -1 overlay core, -2 output guard; STEP needs cascadio (not installed) else STL; defaults: library motors shaft toward -x; servo transform tuned by Tristan from fit ratios; git-ignored viewer/data and .studio count as allowed local outputs)*
-- [ ] **Step 2: Build** (W31-B)
-- [ ] **Step 3: Review** (W31-R); merge
+- [x] **Step 2: Build** (W31-B) *(d83aada, a958887)*
+- [x] **Step 3: Review** (W31-R); merge *(ACCEPT; merged 6116330)*
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
 

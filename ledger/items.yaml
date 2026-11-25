@@ -5179,3 +5179,14 @@ items:
     evidence: plans/2026-11-20-standardization.md
     decided_in: ''
     updated: '2026-11-24'
+  - id: T136
+    kind: task
+    text: 'Keep overlay out of shared numbers: baselines, FEA hashes and validation results written on a machine with the CAD overlay must be produced with PLANE_CAD_OVERLAY=off (or the overlay must be ignored by baseline/hash writers)'
+    source: reviews/2026-11-25-w31.md W31-R note on U4.38
+    owner: conductor
+    status: open
+    due: '2026-11-28'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-24'
