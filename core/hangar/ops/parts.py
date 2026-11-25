@@ -26,7 +26,16 @@ def list_(category: str = "") -> OpResult:
 
 
 def _render_show(r: OpResult) -> str:
-    return "\n".join(f"{k}: {v}" for k, v in r.data.items())
+    lines = [f"{k}: {v}" for k, v in r.data.items() if k != "overlay"]
+    ov = r.data.get("overlay")
+    if ov:
+        lines.append(f"overlay: {ov['state']}")
+        if ov["state"] == "present":
+            lines += [f"  file: {ov['file']}", f"  licence: {ov['licence']}",
+                      "  fit: " + " ".join(f"{x:.2f}" for x in ov["fit"])]
+        elif ov["state"] == "unusable":
+            lines.append(f"  reason: {ov['reason']}")
+    return "\n".join(lines)
 
 
 @op(name="parts.show", summary="Show one real-parts library record.", render=_render_show)
@@ -35,4 +44,5 @@ def show(id: str) -> OpResult:
         part = library.load_part(id)
     except KeyError as e:
         raise OpInputError(e.args[0]) from None
-    return OpResult(ok=True, data={k: v for k, v in part.items() if k != "_dir"})
+    from ..geom import overlay
+    return OpResult(ok=True, data={**{k: v for k, v in part.items() if k != "_dir"}, "overlay": overlay.status(id)})

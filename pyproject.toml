@@ -12,6 +12,7 @@ dependencies = ["pyyaml", "jsonschema", "numpy", "scipy", "trimesh", "manifold3d
 [project.optional-dependencies]
 sim = []  # kept for compatibility: mujoco is now a core dependency
 mcp = ["mcp>=1.2"]
+step = ["cascadio"]  # optional: lets the local CAD overlay load STEP files
 dev = ["pytest", "pytest-xdist>=3.5", "playwright>=1.45"]
 
 [project.scripts]

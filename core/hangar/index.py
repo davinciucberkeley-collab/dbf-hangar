@@ -138,7 +138,7 @@ def design_entry(design, out_dir: Path, file_id: str | None = None) -> dict:
         if data is not None:
             (out_dir / f"{fid}.{key}.json").write_text(dumps(data) + "\n")
             extra[key] = f"{fid}.{key}.json"
-    return {
+    entry = {
         "id": did,
         "name": str(meta.get("name", "")),
         "status": str(meta.get("status", "")),
@@ -153,6 +153,11 @@ def design_entry(design, out_dir: Path, file_id: str | None = None) -> dict:
         "error": None,
         **extra,
     }
+    from .geom import overlay
+    local_only = overlay.design_overlay_parts(design)
+    if local_only:
+        entry["local_only"] = local_only
+    return entry
 
 
 def error_entry(did: str, message: str, meta: dict | None = None) -> dict:
