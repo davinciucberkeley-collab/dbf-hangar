@@ -940,6 +940,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Rehearsal** (design-engineer W29-G) *(C172: blocked — no CLI op adds components; no blank start; no airfoil source; gaps -> U13.2. A400M: built in 73 min via an undocumented add form, PR #5, 1 FAIL (static margin: generated tail invisible to T3); gaps -> U13.3)*
 - [x] **Step 2: Gap fixes** (W29-B) *(via U13.2, U13.3, U12.5, U13.4)*
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
+- [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 

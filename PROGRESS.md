@@ -174,7 +174,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U13.1 | Any-aircraft rehearsal (D77, D78) | 3/3 | done | - |
+| U13.1 | Any-aircraft rehearsal (D77, D78) | 4/4 | done | - |
 | U13.2 | Design authoring from a blank start (rehearsal 1 gaps; D78) [hard] | 4/4 | done | - |
 | U13.3 | A400M rehearsal gaps (D78) [hard] | 3/3 | done | - |
 | U13.4 | Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard] | 1/3 | in progress | - |
