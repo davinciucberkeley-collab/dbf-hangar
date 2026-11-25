@@ -417,7 +417,7 @@ Work-class rule: easy → builder (Haiku); hard → builder-plus (Sonnet). Tacti
 | W10 Freeze fixes and fresh-session findings | Tue 11-24 | U4.23, U4.24, U4.25, U4.26, U4.27, U4.28 |
 | W11 Parameter propagation and speed (D75, D81) | Tue 11-24 | U4.29, U4.35 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | Tue 11-24 → Wed 11-25 | U4.30, U4.31, U4.32, U4.33, U4.38 |
-| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U4.36, U4.37, U4.39, U4.34 |
+| W13 Rehearsal gaps and visual fidelity | Tue 11-24 → Sat 11-28 18:00 | U4.36, U4.37, U4.39, U4.34, U4.41 |
 | W14 Presentation | Mon 11-30 → Wed 12-02 | U4.2 |
 | Present | **Wed 12-02** | demo + deck |
 
@@ -882,8 +882,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** after U4.30-U4.33 merge (and T129), a design-engineer session runs the Dec 1 prompt on a branch exactly as Tristan will, for A400M and for Cessna 172, and lists every gap; fixes go back into U4.30-U4.32; nothing from the rehearsal merges. Cut rule: rehearsal passes by Sun 11-29 12:00 or the demo falls back to concept-a-param.
 
 - [x] **Step 1: Rehearsal** (design-engineer W29-G) *(C172: blocked — no CLI op adds components; no blank start; no airfoil source; gaps -> U4.36. A400M: built in 73 min via an undocumented add form, PR #5, 1 FAIL (static margin: generated tail invisible to T3); gaps -> U4.37)*
-- [ ] **Step 2: Gap fixes** (W29-B)
-- [ ] **Step 3: Second rehearsal**
+- [x] **Step 2: Gap fixes** (W29-B) *(via U4.36, U4.37, U4.38, U4.39)*
+- [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U4.41)*
 
 ### Unit U4.35: Speed up design set (D81) [hard]
 
@@ -929,6 +929,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** from Tristan's look at the A400M in Studio: (1) wheels with tyre and hub, nose leg attaches (`front_attach_z`), in-line wheels (extends U4.37-4c); (2) tail control surfaces split (U4.37-4b as written); (3) mechanisms: a recipe (servo just ahead of the hinge line, horn from `plate`, pushrod from `strut`, `mechanisms[]` entry) in the docs and design-engineer guidance, plus a T6 WARN for a servo that drives no mechanism, and a WARN for a part body that touches nothing; (4) smoother fuselages: per-station dz plus opt-in smoothing (extends U4.37-4a). All opt-in: existing designs bit-identical (default taken). Out of scope for Dec 2, stated plainly: scale detailing (glazing, fairings, flap tracks, intakes/exhausts, airfoiled props, oleos/retracts, hollow shells, wiring). Cut: not merged by Sat 11-28 18:00 -> after Dec 2.
 
 - [x] **Step 1: Briefs** (tactician W31-T: amend 4a, 4c; new mechanism brief) *(070163a: U4.39-1 recipe, -2 servo-undriven WARN, -3 floating-body WARN (optional), -4 team guide, -5 design-engineer agent file; 4a gains smooth_rings, 4c gains wheel_shape tyre + front_attach_z; default taken: the recipe uses a pin part at the horn end, validator unchanged before Dec 2)*
+- [ ] **Step 2: Build** (W31-B)
+- [ ] **Step 3: Review** (W31-R); merge
+
+### Unit U4.41: Rehearsal 2 gaps (D78) 
+
+**Scope:** from rehearsal 2 (gap logs 2026-11-24): (1) document the `design apply` edit-file format and the `propulsion` block in the new-concept recipe; (2) `set`/`apply` accept list values (vectors) and remove a mid-list element; (3) a `design bounds` op (component bounding boxes, mm, body frame) and a `design render` PNG op so an agent can look at its model; (4) library meshes centred on their envelope (battery offset, stray lead stub); (5) T-tail and conventional tails: rudder/elevator clearance (T138); (6) investigate T3.static_margin on generated tails (C172 67.6 % MAC, A400M 150 % MAC; was +40.9 % with the hand wing): bug or real; (7) design-engineer guidance: never invent joint ratings or requirements to clear a check; leave them `placeholder` and report; (8) `build-index --design <id>` filter. Cut: not merged by Sat 11-28 18:00 -> after Dec 2.
+
+- [ ] **Step 1: Briefs** (tactician W31-T)
 - [ ] **Step 2: Build** (W31-B)
 - [ ] **Step 3: Review** (W31-R); merge
 
