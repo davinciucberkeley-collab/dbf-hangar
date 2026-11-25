@@ -425,7 +425,8 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
     expected = copy.deepcopy(data)
     _, exp_list, _, exp_i = walk(expected, key)
     del exp_list[exp_i]                          # the reference result for Verify 1
-    _, seq, _, i = walk(yamlio.load(t), key)
+    root = yamlio.load(t)
+    _, seq, _, i = walk(root, key)
     if seq.fa.flow_style():
         raise OpInputError(hand)
     lines = t.split("\n")
@@ -448,6 +449,17 @@ def remove_element(text: str, key: str) -> tuple[str, object]:
         if mine.match(lines[j].lstrip()):
             first = j                            # the topmost comment line that begins with the id
         j -= 1
+    if len(seq) == 1:                            # the only element: the header becomes `name: []`
+        name = steps[0][1]
+        h = root.lc.key(name)[0]
+        m = re.match(r"^(\s*" + re.escape(str(name)) + r":)\s*(#.*)?$", lines[h])
+        if not m:
+            raise OpInputError(hand)
+        header = m.group(1) + " []" + (("  " + m.group(2)) if m.group(2) else "")
+        out = "\n".join(lines[:h] + [header] + lines[h + 1:first] + lines[last + 1:])
+        if yamlfast.safe_load(out) != expected:
+            raise OpInputError(hand)
+        return (out.replace("\n", "\r\n") if crlf else out), element
     out = "\n".join(lines[:first] + lines[last + 1:])
     if yamlfast.safe_load(out) != expected:
         raise OpInputError(hand)

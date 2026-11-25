@@ -609,7 +609,8 @@ def test_remove_refusals(tmp_concept_a):
     _refused(text, "flight.cl_max", "like name[id]")
     _refused(text, "flight[x]", "needs a list")
     _refused(text, "attachments[E-WNG-10]", "without rewriting other text")      # multi-line flow entry
-    _refused("attachments:\n  - {id: a, parent: x, child: y}\n", "attachments[a]", "without rewriting other text")  # would empty the list
+    # removing a list's only element leaves `attachments: []` now (U4.36-3; tests/test_design_remove_last.py)
+    assert pdledit.remove_element("attachments:\n  - {id: a, parent: x, child: y}\n", "attachments[a]")[0] == "attachments: []\n"
 
 
 def test_remove_op_input_errors_write_nothing(tmp_concept_a):
