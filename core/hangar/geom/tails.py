@@ -1,7 +1,8 @@
 """tail_surfaces generator (PDL 1.2): conventional, T, V and H tails from fin + wing_panel.
 
 Parts are built through the public registry and united into one part. Lengths mm, angles degrees,
-component-local frame. Separate elevator / rudder surfaces are not modelled.
+component-local frame. part selects the whole surface, the fixed part, the elevator or the rudder;
+elevator_fin_gap keeps the elevator clear of the fin.
 """
 from __future__ import annotations
 
@@ -25,7 +26,13 @@ def _build(p: dict, base_dir) -> list:
         if part == "fixed":
             stab["part"] = "core"
         else:
-            stab.update(part="elevon", elevon_y=[0, p["stab_span"] / 2.0], side="both")
+            half, t, g = p["stab_span"] / 2.0, p["fin_thickness"] if layout != "v" else 0.0, p["elevator_fin_gap"]
+            y0, y1 = 0.0, half
+            if g > 0 and layout in ("conventional", "t"):
+                y0 = t / 2.0 + g
+            elif g > 0 and layout == "h":
+                y1 = half - t / 2.0 - g
+            stab.update(part="elevon", elevon_y=[y0, y1], side="both")
     if layout == "t":
         stab["z_offset"] = p["fin_z_root"] + p["fin_height"]
     else:
@@ -60,6 +67,13 @@ def _check(p: dict) -> list[str]:
             errs.append(f"{', '.join(missing)}: required for layout {p['layout']!r}")
     if p["part"] == "rudder" and p["layout"] == "v":
         errs.append("part: rudder needs a layout other than v")
+    g = p["elevator_fin_gap"]
+    if g > 0 and p["layout"] == "v":
+        errs.append("elevator_fin_gap: has no effect on layout v")
+    elif g > 0 and "fin_thickness" in p and "stab_span" in p:
+        room = p["stab_span"] / 2.0 - p["fin_thickness"] / 2.0 - g
+        if room <= 0:
+            errs.append("elevator_fin_gap: the gap leaves no elevator (need fin_thickness/2 + gap < stab_span/2)")
     if not 0 < p["hinge_frac"] < 1:
         errs.append("hinge_frac: must be in (0, 1)")
     if not 5 <= p["v_dihedral_deg"] <= 80:
@@ -79,6 +93,7 @@ register(Generator(
      "stab_sweep_le_deg": ParamSpec("number", default=0.0, doc="stabiliser leading-edge sweep, deg"),
      "stab_x_le": ParamSpec("number", default=0.0, doc="x of the stab root leading edge, mm"),
      "stab_z": ParamSpec("number", default=0.0, doc="z of the stab chord datum (conventional, h, v), mm"),
+     "elevator_fin_gap": ParamSpec("number", default=0.0, minimum=0, doc="lateral gap between the elevator and the fin(s), mm; 0 = the elevator spans to the fin plane (default); only part elevator, layouts conventional, t and h"),
      "v_dihedral_deg": ParamSpec("number", default=35.0, doc="5..80, layout v only, deg"),
      "fin_thickness": ParamSpec("number", exclusive_minimum=0, doc="needed unless layout v, mm"),
      "fin_height": ParamSpec("number", doc="needed unless layout v, mm"),
