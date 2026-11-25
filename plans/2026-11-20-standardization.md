@@ -959,8 +959,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 *Progress: -2 batch apply merged ca54346 (W31-R ACCEPT; 20 edits 161 s vs 315 s single, loaded machine); -3 propose --draft a043894, -4b tails 2a4b2eb, -4a fuselage f722c0b, -4c gear 5e338e4 merged; -1 derived planform merged 899b619 (ACCEPT after one reopen; A400M static margin -6.7% FAIL -> +40.9% WARN).*
 
 - [x] **Step 1: Briefs** (tactician W31-T) *(1fbe834: -1 derived planform, -2 batch apply, -3 propose --draft, -4a/b/c optional fidelity, -5 Studio how-to; defaults taken: `design add` is the one documented way to create elements (set --kind add stays as a field-add); batch CHANGELOG logs count and keys, values in the git diff)*
-- [ ] **Step 2: Build** (W31-B)
-- [ ] **Step 3: Review** (W31-R); merge
+- [x] **Step 2: Build** (W31-B) *(-1 planform, -2 batch apply, -3 propose --draft, -4a/b/c, -5 Studio how-to 22f74cc)*
+- [x] **Step 3: Review** (W31-R); merge *(all ACCEPT; last merge 22f74cc)*
 
 ### Unit U13.4: Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard]
 
