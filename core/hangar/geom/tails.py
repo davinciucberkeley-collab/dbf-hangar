@@ -19,19 +19,30 @@ def _build(p: dict, base_dir) -> list:
     layout = p["layout"]
     stab = {"airfoil_file": p["airfoil_file"], "span": p["stab_span"], "root_chord": p["stab_root_chord"],
             "tip_chord": p["stab_tip_chord"], "sweep_le_deg": p["stab_sweep_le_deg"], "part": "full"}
+    part, hf = p["part"], p["hinge_frac"]
+    if part in ("fixed", "elevator"):
+        stab["hinge_frac"] = hf
+        if part == "fixed":
+            stab["part"] = "core"
+        else:
+            stab.update(part="elevon", elevon_y=[0, p["stab_span"] / 2.0], side="both")
     if layout == "t":
         stab["z_offset"] = p["fin_z_root"] + p["fin_height"]
     else:
         stab["z_offset"] = p["stab_z"]
     if layout == "v":
         stab.update(dihedral_deg=p["v_dihedral_deg"], side="both")
-    meshes = _make("wing_panel", stab, base_dir)
-    for m in meshes:
-        m.apply_translation([p["stab_x_le"], 0.0, 0.0])
-    if layout != "v":
+    meshes = []
+    if part != "rudder":
+        meshes = _make("wing_panel", stab, base_dir)
+        for m in meshes:
+            m.apply_translation([p["stab_x_le"], 0.0, 0.0])
+    if layout != "v" and part != "elevator":
         fin = {"thickness": p["fin_thickness"], "root_chord": p["fin_root_chord"], "tip_chord": p["fin_tip_chord"],
                "height": p["fin_height"], "x_le": p["fin_x_le"], "z_root": p["fin_z_root"],
                "sweep_le_deg": p["fin_sweep_le_deg"]}
+        if part != "full":
+            fin.update(part="rear" if part == "rudder" else "front", hinge_frac=hf)
         if layout == "h":
             for sgn in (1, -1):
                 meshes += _make("fin", {**fin, "plane_y": sgn * p["stab_span"] / 2.0,
@@ -47,6 +58,10 @@ def _check(p: dict) -> list[str]:
         missing = [k for k in _FIN_KEYS if k not in p]
         if missing:
             errs.append(f"{', '.join(missing)}: required for layout {p['layout']!r}")
+    if p["part"] == "rudder" and p["layout"] == "v":
+        errs.append("part: rudder needs a layout other than v")
+    if not 0 < p["hinge_frac"] < 1:
+        errs.append("hinge_frac: must be in (0, 1)")
     if not 5 <= p["v_dihedral_deg"] <= 80:
         errs.append(f"v_dihedral_deg: must be within 5..80, got {p['v_dihedral_deg']!r}")
     return errs
@@ -55,6 +70,8 @@ def _check(p: dict) -> list[str]:
 register(Generator(
     "tail_surfaces",
     {"layout": ParamSpec("choice", default="conventional", choices=("conventional", "t", "v", "h")),
+     "part": ParamSpec("choice", default="full", choices=("full", "fixed", "elevator", "rudder")),
+     "hinge_frac": ParamSpec("number", default=0.7, doc="hinge line as a fraction of the local chord, ratio"),
      "airfoil_file": ParamSpec("string", required=True, doc="design-folder-relative airfoil .dat, or a name: nacaXXXX (4-digit, generated) or a file in knowledge/airfoils/ without .dat (e.g. s5010)"),
      "stab_span": ParamSpec("number", required=True, exclusive_minimum=0, doc="tip to tip (horizontal projection for v)"),
      "stab_root_chord": ParamSpec("number", required=True, exclusive_minimum=0),

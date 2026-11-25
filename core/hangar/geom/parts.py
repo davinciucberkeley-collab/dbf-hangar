@@ -27,12 +27,21 @@ def _fin_build(p: dict, base_dir) -> list:
     h, t = p["height"], p["thickness"]
     xl, zr = p["x_le"], p["z_root"]
     dx = abs(h) * math.tan(math.radians(p["sweep_le_deg"]))
-    outline = [(xl, zr), (xl + p["root_chord"], zr), (xl + dx + p["tip_chord"], zr + h), (xl + dx, zr + h)]
+    rc, tc, f, part = p["root_chord"], p["tip_chord"], p["hinge_frac"], p["part"]
+    if part == "front":
+        outline = [(xl, zr), (xl + f * rc, zr), (xl + dx + f * tc, zr + h), (xl + dx, zr + h)]
+    elif part == "rear":
+        outline = [(xl + f * rc, zr), (xl + rc, zr), (xl + dx + tc, zr + h), (xl + dx + f * tc, zr + h)]
+    else:
+        outline = [(xl, zr), (xl + rc, zr), (xl + dx + tc, zr + h), (xl + dx, zr + h)]
     return [kernel.prism(outline, plane="xz", offset=p["plane_y"] - t / 2.0, depth=t)]
 
 
 def _fin_check(p: dict) -> list[str]:
-    return ["height: must be nonzero"] if p["height"] == 0 else []
+    errs = ["height: must be nonzero"] if p["height"] == 0 else []
+    if not 0 < p["hinge_frac"] < 1:
+        errs.append("hinge_frac: must be in (0, 1)")
+    return errs
 
 
 register(Generator(
@@ -44,7 +53,9 @@ register(Generator(
      "height": ParamSpec("number", required=True, doc="signed distance from the root along z"),
      "x_le": ParamSpec("number", default=0.0),
      "z_root": ParamSpec("number", default=0.0),
-     "sweep_le_deg": ParamSpec("number", default=0.0)},
+     "sweep_le_deg": ParamSpec("number", default=0.0),
+     "part": ParamSpec("choice", default="full", choices=("full", "front", "rear")),
+     "hinge_frac": ParamSpec("number", default=0.7, doc="hinge line as a fraction of the local chord, ratio; the front part ends and the rear part starts there")},
     _fin_build, check=_fin_check))
 
 
