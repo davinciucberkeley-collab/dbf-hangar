@@ -137,9 +137,33 @@ def _read_csv(path: Path, key: str) -> dict[str, dict]:
         return {r[key]: r for r in csv.DictReader(f)}
 
 
+def _separate_coincident(v: np.ndarray, faces: np.ndarray, step: float = 6e-4) -> np.ndarray:
+    """Move all but the lowest-index vertex of each exactly coincident group by `step` mm towards the mean of its
+    face neighbours, so the STL loader's vertex welding cannot merge them. No coincident vertices: `v` is returned as is."""
+    _, inv, cnt = np.unique(v, axis=0, return_inverse=True, return_counts=True)
+    inv = np.asarray(inv).reshape(-1)
+    if not (cnt > 1).any():
+        return v
+    v = v.copy()
+    first = {}
+    for i, g in enumerate(inv):
+        if cnt[g] > 1:
+            if g not in first:
+                first[g] = i
+                continue
+            nb = np.unique(faces[(faces == i).any(axis=1)])
+            nb = nb[nb != i]
+            d = v[nb].mean(axis=0) - v[i] if len(nb) else np.zeros(3)
+            n = np.linalg.norm(d)
+            d = d / n if n > 0 else np.array([0.0, 0.0, 1.0])
+            v[i] = (v[i] + step * d).astype(np.float32).astype(np.float64)
+    return v
+
+
 def _canonical(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     """Same solid, canonical vertex and face order (the boolean kernel's output order is not guaranteed stable)."""
     v = np.round(mesh.vertices.astype(np.float32).astype(np.float64), 6)
+    v = _separate_coincident(v, mesh.faces)
     order = np.lexsort(v.T[::-1])
     inv = np.empty_like(order)
     inv[order] = np.arange(len(order))
