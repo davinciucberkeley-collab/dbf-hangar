@@ -121,7 +121,7 @@ def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     edge then has four faces, so the mesh is no longer watertight. Every vertex that has a coincident partner is moved
     PINCH_MM toward the centroid of its own faces' other corners, which separates the pair without changing the shape visibly
     (the source's own fix is a 0.01 mm grow of the bodies, blender_mesh.GROW_MM; this moves 20x less and only where
-    needed)."""
+    needed). A second pass separates pairs the first pass left coincident (zero move direction)."""
     key = np.round(vertices / 1e-5).astype(np.int64)
     _, inv, cnt = np.unique(key, axis=0, return_inverse=True, return_counts=True)
     inv = np.asarray(inv).reshape(-1)
@@ -141,6 +141,17 @@ def _separate_pinches(vertices: np.ndarray, faces: np.ndarray) -> np.ndarray:
     ok = pinched & (ln > 0)
     out = vertices.copy()
     out[ok] += PINCH_MM * d[ok] / ln[ok, None]
+    key2 = np.round(out / 1e-6).astype(np.int64)
+    _, inv2, cnt2 = np.unique(key2, axis=0, return_inverse=True, return_counts=True)
+    inv2 = np.asarray(inv2).reshape(-1)
+    seen: set[int] = set()
+    for i in range(len(out)):
+        g = int(inv2[i])
+        if cnt2[g] > 1:
+            if g in seen:
+                out[i] += (0.0, 0.0, PINCH_MM)
+            else:
+                seen.add(g)
     return out
 
 
