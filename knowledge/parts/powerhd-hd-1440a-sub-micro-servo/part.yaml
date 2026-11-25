@@ -1,0 +1,14 @@
+id: powerhd-hd-1440a-sub-micro-servo
+name: 'Power HD HD-1440A sub-micro servo 4.4g (Pololu item 1040, discontinued)'
+category: servo
+vendor: Power HD (sold by Pololu as item 1040)
+part_number: 'HD-1440A'
+url: https://www.pololu.com/product/1040
+mass_g: 4.4
+dimensions_mm: [20.2, 20.2, 8.5]
+cad_status: representative-envelope
+cad_source: 'distributor page https://www.pololu.com/product/1040/specs (Size printed 20.2 x 20.2 x 8.5 mm; axis labels and tabs not stated; the printed order differs from the item 1053 page, so the axis order is unconfirmed; mass 4.4 g, lead not stated); no CAD link found'
+verified: {by: W31-S3, date: '2026-11-25', method: webfetch}
+geometry:
+  generator: plate
+  params: {plane: xy, size: [20.2, 20.2], thickness: 8.5}
