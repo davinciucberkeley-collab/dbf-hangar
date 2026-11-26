@@ -97,7 +97,7 @@ def test_wheel_is_a_ground_colliding_continuous_joint():
     assert m.jnt_type[j] == mujoco.mjtJoint.mjJNT_HINGE and m.jnt_limited[j] == 0
     g = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_GEOM, "ground")
     assert g >= 0
-    assert m.geom_pos[g][2] == pytest.approx(-0.040, abs=0.0005)
+    assert m.geom_pos[g][2] == pytest.approx(-0.041, abs=0.0005)
     assert m.geom_contype[g] == 1
     wheel_body = mujoco.mj_name2id(m, mujoco.mjtObj.mjOBJ_BODY, "wheel")
     others = [i for i in range(m.ngeom) if i != g and m.geom_contype[i] == 2]
@@ -120,3 +120,20 @@ def test_docs_in_sync():
     assert "mjcf-kinematic" in rd("docs/cli.md")
     assert "Kinematic MJCF export" in rd("docs/mechanisms.md")
     assert "mjcf-kinematic" in rd("docs/mcp.md")
+
+
+def test_wheel_spins_freely_without_touching_ground():
+    data = copy.deepcopy(load_design(FIX).data)
+    data["components"].append({"id": "wheel", "type": "other", "geometry": {"generator": "tube", "params": {"axis": "y", "length": 6, "outer_d": 20}},
+                               "position": [100, 0, -30], "mass_g": 2, "manufacturing": {"method": "purchased"}})
+    data["attachments"].append({"id": "stab-wheel", "parent": "stab", "child": "wheel", "method": "bolted", "location": [100, 0, -30],
+                                "embed_ok": True, "rated_load_n": 10,
+                                "articulation": {"type": "continuous", "pivot": [100, 0, -30], "axis": [0, 1, 0]}})
+    m = model(Design(data=data, path=FIX / "plane.yaml"))
+    j = jid(m, "stab-wheel")
+    d = mujoco.MjData(m)
+    d.qvel[m.jnt_dofadr[j]] = 10.0
+    for _ in range(1000):
+        mujoco.mj_step(m, d)
+        assert d.ncon == 0
+    assert abs(math.degrees(d.qpos[m.jnt_qposadr[j]])) > 500

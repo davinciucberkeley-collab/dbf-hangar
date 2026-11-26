@@ -90,5 +90,5 @@ Tier 3 warns with T3.wing_area_complete when the measured wing is less than 97 %
 2. Joints: hinge at `articulation.pivot`/`axis` with `range_deg` (continuous: unlimited); ball at the attachment `location`. Named by the attachment id.
 3. Actuators: one position servo per mechanism whose driver is articulated, named after the mechanism; ctrl in radians, range from `input_range_deg`.
 4. Loop: a `connect` named `<mechanism>-link` joins the bodies of `link.driver_end` and `link.follower_end` at the follower attachment location (the ball joint avoids over-constraint).
-5. Wheels: the child of a `continuous` attachment collides with a ground plane touching its lowest point.
+5. Wheels: the child of a `continuous` attachment collides with a ground plane 1 mm below its lowest point (not touching, so it spins freely; wheel damping 1e-7).
 6. Gravity 0. Out of scope: weld loads, rolling tests, mechanisms without a `link` (no ratio coupling), propeller discs.

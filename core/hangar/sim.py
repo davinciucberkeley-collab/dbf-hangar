@@ -149,6 +149,8 @@ def export_mjcf(design: Design, out_path) -> Path:
 
 KINEMATIC = {
     "hinge": {"armature": "1e-06", "damping": "1e-05"},
+    "wheel": {"armature": "1e-06", "damping": "1e-07"},
+    "ground_gap_m": 0.001,
     "ball": {"armature": "1e-08", "damping": "1e-07"},
     "position": {"kp": "2", "kv": "0.02"},
     "connect_solref": "0.005 1",
@@ -228,7 +230,8 @@ def build_kinematic_mjcf(design: Design) -> str:
                 jx = (f'      <joint name="{att_label(a)}" type="ball" pos="{_vec(np.array(a["location"]) / 1000)}" '
                       f'armature="{k["armature"]}" damping="{k["damping"]}"/>\n')
             else:
-                art, k = a["articulation"], KINEMATIC["hinge"]
+                art = a["articulation"]
+                k = KINEMATIC["wheel"] if art.get("type") == "continuous" else KINEMATIC["hinge"]
                 lim = ('limited="false"' if art.get("type") == "continuous" or not art.get("range_deg")
                        else f'range="{_vec(art["range_deg"])}" limited="true"')
                 jx = (f'      <joint name="{att_label(a)}" type="hinge" pos="{_vec(np.array(art["pivot"]) / 1000)}" '
@@ -243,7 +246,7 @@ def build_kinematic_mjcf(design: Design) -> str:
 
     ground = ""
     if wheels and math.isfinite(low):
-        ground = (f'    <geom name="ground" type="plane" size="5 5 0.1" pos="0 0 {low:.9g}" contype="1" '
+        ground = (f'    <geom name="ground" type="plane" size="5 5 0.1" pos="0 0 {low - KINEMATIC["ground_gap_m"]:.9g}" contype="1" '
                   f'conaffinity="2" friction="{_FRICTION}"/>\n')
 
     by_id = {att_label(a): a for a in atts}
