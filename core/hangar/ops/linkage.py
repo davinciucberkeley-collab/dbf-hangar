@@ -70,7 +70,7 @@ def _elements(prefix, servo_id, hinge_id, surface, Op, a_o, tip0, pin0, K, n, q,
 
     def att(aid, parent, child, method, loc, **extra):
         return {"id": aid, "parent": parent, "child": child, "method": method, "location": _vecs(loc),
-                "embed_ok": True, "rated_load_n": 10, **extra}
+                "embed_ok": True, "rated_load_n": 10, "rating_basis": "placeholder", **extra}
 
     atts = [att(f"{prefix}-servo-arm", servo_id, f"{prefix}-arm", "bolted", Op,
                 articulation={"type": "revolute", "pivot": _vecs(Op), "axis": _vecs(a_o),
