@@ -2395,8 +2395,8 @@ bom:
     component_ids:
     - mec-001-l
     - mec-001-r
-    - mec-002-l
-    - mec-002-r
+    - mec-l-arm
+    - mec-r-arm
     verified:
       by: DBF-Combined BOM-A.csv @ a93f14da
       date: '2026-11-15'
@@ -2409,12 +2409,12 @@ bom:
     unit_cost_usd: 8.99
     url: https://www.readymaderc.com/products/details/rmrc-10pc-pushrod-linkage-set-control-horn
     component_ids:
-    - mec-003-l
-    - mec-003-r
-    - mec-004-l
-    - mec-004-r
-    - mec-005-l
-    - mec-005-r
+    - mec-l-rod
+    - mec-r-rod
+    - mec-l-horn
+    - mec-r-horn
+    - mec-l-pin
+    - mec-r-pin
     verified:
       by: DBF-Combined BOM-A.csv @ a93f14da
       date: '2026-11-15'
@@ -2806,14 +2806,14 @@ transport:
     - hwc-003
     - mec-001-l
     - mec-001-r
-    - mec-002-l
-    - mec-002-r
-    - mec-003-l
-    - mec-003-r
-    - mec-004-l
-    - mec-004-r
-    - mec-005-l
-    - mec-005-r
+    - mec-l-arm
+    - mec-r-arm
+    - mec-l-rod
+    - mec-r-rod
+    - mec-l-horn
+    - mec-r-horn
+    - mec-l-pin
+    - mec-r-pin
     - prp-001-ll
     - prp-001-lr
     - prp-001-ul
@@ -3024,8 +3024,8 @@ assembly:
     note: 'D1: Servos into their pockets'
   - step: 28
     add:
-    - mec-002-r
-    - mec-002-l
+    - mec-r-arm
+    - mec-l-arm
     note: 'D2: Servo arms on the splines'
   - step: 29
     add:
@@ -3034,21 +3034,21 @@ assembly:
     note: 'D2a: Arm screws M2x6 into the servo output shafts'
   - step: 30
     add:
-    - mec-004-r
-    - mec-004-l
+    - mec-r-horn
+    - mec-l-horn
     note: 'D3: Horns on the elevons'
   - step: 31
     add:
-    - mec-003-r
-    - mec-003-l
+    - mec-r-rod
+    - mec-l-rod
     note: 'D4: Pushrods into arm hole (Z-bend) and over the horn blade (clevis cheeks straddle it; pin follows in D5)'
   - step: 32
     add:
-    - mec-005-r
+    - mec-r-pin
     note: 'D5: Clevis pin R pressed in along y through the cheeks and the horn hole (from outboard)'
   - step: 33
     add:
-    - mec-005-l
+    - mec-l-pin
     note: 'D5b: Clevis pin L pressed in along y (from outboard)'
   - step: 34
     add:

@@ -1936,3 +1936,83 @@
   new: CT-HW-SEATED
   why: 'D125: carry the sourced rating from E-MEC-PIN-L4'
   kind: add
+- date: '2026-11-26T23:18:55Z'
+  key: rename-id
+  old: mec-002-r
+  new: mec-r-arm
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[17].component_ids[3]
+  - transport.disassembly[0].component_ids[67]
+  - assembly.sequence[27].add[0]
+- date: '2026-11-26T23:18:59Z'
+  key: rename-id
+  old: mec-002-l
+  new: mec-l-arm
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[17].component_ids[2]
+  - transport.disassembly[0].component_ids[66]
+  - assembly.sequence[27].add[1]
+- date: '2026-11-26T23:19:03Z'
+  key: rename-id
+  old: mec-003-r
+  new: mec-r-rod
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[1]
+  - transport.disassembly[0].component_ids[69]
+  - assembly.sequence[30].add[0]
+- date: '2026-11-26T23:19:07Z'
+  key: rename-id
+  old: mec-003-l
+  new: mec-l-rod
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[0]
+  - transport.disassembly[0].component_ids[68]
+  - assembly.sequence[30].add[1]
+- date: '2026-11-26T23:19:11Z'
+  key: rename-id
+  old: mec-004-r
+  new: mec-r-horn
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[3]
+  - transport.disassembly[0].component_ids[71]
+  - assembly.sequence[29].add[0]
+- date: '2026-11-26T23:19:15Z'
+  key: rename-id
+  old: mec-004-l
+  new: mec-l-horn
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[2]
+  - transport.disassembly[0].component_ids[70]
+  - assembly.sequence[29].add[1]
+- date: '2026-11-26T23:19:19Z'
+  key: rename-id
+  old: mec-005-r
+  new: mec-r-pin
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[5]
+  - transport.disassembly[0].component_ids[73]
+  - assembly.sequence[31].add[0]
+- date: '2026-11-26T23:19:23Z'
+  key: rename-id
+  old: mec-005-l
+  new: mec-l-pin
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[4]
+  - transport.disassembly[0].component_ids[72]
+  - assembly.sequence[32].add[0]
