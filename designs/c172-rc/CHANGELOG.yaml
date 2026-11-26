@@ -612,3 +612,44 @@
   why: leg splay with separate wheels moves the leg tops inboard (leg top y = 42.7
     mm instead of 54); joint point must stay on the leg; checked on scratch copy
   kind: modify
+- date: '2026-11-26T08:37:04Z'
+  key: attachments[gear-wheel-r].embed_ok
+  old: true
+  new: false
+  why: axle in bore is a running clearance fit, not an embed (W34-R3 reopen); false
+    is the schema default, the CLI cannot delete a scalar key
+  kind: modify
+- date: '2026-11-26T08:37:04Z'
+  key: attachments[gear-wheel-l].embed_ok
+  old: true
+  new: false
+  why: axle in bore is a running clearance fit, not an embed (W34-R3 reopen); false
+    is the schema default, the CLI cannot delete a scalar key
+  kind: modify
+- date: '2026-11-26T08:37:04Z'
+  key: attachments[gear-wheel-n].embed_ok
+  old: true
+  new: false
+  why: axle in bore is a running clearance fit, not an embed (W34-R3 reopen); false
+    is the schema default, the CLI cannot delete a scalar key
+  kind: modify
+- date: '2026-11-26T08:37:21Z'
+  key: bom.items[b-gear].component_ids
+  old:
+  - landing-gear
+  new:
+  - landing-gear
+  - wheel-r
+  - wheel-l
+  - wheel-n
+  why: wheels are now separate components; list them under the gear BOM item (W34-R3
+    reopen)
+  kind: modify
+- date: '2026-11-26T08:37:21Z'
+  key: bom.items[b-gear].part_number
+  old: tricycle landing gear with tyre wheels, printed PETG (design-made)
+  new: tricycle landing gear, printed PETG legs and nose fork plus three separate
+    printed PETG tyre wheels on axle stubs (design-made)
+  why: wheels are now separate components; list them under the gear BOM item (W34-R3
+    reopen)
+  kind: modify
