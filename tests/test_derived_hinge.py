@@ -108,3 +108,19 @@ def test_schema_and_docs(tmp_path):
 def test_no_existing_design_uses_it():
     for f in (ROOT / "designs").glob("*/plane.yaml"):
         assert "hinge_from" not in f.read_text(encoding="utf-8"), f
+
+
+def test_swept_pockets_see_the_derived_axis(monkeypatch):
+    """U16.2: the resolver derives hinge_from before sampling swept poses, so the pockets sweep about the derived axis."""
+    seen = []
+
+    def fake(data, cut_files, base_dir, wing_id=None):
+        seen.append(copy.deepcopy(att(data, "hinge-r")["articulation"]["axis"]))
+        return []
+    monkeypatch.setattr("hangar.geom.sweeps.swept_cut_poses", fake)
+    raw = raw_fix()
+    for a in raw["attachments"]:
+        a["hinge_from"] = "generator"
+    next(c for c in raw["components"] if c["id"] == "wing")["geometry"]["params"]["cut_files"] = ["x.stl"]
+    data, errors = resolve_design_data(raw, FIX)
+    assert seen and seen[0] == pytest.approx([0.0263, 0.9984, 0.0497], abs=2e-4) and errors == {}

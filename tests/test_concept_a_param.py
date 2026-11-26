@@ -20,7 +20,7 @@ A = DESIGNS_DIR / "concept-a"
 P = DESIGNS_DIR / "concept-a-param"
 GENERATED = ("wng-001", "wng-002", "fin-001-l", "fin-001-r")
 DEMO_VALUE = "940"
-# The swept-pose residue of the cut pockets is baselined (README); the demo edit adds no regression.
+# U16.2: the pockets follow the swept poses, so no swept-pose residue is baselined; the demo edit adds no regression.
 EXPECTED_REGRESSIONS: list = []
 
 
@@ -66,12 +66,11 @@ def test_generated_wing_core_matches_outline(pd):
     assert np.abs(m.bounds - ref.bounds).max() <= 0.1
     cuts = _comp(pd, "wng-001")["geometry"]["params"]["cut_files"]
     assert len(cuts) == 40
-    # neutral-pose interference with any neighbour (all are in cut_files): none; swept poses are the baselined residue
+    # interference with any neighbour (all are in cut_files), at any sampled pose: none
     bad = [r.message for r in _rows(validate(pd, max_tier=1))
-           if r.check_id == "T1.interference" and "wng-001" in r.message
-           and not any(k in r.message for k in ("pose ", "sweep ", "range "))]
+           if r.check_id == "T1.interference" and "wng-001" in r.message]
     assert bad == []
-    # attachment rows name the joint (E-WNG-..), not the part: no neutral-pose overlap row for a joint of wng-001 (the two pose-down rows are the baselined residue)
+    # attachment rows name the joint (E-WNG-..), not the part: no neutral-pose overlap row for a joint of wng-001
     joints = {a.get("id") or f"{a['parent']}->{a['child']}" for a in pd.data["attachments"] if "wng-001" in (a["parent"], a["child"])}
     assert len(joints) >= 5
     neutral = [r.message for r in _rows(validate(pd, max_tier=1))
@@ -84,12 +83,15 @@ def test_nominal_masses(pd, ad):
     pc, ac = _per(mp), _per(ma)
     assert "mass_model" in _comp(pd, "wng-001") and "mass_g" not in next(
         c for c in pd.raw["components"] if c["id"] == "wng-001")
-    assert pc["wng-001"] == pytest.approx(100.1, abs=0.2)
+    # U16.2: the swept-pose pockets (wng-007 / wng-010 / mec-002 lens cuts) remove foam, so the core is 98.86 g (was 100.1 g)
+    assert pc["wng-001"] == pytest.approx(98.86, abs=0.2)
     for cid in GENERATED[1:]:
         assert pc[cid] == pytest.approx(ac[cid], rel=0.01)
-    assert mp["mass_g"] == pytest.approx(ma["mass_g"], abs=0.5)
+    # U16.2: the swept pockets take 1.24 g out of wng-001 (100.1 -> 98.86 g), so the total sits 1.24 g under concept-a
+    assert mp["mass_g"] == pytest.approx(ma["mass_g"] - 1.24, abs=0.5)
     # CG y: the generated core's cut pockets are not mirror-symmetric, so y moves by 0.12 mm (README); x and z stay tight.
-    assert mp["cg_mm"][0] == pytest.approx(ma["cg_mm"][0], abs=0.05)
+    # U16.2: the lens pockets shift x by 0.14 mm (21.20 vs 21.34)
+    assert mp["cg_mm"][0] == pytest.approx(ma["cg_mm"][0] - 0.14, abs=0.05)
     assert mp["cg_mm"][1] == pytest.approx(ma["cg_mm"][1], abs=0.15)
     assert mp["cg_mm"][2] == pytest.approx(ma["cg_mm"][2], abs=0.05)
 
@@ -185,3 +187,13 @@ def test_sweep_over_span(tmp_path, monkeypatch):
     ms = [x["mass_g"] for x in r.data["rows"]]
     assert len(ms) == 3 and ms[0] < ms[1] < ms[2]
     assert ms[1] == pytest.approx(mass_properties(load_design(P))["mass_g"], abs=0.01)
+
+
+def test_no_swept_pose_failures_remain(pd, ad):
+    """U16.2: the pockets follow the swept poses, so concept-a-param fails nothing that concept-a does not."""
+    from collections import Counter
+    rp, ra = _rows(validate(pd)), _rows(validate(ad))
+    extra = Counter(r.check_id for r in rp if r.status == "FAIL") - Counter(r.check_id for r in ra if r.status == "FAIL")
+    assert not extra, extra
+    assert not [r.message for r in rp if r.status == "FAIL"
+                and any(k in r.message or k in r.check_id for k in ("wng-007", "mec-002", "T6.mechanism.elevon"))]
