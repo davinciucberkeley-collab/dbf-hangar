@@ -2,7 +2,7 @@
 
 # plane command reference
 
-69 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+70 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -328,6 +328,21 @@ Writes files.
 - `<path>`: str, required
 - `<title>`: str, required
 - `--draft`: bool, optional
+
+### `plane design rename-id`
+
+Rename a component id everywhere it is used as a value or list item in plane.yaml (components, attachments parent/child, mechanisms, harness from/to/route, cavities, assembly.sequence, transport groups, bom component_ids), byte-preserving, and log it in CHANGELOG.yaml. A stale id with no component (OLD absent) is re-pointed to an existing NEW. Errors on an unknown id, on a collision (both ids are components) or when a list would hold NEW twice; idempotent (already renamed -> unchanged). Substrings such as file names are reported, not renamed.
+
+```
+plane design rename-id <path> <old> <new> --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `<old>`: str, required
+- `<new>`: str, required
+- `--why`: str, required
 
 ### `plane design render`
 

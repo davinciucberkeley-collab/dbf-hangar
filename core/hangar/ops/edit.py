@@ -227,6 +227,31 @@ def add_op(path: str, key: str, *, value: str, why: str) -> OpResult:
                     changed_files=[str(plane), str(log)])
 
 
+@op(name="design.rename-id", summary="Rename a component id everywhere it is used as a value or list item in plane.yaml (components, attachments parent/child, mechanisms, harness from/to/route, cavities, assembly.sequence, transport groups, bom component_ids), byte-preserving, and log it in CHANGELOG.yaml. A stale id with no component (OLD absent) is re-pointed to an existing NEW. Errors on an unknown id, on a collision (both ids are components) or when a list would hold NEW twice; idempotent (already renamed -> unchanged). Substrings such as file names are reported, not renamed.",
+    mutates=True, render=lambda r: "\n".join(r.messages))
+def rename_id_op(path: str, old: str, new: str, *, why: str) -> OpResult:
+    plane = _plane(path)
+    text = _text(plane)
+    if not why.strip():
+        raise OpInputError("why must not be empty")
+    working, paths, near = pdledit.rename_id(text, old, new)
+    data = {"old": old, "new": new, "changed": bool(paths), "count": len(paths), "paths": paths}
+    if not paths:
+        return OpResult(True, data, [f"{old} -> {new}: already renamed"])
+    from ..geom.params import expression_errors
+    before = yaml.safe_load(text)
+    after = yaml.safe_load(working)
+    fresh = [e for e in expression_errors(after) if e not in set(expression_errors(before))]
+    if fresh:
+        raise OpInputError("; ".join(f"{o}: {p}: {m}" for o, p, m in fresh))
+    pdledit.check_schema(before, after, "rename-id")
+    stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    entry = {"date": stamp, "key": "rename-id", "old": old, "new": new, "why": why, "kind": "modify", "paths": paths}
+    log = _write_with_log(plane, text, working, [entry])
+    msgs = [f"{old} -> {new}: {len(paths)} reference(s) renamed"] + [f"not renamed: {p}" for p in near[:10]]
+    return OpResult(True, data, msgs, changed_files=[str(plane), str(log)])
+
+
 @op(name="design.diff", summary="List the keys whose values differ between two designs.",
     render=lambda r: "\n".join(f"{c['key']}: {c['a']!r} -> {c['b']!r}" for c in r.data["changes"]) or "no differences")
 def diff_op(a: str, b: str) -> OpResult:
