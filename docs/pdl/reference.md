@@ -251,6 +251,10 @@ v1.0. One wire harness between two components.
 | `to` | `slug` | yes |  |
 | `route` | array of `slug` |  |  |
 | `gauge_awg` | integer |  |  |
+| `from_port` | `slug` |  | v1.3. Name of a port in the library part of component `from` (knowledge/parts/<id>/part.yaml ports); the wire starts there. Default: the CG of `from`. |
+| `to_port` | `slug` |  | v1.3. Name of a port in the library part of component `to` (knowledge/parts/<id>/part.yaml ports); the wire ends there. Default: the CG of `to`. |
+| `waypoints` | array of `vec3` |  | v1.3. Points (design frame, mm) the wire passes between its ends; [] = straight. Any of from_port, to_port, waypoints makes the harness routed: it is drawn as a tube in Studio and T7 checks the route. |
+| `diameter_mm` | number |  | v1.3. Drawn wire diameter, mm (default 1.5). Visual only. |
 | `exposed_ok` | object |  |  |
 | `exposed_ok.reason` | string | yes |  |
 

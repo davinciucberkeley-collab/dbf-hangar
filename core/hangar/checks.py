@@ -56,6 +56,12 @@ def _tier0_v13(design: Design) -> list[CheckResult]:
     if any(isinstance(x, dict) and x.get("type") == "continuous" for x in arts) and _below(design, "1.3"):
         res.append(CheckResult("T0.version", FAIL, 'articulation.type continuous needs schema_version "1.3"',
                                "schema/plane.schema.json"))
+    wiring = src.get("wiring") if isinstance(src.get("wiring"), dict) else {}
+    harnesses = [h for h in wiring.get("harnesses", []) if isinstance(h, dict)]
+    if any(k in h for h in harnesses for k in ("from_port", "to_port", "waypoints", "diameter_mm")) and _below(design, "1.3"):
+        res.append(CheckResult("T0.version", FAIL,
+                               'wiring.harnesses[] from_port, to_port, waypoints and diameter_mm need schema_version "1.3"',
+                               "schema/plane.schema.json"))
     return res
 
 

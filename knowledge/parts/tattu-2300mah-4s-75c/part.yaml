@@ -12,3 +12,5 @@ verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: br
 geometry:
   generator: mesh_file
   params: {file: mesh.stl}
+ports: {power: {point: [0, 53.35, 0], direction: [0, 1, 0]}}
+ports_source: "estimate: the XT60 lead leaves the +y end face centre (the library mesh has the lead stub removed)"
