@@ -1164,7 +1164,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -1 tail volume, -2 trim, -3 dynamic modes (all hard) + scout packet A; AeroSandbox opt-in, not in CI (modes SKIP there); merge order U18.3-1, U18.4-1, -2, -3)*
 - [x] **Step 2: Build** (builder-plus W34-B) *(-1 tail volume merged ca908c6 (W34-R ACCEPT; bands pending: Raymer gives class points); -2 trim merged 98b2dd6 (c0-a1, tiltwing PASS; c172-rc WARN: generated tails not read, T153); -3 dynamic modes merged 132c13c (D108 limits; runs with AeroSandbox locally, SKIP in CI; tiltwing Dutch roll unstable -> ledger))*
-- [x] **Step 3: Review** (W34-R); merge
+- [x] **Step 3: Review** (W34-R); merge *(follow-up -4 generated tails merged 9920387: c172-rc Vh 0.63 WARN (band top pending), Vv 0.039 PASS, trim stall +8.2 deg PASS; T153 done)*
 
 ### Unit U19.1: Studio UI overhaul and a better 3D viewer (D92; P285) [hard]
 
