@@ -62,6 +62,9 @@ def _tier0_v13(design: Design) -> list[CheckResult]:
         res.append(CheckResult("T0.version", FAIL,
                                'wiring.harnesses[] from_port, to_port, waypoints and diameter_mm need schema_version "1.3"',
                                "schema/plane.schema.json"))
+    if "display" in design.data and _below(design, "1.3"):
+        res.append(CheckResult("T0.version", FAIL, 'display needs schema_version "1.3"',
+                               "schema/plane.schema.json"))
     return res
 
 
