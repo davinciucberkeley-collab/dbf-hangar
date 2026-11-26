@@ -29,7 +29,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 import numpy as np
-import trimesh
+from ._lazy import trimesh
 
 from .design import REPO_ROOT, CheckResult, Design, load_standards
 from .geom import overlay
@@ -92,7 +92,14 @@ def save_config(python: str, root: str) -> Path:
     why = runner_python_error(python)
     if why:
         raise ValueError(why)
-    CONFIG_FILE.write_text(json.dumps({"python": python, "root": root}, indent=2) + "\n")
+    cfg = {}
+    if CONFIG_FILE.exists():
+        try:
+            cfg = json.loads(CONFIG_FILE.read_text())
+        except json.JSONDecodeError:
+            cfg = {}
+    cfg.update({"python": python, "root": root})
+    CONFIG_FILE.write_text(json.dumps(cfg, indent=2) + "\n")
     return CONFIG_FILE
 
 

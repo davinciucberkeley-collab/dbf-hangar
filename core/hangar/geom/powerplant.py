@@ -8,7 +8,7 @@ from __future__ import annotations
 import math
 
 import numpy as np
-import trimesh
+from .._lazy import trimesh
 
 from hangar.geom import kernel
 from hangar.geom.registry import Generator, ParamSpec, register

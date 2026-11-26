@@ -343,6 +343,7 @@ Use this to check stress, drop loads and mass.
 - Runs the drop test with `plane sim drop`. It prints the drop height, then one line per joint, such as `T2.sim_drop_loads PASS: wing-body: peak 82.6 N <= 125 N in drop test`.
 - Reads mass, centre of gravity and inertia with `design_mass`. Exports a mesh with `design_export`.
 - FEA needs OpenCAE, an outside tool (GPL-3.0). The repo does not contain it. Set it up once with `plane fea setup`: `--opencae-python` is the Python of the environment that has OpenCAE's libraries, and `--opencae-root` is the OpenCAE folder. After that, `plane tools doctor` shows `opencae ok`. Until it is installed, FEA results are SKIP with the fix, never a silent pass.
+- Physics checks from OpenCAE's command line (mass, propulsion, structure, flight, whole-aircraft CFD) need a clone of OpenCAEModel main (GPL-3.0, an outside tool; the repo does not contain it) and Python 3.11+ with its libraries. Set it up once with `plane opencae setup --cli-python <python> --cli-root <clone folder>`, then run `plane opencae run <design> --analyses mass,propulsion`. Results are stored in `designs/<id>/opencae/results.json` and shown as `T2.opencae_*` rows. A missing clone, solver (CalculiX for structure; OpenFOAM or SU2 for CFD) or result is SKIP with the fix command, never a pass. `opencae setup su2 --yes` (about 40 MB download) is run by a person, never by an agent.
 
 **Check the answer:**
 

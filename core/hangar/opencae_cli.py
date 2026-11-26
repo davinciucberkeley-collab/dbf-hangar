@@ -225,3 +225,17 @@ def load_result(design: Design) -> dict | None:
     except (OSError, ValueError):
         return None
     return rec if isinstance(rec, dict) else None
+
+
+def save_cli_config(python: str, root: str) -> Path:
+    """Write cli_python and cli_root into fea.CONFIG_FILE, keeping every other key (python, root) as it is."""
+    cfg = {}
+    if fea.CONFIG_FILE.exists():
+        try:
+            cfg = json.loads(fea.CONFIG_FILE.read_text())
+        except json.JSONDecodeError:
+            cfg = {}
+    cfg["cli_python"] = str(python)
+    cfg["cli_root"] = str(root)
+    fea.CONFIG_FILE.write_text(json.dumps(cfg, indent=2) + "\n")
+    return fea.CONFIG_FILE

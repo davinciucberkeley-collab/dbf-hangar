@@ -26,9 +26,9 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W15 Authoring gaps and speed (D86) | 3 | 2 |
 | W16 3D generation close to the real aircraft (D85, D87) | 2 | 0 |
 | W17 Sourced gates (D88) | 1 | 0 |
-| W18 Physics checks (D89) | 4 | 2 |
+| W18 Physics checks (D89) | 4 | 3 |
 | W19 Studio UI and 3D viewer (D92) | 1 | 0 |
-| **all** | 74 | 63 |
+| **all** | 74 | 64 |
 
 ### Open ledger items by owner
 
@@ -37,7 +37,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
-| conductor | 19 | 2026-11-26 |
+| conductor | 20 | 2026-11-26 |
 
 ### Open items for teammates
 
@@ -199,7 +199,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 |---|---|---|---|---|
 | U15.1 | Control surfaces follow their wing (T130; demo-script Issue 6) [hard] | 3/3 | done | - |
 | U15.2 | Small fixes (T19, T111; T101 already fixed) | 3/3 | done | - |
-| U15.3 | Faster plane CLI start-up (T124) [hard] | 1/4 | in progress | - |
+| U15.3 | Faster plane CLI start-up (T124) [hard] | 3/4 | in progress | - |
 
 ### W16 3D generation close to the real aircraft (D85, D87)
 
@@ -218,7 +218,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U18.1 | OpenCAE CLI as hangar's physics backend (D89; P282) [hard] | 1/3 | in progress | - |
+| U18.1 | OpenCAE CLI as hangar's physics backend (D89; P282) [hard] | 3/3 | done | - |
 | U18.2 | Calibration against a real aircraft (D89; P280) | 3/3 | done | - |
 | U18.3 | Wing spar bending by beam theory (D89; P280) | 3/3 | done | - |
 | U18.4 | Trim and stability (D89; P280) [hard] | 1/3 | in progress | - |
@@ -234,7 +234,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 47 | 98 | 3 | 3 | 0 | 151 |
+| task | 48 | 98 | 3 | 3 | 0 | 152 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 

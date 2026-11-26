@@ -327,7 +327,8 @@ _DESIGN_PARAMS = ("path", "src", "a", "b", "design")   # op parameters that name
 _REFUSED_KEYS = ("out",)                                # D54: Studio never writes a caller-named file through /api/op
 _REFUSED_PARAMS = {("ledger.ingest", "path"), ("claim.import-dbf", "dbf_root"), ("ledger.import-dbf", "dbf_root"),
                    ("ledger.import-dbf", "ledger"), ("ledger.seed", "plan"),
-                   ("fea.setup", "opencae_python"), ("fea.setup", "opencae_root")}   # not used by Studio via /api/op
+                   ("fea.setup", "opencae_python"), ("fea.setup", "opencae_root"),
+                   ("opencae.setup", "cli_python"), ("opencae.setup", "cli_root")}   # not used by Studio via /api/op
 _ID_PARAMS = {("design.new", "template"), ("bench.run", "agent"), ("bench.run", "task")}   # must be a bare id
 
 

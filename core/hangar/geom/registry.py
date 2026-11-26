@@ -6,11 +6,11 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Callable
 
-import trimesh
+from .._lazy import trimesh
 
 from hangar.geom.kernel import GeometryError, require_solid
 
-Mesh = trimesh.Trimesh
+Mesh = "trimesh.Trimesh"
 _NAME_RE = re.compile(r"^[a-z][a-z0-9_]*$")
 
 

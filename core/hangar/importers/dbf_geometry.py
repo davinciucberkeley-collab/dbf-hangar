@@ -21,7 +21,7 @@ from __future__ import annotations
 import math
 
 import numpy as np
-import trimesh
+from .._lazy import trimesh
 
 SEG = 48            # blender_backend.SEG
 SMOOTH_SUB = 3      # blender_backend.SMOOTH_SUB

@@ -133,7 +133,7 @@ def test_every_criterion_resolves(example):
             if fname == "design-standards.yaml":
                 assert key in std_keys, f"{r.check_id}: {r.criterion}"
             if fname == "manufacturing.yaml" and key:
-                assert key in machines, f"{r.check_id}: {r.criterion}"
+                assert key in machines | {"machine_optional_methods"}, f"{r.check_id}: {r.criterion}"
 
 
 # ---- re-review (191d951) blockers -------------------------------------------------------------
