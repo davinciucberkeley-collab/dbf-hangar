@@ -5510,3 +5510,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
+  - id: T163
+    kind: task
+    text: Source the EMAX ES08MA II servo travel (deg) for knowledge/parts/emax-es08maii-metal/part.yaml; c172-rc uses +-45 input / +-50 range pending it (D122).
+    source: D122
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T164
+    kind: task
+    text: add-linkage option for aileron differential (arm not square at neutral) so c172-rc ailerons can reach up 20 / down 15 (D123).
+    source: D123
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
