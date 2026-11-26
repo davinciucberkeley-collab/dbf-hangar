@@ -1104,7 +1104,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Brief** (tactician W34-T, with the importtime profile) *(4efe4c6: hard; trimesh 2.26 s of 2.63 s import; lazy proxy; merge after U15.1)*
 - [x] **Step 2: Build** (builder-plus W34-B)
 - [x] **Step 3: Review** (W34-R); merge *(merged 5b2221b, W34-R3 ACCEPT; --help 8.8 -> 3.5 s; get/set on parametric designs wait for step 4, D102)*
-- [ ] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review *(brief 4011789: get mesh-free, set partial (D110); building)*
+- [x] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review *(brief 4011789: get mesh-free, set partial (D110); merged c4a9dbd, W34-R2 ACCEPT)*
 
 ### Unit U16.1: 3D generation close to the real aircraft (I2; D85, D87) [hard]
 
