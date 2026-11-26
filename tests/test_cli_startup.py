@@ -37,6 +37,25 @@ def test_design_get_loads_no_geometry_stack():
     assert any("concept-a" in ln for ln in lines[:-1]), r.stdout
 
 
+def test_index_import_loads_no_geometry_stack():
+    """T159: hangar.index (build-index, studio start-up) imports visuals; visuals must not import trimesh at module level."""
+    r = _run("import sys\nimport hangar.index\n" + LIST_LINE)
+    assert r.returncode == 0, r.stderr
+    assert r.stdout == "[]\n", r.stdout
+
+
+def test_clevis_aliases_build_no_mesh():
+    """T159: clevis_aliases returns names only; it must not build clevis meshes (building one loads trimesh)."""
+    code = ("import sys\nfrom hangar.design import load_design\nfrom hangar.visuals import clevis_aliases\n"
+            "d = load_design('tests/fixtures/four-bar')\nd.data['display'] = {'clevises': True}\n"
+            "print(clevis_aliases(d))\n" + LIST_LINE)
+    r = _run(code)
+    assert r.returncode == 0, r.stderr
+    assert r.stdout.splitlines() == [
+        "[('clevis-elevator-drive-driver', 'rod', 'elevator-drive'), ('clevis-elevator-drive-follower', 'pin', 'elevator-drive')]",
+        "[]"], r.stdout
+
+
 def test_lazy_proxy_behaves():
     from hangar._lazy import LazyModule
 
