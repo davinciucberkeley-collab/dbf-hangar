@@ -52,7 +52,7 @@ def test_clevis_aliases_build_no_mesh():
     r = _run(code)
     assert r.returncode == 0, r.stderr
     assert r.stdout.splitlines() == [
-        "[('clevis-elevator-drive-driver', 'rod', 'elevator-drive'), ('clevis-elevator-drive-follower', 'pin', 'elevator-drive')]",
+        "[('clevis-elevator-drive-driver', 'rod', 'elevator-drive'), ('clevis-elevator-drive-follower', 'rod', 'elevator-drive')]",
         "[]"], r.stdout
 
 
