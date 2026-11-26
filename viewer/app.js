@@ -51,11 +51,10 @@ function setHighlight(ids) {
   else if (state.mode === 'compare') [vps.a, vps.b].forEach((v) => v?.highlight(highlightIds));
   markActiveRows();
 }
+// A scorecard row is active while its parts are the focused set (vp.focusParts).
 function markActiveRows() {
-  document.querySelectorAll('.result.has-pair').forEach((r) => {
-    const pair = r.dataset.pair.split('|');
-    r.classList.toggle('active', pair.length === highlightIds.size && pair.every((p) => highlightIds.has(p)));
-  });
+  const f = vps.main?.focusKey ?? null;
+  document.querySelectorAll('.result[data-parts]').forEach((r) => r.classList.toggle('active', f != null && r.dataset.parts === f));
 }
 // The main viewport reports every selection or visibility change here.
 function onViewportChange(selection) {
@@ -71,7 +70,7 @@ function onPick(id, vp, e) {
 document.addEventListener('keydown', (e) => {
   if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
   const v = state.mode === 'designs' ? vps.main : null;
-  if (e.key === 'Escape') { if (v?.axisLocked()) v.lockAxis(null); else if (highlightIds.size) setHighlight([]); return; }
+  if (e.key === 'Escape') { if (v?.axisLocked()) v.lockAxis(null); else if (v?.focusKey) v.clearFocus(); else if (highlightIds.size) setHighlight([]); return; }
   if (!v) return;
   if (e.key === 'm') v.setTool(v.state().tool === 'move' ? 'select' : 'move');
   else if (v.state().tool === 'move' && 'xyz'.includes(e.key) && e.key.length === 1) v.lockAxis(e.key);
@@ -185,8 +184,11 @@ async function init() {
   const att = h('input', { type: 'checkbox', checked: true, 'data-testid': 'move-with-attached', onchange: () => vps.main?.setAttached(att.checked) });
   attachedOn = () => att.checked;
   tb.append(tSel, tMove, h('label', { title: 'Parts attached below the moved part move with it' }, att, 'with attached parts'));
+  const colourSel = h('select', { 'data-testid': 'colour-by', 'aria-label': 'Colour by', onchange: () => vps.main?.colourBy(colourSel.value) }, ['type', 'status', 'mass'].map((m) => h('option', { value: m }, m)));
+  tb.append(h('label', { class: 'colour-by' }, 'Colour by ', colourSel));
   syncTool = () => {
     const s = vps.main?.state(); if (!s) return;
+    colourSel.value = s.colourBy;
     tSel.setAttribute('aria-pressed', String(s.tool === 'select')); tMove.setAttribute('aria-pressed', String(s.tool === 'move'));
     const off = s.explode?.t > 0; tMove.disabled = off; tMove.title = off ? 'Set explode to 0 to move parts' : 'Move parts (m)';
   };
