@@ -2945,3 +2945,10 @@
         - -41.6
   why: 'U16.1 S8: wires as routed tubes'
   kind: add
+- date: '2026-11-26T14:27:06Z'
+  key: display
+  old: null
+  new:
+    clevises: true
+  why: 'U16.1 S9a: clevises at the pushrod ends'
+  kind: add
