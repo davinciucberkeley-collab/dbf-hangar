@@ -1,11 +1,17 @@
 // Designs mode: 3D view plus scorecard (tiers, FAIL rows first).
 import { TIERS, STATUS_ORDER } from '../lib.js';
+import { renderTree } from '../ui/tree.js';
+import { renderInspector } from '../ui/inspector.js';
 
 export default async function render(ctx) {
   const { state, el, byId, vp } = ctx;
   const d = byId(state.selected);
   ctx.setHighlight([]);
   await vp.main.show(d);
+  const usable = d && !d.pending && !d.error;
+  const parts = usable && d.parts ? await ctx.getJSON(d.parts).catch(() => null) : null;
+  const mass = usable && d.mass ? await ctx.getJSON(d.mass).catch(() => null) : null;
+  renderTree(ctx, d, parts); renderInspector(ctx, d, parts, mass);
   await renderScorecard(ctx, d);
   el.dataset.ready = '1';
 }
@@ -26,7 +32,9 @@ async function renderScorecard({ state, el, h, fmt, getJSON, setHighlight }, d) 
   try { sc = await getJSON(d.scorecard); } catch (e) { box.append(h('div', { class: 'errbox' }, 'Scorecard unavailable: ' + e.message)); return; }
   if (state.selected !== d.id) return; // user moved on
   const row = (r) => {
-    const pair = Array.isArray(r.data?.pair) && r.data.pair.length === 2 ? r.data.pair : null;
+    // interference rows carry `pair`; T6.link rows carry `link_pairs` (list of pairs) and `parts` (their union)
+    const lp = Array.isArray(r.data?.link_pairs) ? [...new Set(r.data.link_pairs.flat())].sort() : null;
+    const pair = Array.isArray(r.data?.pair) && r.data.pair.length === 2 ? r.data.pair : lp?.length ? lp : null;
     return h('div', { class: `result ${r.status}` + (pair ? ' has-pair' : ''), 'data-pair': pair ? pair.join('|') : null,
       tabindex: pair ? 0 : null, role: pair ? 'button' : null,
       onclick: pair ? () => setHighlight(pair) : null, onkeydown: pair ? (e) => { if (e.key === 'Enter') setHighlight(pair); } : null },
