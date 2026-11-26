@@ -304,7 +304,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "arm-rod-elev: carries 1.1 N; rating is a placeholder, not checked",
+      "example": "arm-rod-elev: carries 0.8 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|arm-rod-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"arm-rod-elev\"}",
       "status": "SKIP"
     },
@@ -334,7 +334,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-gear: carries 132.0 N; rating is a placeholder, not checked",
+      "example": "fuselage-gear: carries 131.9 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-gear: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-gear\"}",
       "status": "SKIP"
     },
@@ -436,7 +436,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "servo-arm-elev: carries 1.1 N; rating is a placeholder, not checked",
+      "example": "servo-arm-elev: carries 0.8 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|servo-arm-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"servo-arm-elev\"}",
       "status": "SKIP"
     },
