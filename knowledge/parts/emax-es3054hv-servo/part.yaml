@@ -12,3 +12,9 @@ verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-15', method: br
 geometry:
   generator: mesh_file
   params: {file: mesh.stl}
+frames:
+  output: {point: [-10.7, 0, 8.46], axis: [0, 0, 1]}
+  mount_face: {point: [0, 0, 4.54], normal: [0, 0, 1]}
+frames_source: "estimate from mesh.stl (no transform; envelope box 28.4 x 26.7 x 13 plus a spline stub): spline cluster (vertices z>7.3, span 4.0 x 4.0 mm, centre x -10.7 y 0) rises from the box top face z=4.54 to its top z=8.46, so output = cluster centre at z=8.46, axis +z; the mesh has no ear flanges, so mount_face is the box top face z=4.54; replace when measured"
+ports: {signal: {point: [14.2, 0, -3.46], direction: [1, 0, 0]}}
+ports_source: "estimate from mesh.stl: no lead exit modelled; signal at the end face opposite the spline (x=+14.2), 8 mm below the box top face z=4.54; replace when measured"

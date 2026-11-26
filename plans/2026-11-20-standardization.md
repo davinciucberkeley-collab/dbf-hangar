@@ -390,6 +390,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D121 | U16.1 S8 Part B: with the c172-rc fuselage hollow (S9c wall 3), every routed harness inside the cabin leaves the fuselage envelope by 21-48 mm (T7.wiring WARN), because the envelope is the 3 mm skin, not the enclosed cabin | T7.wiring (and any route-envelope test) uses the closed OUTER volume of a hollow generator part (fuselage_loft with wall > 0: the same loft with wall 0), so a wire in the cabin counts as inside; mass, T1 contact and export keep the hollow mesh; small core change on its own branch with a test (point in the cabin: inside for routing, outside for material); no threshold change, no exposed_ok | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 | D122 | U16.4: c172 servo throw for C172-like deflections (target FAA TCDS 3A12: elevator up 28/down 23, aileron up 20/down 15, rudder +-17.7 deg) needs about +-45 deg servo input; the ES08MA II travel is unsourced (part.yaml has none) | use input +-45 (rudder +-40), servo range +-50, hinge range +-30 with hinge_throw_deg 30, aileron arm about 12 mm; record the servo travel as pending a source (ledger), not as a threshold | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 | D123 | U16.4: aileron differential (+20/-15) needs a new add-linkage option (the op squares arm and rod at neutral, so travel is symmetric) | keep symmetric aileron travel now; differential is a later add-linkage option (ledger) | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
+| D124 | add-linkage default deflection (P317; recon u16.4/recon-throws.md, 943e087): today's defaults give about +-9.7 deg; RC manuals put low rates at about 11-20 deg, full-size C172 at 15-28 deg | new option `--deflection D` (default 15 deg per side): the op solves the arm length from the gate ratio (arm = ratio x horn lever) and reports the achieved deflection; `--arm-length` stays as an override; existing designs unchanged until re-run; hand-value tests for the default call are re-derived | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -834,6 +835,11 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-G2 | `design-engineer` | Sonnet | ledger T156: tiltwing-cakir Dutch roll unstable (T3.dynamic_modes, AeroSandbox) | a proposed `plane design set` sequence on a scratch copy, before/after mode table | layout changes only, no threshold change; propose, do not commit to designs/ |
 | W34-T8 | `tactician` | Sonnet | U16.3: survey which U16.1 features fit concept-a and write designs-only briefs for concept-a-test-refactor | `briefs/U16.3-*.md` | builder-ready bar; measured on a scratch copy |
 | W34-A4 | `advisor` | Opus | U16.4: why c172-rc servos look backwards, deflection is about 5 deg and linkages do not move as solid parts | diagnosis report in chat, fix order | read-only; evidence for each cause |
+| W34-T9 | `tactician` | Sonnet | U19.2: human-readable scorecard spec with before/after examples, then briefs | `u19.2/spec.md`, `briefs/U19.2-*.md` | builder-ready bar |
+| W34-X3 | `recon` | Sonnet | U16.4: typical control-surface throws (deg) and servo travel for RC planes and fixed-wing drones, to set add-linkage default deflection | `u16.4/recon-throws.md` | 3-5 sourced references, ranked recommendation |
+| W34-G3 | `design-engineer` | Sonnet | U13.1 step 6: fifth rehearsal (C172 from blank with the U16.1 ops), after U16.4 merges | draft PR, gap list | nothing merges |
+| W34-S3 | `scout` | Haiku | ledger T165: EMAX ES3054HV servo dimensions, output spline position and mount ears from datasheets | `knowledge/sources/` entries + values table | only sources opened |
+| W34-T10 | `tactician` | Sonnet | ledger T164 (add-linkage aileron differential option) and T165 (ES3054HV frames and ports) briefs | `briefs/U16.4-3-*.md`, `briefs/U16.3-3-*.md` | builder-ready bar |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1006,7 +1012,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
 - [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
 - [x] **Step 5: Fourth rehearsal** *(Wed 11-25 ~03:30: Cessna 172 from a blank design, ~35 min / ~45 calls, renders checked, 0 FAIL / 26 WARN, static margin 9.2 % MAC, wing area 100 %, draft PR #9 with all 6 CI jobs green; placeholders listed, nothing invented; gaps -> U13.8)*
-- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U16.1 delivers
+- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U16.1 delivers *(Tristan 11-26 (P317): launch it once the U16.4 fixes are merged)*
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
@@ -1143,7 +1149,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** `plane design copy concept-a concept-a-test-refactor`, then opt the copy in to what U16.1 built for c172-rc: hinge gaps/bevel/knuckles (S6), servos placed (S3), generated linkages via add-linkage (S4, replacing hand-made ones where the op fits), routed harnesses (S8), clevises and screw heads (S9a/S9b), hollow fuselage where a fuselage_loft exists (S9c), wheels on joints if any (S2). concept-a itself is untouched. Designs-only (no core change; a core gap found on the way becomes a ledger item, not part of this unit). Target: no new FAIL versus the copy's own starting baseline; every row change reported.
 
 - [x] **Step 1: Survey and briefs** (tactician W34-T8): what applies to concept-a's layout, measured on a scratch copy; one designs-only brief per feature group, class easy where it is a command list *(7ede55f: briefs 0 copy, 1 visual detail (migrate 1.3, clevises, screw heads), 2 routes 8 of 14 harnesses; hinges, hollow fuselage, wheels n/a (all concept-a parts are meshes); servos/add-linkage blocked (ES3054HV part has no frames, ledger); 6 harnesses blocked (mesh parts have no ports, ledger))*
-- [ ] **Step 2: Copy and build** (W34-B), briefs in order on one branch per brief
+- [x] **Step 2: Copy and build** (W34-B), briefs in order on one branch per brief *(one stacked branch: copy, PDL 1.3 + clevises/screw heads, 8 harnesses routed (8 WARN -> PASS, FAIL 6 unchanged); merged 7eed81e; servos/add-linkage now possible after T165 (frames from mesh), not yet applied)*
 - [ ] **Step 3: Review** (W34-R2/R3); merge; Tristan looks in Studio
 
 ### Unit U16.4: c172-rc linkage fixes from Tristan's look (P314) [hard]
@@ -1151,8 +1157,16 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** three problems Tristan saw in Studio on c172-rc: (1) the servos are backwards: the linkage attaches to the bottom of the servo, not its rotating output; (2) control-surface deflection is only about 5 deg, far below the real aircraft (C172 POH order of magnitude: elevator about +28/-23, aileron +20/-15, rudder +-17 deg); (3) the linkage connections are messy and do not move like solid parts. Diagnose first (advisor), then briefs, then fixes in core (add-linkage, servo frames, viewer posing) and/or the c172 design. Thresholds unchanged.
 
 - [x] **Step 1: Diagnosis** (advisor W34-A4): root cause of each problem with evidence (renders/screenshots, the numbers), and the fix order *(1: local servo overlay matrix flips the spline (z), plus core guard; 2: commanded ranges +-10/+-20, not a bug (D122); 3: follower clevis rides the pin/surface instead of the rod, two pins drawn; fix order overlay matrix, core clevis+guard PR, c172 design PR)*
-- [ ] **Step 2: Briefs** (tactician) from the diagnosis
+- [x] **Step 2: Briefs** (tactician) from the diagnosis *(U16.4-0 local overlay matrix applied (not in git); U16.4-1 core merged d73769a; -4 --deflection ACCEPTed; -3 differential building; -2 c172 values next)*
 - [ ] **Step 3: Build** (W34-B), review (W34-R2/R3), merge; Tristan looks in Studio
+
+### Unit U19.2: Human-readable scorecards (P315)
+
+**Scope:** today a scorecard row tells a machine what is wrong (`T1.attachment_overlap.servo-arm-elev FAIL embed overlap 48% > 35%`) but a person only sees that something is off. Every row a person sees (markdown scorecard, Studio Scorecard tab, check rows in the inspector) gets: a plain-language name for the check, one sentence on what was measured and what it was compared with (value, limit, unit, source), the part(s) involved by their readable names, and a "what to do" hint where one is known; rows grouped by part or by problem, not only by check id. Machine ids stay available (hover or a column), JSON output unchanged. No threshold or gate behaviour change.
+
+- [x] **Step 1: Spec and briefs** (tactician W34-T9): inventory of check ids and their messages, a proposed row format with 6-8 before/after examples from c172-rc and concept-a, where the plain text lives (one registry next to the gates, not in the viewer), then builder-ready briefs *(9b9611d: u19.2/spec.md with 8 before/after examples; 1225 rows, 50 families, 355 non-PASS, 31% state number and limit; text in core/hangar/gates/describe.yaml, limits read from standards; Studio rows.json sidecar; JSON byte-identical; briefs 1 registry (hard), 2 markdown, 3 rows-json, 4 Studio (hard); default Studio grouping Problem)*
+- [x] **Step 2: Tristan reads the before/after examples** (short; the format is his call) *(Tristan 11-26 (P321): examples look good; Studio default grouping by problem and `plane validate --format md` taken as defaults)*
+- [ ] **Step 3: Build** (W34-B), review, merge *(brief 1 describe registry merged d73769a; briefs 2 markdown, 3 rows-json, 4 Studio next)*
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 

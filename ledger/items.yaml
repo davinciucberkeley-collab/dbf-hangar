@@ -5534,8 +5534,30 @@ items:
     updated: '2026-11-26'
   - id: T165
     kind: task
-    text: 'Add frames (output, mount_face) and ports to knowledge/parts/emax-es3054hv-servo/part.yaml so design place and add-linkage work on concept-a real servo (U16.3 survey: concept-a servos are mesh parts without frames).'
+    text: 'Add frames (output, mount_face) and ports to knowledge/parts/emax-es3054hv-servo/part.yaml so design place and add-linkage work on concept-a real servo (U16.3 survey: concept-a servos are mesh parts without frames). [Scout W34-S3 (c0324d1): case 28.4x13x26.7 mm, 23T spline, travel 90+-8 deg (1000-2000 us); no source gives spline position, ear height/span or lead side. Next: caliper measurement of a unit (team), or derive from the concept-a servo mesh as an estimate.]'
     source: U16.3 W34-T8 survey
+    owner: conductor
+    status: done
+    due: ''
+    units: []
+    evidence: 0cb44a4
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T166
+    kind: task
+    text: 'Routed harnesses need from_point/to_point or ports on mesh parts: concept-a e-hrn-06..11 start at avn-002 CG, 8.4 mm from its shell (> 5 mm); WARN now, FAIL after 2026-12-08.'
+    source: U16.3 W34-T8 survey
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T167
+    kind: task
+    text: 'ES3054HV mesh.stl is rotated vs the real servo: the spline sits on the broad 28.4x26.7 face, the real shaft exits the 28.4x13 face; frames follow the mesh (T165), so a measured mesh/frames replace both together.'
+    source: reviews/2026-11-25-w34b.md section 27
     owner: conductor
     status: open
     due: ''
@@ -5543,10 +5565,10 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
-  - id: T166
+  - id: T168
     kind: task
-    text: 'Routed harnesses need from_point/to_point or ports on mesh parts: concept-a e-hrn-06..11 start at avn-002 CG, 8.4 mm from its shell (> 5 mm); WARN now, FAIL after 2026-12-08.'
-    source: U16.3 W34-T8 survey
+    text: plane design cannot edit block-list ids in assembly.sequence, transport.disassembly or bom component_ids; after U16.3-3 replaces concept-a-test-refactor linkages, stale mec-002..005 ids make T7.assembly.once/touch, T7.transport, T8.budget, T8.bom.verified WARN (FAIL after 2026-12-08). Add an op (e.g. design set --replace-id old=new) or make add-linkage update those lists.
+    source: U16.3-3 brief 2cd488f
     owner: conductor
     status: open
     due: '2026-12-08'
