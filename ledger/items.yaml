@@ -5587,3 +5587,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
+  - id: T170
+    kind: task
+    text: 'concept-a-test-refactor: after U16.3-3/4, T8.budget and T8.bom.verified stay WARN (b-mec-rods, b-mec-pins have no cost/verification; 17 other BOM items unverified) and T7.transport WARN (packed airframe 438x478x900 vs box 1200x500x400); FAIL after 2026-12-08 unless sourced.'
+    source: T168 brief 4817c41
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
