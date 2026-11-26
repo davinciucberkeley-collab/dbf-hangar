@@ -1,11 +1,27 @@
 // Inspector (right column of Designs mode): facts about the selected part(s).
 import { h, fmt } from '../lib.js';
+import { partChecks } from '../vp/status.js';
 
-const cur = { ctx: null, parts: null, mass: null, vp: null };
+const cur = { ctx: null, parts: null, mass: null, vp: null, scorecard: null };
 
 export function renderInspector(ctx, d, parts, mass) {
-  Object.assign(cur, { ctx, parts, mass, vp: ctx.vp.main });
+  Object.assign(cur, { ctx, parts, mass, vp: ctx.vp.main, scorecard: null });
   refreshInspector();
+}
+
+// The scorecard arrives after the first render (and again after a re-check): the part's check list follows it.
+export function setInspectorScorecard(sc) { cur.scorecard = sc; refreshInspector(); }
+
+function checksList(ctx, sc, parts, id) {
+  const rows = partChecks(sc, parts, id);
+  return h('section', { class: 'part-checks' }, h('h4', {}, `Checks (${rows.length})`),
+    h('ul', { 'data-testid': 'part-checks' }, rows.map((r) => h('li', { class: 'pc', tabindex: 0, 'data-for': r.check_id, onclick: () => {
+      const sel = [...ctx.el.querySelectorAll('#scorecard [data-check-id]')].find((x) => x.dataset.checkId === r.check_id);
+      if (!sel) return;
+      ctx.el.querySelectorAll('#scorecard .result.active').forEach((x) => x.classList.remove('active'));
+      const det = sel.closest('details'); if (det) det.open = true;
+      sel.classList.add('active'); sel.scrollIntoView({ block: 'nearest' });
+    } }, h('span', { class: 'badge ' + r.status }, r.status), ' ', h('span', { class: 'cid' }, r.check_id), ' ', h('span', { class: 'msg small' }, r.message)))));
 }
 
 export function refreshInspector() {
@@ -35,7 +51,8 @@ export function refreshInspector() {
     h('dt', {}, 'articulated'), h('dd', {}, p.articulated ? 'yes' : 'no')),
   ...(p.local_only ? [h('span', { class: 'tag', 'data-testid': 'tag-local-cad' }, 'local CAD')] : []),
   ...(pend ? [h('span', { class: 'tag', 'data-testid': 'tag-moved' }, 'moved')] : []),
-  ...(p.visual_only ? [] : [nudge(vp, id, pend?.delta_mm ?? [0, 0, 0], lock)]));
+  ...(p.visual_only ? [] : [nudge(vp, id, pend?.delta_mm ?? [0, 0, 0], lock)]),
+  ...(cur.scorecard ? [checksList(ctx, cur.scorecard, parts, id)] : []));
 }
 
 // Numeric nudge: the three inputs show the part's pending offset (mm); typing one moves the part to that offset.

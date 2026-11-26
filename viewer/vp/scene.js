@@ -3,17 +3,19 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { h, fmt, getJSON } from '../lib.js';
 import { loadGLB, disposeModel } from './loader.js';
-import { prepareMesh, applyAppearance, INTERNAL_TYPES } from './materials.js';
+import { prepareMesh, applyAppearance, INTERNAL_TYPES, STATUS_COLOUR, NEUTRAL, MASS_LO, MASS_HI, maxMass } from './materials.js';
 import { pickAt, hitAt, hitsAlong, cycleSelect } from './pick.js';
-import { Transforms, mmToScene, explodeOffsets } from './transforms.js';
+import { Transforms, mmToScene, sceneToMm, explodeOffsets } from './transforms.js';
 import { Mover } from './move.js';
+import { Measure } from './measure.js';
+import { updateCube, bindCube } from '../ui/viewcube.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 export class Viewport {
   constructor(el, { onPick, onSelect, onModel, onDiscard } = {}) {
-    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.onModel = onModel; this.onDiscard = onDiscard; this.subs = new Set(); this.keepNext = null; this.parts = null; this.centres = null; this.transforms = null; this.explodeState = null; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
+    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.onModel = onModel; this.onDiscard = onDiscard; this.subs = new Set(); this.keepNext = null; this.parts = null; this.centres = null; this.transforms = null; this.explodeState = null; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.colourMode = 'type'; this.statusMap = new Map(); this.focusSaved = null; this.focusKey = null; this.sectionState = null; this.cycle = null; this.dirty = true;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     this.renderer.localClippingEnabled = true; this.clipPlane = new THREE.Plane();
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -29,20 +31,23 @@ export class Viewport {
     sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.002;
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.enableDamping = true; this.controls.dampingFactor = 0.12;
-    this.controls.addEventListener('change', () => (this.dirty = true));
+    this.cubeInner = el.parentElement?.querySelector('#view-cube-inner') ?? null;
+    this.controls.addEventListener('change', () => { this.dirty = true; updateCube(this.camera, this.cubeInner); });
+    const cube = el.parentElement?.querySelector('#view-cube'); if (cube) bindCube(this, cube);
     this.root = new THREE.Group(); this.scene.add(this.root);
-    this.mover = new Mover(this);
+    this.mover = new Mover(this); this.measure = new Measure(this);
     this.ray = new THREE.Raycaster();
     this.overlay = h('div', { class: 'vp-overlay', hidden: true });
     this.msg = h('div', { class: 'vp-msg' });
     this.legend = h('div', { class: 'vp-legend', hidden: true }, h('span', { class: 'dot' }), 'CG');
-    el.append(this.overlay, this.msg, this.legend);
+    this.legend2 = h('div', { class: 'vp-legend2', 'data-testid': 'legend', hidden: true });
+    el.append(this.overlay, this.msg, this.legend, this.legend2);
     let down = null;
     const cv = this.renderer.domElement;
     cv.addEventListener('pointerdown', (e) => (down = [e.clientX, e.clientY]));
     cv.addEventListener('pointerup', (e) => {
       if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4 || this.mover.busy()) return;
-      this.pickEvent(e);
+      if (this.mover.tool === 'measure') this.measureEvent(e); else this.pickEvent(e);
     });
     cv.addEventListener('dblclick', (e) => { this.model?.updateMatrixWorld(true); const id = hitAt(this, e); if (id) { this.select([id]); this.fitTo([id]); } });
     this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(el);
@@ -67,7 +72,7 @@ export class Viewport {
     this.msg.textContent = text || ''; this.msg.className = 'vp-msg' + (err ? ' err' : ''); this.msg.hidden = !text;
   }
   clear() {
-    this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.types.clear(); this.cycle = null; this.cg = null; this.mass = null;
+    this.cancelAnim?.(); this.measure.clear(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.types.clear(); this.cycle = null; this.cg = null; this.mass = null; this.statusMap = new Map(); this.focusSaved = null; this.focusKey = null;
     this.transforms = null; this.centres = null; this.parts = null; this.explodeState = null;
     this.overlay.hidden = true; this.legend.hidden = true; this.dirty = true;
     this.mover.sync(); this.emit();
@@ -91,9 +96,50 @@ export class Viewport {
   move(id, dMm) { return this.moveBy(id, dMm, { attached: this.mover.attached }); }
   moveBy(id, dMm, opts) { return this.mover.moveBy(id, dMm, opts); }
   pending() { return this.mover.pending(); }
-  revertMoves() { this.mover.revert(); }
-  clearMovesAfterSave() { this.mover.clearAfterSave(); } // drops the edits without redrawing: the reload that follows replaces the model
-  setTool(t) { return this.mover.setTool(t); }
+  revertMoves() { this.measure.clear(); this.mover.revert(); }
+  clearMovesAfterSave() { this.measure.clear(); this.mover.clearAfterSave(); } // drops the edits without redrawing: the reload that follows replaces the model
+  setTool(t) {
+    const cv = this.renderer.domElement;
+    if (t === 'measure') { this.mover.tool = 'measure'; cv.style.cursor = 'crosshair'; this.mover.sync(); this.emit(); return true; } // the gizmo detaches: target() is null outside the Move tool
+    const was = this.mover.tool, ok = this.mover.setTool(t);
+    if (ok && was === 'measure') { this.measure.clear(); cv.style.cursor = ''; }
+    return ok;
+  }
+  // Measure tool: first pickable hit (as pickRay), snapped to the nearest vertex of the hit triangle within snapRadius (scene m).
+  measureRay(ray, snapRadius) {
+    if (!this.model) return null;
+    this.root.updateMatrixWorld(true);
+    const first = hitsAlong(this, ray)[0];
+    if (!first) return null;
+    const raw = ray.intersectObject(this.model, true).find((i) => i.distance === first.distance && i.object.userData.compId === first.id);
+    const point = first.point.clone(), pr = snapRadius(first.distance);
+    if (raw?.face && raw.object.geometry?.attributes?.position) {
+      const pos = raw.object.geometry.attributes.position, v = new THREE.Vector3();
+      let best = Infinity, bp = null;
+      for (const k of [raw.face.a, raw.face.b, raw.face.c]) {
+        v.fromBufferAttribute(pos, k).applyMatrix4(raw.object.matrixWorld);
+        const d = v.distanceTo(first.point);
+        if (d < best) { best = d; bp = v.clone(); }
+      }
+      if (bp && best < pr) point.copy(bp);
+    }
+    this.measure.click({ point, face: raw?.face, object: raw?.object });
+    return point;
+  }
+  measureEvent(e) {
+    const cv = this.renderer.domElement, r = cv.getBoundingClientRect();
+    this.ray.setFromCamera(new THREE.Vector2(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1), this.camera);
+    this.measureRay(this.ray, (dist) => ((2 * dist * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2)) / (r.height || 1)) * 8);
+    this.emit();
+  }
+  measureClick(originMm, dirMm, snapMm = 0) {
+    if (this.mover.tool !== 'measure') this.setTool('measure');
+    const p = this.measureRay(new THREE.Raycaster(mmToScene(originMm), mmToScene(dirMm).normalize()), () => snapMm / 1000);
+    this.emit();
+    return p ? sceneToMm(p) : null;
+  }
+  measurement() { return this.measure.result(); }
+  clearMeasure() { this.measure.clear(); }
   setAttached(on) { this.mover.attached = !!on; }
   lockAxis(a) { this.mover.lockAxis(a); }
   axisLocked() { return !!this.mover.axis; }
@@ -106,7 +152,7 @@ export class Viewport {
     if (!design.glb) return this.message('No GLB for this design', true);
     this.message('Loading…');
     const same = this.mountInfo?.id === design.id; // a reload of the open design keeps the camera and what the person had set
-    if (!same) this.keepNext = null;
+    if (!same) { this.keepNext = null; this.colourMode = 'type'; }
     try {
       const [gltf, mass, parts] = await Promise.all([loadGLB(design.glb), design.mass ? getJSON(design.mass).catch(() => null) : null, design.parts ? getJSON(design.parts).catch(() => null) : null]);
       if (token !== this.token) return;
@@ -136,7 +182,7 @@ export class Viewport {
       this.onModel?.(this);
       const keep = this.keepNext; this.keepNext = null;
       if (keep) this.restore(keep);
-      this.mover.sync(); this.emit();
+      this.updateLegend(); this.mover.sync(); this.emit();
     } catch (e) {
       console.warn(e); this.message('Could not load model: ' + e.message, true);
     }
@@ -199,10 +245,52 @@ export class Viewport {
     for (const id of ids) if (this.ids.has(id)) { if (on) this.ghost.add(id); else this.ghost.delete(id); }
     applyAppearance(this); this.onSelect?.(this.highlighted);
   }
+  // Colour by type | status | mass (U19.1 B6b); the status map comes from the scorecard (designs.js).
+  colourBy(mode) {
+    this.colourMode = ['status', 'mass'].includes(mode) ? mode : 'type';
+    applyAppearance(this); this.updateLegend(); this.onSelect?.(this.highlighted); this.emit();
+  }
+  setStatus(map) {
+    this.statusMap = map instanceof Map ? map : new Map();
+    applyAppearance(this); this.updateLegend(); this.onSelect?.(this.highlighted);
+  }
+  coloured() {
+    const all = [...this.ids];
+    if (this.colourMode === 'status') return all.filter((i) => this.statusMap.has(i));
+    if (this.colourMode === 'mass') return all.filter((i) => this.mass?.get(i)?.mass_g != null);
+    return [];
+  }
+  updateLegend() {
+    const L = this.legend2, m = this.colourMode, hex = (n) => '#' + n.toString(16).padStart(6, '0');
+    L.hidden = m === 'type' || !this.model; L.replaceChildren();
+    if (L.hidden) return;
+    const sw = (c, t) => h('span', { class: 'lg-item' }, h('i', { class: 'lg-sw', style: `background:${hex(c)}` }), t);
+    if (m === 'status') {
+      const n = (s) => this.coloured().filter((i) => this.statusMap.get(i).status === s).length;
+      L.append(sw(STATUS_COLOUR.FAIL, `FAIL ${n('FAIL')}`), sw(STATUS_COLOUR.WARN, `WARN ${n('WARN')}`), sw(NEUTRAL, `no finding ${this.ids.size - this.coloured().length}`), sw(NEUTRAL, `design-level ${this.statusMap.designLevel || 0}`));
+    } else {
+      L.append(h('span', {}, '0 g'), h('i', { class: 'lg-ramp', style: `background:linear-gradient(90deg,${hex(MASS_LO)},${hex(MASS_HI)})` }), h('span', {}, fmt(maxMass(this), 0) + ' g'));
+    }
+  }
+  // Select parts, frame them and ghost the rest; the previous ghost set comes back on clearFocus.
+  focusParts(ids) {
+    ids = [...ids].filter((i) => this.ids.has(i));
+    if (!ids.length) return;
+    if (!this.focusSaved) this.focusSaved = new Set(this.ghost);
+    this.focusKey = ids.join('|');
+    this.ghost = new Set(this.focusSaved);
+    for (const i of this.ids) if (!ids.includes(i)) this.ghost.add(i);
+    this.select(ids); this.fitTo(ids);
+  }
+  clearFocus() {
+    if (!this.focusSaved) return;
+    this.ghost = new Set(this.focusSaved); this.focusSaved = null; this.focusKey = null;
+    this.select([]);
+  }
   xray(on) { this.xrayOn = !!on; applyAppearance(this); this.onSelect?.(this.highlighted); }
   // Section plane across the model box along a BODY axis (x, y, z) or null; one shared plane, uncapped.
   section(axis, value = 0.5, flip = false) {
-    this.sectionState = axis ? { axis, value, flip: !!flip } : null;
+    this.sectionState = axis ? { axis, value, flip: !!flip } : null; this.measure.clear();
     this.applySection(); this.onSelect?.(this.highlighted);
   }
   applySection() {
@@ -240,7 +328,7 @@ export class Viewport {
   explode(t, level = 'all', strategy = 'hierarchy') {
     if (!this.parts || !this.transforms) return;
     t = Math.min(1, Math.max(0, +t || 0));
-    this.explodeState = { t, level, strategy };
+    this.explodeState = { t, level, strategy }; this.measure.clear();
     const D = t === 0 ? null : explodeOffsets(this.parts, this.centres, this.center, t, level, strategy);
     for (const id of this.ids) this.transforms.setExplode(id, D?.get(id) ?? null);
     this.mover.sync(); this.emit();
@@ -249,7 +337,7 @@ export class Viewport {
     const all = [...this.ids], tr = this.transforms, r6 = (n) => Math.round(n * 1e6) / 1e6 || 0;
     const offsets = {};
     if (tr) for (const id of all) offsets[id] = tr.offset(id).map(r6);
-    return { explode: this.explodeState ? { ...this.explodeState } : null, offsets, moved: tr ? all.filter((i) => tr.isMoved(i)) : [], selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null, tool: this.mover.tool, gizmo: this.mover.target(), pending: this.pending().length };
+    return { explode: this.explodeState ? { ...this.explodeState } : null, offsets, moved: tr ? all.filter((i) => tr.isMoved(i)) : [], selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: this.coloured(), colourBy: this.colourMode, status: Object.fromEntries([...this.statusMap].map(([i, e]) => [i, e.status])), focus: this.focusKey, xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null, tool: this.mover.tool, measure: this.measure.result(), gizmo: this.mover.target(), pending: this.pending().length };
   }
   fitTo(ids) {
     if (!this.model) return;
@@ -265,15 +353,15 @@ export class Viewport {
     this.flyTo(c.clone().add(dir.multiplyScalar(dist)), c, dist);
   }
   view(name) {
-    const dirs = { iso: [0.9, 0.55, 1.1], front: [1, 0, 0], back: [-1, 0, 0], top: [0, 1, 0], side: [0, 0, 1] };
+    const dirs = { iso: [0.9, 0.55, 1.1], front: [1, 0, 0], back: [-1, 0, 0], top: [0, 1, 0], bottom: [0, -1, 0], side: [0, 0, 1], left: [0, 0, 1], right: [0, 0, -1] };
     const d = dirs[name];
     if (!d || !this.model) return;
-    this.camera.up.set(...(name === 'top' ? [1, 0, 0] : [0, 1, 0]));
+    this.camera.up.set(...(name === 'top' || name === 'bottom' ? [1, 0, 0] : [0, 1, 0]));
     const c = this.controls; // OrbitControls caches the up-axis rotation at construction
     if (c._quat) { c._quat.setFromUnitVectors(this.camera.up, new THREE.Vector3(0, 1, 0)); c._quatInverse.copy(c._quat).invert(); }
     const dir = new THREE.Vector3(...d).normalize();
     this.camera.position.copy(c.target).add(dir.multiplyScalar(this.camera.position.distanceTo(c.target) || 1));
-    this.fitTo(this.ids);
+    this.fitTo(this.ids); updateCube(this.camera, this.cubeInner);
   }
   cancelAnim() { if (this.animId) cancelAnimationFrame(this.animId); clearTimeout(this.animTimer); this.animId = 0; }
   flyTo(pos, target, dist) {
@@ -297,7 +385,7 @@ export class Viewport {
     return { edgeSegments, geometries: i.memory.geometries, textures: i.memory.textures, calls: i.render.calls, triangles: i.render.triangles, canvases: document.querySelectorAll('canvas').length, design: this.mountInfo?.id ?? null };
   }
   dispose() {
-    this.dead = true; this.cancelAnim(); this.ro.disconnect(); this.token = Symbol(); this.subs.clear(); this.mover.dispose();
+    this.dead = true; this.cancelAnim(); this.ro.disconnect(); this.token = Symbol(); this.subs.clear(); this.mover.dispose(); this.measure.dispose();
     disposeModel(this.root);
     this.scene.environment?.dispose();
     this.renderer.dispose(); this.renderer.forceContextLoss(); this.renderer.domElement.remove();
@@ -317,5 +405,5 @@ export class Viewport {
         m?.cg_mm ? [h('dt', {}, 'cg (mm)'), h('dd', {}, m.cg_mm.map((v) => fmt(v, 0)).join(', '))] : null));
     }
   }
-  tick() { if (!this.dead && this.controls.update()) this.dirty = true; if (!this.dead && this.dirty && this.el.clientWidth) { this.renderer.render(this.scene, this.camera); this.dirty = false; } }
+  tick() { if (!this.dead && this.controls.update()) this.dirty = true; if (!this.dead && this.measure.label) this.measure.update(); if (!this.dead && this.dirty && this.el.clientWidth) { this.renderer.render(this.scene, this.camera); this.dirty = false; } }
 }

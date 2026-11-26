@@ -15,6 +15,12 @@ from test_viewer_static import browser, collect, pages_base, studio_base  # noqa
 pytestmark = pytest.mark.slow
 
 
+def pick_design(page, did):
+    page.click('[data-testid="design-picker"]')
+    page.click(f'#design-list .design-item[data-id="{did}"]')
+    page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
+
+
 def _ready(page, mode, timeout=60000):
     page.wait_for_selector(f'#mode-{mode}[data-ready="1"]', timeout=timeout)
 
@@ -46,7 +52,7 @@ def test_design_switches_do_not_leak_geometry(browser, pages_base):
     ids = ["example-tailsitter-wing", "mech-good"]
     vals = {}
     for n in range(1, 13):
-        page.click(f'.design-item[data-id="{ids[(n - 1) % 2]}"]')
+        pick_design(page, ids[(n - 1) % 2])
         _ready(page, "designs")
         if n in (2, 12):
             page.wait_for_function("window.planeViewer.vp.info().geometries > 0")
@@ -596,11 +602,11 @@ def test_discard_prompt_on_design_switch(browser, pages_base):
         msgs.append(d.message)
         d.dismiss() if action[0] == "dismiss" else d.accept()
     page.on("dialog", on_dialog)
-    page.click('.design-item[data-id="mech-good"]')
+    pick_design(page, "mech-good")
     assert page.evaluate("window.planeViewer.selected()") == "example-tailsitter-wing"
     assert len(page.evaluate(f"{VPJ}.pending()")) == 1
     action[0] = "accept"
-    page.click('.design-item[data-id="mech-good"]')
+    pick_design(page, "mech-good")
     _ready(page, "designs")
     assert page.evaluate("window.planeViewer.selected()") == "mech-good"
     assert page.evaluate(f"{VPJ}.pending()") == []
@@ -762,5 +768,443 @@ def test_gizmo_drag_moves_the_part_in_whole_millimetres(browser, pages_base):
     d = pend[0]["delta_mm"]
     assert d[0] != 0 and d[1] == 0 and d[2] == 0 and d[0] == int(d[0])  # one axis, whole millimetres
     assert page.evaluate(f"{VPJ}.state().selection") == ["battery"]  # the click-through did not deselect
+    assert errors == []
+    page.close()
+
+
+# ---------- U19.1 B6b: colour by status or mass, tree dots, row click frames parts, part checks ----------
+_T9 = [
+    ("T9.a", "FAIL", {"pair": ["battery", "center_body"]}),
+    ("T9.b", "WARN", {"joint": "battery-bay"}),
+    ("T9.c", "WARN", {"component": "wing"}),
+    ("T9.d", "FAIL", {"parts": ["flight_controller"]}),
+    ("T9.e", "SKIP", {"parts": ["prop_l"]}),
+    ("T9.f", "FAIL", {"unchecked_pairs": ["a & b"], "parts": []}),
+    ("T9.g", "FAIL", {"paths": ["components/0/mass_g"]}),
+]
+
+
+def _inject(page):
+    def handler(route):
+        resp = route.fetch()
+        body = resp.json()
+        body["tiers"][0]["results"] += [
+            {"check_id": c, "status": s, "message": "m " + c, "criterion": "t", "data": d} for c, s, d in _T9]
+        route.fulfill(response=resp, json=body)
+    page.route("**/*.scorecard.json", handler)
+
+
+def _open9(browser, pages_base):
+    page = browser.new_page(viewport={"width": 1500, "height": 900})
+    errors = collect(page)
+    _inject(page)
+    page.goto(pages_base + "#m=designs&d=example-tailsitter-wing")
+    _ready(page, "designs")
+    page.wait_for_function("window.planeViewer.vp && window.planeViewer.vp.state().all.length > 0")
+    return page, errors
+
+
+def test_status_map_rules(browser, pages_base):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const parts = { parts: [{id:'a'},{id:'b'},{id:'c'}], attachments: [{label:'j1', parent:'a', child:'b'}] };
+      const row = (check_id, status, data) => ({ check_id, status, message: check_id, data });
+      const sc = { tiers: [{ results: [row('p','FAIL',{pair:['a','b']}), row('j','WARN',{joint:'j1'}), row('c','WARN',{component:'c'}),
+        row('z','FAIL',{parts:['zzz']}), row('u','FAIL',{unchecked_pairs:['a & b'], parts: []}), row('s','SKIP',{parts:['c']})] }] };
+      const st = m.partStatus(sc, parts);
+      return { st: Object.fromEntries([...st].map(([k, v]) => [k, v.status])), joint: m.rowParts(sc.tiers[0].results[1], parts),
+        a: [...st.get('a').rows.map((r) => r.check_id)], skip: m.rowParts(sc.tiers[0].results[5], parts), checksC: m.partChecks(sc, parts, 'c').map((r) => r.check_id) };
+    }""")
+    assert out["st"] == {"a": "FAIL", "b": "FAIL", "c": "WARN"}
+    assert out["joint"] == ["a", "b"]
+    assert out["a"] == ["p", "j"]
+    assert out["skip"] == ["c"] and out["checksC"] == ["c", "s"]  # a SKIP row names its part but never colours it
+    assert errors == []
+    page.close()
+
+
+def test_colour_by_status_colours_fail_and_warn_parts(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    type_png = _canvas_png(page)
+    page.select_option('[data-testid="colour-by"]', "status")
+    st = page.evaluate(f"{VPJ}.state()")
+    assert {"battery", "center_body", "flight_controller", "wing"} <= set(st["coloured"])
+    assert st["status"]["battery"] == "FAIL" and st["status"]["flight_controller"] == "FAIL"
+    assert page.locator('[data-testid="legend"]').is_visible()
+    assert _canvas_png(page) != type_png
+    page.evaluate(f'{VPJ}.colourBy("type")')
+    assert page.evaluate(f"{VPJ}.state().coloured") == []
+    assert errors == []
+    page.close()
+
+
+def test_tree_dots_show_status(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    assert page.locator('.part-row[data-id="battery"]').get_attribute("data-status") == "FAIL"
+    assert page.locator('.part-row[data-id="flight_controller"]').get_attribute("data-status") == "FAIL"
+    assert page.locator(".part-row .status-dot").count() == page.locator(".part-row").count()
+    assert errors == []
+    page.close()
+
+
+def _dist(page):
+    return _cam(page)["len"]
+
+
+def test_row_click_selects_frames_and_ghosts_the_rest(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    before = _dist(page)
+    row = page.locator('[data-check-id="T9.d"]')
+    row.click()
+    page.wait_for_timeout(400)
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == ["flight_controller"]
+    assert set(st["all"]) - {"flight_controller"} <= set(st["ghosted"])
+    assert _dist(page) < before
+    assert "active" in row.get_attribute("class")
+    row.click()
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == [] and st["ghosted"] == []
+    page.locator('[data-check-id="T9.a"]').click()
+    assert sorted(page.evaluate(f"{VPJ}.state().selection")) == ["battery", "center_body"]
+    page.keyboard.press("Escape")
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == [] and st["ghosted"] == []
+    assert errors == []
+    page.close()
+
+
+def test_inspector_lists_the_checks_of_a_part(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    li = page.locator('[data-testid="part-checks"] li')
+    mine = page.locator('[data-testid="part-checks"] li', has_text="T9.")
+    page.evaluate(f'{VPJ}.select(["battery"])')
+    assert mine.count() == 2
+    assert "FAIL" in li.first.inner_text()
+    page.evaluate(f'{VPJ}.select(["prop_l"])')
+    assert mine.count() == 1 and "SKIP" in mine.first.inner_text()
+    page.evaluate(f'{VPJ}.select(["motor_l"])')
+    assert mine.count() == 0
+    page.evaluate(f"{VPJ}.select([])")
+    assert page.locator('[data-testid="part-checks"]').count() == 0
+    assert errors == []
+    page.close()
+
+
+def test_colour_by_mass(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    page.evaluate(f'{VPJ}.colourBy("mass")')
+    assert len(page.evaluate(f"{VPJ}.state().coloured")) >= 10
+    assert " g" in page.locator('[data-testid="legend"]').inner_text()
+    assert errors == []
+    page.close()
+
+
+def test_no_row_without_ids_is_clickable(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    for cid in ("T9.f", "T9.g"):
+        assert "has-parts" not in page.locator(f'[data-check-id="{cid}"]').get_attribute("class")
+    assert "has-parts" in page.locator('[data-check-id="T9.d"]').get_attribute("class")
+    assert errors == []
+    page.close()
+
+
+def test_report_only_skip_is_not_coloured(browser, pages_base):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const parts = { parts: [{id:'a'},{id:'b'}], attachments: [] };
+      const sc = { tiers: [{ results: [
+        { check_id: 'w1', status: 'WARN', message: 'x', data: { component: 'a', report_only: true, raw_status: 'SKIP' } },
+        { check_id: 'w2', status: 'WARN', message: 'x', data: { component: 'b', report_only: true, raw_status: 'FAIL' } }] }] };
+      return { st: Object.fromEntries([...m.partStatus(sc, parts)].map(([k, v]) => [k, v.status])), checks: m.partChecks(sc, parts, 'a').length };
+    }""")
+    assert out["st"] == {"b": "WARN"} and out["checks"] == 1
+    assert errors == []
+    page.close()
+
+
+def test_empty_click_ends_a_row_focus(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    page.locator('[data-check-id="T9.d"]').click()
+    page.wait_for_timeout(300)
+    assert page.evaluate(f"{VPJ}.state().ghosted") != []
+    box = page.locator("#vp-main canvas").bounding_box()
+    page.mouse.click(box["x"] + 4, box["y"] + box["height"] - 4)
+    page.wait_for_timeout(300)
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == [] and st["ghosted"] == [] and st["focus"] is None
+    assert errors == []
+    page.close()
+
+
+def test_design_level_rows_do_not_paint_parts(browser, pages_base):
+    from hangar.baseline import DESIGN_LEVEL
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const ids = 'abcdefghijkl'.split('');
+      const parts = { parts: ids.map((id) => ({ id })), attachments: [] };
+      const row = (check_id, data) => ({ check_id, status: 'WARN', message: 'x', data });
+      const sc = { tiers: [{ results: [row('T3.mass', { component: 'a' }), row('T7.transport', { parts: ids.slice(0, 6) }),
+        row('T8.bom.x', { component: 'b' }), row('T7.wiring.y', { parts: ['c', 'd', 'e'] })] }] };
+      const st = m.partStatus(sc, parts);
+      return { ids: [...st.keys()], dl: st.designLevel, list: [...m.DESIGN_LEVEL].sort() };
+    }""")
+    assert out["ids"] == ["b", "c", "d", "e"] and out["dl"] == 2
+    assert out["list"] == sorted(DESIGN_LEVEL)
+    assert errors == []
+    page.close()
+
+
+# ---------- U19.1 B7: layout ----------
+def _box(page, sel):
+    return page.evaluate("(s) => { const r = document.querySelector(s).getBoundingClientRect(); return {x: r.x, y: r.y, width: r.width, height: r.height}; }", sel)
+
+
+def _open_sized(browser, pages_base, w, h, hash_="#m=designs&d=mech-good"):
+    page = browser.new_page()
+    errors = collect(page)
+    page.set_viewport_size({"width": w, "height": h})
+    page.goto(pages_base + hash_)
+    _ready(page, "designs")
+    return page, errors
+
+
+def test_picker_opens_filters_and_selects(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1280, 800)
+    assert not page.is_visible("#sidebar")
+    page.click('[data-testid="design-picker"]')
+    assert page.is_visible("#sidebar")
+    assert page.get_attribute('[data-testid="design-picker"]', "aria-expanded") == "true"
+    page.fill("#filter-text", "mech-good")
+    assert page.locator("#design-list .design-item").count() == 1
+    assert page.locator('#design-list .design-item[data-id="mech-good"]').count() == 1
+    page.fill("#filter-text", "")
+    page.click('#design-list .design-item[data-id="example-tailsitter-wing"]')
+    _ready(page, "designs")
+    assert page.evaluate("window.planeViewer.selected()") == "example-tailsitter-wing"
+    assert not page.is_visible("#sidebar")
+    name = page.evaluate("window.planeViewer.designs().find(d => d.id === 'example-tailsitter-wing').name")
+    assert name in page.inner_text('[data-testid="design-picker"]')
+    page.click('[data-testid="design-picker"]')
+    assert page.is_visible("#sidebar")
+    page.keyboard.press("Escape")
+    assert not page.is_visible("#sidebar")
+    assert errors == []
+    page.close()
+
+
+def test_three_panes_side_by_side_on_a_wide_screen(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1400, 900)
+    tree, cv, ins = _box(page, "#parts-tree"), _box(page, "#vp-main canvas"), _box(page, "#side-right")
+    assert tree["x"] + tree["width"] <= cv["x"] + 2
+    assert cv["x"] + cv["width"] <= ins["x"] + 2
+    assert cv["height"] >= 400
+    assert errors == []
+    page.close()
+
+
+def test_stacks_under_1100px(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1000, 900)
+    tree, cv, ins = _box(page, "#parts-tree"), _box(page, "#vp-main canvas"), _box(page, "#side-right")
+    assert ins["y"] >= cv["y"] + cv["height"] - 2
+    assert tree["x"] + tree["width"] > cv["x"]
+    assert errors == []
+    page.close()
+
+
+def test_tabs_switch_scorecard_and_bom(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1400, 900, f"#m=designs&d={TREE}")
+    page.click('[data-testid="tab-bom"]')
+    assert page.is_visible('[data-testid="bom-panel"]')
+    assert not page.is_visible("#scorecard")
+    n = page.evaluate("fetch('data/' + window.planeViewer.designs().find(d => d.id === 'example-tailsitter-wing').parts).then(r => r.json()).then(j => j.parts.length)")
+    assert page.locator('[data-testid="bom-row"]').count() == n
+    masses = page.evaluate("[...document.querySelectorAll('[data-testid=\"bom-row\"]')].map(r => parseFloat(r.children[2].textContent) || 0)")
+    total = page.inner_text('[data-testid="bom-total"]')
+    assert abs(float(total) - sum(masses)) <= 0.1
+    page.click('[data-testid="bom-row"][data-id="battery"]')
+    assert page.evaluate("window.planeViewer.vp.state().selection") == ["battery"]
+    page.click('[data-testid="tab-scorecard"]')
+    assert page.is_visible("#scorecard")
+    assert not page.is_visible('[data-testid="bom-panel"]')
+    assert errors == []
+    page.close()
+
+
+def test_toolbar_groups_are_in_one_bar(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1400, 900)
+    order = ["tool-select", "tool-move", "explode-slider", "btn-xray", "section-axis", "view-iso", "colour-by"]
+    for t in order:
+        assert page.locator(f'#vp-toolbar [data-testid="{t}"]').count() == 1, t
+    ok = page.evaluate("(ids) => { const els = ids.map(t => document.querySelector('[data-testid=\"' + t + '\"]')); return els.every((e, i) => i === 0 || (els[i - 1].compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0); }", order)
+    assert ok
+    assert errors == []
+    page.close()
+
+
+def test_toolbar_does_not_overlap_at_1280(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1280, 800)
+    boxes = page.evaluate("[...document.querySelectorAll('#vp-toolbar > .view-bar:not([hidden])')].map(e => { const r = e.getBoundingClientRect(); return [r.x, r.y, r.width, r.height]; })")
+    assert len(boxes) >= 4
+    for i, a in enumerate(boxes):
+        for b in boxes[i + 1:]:
+            apart = a[0] + a[2] <= b[0] + 1 or b[0] + b[2] <= a[0] + 1 or a[1] + a[3] <= b[1] + 1 or b[1] + b[3] <= a[1] + 1
+            assert apart, (a, b)
+    assert errors == []
+    page.close()
+
+
+def test_old_hashes_still_open_the_right_mode(browser, pages_base):
+    cases = [("#m=designs&d=mech-good", "designs"), ("#m=physics&d=mech-good", "designs"),
+             ("#m=compare&a=mech-good&b=example-tailsitter-wing", "compare"), ("#m=stress", "stress"),
+             ("#m=updates", "updates"), ("#m=ledger", "ledger"), ("#m=nonsense", "designs")]
+    page = browser.new_page()
+    errors = collect(page)
+    for hash_, mode in cases:
+        page.goto(pages_base + hash_)
+        page.reload()
+        page.wait_for_selector(f"#mode-{mode}[data-ready]", state="attached", timeout=60000)
+        assert page.evaluate("document.body.dataset.mode") == mode, hash_
+    names = page.locator("#modes button").all_inner_texts()
+    assert "Model" in names and "Designs" not in names and "Physics" not in names
+    assert errors == []
+    page.close()
+
+
+# ---- U19.1 B8: measure tool and view cube ----
+def _mc(page, o, d, snap=None):
+    args = f"{o}, {d}" + (f", {snap}" if snap is not None else "")
+    return page.evaluate(f"window.planeViewer.vp.measureClick({args})")
+
+
+def _label(page):
+    loc = page.locator('[data-testid="measure-label"]')
+    return loc.count() > 0 and loc.is_visible()
+
+
+def test_measure_between_two_faces_in_mm(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    a = _mc(page, [-500, 0, 0], [1, 0, 0])
+    assert a is not None and all(abs(v) <= 0.5 for v in a), a
+    b = _mc(page, [800, 0, 0], [-1, 0, 0])
+    assert b is not None and abs(b[0] - 300) <= 0.5, b
+    m = page.evaluate("window.planeViewer.vp.measurement()")
+    assert abs(m["distance_mm"] - 300) <= 0.5
+    page.wait_for_selector('[data-testid="measure-label"]', state="visible")
+    text = page.inner_text('[data-testid="measure-label"]')
+    assert "mm" in text
+    import re
+    assert abs(float(re.search(r"([\d.]+) mm", text).group(1)) - 300) <= 0.5, text
+    assert page.evaluate("window.planeViewer.vp.state().measure.distance_mm") == m["distance_mm"]
+    assert errors == []
+    page.close()
+
+
+def test_measure_snaps_to_a_vertex(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    p = _mc(page, [-500, 39, 39], [1, 0, 0], 5)
+    assert p is not None and all(abs(u - v) <= 0.5 for u, v in zip(p, [0, 40, 40])), p
+    page.evaluate("window.planeViewer.vp.clearMeasure()")
+    p = _mc(page, [-500, 39, 39], [1, 0, 0])
+    assert p is not None and abs(p[1] - 39) <= 0.5 and abs(p[2] - 39) <= 0.5, p
+    assert errors == []
+    page.close()
+
+
+def test_measure_diagonal(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    page.evaluate("window.planeViewer.vp.clearMeasure()")
+    _mc(page, [-500, 39, 39], [1, 0, 0], 5)
+    _mc(page, [800, -39, -39], [-1, 0, 0], 5)
+    m = page.evaluate("window.planeViewer.vp.measurement()")
+    assert abs(m["distance_mm"] - (300 ** 2 + 80 ** 2 + 80 ** 2) ** 0.5) <= 0.5, m
+    assert errors == []
+    page.close()
+
+
+def test_third_click_starts_a_new_measurement_and_escape_clears(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    for o, d in (([-500, 0, 0], [1, 0, 0]), ([800, 0, 0], [-1, 0, 0]), ([-500, 0, 0], [1, 0, 0])):
+        _mc(page, o, d)
+    assert page.evaluate("window.planeViewer.vp.measurement()") is None
+    page.keyboard.press("Escape")
+    assert not _label(page)
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "measure"
+    page.keyboard.press("Escape")
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "select"
+    assert errors == []
+    page.close()
+
+
+def test_measure_cleared_by_explode(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    _mc(page, [-500, 0, 0], [1, 0, 0])
+    _mc(page, [800, 0, 0], [-1, 0, 0])
+    assert page.evaluate("window.planeViewer.vp.measurement()") is not None
+    page.evaluate("window.planeViewer.vp.explode(0.3)")
+    assert page.evaluate("window.planeViewer.vp.measurement()") is None
+    assert not _label(page)
+    assert errors == []
+    page.close()
+
+
+def test_measure_tool_button_and_key(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    page.click('[data-testid="tool-measure"]')
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "measure"
+    assert page.evaluate("getComputedStyle(document.querySelector('#vp-main canvas')).cursor") == "crosshair"
+    assert page.get_attribute('[data-testid="tool-move"]', "aria-pressed") == "false"
+    page.keyboard.press("d")
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "select"
+    assert errors == []
+    page.close()
+
+
+def _cube_areas(page):
+    return page.evaluate("""() => Object.fromEntries(['front','back','top','bottom','left','right'].map(n => {
+      const r = document.querySelector(`[data-testid="cube-${n}"]`).getBoundingClientRect(); return [n, r.width * r.height]; }))""")
+
+
+def _cube_centre(page):
+    return page.evaluate("""() => { const c = document.querySelector('#view-cube').getBoundingClientRect();
+      const e = document.elementFromPoint(c.left + c.width / 2, c.top + c.height / 2); return e && e.dataset ? e.dataset.testid : null; }""")
+
+
+def test_view_cube_faces_follow_the_camera(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    for name in ("front", "top", "back", "right"):
+        page.evaluate(f'window.planeViewer.vp.view("{name}")')
+        page.wait_for_timeout(400)
+        areas = _cube_areas(page)
+        assert areas[name] == max(areas.values()), (name, areas)
+        assert areas[name] >= 3 * min(areas.values()), (name, areas)
+        assert _cube_centre(page) == f"cube-{name}", (name, _cube_centre(page))
+    page.evaluate('window.planeViewer.vp.view("iso")')
+    page.wait_for_timeout(400)
+    assert _cube_centre(page) == "cube-left"
+    assert errors == []
+    page.close()
+
+
+def test_view_cube_click_sets_the_view(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    # dispatch_event: after one face is clicked its opposite face sits behind it, so a pointer click would hit the wrong face
+    for face, axis, sign in (("top", "y", 1), ("bottom", "y", -1), ("front", "x", 1)):
+        page.dispatch_event(f'[data-testid="cube-{face}"]', "click")
+        page.wait_for_timeout(400)
+        p = _cam(page)
+        assert sign * p[axis] > 0.9 * p["len"], (face, p)
     assert errors == []
     page.close()

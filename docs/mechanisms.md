@@ -81,3 +81,14 @@ The fix: set `core_fill: outside` on the CORE component only (not on the elevon 
 Keep the two elevon pieces as `articulated` children of the wing: `T3` measures the planform from the core and its articulated children, so only then is the aileron area counted.
 
 Tier 3 warns with T3.wing_area_complete when the measured wing is less than 97 % of the area its wing_panel params give.
+
+## Kinematic MJCF export (PDL 1.3)
+
+`plane design export <design> --format mjcf-kinematic --out k.xml` writes a MuJoCo file for moving the mechanism (the drop test stays `mjcf`). View it with `python -m mujoco.viewer k.xml`.
+
+1. Bodies: breadth-first tree from `root` along attachments; a new body starts at each hinge (articulated) or ball (`kinematic_link`) edge; the rest is rigid inside its parent body. Root fixed, no weld, no freejoint, absolute coordinates in metres.
+2. Joints: hinge at `articulation.pivot`/`axis` with `range_deg` (continuous: unlimited); ball at the attachment `location`. Named by the attachment id.
+3. Actuators: one position servo per mechanism whose driver is articulated, named after the mechanism; ctrl in radians, range from `input_range_deg`.
+4. Loop: a `connect` named `<mechanism>-link` joins the bodies of `link.driver_end` and `link.follower_end` at the follower attachment location (the ball joint avoids over-constraint).
+5. Wheels: the child of a `continuous` attachment collides with a ground plane 1 mm below its lowest point (not touching, so it spins freely; wheel damping 1e-7).
+6. Gravity 0. Out of scope: weld loads, rolling tests, mechanisms without a `link` (no ratio coupling), propeller discs.

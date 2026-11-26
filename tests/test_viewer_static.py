@@ -162,7 +162,7 @@ def test_pages_build_has_no_edit_controls(browser, pages_base, studio_base):
     assert not any("modes/edit.js" in u for u in requests)
     assert page.locator('[data-testid="btn-edit"], [data-testid="btn-validate"], [data-testid="btn-propose"], [data-testid="save"]').count() == 0
     page.goto(studio_base)
-    page.wait_for_selector("[data-edit]", timeout=30000)
+    page.wait_for_selector("[data-edit]", state="attached", timeout=30000)
     assert page.locator("[data-edit]").count() > 0
     page.wait_for_selector('[data-testid="btn-validate"]', timeout=30000)
     assert page.locator('[data-testid="btn-propose"]').count() == 1
