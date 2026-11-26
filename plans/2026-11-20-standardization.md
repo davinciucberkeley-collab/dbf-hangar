@@ -380,6 +380,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D111 | Overnight staffing (Tristan away) | keep at least 3 builders and 2 reviewers running while free RAM allows; launch more when RAM is idle; hourly audits continue | Tristan | 11-26 | decided (Tristan P306, 2026-11-26) |
 | D112 | S9c hollow fuselage: may the c172-rc showcase opt in (mass/CG change)? | yes (Tristan P307): Part B may apply it once S9c core merges and the scratch report shows no new FAIL | Tristan | 11-26 | decided (Tristan P307, 2026-11-26) |
 | D113 | Studio colour-by-status shows concept-a almost all amber because report-only SKIPs display as WARN | a WARN row whose original status was SKIP (report-only wrapper) colours as "not judged" (grey), not amber; an empty click also ends a row focus | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
+| D114 | U16.1 S3 brief defects (builder stop) | correct the brief's arithmetic (bay y 12.1, removed 5082.97 mm3); fixture joint point moved into host material; rotation ranking = fewest non-zero angles, then least sum, then largest roll/pitch/yaw; CLI flag --host (registry derives it); manifold half-space for inside fraction (no shapely); Part B: rudder servo on the upper face, solve the servo-elev / tail-fixed clip | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
