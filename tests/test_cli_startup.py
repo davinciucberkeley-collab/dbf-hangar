@@ -26,7 +26,7 @@ def test_help_loads_no_geometry_stack():
 
 
 def test_design_get_loads_no_geometry_stack():
-    """A design without generators (concept-a-param builds meshes on load for mass_g, so it needs trimesh; see report U15.3)."""
+    """design get --key id builds no meshes, even on parametric designs (mass_g and swept poses are filled lazily; D102)."""
     code = ("import sys\nfrom hangar.cli import cli\n"
             "cli(['design', 'get', 'designs/concept-a', '--key', 'id'], standalone_mode=False)\n"
             + LIST_LINE)

@@ -32,11 +32,11 @@ class Design:
 
     def __getattribute__(self, name):
         if (name == "data" or name == "resolve_errors") and object.__getattribute__(self, "__dict__").get("_mass_pending"):
-            self._mass_pending = False
             from hangar.geom.resolve import fill_generated_mass, fill_swept_poses   # inside: hangar.geom imports hangar.design
             d, errs = self.__dict__["data"], self.__dict__["resolve_errors"]
             fill_swept_poses(d, self.base_dir, errs)
             fill_generated_mass(d, self.base_dir, errs)
+            self._mass_pending = False   # only after both fills succeeded
         return object.__getattribute__(self, name)
 
     def data_without_mass(self) -> dict:
