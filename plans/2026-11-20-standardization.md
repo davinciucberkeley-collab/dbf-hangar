@@ -834,6 +834,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-G2 | `design-engineer` | Sonnet | ledger T156: tiltwing-cakir Dutch roll unstable (T3.dynamic_modes, AeroSandbox) | a proposed `plane design set` sequence on a scratch copy, before/after mode table | layout changes only, no threshold change; propose, do not commit to designs/ |
 | W34-T8 | `tactician` | Sonnet | U16.3: survey which U16.1 features fit concept-a and write designs-only briefs for concept-a-test-refactor | `briefs/U16.3-*.md` | builder-ready bar; measured on a scratch copy |
 | W34-A4 | `advisor` | Opus | U16.4: why c172-rc servos look backwards, deflection is about 5 deg and linkages do not move as solid parts | diagnosis report in chat, fix order | read-only; evidence for each cause |
+| W34-T9 | `tactician` | Sonnet | U19.2: human-readable scorecard spec with before/after examples, then briefs | `u19.2/spec.md`, `briefs/U19.2-*.md` | builder-ready bar |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1153,6 +1154,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Diagnosis** (advisor W34-A4): root cause of each problem with evidence (renders/screenshots, the numbers), and the fix order *(1: local servo overlay matrix flips the spline (z), plus core guard; 2: commanded ranges +-10/+-20, not a bug (D122); 3: follower clevis rides the pin/surface instead of the rod, two pins drawn; fix order overlay matrix, core clevis+guard PR, c172 design PR)*
 - [ ] **Step 2: Briefs** (tactician) from the diagnosis
 - [ ] **Step 3: Build** (W34-B), review (W34-R2/R3), merge; Tristan looks in Studio
+
+### Unit U19.2: Human-readable scorecards (P315)
+
+**Scope:** today a scorecard row tells a machine what is wrong (`T1.attachment_overlap.servo-arm-elev FAIL embed overlap 48% > 35%`) but a person only sees that something is off. Every row a person sees (markdown scorecard, Studio Scorecard tab, check rows in the inspector) gets: a plain-language name for the check, one sentence on what was measured and what it was compared with (value, limit, unit, source), the part(s) involved by their readable names, and a "what to do" hint where one is known; rows grouped by part or by problem, not only by check id. Machine ids stay available (hover or a column), JSON output unchanged. No threshold or gate behaviour change.
+
+- [ ] **Step 1: Spec and briefs** (tactician W34-T9): inventory of check ids and their messages, a proposed row format with 6-8 before/after examples from c172-rc and concept-a, where the plain text lives (one registry next to the gates, not in the viewer), then builder-ready briefs
+- [ ] **Step 2: Tristan reads the before/after examples** (short; the format is his call)
+- [ ] **Step 3: Build** (W34-B), review, merge
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 
