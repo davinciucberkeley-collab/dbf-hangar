@@ -20,10 +20,11 @@ export function prepareMesh(o, model, vp) {
     line.userData.isEdge = true; line.raycast = () => {}; line.renderOrder = 1; o.add(line);
   }
   const comp = vp.componentOf(o, model);
-  if (comp) { o.userData.compId = comp.name; vp.ids.add(comp.name); }
+  if (comp) { o.userData.compId = comp.name; vp.ids.add(comp.name); if (type && !vp.types.has(comp.name)) vp.types.set(comp.name, type); }
 }
 
-export const SKIN_TYPES = ['fuselage', 'wing', 'tail_surface'];
+// X-ray ghosts every part except these internal types (D106).
+export const INTERNAL_TYPES = ['battery', 'esc', 'servo', 'receiver', 'flight_controller', 'motor', 'harness', 'wire', 'sensor'];
 
 // The one appearance function: selection tint, dimming of the rest, ghosting. Precedence: ghost, dim, base.
 export function applyAppearance(vp) {

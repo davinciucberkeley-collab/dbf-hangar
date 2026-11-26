@@ -357,3 +357,32 @@ def test_section_controls_drive_the_hook(browser, pages_base):
     assert page.evaluate(f"{VP}.state().section") is None
     assert errors == []
     page.close()
+
+
+def test_xray_ghosts_everything_but_internal_types(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    page.click('[data-testid="btn-xray"]')
+    g = page.evaluate(f"{VP}.state().ghosted")
+    for gone in ("mount_l", "center_body", "wing", "prop_l", "fin_l"):
+        assert gone in g, (gone, g)
+    for solid in ("battery", "flight_controller", "motor_l"):
+        assert solid not in g, (solid, g)
+    assert errors == []
+    page.close()
+
+
+def test_section_y_and_z_cut_geometrically(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    page.click('[data-testid="btn-xray"]')
+    hit = lambda: "battery" in _ray(page, TOP_O, TOP_D)  # noqa: E731
+    for axis in ("y", "z"):
+        page.evaluate(f'{VP}.section("{axis}", 0, false)')
+        assert hit(), axis          # plane at the box min keeps everything
+        page.evaluate(f'{VP}.section("{axis}", 1, false)')
+        assert not hit(), axis      # plane at the box max keeps nothing
+        page.evaluate(f'{VP}.section("{axis}", 1, true)')
+        assert hit(), axis          # flipped keeps the other side
+        page.evaluate(f'{VP}.section("{axis}", 0, true)')
+        assert not hit(), axis
+    assert errors == []
+    page.close()
