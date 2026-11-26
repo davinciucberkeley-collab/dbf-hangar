@@ -38,7 +38,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
-| conductor | 21 | 2026-12-08 |
+| conductor | 23 | 2026-12-08 |
 
 ### Open items for teammates
 
@@ -234,7 +234,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U16.3 | concept-a-test-refactor: the U16.1 features on a copy of concept-a (P313) | 0/3 | not started | - |
+| U16.3 | concept-a-test-refactor: the U16.1 features on a copy of concept-a (P313) | 1/3 | in progress | - |
 | U16.4 | c172-rc linkage fixes from Tristan's look (P314) [hard] | 1/3 | in progress | - |
 
 ## Ledger
@@ -242,7 +242,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 49 | 107 | 5 | 3 | 0 | 164 |
+| task | 51 | 107 | 5 | 3 | 0 | 166 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 

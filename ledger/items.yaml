@@ -5532,3 +5532,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
+  - id: T165
+    kind: task
+    text: 'Add frames (output, mount_face) and ports to knowledge/parts/emax-es3054hv-servo/part.yaml so design place and add-linkage work on concept-a real servo (U16.3 survey: concept-a servos are mesh parts without frames).'
+    source: U16.3 W34-T8 survey
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T166
+    kind: task
+    text: 'Routed harnesses need from_point/to_point or ports on mesh parts: concept-a e-hrn-06..11 start at avn-002 CG, 8.4 mm from its shell (> 5 mm); WARN now, FAIL after 2026-12-08.'
+    source: U16.3 W34-T8 survey
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'

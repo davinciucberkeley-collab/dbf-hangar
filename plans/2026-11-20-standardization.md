@@ -1142,7 +1142,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** `plane design copy concept-a concept-a-test-refactor`, then opt the copy in to what U16.1 built for c172-rc: hinge gaps/bevel/knuckles (S6), servos placed (S3), generated linkages via add-linkage (S4, replacing hand-made ones where the op fits), routed harnesses (S8), clevises and screw heads (S9a/S9b), hollow fuselage where a fuselage_loft exists (S9c), wheels on joints if any (S2). concept-a itself is untouched. Designs-only (no core change; a core gap found on the way becomes a ledger item, not part of this unit). Target: no new FAIL versus the copy's own starting baseline; every row change reported.
 
-- [ ] **Step 1: Survey and briefs** (tactician W34-T8): what applies to concept-a's layout, measured on a scratch copy; one designs-only brief per feature group, class easy where it is a command list
+- [x] **Step 1: Survey and briefs** (tactician W34-T8): what applies to concept-a's layout, measured on a scratch copy; one designs-only brief per feature group, class easy where it is a command list *(7ede55f: briefs 0 copy, 1 visual detail (migrate 1.3, clevises, screw heads), 2 routes 8 of 14 harnesses; hinges, hollow fuselage, wheels n/a (all concept-a parts are meshes); servos/add-linkage blocked (ES3054HV part has no frames, ledger); 6 harnesses blocked (mesh parts have no ports, ledger))*
 - [ ] **Step 2: Copy and build** (W34-B), briefs in order on one branch per brief
 - [ ] **Step 3: Review** (W34-R2/R3); merge; Tristan looks in Studio
 
