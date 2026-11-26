@@ -310,3 +310,19 @@ table.cmp thead th { position: sticky; top: 0; background: var(--panel); z-index
   #topbar { flex-wrap: wrap; }
   #mode-hint { flex-basis: 100%; order: 9; }
 }
+
+/* B8: measure label and view cube (orthographic: no perspective on #view-cube) */
+.measure-label { position: absolute; z-index: 4; transform: translate(-50%, -130%); pointer-events: none; display: flex; flex-direction: column; align-items: center; background: var(--panel); border: 1px solid #f97316; border-radius: 5px; padding: 2px 6px; font-size: 12px; white-space: nowrap; box-shadow: 0 2px 8px #0002; }
+.measure-label small { font-size: 10px; color: var(--muted); font-family: var(--mono); }
+.measure-label[hidden] { display: none; }
+#tool-bar button[data-testid="tool-measure"][aria-pressed="true"] { background: var(--accent); color: #fff; }
+.view-cube { position: absolute; right: 28px; top: 120px; width: 72px; height: 72px; z-index: 2; }
+.cube-inner { position: relative; width: 72px; height: 72px; transform-style: preserve-3d; }
+.cube-face { position: absolute; left: 0; top: 0; width: 72px; height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 0; font-size: 11px; color: inherit; cursor: pointer; background: color-mix(in srgb, var(--panel) 88%, transparent); border: 1px solid var(--border); }
+.cube-face:hover { background: var(--accent); color: #fff; }
+.cube-face[data-view="front"] { transform: rotateY(90deg) translateZ(36px); }
+.cube-face[data-view="back"] { transform: rotateY(-90deg) translateZ(36px); }
+.cube-face[data-view="top"] { transform: rotateX(90deg) translateZ(36px); }
+.cube-face[data-view="bottom"] { transform: rotateX(-90deg) translateZ(36px); }
+.cube-face[data-view="left"] { transform: translateZ(36px); }
+.cube-face[data-view="right"] { transform: rotateY(180deg) translateZ(36px); }

@@ -1081,3 +1081,121 @@ def test_old_hashes_still_open_the_right_mode(browser, pages_base):
     assert "Model" in names and "Designs" not in names and "Physics" not in names
     assert errors == []
     page.close()
+
+
+# ---- U19.1 B8: measure tool and view cube ----
+def _mc(page, o, d, snap=None):
+    args = f"{o}, {d}" + (f", {snap}" if snap is not None else "")
+    return page.evaluate(f"window.planeViewer.vp.measureClick({args})")
+
+
+def _label(page):
+    loc = page.locator('[data-testid="measure-label"]')
+    return loc.count() > 0 and loc.is_visible()
+
+
+def test_measure_between_two_faces_in_mm(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    a = _mc(page, [-500, 0, 0], [1, 0, 0])
+    assert a is not None and all(abs(v) <= 0.5 for v in a), a
+    b = _mc(page, [800, 0, 0], [-1, 0, 0])
+    assert b is not None and abs(b[0] - 300) <= 0.5, b
+    m = page.evaluate("window.planeViewer.vp.measurement()")
+    assert abs(m["distance_mm"] - 300) <= 0.5
+    page.wait_for_selector('[data-testid="measure-label"]', state="visible")
+    text = page.inner_text('[data-testid="measure-label"]')
+    assert "mm" in text
+    import re
+    assert abs(float(re.search(r"([\d.]+) mm", text).group(1)) - 300) <= 0.5, text
+    assert page.evaluate("window.planeViewer.vp.state().measure.distance_mm") == m["distance_mm"]
+    assert errors == []
+    page.close()
+
+
+def test_measure_snaps_to_a_vertex(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    p = _mc(page, [-500, 39, 39], [1, 0, 0], 5)
+    assert p is not None and all(abs(u - v) <= 0.5 for u, v in zip(p, [0, 40, 40])), p
+    page.evaluate("window.planeViewer.vp.clearMeasure()")
+    p = _mc(page, [-500, 39, 39], [1, 0, 0])
+    assert p is not None and abs(p[1] - 39) <= 0.5 and abs(p[2] - 39) <= 0.5, p
+    assert errors == []
+    page.close()
+
+
+def test_measure_diagonal(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    page.evaluate("window.planeViewer.vp.clearMeasure()")
+    _mc(page, [-500, 39, 39], [1, 0, 0], 5)
+    _mc(page, [800, -39, -39], [-1, 0, 0], 5)
+    m = page.evaluate("window.planeViewer.vp.measurement()")
+    assert abs(m["distance_mm"] - (300 ** 2 + 80 ** 2 + 80 ** 2) ** 0.5) <= 0.5, m
+    assert errors == []
+    page.close()
+
+
+def test_third_click_starts_a_new_measurement_and_escape_clears(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    for o, d in (([-500, 0, 0], [1, 0, 0]), ([800, 0, 0], [-1, 0, 0]), ([-500, 0, 0], [1, 0, 0])):
+        _mc(page, o, d)
+    assert page.evaluate("window.planeViewer.vp.measurement()") is None
+    page.keyboard.press("Escape")
+    assert not _label(page)
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "measure"
+    page.keyboard.press("Escape")
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "select"
+    assert errors == []
+    page.close()
+
+
+def test_measure_cleared_by_explode(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    _mc(page, [-500, 0, 0], [1, 0, 0])
+    _mc(page, [800, 0, 0], [-1, 0, 0])
+    assert page.evaluate("window.planeViewer.vp.measurement()") is not None
+    page.evaluate("window.planeViewer.vp.explode(0.3)")
+    assert page.evaluate("window.planeViewer.vp.measurement()") is None
+    assert not _label(page)
+    assert errors == []
+    page.close()
+
+
+def test_measure_tool_button_and_key(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    page.click('[data-testid="tool-measure"]')
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "measure"
+    assert page.evaluate("getComputedStyle(document.querySelector('#vp-main canvas')).cursor") == "crosshair"
+    assert page.get_attribute('[data-testid="tool-move"]', "aria-pressed") == "false"
+    page.keyboard.press("d")
+    assert page.evaluate("window.planeViewer.vp.state().tool") == "select"
+    assert errors == []
+    page.close()
+
+
+def _cube_areas(page):
+    return page.evaluate("""() => Object.fromEntries(['front','back','top','bottom','left','right'].map(n => {
+      const r = document.querySelector(`[data-testid="cube-${n}"]`).getBoundingClientRect(); return [n, r.width * r.height]; }))""")
+
+
+def test_view_cube_faces_follow_the_camera(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    for name in ("front", "top", "back", "right"):
+        page.evaluate(f'window.planeViewer.vp.view("{name}")')
+        page.wait_for_timeout(400)
+        areas = _cube_areas(page)
+        assert areas[name] == max(areas.values()), (name, areas)
+        assert areas[name] >= 3 * min(areas.values()), (name, areas)
+    assert errors == []
+    page.close()
+
+
+def test_view_cube_click_sets_the_view(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    # dispatch_event: after one face is clicked its opposite face sits behind it, so a pointer click would hit the wrong face
+    for face, axis, sign in (("top", "y", 1), ("bottom", "y", -1), ("front", "x", 1)):
+        page.dispatch_event(f'[data-testid="cube-{face}"]', "click")
+        page.wait_for_timeout(400)
+        p = _cam(page)
+        assert sign * p[axis] > 0.9 * p["len"], (face, p)
+    assert errors == []
+    page.close()

@@ -70,9 +70,10 @@ function onPick(id, vp, e) {
 document.addEventListener('keydown', (e) => {
   if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
   const v = state.mode === 'designs' ? vps.main : null;
-  if (e.key === 'Escape') { if (v?.axisLocked()) v.lockAxis(null); else if (v?.focusKey) v.clearFocus(); else if (highlightIds.size) setHighlight([]); return; }
+  if (e.key === 'Escape') { if (v?.state().tool === 'measure') { if (v.measure.active()) v.clearMeasure(); else v.setTool('select'); } else if (v?.axisLocked()) v.lockAxis(null); else if (v?.focusKey) v.clearFocus(); else if (highlightIds.size) setHighlight([]); return; }
   if (!v) return;
-  if (e.key === 'm') v.setTool(v.state().tool === 'move' ? 'select' : 'move');
+  if (e.key === 'd') v.setTool(v.state().tool === 'measure' ? 'select' : 'measure');
+  else if (e.key === 'm') v.setTool(v.state().tool === 'move' ? 'select' : 'move');
   else if (v.state().tool === 'move' && 'xyz'.includes(e.key) && e.key.length === 1) v.lockAxis(e.key);
   else if (e.key === 'h') v.setHidden([...highlightIds], true);
   else if (e.key === 'i') { if (highlightIds.size) v.isolate([...highlightIds]); }
@@ -194,15 +195,16 @@ async function init() {
   const tb = $('tool-bar'), pick = (t) => vps.main?.setTool(t);
   const tSel = h('button', { type: 'button', 'data-testid': 'tool-select', 'aria-pressed': 'true', title: 'Select parts (Esc)', onclick: () => pick('select') }, 'Select');
   const tMove = h('button', { type: 'button', 'data-testid': 'tool-move', 'aria-pressed': 'false', title: 'Move parts (m)', onclick: () => pick('move') }, 'Move');
+  const tMeasure = h('button', { type: 'button', 'data-testid': 'tool-measure', 'aria-pressed': 'false', title: 'Measure between two points (d)', onclick: () => pick('measure') }, 'Measure');
   const att = h('input', { type: 'checkbox', checked: true, 'data-testid': 'move-with-attached', onchange: () => vps.main?.setAttached(att.checked) });
   attachedOn = () => att.checked;
-  tb.append(tSel, tMove, h('label', { title: 'Parts attached below the moved part move with it' }, att, 'with attached parts'));
+  tb.append(tSel, tMove, tMeasure, h('label', { title: 'Parts attached below the moved part move with it' }, att, 'with attached parts'));
   const colourSel = h('select', { 'data-testid': 'colour-by', 'aria-label': 'Colour by', onchange: () => vps.main?.colourBy(colourSel.value) }, ['type', 'status', 'mass'].map((m) => h('option', { value: m }, m)));
   $('colour-bar').append(h('label', { class: 'colour-by' }, 'Colour by ', colourSel));
   syncTool = () => {
     const s = vps.main?.state(); if (!s) return;
     colourSel.value = s.colourBy;
-    tSel.setAttribute('aria-pressed', String(s.tool === 'select')); tMove.setAttribute('aria-pressed', String(s.tool === 'move'));
+    tSel.setAttribute('aria-pressed', String(s.tool === 'select')); tMove.setAttribute('aria-pressed', String(s.tool === 'move')); tMeasure.setAttribute('aria-pressed', String(s.tool === 'measure'));
     const off = s.explode?.t > 0; tMove.disabled = off; tMove.title = off ? 'Set explode to 0 to move parts' : 'Move parts (m)';
   };
   const eb = $('explode-bar'), strat = h('select', { 'data-testid': 'explode-strategy', 'aria-label': 'Explode strategy', onchange: () => { fillLevels(); explode(); } }, ['hierarchy', 'radial'].map((s) => h('option', { value: s }, s)));
