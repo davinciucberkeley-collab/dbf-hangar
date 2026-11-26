@@ -2840,3 +2840,108 @@
     rating_basis: placeholder
   why: S4b
   kind: modify
+- date: '2026-11-26T14:15:05Z'
+  key: wiring
+  old: null
+  new:
+    harnesses:
+    - id: h-ail-r
+      from: receiver
+      to: servo-ail-r
+      route:
+      - fuselage
+      - wing-core
+      from_port: ch2
+      to_port: signal
+      waypoints:
+      - - 234.07
+        - -3
+        - -51
+      - - 250
+        - 30
+        - 74
+      - - 250
+        - 400
+        - 83.16
+      - - 290.5
+        - 420
+        - 82
+    - id: h-ail-l
+      from: receiver
+      to: servo-ail-l
+      route:
+      - fuselage
+      - wing-core
+      from_port: ch1
+      to_port: signal
+      waypoints:
+      - - 234.07
+        - -6
+        - -51
+      - - 250
+        - -30
+        - 74
+      - - 250
+        - -400
+        - 83.16
+      - - 290.5
+        - -420
+        - 82
+    - id: h-elev
+      from: receiver
+      to: servo-elev
+      route:
+      - fuselage
+      from_port: ch3
+      to_port: signal
+      waypoints:
+      - - 234.07
+        - 0
+        - -51
+      - - 604.5
+        - 9
+        - 10.55
+    - id: h-rud
+      from: receiver
+      to: servo-rud
+      route:
+      - fuselage
+      from_port: ch4
+      to_port: signal
+      waypoints:
+      - - 234.07
+        - 3
+        - -51
+      - - 575.5
+        - -9
+        - -6.6
+    - id: h-esc-motor
+      from: esc
+      to: motor
+      route:
+      - fuselage
+      from_port: motor_out
+      to_port: leads
+      waypoints:
+      - - 113.5
+        - 0
+        - -41.6
+      - - 66.25
+        - 0
+        - 0
+    - id: h-bat-esc
+      from: battery
+      to: esc
+      route:
+      - fuselage
+      from_port: power
+      to_port: power_in
+      waypoints:
+      - - 233.65
+        - 0
+        - -40.5
+      - - 156.5
+        - 0
+        - -41.6
+  why: 'U16.1 S8: wires as routed tubes'
+  kind: add
