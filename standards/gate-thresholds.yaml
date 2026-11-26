@@ -39,3 +39,13 @@ wing_area_complete_min:
   rule: "T3.wing_area_complete: the measured planform area of a generated core wing divided by the area its wing_panel params give must be at least this; below it the wing has uncovered chord (a WARN)."
   source: pending
   note: "Strip measurement agrees with the params within 0.1 % on a complete wing (U13.7-5 findings); 0.97 leaves room for sweep and airfoil tip effects; internal expectation, no external source."
+mtow_declared_in_design:
+  value: "the design's own requirements.mtow_g"
+  rule: "T3.mass: the rolled-up mass must not exceed the design's declared requirements.mtow_g. Rows citing requirements.mtow_g resolve here (fidelity.CRITERION_ALIASES)."
+  source: pending
+  note: "U17.1 2b: a per-design declared requirement, sourced in each design's own comment, not a shared threshold; left pending (D91, conductor decision)."
+connection_named_in_library:
+  value: true
+  rule: "T1.interfaces.connection_known: every named connection exists in standards/connection-types.yaml. Rows citing connection-types.yaml (bare) resolve here (fidelity.CRITERION_ALIASES)."
+  source: pending
+  note: "U17.1 2b: library membership is a definition; left pending (D91, conductor decision)."

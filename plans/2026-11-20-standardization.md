@@ -369,6 +369,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D100 | U17.1 step 2b briefs (e6c36eb): owners and relabelling | criteria brief builds now (+516 rows resolve, statuses unchanged); team-owner Part 1 builds after values merges with owner Tristan, date 2026-11-25 as a placeholder owner that Tristan confirms; Part 2 (relabel 7 `internal convention` values as team decisions, +51) is NOT built until Tristan decides each value himself, because an agent may not create a team decision; schema/mtow/connection keys stay `pending` | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D101 | U16.1 S6-S9 brief defaults (11653fa) | S6 ships hinge_style none/bevel (round deferred); S7 kinematic MJCF with gravity 0, ball joint at the rod end + connect loop; S8 wires Catmull-Rom tubes 1.5 mm, visual-only, bend radius deferred, library ports labelled estimates; S9 clevis/screw-head drawing rules (not standards) behind an opt-in `display` block; S9c hollow fuselage changes mass/CG so its showcase opt-in waits for Tristan | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D102 | U15.3: `design get/set` on generator designs still load trimesh because loading computes mass_g by building meshes | accept U15.3 as lazy imports only (`plane --help` 8.8 -> 3.5 s, outputs byte-identical); test 2 uses concept-a; a follow-up step U15.3-2 makes mass_g lazy (computed on first use) so get/set on parametric designs skip mesh building | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D103 | U16.2 tier-1 time budget (D73) | relaxed to ~90 s for concept-a-param tier 1 (U16.2 measured 71 s alone, ~77-99 s loaded); U16.2 merges on ACCEPT + green CI, then concept-a-param's designs-only baseline refresh | Tristan | 11-25 | decided (Tristan P295, 2026-11-25) |
+| D104 | May a vendor's minimum strength with no stated test method count as a spar allowable? | yes (cfrp-tube 1379 MPa from Goodwinds stays, with its note) | Tristan | 11-25 | decided (Tristan P295, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1117,7 +1119,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Inventory and packets** (tactician W34-T2) *(48791cb: 96 entries, 9 packets, 21 team decisions; 518 blocking rows have criteria that resolve to no threshold (D91); connection types move 0 rows (U8.3))*
 - [x] **Step 2: Sources** (scouts W34-S, up to 3 at a time; worktree C:/Users/trist/wt/u17.1, branch std/u17.1-sources) *(9 packets + a second pass with pdftotext for binary PDFs; about 45 source files; disagreements for the team: tip_angle_max_deg 30 vs ~15 deg tip-back, fw_static_margin_max 0.25 vs 0.05-0.15, wire_clearance_mm 5 vs 9.5-12.7 mm (AC 43.13-1B), LulzBot Z 256 vs 250 mm, attach/planform tolerances looser than printer accuracy, XPS 25 kg/m3 below the denser grades; hover-moment rows unsourced)*
-- [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus) *(briefs e6c36eb: -criteria (hard) building; -team-owner Part 1 after values merges; Part 2 held for Tristan (D100))*
+- [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus) *(briefs e6c36eb: -criteria merged 4daec00 (sourced blocking 282 -> 798 of 2816, statuses unchanged; one REOPEN: duplicate alias re-added by a stray process); -team-owner Part 1 after values merges; Part 2 held for Tristan (D100))*
 - [x] **Step 3: Values into standards; re-run; baselines** (W34-B) *(merged 0f67f27: 8 entries sourced, no value changed, fidelity +1 per design; disagreements listed for Tristan)*
 - [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
 
@@ -1126,8 +1128,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** OpenCAEModel main (11-24) ships an `opencae` CLI (`doctor`, `new`, `run --only mass,propulsion,structure,cfd,flight --json`, `iterate --set`, `status`) with evidence-status rules close to hangar's (estimate/datasheet/measured). Integrate it as an external GPL program: a hangar op exports a design to an OpenCAE drone project (drone.json from PDL propulsion, battery, ESC, materials, requirements; geometry from the GLB/STL export), runs `opencae run --json`, and maps results to check rows: propulsion current margins (motor, ESC, battery) and thrust-to-weight, structure safety factor (replacing or alongside the old opencae_runner FEA route), whole-aircraft CL/CD/LD from SU2 CFD, hover flight for VTOL/tailsitter. SKIP with the reason where OpenCAE or a solver is missing (CI). Results cached and hashed like FEA. No OpenCAE source copied (PROVENANCE row).
 
 - [x] **Step 1: Integration study and briefs** (tactician W34-T3) *(77414cd: study + fixtures; OpenCAE runs in qt_test; quad250 mass/prop 1.4 s, structure 27 s, flight 1.9 s, SU2 CFD 11 min; concept-a-param mass matches except 2 meshless point masses; briefs -1 cli (hard), -2 export (hard), -3 rows (hard, after -1), -4 ops (easy, after -1 and -2); D93)*
-- [ ] **Step 2: Build** (W34-B) *(-1 cli merged d2105bd (one REOPEN: Linux test), -2 export merged 2ba4033; -3 rows merged c0a851b (W34-R ACCEPT, D98); -4 ops building)*
-- [ ] **Step 3: Review** (W34-R); merge
+- [x] **Step 2: Build** (W34-B) *(-1 cli merged d2105bd (one REOPEN: Linux test), -2 export merged 2ba4033; -3 rows merged c0a851b (W34-R ACCEPT, D98); -4 ops merged ac7f628 (one REOPEN: Studio path refusal))*
+- [x] **Step 3: Review** (W34-R); merge
 
 ### Unit U18.2: Calibration against a real aircraft (D89; P280)
 
