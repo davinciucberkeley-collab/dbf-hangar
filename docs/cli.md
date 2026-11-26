@@ -2,7 +2,7 @@
 
 # plane command reference
 
-68 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+69 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -151,6 +151,29 @@ Writes files.
 - `<path>`: str, required
 - `<key>`: str, required
 - `--value`: str, required
+- `--why`: str, required
+
+### `plane design add-linkage`
+
+Generate a servo linkage: arm, rod, horn and pin components, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. One logged write; reports the ratio, tip, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.
+
+```
+plane design add-linkage <path> --servo <str> --hinge <str> --station <float> [--prefix <str>] [--arm-length <float>] [--horn-height <float>] [--arm-side <choice>] [--horn-dir <str>] [--input-range <float>] [--servo-range <float>] --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `--servo`: str, required
+- `--hinge`: str, required
+- `--station`: float, required
+- `--prefix`: str, optional
+- `--arm-length`: float, optional
+- `--horn-height`: float, optional
+- `--arm-side`: choice, one of +, -, optional
+- `--horn-dir`: str, optional
+- `--input-range`: float, optional
+- `--servo-range`: float, optional
 - `--why`: str, required
 
 ### `plane design apply`
