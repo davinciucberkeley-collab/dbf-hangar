@@ -5411,3 +5411,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-25'
+  - id: T154
+    kind: task
+    text: 'Builders: never run python with stdin (, ); a stray stdin process later re-ran an old edit script and re-added duplicate definitions on std/u17.1-2b-criteria (W34-R3 4b). Write scripts to files; before committing, confirm no background task of yours is still running. Add this line to the builder role file and the shared environment briefs.'
+    source: reviews/2026-11-25-w34c.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
