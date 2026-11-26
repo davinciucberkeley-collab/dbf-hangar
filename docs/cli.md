@@ -158,7 +158,7 @@ Writes files.
 Generate a servo linkage: arm, rod, horn and pin components built clear of the servo (arm plane above its highest point), the horn rooted on the surface skin aft of the hinge and the pin beside the horn, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. One logged write; reports the ratio, arm pivot, tip, horn root, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.
 
 ```
-plane design add-linkage <path> --servo <str> --hinge <str> --station <float> [--prefix <str>] [--arm-length <float>] [--horn-height <float>] [--horn-offset <float>] [--arm-side <choice>] [--horn-dir <str>] [--input-range <float>] [--servo-range <float>] --why <str>
+plane design add-linkage <path> --servo <str> --hinge <str> --station <float> [--prefix <str>] [--arm-length <float>] [--horn-height <float>] [--horn-offset <float>] [--arm-side <choice>] [--horn-toward <str>] [--input-range <float>] [--servo-range <float>] --why <str>
 ```
 
 Writes files.
@@ -172,7 +172,7 @@ Writes files.
 - `--horn-height`: float, optional
 - `--horn-offset`: float, optional
 - `--arm-side`: choice, one of +, -, optional
-- `--horn-dir`: str, optional
+- `--horn-toward`: str, optional
 - `--input-range`: float, optional
 - `--servo-range`: float, optional
 - `--why`: str, required

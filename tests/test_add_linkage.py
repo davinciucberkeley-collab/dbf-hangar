@@ -178,7 +178,7 @@ def test_input_errors(tmp_path):
     assert "frames" in _no_change(g)
     h = scratch(tmp_path, "h")
     _edit(h, "axis: [0, -1, 0]", "axis: [0, 0, 1]")
-    assert "give --horn-dir" in _no_change(h)
+    assert "give --horn-toward" in _no_change(h)
     k = scratch(tmp_path, "k")
     _edit(k, "position: [14.5, 0, -24.4]", "position: [14.5, 0, -8]")
     assert "arm plane" in _no_change(k)

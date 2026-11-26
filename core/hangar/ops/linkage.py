@@ -99,7 +99,7 @@ def _tip(pin, Op, a_o, arm_length: float, side: float):
 
 
 def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length: float, side: float,
-              horn_height, horn_offset: float, horn_dir: np.ndarray):
+              horn_height, horn_offset: float, horn_toward: np.ndarray):
     """The linkage points (unrounded) from the resolved design and the servo and surface meshes."""
     from ..geom.library import load_part
     from ..geometry import component_parts
@@ -138,11 +138,11 @@ def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length
     if np.linalg.norm(d) < 1e-9:
         raise OpInputError("the servo shaft lies on the hinge line; move the servo or give another --station")
     n = _unit(np.cross(ax, d))
-    if n @ horn_dir < 0:
+    if n @ horn_toward < 0:
         n = -n
-    if abs(n @ horn_dir) < 0.3:
+    if abs(n @ horn_toward) < 0.3:
         raise OpInputError(f"the horn direction is ambiguous (normal to hinge and shaft is {n.round(3).tolist()}); "
-                           f"give --horn-dir along the side the horn should stand")
+                           f"give --horn-toward along the side the horn should stand")
     # 3. the horn root on the skin, aft of the hinge
     parts_f = component_parts(comps[surf], design.base_dir)
     cen = np.mean(np.vstack([m.vertices for m in parts_f]), axis=0)
@@ -194,7 +194,7 @@ def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length
 
 def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = 6.0,
                    horn_height: float = None, horn_offset: float = 6.0, arm_side: Literal["+", "-"] = "+",
-                   horn_dir: str = "0,0,-1", input_range: float = 20.0, servo_range: float = 30.0,
+                   horn_toward: str = "0,0,-1", input_range: float = 20.0, servo_range: float = 30.0,
                    why: str) -> OpResult:
     from ..checks import validate
     from ..gates.mechanisms import link_ratios, simulate_mechanism
@@ -203,9 +203,9 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
     text = _text(plane)
     if not why.strip():
         raise OpInputError("why must not be empty")
-    hd = np.array(_vec(horn_dir, 3, "--horn-dir"), float)
+    hd = np.array(_vec(horn_toward, 3, "--horn-toward"), float)
     if np.linalg.norm(hd) < 1e-9:
-        raise OpInputError("--horn-dir must not be zero")
+        raise OpInputError("--horn-toward must not be zero")
     hd = _unit(hd)
     if arm_length <= 0 or (horn_height is not None and horn_height <= 0) or horn_offset < 0:
         raise OpInputError("--arm-length and --horn-height must be positive and --horn-offset not negative")
@@ -315,10 +315,10 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
     mutates=True, render=lambda r: "\n".join(r.messages))
 def add_linkage_op(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = 6.0,
                    horn_height: float = None, horn_offset: float = 6.0, arm_side: Literal["+", "-"] = "+",
-                   horn_dir: str = "0,0,-1", input_range: float = 20.0, servo_range: float = 30.0,
+                   horn_toward: str = "0,0,-1", input_range: float = 20.0, servo_range: float = 30.0,
                    why: str) -> OpResult:
     from ..geom import overlay
     with overlay.forced_off():       # the CAD overlay never changes what is written: same plane.yaml on every machine
         return _add_linkage(path, servo=servo, hinge=hinge, station=station, prefix=prefix, arm_length=arm_length,
-                            horn_height=horn_height, horn_offset=horn_offset, arm_side=arm_side, horn_dir=horn_dir,
+                            horn_height=horn_height, horn_offset=horn_offset, arm_side=arm_side, horn_toward=horn_toward,
                             input_range=input_range, servo_range=servo_range, why=why)
