@@ -4,6 +4,12 @@
 
 A control surface needs a servo, an arm on the servo output, a pushrod and a horn on the surface. T6 (`T6.mechanism`, `T6.ratio`) only runs when a `mechanisms[]` entry joins them.
 
+## Generate the linkage
+
+Run `plane design add-linkage <design> --servo <servo-id> --hinge <hinge-attachment-id> --station <mm along the hinge axis from its pivot> --why "..."` instead of steps (a) to (h) below. It reads the servo output frame (part `frames`, see `design place`) and the hinge from the resolved design (so a derived hinge is followed), then writes `<prefix>-arm`, `-rod`, `-horn`, `-pin`, their four attachments and the `four_bar` mechanism `<prefix>-drive` with the ratio the gate computes. Arm and rod are at 90 degrees at neutral, the rod is perpendicular to the hinge line and the horn pin is over the hinge line.
+Options: `--prefix` (default the hinge id), `--arm-length` 6, `--horn-height` 13, `--arm-side +|-`, `--horn-dir X,Y,Z` (default `0,0,-1`; give it when the message says so), `--input-range` 20, `--servo-range` 30. These are layout defaults for a 1:10 RC model, not thresholds.
+Run it again after moving the servo or the wing: unchanged parts are skipped, changed ones are replaced in place. The result lists the ratio, the minimum transmission angle and the T0 / T6 rows; T1 FAIL rows that name the new parts (arm or horn clipping the servo or surface) are reported, not hidden: adjust the options or the servo position.
+
 ## 2. The recipe
 
 (a) Put the servo just ahead of the hinge line (smaller x on a tail or wing trailing surface), on the side of the fixed surface away from the airflow if possible. Glue it with `embed_ok` where it sits in a recess.
