@@ -5460,9 +5460,9 @@ items:
     text: tests/test_generated_tails.py pins c172-rc literal values (tail_cl, tail_lift, elevator, x_cg, stall and static-margin text); every designs-only c172 change moves them (S2 Part B, S6 Part B). Make the c172 pins derive from the design or move them to a fixture copy, so showcase opt-ins stop breaking CI; the stall text pin sits on a rounding edge (8.05).
     source: reviews/2026-11-25-w34c.md section 16
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: ea9ec65
     decided_in: ''
     updated: '2026-11-26'
