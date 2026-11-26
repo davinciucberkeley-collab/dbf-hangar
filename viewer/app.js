@@ -7,7 +7,7 @@ import { refreshInspector } from './ui/inspector.js';
 import { initApplyBar, bindApplyBar } from './ui/applybar.js';
 
 const DATA = 'data/';
-const MODES = ['designs', 'compare', 'stress', 'updates', 'ledger'];
+const MODES = ['designs', 'compare', 'stress', 'ledger', 'updates'];
 const LABELS = { designs: 'Model', compare: 'Compare', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
 const HINTS = { designs: 'Click a part, or a row in the list. Drag to orbit, scroll to zoom.', compare: 'Click designs in the list to fill slots A and B alternately.' };
 

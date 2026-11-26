@@ -1177,6 +1177,11 @@ def _cube_areas(page):
       const r = document.querySelector(`[data-testid="cube-${n}"]`).getBoundingClientRect(); return [n, r.width * r.height]; }))""")
 
 
+def _cube_centre(page):
+    return page.evaluate("""() => { const c = document.querySelector('#view-cube').getBoundingClientRect();
+      const e = document.elementFromPoint(c.left + c.width / 2, c.top + c.height / 2); return e && e.dataset ? e.dataset.testid : null; }""")
+
+
 def test_view_cube_faces_follow_the_camera(browser, pages_base):
     page, errors = _open(browser, pages_base, "mech-good")
     for name in ("front", "top", "back", "right"):
@@ -1185,6 +1190,10 @@ def test_view_cube_faces_follow_the_camera(browser, pages_base):
         areas = _cube_areas(page)
         assert areas[name] == max(areas.values()), (name, areas)
         assert areas[name] >= 3 * min(areas.values()), (name, areas)
+        assert _cube_centre(page) == f"cube-{name}", (name, _cube_centre(page))
+    page.evaluate('window.planeViewer.vp.view("iso")')
+    page.wait_for_timeout(400)
+    assert _cube_centre(page) == "cube-left"
     assert errors == []
     page.close()
 

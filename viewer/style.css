@@ -318,11 +318,13 @@ table.cmp thead th { position: sticky; top: 0; background: var(--panel); z-index
 #tool-bar button[data-testid="tool-measure"][aria-pressed="true"] { background: var(--accent); color: #fff; }
 .view-cube { position: absolute; right: 28px; top: 120px; width: 72px; height: 72px; z-index: 2; }
 .cube-inner { position: relative; width: 72px; height: 72px; transform-style: preserve-3d; }
-.cube-face { position: absolute; left: 0; top: 0; width: 72px; height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 0; font-size: 11px; color: inherit; cursor: pointer; background: color-mix(in srgb, var(--panel) 88%, transparent); border: 1px solid var(--border); }
+.cube-face { position: absolute; left: 0; top: 0; width: 72px; height: 72px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; padding: 0; font-size: 11px; color: inherit; cursor: pointer; backface-visibility: hidden; background: color-mix(in srgb, var(--panel) 88%, transparent); border: 1px solid var(--border); }
 .cube-face:hover { background: var(--accent); color: #fff; }
 .cube-face[data-view="front"] { transform: rotateY(90deg) translateZ(36px); }
 .cube-face[data-view="back"] { transform: rotateY(-90deg) translateZ(36px); }
-.cube-face[data-view="top"] { transform: rotateX(90deg) translateZ(36px); }
-.cube-face[data-view="bottom"] { transform: rotateX(-90deg) translateZ(36px); }
+.cube-face[data-view="top"] { transform: rotateX(90deg) translateZ(36px) rotateZ(90deg); } /* the Top view has camera.up = +x: turn the label so it reads upright there */
+.cube-face[data-view="bottom"] { transform: rotateX(-90deg) translateZ(36px) rotateZ(90deg); }
 .cube-face[data-view="left"] { transform: translateZ(36px); }
 .cube-face[data-view="right"] { transform: rotateY(180deg) translateZ(36px); }
+#explode-bar label { display: flex; align-items: center; gap: 4px; }
+#sidebar .brand h1 { display: none; } /* the top bar already says Plane Studio */
