@@ -1711,14 +1711,14 @@ attachments:
   - {id: E-ASM-01, parent: wng-001, child: hrd-001, method: zip-tie, location: [100, 0, 0], rated_load_n: 1.2, rating_basis: placeholder, connection: CT-TIE}
   - {id: e-mec-01, parent: wng-001, child: mec-001-r, method: glued, location: [140.505, 199.75, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
   - {id: e-mec-06, parent: wng-001, child: mec-001-l, method: glued, location: [140.505, -200.25, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
-  - {id: mec-r-servo-arm, parent: mec-001-r, child: mec-r-arm, method: bolted, location: [130.5, 200, 11.96], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [130.5, 200, 11.96], axis: [0, 0, 1], range_deg: [-30, 30]}}
-  - {id: mec-r-arm-rod, parent: mec-r-arm, child: mec-r-rod, method: hinge, location: [133.4968, 211.6198, 11.96], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, kinematic_link: true}
-  - {id: mec-r-horn-mount, parent: wng-006-r, child: mec-r-horn, method: glued, location: [189.702, 195, -0.5287], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}
-  - {id: mec-r-horn-pin, parent: mec-r-horn, child: mec-r-pin, method: bolted, location: [192.1211, 196.5, 11.96], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}
-  - {id: mec-l-servo-arm, parent: mec-001-l, child: mec-l-arm, method: bolted, location: [130.5, -200, 11.96], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [130.5, -200, 11.96], axis: [0, 0, 1], range_deg: [-30, 30]}}
-  - {id: mec-l-arm-rod, parent: mec-l-arm, child: mec-l-rod, method: hinge, location: [131.5762, -188.0484, 11.96], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, kinematic_link: true}
-  - {id: mec-l-horn-mount, parent: wng-006-l, child: mec-l-horn, method: glued, location: [189.702, -195, -0.5287], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}
-  - {id: mec-l-horn-pin, parent: mec-l-horn, child: mec-l-pin, method: bolted, location: [192.1211, -193.5, 11.96], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}
+  - {id: mec-r-servo-arm, parent: mec-001-r, child: mec-r-arm, method: bolted, location: [130.5, 200, 11.96], embed_ok: true, rated_load_n: 931.5, rating_basis: derived, articulation: {type: revolute, pivot: [130.5, 200, 11.96], axis: [0, 0, 1], range_deg: [-30, 30]}, connection: CT-SERVO-SPLINE}
+  - {id: mec-r-arm-rod, parent: mec-r-arm, child: mec-r-rod, method: hinge, location: [133.4968, 211.6198, 11.96], embed_ok: true, rated_load_n: 73, rating_basis: sourced, kinematic_link: true, connection: CT-CLEVIS}
+  - {id: mec-r-horn-mount, parent: wng-006-r, child: mec-r-horn, method: glued, location: [189.702, 195, -0.5287], embed_ok: true, rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
+  - {id: mec-r-horn-pin, parent: mec-r-horn, child: mec-r-pin, method: bolted, location: [192.1211, 196.5, 11.96], embed_ok: true, rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: mec-l-servo-arm, parent: mec-001-l, child: mec-l-arm, method: bolted, location: [130.5, -200, 11.96], embed_ok: true, rated_load_n: 931.5, rating_basis: derived, articulation: {type: revolute, pivot: [130.5, -200, 11.96], axis: [0, 0, 1], range_deg: [-30, 30]}, connection: CT-SERVO-SPLINE}
+  - {id: mec-l-arm-rod, parent: mec-l-arm, child: mec-l-rod, method: hinge, location: [131.5762, -188.0484, 11.96], embed_ok: true, rated_load_n: 73, rating_basis: sourced, kinematic_link: true, connection: CT-CLEVIS}
+  - {id: mec-l-horn-mount, parent: wng-006-l, child: mec-l-horn, method: glued, location: [189.702, -195, -0.5287], embed_ok: true, rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
+  - {id: mec-l-horn-pin, parent: mec-l-horn, child: mec-l-pin, method: bolted, location: [192.1211, -193.5, 11.96], embed_ok: true, rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
   - {id: e-mec-hw-r2, parent: mec-r-arm, child: hwc-002-r, method: bolted, location: [130.5, 200, 13], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
   - {id: e-mec-hw-l2, parent: mec-l-arm, child: hwc-002-l, method: bolted, location: [130.5, -200, 13], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
 files:
