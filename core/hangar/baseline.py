@@ -22,6 +22,7 @@ DESIGN_LEVEL = frozenset({
     "T3.mass", "T3.stall", "T3.static_margin", "T3.lateral_cg", "T3.hover_tw", "T3.planform_matches_geometry",
     "T2.hover_moment", "T2.sim_rest", "T2.sim_stable",
     "T3.control_authority", "T3.transition_margin", "T3.endurance", "T3.spar_bending", "T3.tail_volume", "T3.trim",
+    "T3.dynamic_modes",
     "T5.part107_mass", "T5.registration",
     "T0.version",
 })
@@ -32,6 +33,7 @@ _WHOLE_GROUP_SKIPS = (
     "standards/manufacturing.yaml not written",  # checks.py: T4.capabilities
     "no model",                             # sim.py: T2.sim_drop_loads and T2.sim_rest when the model will not build
     "simulation went unstable",             # sim.py: T2.sim_drop_loads / T2.sim_rest after NaN states (no loads exist)
+    "aerosandbox not installed",            # gates/dynamics.py: T3.dynamic_modes
 )
 _WHOLE_GROUP_FAILS = (
     "could not build simulation model",     # sim.py: T2.sim_stable

@@ -23,7 +23,8 @@ KEY = "components[{}].propulsion.max_thrust_n"
 # re-recorded after U17.1 sourced wind_drag_coefficient (the "operations.yaml#wind_drag_coefficient" mentions dropped from T3.control_authority messages)
 # U18.4-1: one more row, T3.tail_volume not-applicable SKIP (rows minus it hash to the value above)
 # U18.4-2: one more row, T3.trim not-applicable SKIP (rows minus it hash to the previous value 3679b4c7...)
-MAIN_ROWS_SHA = "8c1ab62475146b52df881229f78ef0b54281ebe74bdfe6a77e31c0e56cfa0bb4"
+# U18.4-3: one more row, T3.dynamic_modes (aerosandbox not installed; rows minus it hash to 8c1ab624...)
+MAIN_ROWS_SHA = "36af0c965c20bf346fc88094d4dc73719e5f5a225a016bc5cb8f1963cfa7401c"
 
 
 @pytest.fixture
