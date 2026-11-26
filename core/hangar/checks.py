@@ -48,10 +48,15 @@ def _tier0_v13(design: Design) -> list[CheckResult]:
     """PDL 1.3 row (mechanisms[].kinematics); nothing at all for a design that does not use it."""
     src = design.raw if design.raw is not None else design.data
     mechs = [m for m in src.get("mechanisms", []) if isinstance(m, dict)]
+    res: list[CheckResult] = []
     if any("kinematics" in m for m in mechs) and _below(design, "1.3"):
-        return [CheckResult("T0.version", FAIL, 'mechanisms[].kinematics need schema_version "1.3"',
-                            "schema/plane.schema.json")]
-    return []
+        res.append(CheckResult("T0.version", FAIL, 'mechanisms[].kinematics need schema_version "1.3"',
+                               "schema/plane.schema.json"))
+    arts = [a.get("articulation") for a in src.get("attachments", []) if isinstance(a, dict)]
+    if any(isinstance(x, dict) and x.get("type") == "continuous" for x in arts) and _below(design, "1.3"):
+        res.append(CheckResult("T0.version", FAIL, 'articulation.type continuous needs schema_version "1.3"',
+                               "schema/plane.schema.json"))
+    return res
 
 
 def _tier0_v12(design: Design) -> list[CheckResult]:
@@ -345,7 +350,7 @@ def _configurations(design: Design, sweep_step_deg: float) -> list[tuple[str, di
     Each named pose: all joints at that pose if every joint defines it, else each defining joint swept alone.
     Then both range endpoints of each joint, swept alone with the others at 0.
     Then every sweep_step_deg step across each joint's range (min, min+step, ... max), others at 0."""
-    joints = articulated_attachments(design)
+    joints = [a for a in articulated_attachments(design) if a["articulation"].get("type") != "continuous"]
     if not joints:
         return []
     if sweep_step_deg <= 0:
@@ -401,13 +406,15 @@ def _articulation_checks(design: Design, std: dict, meshes: dict) -> list[CheckR
     res: list[CheckResult] = []
     for a in articulated_attachments(design):
         label, art = att_label(a), a["articulation"]
-        lo, hi = art["range_deg"]
+        continuous = art.get("type") == "continuous"
         problems = []
-        if lo > hi:
-            problems.append(f"range_deg [{lo}, {hi}] is reversed")
+        if not continuous:
+            lo, hi = art["range_deg"]
+            if lo > hi:
+                problems.append(f"range_deg [{lo}, {hi}] is reversed")
         if float(np.linalg.norm(art["axis"])) < 1e-9:
             problems.append("axis is the zero vector")
-        for n, ang in art.get("poses", {}).items():
+        for n, ang in ({} if continuous else art.get("poses", {})).items():
             if not lo <= ang <= hi:
                 problems.append(f"pose {n} ({_fmt_deg(ang)}) is outside range [{_fmt_deg(lo)}, {_fmt_deg(hi)}]")
         if a["parent"] in downstream_ids(design, a):
@@ -419,6 +426,9 @@ def _articulation_checks(design: Design, std: dict, meshes: dict) -> list[CheckR
         if problems:
             res.append(CheckResult("T1.articulation", FAIL, f"{label}: " + "; ".join(problems), STD + "attach_tolerance_mm",
                                    {"joint": label}))
+        elif continuous:
+            res.append(CheckResult("T1.articulation", PASS, f"{label}: continuous, pivot on both parts",
+                                   STD + "attach_tolerance_mm"))
         else:
             res.append(CheckResult("T1.articulation", PASS,
                                    f"{label}: revolute, range [{_fmt_deg(lo)}, {_fmt_deg(hi)}], poses "

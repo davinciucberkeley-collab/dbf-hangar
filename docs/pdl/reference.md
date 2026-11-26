@@ -144,10 +144,10 @@ Type: array of number
 | `rated_load_n` | number | yes |  |
 | `rating_basis` | one of `sourced`, `derived`, `placeholder` |  | v0.4. Where rated_load_n comes from. sourced: a published or tested capacity. derived: an allowable times measured geometry. placeholder: no capacity in the source; the value is not a capacity, and tier-2 load checks skip this joint (never PASS or FAIL it). |
 | `articulation` | object |  | v0.2. The joint moves. Rotation applies to the CHILD side: the child and everything attached downstream of it (reached from the child without crossing back through this joint). 0 deg = the geometry as written. |
-| `articulation.type` | `revolute` | yes |  |
+| `articulation.type` | one of `revolute`, `continuous` | yes | v1.3: type continuous = spins without limit (a wheel on its axle); no range_deg, no poses. |
 | `articulation.pivot` | `vec3` | yes | A point on the rotation axis, body frame (mm), at 0 deg. |
 | `articulation.axis` | `vec3` | yes | Rotation axis direction (right-hand rule), body frame, at 0 deg. |
-| `articulation.range_deg` | array of number | yes | [min, max] angle in degrees. |
+| `articulation.range_deg` | array of number |  | [min, max] angle in degrees. |
 | `articulation.poses` | object |  | Named poses -> angle in degrees (each within range_deg). |
 | `connection` | string |  | v1.0. Id of a connection type in standards/connection-types.yaml (for example CT-M3-SHCS-INSERT). Optional. T1.interfaces.connection_known fails an id that is not in the library. |
 | `seat` | string |  | v1.0. Optional. Short text naming the recess, pocket or slot machined in the parent that receives the child (for example "pod recess cut in the core"). Data only; no check reads it. |

@@ -913,13 +913,48 @@
           "required": [
             "type",
             "pivot",
-            "axis",
-            "range_deg"
+            "axis"
           ],
           "additionalProperties": false,
+          "allOf": [
+            {
+              "if": {
+                "properties": {
+                  "type": {
+                    "const": "revolute"
+                  }
+                }
+              },
+              "then": {
+                "required": [
+                  "range_deg"
+                ]
+              },
+              "else": {
+                "not": {
+                  "anyOf": [
+                    {
+                      "required": [
+                        "range_deg"
+                      ]
+                    },
+                    {
+                      "required": [
+                        "poses"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          ],
           "properties": {
             "type": {
-              "const": "revolute"
+              "enum": [
+                "revolute",
+                "continuous"
+              ],
+              "description": "v1.3: type continuous = spins without limit (a wheel on its axle); no range_deg, no poses."
             },
             "pivot": {
               "description": "A point on the rotation axis, body frame (mm), at 0 deg.",

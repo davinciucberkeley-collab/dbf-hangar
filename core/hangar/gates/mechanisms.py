@@ -27,6 +27,15 @@ def _atts(design: Design) -> dict[str, dict]:
     return {att_label(a): a for a in design.data.get("attachments", [])}
 
 
+def _continuous_refusal(design: Design, mech: dict) -> str | None:
+    """FAIL text when the driver, a driven joint or an expect target is a continuous joint (a wheel spins freely), else None."""
+    atts = _atts(design)
+    for x in (mech["driver"], *mech["driven"], *(e["attachment"] for e in mech.get("expect", []))):
+        if (atts.get(x, {}).get("articulation") or {}).get("type") == "continuous":
+            return f"mechanism {mech['id']}: continuous joint {x} cannot be a driver or follower"
+    return None
+
+
 def _input_range(design: Design, mech: dict) -> tuple[float, float]:
     rng = mech.get("input_range_deg") or _atts(design)[mech["driver"]]["articulation"]["range_deg"]
     return float(rng[0]), float(rng[1])
@@ -169,6 +178,9 @@ def simulate_mechanism(design: Design, mech: dict) -> dict:
     """Follower angle (deg) at each 1 degree of driver input: clamp(ratio x driver, follower range_deg).
     A follower sitting at its own limit is the jam. With kinematics: four_bar the angle is solved from the rod length
     instead (see solve_four_bar), and a jam is reported under the key "jam"."""
+    refusal = _continuous_refusal(design, mech)
+    if refusal:
+        raise RuntimeError(refusal)
     if mech.get("kinematics") == "four_bar":
         return _simulate_four_bar(design, mech)
     atts = _atts(design)
@@ -328,6 +340,9 @@ def _mechanism_row(design: Design, mech: dict, th: dict, limit: float) -> CheckR
         if x not in atts or (x in (drv, *expect) and not atts[x].get("articulation")):
             return CheckResult(f"T6.mechanism.{mid}", FAIL,
                                f"mechanism {mid}: attachment {x} is missing or not articulated", CRIT, data)
+    refusal = _continuous_refusal(design, mech)
+    if refusal:
+        return CheckResult(f"T6.mechanism.{mid}", FAIL, refusal, CRIT, data)
     four_bar = mech.get("kinematics") == "four_bar"
     if four_bar:
         need = _four_bar_needs(design, mech, atts)
@@ -388,7 +403,7 @@ def tier6_mechanisms(ctx) -> TierReport | None:
     from ..geometry import articulated_attachments, att_label
     design = ctx.design
     mechs = design.data.get("mechanisms", [])
-    arts = articulated_attachments(design)
+    arts = [a for a in articulated_attachments(design) if a["articulation"].get("type") != "continuous"]
     idle = _undriven_servos(design)
     if not mechs and not arts and not idle:
         return None
