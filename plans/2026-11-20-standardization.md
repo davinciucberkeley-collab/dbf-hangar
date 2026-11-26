@@ -372,6 +372,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D103 | U16.2 tier-1 time budget (D73) | relaxed to ~90 s for concept-a-param tier 1 (U16.2 measured 71 s alone, ~77-99 s loaded); U16.2 merges on ACCEPT + green CI, then concept-a-param's designs-only baseline refresh | Tristan | 11-25 | decided (Tristan P295, 2026-11-25) |
 | D104 | May a vendor's minimum strength with no stated test method count as a spar allowable? | yes (cfrp-tube 1379 MPa from Goodwinds stays, with its note) | Tristan | 11-25 | decided (Tristan P295, 2026-11-25) |
 | D105 | Install AeroSandbox? | yes locally in .venv now (installed 2026-11-25 via uv) so dynamic modes and the AeroSandbox code path run on Tristan's PC; adding it to CI (pyproject extra + validate.yml) is planned for later (ledger task) | Tristan | 11-25 | decided (Tristan P298, 2026-11-25) |
+| D106 | What does Studio x-ray ghost? (B3 review: type-based ghosting misses concept-a's shell typed structure/other) | invert it: x-ray ghosts every part except internal types (battery, esc, servo, receiver, flight_controller, motor, harness/wire, sensor), so internals show on any design without re-typing; CG marker gets a colour distinct from the selection | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan P286 intent) |
+| D107 | Team-constraint owners, and the parked std/u4.25-pockets branch | all 19 team constraints: owner Tristan, date 2026-11-25 (confirmed); delete remote std/u4.25-pockets after U16.2 merges | Tristan | 11-25 | decided (Tristan P299, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
