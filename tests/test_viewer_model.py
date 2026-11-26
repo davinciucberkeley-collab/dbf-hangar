@@ -764,3 +764,198 @@ def test_gizmo_drag_moves_the_part_in_whole_millimetres(browser, pages_base):
     assert page.evaluate(f"{VPJ}.state().selection") == ["battery"]  # the click-through did not deselect
     assert errors == []
     page.close()
+
+
+# ---------- U19.1 B6b: colour by status or mass, tree dots, row click frames parts, part checks ----------
+_T9 = [
+    ("T9.a", "FAIL", {"pair": ["battery", "center_body"]}),
+    ("T9.b", "WARN", {"joint": "battery-bay"}),
+    ("T9.c", "WARN", {"component": "wing"}),
+    ("T9.d", "FAIL", {"parts": ["flight_controller"]}),
+    ("T9.e", "SKIP", {"parts": ["prop_l"]}),
+    ("T9.f", "FAIL", {"unchecked_pairs": ["a & b"], "parts": []}),
+    ("T9.g", "FAIL", {"paths": ["components/0/mass_g"]}),
+]
+
+
+def _inject(page):
+    def handler(route):
+        resp = route.fetch()
+        body = resp.json()
+        body["tiers"][0]["results"] += [
+            {"check_id": c, "status": s, "message": "m " + c, "criterion": "t", "data": d} for c, s, d in _T9]
+        route.fulfill(response=resp, json=body)
+    page.route("**/*.scorecard.json", handler)
+
+
+def _open9(browser, pages_base):
+    page = browser.new_page(viewport={"width": 1500, "height": 900})
+    errors = collect(page)
+    _inject(page)
+    page.goto(pages_base + "#m=designs&d=example-tailsitter-wing")
+    _ready(page, "designs")
+    page.wait_for_function("window.planeViewer.vp && window.planeViewer.vp.state().all.length > 0")
+    return page, errors
+
+
+def test_status_map_rules(browser, pages_base):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const parts = { parts: [{id:'a'},{id:'b'},{id:'c'}], attachments: [{label:'j1', parent:'a', child:'b'}] };
+      const row = (check_id, status, data) => ({ check_id, status, message: check_id, data });
+      const sc = { tiers: [{ results: [row('p','FAIL',{pair:['a','b']}), row('j','WARN',{joint:'j1'}), row('c','WARN',{component:'c'}),
+        row('z','FAIL',{parts:['zzz']}), row('u','FAIL',{unchecked_pairs:['a & b'], parts: []}), row('s','SKIP',{parts:['c']})] }] };
+      const st = m.partStatus(sc, parts);
+      return { st: Object.fromEntries([...st].map(([k, v]) => [k, v.status])), joint: m.rowParts(sc.tiers[0].results[1], parts),
+        a: [...st.get('a').rows.map((r) => r.check_id)], skip: m.rowParts(sc.tiers[0].results[5], parts), checksC: m.partChecks(sc, parts, 'c').map((r) => r.check_id) };
+    }""")
+    assert out["st"] == {"a": "FAIL", "b": "FAIL", "c": "WARN"}
+    assert out["joint"] == ["a", "b"]
+    assert out["a"] == ["p", "j"]
+    assert out["skip"] == ["c"] and out["checksC"] == ["c", "s"]  # a SKIP row names its part but never colours it
+    assert errors == []
+    page.close()
+
+
+def test_colour_by_status_colours_fail_and_warn_parts(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    type_png = _canvas_png(page)
+    page.select_option('[data-testid="colour-by"]', "status")
+    st = page.evaluate(f"{VPJ}.state()")
+    assert {"battery", "center_body", "flight_controller", "wing"} <= set(st["coloured"])
+    assert st["status"]["battery"] == "FAIL" and st["status"]["flight_controller"] == "FAIL"
+    assert page.locator('[data-testid="legend"]').is_visible()
+    assert _canvas_png(page) != type_png
+    page.evaluate(f'{VPJ}.colourBy("type")')
+    assert page.evaluate(f"{VPJ}.state().coloured") == []
+    assert errors == []
+    page.close()
+
+
+def test_tree_dots_show_status(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    assert page.locator('.part-row[data-id="battery"]').get_attribute("data-status") == "FAIL"
+    assert page.locator('.part-row[data-id="flight_controller"]').get_attribute("data-status") == "FAIL"
+    assert page.locator(".part-row .status-dot").count() == page.locator(".part-row").count()
+    assert errors == []
+    page.close()
+
+
+def _dist(page):
+    return _cam(page)["len"]
+
+
+def test_row_click_selects_frames_and_ghosts_the_rest(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    before = _dist(page)
+    row = page.locator('[data-check-id="T9.d"]')
+    row.click()
+    page.wait_for_timeout(400)
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == ["flight_controller"]
+    assert set(st["all"]) - {"flight_controller"} <= set(st["ghosted"])
+    assert _dist(page) < before
+    assert "active" in row.get_attribute("class")
+    row.click()
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == [] and st["ghosted"] == []
+    page.locator('[data-check-id="T9.a"]').click()
+    assert sorted(page.evaluate(f"{VPJ}.state().selection")) == ["battery", "center_body"]
+    page.keyboard.press("Escape")
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == [] and st["ghosted"] == []
+    assert errors == []
+    page.close()
+
+
+def test_inspector_lists_the_checks_of_a_part(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    li = page.locator('[data-testid="part-checks"] li')
+    mine = page.locator('[data-testid="part-checks"] li', has_text="T9.")
+    page.evaluate(f'{VPJ}.select(["battery"])')
+    assert mine.count() == 2
+    assert "FAIL" in li.first.inner_text()
+    page.evaluate(f'{VPJ}.select(["prop_l"])')
+    assert mine.count() == 1 and "SKIP" in mine.first.inner_text()
+    page.evaluate(f'{VPJ}.select(["motor_l"])')
+    assert mine.count() == 0
+    page.evaluate(f"{VPJ}.select([])")
+    assert page.locator('[data-testid="part-checks"]').count() == 0
+    assert errors == []
+    page.close()
+
+
+def test_colour_by_mass(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    page.evaluate(f'{VPJ}.colourBy("mass")')
+    assert len(page.evaluate(f"{VPJ}.state().coloured")) >= 10
+    assert " g" in page.locator('[data-testid="legend"]').inner_text()
+    assert errors == []
+    page.close()
+
+
+def test_no_row_without_ids_is_clickable(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    for cid in ("T9.f", "T9.g"):
+        assert "has-parts" not in page.locator(f'[data-check-id="{cid}"]').get_attribute("class")
+    assert "has-parts" in page.locator('[data-check-id="T9.d"]').get_attribute("class")
+    assert errors == []
+    page.close()
+
+
+def test_report_only_skip_is_not_coloured(browser, pages_base):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const parts = { parts: [{id:'a'},{id:'b'}], attachments: [] };
+      const sc = { tiers: [{ results: [
+        { check_id: 'w1', status: 'WARN', message: 'x', data: { component: 'a', report_only: true, raw_status: 'SKIP' } },
+        { check_id: 'w2', status: 'WARN', message: 'x', data: { component: 'b', report_only: true, raw_status: 'FAIL' } }] }] };
+      return { st: Object.fromEntries([...m.partStatus(sc, parts)].map(([k, v]) => [k, v.status])), checks: m.partChecks(sc, parts, 'a').length };
+    }""")
+    assert out["st"] == {"b": "WARN"} and out["checks"] == 1
+    assert errors == []
+    page.close()
+
+
+def test_empty_click_ends_a_row_focus(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    page.locator('[data-check-id="T9.d"]').click()
+    page.wait_for_timeout(300)
+    assert page.evaluate(f"{VPJ}.state().ghosted") != []
+    box = page.locator("#vp-main canvas").bounding_box()
+    page.mouse.click(box["x"] + 4, box["y"] + box["height"] - 4)
+    page.wait_for_timeout(300)
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == [] and st["ghosted"] == [] and st["focus"] is None
+    assert errors == []
+    page.close()
+
+
+def test_design_level_rows_do_not_paint_parts(browser, pages_base):
+    from hangar.baseline import DESIGN_LEVEL
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const ids = 'abcdefghijkl'.split('');
+      const parts = { parts: ids.map((id) => ({ id })), attachments: [] };
+      const row = (check_id, data) => ({ check_id, status: 'WARN', message: 'x', data });
+      const sc = { tiers: [{ results: [row('T3.mass', { component: 'a' }), row('T7.transport', { parts: ids.slice(0, 6) }),
+        row('T8.bom.x', { component: 'b' }), row('T7.wiring.y', { parts: ['c', 'd', 'e'] })] }] };
+      const st = m.partStatus(sc, parts);
+      return { ids: [...st.keys()], dl: st.designLevel, list: [...m.DESIGN_LEVEL].sort() };
+    }""")
+    assert out["ids"] == ["b", "c", "d", "e"] and out["dl"] == 2
+    assert out["list"] == sorted(DESIGN_LEVEL)
+    assert errors == []
+    page.close()

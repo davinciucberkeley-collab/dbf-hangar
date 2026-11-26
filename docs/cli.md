@@ -2,7 +2,7 @@
 
 # plane command reference
 
-67 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+68 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -203,7 +203,7 @@ plane design diff <a> <b>
 
 ### `plane design export`
 
-Export a design to glb, stl, json or mjcf.
+Export a design to glb, stl, json, mjcf or mjcf-kinematic.
 
 ```
 plane design export <path> --format <choice> --out <path>
@@ -212,7 +212,7 @@ plane design export <path> --format <choice> --out <path>
 Writes files.
 
 - `<path>`: str, required
-- `--format`: choice, one of glb, stl, json, mjcf, required
+- `--format`: choice, one of glb, stl, json, mjcf, mjcf-kinematic, required
 - `--out`: path, required
 
 ### `plane design get`
@@ -270,6 +270,25 @@ Writes files.
 - `<new-id>`: str, required
 - `--template`: str, optional
 - `--blank`: bool, optional
+
+### `plane design place`
+
+Put a library servo in a bay: pose it so its mount face sits on the host skin at X,Y (lower or upper face) with the output shaft along --shaft (default: the outward normal of the face), and cut a box bay (servo size plus --clearance, default gate-thresholds bay_clearance_mm) into the host in one atomic, logged edit; idempotent; the part needs `frames` in its part.yaml. Reports the output shaft frame, the removed volume and the part of the servo body inside the host.
+
+```
+plane design place <path> <component> --host <str> --at <str> --face <choice> [--shaft <str>] [--clearance <float>] --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `<component>`: str, required
+- `--host`: str, required
+- `--at`: str, required
+- `--face`: choice, one of lower, upper, required
+- `--shaft`: str, optional
+- `--clearance`: float, optional
+- `--why`: str, required
 
 ### `plane design propose`
 
@@ -841,7 +860,7 @@ Commands that are not registry operations (old forms and CLI-only commands):
 
 - `plane baseline`: Known-failure baselines: CI fails only on regressions.
 - `plane build-index`: Export glb, scorecard and mass for every design (or only the --design ones), then write index.json.
-- `plane export`: Export PATH to glb, stl or json.
+- `plane export`: Export PATH to glb, stl, json, mjcf or mjcf-kinematic.
 - `plane import`: Import a design from another project.
 - `plane list`: List every design under designs/.
 - `plane mass`: Print mass properties of PATH as JSON.
