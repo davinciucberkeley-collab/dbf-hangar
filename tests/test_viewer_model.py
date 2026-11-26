@@ -1340,3 +1340,28 @@ def test_old_index_without_rows_renders_as_before(browser, pages_base):
     assert page.locator('[data-testid="check-fold"]').count() == 0
     assert errors == []
     page.close()
+
+
+def test_inspector_jump_prefers_the_row_naming_the_part(browser, pages_base):
+    def handler(route):
+        resp = route.fetch()
+        body = resp.json()
+        body["tiers"][0]["results"] += [
+            {"check_id": "T9.same", "status": "WARN", "message": "m " + c, "criterion": "t", "data": {"parts": [c]}}
+            for c in ("battery", "motor_l")]
+        route.fulfill(response=resp, json=body)
+
+    page = browser.new_page(viewport={"width": 1500, "height": 900})
+    errors = collect(page)
+    page.route("**/*.scorecard.json", handler)
+    page.goto(pages_base + f"#m=designs&d={EX}")
+    _ready(page, "designs")
+    page.wait_for_function("window.planeViewer.vp && window.planeViewer.vp.state().all.length > 0")
+    page.evaluate(f'{VPJ}.select(["motor_l"])')
+    page.locator('[data-testid="part-checks"] li[data-for="T9.same"]').click()
+    act = page.locator("#scorecard .result.active")
+    assert act.count() == 1
+    assert act.get_attribute("data-parts") == "motor_l"
+    assert page.locator('#scorecard [data-check-id="T9.same"]').first.get_attribute("data-parts") == "battery"
+    assert errors == []
+    page.close()

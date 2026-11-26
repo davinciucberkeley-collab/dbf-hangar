@@ -14,7 +14,8 @@ export function setInspectorScorecard(sc) { cur.scorecard = sc; refreshInspector
 
 function checksList(ctx, sc, parts, id) {
   const rows = partChecks(sc, parts, id);
-  const find = (cid) => [...ctx.el.querySelectorAll('#scorecard [data-check-id]')].find((x) => x.dataset.checkId === cid);
+  const find = (cid) => { const all = [...ctx.el.querySelectorAll('#scorecard [data-check-id]')].filter((x) => x.dataset.checkId === cid);
+    return all.find((x) => (x.dataset.parts || '').split('|').includes(id)) || all[0]; }; // prefer the row naming this part
   return h('section', { class: 'part-checks' }, h('h4', {}, `Checks (${rows.length})`),
     h('ul', { 'data-testid': 'part-checks' }, rows.map((r) => { const text = r.text; return h('li', { class: 'pc', tabindex: 0, 'data-for': r.check_id, title: r.check_id, onclick: () => {
       let sel = find(r.check_id);
@@ -23,8 +24,8 @@ function checksList(ctx, sc, parts, id) {
       ctx.el.querySelectorAll('#scorecard .result.active').forEach((x) => x.classList.remove('active'));
       for (let det = sel.closest('details'); det; det = det.parentElement?.closest('details')) det.open = true;
       sel.classList.add('active'); sel.scrollIntoView({ block: 'nearest' });
-    } }, h('span', { class: 'badge ' + r.status }, r.status), ' ', h('span', { class: 'cid' }, r.check_id), ' ',
-    text && !text.fallback ? [h('span', { class: 'title small' }, text.title), ' ', h('span', { class: 'msg small' }, text.sentence)] : h('span', { class: 'msg small' }, r.message)); })));
+    } }, h('div', { class: 'pc-top' }, h('span', { class: 'badge ' + r.status }, r.status), ' ', h('span', { class: 'cid' }, r.check_id)),
+    text && !text.fallback ? [h('div', { class: 'title small' }, text.title), h('div', { class: 'msg small' }, text.sentence)] : h('div', { class: 'msg small' }, r.message)); })));
 }
 
 export function refreshInspector() {

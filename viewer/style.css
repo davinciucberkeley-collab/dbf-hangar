@@ -347,3 +347,7 @@ details.fold > .results { padding: 6px 0 2px; }
 .result .top { flex-wrap: wrap; }
 .results > * { min-width: 0; }
 .result .sentence, .result .hint, .result .cid { overflow-wrap: anywhere; }
+.pc .pc-top { display: flex; gap: 6px; align-items: center; }
+.pc .cid { font: 11px var(--mono); color: var(--muted); background: var(--panel-2); border-radius: 999px; padding: 0 6px; }
+.pc .title { font-weight: 700; margin-top: 2px; }
+.pc .msg { color: var(--muted); }
