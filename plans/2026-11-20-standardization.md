@@ -1117,7 +1117,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Inventory and packets** (tactician W34-T2) *(48791cb: 96 entries, 9 packets, 21 team decisions; 518 blocking rows have criteria that resolve to no threshold (D91); connection types move 0 rows (U8.3))*
 - [x] **Step 2: Sources** (scouts W34-S, up to 3 at a time; worktree C:/Users/trist/wt/u17.1, branch std/u17.1-sources) *(9 packets + a second pass with pdftotext for binary PDFs; about 45 source files; disagreements for the team: tip_angle_max_deg 30 vs ~15 deg tip-back, fw_static_margin_max 0.25 vs 0.05-0.15, wire_clearance_mm 5 vs 9.5-12.7 mm (AC 43.13-1B), LulzBot Z 256 vs 250 mm, attach/planform tolerances looser than printer accuracy, XPS 25 kg/m3 below the denser grades; hover-moment rows unsourced)*
-- [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus) *(briefs e6c36eb: -criteria (hard) building; -team-owner Part 1 after values merges; Part 2 held for Tristan (D100))*
+- [ ] **Step 2b: Criteria that resolve to no threshold, and team-constraint owner/date in the fidelity count** (D91; tactician brief, builder-plus) *(briefs e6c36eb: -criteria merged 4daec00 (sourced blocking 282 -> 798 of 2816, statuses unchanged; one REOPEN: duplicate alias re-added by a stray process); -team-owner Part 1 after values merges; Part 2 held for Tristan (D100))*
 - [x] **Step 3: Values into standards; re-run; baselines** (W34-B) *(merged 0f67f27: 8 entries sourced, no value changed, fidelity +1 per design; disagreements listed for Tristan)*
 - [ ] **Step 4: Review** (W34-R); merge; fidelity line before/after in the plan
 
