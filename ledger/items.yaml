@@ -5526,10 +5526,10 @@ items:
     text: add-linkage option for aileron differential (arm not square at neutral) so c172-rc ailerons can reach up 20 / down 15 (D123).
     source: D123
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: 4711e1c
     decided_in: ''
     updated: '2026-11-26'
   - id: T165
@@ -5570,16 +5570,38 @@ items:
     text: plane design cannot edit block-list ids in assembly.sequence, transport.disassembly or bom component_ids; after U16.3-3 replaces concept-a-test-refactor linkages, stale mec-002..005 ids make T7.assembly.once/touch, T7.transport, T8.budget, T8.bom.verified WARN (FAIL after 2026-12-08). Add an op (e.g. design set --replace-id old=new) or make add-linkage update those lists.
     source: U16.3-3 brief 2cd488f
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-08'
     units: []
-    evidence: ''
+    evidence: 6e478fc
     decided_in: ''
     updated: '2026-11-26'
   - id: T169
     kind: task
     text: add-linkage must not overwrite an existing non-placeholder rated_load_n / rating_basis / connection on re-run (D125; U16.3-3 review W34-R3 27).
     source: D125
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T170
+    kind: task
+    text: 'concept-a-test-refactor: after U16.3-3/4, T8.budget and T8.bom.verified stay WARN (b-mec-rods, b-mec-pins have no cost/verification; 17 other BOM items unverified) and T7.transport WARN (packed airframe 438x478x900 vs box 1200x500x400); FAIL after 2026-12-08 unless sourced.'
+    source: T168 brief 4817c41
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T171
+    kind: task
+    text: 'describe registry: SKIP rows keep failure-style titles (e.g. "Wing spar is too weak" when no spar was found); add per-status titles (title_by status or a skip_title) so SKIP and PASS rows read neutrally (U19.2, review W34-R2 31).'
+    source: reviews/2026-11-25-w34b.md section 31
     owner: conductor
     status: open
     due: ''

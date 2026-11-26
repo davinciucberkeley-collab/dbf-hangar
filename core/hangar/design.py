@@ -133,11 +133,77 @@ class Scorecard:
             d["fidelity"] = self.fidelity
         return d
 
-    def to_markdown(self) -> str:
+    def to_markdown(self, design=None) -> str:
+        from .gates import REPORT_ONLY_PREFIX
+        from .gates.describe import describe_card, fold
+        texts = describe_card(self, design)
+        flat = [t for tier in texts for t in tier]
+        until = REPORT_ONLY_PREFIX.removeprefix("report-only until ").rstrip(": ")
+        F = sum(1 for t in flat if t.status == FAIL)
+        W = sum(1 for t in flat if t.status == WARN)
+        P = sum(1 for t in flat if t.status == PASS)
+        N = sum(1 for t in flat if t.not_applicable)
+        S = sum(1 for t in flat if t.status == SKIP and not t.not_applicable)
+
+        def entry_lines(e: dict) -> list[str]:
+            rows = e["rows"]
+            single = len(rows) == 1
+            head = f"- **{e['status']}** **{e['title']}**"
+            if single and rows[0].parts:
+                head += ": " + ", ".join(p.label for p in rows[0].parts)
+            if rows and all(r.report_only for r in rows):
+                wb = {r.would_be for r in rows}
+                tag = f"report-only until {until}"
+                if len(wb) == 1 and next(iter(wb)):
+                    tag += f", would be {next(iter(wb))} today"
+                head += f" _[{tag}]_"
+            lines = [head, f"  {e['sentence']}"]
+            if e["hint"]:
+                lines.append(f"  Fix: {e['hint']}")
+            if single:
+                r = rows[0]
+                lines.append(f"  Details: {r.details}")
+                lines.append(f"  Check: `{r.check_id}`")
+            else:
+                for r in rows:
+                    lines.append(f"  - {', '.join(p.label for p in r.parts) or r.details} (`{r.check_id}`)")
+            return lines
+
         lines = [f"# Scorecard: {self.design_id}", "",
                  (f"**Partial run (tiers 0\u2013{self.max_tier}):** {'no failures' if self.clean else 'failures found'}"
                   if self.partial else f"**Accepted:** {'yes' if self.accepted else 'no'}"), "",
-                 "| Tier | Status | Check | Result | Criterion |", "|---|---|---|---|---|"]
+                 f"**Summary:** {F} FAIL, {W} WARN, {S} not checked, {N} not applicable, {P} PASS.", ""]
+        sections = [
+            ("## Needs fixing", fold([t for t in flat if t.status == FAIL])),
+            ("## Warnings", fold([t for t in flat if t.status == WARN])),
+            ("## Not checked", fold([t for t in flat if t.status == SKIP and not t.not_applicable])),
+        ]
+        for heading, entries in sections:
+            if entries:
+                lines += [heading, ""]
+                for e in entries:
+                    lines += entry_lines(e)
+                lines.append("")
+        if N:
+            lines += [f"## Not applicable ({N})", ""]
+            seen: dict[str, object] = {}
+            for t in flat:
+                if t.not_applicable:
+                    seen.setdefault(t.family, t)
+            for t in seen.values():
+                lines.append(f"- {t.title}: {t.details}")
+            lines.append("")
+        if P:
+            lines += [f"## Passing ({P} checks)", ""]
+            counts: dict[str, list] = {}
+            for t in flat:
+                if t.status == PASS:
+                    counts.setdefault(t.family, [t.title, 0])[1] += 1
+            for title, n in counts.values():
+                lines.append(f"- {title}: {n} ok")
+            lines.append("")
+        lines += ["## Full table", "",
+                  "| Tier | Status | Check | Result | Criterion |", "|---|---|---|---|---|"]
         for t in self.tiers:
             for r in t.results:
                 lines.append(f"| {t.tier} {t.name} | {r.status} | {r.check_id} | {r.status}: {r.message} | {r.criterion} |")
