@@ -19,7 +19,7 @@ def scratch(tmp_path, name="f"):
 
 
 def run(folder, **kw):
-    args = dict(path=str(folder), servo="servo", hinge="stab-elev", station=0, why="x")
+    args = dict(path=str(folder), servo="servo", hinge="stab-elev", station=0, why="x", arm_length=6.0)
     args.update(kw)
     return call("design.add-linkage", **args)
 
@@ -218,3 +218,147 @@ def test_rerun_keeps_extra_keys(tmp_path):
     assert r.data["changed"] is True
     att = next(a for a in _plane(f)["attachments"] if a["id"] == aid)
     assert att["connection"] == "CT-SERVO-SPLINE"
+
+
+def test_default_deflection_hand_values(tmp_path):
+    r = run(scratch(tmp_path), arm_length=None)
+    assert r.ok, r.messages
+    ap = pytest.approx
+    d = r.data
+    assert d["arm_length"] == ap(8.2113, abs=2e-3)
+    assert d["ratio"] == -0.75
+    assert d["tip0"] == ap([21.1109, 8.1358, -11.05], abs=2e-3)
+    assert d["pin0"] == ap([69.7072, 1.5, -11.05], abs=2e-3)
+    assert d["rod_length"] == ap(49.0472, abs=2e-3)
+    assert d["follower_deg"]["minus"] == ap(16.3805, abs=2e-3)
+    assert d["follower_deg"]["plus"] == ap(-13.6187, abs=2e-3)
+    assert d["deflection_deg"] == ap(15.0, abs=0.05)
+    assert d["min_transmission_deg"] == ap(36.61, abs=0.05)
+    assert [x for x in d["rows"] if x[1] == "FAIL"] == []
+    assert "deflection 15" in r.messages[0]
+
+
+def test_deflection_option(tmp_path):
+    r = run(scratch(tmp_path), arm_length=None, deflection=12.0)
+    assert r.ok, r.messages
+    ap = pytest.approx
+    assert r.data["arm_length"] == ap(6.595, abs=2e-3)
+    assert r.data["ratio"] == -0.6
+    assert r.data["follower_deg"]["minus"] == ap(12.7796, abs=2e-3)
+    assert r.data["follower_deg"]["plus"] == ap(-11.0406, abs=2e-3)
+    assert r.data["deflection_deg"] == ap(11.91, abs=0.05)
+
+
+def test_arm_length_wins(tmp_path):
+    r = run(scratch(tmp_path), arm_length=6.0, deflection=30.0)
+    assert r.ok, r.messages
+    assert r.data["arm_length"] == 6.0
+    assert r.data["ratio"] == -0.55
+    assert r.data["tip0"] == pytest.approx([20.5439, 5.9753, -11.05], abs=2e-3)
+    assert r.data["follower_deg"]["minus"] == pytest.approx(11.5128, abs=2e-3)
+
+
+def test_deflection_errors(tmp_path):
+    m = _no_change(scratch(tmp_path), arm_length=None, deflection=0)
+    assert "deflection" in m and "positive" in m
+    m = _no_change(scratch(tmp_path, "g"), arm_length=None, deflection=200)
+    assert "deflection 200" in m and "--arm-length" in m
+
+
+def test_deflection_second_run_is_an_empty_diff(tmp_path):
+    f = scratch(tmp_path)
+    assert run(f, arm_length=None).ok
+    a, b = (f / "plane.yaml").read_bytes(), (f / "CHANGELOG.yaml").read_bytes()
+    r = run(f, arm_length=None)
+    assert r.ok and r.data["changed"] is False
+    assert (f / "plane.yaml").read_bytes() == a and (f / "CHANGELOG.yaml").read_bytes() == b
+
+
+def _followers(folder):
+    d = load_design(folder / "plane.yaml")
+    m = next(m for m in d.data["mechanisms"] if m["id"] == "stab-elev-drive")
+    sim = simulate_mechanism(d, m)
+    return {float(s["input_deg"]): s["followers"]["stab-elev"] for s in sim["steps"] if s.get("followers")}
+
+
+def test_offset_zero_is_byte_identical(tmp_path):
+    a, b = scratch(tmp_path, "a"), scratch(tmp_path, "b")
+    run(a)
+    r = run(b, arm_offset_deg=0.0)
+    assert (a / "plane.yaml").read_bytes() == (b / "plane.yaml").read_bytes()
+    assert r.data["arm_offset_deg"] == 0.0
+
+
+@pytest.mark.parametrize("A,tip,rod,ratio,up,down,mu", [
+    (15.0, [22.0719, 5.6309, -11.05], 47.8141, -0.53, 10.4345, -10.1960, 40.7),
+    (25.0, [23.0182, 5.1856, -11.05], 46.8342, -0.49, 9.2339, -9.8902, 41.6)])
+def test_offset_hand_values(tmp_path, A, tip, rod, ratio, up, down, mu):
+    f = scratch(tmp_path)
+    r = run(f, arm_offset_deg=A)
+    assert r.ok, r.messages
+    ap = pytest.approx
+    assert r.data["tip0"] == ap(tip, abs=2e-3)
+    assert r.data["rod_length"] == ap(rod, abs=2e-3)
+    assert r.data["pin0"] == ap([69.7072, 1.5, -11.05], abs=2e-3)
+    assert r.data["ratio"] == ratio
+    fl = _followers(f)
+    assert fl[-20.0] == ap(up, abs=2e-3)
+    assert fl[20.0] == ap(down, abs=2e-3)
+    assert r.data["min_transmission_deg"] == ap(mu, abs=0.1)
+    assert [row for row in r.data["rows"] if row[1] == "FAIL"] == []
+    assert "arm offset" in r.messages[0]
+
+
+def test_offset_geometry(tmp_path):
+    a, b = scratch(tmp_path, "a"), scratch(tmp_path, "b")
+    ra, rb = run(a), run(b, arm_offset_deg=25.0)
+    Op = np.array(rb.data["arm_pivot"])
+    ta, tb = np.array(ra.data["tip0"]), np.array(rb.data["tip0"])
+    assert np.linalg.norm(ta - Op) == pytest.approx(6, abs=1e-3)
+    assert np.linalg.norm(tb - Op) == pytest.approx(6, abs=1e-3)
+    assert np.degrees(np.arccos((ta - Op) @ (tb - Op) / 36)) == pytest.approx(25, abs=0.01)
+    assert ta[2] == pytest.approx(-11.05, abs=1e-3) and tb[2] == pytest.approx(-11.05, abs=1e-3)
+    assert ra.data["pin0"] == rb.data["pin0"]
+    pin = np.array(rb.data["pin0"])
+    u = (pin - tb) / np.linalg.norm(pin - tb)
+    rod = _strut(b, "stab-elev-rod")
+    assert rod["end"] == pytest.approx(list(pin - 2.0 * u), abs=1e-3)
+    assert _strut(b, "stab-elev-arm")["end"] == pytest.approx(list(tb), abs=1e-3)
+
+
+def test_offset_t6_and_ratio(tmp_path):
+    f = scratch(tmp_path)
+    run(f, arm_offset_deg=25.0)
+    card = validate(load_design(f / "plane.yaml"))
+    rows = [x for t in card.tiers for x in t.results]
+    assert [x for x in rows if x.status == "FAIL" and x.check_id.split(".")[0] in ("T0", "T1", "T6")] == []
+    for cid in ("T6.mechanism", "T6.link", "T6.ratio"):
+        assert [x.status for x in rows if x.check_id == f"{cid}.stab-elev-drive"] == ["PASS"]
+    assert _plane(f)["mechanisms"][0]["expect"][0]["ratio"] == -0.49
+
+
+def test_offset_second_run_and_replace(tmp_path):
+    f = scratch(tmp_path)
+    run(f, arm_offset_deg=15.0)
+    p, c = (f / "plane.yaml").read_bytes(), (f / "CHANGELOG.yaml").read_bytes()
+    r = run(f, arm_offset_deg=15.0)
+    assert (f / "plane.yaml").read_bytes() == p and (f / "CHANGELOG.yaml").read_bytes() == c
+    assert r.data["changed"] is False
+    r = run(f, arm_offset_deg=25.0)
+    assert r.ok and r.data["changed"] is True
+    assert len([x for x in _plane(f)["components"] if x["id"].startswith("stab-elev-")]) == 4
+
+
+def test_offset_errors(tmp_path):
+    assert "--arm-offset-deg" in _no_change(scratch(tmp_path, "a"), arm_offset_deg=61)
+    assert "--arm-offset-deg" in _no_change(scratch(tmp_path, "b"), arm_offset_deg=-61)
+    assert run(scratch(tmp_path, "c"), arm_offset_deg=60).ok
+
+
+def test_offset_with_deflection(tmp_path):
+    f = scratch(tmp_path)
+    r = run(f, arm_length=None, deflection=15.0, arm_offset_deg=15.0)
+    assert r.ok, r.messages
+    assert r.data["arm_offset_deg"] == 15.0
+    assert np.linalg.norm(np.array(r.data["tip0"]) - np.array(r.data["arm_pivot"])) == pytest.approx(8.2113, abs=2e-3)
+    assert [row for row in r.data["rows"] if row[1] == "FAIL"] == []
