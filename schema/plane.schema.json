@@ -833,7 +833,7 @@
             "generator": {
               "type": "string",
               "pattern": "^[a-z][a-z0-9_]*$",
-              "description": "v1.2. Name of a registered geometry generator (hangar.geom registry: wing_panel, tube, fin, plate, fuselage_loft, motor_mount, mesh_file, library_part, nacelle, propeller, strut, landing_gear, tail_surfaces)."
+              "description": "v1.2. Name of a registered geometry generator (hangar.geom registry: wing_panel, tube, fin, plate, fuselage_loft, motor_mount, mesh_file, library_part, nacelle, propeller, strut, landing_gear, wheel, tail_surfaces)."
             },
             "params": {
               "type": "object",

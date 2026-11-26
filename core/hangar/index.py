@@ -102,7 +102,8 @@ def mechanism_sweeps(design) -> dict | None:
                                          if cid not in skip and not np.allclose(t, np.eye(4))}})
         out.append({"id": mech["id"], "driver": mech["driver"], "driven": list(mech["driven"]),
                     "input_range_deg": list(_input_range(design, mech)), "steps": steps})
-    used = {mech["driver"] for mech in mechs} | {a for mech in mechs for a in mech["driven"]}         | {e["attachment"] for mech in mechs for e in mech.get("expect", [])}
+    used = {mech["driver"] for mech in mechs} | {a for mech in mechs for a in mech["driven"]} \
+        | {e["attachment"] for mech in mechs for e in mech.get("expect", [])}
     for a in spins:
         label = att_label(a)
         if label in used:
