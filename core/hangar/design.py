@@ -28,6 +28,21 @@ class Design:
     raw: dict | None = None            # PDL 1.2: the unresolved data ("$name" references, no generated mass_g); None otherwise
     resolve_errors: dict = field(default_factory=dict)   # PDL 1.2: {component id: why its generated geometry/mass failed}
 
+    _mass_pending = False              # True between load_design and the first read of data/resolve_errors (lazy generated mass_g)
+
+    def __getattribute__(self, name):
+        if (name == "data" or name == "resolve_errors") and object.__getattribute__(self, "__dict__").get("_mass_pending"):
+            self._mass_pending = False
+            from hangar.geom.resolve import fill_generated_mass, fill_swept_poses   # inside: hangar.geom imports hangar.design
+            d, errs = self.__dict__["data"], self.__dict__["resolve_errors"]
+            fill_swept_poses(d, self.base_dir, errs)
+            fill_generated_mass(d, self.base_dir, errs)
+        return object.__getattribute__(self, name)
+
+    def data_without_mass(self) -> dict:
+        """The resolved data without forcing the generated-part mass fill (the same dict `data` returns, filled or not)."""
+        return self.__dict__["data"]
+
     @property
     def id(self) -> str:
         return self.data.get("id", "<no id>")
@@ -148,7 +163,8 @@ def load_design(path: str | Path) -> Design:
                                    for c in comps):
         from hangar.geom.resolve import resolve_design_data   # inside: hangar.geom imports hangar.design
         design.raw = data
-        design.data, design.resolve_errors = resolve_design_data(data, design.base_dir)
+        design.data, design.resolve_errors = resolve_design_data(data, design.base_dir, mass=False)
+        design._mass_pending = True
     return design
 
 

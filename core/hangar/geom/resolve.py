@@ -91,11 +91,8 @@ def _derive_hinges(data: dict, base_dir, errors: dict) -> None:
         a["articulation"]["axis"] = [round(float(v), 4) for v in axis]
 
 
-def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]]:
-    data = resolve_references(raw)
-    errors: dict[str, str] = {}
-    _cut_poses(data)
-    _derive_hinges(data, base_dir, errors)   # before the swept poses: hinge_from pockets sweep about the derived axis
+def fill_swept_poses(data: dict, base_dir: Path, errors: dict[str, str]) -> None:
+    """Set `cut_poses` on swept wing_panel cuts (builds meshes); failures go to `errors`. Runs before the mass fill."""
     for c in data.get("components") or []:
         g = c.get("geometry") if isinstance(c, dict) else None
         gp = g.get("params") if isinstance(g, dict) and g.get("generator") == "wing_panel" else None
@@ -109,6 +106,10 @@ def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]
                     gp["cut_poses"] = [by_file[f] for f in sorted(by_file)]
             except Exception as e:
                 errors[str(c.get("id"))] = f"cut_sweep: {e}"
+
+
+def fill_generated_mass(data: dict, base_dir: Path, errors: dict[str, str]) -> None:
+    """Set `mass_g` on every generated component with a mass_model (builds its meshes); failures go to `errors`."""
     design_materials = data.get("materials") if isinstance(data.get("materials"), dict) else None
     for c in data.get("components") or []:
         mm = c.get("mass_model") if isinstance(c, dict) else None
@@ -126,6 +127,16 @@ def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]
             errors[cid] = str(e.args[0]) if e.args else "unknown material"
         except (TypeError, ValueError) as e:
             errors[cid] = f"mass_model: {e}"
+
+
+def resolve_design_data(raw: dict, base_dir: Path, *, mass: bool = True) -> tuple[dict, dict[str, str]]:
+    data = resolve_references(raw)
+    errors: dict[str, str] = {}
+    _cut_poses(data)
+    _derive_hinges(data, base_dir, errors)   # before the swept poses: hinge_from pockets sweep about the derived axis
+    if mass:
+        fill_swept_poses(data, base_dir, errors)
+        fill_generated_mass(data, base_dir, errors)
     return data, errors
 
 
@@ -185,8 +196,11 @@ def regeneration_report(old_text: str, new_text: str, plane_path: Path) -> dict 
                 continue
             entry["mass_g"][i] = comp.get("mass_g")
         comps[c["id"]] = entry
-    om, ocg = _aircraft(old, plane_path, old_err)
-    nm, ncg = _aircraft(new, plane_path, new_err)
+    if comps:
+        om, ocg = _aircraft(old, plane_path, old_err)
+        nm, ncg = _aircraft(new, plane_path, new_err)
+    else:
+        om = ocg = nm = ncg = None
     inter = {"moved": [], "joints": [], "new": [], "cleared": []}
     if not new_err and not old_err:
         try:
