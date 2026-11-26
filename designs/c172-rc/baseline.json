@@ -58,8 +58,8 @@
     },
     {
       "check_id": "T2.fea_strength",
-      "example": "1 printed part(s) have no OpenCAE stress check yet (plane fea c172-rc --all)",
-      "key": "T2.fea_strength|# printed part(s) have no OpenCAE stress check yet (plane fea c172-rc --all)|{\"parts\":[\"landing-gear\"]}",
+      "example": "4 printed part(s) have no OpenCAE stress check yet (plane fea c172-rc --all)",
+      "key": "T2.fea_strength|# printed part(s) have no OpenCAE stress check yet (plane fea c172-rc --all)|{\"parts\":[\"landing-gear\",\"wheel-r\",\"wheel-l\",\"wheel-n\"]}",
       "status": "SKIP"
     },
     {
@@ -118,7 +118,7 @@
     },
     {
       "check_id": "T2.joint_load",
-      "example": "fuselage-gear: carries 3.7 N; rating is a placeholder, not checked",
+      "example": "fuselage-gear: carries 3.8 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|fuselage-gear: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-gear\"}",
       "status": "SKIP"
     },
@@ -168,6 +168,24 @@
       "check_id": "T2.joint_load",
       "example": "fuselage-wing: carries 2.1 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|fuselage-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-wheel-l: carries 1.3 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-wheel-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-wheel-n: carries 0.9 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-wheel-n: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-n\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-wheel-r: carries 1.3 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-wheel-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-r\"}",
       "status": "SKIP"
     },
     {
@@ -304,86 +322,104 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "arm-rod-elev: carries 0.8 N; rating is a placeholder, not checked",
+      "example": "arm-rod-elev: carries 0.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|arm-rod-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"arm-rod-elev\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "arm-rod-rud: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "arm-rod-rud: carries 0.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|arm-rod-rud: carries # N; rating is a placeholder, not checked|{\"joint\":\"arm-rod-rud\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "elev-horn: carries 0.1 N; rating is a placeholder, not checked",
+      "example": "elev-horn: carries 0.2 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|elev-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"elev-horn\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-battery: carries 54.8 N; rating is a placeholder, not checked",
+      "example": "fuselage-battery: carries 34.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-battery: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-battery\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-esc: carries 5.3 N; rating is a placeholder, not checked",
+      "example": "fuselage-esc: carries 3.9 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-esc: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-esc\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-gear: carries 131.9 N; rating is a placeholder, not checked",
+      "example": "fuselage-gear: carries 86.2 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-gear: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-gear\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-motor: carries 26.3 N; rating is a placeholder, not checked",
+      "example": "fuselage-motor: carries 19.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-motor: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-motor\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-receiver: carries 1.1 N; rating is a placeholder, not checked",
+      "example": "fuselage-receiver: carries 0.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-receiver: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-receiver\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-servo-elev: carries 1.8 N; rating is a placeholder, not checked",
+      "example": "fuselage-servo-elev: carries 1.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-servo-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-servo-elev\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-servo-rud: carries 1.8 N; rating is a placeholder, not checked",
+      "example": "fuselage-servo-rud: carries 1.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-servo-rud: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-servo-rud\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-strut-l: carries 0.7 N; rating is a placeholder, not checked",
+      "example": "fuselage-strut-l: carries 0.6 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-strut-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-strut-l\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-strut-r: carries 0.8 N; rating is a placeholder, not checked",
+      "example": "fuselage-strut-r: carries 0.6 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-strut-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-strut-r\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-tail: carries 1.7 N; rating is a placeholder, not checked",
+      "example": "fuselage-tail: carries 2.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-tail: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-tail\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "fuselage-wing: carries 14.8 N; rating is a placeholder, not checked",
+      "example": "fuselage-wing: carries 9.8 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|fuselage-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"fuselage-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-wheel-l: carries 28.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-wheel-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-wheel-n: carries 30.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-wheel-n: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-n\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-wheel-r: carries 28.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-wheel-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-r\"}",
       "status": "SKIP"
     },
     {
@@ -412,7 +448,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "motor-prop: carries 1.5 N; rating is a placeholder, not checked",
+      "example": "motor-prop: carries 1.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|motor-prop: carries # N; rating is a placeholder, not checked|{\"joint\":\"motor-prop\"}",
       "status": "SKIP"
     },
@@ -436,13 +472,13 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "servo-arm-elev: carries 0.8 N; rating is a placeholder, not checked",
+      "example": "servo-arm-elev: carries 0.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|servo-arm-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"servo-arm-elev\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "servo-arm-rud: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "servo-arm-rud: carries 0.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|servo-arm-rud: carries # N; rating is a placeholder, not checked|{\"joint\":\"servo-arm-rud\"}",
       "status": "SKIP"
     },
@@ -454,7 +490,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "tail-rudder: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "tail-rudder: carries 0.3 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|tail-rudder: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rudder\"}",
       "status": "SKIP"
     },
@@ -472,13 +508,13 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "wing-servo-ail-l: carries 2.5 N; rating is a placeholder, not checked",
+      "example": "wing-servo-ail-l: carries 1.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|wing-servo-ail-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-servo-ail-l\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "wing-servo-ail-r: carries 2.5 N; rating is a placeholder, not checked",
+      "example": "wing-servo-ail-r: carries 1.7 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|wing-servo-ail-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-servo-ail-r\"}",
       "status": "SKIP"
     },
