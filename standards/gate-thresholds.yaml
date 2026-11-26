@@ -19,6 +19,11 @@ wire_clearance_mm:
   rule: "A harness segment between consecutive route components must lie inside the union of their envelopes grown by this distance."
   source: pending
   note: "D5: Dillon has not given a clearance; 5 mm is provisional."
+bay_clearance_mm:
+  value: 0.3
+  rule: "design place cuts a servo bay this much larger than the servo box on every side except the skin side."
+  source: pending
+  note: "provisional bay clearance; no published source opened (U16.1 S3)"
 transport_box_mm:
   value: [1250, 550, 450]
   rule: "Default transport box [length, width, height] when requirements.transport_box_mm is absent; each disassembly group's oriented bounding box must fit."

@@ -39,7 +39,7 @@ def list_op() -> OpResult:
     rows = []
     for p in list_designs():
         try:
-            d = load_design(p).data
+            d = load_design(p).data_without_mass()
         except Exception as e:  # noqa: BLE001
             rows.append({"id": p.parent.name, "name": f"<error: {e}>", "status": "", "lift": "", "vtol_method": ""})
             continue
@@ -59,7 +59,10 @@ def list_op() -> OpResult:
 def get_op(path: str, *, key: str = "") -> OpResult:
     design = _load(path)
     if key:
-        return OpResult(True, {"path": str(design.path), "key": key, "value": pdledit.get_value(design.data, key)})
+        first = key.replace("[", ".").split(".", 1)[0]
+        needs_mass = first == "components" or "mass_g" in key or "cut_poses" in key
+        data = design.data if needs_mass else design.data_without_mass()
+        return OpResult(True, {"path": str(design.path), "key": key, "value": pdledit.get_value(data, key)})
     return OpResult(True, {"path": str(design.path), "text": Path(design.path).read_text(encoding="utf-8")})
 
 
@@ -171,9 +174,9 @@ def render_op(path: str, *, out: Path, view: Literal["top", "side", "front", "is
     return OpResult(True, {"files": files}, changed_files=list(files))
 
 
-@op(name="design.export", summary="Export a design to glb, stl, json or mjcf.", mutates=True,
+@op(name="design.export", summary="Export a design to glb, stl, json, mjcf or mjcf-kinematic.", mutates=True,
     render=lambda r: "\n".join(r.data["files"]))
-def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out: Path) -> OpResult:
+def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf", "mjcf-kinematic"], out: Path) -> OpResult:
     design = _load(path)
     try:
         if format_ == "stl":
@@ -183,6 +186,9 @@ def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out:
         elif format_ == "mjcf":
             from ..sim import export_mjcf
             written = export_mjcf(design, out)
+        elif format_ == "mjcf-kinematic":
+            from ..sim import export_mjcf_kinematic
+            written = export_mjcf_kinematic(design, out)
         else:
             written = export_json(design, out)
     except Exception as e:  # noqa: BLE001

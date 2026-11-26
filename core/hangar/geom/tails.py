@@ -10,6 +10,9 @@ from hangar.geom import airfoil, kernel, registry
 from hangar.geom.registry import Generator, ParamSpec, register
 
 _FIN_KEYS = ("fin_thickness", "fin_height", "fin_root_chord", "fin_tip_chord")
+HINGE_KEYS = ("hinge_gap", "hinge_style", "hinge_throw_deg", "hinge_knuckles", "knuckle_d", "knuckle_len")
+_HINGE_DEFAULTS = {"hinge_gap": 0.0, "hinge_style": "none", "hinge_throw_deg": 0.0, "hinge_knuckles": 0,
+                   "knuckle_d": 0.0, "knuckle_len": 0.0}
 
 
 def _make(name: str, params: dict, base_dir) -> list:
@@ -32,7 +35,7 @@ def _build(p: dict, base_dir) -> list:
                 y0 = t / 2.0 + g
             elif g > 0 and layout == "h":
                 y1 = half - t / 2.0 - g
-            stab.update(part="elevon", elevon_y=[y0, y1], side="both")
+            stab.update(part="elevon", elevon_y=[y0, y1], side="both", **{k: p[k] for k in HINGE_KEYS})
     if layout == "t":
         stab["z_offset"] = p["fin_z_root"] + p["fin_height"]
     else:
@@ -50,6 +53,8 @@ def _build(p: dict, base_dir) -> list:
                "sweep_le_deg": p["fin_sweep_le_deg"]}
         if part != "full":
             fin.update(part="rear" if part == "rudder" else "front", hinge_frac=hf)
+            if part == "rudder":
+                fin.update({k: p[k] for k in HINGE_KEYS})
         if layout == "h":
             for sgn in (1, -1):
                 meshes += _make("fin", {**fin, "plane_y": sgn * p["stab_span"] / 2.0,
@@ -78,6 +83,8 @@ def _check(p: dict) -> list[str]:
         errs.append("hinge_frac: must be in (0, 1)")
     if not 5 <= p["v_dihedral_deg"] <= 80:
         errs.append(f"v_dihedral_deg: must be within 5..80, got {p['v_dihedral_deg']!r}")
+    if p["part"] in ("full", "fixed") and any(p[k] != v for k, v in _HINGE_DEFAULTS.items()):
+        errs.append("hinge_gap: only part elevator or rudder use the hinge_* and knuckle_* params")
     return errs
 
 
@@ -101,5 +108,11 @@ register(Generator(
      "fin_tip_chord": ParamSpec("number", exclusive_minimum=0, doc="needed unless layout v, mm"),
      "fin_sweep_le_deg": ParamSpec("number", default=0.0, doc="fin leading-edge sweep, deg"),
      "fin_x_le": ParamSpec("number", default=0.0, doc="fin root leading-edge x, mm"),
-     "fin_z_root": ParamSpec("number", default=0.0, doc="fin root z position, mm")},
+     "fin_z_root": ParamSpec("number", default=0.0, doc="fin root z position, mm"),
+     "hinge_gap": ParamSpec("number", default=0.0, minimum=0, doc="elevator and rudder only: gap between the fixed part and the moving part, mm, measured normal to the hinge line; the front face moves aft by it (0 = flush, default)"),
+     "hinge_style": ParamSpec("choice", default="none", choices=("none", "bevel"), doc="elevator and rudder only: none = flat front face; bevel = V ridge on the hinge axis with chamfers back to the skins, clearing the fixed part up to hinge_throw_deg"),
+     "hinge_throw_deg": ParamSpec("number", default=0.0, minimum=0, doc="elevator and rudder only: the largest deflection the bevel clears, deg; set it at least as large as the articulation range_deg"),
+     "hinge_knuckles": ParamSpec("int", default=0, minimum=0, doc="elevator and rudder only: count of round knuckle cylinders along the hinge line, united with the moving part (printed geometry)"),
+     "knuckle_d": ParamSpec("number", default=0.0, minimum=0, doc="elevator and rudder only: knuckle diameter, mm; at most 2 * hinge_gap * cos(hinge_throw_deg)"),
+     "knuckle_len": ParamSpec("number", default=0.0, minimum=0, doc="elevator and rudder only: knuckle length along the hinge line, mm")},
     _build, files=lambda p: [] if airfoil.is_named(p["airfoil_file"]) else [p["airfoil_file"]], check=_check))

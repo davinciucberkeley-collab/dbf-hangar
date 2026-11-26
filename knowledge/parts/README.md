@@ -18,3 +18,11 @@ cad_source: <string: URL of the vendor CAD, or where the envelope came from>
 verified: {by: <string>, date: 'YYYY-MM-DD', method: <string>}
 geometry: {generator: <registered generator>, params: {...}}   # same shape as a component's geometry; file paths resolve against the part's folder
 ```
+
+Servos may add `frames` and `frames_source` (both or neither; `category: servo` only), used by `plane design place`:
+```
+frames:
+  output: {point: [x, y, z], axis: [x, y, z]}        # output shaft: a point on it, direction pointing OUT of the case (axis-aligned, part-local)
+  mount_face: {point: [x, y, z], normal: [x, y, z]}    # plane the ears sit against, OUTWARD normal toward the shaft side (axis-aligned)
+frames_source: <text>   # where the numbers come from; "estimate" is allowed, a measured value names the drawing or measurement
+```
