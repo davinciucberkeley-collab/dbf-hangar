@@ -5482,10 +5482,10 @@ items:
     text: 'Follow-up (review w34b 22): the Studio part tree lists clevises and screw heads under Wiring; group visual-only nodes by kind (Wiring, Clevises, Screws).'
     source: reviews/2026-11-25-w34b.md, w34c.md
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: c98f7c7
     decided_in: ''
     updated: '2026-11-26'
   - id: T161
