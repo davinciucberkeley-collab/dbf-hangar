@@ -246,3 +246,18 @@ a.filelink { margin-right: 8px; color: var(--accent); }
 #explode-bar[hidden] { display: none; }
 #explode-bar select, #explode-bar input[type="range"] { font-size: 11px; }
 #explode-bar input[type="range"] { width: 120px; }
+.see-inside input[type="checkbox"], #tool-bar input[type="checkbox"] { width: auto; padding: 0; margin: 0 3px 0 0; }
+#tool-bar { top: 42px; align-items: center; font-size: 11px; background: var(--panel); border: 1px solid var(--border); border-radius: 5px; padding: 2px 6px; }
+#tool-bar button[aria-pressed="true"] { background: var(--accent); color: #fff; }
+#tool-bar button:disabled { opacity: 0.4; cursor: default; }
+#tool-bar label { white-space: nowrap; display: flex; align-items: center; }
+#apply-bar { left: auto; right: 10px; top: 42px; align-items: center; font-size: 12px; background: var(--panel); border: 1px solid #f97316; border-radius: 5px; padding: 4px 8px; gap: 10px; }
+#apply-bar[hidden] { display: none; }
+#apply-bar button { font-size: 12px; }
+.part-row:not([data-moved="1"]) > .row-main .moved-tag { display: none; }
+.part-row .moved-tag { color: #f97316; border-color: #f97316; }
+.timeline.blocked input, .timeline.blocked select, .timeline.blocked .btn { opacity: 0.5; }
+.nudge input { width: 64px; padding: 2px 4px; }
+.nudge { display: flex; gap: 4px; align-items: center; margin-top: 6px; font-size: 12px; }
+div.warn { color: var(--warn); }
+div.warn p { margin: 2px 0; font-size: 12px; }
