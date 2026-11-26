@@ -44,6 +44,16 @@ def _below(design: Design, version: str) -> bool:
     return cur in KNOWN_VERSIONS and KNOWN_VERSIONS.index(cur) < KNOWN_VERSIONS.index(version)
 
 
+def _tier0_v13(design: Design) -> list[CheckResult]:
+    """PDL 1.3 row (mechanisms[].kinematics); nothing at all for a design that does not use it."""
+    src = design.raw if design.raw is not None else design.data
+    mechs = [m for m in src.get("mechanisms", []) if isinstance(m, dict)]
+    if any("kinematics" in m for m in mechs) and _below(design, "1.3"):
+        return [CheckResult("T0.version", FAIL, 'mechanisms[].kinematics need schema_version "1.3"',
+                            "schema/plane.schema.json")]
+    return []
+
+
 def _tier0_v12(design: Design) -> list[CheckResult]:
     """PDL 1.2 rows (parameters, generators, mass_model); nothing at all for a design that uses none of it."""
     src = design.raw if design.raw is not None else design.data
@@ -200,6 +210,7 @@ def tier0_schema(design: Design) -> TierReport:
         res.append(CheckResult("T0.version", FAIL, ", ".join(f"propulsion.{k}" for k in v11) + " need schema_version \"1.1\"",
                                "schema/plane.schema.json"))
     res.extend(_tier0_v12(design))
+    res.extend(_tier0_v13(design))
     both = [c["id"] for c in design.data.get("components", [])
             if "planform" in c and "lifting_surface" in c.get("geometry", {})]
     if both:

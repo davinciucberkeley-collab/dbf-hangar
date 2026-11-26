@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import shutil
 from pathlib import Path
@@ -23,7 +24,8 @@ KEY = "components[{}].propulsion.max_thrust_n"
 # re-recorded after U17.1 sourced wind_drag_coefficient (the "operations.yaml#wind_drag_coefficient" mentions dropped from T3.control_authority messages)
 # U18.4-1: one more row, T3.tail_volume not-applicable SKIP (rows minus it hash to the value above)
 # U18.4-2: one more row, T3.trim not-applicable SKIP (rows minus it hash to the previous value 3679b4c7...)
-MAIN_ROWS_SHA = "8c1ab62475146b52df881229f78ef0b54281ebe74bdfe6a77e31c0e56cfa0bb4"
+# U18.4-3: one more row, T3.dynamic_modes (aerosandbox not installed; rows minus it hash to 8c1ab624...)
+MAIN_ROWS_SHA = "36af0c965c20bf346fc88094d4dc73719e5f5a225a016bc5cb8f1963cfa7401c"
 
 
 @pytest.fixture
@@ -87,7 +89,10 @@ def test_joint_thrust_case_skipped(tmp_example, tmp_path):
             assert abs(a - b) < 1e-9
 
 
-def test_numeric_designs_bit_identical(tmp_example):
+def test_numeric_designs_bit_identical(tmp_example, monkeypatch):
+    real = importlib.util.find_spec  # hide AeroSandbox so the hash is the CI value on every machine
+    monkeypatch.setattr(importlib.util, "find_spec",
+                        lambda name, *a, **k: None if name == "aerosandbox" else real(name, *a, **k))
     blob = json.dumps(sorted(rows(tmp_example)))
     assert hashlib.sha256(blob.encode()).hexdigest() == MAIN_ROWS_SHA
 

@@ -4,10 +4,10 @@ from __future__ import annotations
 import copy
 import re
 
-KNOWN_VERSIONS = ("0.1", "0.2", "0.3", "0.4", "1.0", "1.1", "1.2")
-LATEST = "1.2"
+KNOWN_VERSIONS = ("0.1", "0.2", "0.3", "0.4", "1.0", "1.1", "1.2", "1.3")
+LATEST = "1.3"
 
-_VERSION_LINE = re.compile(r'^(schema_version:[ \t]*)(["\']?)(0\.[1-4]|1\.[01])\2([ \t]*(?:#[^\r\n]*)?)(\r?)$', re.M)
+_VERSION_LINE = re.compile(r'^(schema_version:[ \t]*)(["\']?)(0\.[1-4]|1\.[012])\2([ \t]*(?:#[^\r\n]*)?)(\r?)$', re.M)
 
 
 def migrate(data: dict) -> tuple[dict, list[str]]:
@@ -15,21 +15,21 @@ def migrate(data: dict) -> tuple[dict, list[str]]:
     out = copy.deepcopy(data)
     v = out.get("schema_version") if isinstance(out, dict) else None
     if v not in KNOWN_VERSIONS:
-        raise ValueError(f"unsupported schema_version {v!r}; known: 0.1, 0.2, 0.3, 0.4, 1.0, 1.1, 1.2")
+        raise ValueError(f"unsupported schema_version {v!r}; known: 0.1, 0.2, 0.3, 0.4, 1.0, 1.1, 1.2, 1.3")
     if v == LATEST:
-        return out, ["already 1.2"]
+        return out, ["already 1.3"]
     out["schema_version"] = LATEST
-    return out, [f"schema_version {v} -> 1.2",
-                 "no fields added, removed or renamed (all 1.0 blocks, 1.1 fields and 1.2 generator fields are optional)"]
+    return out, [f"schema_version {v} -> 1.3",
+                 "no fields added, removed or renamed (all 1.0 blocks, 1.1 fields, 1.2 generator fields and 1.3 mechanism kinematics are optional)"]
 
 
 def bump_version_text(text: str) -> str:
-    """Replace the one top-level schema_version line (0.1-1.1) with "1.2", leaving every other byte alone."""
+    """Replace the one top-level schema_version line (0.1-1.2) with "1.3", leaving every other byte alone."""
     matches = _VERSION_LINE.findall(text)
     if not matches:
-        if re.search(r'^schema_version:[ \t]*["\']?1\.2["\']?[ \t]*(?:#[^\r\n]*)?\r?$', text, re.M):
-            raise ValueError("already at schema_version 1.2")
-        raise ValueError("no top-level schema_version line with a 0.1-1.1 value found")
+        if re.search(r'^schema_version:[ \t]*["\']?1\.3["\']?[ \t]*(?:#[^\r\n]*)?\r?$', text, re.M):
+            raise ValueError("already at schema_version 1.3")
+        raise ValueError("no top-level schema_version line with a 0.1-1.2 value found")
     if len(matches) > 1:
         raise ValueError("more than one top-level schema_version line found")
-    return _VERSION_LINE.sub(r'\1"1.2"\4\5', text)
+    return _VERSION_LINE.sub(r'\1"1.3"\4\5', text)

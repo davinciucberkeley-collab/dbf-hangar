@@ -1,0 +1,25 @@
+schema_version: "1.3"
+id: four-bar
+name: "mechanism recipe: servo, horn and pushrod on an elevator"
+status: concept
+description: "stabiliser and elevator boxes, servo below the stabiliser just ahead of the hinge line, arm, pushrod (strut) and horn (plate)"
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: stab
+components:
+  - {id: stab, type: tail_surface, geometry: {box: {size: [60, 200, 6]}}, position: [30, 0, 0], mass_g: 20, manufacturing: {method: foamboard}}
+  - {id: elevator, type: tail_surface, geometry: {box: {size: [30, 200, 3]}}, position: [75, 0, 0], mass_g: 8, manufacturing: {method: foamboard}}
+  - {id: servo, type: servo, geometry: {generator: plate, params: {plane: xy, size: [23, 24], thickness: 11.5}}, position: [20, 0, -8.25], mass_g: 12, manufacturing: {method: purchased}}
+  - {id: arm, type: other, geometry: {generator: plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}, position: [20, 3, -15.25], mass_g: 1, manufacturing: {method: laser-cut, machine: jacobs-laser}}
+  - {id: rod, type: other, geometry: {generator: strut, params: {start: [20, 6, -15.25], end: [73, 6, -15.25], diameter: 1.5}}, position: [0, 0, 0], mass_g: 1, manufacturing: {method: purchased}}
+  - {id: horn, type: other, geometry: {generator: plate, params: {plane: xz, size: [4, 14.75], thickness: 1.5}}, position: [75, 6, -8.875], mass_g: 1, manufacturing: {method: laser-cut, machine: jacobs-laser}}
+  - {id: pin, type: other, geometry: {generator: tube, params: {axis: y, length: 1.2, outer_d: 1.5}}, position: [75, 6, -15.25], mass_g: 0.2, manufacturing: {method: purchased}}
+attachments:
+  - {id: stab-servo, parent: stab, child: servo, method: glued, location: [20, 0, -3], embed_ok: true, rated_load_n: 10}
+  - {id: stab-elev, parent: stab, child: elevator, method: hinge, location: [60, 0, 0], rated_load_n: 10, articulation: {type: revolute, pivot: [60, 0, 0], axis: [0, -1, 0], range_deg: [-25, 25]}}
+  - {id: servo-arm, parent: servo, child: arm, method: bolted, location: [20, 0, -14.5], embed_ok: true, rated_load_n: 10, articulation: {type: revolute, pivot: [20, 0, -15.25], axis: [0, 0, 1], range_deg: [-30, 30]}}
+  - {id: arm-rod, parent: arm, child: rod, method: hinge, location: [20, 6, -15.25], embed_ok: true, rated_load_n: 10, kinematic_link: true}
+  - {id: elev-horn, parent: elevator, child: horn, method: glued, location: [75, 6, -1.5], embed_ok: true, rated_load_n: 10}
+  - {id: horn-pin, parent: horn, child: pin, method: bolted, location: [75, 6, -15.25], embed_ok: true, rated_load_n: 10}
+mechanisms:
+  - {id: elevator-drive, driver: servo-arm, kinematics: four_bar, driven: [stab-elev], input_range_deg: [-20, 20], expect: [{attachment: stab-elev, ratio: -0.39}], link: {driver_end: arm-rod, follower_end: horn-pin}}
