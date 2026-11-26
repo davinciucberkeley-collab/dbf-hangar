@@ -376,6 +376,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D107 | Team-constraint owners, and the parked std/u4.25-pockets branch | all 19 team constraints: owner Tristan, date 2026-11-25 (confirmed); delete remote std/u4.25-pockets after U16.2 merges | Tristan | 11-25 | decided (Tristan P299, 2026-11-25) |
 | D108 | U18.4-3: builder sourced three dynamic-mode limits from MIL-F-8785C (via NASA CR-1796) instead of stopping | approved: short-period zeta 0.30, Dutch roll zeta 0.08, spiral time-to-double 20 s (Level 1, Category B, cruise); phugoid stays pending; T3.dynamic_modes stays non-blocking until the spec text itself is opened | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D109 | Explode: the brief's hierarchy formula telescopes to the radial one (B4 builder) | hierarchy moves whole subassemblies: every part takes the offset of its ancestor at the chosen level, t x 1.5 x (C(anc) - C(root)) (the brief's 1.5 factor kept for both styles), so parts inside a subassembly keep their relative positions; radial moves each part by t x (C(p) - C(root)); with level All, hierarchy uses each part's top-level child of the root | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
+| D110 | U15.3-4 / U18.4-4 brief scope (4011789) | lazy mass makes `design get` mesh-free; `design set` keeps one mesh build (its refuse rule needs failing-part detection) and only skips the two mass_properties runs when nothing regenerated; trim stall keeps default CLmax 1.1 (1.54 is the full-size value, no model-scale source); fins: conventional and T layouts only | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1098,7 +1099,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Brief** (tactician W34-T, with the importtime profile) *(4efe4c6: hard; trimesh 2.26 s of 2.63 s import; lazy proxy; merge after U15.1)*
 - [x] **Step 2: Build** (builder-plus W34-B)
 - [x] **Step 3: Review** (W34-R); merge *(merged 5b2221b, W34-R3 ACCEPT; --help 8.8 -> 3.5 s; get/set on parametric designs wait for step 4, D102)*
-- [ ] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review
+- [ ] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review *(brief 4011789: get mesh-free, set partial (D110); building)*
 
 ### Unit U16.1: 3D generation close to the real aircraft (I2; D85, D87) [hard]
 
