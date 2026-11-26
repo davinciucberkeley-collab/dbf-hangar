@@ -5471,10 +5471,10 @@ items:
     text: 'Follow-up (reviews w34b 21-23): core/hangar/visuals.py and index.py import trimesh at module level; make them lazy like U15.3 so plane startup stays fast; clevis_aliases builds meshes only to read names.'
     source: reviews/2026-11-25-w34b.md, w34c.md
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: 68e23b2
     decided_in: ''
     updated: '2026-11-26'
   - id: T160
@@ -5493,10 +5493,10 @@ items:
     text: 'Follow-up (review w34c 21): T1 moves the pushrod rigidly and SKIPs rod-vs-moving-part pairs (T1.kinematic_link, 7 rows on c172-rc); pose the rod from the S1 four-bar solve so those pairs are checked.'
     source: reviews/2026-11-25-w34b.md, w34c.md
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: 68e23b2
     decided_in: ''
     updated: '2026-11-26'
   - id: T162
