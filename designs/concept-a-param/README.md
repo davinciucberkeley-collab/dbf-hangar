@@ -21,14 +21,12 @@ Wing density is lumped: `xps-tape-lumped` 0.03499 g/cm3 = 100.1 g / nominal core
 CG y moves 0.12 mm because the cut pockets (neighbour meshes) are not mirror-symmetric, so the generated core's y centroid
 is not 0; the test allows 0.15 mm for y only.
 
-## Baselined residue (93 known rows: 20 FAIL + 73 SKIP; concept-a has 10 FAIL + 73 SKIP)
-Verified row by row from the two `baseline.json` files. Net FAIL: 10 + 14 new - 4 absent = 20.
+## Baselined residue (79 known rows: 6 FAIL + 73 SKIP; concept-a has 10 FAIL + 73 SKIP)
+Verified row by row from the two `baseline.json` files. Net FAIL: 10 - 4 absent = 6.
 
-14 new FAIL rows. Cut pockets follow the neutral pose only; swept-pose pockets are a follow-up.
-- `wng-007-l/r` against `wng-001`: 8 T1.interference (pose up, pose down, sweep -6 and 9 deg, per side) and
-  2 T1.attachment_overlap (pose down, 6 %).
-- `mec-002-l/r` against `wng-001`: 2 T1.interference (range max/min, 15 deg, 8 mm3 each).
-- T6.mechanism.elevon-l/r: 2 collisions at -15 deg (`wng-007-l`, `mec-002-r`).
+The swept-pose and neutral-pose FAIL rows for `wng-007-l/r` and `mec-002-l/r` against `wng-001` are gone since U16.2
+(7d183bf) made the cut pockets follow the pose: 10 T1.interference, 2 T1.attachment_overlap, and 2 T6.mechanism.elevon-l/r
+were removed from the baseline.
 
 4 concept-a FAIL rows are absent because `fea/` is not copied: cge-001 landing and thrust (SF 0.37, 0.44) and cge-006
 landing and thrust (SF 0.83, 0.72). The cge-008 SKIP is absent too; in their place one SKIP ("28 printed part(s) have no

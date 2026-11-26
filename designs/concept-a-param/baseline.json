@@ -3,78 +3,6 @@
   "design_id": "concept-a-param",
   "known": [
     {
-      "check_id": "T1.attachment_overlap",
-      "example": "pose down (E-WNG-10 -21\u00b0): E-WNG-10: parts overlap 6% of the smaller part; set embed_ok if intended",
-      "key": "T1.attachment_overlap|pose down (E-WNG-10 #\u00b0): E-WNG-10: parts overlap #% of the smaller part; set embed_ok if intended|{\"joint\":\"E-WNG-10\",\"pose\":\"pose down (E-WNG-10 -21\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.attachment_overlap",
-      "example": "pose down (E-WNG-11 -21\u00b0): E-WNG-11: parts overlap 6% of the smaller part; set embed_ok if intended",
-      "key": "T1.attachment_overlap|pose down (E-WNG-11 #\u00b0): E-WNG-11: parts overlap #% of the smaller part; set embed_ok if intended|{\"joint\":\"E-WNG-11\",\"pose\":\"pose down (E-WNG-11 -21\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "pose down (E-WNG-10 -21\u00b0): clipping: wng-001 and wng-007-r overlap 232 mm^3",
-      "key": "T1.interference|pose down (E-WNG-10 #\u00b0): clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"pose down (E-WNG-10 -21\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "pose down (E-WNG-11 -21\u00b0): clipping: wng-001 and wng-007-l overlap 232 mm^3",
-      "key": "T1.interference|pose down (E-WNG-11 #\u00b0): clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"pose down (E-WNG-11 -21\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "pose up (E-WNG-10 21\u00b0): clipping: wng-001 and wng-007-r overlap 436 mm^3",
-      "key": "T1.interference|pose up (E-WNG-10 #\u00b0): clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"pose up (E-WNG-10 21\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "pose up (E-WNG-11 21\u00b0): clipping: wng-001 and wng-007-l overlap 436 mm^3",
-      "key": "T1.interference|pose up (E-WNG-11 #\u00b0): clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"pose up (E-WNG-11 21\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "range max of E-MEC-07 (15\u00b0): clipping: wng-001 and mec-002-l overlap 8 mm^3",
-      "key": "T1.interference|range max of E-MEC-07 (#\u00b0): clipping: wng-001 and mec-002-l overlap # mm^#|{\"pair\":[\"wng-001\",\"mec-002-l\"],\"pose\":\"range max of E-MEC-07 (15\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "range min of E-MEC-02 (-15\u00b0): clipping: wng-001 and mec-002-r overlap 8 mm^3",
-      "key": "T1.interference|range min of E-MEC-02 (#\u00b0): clipping: wng-001 and mec-002-r overlap # mm^#|{\"pair\":[\"wng-001\",\"mec-002-r\"],\"pose\":\"range min of E-MEC-02 (-15\u00b0)\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "sweep E-WNG-10 -6\u00b0: clipping: wng-001 and wng-007-r overlap 1266 mm^3",
-      "key": "T1.interference|sweep E-WNG-10 #\u00b0: clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"sweep E-WNG-10 -6\u00b0\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "sweep E-WNG-10 9\u00b0: clipping: wng-001 and wng-007-r overlap 1288 mm^3",
-      "key": "T1.interference|sweep E-WNG-10 #\u00b0: clipping: wng-001 and wng-007-r overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-r\"],\"pose\":\"sweep E-WNG-10 9\u00b0\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "sweep E-WNG-11 -6\u00b0: clipping: wng-001 and wng-007-l overlap 1266 mm^3",
-      "key": "T1.interference|sweep E-WNG-11 #\u00b0: clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"sweep E-WNG-11 -6\u00b0\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T1.interference",
-      "example": "sweep E-WNG-11 9\u00b0: clipping: wng-001 and wng-007-l overlap 1288 mm^3",
-      "key": "T1.interference|sweep E-WNG-11 #\u00b0: clipping: wng-001 and wng-007-l overlap # mm^#|{\"pair\":[\"wng-001\",\"wng-007-l\"],\"pose\":\"sweep E-WNG-11 9\u00b0\"}",
-      "status": "FAIL"
-    },
-    {
       "check_id": "T1.kinematic_link",
       "example": "pose down (E-WNG-10 -21\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-009-r, wng-010-r",
       "key": "T1.kinematic_link|pose down (E-WNG-10 #\u00b0): # pair(s) not checked \u2014 linkage path not modelled: mec-003-r, mec-004-r, wng-009-r, wng-010-r|{\"parts\":[\"mec-003-r\",\"mec-004-r\",\"wng-009-r\",\"wng-010-r\"],\"pose\":\"pose down (E-WNG-10 -21\u00b0)\",\"unchecked_pairs\":[\"wng-009-r & wng-010-r\",\"mec-003-r & mec-004-r\"]}",
@@ -394,7 +322,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-AVN-14: carries 6.2 N; rating is a placeholder, not checked",
+      "example": "E-AVN-14: carries 8.0 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-AVN-14: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-AVN-14\"}",
       "status": "SKIP"
     },
@@ -448,13 +376,13 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-MEC-05: peak 1.2 N in drop test exceeds rating 0.7 N",
+      "example": "E-MEC-05: peak 0.9 N in drop test exceeds rating 0.7 N",
       "key": "T2.sim_drop_loads|E-MEC-05: peak # N in drop test exceeds rating # N|{\"joint\":\"E-MEC-05\"}",
       "status": "FAIL"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-MEC-10: peak 1.1 N in drop test exceeds rating 0.7 N",
+      "example": "E-MEC-10: peak 0.7 N in drop test exceeds rating 0.7 N",
       "key": "T2.sim_drop_loads|E-MEC-10: peak # N in drop test exceeds rating # N|{\"joint\":\"E-MEC-10\"}",
       "status": "FAIL"
     },
@@ -472,7 +400,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-PWR-02: carries 16.2 N; rating is a placeholder, not checked",
+      "example": "E-PWR-02: carries 16.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-PWR-02: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-PWR-02\"}",
       "status": "SKIP"
     },
@@ -490,7 +418,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "E-WNG-10: carries 3.3 N; rating is a placeholder, not checked",
+      "example": "E-WNG-10: carries 4.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-WNG-10: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-WNG-10\"}",
       "status": "SKIP"
     },
@@ -538,7 +466,7 @@
     },
     {
       "check_id": "T2.sim_rest",
-      "example": "tipped over after drop: landing axis 81 deg from vertical (limit 30), speed 0.009 m/s; tailsitter cannot stand on its landing gear",
+      "example": "tipped over after drop: landing axis 80 deg from vertical (limit 30), speed 0.009 m/s; tailsitter cannot stand on its landing gear",
       "key": "T2.sim_rest|tipped over after drop: landing axis # deg from vertical (limit #), speed # m/s; tailsitter cannot stand on its landing gear",
       "status": "FAIL"
     },
@@ -546,18 +474,6 @@
       "check_id": "T3.static_margin",
       "example": "15.7% MAC (NP x=57 mm, CG x=21 mm; target 5%-15%; fuselage effect not modelled) (mesh wing: chord measured at 41 stations)",
       "key": "T3.static_margin|#% MAC (NP x=# mm, CG x=# mm; target #%#%; fuselage effect not modelled) (mesh wing: chord measured at # stations)|{\"band\":\"above\"}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T6.mechanism.elevon-l",
-      "example": "mechanism elevon-l: wng-001 and wng-007-l collide at input -15 deg (330.1 mm3 > 1.0 mm3)",
-      "key": "T6.mechanism.elevon-l|mechanism elevon-l: wng-001 and wng-007-l collide at input # deg (# mm3 > # mm3)|{\"joint\":[\"E-MEC-07\",\"E-WNG-11\"]}",
-      "status": "FAIL"
-    },
-    {
-      "check_id": "T6.mechanism.elevon-r",
-      "example": "mechanism elevon-r: mec-002-r and wng-001 collide at input -15 deg (8.2 mm3 > 1.0 mm3)",
-      "key": "T6.mechanism.elevon-r|mechanism elevon-r: mec-002-r and wng-001 collide at input # deg (# mm3 > # mm3)|{\"joint\":[\"E-MEC-02\",\"E-WNG-10\"]}",
       "status": "FAIL"
     }
   ],
