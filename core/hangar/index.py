@@ -35,6 +35,47 @@ def dumps(obj) -> str:
     return json.dumps(obj, indent=2, default=_jsonable)
 
 
+def parts_json(design) -> dict:
+    """The part tree the viewer draws: parent, depth and flags per component, plus every attachment label.
+
+    Carries only ids, positions and booleans already in plane.yaml; `local_only` is a flag, never geometry (D83).
+    """
+    from .geom import overlay
+    comps = design.components
+    atts = design.data.get("attachments", []) or []
+    root = design.data.get("root")
+    ids = {c["id"] for c in comps}
+    reached: dict[str, tuple] = {}
+    if root in ids:
+        reached[root] = (None, 0, None)
+        queue = [root]
+        while queue:
+            cur = queue.pop(0)
+            for a in atts:
+                ch = a.get("child")
+                if a.get("parent") == cur and ch in ids and ch not in reached:
+                    reached[ch] = (cur, reached[cur][1] + 1, a)
+                    queue.append(ch)
+    raw = {c.get("id"): c for c in (design.raw or design.data).get("components", [])}
+    local = set(overlay.design_overlay_parts(design))
+    parts = []
+    for c in comps:
+        parent, depth, a = reached.get(c["id"], (None, 0, None))
+        g = c.get("geometry") or {}
+        parts.append({
+            "id": c["id"], "type": c.get("type"), "parent": parent,
+            "attachment": att_label(a) if a else None, "depth": depth,
+            "articulated": bool(a and a.get("articulation")),
+            "position_mm": [float(v) for v in (c.get("position") or [0, 0, 0])],
+            "position_expr": any(isinstance(v, str) for v in (raw.get(c["id"], {}).get("position") or [])),
+            "has_cavities": bool(c.get("cavities")),
+            "visual_only": bool(c.get("visual_only", False)),
+            "local_only": g.get("generator") == "library_part" and (g.get("params") or {}).get("part") in local,
+        })
+    return {"design": str(design.data.get("id", design.base_dir.name)), "root": root, "parts": parts,
+            "attachments": [{"label": att_label(a), "parent": a["parent"], "child": a["child"]} for a in atts]}
+
+
 def mechanism_sweeps(design) -> dict | None:
     """Per-step part transforms for every mechanism (the T6 sweep, 1 degree steps) for the viewer's Physics mode.
     Designs with articulations but no `mechanisms` block get one pseudo-mechanism per articulated joint."""
@@ -129,6 +170,7 @@ def design_entry(design, out_dir: Path, file_id: str | None = None) -> dict:
     (out_dir / f"{fid}.scorecard.json").write_text(dumps(card_dict) + "\n")
     mp = mass_properties(design)
     (out_dir / f"{fid}.mass.json").write_text(dumps(mp) + "\n")
+    (out_dir / f"{fid}.parts.json").write_text(dumps(parts_json(design)) + "\n")
     extra = {}
     for key, fn in (("mechanisms", mechanism_sweeps), ("fea", fea_rows)):
         extra[key] = None
@@ -150,6 +192,7 @@ def design_entry(design, out_dir: Path, file_id: str | None = None) -> dict:
         "glb": f"{fid}.glb",
         "scorecard": f"{fid}.scorecard.json",
         "mass": f"{fid}.mass.json",
+        "parts": f"{fid}.parts.json",
         "tiers": {str(t["tier"]): t["status"] for t in card_dict["tiers"]},
         "error": None,
         **extra,
@@ -174,6 +217,7 @@ def error_entry(did: str, message: str, meta: dict | None = None) -> dict:
         "glb": None,
         "scorecard": None,
         "mass": None,
+        "parts": None,
         "tiers": {},
         "mechanisms": None,
         "fea": None,

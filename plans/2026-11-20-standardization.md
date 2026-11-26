@@ -371,6 +371,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D102 | U15.3: `design get/set` on generator designs still load trimesh because loading computes mass_g by building meshes | accept U15.3 as lazy imports only (`plane --help` 8.8 -> 3.5 s, outputs byte-identical); test 2 uses concept-a; a follow-up step U15.3-2 makes mass_g lazy (computed on first use) so get/set on parametric designs skip mesh building | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D103 | U16.2 tier-1 time budget (D73) | relaxed to ~90 s for concept-a-param tier 1 (U16.2 measured 71 s alone, ~77-99 s loaded); U16.2 merges on ACCEPT + green CI, then concept-a-param's designs-only baseline refresh | Tristan | 11-25 | decided (Tristan P295, 2026-11-25) |
 | D104 | May a vendor's minimum strength with no stated test method count as a spar allowable? | yes (cfrp-tube 1379 MPa from Goodwinds stays, with its note) | Tristan | 11-25 | decided (Tristan P295, 2026-11-25) |
+| D105 | Install AeroSandbox? | yes locally in .venv now (installed 2026-11-25 via uv) so dynamic modes and the AeroSandbox code path run on Tristan's PC; adding it to CI (pyproject extra + validate.yml) is planned for later (ledger task) | Tristan | 11-25 | decided (Tristan P298, 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1153,7 +1154,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** elevator deflection to trim at cruise and at stall speed vs its travel; horizontal and vertical tail volume coefficients vs sourced typical bands; dynamic modes (short period, phugoid, Dutch roll, spiral) from AeroSandbox or AVL with damping thresholds from a source (e.g. MIL-F-8785C levels) or `pending`. Fixed-wing and transition designs only.
 
 - [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -1 tail volume, -2 trim, -3 dynamic modes (all hard) + scout packet A; AeroSandbox opt-in, not in CI (modes SKIP there); merge order U18.3-1, U18.4-1, -2, -3)*
-- [ ] **Step 2: Build** (builder-plus W34-B) *(-1 tail volume merged ca908c6 (W34-R ACCEPT; bands pending: Raymer gives class points); -2 trim next)*
+- [ ] **Step 2: Build** (builder-plus W34-B) *(-1 tail volume merged ca908c6 (W34-R ACCEPT; bands pending: Raymer gives class points); -2 trim merged 98b2dd6 (c0-a1, tiltwing PASS; c172-rc WARN: generated tails not read, T153); -3 dynamic modes next)*
 - [ ] **Step 3: Review** (W34-R); merge
 
 ### Unit U19.1: Studio UI overhaul and a better 3D viewer (D92; P285) [hard]
@@ -1164,7 +1165,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Recon and UI spec** (recon W34-X2, then advisor W34-A2): `u19.1/recon.md`, `u19.1/ui-spec.md` *(extend our three.js app; three panes (part tree, viewport + toolbar/view cube/apply bar/timeline, inspector); Apply via existing /api/op/design.set; steps B0 three upgrade + one renderer + split app.js, B1 lighting/edges, B2 tree + parts.json, B3 see inside, B4 explode + timeline, B5 move + apply, B6 part ids on check rows (core, first as its own PR), B7 layout, B8 measure + view cube; concept-a GLB 2.29 MB / 118k tris; D95)*
 - [x] **Step 2: Briefs** (tactician W34-T6) from the spec *(277de38: B6 part ids (easy, core, own PR), then B0 three 0.180 + split + Playwright, B1 look, B2 tree/inspector/parts.json, B3 see inside, B4 explode + timeline (Physics tab folds in), B5 move + apply, B6b colour by status, B7 layout, B8 measure + cube; strictly sequential after B0; D97)*
-- [ ] **Step 3: Build** (W34-B), one brief at a time *(B0 three 0.180 + split merged 335d304; B6 part ids merged 594c831 (PR #13, migration label); B1 look merged b7e3ade; B2 tree/inspector next)*
+- [ ] **Step 3: Build** (W34-B), one brief at a time *(B0 three 0.180 + split merged 335d304; B6 part ids merged 594c831 (PR #13, migration label); B1 look merged b7e3ade; B2 tree/inspector merged 84c3b7e; B3 see inside next (Tristan looks after B3))*
 - [ ] **Step 4: Review** (W34-R); merge; Tristan tries it in Studio
 
 ## 8. Not doing for v1.0 (YAGNI; ledger status `dropped` with this file as `decided_in`)
