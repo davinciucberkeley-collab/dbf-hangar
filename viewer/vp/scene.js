@@ -3,17 +3,18 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { h, fmt, getJSON } from '../lib.js';
 import { loadGLB, disposeModel } from './loader.js';
-import { prepareMesh, highlight } from './materials.js';
-import { pickAt } from './pick.js';
+import { prepareMesh, applyAppearance, INTERNAL_TYPES } from './materials.js';
+import { pickAt, hitAt, hitsAlong, cycleSelect } from './pick.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 const mmToScene = ([x, y, z]) => new THREE.Vector3(x / 1000, z / 1000, -y / 1000); // body z-up mm -> glTF y-up m
 
 export class Viewport {
-  constructor(el, { onPick } = {}) {
-    this.el = el; this.onPick = onPick; this.ids = new Set(); this.highlighted = new Set(); this.dirty = true;
+  constructor(el, { onPick, onSelect } = {}) {
+    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    this.renderer.localClippingEnabled = true; this.clipPlane = new THREE.Plane();
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     el.append(this.renderer.domElement);
     this.scene = new THREE.Scene();
@@ -26,7 +27,7 @@ export class Viewport {
     const sun = this.sun = new THREE.DirectionalLight(0xffffff, 1.8); sun.position.set(2, 3, 1.5); this.scene.add(sun);
     sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048); sun.shadow.bias = -0.0005; sun.shadow.normalBias = 0.002;
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.enableDamping = false;
+    this.controls.enableDamping = true; this.controls.dampingFactor = 0.12;
     this.controls.addEventListener('change', () => (this.dirty = true));
     this.root = new THREE.Group(); this.scene.add(this.root);
     this.ray = new THREE.Raycaster();
@@ -39,8 +40,9 @@ export class Viewport {
     cv.addEventListener('pointerdown', (e) => (down = [e.clientX, e.clientY]));
     cv.addEventListener('pointerup', (e) => {
       if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4) return;
-      this.pick(e);
+      this.pickEvent(e);
     });
+    cv.addEventListener('dblclick', (e) => { const id = hitAt(this, e); if (id) { this.select([id]); this.fitTo([id]); } });
     this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(el);
     this.applyTheme(); this.resize();
   }
@@ -63,7 +65,7 @@ export class Viewport {
     this.msg.textContent = text || ''; this.msg.className = 'vp-msg' + (err ? ' err' : ''); this.msg.hidden = !text;
   }
   clear() {
-    disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.cg = null; this.mass = null;
+    this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.types.clear(); this.cycle = null; this.cg = null; this.mass = null;
     this.overlay.hidden = true; this.legend.hidden = true; this.dirty = true;
   }
   async show(design) {
@@ -83,6 +85,7 @@ export class Viewport {
       this.root.add(model);
       this.model = model;
       const box = new THREE.Box3().setFromObject(model);
+      this.box0 = box.clone();
       this.size = box.getSize(new THREE.Vector3()); this.center = box.getCenter(new THREE.Vector3());
       const diag = this.size.length() || 1;
       const grid = this.makeGrid(box, diag); this.root.add(grid, this.makeGround(grid.position, diag));
@@ -91,6 +94,7 @@ export class Viewport {
       if (cgmm) this.addCG(mmToScene(cgmm), diag);
       this.mountInfo = design;
       this.fit(diag);
+      applyAppearance(this); this.applySection();
       this.message('');
     } catch (e) {
       console.warn(e); this.message('Could not load model: ' + e.message, true);
@@ -120,7 +124,7 @@ export class Viewport {
   }
   addCG(p, diag) {
     const r = diag * 0.018;
-    const mat = new THREE.MeshBasicMaterial({ color: 0xf97316, depthTest: false, transparent: true });
+    const mat = new THREE.MeshBasicMaterial({ color: 0xd6119b, depthTest: false, transparent: true });
     const s = new THREE.Mesh(new THREE.SphereGeometry(r, 20, 14), mat); s.position.copy(p); s.renderOrder = 10;
     const ring = new THREE.Mesh(new THREE.TorusGeometry(r * 1.8, r * 0.18, 8, 32), mat); ring.position.copy(p); ring.renderOrder = 10;
     ring.rotation.x = Math.PI / 2;
@@ -132,8 +136,108 @@ export class Viewport {
     this.controls.target.copy(this.center); this.camera.near = d / 100; this.camera.far = d * 20;
     this.camera.updateProjectionMatrix(); this.controls.update(); this.dirty = true;
   }
-  pick(e) { pickAt(this, e); }
-  highlight(ids) { highlight(this, ids); }
+  pickEvent(e) { pickAt(this, e); }
+  pick(id) { this.onPick?.(id, this, null); } // same call as a plain click on that part
+  highlight(ids) { this.highlighted = new Set([...ids].filter((i) => this.ids.has(i))); applyAppearance(this); }
+  // The single selection setter: the selection is the highlighted set.
+  select(ids, { add = false } = {}) {
+    this.highlight(add ? [...this.highlighted, ...ids] : ids);
+    this.onSelect?.(this.highlighted);
+  }
+  setHidden(ids, hidden) {
+    for (const id of ids) {
+      const node = this.model?.getObjectByName(id);
+      if (!node || !this.ids.has(id)) continue;
+      node.visible = !hidden;
+      if (hidden) this.hidden.add(id); else this.hidden.delete(id);
+    }
+    this.dirty = true; this.onSelect?.(this.highlighted);
+  }
+  isGhosted(id, type) { return this.ghost.has(id) || (this.xrayOn && !INTERNAL_TYPES.includes(type ?? this.types.get(id))); }
+  setGhost(ids, on) {
+    for (const id of ids) if (this.ids.has(id)) { if (on) this.ghost.add(id); else this.ghost.delete(id); }
+    applyAppearance(this); this.onSelect?.(this.highlighted);
+  }
+  xray(on) { this.xrayOn = !!on; applyAppearance(this); this.onSelect?.(this.highlighted); }
+  // Section plane across the model box along a BODY axis (x, y, z) or null; one shared plane, uncapped.
+  section(axis, value = 0.5, flip = false) {
+    this.sectionState = axis ? { axis, value, flip: !!flip } : null;
+    this.applySection(); this.onSelect?.(this.highlighted);
+  }
+  applySection() {
+    const s = this.sectionState, b = this.box0;
+    if (s && b) {
+      const sz = b.getSize(new THREE.Vector3()), n = new THREE.Vector3(), p = new THREE.Vector3();
+      if (s.axis === 'x') { n.set(1, 0, 0); p.x = b.min.x + s.value * sz.x; }
+      else if (s.axis === 'y') { n.set(0, 0, -1); p.z = b.max.z - s.value * sz.z; }
+      else { n.set(0, 1, 0); p.y = b.min.y + s.value * sz.y; }
+      if (s.flip) n.negate();
+      this.clipPlane.setFromNormalAndCoplanarPoint(n, p);
+    }
+    const planes = s && b ? [this.clipPlane] : null;
+    this.model?.traverse((o) => {
+      if (!o.isMesh && !o.isLineSegments) return;
+      o.material.clippingPlanes = planes; o.material.needsUpdate = true;
+    });
+    this.dirty = true;
+  }
+  hits(origin, dir) {
+    if (!this.model) return [];
+    this.root.updateMatrixWorld(true);
+    return hitsAlong(this, new THREE.Raycaster(origin, dir.clone().normalize()));
+  }
+  pickRay(o, d) { return this.hits(mmToScene(o), mmToScene(d)).map((x) => x.id); }
+  cyclePick(o, d) { return cycleSelect(this, this.hits(mmToScene(o), mmToScene(d)), JSON.stringify([o, d])); }
+  isolate(ids) {
+    const keep = new Set(ids);
+    if (!keep.size) return;
+    this.setHidden([...this.ids].filter((i) => !keep.has(i)), true);
+    this.setHidden([...keep], false);
+  }
+  showAll() { this.setHidden([...this.hidden], false); }
+  state() {
+    const all = [...this.ids];
+    return { selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null };
+  }
+  fitTo(ids) {
+    if (!this.model) return;
+    const box = new THREE.Box3();
+    for (const id of ids || []) {
+      const node = this.hidden.has(id) ? null : this.model.getObjectByName(id);
+      if (node) box.expandByObject(node);
+    }
+    if (box.isEmpty()) box.setFromObject(this.model);
+    const size = box.getSize(new THREE.Vector3()), c = box.getCenter(new THREE.Vector3());
+    const dist = (Math.max(size.x, size.y, size.z, 1e-3) / (2 * Math.tan(THREE.MathUtils.degToRad(this.camera.fov) / 2))) * 1.4;
+    const dir = this.camera.position.clone().sub(this.controls.target).normalize();
+    this.flyTo(c.clone().add(dir.multiplyScalar(dist)), c, dist);
+  }
+  view(name) {
+    const dirs = { iso: [0.9, 0.55, 1.1], front: [1, 0, 0], back: [-1, 0, 0], top: [0, 1, 0], side: [0, 0, 1] };
+    const d = dirs[name];
+    if (!d || !this.model) return;
+    this.camera.up.set(...(name === 'top' ? [1, 0, 0] : [0, 1, 0]));
+    const c = this.controls; // OrbitControls caches the up-axis rotation at construction
+    if (c._quat) { c._quat.setFromUnitVectors(this.camera.up, new THREE.Vector3(0, 1, 0)); c._quatInverse.copy(c._quat).invert(); }
+    const dir = new THREE.Vector3(...d).normalize();
+    this.camera.position.copy(c.target).add(dir.multiplyScalar(this.camera.position.distanceTo(c.target) || 1));
+    this.fitTo(this.ids);
+  }
+  cancelAnim() { if (this.animId) cancelAnimationFrame(this.animId); clearTimeout(this.animTimer); this.animId = 0; }
+  flyTo(pos, target, dist) {
+    this.cancelAnim();
+    this.camera.near = dist / 100; this.camera.far = Math.max(this.camera.far, dist * 20); this.camera.updateProjectionMatrix();
+    const p0 = this.camera.position.clone(), t0 = this.controls.target.clone(), start = performance.now();
+    const apply = (k) => {
+      const e = k * (2 - k);
+      this.camera.position.lerpVectors(p0, pos, e); this.controls.target.lerpVectors(t0, target, e);
+      this.controls.update(); this.dirty = true;
+    };
+    const step = (now) => { const k = Math.min(1, (now - start) / 250); apply(k); this.animId = k < 1 ? requestAnimationFrame(step) : 0; };
+    this.animId = requestAnimationFrame(step);
+    // a browser that withholds animation frames (hidden tab, busy GPU) must still land on the final pose
+    this.animTimer = setTimeout(() => { if (this.animId) cancelAnimationFrame(this.animId); this.animId = 0; apply(1); }, 270);
+  }
   info() {
     const i = this.renderer.info;
     let edgeSegments = 0;
@@ -141,7 +245,7 @@ export class Viewport {
     return { edgeSegments, geometries: i.memory.geometries, textures: i.memory.textures, calls: i.render.calls, triangles: i.render.triangles, canvases: document.querySelectorAll('canvas').length, design: this.mountInfo?.id ?? null };
   }
   dispose() {
-    this.dead = true; this.ro.disconnect(); this.token = Symbol();
+    this.dead = true; this.cancelAnim(); this.ro.disconnect(); this.token = Symbol();
     disposeModel(this.root);
     this.scene.environment?.dispose();
     this.renderer.dispose(); this.renderer.forceContextLoss(); this.renderer.domElement.remove();
@@ -161,5 +265,5 @@ export class Viewport {
         m?.cg_mm ? [h('dt', {}, 'cg (mm)'), h('dd', {}, m.cg_mm.map((v) => fmt(v, 0)).join(', '))] : null));
     }
   }
-  tick() { if (!this.dead && this.dirty && this.el.clientWidth) { this.renderer.render(this.scene, this.camera); this.dirty = false; } }
+  tick() { if (!this.dead && this.controls.update()) this.dirty = true; if (!this.dead && this.dirty && this.el.clientWidth) { this.renderer.render(this.scene, this.camera); this.dirty = false; } }
 }

@@ -20,3 +20,43 @@ tail_volume_v_max:
   rule: "upper bound of the same band"
   source: pending
   note: "same as tail_volume_v_min: scale-RC band via MIT (unverified); std-tail-volume-coefficients Table 2.4 p. 52 gives only typical points (sailplane 0.02, homebuilt 0.04, GA single 0.04), so it stays pending."
+elevator_effectiveness_tau:
+  value: 0.5
+  rule: "T3.trim: elevator effectiveness tau (change of tail lift coefficient per radian of elevator deflection, as a fraction of the tail lift slope)"
+  source: pending
+  note: "textbook figure depends on elevator chord fraction (about 0.5 for a 30 % chord elevator); Raymer / Roskam / Etkin figure not opened; scout packet A"
+elevator_travel_up_deg:
+  value: 25.0
+  rule: "T3.trim: trailing-edge-up elevator travel assumed when the design gives none"
+  source: pending
+  note: "placeholder; the FAA TCDS 3A12 elevator travel for the Cessna 172 (scout U18.2) is the first anchor"
+elevator_travel_down_deg:
+  value: 20.0
+  rule: "same, trailing-edge-down"
+  source: pending
+  note: "placeholder; the FAA TCDS 3A12 elevator travel for the Cessna 172 (scout U18.2) is the first anchor"
+wing_cm_ac:
+  value: 0.0
+  rule: "T3.trim: wing pitching-moment coefficient about its aerodynamic centre, nose-up positive; 0.0 is the symmetric-section value, a cambered section is negative (needs more tail down-force)"
+  source: pending
+  note: "PDL carries only the airfoil name; NACA 2412 about -0.047 is a remembered figure, not opened"
+short_period_damping_min:
+  value: 0.30
+  rule: "T3.dynamic_modes: short-period damping ratio lower bound, Level 1, Category B (nonterminal phases, cruise)"
+  source: 'std-mil-f-8785c-damping (MIL-F-8785C via NASA CR-1796 Table 2, p. 46: Level 1 minimum 0.35 Category A/C, 0.30 Category B)'
+  note: "secondary reproduction, not the spec text; the upper bound (1.30 Cat A/C, 2.00 Cat B) and the frequency limits are not checked"
+phugoid_damping_min:
+  value: 0.04
+  rule: "T3.dynamic_modes: phugoid damping ratio lower bound"
+  source: pending
+  note: "recalled MIL-F-8785C Level 1 figure; the phugoid limit is not in the NASA CR-1796 text opened (std-mil-f-8785c-damping)"
+dutch_roll_damping_min:
+  value: 0.08
+  rule: "T3.dynamic_modes: Dutch-roll damping ratio lower bound, Level 1, Category B (and C)"
+  source: 'std-mil-f-8785c-damping (MIL-F-8785C via NASA CR-1796 Table 4, p. 49, OCR: Level 1 minimum damping ratio 0.19 Category A, 0.08 Category B/C)'
+  note: "OCR table with a garbled column header; the zeta*omega_n minimum (0.15 rad/s Cat B) and the frequency minimum are not checked"
+spiral_time_to_double_min_s:
+  value: 20.0
+  rule: "T3.dynamic_modes: an unstable spiral mode must take at least this long to double amplitude, seconds, Level 1, Category B"
+  source: 'std-mil-f-8785c-damping (MIL-F-8785C via NASA CR-1796 Table 6, p. 50, OCR: Level 1 minimum 12 s Category A/C, 20 s Category B)'
+  note: "secondary reproduction, not the spec text"

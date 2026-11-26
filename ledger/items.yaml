@@ -5380,7 +5380,7 @@ items:
     updated: '2026-11-25'
   - id: T151
     kind: task
-    text: "Process miss (audit W34-Au 2): conductor merged U19.1 B6 (594c831) and B1 (b7e3ade) with red CI on their heads (c172-rc baseline after the key rename, plus LFS checkout timeouts), and B1's merge message said CI green. Rule from now: merge only when the head's own run is green AND it includes current main (merge main into the branch and re-run when main moved since the branch's CI); an LFS-only failure is re-run, never waived."
+    text: "Process miss (audit W34-Au 2): conductor merged U19.1 B6 (594c831) and B1 (b7e3ade) with red CI on their heads (c172-rc baseline after the key rename, plus LFS checkout timeouts), and B1's merge message said CI green. Rule from now: merge only when the head's own run is green AND it includes current main (merge main into the branch and re-run when main moved since the branch's CI); an LFS-only failure is re-run, never waived. [Audit 3 (11-25 16:53): three merges in one batch (4f05c04, ca908c6, 5b2221b) each had green head CI on main as of its own merge-in, not including its batch siblings; merge messages overstated it. Main CI at bc375ad was green, so no harm. Rule tightened: merge one branch at a time, or if batching, say 'head CI green on main <sha>' and do not merge further until main CI on the batch is green.]"
     source: reviews/2026-11-25-w34b.md
     owner: conductor
     status: open
@@ -5403,6 +5403,39 @@ items:
   - id: T153
     kind: task
     text: 'Follow-up U18.4: T3.trim and T3.tail_volume read only declared lifting_surface tails, so generated tails (tail_surfaces / fin generators, e.g. c172-rc) get a SKIP and the showcase has no trim or tail-volume numbers; read generated tails. Also the trim stall row uses default-CLmax stall speed, which U18.2 found 18 % high on the C172.'
+    source: reviews/2026-11-25-w34b.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T154
+    kind: task
+    text: 'Builders: never run python with stdin (, ); a stray stdin process later re-ran an old edit script and re-added duplicate definitions on std/u17.1-2b-criteria (W34-R3 4b). Write scripts to files; before committing, confirm no background task of yours is still running. Add this line to the builder role file and the shared environment briefs. [duplicate of T152 (created by a delayed shell command after a backtick slip)]'
+    source: reviews/2026-11-25-w34c.md
+    owner: conductor
+    status: dropped
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ledger/items.yaml
+    updated: '2026-11-25'
+  - id: T155
+    kind: task
+    text: 'Later (D105 option 2): add AeroSandbox to CI (pyproject extra and validate.yml install) so T3.dynamic_modes and AeroSandbox-based checks run on every PR; measure CI install time first and decide once the local numbers on c172-rc and concept-a look trustworthy.'
+    source: plans/2026-11-20-standardization.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T156
+    kind: task
+    text: 'tiltwing-cakir: Dutch roll is unstable (omega 0.27 rad/s, damping -0.01) per T3.dynamic_modes with AeroSandbox (W34-R2 review section 12); a design-engineer task to check the vertical tail and dihedral.'
     source: reviews/2026-11-25-w34b.md
     owner: conductor
     status: open
