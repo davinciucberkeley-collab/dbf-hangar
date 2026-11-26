@@ -391,6 +391,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D122 | U16.4: c172 servo throw for C172-like deflections (target FAA TCDS 3A12: elevator up 28/down 23, aileron up 20/down 15, rudder +-17.7 deg) needs about +-45 deg servo input; the ES08MA II travel is unsourced (part.yaml has none) | use input +-45 (rudder +-40), servo range +-50, hinge range +-30 with hinge_throw_deg 30, aileron arm about 12 mm; record the servo travel as pending a source (ledger), not as a threshold | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 | D123 | U16.4: aileron differential (+20/-15) needs a new add-linkage option (the op squares arm and rod at neutral, so travel is symmetric) | keep symmetric aileron travel now; differential is a later add-linkage option (ledger) | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 | D124 | add-linkage default deflection (P317; recon u16.4/recon-throws.md, 943e087): today's defaults give about +-9.7 deg; RC manuals put low rates at about 11-20 deg, full-size C172 at 15-28 deg | new option `--deflection D` (default 15 deg per side): the op solves the arm length from the gate ratio (arm = ratio x horn lever) and reports the achieved deflection; `--arm-length` stays as an override; existing designs unchanged until re-run; hand-value tests for the default call are re-derived | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
+| D125 | U16.3-3: replacing concept-a-test-refactor's hand-made linkages with add-linkage turns sourced joint ratings into placeholders, so the E-MEC-05/10 drop-load FAILs disappear as SKIPs instead of being fixed (W34-R3 27, [J6#2]) | carry the old joints' sourced ratings over: after add-linkage, `design set` each new joint's rated_load_n, rating_basis and connection from the joint it replaces, so the honest FAILs come back; core follow-up (ledger): add-linkage never overwrites an existing non-placeholder rating on re-run | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1157,7 +1158,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** three problems Tristan saw in Studio on c172-rc: (1) the servos are backwards: the linkage attaches to the bottom of the servo, not its rotating output; (2) control-surface deflection is only about 5 deg, far below the real aircraft (C172 POH order of magnitude: elevator about +28/-23, aileron +20/-15, rudder +-17 deg); (3) the linkage connections are messy and do not move like solid parts. Diagnose first (advisor), then briefs, then fixes in core (add-linkage, servo frames, viewer posing) and/or the c172 design. Thresholds unchanged.
 
 - [x] **Step 1: Diagnosis** (advisor W34-A4): root cause of each problem with evidence (renders/screenshots, the numbers), and the fix order *(1: local servo overlay matrix flips the spline (z), plus core guard; 2: commanded ranges +-10/+-20, not a bug (D122); 3: follower clevis rides the pin/surface instead of the rod, two pins drawn; fix order overlay matrix, core clevis+guard PR, c172 design PR)*
-- [ ] **Step 2: Briefs** (tactician) from the diagnosis
+- [x] **Step 2: Briefs** (tactician) from the diagnosis *(U16.4-0 local overlay matrix applied (not in git); U16.4-1 core merged d73769a; -4 --deflection merged e0f0e24; -3 differential merged 4711e1c; -2 c172 values next)*
 - [ ] **Step 3: Build** (W34-B), review (W34-R2/R3), merge; Tristan looks in Studio
 
 ### Unit U19.2: Human-readable scorecards (P315)
@@ -1166,7 +1167,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Spec and briefs** (tactician W34-T9): inventory of check ids and their messages, a proposed row format with 6-8 before/after examples from c172-rc and concept-a, where the plain text lives (one registry next to the gates, not in the viewer), then builder-ready briefs *(9b9611d: u19.2/spec.md with 8 before/after examples; 1225 rows, 50 families, 355 non-PASS, 31% state number and limit; text in core/hangar/gates/describe.yaml, limits read from standards; Studio rows.json sidecar; JSON byte-identical; briefs 1 registry (hard), 2 markdown, 3 rows-json, 4 Studio (hard); default Studio grouping Problem)*
 - [x] **Step 2: Tristan reads the before/after examples** (short; the format is his call) *(Tristan 11-26 (P321): examples look good; Studio default grouping by problem and `plane validate --format md` taken as defaults)*
-- [ ] **Step 3: Build** (W34-B), review, merge
+- [ ] **Step 3: Build** (W34-B), review, merge *(brief 1 describe registry merged d73769a; briefs 2 markdown, 3 rows-json, 4 Studio next)*
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 

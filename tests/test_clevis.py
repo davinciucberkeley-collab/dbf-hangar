@@ -37,9 +37,24 @@ def test_clevis_aliases_hand_values():
     from hangar.visuals import clevis_aliases
     assert clevis_aliases(with_display(clevises=True)) == [
         ("clevis-elevator-drive-driver", "rod", "elevator-drive"),
-        ("clevis-elevator-drive-follower", "pin", "elevator-drive")]
+        ("clevis-elevator-drive-follower", "rod", "elevator-drive")]
     assert clevis_aliases(with_display()) == []
     assert clevis_aliases(with_display(clevises=False)) == []
+
+
+def test_pin_component_hidden_in_scene_only():
+    from hangar.export import to_scene
+    from hangar.visuals import hidden_visual_components
+    on, off = with_display(clevises=True), with_display()
+    s_on, s_off = to_scene(on), to_scene(off)
+    assert "pin" not in s_on.geometry
+    assert {"clevis-elevator-drive-driver", "clevis-elevator-drive-follower"} <= set(s_on.geometry)
+    assert "pin" in s_off.geometry
+    assert not [n for n in s_off.geometry if n.startswith("clevis-")]
+    assert hidden_visual_components(on) == {"pin"}
+    assert hidden_visual_components(off) == set()
+    assert sum(c["mass_g"] for c in on.components) == sum(c["mass_g"] for c in off.components)
+    assert [c["id"] for c in on.components] == [c["id"] for c in off.components]
 
 
 def test_off_by_default():
@@ -77,7 +92,7 @@ def test_physics_moves_the_clevises():
     m = mechanism_sweeps(with_display(clevises=True))["mechanisms"][0]
     step10 = next(s for s in m["steps"] if s["input_deg"] == 10)
     assert step10["transforms"]["clevis-elevator-drive-driver"] == step10["transforms"]["rod"]
-    assert step10["transforms"]["clevis-elevator-drive-follower"] == step10["transforms"]["pin"]
+    assert step10["transforms"]["clevis-elevator-drive-follower"] == step10["transforms"]["rod"]
     step0 = next(s for s in m["steps"] if s["input_deg"] == 0)
     assert "clevis-elevator-drive-driver" not in step0["transforms"]
     assert "clevis-elevator-drive-follower" not in step0["transforms"]

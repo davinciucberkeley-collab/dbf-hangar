@@ -235,7 +235,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U16.3 | concept-a-test-refactor: the U16.1 features on a copy of concept-a (P313) | 2/3 | in progress | - |
-| U16.4 | c172-rc linkage fixes from Tristan's look (P314) [hard] | 1/3 | in progress | - |
+| U16.4 | c172-rc linkage fixes from Tristan's look (P314) [hard] | 2/3 | in progress | - |
 | U19.2 | Human-readable scorecards (P315) | 2/3 | in progress | - |
 
 ## Ledger
@@ -243,7 +243,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 52 | 108 | 5 | 3 | 0 | 168 |
+| task | 52 | 110 | 5 | 3 | 0 | 170 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 
