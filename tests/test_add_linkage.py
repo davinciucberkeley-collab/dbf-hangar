@@ -63,6 +63,14 @@ def test_hand_values(tmp_path):
     assert pin["start"] == ap([69.7072, 2.1, -11.05], abs=2e-3) and pin["end"] == ap([69.7072, 0.9, -11.05], abs=2e-3)
 
 
+def test_written_attachments_carry_placeholder_rating_basis(tmp_path):
+    f = scratch(tmp_path)
+    assert run(f).ok
+    mine = [a for a in _plane(f)["attachments"] if a["id"].startswith("stab-elev-")]
+    assert len(mine) == 4
+    assert all(a["rated_load_n"] == 10 and a.get("rating_basis") == "placeholder" for a in mine), mine
+
+
 def test_geometry_rules(tmp_path):
     f = scratch(tmp_path)
     assert run(f).ok
