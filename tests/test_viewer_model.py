@@ -193,6 +193,36 @@ def test_tree_rows_match_parts(browser, pages_base):
     page.close()
 
 
+def test_tree_groups_visual_nodes_by_kind(browser, pages_base):
+    extra = [{"id": i, "type": t, "parent": None, "attachment": None, "depth": 0, "articulated": False,
+              "position_mm": [0.0, 0.0, 0.0], "position_expr": False, "has_cavities": False,
+              "visual_only": True, "local_only": False}
+             for i, t in (("wire-w1", "wire"), ("clevis-m1-driver", "clevis"),
+                          ("clevis-m1-follower", "clevis"), ("screws", "screw"))]
+
+    def handler(route):
+        resp = route.fetch()
+        body = resp.json()
+        body["parts"] += extra
+        route.fulfill(response=resp, json=body)
+
+    page = browser.new_page()
+    errors = collect(page)
+    page.route("**/data/*.parts.json", handler)
+    page.goto(f"{pages_base}#m=designs&d={TREE}")
+    _ready(page, "designs")
+    page.wait_for_selector("#parts-tree li.part-row", timeout=30000)
+    groups = page.evaluate("""() => Object.fromEntries([...document.querySelectorAll('#parts-tree li.part-group')].map(
+      (g) => [g.dataset.group, [...g.querySelectorAll('li.part-row')].map((r) => r.dataset.id)]))""")
+    assert groups["Wiring"] == ["wire-w1"]
+    assert groups["Clevises"] == ["clevis-m1-driver", "clevis-m1-follower"]
+    assert groups["Screws"] == ["screws"]
+    order = page.evaluate("() => [...document.querySelectorAll('#parts-tree li.part-group')].map((g) => g.dataset.group)")
+    assert order.index("Wiring") < order.index("Clevises") < order.index("Screws")
+    assert errors == []
+    page.close()
+
+
 def test_tree_click_selects_and_inspects(browser, pages_base):
     page, errors = _open_tree(browser, pages_base)
     row = '#parts-tree li.part-row[data-id="battery"]'

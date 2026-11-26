@@ -5466,3 +5466,36 @@ items:
     evidence: ea9ec65
     decided_in: ''
     updated: '2026-11-26'
+  - id: T159
+    kind: task
+    text: 'Follow-up (reviews w34b 21-23): core/hangar/visuals.py and index.py import trimesh at module level; make them lazy like U15.3 so plane startup stays fast; clevis_aliases builds meshes only to read names.'
+    source: reviews/2026-11-25-w34b.md, w34c.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T160
+    kind: task
+    text: 'Follow-up (review w34b 22): the Studio part tree lists clevises and screw heads under Wiring; group visual-only nodes by kind (Wiring, Clevises, Screws).'
+    source: reviews/2026-11-25-w34b.md, w34c.md
+    owner: conductor
+    status: done
+    due: ''
+    units: []
+    evidence: c98f7c7
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T161
+    kind: task
+    text: 'Follow-up (review w34c 21): T1 moves the pushrod rigidly and SKIPs rod-vs-moving-part pairs (T1.kinematic_link, 7 rows on c172-rc); pose the rod from the S1 four-bar solve so those pairs are checked.'
+    source: reviews/2026-11-25-w34b.md, w34c.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
