@@ -1,0 +1,17 @@
+schema_version: "1.3"
+id: linkage-op
+name: "linkage op fixture: stabiliser, elevator, servo on a post"
+status: concept
+description: "stabiliser and elevator boxes, a library servo hung under the stabiliser on a post, its output shaft at (20, 0, -12.4) pointing up, no linkage yet"
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: stab
+components:
+  - {id: stab, type: tail_surface, geometry: {box: {size: [60, 200, 6]}}, position: [30, 0, 0], mass_g: 20, manufacturing: {method: foamboard}}
+  - {id: elevator, type: tail_surface, geometry: {box: {size: [30, 200, 3]}}, position: [75, 0, 0], mass_g: 8, manufacturing: {method: foamboard}}
+  - {id: post, type: other, geometry: {box: {size: [4, 6, 8]}}, position: [8, 0, -7], mass_g: 1, manufacturing: {method: foamboard}}
+  - {id: servo, type: servo, geometry: {generator: library_part, params: {part: emax-es08maii-metal}}, position: [14.5, 0, -24.4], mass_g: 12, manufacturing: {method: purchased}}
+attachments:
+  - {id: stab-post, parent: stab, child: post, method: glued, location: [8, 0, -3], embed_ok: true, rated_load_n: 10}
+  - {id: post-servo, parent: post, child: servo, method: glued, location: [8, 0, -11], embed_ok: true, rated_load_n: 10}
+  - {id: stab-elev, parent: stab, child: elevator, method: hinge, location: [60, 0, 0], rated_load_n: 10, articulation: {type: revolute, pivot: [60, 0, 0], axis: [0, -1, 0], range_deg: [-25, 25]}}

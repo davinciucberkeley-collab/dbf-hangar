@@ -278,9 +278,39 @@ def _link(design: Design, mech: dict, atts: dict) -> tuple[list[list[str]], str 
     return sorted(sorted([de["child"], x]) for x in ends), None
 
 
+def link_ratios(design: Design, mech: dict) -> dict[str, float]:
+    """Small-angle geometric ratio (driver degrees per driven degree) of each expect attachment that lies on the side of
+    link.follower_end: attachment id -> unrounded ratio. math.inf marks a dead point (the follower end lies on that
+    attachment's axis). {} when the mechanism has no link or its two link points coincide."""
+    from ..geometry import downstream_ids
+    atts, link = _atts(design), mech.get("link")
+    if not link:
+        return {}
+    pd, pf = (np.array(atts[link[k]]["location"], dtype=float) for k in ("driver_end", "follower_end"))
+    drv = atts[mech["driver"]]["articulation"]
+    side = atts[link["follower_end"]]["child"]
+    d = pf - pd
+    if np.linalg.norm(d) < 1e-9:
+        return {}
+    u = d / np.linalg.norm(d)
+
+    def lever(art, p):
+        w = np.array(art["axis"], dtype=float)
+        return float(u @ np.cross(w / np.linalg.norm(w), p - np.array(art["pivot"], dtype=float)))
+
+    num = lever(drv, pd)
+    out = {}
+    for e in mech.get("expect", []):
+        att = atts[e["attachment"]]
+        if side not in downstream_ids(design, att):
+            continue
+        den = lever(att["articulation"], pf)
+        out[e["attachment"]] = math.inf if abs(den) < 1e-9 else num / den
+    return out
+
+
 def _ratio_row(design: Design, mech: dict, atts: dict, th: dict) -> CheckResult | None:
     """Small-angle lever ratio from the two link points against each declared expect ratio."""
-    from ..geometry import downstream_ids
     mid, cid = mech["id"], f"T6.ratio.{mech['id']}"
     expect = mech.get("expect", [])
     if not expect:
@@ -290,32 +320,22 @@ def _ratio_row(design: Design, mech: dict, atts: dict, th: dict) -> CheckResult 
         r = ", ".join(f"{e['ratio']:g}" for e in expect)
         return CheckResult(cid, SKIP, f"mechanism {mid}: ratio {r} is declared, not measured: mechanisms[].link missing", CRIT)
     pd, pf = (np.array(atts[link[k]]["location"], dtype=float) for k in ("driver_end", "follower_end"))
-    drv = atts[mech["driver"]]["articulation"]
     lo, hi = _input_range(design, mech)
     tol, floor = th["mechanism_ratio_tol"]["value"], th["mechanism_abs_tol_deg"]["value"]
     span = max(abs(lo), abs(hi)) or 1.0
-    side = atts[link["follower_end"]]["child"]
     notes, data = [], {"driver_end": link["driver_end"], "follower_end": link["follower_end"], "ratios": {}}
-    d = pf - pd
-    if np.linalg.norm(d) < 1e-9:
+    if np.linalg.norm(pf - pd) < 1e-9:
         return CheckResult(cid, FAIL, f"mechanism {mid}: dead point: link.driver_end and link.follower_end coincide", CRIT, data)
-    u = d / np.linalg.norm(d)
-
-    def lever(art, p):
-        w = np.array(art["axis"], dtype=float)
-        return float(u @ np.cross(w / np.linalg.norm(w), p - np.array(art["pivot"], dtype=float)))
-
-    num = lever(drv, pd)
+    geos = link_ratios(design, mech)
     for e in expect:
-        att = atts[e["attachment"]]
-        if side not in downstream_ids(design, att):
+        if e["attachment"] not in geos:
             notes.append(f"{e['attachment']} not measured (link.follower_end is not on its side)")
             continue
-        den = lever(att["articulation"], pf)
-        if abs(den) < 1e-9:
+        geo = geos[e["attachment"]]
+        if math.isinf(geo):
             return CheckResult(cid, FAIL, f"mechanism {mid}: dead point: the follower end of the link lies on the "
                                f"axis of {e['attachment']} (lever 0)", CRIT, data)
-        geo, decl = num / den, float(e["ratio"])
+        decl = float(e["ratio"])
         data["ratios"][e["attachment"]] = {"declared": decl, "geometric": round(geo, 4)}
         allowed = max(tol * abs(geo), floor / span)
         if abs(decl - geo) > allowed:

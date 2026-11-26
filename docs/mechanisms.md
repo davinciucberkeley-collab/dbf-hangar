@@ -4,6 +4,14 @@
 
 A control surface needs a servo, an arm on the servo output, a pushrod and a horn on the surface. T6 (`T6.mechanism`, `T6.ratio`) only runs when a `mechanisms[]` entry joins them.
 
+## Generate the linkage
+
+Run `plane design add-linkage <design> --servo <servo-id> --hinge <hinge-attachment-id> --station <mm along the hinge axis from its pivot> --why "..."` instead of steps (a) to (h) below. It reads the servo output frame (part `frames`, see `design place`) and the hinge from the resolved design (so a derived hinge is followed), then writes `<prefix>-arm`, `-rod`, `-horn`, `-pin`, their four attachments and the `four_bar` mechanism `<prefix>-drive` with the ratio the gate computes.
+Construction (layout defaults for a 1:10 RC model, not thresholds; always from the part.yaml envelope, never the local CAD overlay, so the file is the same on every machine): the arm lies on its own plane 0.6 mm above the servo's highest point; the horn is rooted on the skin of the control surface `--horn-offset` (default 6 mm) aft of the hinge line and stands toward `--horn-toward` (default `0,0,-1`); the pin sits beside the horn, in the arm plane; arm and rod are at 90 degrees at neutral; the rod stops 2 mm short of the pin.
+`--horn-height` (default automatic) is the distance from the skin point to the pin hole along the horn; automatic puts the pin in the arm plane and needs 2.5 to 40 mm, otherwise the op stops with `arm plane`: move the servo, turn it with `rotation_deg` so its shaft points to the horn side, or give `--horn-height`.
+Other options: `--prefix` (default the hinge id), `--arm-length` 6, `--arm-side +|-`, `--input-range` 20, `--servo-range` 30. Give `--horn-toward` when the message says so.
+Run it again after moving the servo or the wing: unchanged parts are skipped, changed ones are replaced in place. The result lists the ratio, the minimum transmission angle and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows. The op cuts no pocket: a fuselage skin in the way is a design change (cavity).
+
 ## 2. The recipe
 
 (a) Put the servo just ahead of the hinge line (smaller x on a tail or wing trailing surface), on the side of the fixed surface away from the airflow if possible. Glue it with `embed_ok` where it sits in a recess.
