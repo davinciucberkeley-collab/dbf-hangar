@@ -4,6 +4,7 @@ import { h, $, fmt, getJSON, cache, TIERS } from './lib.js';
 import { Viewport } from './vp/scene.js';
 import { syncTree } from './ui/tree.js';
 import { refreshInspector } from './ui/inspector.js';
+import { initApplyBar, bindApplyBar } from './ui/applybar.js';
 
 const DATA = 'data/';
 const MODES = ['designs', 'compare', 'stress', 'updates', 'ledger'];
@@ -19,7 +20,19 @@ const vps = {};
 const VP_EL = { main: 'vp-main', a: 'vp-a', b: 'vp-b' };
 const VP_NEEDED = { designs: ['main'], compare: ['a', 'b'] };
 function getVp(name) {
-  return (vps[name] ||= new Viewport($(VP_EL[name]), name === 'main' ? { onPick, onSelect: onViewportChange, onModel: (v) => syncExplodeControls(v) } : { onPick }));
+  if (vps[name]) return vps[name];
+  const v = (vps[name] = new Viewport($(VP_EL[name]), name === 'main' ? { onPick, onSelect: onViewportChange, onModel: (x) => syncExplodeControls(x), onDiscard: (m) => window.planeViewer?.studio?.toast?.(m, 'err') } : { onPick }));
+  if (name === 'main') { v.setAttached(attachedOn()); bindApplyBar(v); v.subscribe(() => { syncTool(); syncTree(); refreshInspector(); }); }
+  return v;
+}
+let attachedOn = () => true, syncTool = () => {};
+// Pending moves are lost on a design or mode change: ask first. Returns false when the person keeps them.
+function confirmDiscard() {
+  const n = vps.main?.pending().length ?? 0;
+  if (!n) return true;
+  if (!window.confirm('Discard ' + n + ' unsaved move' + (n === 1 ? '' : 's') + '?')) return false;
+  vps.main.revertMoves();
+  return true;
 }
 // A mode callback that resumes after the user left its mode must not re-create a viewport: its getters throw StaleMode.
 class StaleMode extends Error {}
@@ -57,10 +70,12 @@ function onPick(id, vp, e) {
 }
 document.addEventListener('keydown', (e) => {
   if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
-  if (e.key === 'Escape') { if (highlightIds.size) setHighlight([]); return; }
   const v = state.mode === 'designs' ? vps.main : null;
+  if (e.key === 'Escape') { if (v?.axisLocked()) v.lockAxis(null); else if (highlightIds.size) setHighlight([]); return; }
   if (!v) return;
-  if (e.key === 'h') v.setHidden([...highlightIds], true);
+  if (e.key === 'm') v.setTool(v.state().tool === 'move' ? 'select' : 'move');
+  else if (v.state().tool === 'move' && 'xyz'.includes(e.key) && e.key.length === 1) v.lockAxis(e.key);
+  else if (e.key === 'h') v.setHidden([...highlightIds], true);
   else if (e.key === 'i') { if (highlightIds.size) v.isolate([...highlightIds]); }
   else if (e.key === 'H') v.showAll();
   else if (e.key === 'g') { const ids = [...highlightIds], gh = new Set(v.state().ghosted); if (ids.length) v.setGhost(ids, !ids.every((i) => gh.has(i))); }
@@ -96,9 +111,11 @@ function renderSidebar() {
 
 function choose(id) {
   if (state.mode === 'compare') { assign(state.nextSlot, id); return; }
+  if (id !== state.selected && !confirmDiscard()) return;
   state.selected = id; syncHash(); renderSidebar(); renderMode();
 }
 function assign(slot, id) {
+  if (!confirmDiscard()) return;
   state['slot' + slot.toUpperCase()] = id; state.nextSlot = slot === 'a' ? 'b' : 'a';
   syncHash(); renderSidebar(); renderMode();
 }
@@ -107,6 +124,8 @@ function assign(slot, id) {
 async function renderMode() {
   const id = state.mode, el = $('mode-' + id), gen = ++renderGen;
   delete el.dataset.ready;
+  const vm = vps.main; // a re-render of the open design keeps what the person had set (view, selection, pending moves)
+  if (id === 'designs' && vm?.transforms && vm.mountInfo?.id === state.selected) vm.keepNext = vm.snapshot();
   try {
     const ctx = { state, el, h, fmt, getJSON, byId, vp: vpAccessFor(gen), setHighlight, studio: state.index.studio === true };
     await (await import('./modes/' + id + '.js')).default(ctx);
@@ -117,6 +136,7 @@ async function renderMode() {
   }
 }
 function setMode(id) {
+  if (id !== state.mode && !confirmDiscard()) return;
   state.mode = id; document.body.dataset.mode = id;
   for (const m of MODES) $('mode-' + m).hidden = m !== id;
   document.querySelectorAll('#modes button').forEach((b) => b.classList.toggle('active', b.dataset.mode === id));
@@ -158,6 +178,18 @@ async function init() {
     h('select', { 'data-testid': 'section-axis', 'aria-label': 'Section axis', onchange: sec }, ['off', 'x', 'y', 'z'].map((a) => h('option', { value: a }, a))),
     h('input', { type: 'range', min: '0', max: '1000', value: '500', disabled: true, 'data-testid': 'section-slider', 'aria-label': 'Section position', oninput: sec }),
     h('label', {}, h('input', { type: 'checkbox', 'data-testid': 'section-flip', onchange: sec }), ' flip'));
+  initApplyBar();
+  const tb = $('tool-bar'), pick = (t) => vps.main?.setTool(t);
+  const tSel = h('button', { type: 'button', 'data-testid': 'tool-select', 'aria-pressed': 'true', title: 'Select parts (Esc)', onclick: () => pick('select') }, 'Select');
+  const tMove = h('button', { type: 'button', 'data-testid': 'tool-move', 'aria-pressed': 'false', title: 'Move parts (m)', onclick: () => pick('move') }, 'Move');
+  const att = h('input', { type: 'checkbox', checked: true, 'data-testid': 'move-with-attached', onchange: () => vps.main?.setAttached(att.checked) });
+  attachedOn = () => att.checked;
+  tb.append(tSel, tMove, h('label', { title: 'Parts attached below the moved part move with it' }, att, 'with attached parts'));
+  syncTool = () => {
+    const s = vps.main?.state(); if (!s) return;
+    tSel.setAttribute('aria-pressed', String(s.tool === 'select')); tMove.setAttribute('aria-pressed', String(s.tool === 'move'));
+    const off = s.explode?.t > 0; tMove.disabled = off; tMove.title = off ? 'Set explode to 0 to move parts' : 'Move parts (m)';
+  };
   const eb = $('explode-bar'), strat = h('select', { 'data-testid': 'explode-strategy', 'aria-label': 'Explode strategy', onchange: () => { fillLevels(); explode(); } }, ['hierarchy', 'radial'].map((s) => h('option', { value: s }, s)));
   const lvl = h('select', { 'data-testid': 'explode-level', 'aria-label': 'Explode level', onchange: () => explode() });
   let depth = 0;
@@ -204,6 +236,7 @@ async function init() {
 
 // Hooks for the local studio app (modes/edit.js). The Pages build never calls these.
 async function reload(selectId) {
+  if (selectId && !confirmDiscard()) return;
   const r = await fetch(DATA + 'index.json', { cache: 'no-store' });
   if (!r.ok) return;
   const prev = state.index;

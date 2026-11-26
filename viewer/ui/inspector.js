@@ -24,6 +24,7 @@ export function refreshInspector() {
   const parent = p.parent
     ? h('a', { href: '#', class: 'plink', 'data-testid': 'inspector-parent', onclick: (e) => { e.preventDefault(); ctx.setHighlight([p.parent]); } }, p.parent)
     : '-';
+  const pend = vp.pending().find((x) => x.id === id), lock = vp.state().explode?.t > 0;
   box.append(h('dl', {},
     h('dt', {}, 'type'), h('dd', {}, p.type ?? '-'),
     h('dt', {}, 'mass'), h('dd', {}, m ? `${fmt(m.mass_g, 1)} g` : '-'),
@@ -32,5 +33,19 @@ export function refreshInspector() {
     h('dt', {}, 'attachment'), h('dd', {}, p.attachment ?? '-'),
     h('dt', {}, 'depth'), h('dd', {}, String(p.depth)),
     h('dt', {}, 'articulated'), h('dd', {}, p.articulated ? 'yes' : 'no')),
-  ...(p.local_only ? [h('span', { class: 'tag', 'data-testid': 'tag-local-cad' }, 'local CAD')] : []));
+  ...(p.local_only ? [h('span', { class: 'tag', 'data-testid': 'tag-local-cad' }, 'local CAD')] : []),
+  ...(pend ? [h('span', { class: 'tag', 'data-testid': 'tag-moved' }, 'moved')] : []),
+  ...(p.visual_only ? [] : [nudge(vp, id, pend?.delta_mm ?? [0, 0, 0], lock)]));
+}
+
+// Numeric nudge: the three inputs show the part's pending offset (mm); typing one moves the part to that offset.
+function nudge(vp, id, delta, lock) {
+  return h('div', { class: 'nudge', title: lock ? 'Set explode to 0 to move parts' : 'Move by (mm), 0.1 mm steps' }, h('span', { class: 'muted' }, 'move (mm)'),
+    ['x', 'y', 'z'].map((axis, k) => h('input', { type: 'number', step: '0.1', value: String(delta[k]), disabled: lock ? '' : null, 'aria-label': 'Move ' + axis, 'data-testid': 'nudge-' + axis,
+      onchange: (e) => {
+        const v = Math.round(Number(e.target.value) * 10) / 10;
+        if (e.target.value === '' || Number.isNaN(v)) { e.target.value = String(delta[k]); return; }
+        const d = [0, 0, 0]; d[k] = v - delta[k];
+        if (d[k] !== 0) vp.moveBy(id, d);
+      } })));
 }
