@@ -837,6 +837,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-T9 | `tactician` | Sonnet | U19.2: human-readable scorecard spec with before/after examples, then briefs | `u19.2/spec.md`, `briefs/U19.2-*.md` | builder-ready bar |
 | W34-X3 | `recon` | Sonnet | U16.4: typical control-surface throws (deg) and servo travel for RC planes and fixed-wing drones, to set add-linkage default deflection | `u16.4/recon-throws.md` | 3-5 sourced references, ranked recommendation |
 | W34-G3 | `design-engineer` | Sonnet | U13.1 step 6: fifth rehearsal (C172 from blank with the U16.1 ops), after U16.4 merges | draft PR, gap list | nothing merges |
+| W34-S3 | `scout` | Haiku | ledger T165: EMAX ES3054HV servo dimensions, output spline position and mount ears from datasheets | `knowledge/sources/` entries + values table | only sources opened |
+| W34-T10 | `tactician` | Sonnet | ledger T164 (add-linkage aileron differential option) and T165 (ES3054HV frames and ports) briefs | `briefs/U16.4-3-*.md`, `briefs/U16.3-3-*.md` | builder-ready bar |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
