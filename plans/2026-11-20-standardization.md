@@ -379,6 +379,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D110 | U15.3-4 / U18.4-4 brief scope (4011789) | lazy mass makes `design get` mesh-free; `design set` keeps one mesh build (its refuse rule needs failing-part detection) and only skips the two mass_properties runs when nothing regenerated; trim stall keeps default CLmax 1.1 (1.54 is the full-size value, no model-scale source); fins: conventional and T layouts only | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D111 | Overnight staffing (Tristan away) | keep at least 3 builders and 2 reviewers running while free RAM allows; launch more when RAM is idle; hourly audits continue | Tristan | 11-26 | decided (Tristan P306, 2026-11-26) |
 | D112 | S9c hollow fuselage: may the c172-rc showcase opt in (mass/CG change)? | yes (Tristan P307): Part B may apply it once S9c core merges and the scratch report shows no new FAIL | Tristan | 11-26 | decided (Tristan P307, 2026-11-26) |
+| D113 | Studio colour-by-status shows concept-a almost all amber because report-only SKIPs display as WARN | a WARN row whose original status was SKIP (report-only wrapper) colours as "not judged" (grey), not amber; an empty click also ends a row focus | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
