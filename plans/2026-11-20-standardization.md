@@ -835,6 +835,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-T8 | `tactician` | Sonnet | U16.3: survey which U16.1 features fit concept-a and write designs-only briefs for concept-a-test-refactor | `briefs/U16.3-*.md` | builder-ready bar; measured on a scratch copy |
 | W34-A4 | `advisor` | Opus | U16.4: why c172-rc servos look backwards, deflection is about 5 deg and linkages do not move as solid parts | diagnosis report in chat, fix order | read-only; evidence for each cause |
 | W34-T9 | `tactician` | Sonnet | U19.2: human-readable scorecard spec with before/after examples, then briefs | `u19.2/spec.md`, `briefs/U19.2-*.md` | builder-ready bar |
+| W34-X3 | `recon` | Sonnet | U16.4: typical control-surface throws (deg) and servo travel for RC planes and fixed-wing drones, to set add-linkage default deflection | `u16.4/recon-throws.md` | 3-5 sourced references, ranked recommendation |
+| W34-G3 | `design-engineer` | Sonnet | U13.1 step 6: fifth rehearsal (C172 from blank with the U16.1 ops), after U16.4 merges | draft PR, gap list | nothing merges |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1007,7 +1009,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
 - [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
 - [x] **Step 5: Fourth rehearsal** *(Wed 11-25 ~03:30: Cessna 172 from a blank design, ~35 min / ~45 calls, renders checked, 0 FAIL / 26 WARN, static margin 9.2 % MAC, wing area 100 %, draft PR #9 with all 6 CI jobs green; placeholders listed, nothing invented; gaps -> U13.8)*
-- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U16.1 delivers
+- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U16.1 delivers *(Tristan 11-26 (P317): launch it once the U16.4 fixes are merged)*
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
