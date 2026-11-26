@@ -5,14 +5,14 @@ import { h, fmt, getJSON } from '../lib.js';
 import { loadGLB, disposeModel } from './loader.js';
 import { prepareMesh, applyAppearance, INTERNAL_TYPES } from './materials.js';
 import { pickAt, hitAt, hitsAlong, cycleSelect } from './pick.js';
+import { Transforms, mmToScene, explodeOffsets } from './transforms.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
-const mmToScene = ([x, y, z]) => new THREE.Vector3(x / 1000, z / 1000, -y / 1000); // body z-up mm -> glTF y-up m
 
 export class Viewport {
-  constructor(el, { onPick, onSelect } = {}) {
-    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
+  constructor(el, { onPick, onSelect, onModel } = {}) {
+    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.onModel = onModel; this.parts = null; this.centres = null; this.transforms = null; this.explodeState = null; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     this.renderer.localClippingEnabled = true; this.clipPlane = new THREE.Plane();
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -42,7 +42,7 @@ export class Viewport {
       if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4) return;
       this.pickEvent(e);
     });
-    cv.addEventListener('dblclick', (e) => { const id = hitAt(this, e); if (id) { this.select([id]); this.fitTo([id]); } });
+    cv.addEventListener('dblclick', (e) => { this.model?.updateMatrixWorld(true); const id = hitAt(this, e); if (id) { this.select([id]); this.fitTo([id]); } });
     this.ro = new ResizeObserver(() => this.resize()); this.ro.observe(el);
     this.applyTheme(); this.resize();
   }
@@ -66,6 +66,7 @@ export class Viewport {
   }
   clear() {
     this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.types.clear(); this.cycle = null; this.cg = null; this.mass = null;
+    this.transforms = null; this.centres = null; this.parts = null; this.explodeState = null;
     this.overlay.hidden = true; this.legend.hidden = true; this.dirty = true;
   }
   async show(design) {
@@ -77,7 +78,7 @@ export class Viewport {
     if (!design.glb) return this.message('No GLB for this design', true);
     this.message('Loading…');
     try {
-      const [gltf, mass] = await Promise.all([loadGLB(design.glb), design.mass ? getJSON(design.mass).catch(() => null) : null]);
+      const [gltf, mass, parts] = await Promise.all([loadGLB(design.glb), design.mass ? getJSON(design.mass).catch(() => null) : null, design.parts ? getJSON(design.parts).catch(() => null) : null]);
       if (token !== this.token) return;
       const model = gltf.scene.clone(true);
       this.mass = new Map((mass?.per_component || []).map((c) => [c.id, c]));
@@ -93,9 +94,16 @@ export class Viewport {
       const cgmm = design.cg_mm || mass?.cg_mm;
       if (cgmm) this.addCG(mmToScene(cgmm), diag);
       this.mountInfo = design;
+      model.updateMatrixWorld(true);
+      this.centres = new Map();
+      for (const id of this.ids) { const b = new THREE.Box3().setFromObject(model.getObjectByName(id)); if (!b.isEmpty()) this.centres.set(id, b.getCenter(new THREE.Vector3())); }
+      this.parts = parts?.parts ? parts : null;
+      this.transforms = new Transforms(this);
+      if (this.parts) this.explodeState = { t: 0, level: 'all', strategy: 'hierarchy' };
       this.fit(diag);
       applyAppearance(this); this.applySection();
       this.message('');
+      this.onModel?.(this);
     } catch (e) {
       console.warn(e); this.message('Could not load model: ' + e.message, true);
     }
@@ -136,7 +144,7 @@ export class Viewport {
     this.controls.target.copy(this.center); this.camera.near = d / 100; this.camera.far = d * 20;
     this.camera.updateProjectionMatrix(); this.controls.update(); this.dirty = true;
   }
-  pickEvent(e) { pickAt(this, e); }
+  pickEvent(e) { this.model?.updateMatrixWorld(true); pickAt(this, e); }
   pick(id) { this.onPick?.(id, this, null); } // same call as a plain click on that part
   highlight(ids) { this.highlighted = new Set([...ids].filter((i) => this.ids.has(i))); applyAppearance(this); }
   // The single selection setter: the selection is the highlighted set.
@@ -195,9 +203,19 @@ export class Viewport {
     this.setHidden([...keep], false);
   }
   showAll() { this.setHidden([...this.hidden], false); }
+  // Explode view: t 0..1, level 'all' or 1..max depth, strategy 'hierarchy' | 'radial'. t = 0 restores every part exactly.
+  explode(t, level = 'all', strategy = 'hierarchy') {
+    if (!this.parts || !this.transforms) return;
+    t = Math.min(1, Math.max(0, +t || 0));
+    this.explodeState = { t, level, strategy };
+    const D = t === 0 ? null : explodeOffsets(this.parts, this.centres, this.center, t, level, strategy);
+    for (const id of this.ids) this.transforms.setExplode(id, D?.get(id) ?? null);
+  }
   state() {
-    const all = [...this.ids];
-    return { selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null };
+    const all = [...this.ids], tr = this.transforms, r6 = (n) => Math.round(n * 1e6) / 1e6 || 0;
+    const offsets = {};
+    if (tr) for (const id of all) offsets[id] = tr.offset(id).map(r6);
+    return { explode: this.explodeState ? { ...this.explodeState } : null, offsets, moved: tr ? all.filter((i) => tr.isMoved(i)) : [], selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null };
   }
   fitTo(ids) {
     if (!this.model) return;

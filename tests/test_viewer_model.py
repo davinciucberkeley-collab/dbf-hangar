@@ -29,8 +29,8 @@ def test_model_mode_has_one_canvas(browser, pages_base):
     page.click('#modes button[data-mode="compare"]')
     _ready(page, "compare")
     assert page.locator("canvas").count() == 2
-    page.click('#modes button[data-mode="physics"]')
-    _ready(page, "physics")
+    page.click('#modes button[data-mode="designs"]')
+    _ready(page, "designs")
     assert page.locator("canvas").count() == 1
     page.click('#modes button[data-mode="stress"]')
     page.wait_for_selector("#mode-stress[data-ready]", state="attached", timeout=60000)
@@ -123,17 +123,20 @@ def test_stale_mode_callback_does_not_create_viewport(browser, pages_base):
         held.append(route)
 
     page.route("**/data/*mechanisms*", hold)
-    page.goto(pages_base + "#m=physics&d=mech-good")
-    page.wait_for_function("document.querySelector('#mode-physics') !== null")
-    page.wait_for_timeout(1500)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    page.wait_for_function("document.querySelector('#mode-designs') !== null")
+    for _ in range(60):  # the timeline asks for the sweeps after the scorecard has loaded
+        if held:
+            break
+        page.wait_for_timeout(500)
     assert held, "the mechanisms request was not held"
-    page.click('#modes button[data-mode="designs"]')
-    _ready(page, "designs")
+    page.click('#modes button[data-mode="compare"]')
+    _ready(page, "compare")
     for r in held:
         r.continue_()
     page.wait_for_timeout(2500)
-    assert page.locator("canvas").count() == 1
-    assert page.locator("#vp-phys canvas").count() == 0
+    assert page.locator("canvas").count() == 2
+    assert page.locator("#vp-main canvas").count() == 0
     assert errors == []
     page.close()
 
@@ -384,5 +387,114 @@ def test_section_y_and_z_cut_geometrically(browser, pages_base):
         assert hit(), axis          # flipped keeps the other side
         page.evaluate(f'{VP}.section("{axis}", 0, true)')
         assert not hit(), axis
+    assert errors == []
+    page.close()
+
+
+# ---------- U19.1 B4: transform layers, explode, timeline replaces Physics ----------
+def _open(browser, pages_base, design):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(f"{pages_base}#m=designs&d={design}")
+    _ready(page, "designs")
+    page.wait_for_function("window.planeViewer.vp && window.planeViewer.vp.state().all.length > 0")
+    return page, errors
+
+
+def test_old_physics_link_maps_to_model_with_timeline(browser, pages_base):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=physics&d=mech-good")
+    _ready(page, "designs")
+    assert page.evaluate("document.body.dataset.mode") == "designs"
+    assert page.is_visible("#timeline")
+    assert "Physics" not in page.locator("#modes button").all_inner_texts()
+    assert errors == []
+    page.close()
+
+
+def test_mm_scene_round_trip(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/transforms.js');
+      return [[10, 0, 0], [-5.5, 12.3, 0.7], [0, 0, -27.5]].map((v) => m.sceneToMm(m.mmToScene(v)));
+    }""")
+    for got, want in zip(out, [[10, 0, 0], [-5.5, 12.3, 0.7], [0, 0, -27.5]]):
+        assert all(abs(a - b) <= 0.05 for a, b in zip(got, want)), (got, want)
+    assert errors == []
+    page.close()
+
+
+def test_explode_moves_every_non_root_part_and_zero_restores(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.evaluate("window.planeViewer.vp.explode(1)")
+    s = page.evaluate("window.planeViewer.vp.state()")
+    print("not moved:", set(s["all"]) - {"center_body"} - set(s["moved"]), "moved extra:", set(s["moved"]) - set(s["all"]))
+    assert set(s["moved"]) == set(s["all"]) - {"center_body"}
+    assert s["explode"]["t"] == 1
+    page.evaluate("window.planeViewer.vp.explode(0)")
+    s = page.evaluate("window.planeViewer.vp.state()")
+    assert s["moved"] == []
+    assert not any(page.evaluate("(id) => window.planeViewer.vp.transforms.isMoved(id)", i) for i in s["all"])
+    assert errors == []
+    page.close()
+
+
+def test_explode_levels_keep_subassemblies_together(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    out = page.evaluate("""async () => {
+      const vp = window.planeViewer.vp, parts = vp.parts.parts, ids = new Set(vp.state().all);
+      const P = parts.find((p) => p.depth >= 2 && ids.has(p.id) && ids.has(p.parent));
+      vp.explode(1, 1); const l1 = vp.state().offsets;
+      vp.explode(1, 'all'); const all = vp.state().offsets;
+      vp.explode(1, 'all', 'radial'); const rad = vp.state().offsets;
+      vp.explode(1, P.depth); const deep = vp.state().offsets;
+      return { p: P.id, q: P.parent, l1, all, rad, deep };
+    }""")
+    p, q = out["p"], out["q"]
+    print("P", p, "Q", q)
+    assert all(abs(a - b) <= 1e-6 for a, b in zip(out["l1"][p], out["l1"][q]))
+    assert all(abs(a - b) <= 1e-6 for a, b in zip(out["all"][p], out["all"][q]))  # hierarchy: whole subassemblies as units (D109)
+    assert out["rad"][p] != out["all"][p]  # radial moves each part on its own
+    assert max(abs(a - b) for a, b in zip(out["deep"][p], out["deep"][q])) > 1e-4  # a deeper level separates P from its parent
+    assert max(abs(a - b) for a, b in zip(out["rad"][p], out["rad"][q])) > 1e-4
+    assert errors == []
+    page.close()
+
+
+def test_explode_controls_drive_the_hook(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.fill('[data-testid="explode-slider"]', "500")
+    assert page.evaluate("window.planeViewer.vp.state().explode.t") == 0.5
+    page.select_option('[data-testid="explode-level"]', "1")
+    assert page.evaluate("window.planeViewer.vp.state().explode.level") == 1
+    page.select_option('[data-testid="explode-strategy"]', "radial")
+    assert page.evaluate("window.planeViewer.vp.state().explode.strategy") == "radial"
+    assert errors == []
+    page.close()
+
+
+def test_explode_and_timeline_compose(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    page.evaluate("window.planeViewer.vp.explode(0.5)")
+    page.click('[data-testid="tl-play"]')
+    page.wait_for_function("document.querySelector('[data-testid=tl-input]').textContent === '20'", timeout=15000)
+    s = page.evaluate("window.planeViewer.vp.state()")
+    assert "flap" in s["moved"] and any(abs(v) > 0 for v in s["offsets"]["flap"])
+    page.evaluate("window.planeViewer.vp.explode(0)")
+    s = page.evaluate("window.planeViewer.vp.state()")
+    assert "flap" in s["moved"] and s["offsets"]["flap"] == [0, 0, 0]
+    assert errors == []
+    page.close()
+
+
+def test_timeline_opens_at_input_zero_with_nothing_moved(browser, pages_base):
+    page, errors = _open(browser, pages_base, "four-bar")  # sweep runs -20..20
+    page.wait_for_selector('[data-testid="tl-scrub"]')
+    assert page.inner_text('[data-testid="tl-input"]') == "0"
+    assert page.evaluate("window.planeViewer.vp.state().moved") == []
+    page.evaluate("document.querySelector('[data-testid=tl-scrub]').value = 0; document.querySelector('[data-testid=tl-scrub]').dispatchEvent(new Event('input'))")
+    assert page.inner_text('[data-testid="tl-input"]') == "-20"
+    assert page.evaluate("window.planeViewer.vp.state().moved") != []
     assert errors == []
     page.close()
