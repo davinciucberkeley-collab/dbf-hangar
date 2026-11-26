@@ -7,14 +7,14 @@ from __future__ import annotations
 
 import math
 
-import trimesh
+from .._lazy import trimesh
 
 from hangar.importers.dbf_geometry import GeometryError, _boolean, _clean, body_mesh
 
 __all__ = ["GeometryError", "box", "tube", "prism", "loft", "revolve", "union", "difference",
            "volume_mm3", "require_solid", "ngon_area"]
 
-Mesh = trimesh.Trimesh
+Mesh = "trimesh.Trimesh"
 _PLANE_AXIS = {"xy": "Z", "xz": "Y", "yz": "X"}
 
 

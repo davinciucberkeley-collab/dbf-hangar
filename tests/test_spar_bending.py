@@ -8,7 +8,7 @@ import pytest
 import yaml
 
 from hangar.calcs.spar import root_moment_nmm, spanwise_load, tip_deflection_mm, tube_section
-from hangar.design import FAIL, PASS, SKIP, Design
+from hangar.design import DESIGNS_DIR, FAIL, PASS, SKIP, Design, load_design
 from hangar.design import REPO_ROOT
 from test_discipline_gates import rows, run
 
@@ -81,7 +81,7 @@ def test_gate_fail_thin_tube():
 
 
 def test_gate_skip_without_allowable():
-    rs = rows(run(spar_design(material="cfrp-tube"), tiers={3}), "T3.spar_bending")
+    rs = rows(run(spar_design(material="al-6061-t6"), tiers={3}), "T3.spar_bending")
     assert len(rs) == 1, rs
     r = rs[0]
     assert r.status == SKIP
@@ -105,3 +105,16 @@ def test_new_keys_all_have_source():
     assert keys
     for k in keys:
         assert data[k].get("source"), k
+
+
+def test_concept_a_param_spar_judged():
+    # U18.3 follow-up: the cfrp-tube flexural allowable (Goodwinds sheet) judges wng-002 in concept-a-param.
+    rs = rows(run(load_design(DESIGNS_DIR / "concept-a-param"), tiers={3}), "T3.spar_bending")
+    assert len(rs) == 1, rs
+    r = rs[0]
+    assert r.status in (PASS, FAIL), r.message
+    assert r.data["component"] == "wng-002"
+    assert r.data["stress_ultimate_mpa"] == pytest.approx(84.3, rel=0.01)
+    assert r.data["allowable_mpa"] == pytest.approx(1379, rel=1e-6)
+    assert r.data["reserve_factor"] == pytest.approx(16.4, rel=0.01)
+    assert "not judged" not in r.message

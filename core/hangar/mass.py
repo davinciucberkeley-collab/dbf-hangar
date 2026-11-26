@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import numpy as np
-import trimesh
+from ._lazy import trimesh
 
 from .design import Design
 from .geometry import posed_component_parts, pose_transforms

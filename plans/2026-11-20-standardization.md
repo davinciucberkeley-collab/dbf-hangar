@@ -1087,8 +1087,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** every agent call pays about 4.4 s of start-up (hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx). Measure with `python -X importtime`, lazy-import the heavy modules where the op does not need them, and report before/after for `plane --help`, `design get`, `design set`, `design validate --tier 1`. Outputs byte-identical; no behaviour change.
 
 - [x] **Step 1: Brief** (tactician W34-T, with the importtime profile) *(4efe4c6: hard; trimesh 2.26 s of 2.63 s import; lazy proxy; merge after U15.1)*
-- [ ] **Step 2: Build** (builder-plus W34-B)
-- [ ] **Step 3: Review** (W34-R); merge
+- [x] **Step 2: Build** (builder-plus W34-B)
+- [x] **Step 3: Review** (W34-R); merge *(merged 5b2221b, W34-R3 ACCEPT; --help 8.8 -> 3.5 s; get/set on parametric designs wait for step 4, D102)*
 - [ ] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review
 
 ### Unit U16.1: 3D generation close to the real aircraft (I2; D85, D87) [hard]
@@ -1144,14 +1144,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -spar-bending (easy) + scout packet B (allowables); FEA comparison deferred to U18.3-2 after U18.1 merges)*
 - [x] **Step 2: Build** (W34-B)
-- [x] **Step 3: Review** (W34-R); merge *(merged 088ce2d; W34-R2 ACCEPT after the pinned-rows hash fix; CFRP/6061 allowables now sourced on std/u18-sources, wiring them into spar.yaml is a follow-up)*
+- [x] **Step 3: Review** (W34-R); merge *(merged 088ce2d; W34-R2 ACCEPT after the pinned-rows hash fix; CFRP/6061 allowables now sourced on std/u18-sources, wiring them into spar.yaml is a follow-up)* *(follow-up merged 4f05c04: cfrp-tube allowable 1379 MPa, modulus 127553 MPa (Goodwinds minimums); concept-a-param spar PASS RF 16.4)*
 
 ### Unit U18.4: Trim and stability (D89; P280) [hard]
 
 **Scope:** elevator deflection to trim at cruise and at stall speed vs its travel; horizontal and vertical tail volume coefficients vs sourced typical bands; dynamic modes (short period, phugoid, Dutch roll, spiral) from AeroSandbox or AVL with damping thresholds from a source (e.g. MIL-F-8785C levels) or `pending`. Fixed-wing and transition designs only.
 
 - [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -1 tail volume, -2 trim, -3 dynamic modes (all hard) + scout packet A; AeroSandbox opt-in, not in CI (modes SKIP there); merge order U18.3-1, U18.4-1, -2, -3)*
-- [ ] **Step 2: Build** (builder-plus W34-B)
+- [ ] **Step 2: Build** (builder-plus W34-B) *(-1 tail volume merged ca908c6 (W34-R ACCEPT; bands pending: Raymer gives class points); -2 trim next)*
 - [ ] **Step 3: Review** (W34-R); merge
 
 ### Unit U19.1: Studio UI overhaul and a better 3D viewer (D92; P285) [hard]

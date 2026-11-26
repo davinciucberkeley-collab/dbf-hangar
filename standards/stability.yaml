@@ -1,0 +1,22 @@
+# Trim and stability thresholds (U18.4). Every entry needs a source; `source: pending` means provisional.
+version: "0.1"
+tail_volume_h_min:
+  value: 0.30
+  rule: "T3.tail_volume: horizontal tail volume Vh = sum(S_h x l_h) / (S x MAC) lower bound"
+  source: pending
+  note: "from knowledge/sources/scale-rcu-tail-feathers-scale-size.md (cites an MIT range, not verified in the MIT note itself); the real Cessna 172 measures about 0.64 (reference sheet). Opened source std-tail-volume-coefficients (Scholz HAW Hamburg note reproducing Raymer, Table 2.3 p. 51 and Table 2.4 p. 52) gives only per-class typical points, not bands: Vh homebuilt 0.50, sailplane 0.50, GA single 0.70; Vv homebuilt 0.04, sailplane 0.02, GA single 0.04. A min-max band cannot be read from single typical values, so the band stays pending."
+tail_volume_h_max:
+  value: 0.60
+  rule: "upper bound of the same band"
+  source: pending
+  note: "same as tail_volume_h_min: band from the scale-RC note via MIT (unverified); std-tail-volume-coefficients Table 2.3 p. 51 gives only typical points (homebuilt 0.50, sailplane 0.50, GA single 0.70), so no band is readable and it stays pending."
+tail_volume_v_min:
+  value: 0.02
+  rule: "T3.tail_volume: vertical tail volume Vv = sum(S_v x l_v) / (S x b) lower bound"
+  source: pending
+  note: "from knowledge/sources/scale-rcu-tail-feathers-scale-size.md (cites an MIT range, not verified in the MIT note itself). Opened source std-tail-volume-coefficients Table 2.4 p. 52 gives per-class typical points (sailplane 0.02, homebuilt 0.04, GA single 0.04), not a band, so it stays pending."
+tail_volume_v_max:
+  value: 0.05
+  rule: "upper bound of the same band"
+  source: pending
+  note: "same as tail_volume_v_min: scale-RC band via MIT (unverified); std-tail-volume-coefficients Table 2.4 p. 52 gives only typical points (sailplane 0.02, homebuilt 0.04, GA single 0.04), so it stays pending."
