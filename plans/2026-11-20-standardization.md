@@ -1157,7 +1157,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** three problems Tristan saw in Studio on c172-rc: (1) the servos are backwards: the linkage attaches to the bottom of the servo, not its rotating output; (2) control-surface deflection is only about 5 deg, far below the real aircraft (C172 POH order of magnitude: elevator about +28/-23, aileron +20/-15, rudder +-17 deg); (3) the linkage connections are messy and do not move like solid parts. Diagnose first (advisor), then briefs, then fixes in core (add-linkage, servo frames, viewer posing) and/or the c172 design. Thresholds unchanged.
 
 - [x] **Step 1: Diagnosis** (advisor W34-A4): root cause of each problem with evidence (renders/screenshots, the numbers), and the fix order *(1: local servo overlay matrix flips the spline (z), plus core guard; 2: commanded ranges +-10/+-20, not a bug (D122); 3: follower clevis rides the pin/surface instead of the rod, two pins drawn; fix order overlay matrix, core clevis+guard PR, c172 design PR)*
-- [ ] **Step 2: Briefs** (tactician) from the diagnosis
+- [x] **Step 2: Briefs** (tactician) from the diagnosis *(U16.4-0 local overlay matrix applied (not in git); U16.4-1 core merged d73769a; -4 --deflection ACCEPTed; -3 differential building; -2 c172 values next)*
 - [ ] **Step 3: Build** (W34-B), review (W34-R2/R3), merge; Tristan looks in Studio
 
 ### Unit U19.2: Human-readable scorecards (P315)
@@ -1166,7 +1166,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Spec and briefs** (tactician W34-T9): inventory of check ids and their messages, a proposed row format with 6-8 before/after examples from c172-rc and concept-a, where the plain text lives (one registry next to the gates, not in the viewer), then builder-ready briefs *(9b9611d: u19.2/spec.md with 8 before/after examples; 1225 rows, 50 families, 355 non-PASS, 31% state number and limit; text in core/hangar/gates/describe.yaml, limits read from standards; Studio rows.json sidecar; JSON byte-identical; briefs 1 registry (hard), 2 markdown, 3 rows-json, 4 Studio (hard); default Studio grouping Problem)*
 - [x] **Step 2: Tristan reads the before/after examples** (short; the format is his call) *(Tristan 11-26 (P321): examples look good; Studio default grouping by problem and `plane validate --format md` taken as defaults)*
-- [ ] **Step 3: Build** (W34-B), review, merge
+- [ ] **Step 3: Build** (W34-B), review, merge *(brief 1 describe registry merged d73769a; briefs 2 markdown, 3 rows-json, 4 Studio next)*
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 
