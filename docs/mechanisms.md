@@ -61,6 +61,15 @@ Add `kinematics: four_bar` to a `mechanisms[]` entry (schema_version 1.3; defaul
 - The rod is posed on the horn pin at every step: the step collision loop checks rod, horn, pin and surface with nothing exempted, and `T6.link` is a PASS row. Studio Physics shows the rod pinned on the horn.
 - Limits: T1 pose sweeps still pose the rod rigidly (their `T1.kinematic_link` SKIP rows stay); a servo or a hinge parent that itself moves with another articulated joint is refused.
 
+## Wheels on axles
+
+Set `landing_gear` `wheels: separate` (PDL 1.3): the gear mesh is then legs, axle stubs and the nose fork only (`main_wheels` must be 1; `axle_d` is the stub diameter, 0 = half the leg diameter).
+- Add one `wheel` generator component per wheel (`wheel_d`, `wheel_w`, `shape`, `bore_d`) with `position` at its axle centre, so the wheel sits on its axle stub.
+- Attach each wheel to the gear with a `hinge` attachment whose `articulation` is `type: continuous`, `axis: [0, 1, 0]`, `pivot` at the axle centre (no `range_deg`, no `poses`).
+- Make the bore 0.4 mm larger than `axle_d`, so the joint point at the axle centre stays on the wheel and clears the stub.
+- T1 checks each wheel for contact with the gear (a nose wheel that is not on its fork FAILs); it does not sweep a continuous joint, and T6 does not warn it as undriven. A continuous joint cannot be a mechanism driver or follower.
+- Studio Physics gets one `spin-<attachment id>` sweep per wheel (0 to 360 degrees).
+
 ## Splitting a wing into core and ailerons
 
 A wing split into a core and two ailerons is three components: the wing (`part: core`) and two `part: elevon` pieces (`side: right` and `side: left`), all with the same airfoil, span, chords and `elevon_y`.

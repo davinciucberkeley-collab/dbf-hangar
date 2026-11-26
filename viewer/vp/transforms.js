@@ -26,6 +26,7 @@ export class Transforms {
     this.edits.clear(); this.explodes.clear(); this.mechs.clear();
     for (const id of ids) this.recompose(id);
   }
+  editOf(id) { return this.edits.get(id) ?? null; }
   offset(id) { const v = this.explodes.get(id); return v ? [v.x, v.y, v.z] : [0, 0, 0]; }
   isMoved(id) {
     const node = this.vp.model?.getObjectByName(id);

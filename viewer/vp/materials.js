@@ -41,7 +41,11 @@ export function applyAppearance(vp) {
     m.emissive?.set(on ? 0xffb020 : 0x000000);
     if (m.emissiveIntensity != null) m.emissiveIntensity = on ? 0.55 : 1;
     if (m.transparent !== wasT || m.depthWrite !== wasD) m.needsUpdate = true;
-    for (const e of o.children) if (e.userData.isEdge) { e.material.opacity = edge; e.renderOrder = ghost ? 5 : 1; }
+    const pend = vp.transforms?.edits.has(cid); // a part with a pending move gets the orange outline (the CG orange), whatever the dimming
+    for (const e of o.children) if (e.userData.isEdge) {
+      e.material.opacity = pend ? 0.9 : edge; e.renderOrder = ghost ? 5 : 1;
+      if (pend) { e.material.color.set(0xf97316); e.userData.orange = true; } else if (e.userData.orange) { e.material.color.set(vp.edgeColor()); e.userData.orange = false; }
+    }
   });
   vp.updateOverlay(); vp.dirty = true;
 }

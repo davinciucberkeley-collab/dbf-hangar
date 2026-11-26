@@ -372,6 +372,8 @@ export default async function boot(viewer) {
   document.querySelector('#sidebar footer').before(h('div', { id: 'jobs', class: 'jobs', hidden: true, 'aria-live': 'polite' }));
   document.body.append(h('div', { id: 'toasts', class: 'toasts' }));
   V.onScorecard = actionBar;
+  V.studio = { op, designPath, toast, dialog, field, primary };
   V.refresh();
   poll();
+  import('./move-apply.js').then((m) => m.default(V)).catch((e) => console.warn('move apply failed to load', e));
 }
