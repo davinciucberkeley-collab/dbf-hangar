@@ -32,7 +32,7 @@ function review(V) {
   const line = () => {
     const [first, ...rest] = pend;
     cli.textContent = `plane design set designs/${id} "${key(first)}" "${list(first.to_mm)}"` + rest.map((p) => ` --also "${key(p)}=${list(p.to_mm)}"`).join('')
-      + ` --kind modify --why "${why.value.replace(/"/g, '\\"')}"`;
+      + ` --kind modify --why '${why.value.replace(/'/g, "'\\''")}'`; // single quotes: $ and backticks stay literal when pasted
   };
   why.addEventListener('input', line); line();
   const warns = warnings(vp, pend);
