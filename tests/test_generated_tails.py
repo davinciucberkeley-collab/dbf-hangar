@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 
 import pytest
 from pytest import approx
@@ -12,10 +13,13 @@ from hangar.design import DESIGNS_DIR, PASS, SKIP, WARN, load_design, load_stand
 from hangar.gates.stability import all_surfaces, declared_surfaces, generated_surfaces
 from hangar.geom.planform import generated_fin
 
+# T158: values below are pinned to this frozen copy, so showcase changes to designs/c172-rc don't move them.
+C172 = Path(__file__).parent / "fixtures" / "c172-rc-frozen"
+
 
 @pytest.fixture(scope="module")
 def design():
-    return load_design(DESIGNS_DIR / "c172-rc")
+    return load_design(C172)
 
 
 @pytest.fixture(scope="module")
@@ -24,7 +28,7 @@ def card(design):
 
 
 def test_generated_fin_params():
-    data = yamlfast.safe_load((DESIGNS_DIR / "c172-rc" / "plane.yaml").read_text(encoding="utf-8"))
+    data = yamlfast.safe_load((C172 / "plane.yaml").read_text(encoding="utf-8"))
     comps = {c["id"]: c for c in data["components"]}
     fin = generated_fin(comps["tail-fixed"])
     assert fin["lifting_surface"] == {"span": 116.0, "root_chord": 225.0, "tip_chord": 86.0, "sweep_le_deg": 44.0,

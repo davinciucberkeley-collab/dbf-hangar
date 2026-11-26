@@ -1,0 +1,308 @@
+# Blank design from `plane design new --blank`. Add parts with `plane design add`, change values with `plane design set`.
+schema_version: "1.3"
+id: c172-rc
+name: "Cessna 172 Skyhawk, 1:10 RC scale model"
+status: concept
+description: "1:10 scale RC model of the Cessna 172S Skyhawk (high wing, conventional tail, fixed tricycle gear, single tractor motor). Full-size dimensions from knowledge/reference-aircraft/c172.md (maker three-view and published data), scaled by 0.1. Frame: x aft from the spinner tip, y right, z up from the fuselage centre line, mm. Foam airframe (XPS density from standards/materials.yaml), library electronics. Concept only: nothing built, nothing flown."
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: fuselage
+components:
+  - id: fuselage
+    type: fuselage
+    description: "Fuselage and cowl, 12 measured stations from the three-view x 0.1 (c172.md section 2)"
+    geometry: {generator: fuselage_loft, params: {stations: [[34, 68, 70], [50, 78, 80], [100, 92, 92], [150, 98, 105], [200, 115, 150], [250, 114, 158], [300, 114, 145], [370, 99, 120], [460, 76, 89], [560, 54, 66], [650, 33, 45], [720, 15, 23], [755, 5, 10]], shape: ellipse, nose_length: 0, nose_shape: ellipsoid, smooth_rings: 3}}
+    position: [0, 0, 0]
+    mass_model: {material: xps-foam}
+    material: "XPS foam"
+    manufacturing: {method: hotwire-foam}
+    cavities: [{geometry: {box: {size: [28, 28, 1.6]}}, position: [590, 9, -10.8], description: "elevator arm pocket"}, {geometry: {box: {size: [141, 50, 1.6]}}, position: [660.5, 15, -10.8], description: "elevator pushrod sweep slit"}, {geometry: {box: {size: [150, 50, 4]}}, position: [675, 15, -10.8], description: "elevator pushrod tail-cone slot, 4 mm deep over the rod pose sweep, x 600 to 750"}, {geometry: {box: {size: [28, 28, 1.6]}}, position: [590, -9, 14.8], description: "rudder arm pocket"}, {geometry: {box: {size: [115, 50, 1.6]}}, position: [647.5, -15, 14.8], description: "rudder pushrod sweep slit"}]
+  - id: wing-core
+    type: wing
+    description: "Wing, NACA 2412, span 1100, chord 162 to 106 (c172.md section 1); core to the hinge line, full chord outside the aileron span"
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: 1100, root_chord: 162, tip_chord: 106, inboard_span: 251, sweep_le_deg: 1.8, dihedral_deg: 1.6, part: core, hinge_frac: 0.72, elevon_y: [300, 520], core_fill: outside}}
+    position: [194, 0, 72]
+    mass_model: {material: xps-foam}
+    material: "XPS foam"
+    manufacturing: {method: hotwire-foam}
+  - id: aileron-r
+    type: wing
+    description: "Right aileron. Span, hinge line: ESTIMATE (c172.md lists them as unknown)"
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: 1100, root_chord: 162, tip_chord: 106, inboard_span: 251, sweep_le_deg: 1.8, dihedral_deg: 1.6, part: elevon, hinge_frac: 0.72, elevon_y: [300, 520], side: right, hinge_throw_deg: 25, hinge_gap: 1.0, hinge_style: bevel, knuckle_d: 1.6, knuckle_len: 8, hinge_knuckles: 3}}
+    position: [194, 0, 72]
+    mass_model: {material: xps-foam}
+    material: "XPS foam"
+    manufacturing: {method: hotwire-foam}
+  - id: aileron-l
+    type: wing
+    description: "Left aileron (same estimate as the right)"
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: 1100, root_chord: 162, tip_chord: 106, inboard_span: 251, sweep_le_deg: 1.8, dihedral_deg: 1.6, part: elevon, hinge_frac: 0.72, elevon_y: [300, 520], side: left, hinge_throw_deg: 25, hinge_gap: 1.0, hinge_style: bevel, knuckle_d: 1.6, knuckle_len: 8, hinge_knuckles: 3}}
+    position: [194, 0, 72]
+    mass_model: {material: xps-foam}
+    material: "XPS foam"
+    manufacturing: {method: hotwire-foam}
+  - id: tail-fixed
+    type: tail_surface
+    description: "Tailplane and fin, fixed part. Dimensions from the three-view (c172.md section 3); tail airfoil NACA 0012, fin thickness and hinge fraction are ESTIMATES (not in the sheet)"
+    geometry: {generator: tail_surfaces, params: {airfoil_file: naca0012, stab_span: 325, stab_root_chord: 120, stab_tip_chord: 92, stab_sweep_le_deg: 10, stab_x_le: 0, stab_z: 0, fin_thickness: 12, fin_height: 116, fin_root_chord: 225, fin_tip_chord: 86, fin_sweep_le_deg: 44, fin_x_le: -104, fin_z_root: 16, elevator_fin_gap: 7, part: fixed}}
+    position: [640, 0, 0]
+    mass_model: {material: xps-foam}
+    material: "XPS foam"
+    manufacturing: {method: hotwire-foam}
+  - id: elevator
+    type: tail_surface
+    description: "Elevator (hinge fraction 0.7 is an ESTIMATE)"
+    geometry: {generator: tail_surfaces, params: {airfoil_file: naca0012, stab_span: 325, stab_root_chord: 120, stab_tip_chord: 92, stab_sweep_le_deg: 10, stab_x_le: 0, stab_z: 0, fin_thickness: 12, fin_height: 116, fin_root_chord: 225, fin_tip_chord: 86, fin_sweep_le_deg: 44, fin_x_le: -104, fin_z_root: 16, elevator_fin_gap: 7, part: elevator, hinge_throw_deg: 25, hinge_gap: 1.0, hinge_style: bevel, knuckle_d: 1.6, knuckle_len: 8, hinge_knuckles: 3}}
+    position: [640, 0, 0]
+    mass_model: {material: xps-foam}
+    material: "XPS foam"
+    manufacturing: {method: hotwire-foam}
+  - id: rudder
+    type: tail_surface
+    description: "Rudder (hinge fraction 0.7 is an ESTIMATE)"
+    geometry: {generator: tail_surfaces, params: {airfoil_file: naca0012, stab_span: 325, stab_root_chord: 120, stab_tip_chord: 92, stab_sweep_le_deg: 10, stab_x_le: 0, stab_z: 0, fin_thickness: 12, fin_height: 116, fin_root_chord: 225, fin_tip_chord: 86, fin_sweep_le_deg: 44, fin_x_le: -104, fin_z_root: 16, elevator_fin_gap: 7, part: rudder, hinge_throw_deg: 25, hinge_gap: 1.0, hinge_style: bevel, knuckle_d: 1.6, knuckle_len: 8, hinge_knuckles: 3}}
+    position: [640, 0, 0]
+    mass_model: {material: xps-foam}
+    material: "XPS foam"
+    manufacturing: {method: hotwire-foam}
+  - id: landing-gear
+    type: landing_gear
+    description: "Fixed tricycle gear: main wheels x 266 y +-109, 450 x 180 mm wheels, nose wheel x 110 (c172.md section 5, x 0.1); leg diameter is an ESTIMATE; printed PETG legs are a design choice"
+    geometry: {generator: landing_gear, params: {layout: tricycle, main_x: 266, track: 218, attach_z: -10, ground_z: -140, wheel_d: 45, wheel_w: 18, leg_d: 4, leg_splay_deg: 27, front_x: 110, front_wheel_d: 36, front_attach_z: -30, wheel_shape: tyre, wheels: separate, axle_d: 2}}
+    position: [0, 0, 0]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: motor
+    type: motor
+    description: "T-Motor MN3510 KV700 (library part), tractor, thrust axis forward. max_thrust_n is a PLACEHOLDER: the part's source gives power and current, not thrust"
+    geometry: {generator: library_part, params: {part: tmotor-mn3510-kv700}}
+    position: [49, 0, 0]
+    mass_g: 97
+    manufacturing: {method: purchased, part_number: "MN3510 KV700"}
+    propulsion: {max_thrust_n: 1, axis: [-1, 0, 0], role: cruise, prop_diameter_mm: 191}
+  - id: battery
+    type: battery
+    description: "Tattu 2300 mAh 4S 75C (library part), long axis along x"
+    geometry: {generator: library_part, params: {part: tattu-2300mah-4s-75c}}
+    position: [290, 0, -20]
+    rotation_deg: [0, 0, 90]
+    mass_g: 270
+    battery: {capacity_mah: 2300, cells_s: 4, max_discharge_c: 75}
+    manufacturing: {method: purchased, part_number: "Tattu 2300 mAh 4S 75C XT60"}
+  - id: esc
+    type: esc
+    description: "Hobbywing FlyFun 30A mini V5 (library part)"
+    geometry: {generator: library_part, params: {part: hobbywing-flyfun-30a-mini-v5}}
+    position: [135, 0, -35]
+    mass_g: 23
+    manufacturing: {method: purchased, part_number: "FlyFun 30A mini V5"}
+  - id: receiver
+    type: receiver
+    description: "RadioMaster RP3 V2 ELRS receiver (library part)"
+    geometry: {generator: library_part, params: {part: radiomaster-rp3-v2-elrs-rx}}
+    position: [195, 0, -30]
+    mass_g: 4.6
+    manufacturing: {method: purchased, part_number: "RP3 V2 ELRS"}
+  - id: strut-r
+    type: structure
+    description: "Right wing strut, 3 mm carbon rod; attach points from the three-view (c172.md section 1), diameter ESTIMATE"
+    geometry: {generator: strut, params: {start: [250, 217, 73], end: [235, 55, -20], diameter: 3}}
+    position: [0, 0, 0]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: strut-l
+    type: structure
+    description: "Left wing strut (mirror)"
+    geometry: {generator: strut, params: {start: [250, -217, 73], end: [235, -55, -20], diameter: 3}}
+    position: [0, 0, 0]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: servo-ail-r
+    type: servo
+    description: "Aileron servo r, under the wing just ahead of the hinge (no servo fits inside the 14 mm wing at 1:10)"
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    mass_g: 12
+    manufacturing: {method: purchased, part_number: "ES08MA II"}
+    position: [276, 420, 74]
+  - id: arm-ail-r
+    type: other
+    description: "servo arm"
+    geometry: {generator: plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}
+    position: [276, 423, 61.25]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: rod-ail-r
+    type: other
+    description: "pushrod, 1.5 mm carbon"
+    geometry: {generator: strut, params: {start: [276, 426, 61.25], end: [318, 426, 61.25], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: horn-ail-r
+    type: other
+    description: "control horn"
+    geometry: {generator: plate, params: {plane: xz, size: [4, 22.5], thickness: 1.5}}
+    position: [320, 426, 71.25]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: pin-ail-r
+    type: other
+    description: "link pin"
+    geometry: {generator: tube, params: {axis: y, length: 1.2, outer_d: 1.5}}
+    position: [320, 426, 61.25]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: servo-ail-l
+    type: servo
+    description: "Aileron servo l, under the wing just ahead of the hinge (no servo fits inside the 14 mm wing at 1:10)"
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    mass_g: 12
+    manufacturing: {method: purchased, part_number: "ES08MA II"}
+    position: [276, -420, 74]
+  - id: arm-ail-l
+    type: other
+    description: "servo arm"
+    geometry: {generator: plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}
+    position: [276, -423, 61.25]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: rod-ail-l
+    type: other
+    description: "pushrod, 1.5 mm carbon"
+    geometry: {generator: strut, params: {start: [276, -426, 61.25], end: [318, -426, 61.25], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: horn-ail-l
+    type: other
+    description: "control horn"
+    geometry: {generator: plate, params: {plane: xz, size: [4, 22.5], thickness: 1.5}}
+    position: [320, -426, 71.25]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: pin-ail-l
+    type: other
+    description: "link pin"
+    geometry: {generator: tube, params: {axis: y, length: 1.2, outer_d: 1.5}}
+    position: [320, -426, 61.25]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: servo-elev
+    type: servo
+    description: "Elevator servo in the tail cone"
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    mass_g: 12
+    manufacturing: {method: purchased, part_number: "ES08MA II"}
+    position: [590, 9, 2]
+  - id: arm-elev
+    type: other
+    description: "servo arm"
+    geometry: {generator: plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}
+    position: [590, 12, -10.75]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: rod-elev
+    type: other
+    description: "pushrod, 1.5 mm carbon"
+    geometry: {generator: strut, params: {start: [590, 15, -10.75], end: [736, 15, -10.75], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: horn-elev
+    type: other
+    description: "control horn"
+    geometry: {generator: plate, params: {plane: xz, size: [4, 8.8], thickness: 1.5}}
+    position: [738, 15, -7.1]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: pin-elev
+    type: other
+    description: "link pin"
+    geometry: {generator: tube, params: {axis: y, length: 1.2, outer_d: 1.5}}
+    position: [738, 15, -10.75]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: servo-rud
+    type: servo
+    description: "Rudder servo in the tail cone"
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    mass_g: 12
+    manufacturing: {method: purchased, part_number: "ES08MA II"}
+    position: [590, -9, 2]
+  - id: arm-rud
+    type: other
+    description: "servo arm"
+    geometry: {generator: plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}
+    position: [590, -12, 14.75]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: rod-rud
+    type: other
+    description: "pushrod, 1.5 mm carbon"
+    geometry: {generator: strut, params: {start: [590, -15, 14.75], end: [701.5, -15, 14.75], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: horn-rud
+    type: other
+    description: "control horn"
+    geometry: {generator: plate, params: {plane: xy, size: [6, 12], thickness: 1.5}}
+    position: [705.5, -10.5, 15.5]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: pin-rud
+    type: other
+    description: "link pin"
+    geometry: {generator: tube, params: {axis: z, length: 1.2, outer_d: 1.5}}
+    position: [705.5, -15, 15.5]
+    mass_model: {material: cfrp-tube}
+    material: "CFRP rod"
+    manufacturing: {method: purchased}
+  - id: prop
+    type: propeller
+    description: "Two-blade tractor prop, 191 mm = published 1.91 m x 0.1 (c172.md section 4; 172R figure). Blade chords, hub size and the 25 mm spinner (c172.md: 0.25 m x 0.1) are ESTIMATES; no library prop matches this diameter (library props are solid envelope discs, APC 9x6E is 229 mm)"
+    geometry: {generator: propeller, params: {blades: 2, diameter: 191, hub_d: 14, hub_length: 10, root_chord: 14, tip_chord: 8, spinner_length: 25}}
+    position: [29, 0, 0]
+    mass_model: {material: petg-printed}
+    material: "PETG (printed)"
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: wheel-r
+    type: landing_gear
+    geometry: {generator: wheel, params: {wheel_d: 45, wheel_w: 18, shape: tyre, bore_d: 2.4}}
+    position: [266, 109, -117.5]
+    mass_model: {material: petg-printed}
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: wheel-l
+    type: landing_gear
+    geometry: {generator: wheel, params: {wheel_d: 45, wheel_w: 18, shape: tyre, bore_d: 2.4}}
+    position: [266, -109, -117.5]
+    mass_model: {material: petg-printed}
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: wheel-n
+    type: landing_gear
+    geometry: {generator: wheel, params: {wheel_d: 36, wheel_w: 18, shape: tyre, bore_d: 2.4}}
+    position: [110, 0, -122]
+    mass_model: {material: petg-printed}
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+attachments: [{id: fuselage-wing, parent: fuselage, child: wing-core, method: glued, location: [270, 0, 72], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: wing-aileron-r, parent: wing-core, child: aileron-r, method: hinge, location: [302, 410, 85], rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [302, 410, 85], axis: [0.1, -1, -0.03], range_deg: [-25, 25]}, embed_ok: false, hinge_from: generator}, {id: wing-aileron-l, parent: wing-core, child: aileron-l, method: hinge, location: [302, -410, 85], rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [302, -410, 85], axis: [0.1, 1, -0.03], range_deg: [-25, 25]}, embed_ok: false, hinge_from: generator}, {id: fuselage-tail, parent: fuselage, child: tail-fixed, method: glued, location: [680, 0, 0], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: tail-elevator, parent: tail-fixed, child: elevator, method: hinge, location: [728, 60, 0], rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [728, 60, 0], axis: [0, -1, 0], range_deg: [-25, 25]}, embed_ok: false}, {id: tail-rudder, parent: tail-fixed, child: rudder, method: hinge, location: [699, 0, 60], rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [699, 0, 60], axis: [0.127, 0, 1], range_deg: [-25, 25]}, embed_ok: false}, {id: fuselage-gear, parent: fuselage, child: landing-gear, method: bolted, location: [266, 42.7, -12], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-motor, parent: fuselage, child: motor, method: bolted, location: [49, 0, 0], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-battery, parent: fuselage, child: battery, method: tape, location: [290, 0, -20], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-esc, parent: fuselage, child: esc, method: tape, location: [135, 0, -35], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-receiver, parent: fuselage, child: receiver, method: tape, location: [175, 0, -28], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: wing-strut-r, parent: wing-core, child: strut-r, method: glued, location: [250, 217, 73], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: wing-strut-l, parent: wing-core, child: strut-l, method: glued, location: [250, -217, 73], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-strut-r, parent: fuselage, child: strut-r, method: glued, location: [235, 55, -20], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-strut-l, parent: fuselage, child: strut-l, method: glued, location: [235, -55, -20], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: wing-servo-ail-r, parent: wing-core, child: servo-ail-r, method: glued, location: [276, 420, 82], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: servo-arm-ail-r, parent: servo-ail-r, child: arm-ail-r, method: bolted, location: [276, 420, 62], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [276, 420, 61.25], axis: [0, 0, 1], range_deg: [-30, 30]}}, {id: arm-rod-ail-r, parent: arm-ail-r, child: rod-ail-r, method: hinge, location: [276, 426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, kinematic_link: true}, {id: ail-horn-r, parent: aileron-r, child: horn-ail-r, method: glued, location: [320, 426, 82], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: horn-pin-ail-r, parent: horn-ail-r, child: pin-ail-r, method: bolted, location: [320, 426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: wing-servo-ail-l, parent: wing-core, child: servo-ail-l, method: glued, location: [276, -420, 82], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: servo-arm-ail-l, parent: servo-ail-l, child: arm-ail-l, method: bolted, location: [276, -420, 62], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [276, -420, 61.25], axis: [0, 0, 1], range_deg: [-30, 30]}}, {id: arm-rod-ail-l, parent: arm-ail-l, child: rod-ail-l, method: hinge, location: [276, -426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, kinematic_link: true}, {id: ail-horn-l, parent: aileron-l, child: horn-ail-l, method: glued, location: [320, -426, 82], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: horn-pin-ail-l, parent: horn-ail-l, child: pin-ail-l, method: bolted, location: [320, -426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-servo-elev, parent: fuselage, child: servo-elev, method: glued, location: [590, 9, 2], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: servo-arm-elev, parent: servo-elev, child: arm-elev, method: bolted, location: [590, 9, -10], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [590, 9, -10.75], axis: [0, 0, 1], range_deg: [-10, 10]}}, {id: arm-rod-elev, parent: arm-elev, child: rod-elev, method: hinge, location: [590, 15, -10.75], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, kinematic_link: true}, {id: elev-horn, parent: elevator, child: horn-elev, method: glued, location: [738, 15, -3], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: horn-pin-elev, parent: horn-elev, child: pin-elev, method: bolted, location: [738, 15, -10.75], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: fuselage-servo-rud, parent: fuselage, child: servo-rud, method: glued, location: [590, -9, 2], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: servo-arm-rud, parent: servo-rud, child: arm-rud, method: bolted, location: [590, -9, 14], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, articulation: {type: revolute, pivot: [590, -9, 14.75], axis: [0, 0, 1], range_deg: [-10, 10]}}, {id: arm-rod-rud, parent: arm-rud, child: rod-rud, method: hinge, location: [590, -15, 14.75], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, kinematic_link: true}, {id: rud-horn, parent: rudder, child: horn-rud, method: glued, location: [705.5, -5.5, 16], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: horn-pin-rud, parent: horn-rud, child: pin-rud, method: bolted, location: [705.5, -15, 15.5], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}, {id: motor-prop, parent: motor, child: prop, method: bolted, location: [34.3, 0, 0], rated_load_n: 1, rating_basis: placeholder}, {id: gear-wheel-r, parent: landing-gear, child: wheel-r, method: hinge, location: [266, 109, -117.5], rated_load_n: 10, rating_basis: placeholder, embed_ok: false, articulation: {type: continuous, pivot: [266, 109, -117.5], axis: [0, 1, 0]}}, {id: gear-wheel-l, parent: landing-gear, child: wheel-l, method: hinge, location: [266, -109, -117.5], rated_load_n: 10, rating_basis: placeholder, embed_ok: false, articulation: {type: continuous, pivot: [266, -109, -117.5], axis: [0, 1, 0]}}, {id: gear-wheel-n, parent: landing-gear, child: wheel-n, method: hinge, location: [110, 0, -122], rated_load_n: 10, rating_basis: placeholder, embed_ok: false, articulation: {type: continuous, pivot: [110, 0, -122], axis: [0, 1, 0]}}]
+mission: {name: "C172 scale model", profile: scale-model, reference_aircraft: "Cessna 172S Skyhawk", source: knowledge/reference-aircraft/c172.md, statement: "1:10 scale RC model of the Cessna 172S"}
+mechanisms: [{id: aileron-r-drive, driver: servo-arm-ail-r, driven: [wing-aileron-r], input_range_deg: [-20, 20], link: {driver_end: arm-rod-ail-r, follower_end: horn-pin-ail-r}, expect: [{attachment: wing-aileron-r, ratio: 0.25}], kinematics: four_bar}, {id: aileron-l-drive, driver: servo-arm-ail-l, driven: [wing-aileron-l], input_range_deg: [-20, 20], link: {driver_end: arm-rod-ail-l, follower_end: horn-pin-ail-l}, expect: [{attachment: wing-aileron-l, ratio: -0.25}], kinematics: four_bar}, {id: elevator-drive, driver: servo-arm-elev, driven: [tail-elevator], input_range_deg: [-10, 10], link: {driver_end: arm-rod-elev, follower_end: horn-pin-elev}, expect: [{attachment: tail-elevator, ratio: -0.56}], kinematics: four_bar}, {id: rudder-drive, driver: servo-arm-rud, driven: [tail-rudder], input_range_deg: [-10, 10], link: {driver_end: arm-rod-rud, follower_end: horn-pin-rud}, expect: [{attachment: tail-rudder, ratio: 0.4}], kinematics: four_bar}]
+bom: {items: [{id: b-motor, qty: 1, supplier: T-Motor, part_number: "MN3510 KV700", url: "https://store.tmotor.com/goods.php?id=337", library_part: tmotor-mn3510-kv700, component_ids: [motor]}, {id: b-battery, qty: 1, supplier: RMRC, part_number: "Tattu 2300 mAh 4S 75C XT60 270 g", url: "https://www.readymaderc.com/products/details/tattu-2300-75c-4s1p-xt60", library_part: tattu-2300mah-4s-75c, component_ids: [battery]}, {id: b-esc, qty: 1, supplier: Hobbywing, part_number: "30202307 (FlyFun 30A mini V5)", url: "https://www.hobbywing.com/en/products/flyfun-v5-series17", library_part: hobbywing-flyfun-30a-mini-v5, component_ids: [esc]}, {id: b-receiver, qty: 1, supplier: RMRC, part_number: "Radiomaster RP3 V2 ELRS RX", url: "https://www.readymaderc.com/products/details/85670-radiomaster-rp3-expresslrs-2-4ghz-nano-receiver-v2", library_part: radiomaster-rp3-v2-elrs-rx, component_ids: [receiver]}, {id: b-servo, qty: 4, supplier: EMAX, part_number: "EMX-SV-0275 (ES08MA II)", url: "https://amainhobbies.com/emax-es08maii-12g-analog-metal-gear-servo-emx-sv-0275/p667829", library_part: emax-es08maii-metal, component_ids: [servo-ail-r, servo-ail-l, servo-elev, servo-rud]}, {id: b-prop, qty: 1, part_number: "scale 2-blade prop, 191 mm, printed PETG (no library or catalogue part chosen)", component_ids: [prop]}, {id: b-fuselage, qty: 1, part_number: "fuselage, XPS foam, hot-wire cut (design-made)", component_ids: [fuselage]}, {id: b-wing, qty: 1, part_number: "wing core, XPS foam, hot-wire cut (design-made)", component_ids: [wing-core]}, {id: b-ailerons, qty: 2, part_number: "aileron, XPS foam, hot-wire cut (design-made)", component_ids: [aileron-r, aileron-l]}, {id: b-tail, qty: 1, part_number: "tailplane and fin, XPS foam, hot-wire cut (design-made)", component_ids: [tail-fixed]}, {id: b-elevator, qty: 1, part_number: "elevator, XPS foam, hot-wire cut (design-made)", component_ids: [elevator]}, {id: b-rudder, qty: 1, part_number: "rudder, XPS foam, hot-wire cut (design-made)", component_ids: [rudder]}, {id: b-gear, qty: 1, part_number: "tricycle landing gear, printed PETG legs and nose fork plus three separate printed PETG tyre wheels on axle stubs (design-made)", component_ids: [landing-gear, wheel-r, wheel-l, wheel-n]}, {id: b-struts, qty: 2, part_number: "wing strut, 3 mm carbon rod (diameter is an estimate)", component_ids: [strut-r, strut-l]}, {id: b-pushrods, qty: 4, part_number: "pushrod, 1.5 mm carbon rod", component_ids: [rod-ail-r, rod-ail-l, rod-elev, rod-rud]}, {id: b-arms-horns, qty: 8, part_number: "servo arm and control horn, printed PETG (design-made)", component_ids: [arm-ail-r, arm-ail-l, arm-elev, arm-rud, horn-ail-r, horn-ail-l, horn-elev, horn-rud]}, {id: b-pins, qty: 4, part_number: "link pin, 1.5 mm carbon rod, 1.2 mm long", component_ids: [pin-ail-r, pin-ail-l, pin-elev, pin-rud]}]}
