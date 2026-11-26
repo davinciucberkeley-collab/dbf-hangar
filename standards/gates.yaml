@@ -23,3 +23,4 @@ discipline_checks:
   - {id: T3.tail_volume,         tier: 3, blocking: false, criterion: "stability.yaml#tail_volume_h_min"}
   - {id: T3.spar_bending,        tier: 3, blocking: false, criterion: "spar.yaml#spar_reserve_factor_min"}
   - {id: T3.trim,                tier: 3, blocking: false, criterion: "stability.yaml#elevator_travel_up_deg"}
+  - {id: T3.dynamic_modes,       tier: 3, blocking: false, criterion: "stability.yaml#short_period_damping_min"}
