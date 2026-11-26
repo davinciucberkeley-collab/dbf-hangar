@@ -49,9 +49,10 @@ export async function renderTimeline(ctx, d) {
     stop(); clear();
     mech = sw.mechanisms.find((m) => m.id === sel.value);
     touched = new Set(mech.steps.flatMap((s) => Object.keys(s.transforms)));
-    scrub.max = mech.steps.length - 1; i = 0;
+    scrub.max = mech.steps.length - 1;
+    i = mech.steps.reduce((best, s, k) => (Math.abs(s.input_deg) < Math.abs(mech.steps[best].input_deg) ? k : best), 0); // open at input 0: nothing deflected
     fol.replaceChildren(...Object.keys(mech.steps[0].followers).map((l) => h('span', {}, h('b', {}, l + ' '), h('span', { 'data-follower': l }))));
-    apply(0);
+    apply(i);
   }
   function apply(k) {
     const s = mech.steps[k], tr = vp.transforms;

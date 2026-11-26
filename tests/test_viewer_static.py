@@ -45,6 +45,7 @@ def _serve(handler):
 
 def _seed(designs: Path):
     shutil.copytree(EXAMPLE, designs / "example-tailsitter-wing")
+    shutil.copytree(REPO / "tests" / "fixtures" / "four-bar", designs / "four-bar")
     (designs / "mech-good").mkdir()
     shutil.copy(FIXTURES / "mech-good.yaml", designs / "mech-good" / "plane.yaml")
 

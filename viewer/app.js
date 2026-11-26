@@ -158,15 +158,21 @@ async function init() {
     h('select', { 'data-testid': 'section-axis', 'aria-label': 'Section axis', onchange: sec }, ['off', 'x', 'y', 'z'].map((a) => h('option', { value: a }, a))),
     h('input', { type: 'range', min: '0', max: '1000', value: '500', disabled: true, 'data-testid': 'section-slider', 'aria-label': 'Section position', oninput: sec }),
     h('label', {}, h('input', { type: 'checkbox', 'data-testid': 'section-flip', onchange: sec }), ' flip'));
-  const eb = $('explode-bar'), strat = h('select', { 'data-testid': 'explode-strategy', 'aria-label': 'Explode strategy', onchange: () => explode() }, ['hierarchy', 'radial'].map((s) => h('option', { value: s }, s)));
-  const lvl = h('select', { 'data-testid': 'explode-level', 'aria-label': 'Explode level', onchange: () => explode() }, h('option', { value: 'all' }, 'All'));
+  const eb = $('explode-bar'), strat = h('select', { 'data-testid': 'explode-strategy', 'aria-label': 'Explode strategy', onchange: () => { fillLevels(); explode(); } }, ['hierarchy', 'radial'].map((s) => h('option', { value: s }, s)));
+  const lvl = h('select', { 'data-testid': 'explode-level', 'aria-label': 'Explode level', onchange: () => explode() });
+  let depth = 0;
+  // hierarchy: "All" would equal level 1 (top-level child of the root), so it is not offered there; radial offers All
+  const fillLevels = () => {
+    const keep = lvl.value, radial = strat.value === 'radial';
+    lvl.replaceChildren(...(radial ? [h('option', { value: 'all' }, 'All')] : []), ...Array.from({ length: depth }, (_, k) => h('option', { value: String(k + 1) }, String(k + 1))));
+    lvl.value = [...lvl.options].some((o) => o.value === keep) ? keep : lvl.options[0]?.value ?? '';
+  };
   const slider = h('input', { type: 'range', min: '0', max: '1000', value: '0', 'data-testid': 'explode-slider', 'aria-label': 'Explode', oninput: () => explode() });
-  const explode = () => vps.main?.explode(slider.value / 1000, lvl.value === 'all' ? 'all' : +lvl.value, strat.value);
+  const explode = () => vps.main?.explode(slider.value / 1000, lvl.value === 'all' || lvl.value === '' ? 'all' : +lvl.value, strat.value);
   syncExplodeControls = (vp) => { // a new model: controls back to 0 / All / hierarchy, levels from the part tree
     slider.value = '0'; strat.value = 'hierarchy';
-    const depth = Math.max(0, ...(vp.parts?.parts || []).map((x) => x.depth));
-    lvl.replaceChildren(h('option', { value: 'all' }, 'All'), ...Array.from({ length: depth }, (_, k) => h('option', { value: String(k + 1) }, String(k + 1))));
-    lvl.value = 'all'; eb.hidden = !vp.parts;
+    depth = Math.max(0, ...(vp.parts?.parts || []).map((x) => x.depth));
+    lvl.replaceChildren(); fillLevels(); eb.hidden = !vp.parts;
   };
   eb.append(h('label', {}, 'Explode ', slider), lvl, strat);
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };

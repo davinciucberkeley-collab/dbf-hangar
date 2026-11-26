@@ -448,13 +448,15 @@ def test_explode_levels_keep_subassemblies_together(browser, pages_base):
       vp.explode(1, 1); const l1 = vp.state().offsets;
       vp.explode(1, 'all'); const all = vp.state().offsets;
       vp.explode(1, 'all', 'radial'); const rad = vp.state().offsets;
-      return { p: P.id, q: P.parent, l1, all, rad };
+      vp.explode(1, P.depth); const deep = vp.state().offsets;
+      return { p: P.id, q: P.parent, l1, all, rad, deep };
     }""")
     p, q = out["p"], out["q"]
     print("P", p, "Q", q)
     assert all(abs(a - b) <= 1e-6 for a, b in zip(out["l1"][p], out["l1"][q]))
     assert all(abs(a - b) <= 1e-6 for a, b in zip(out["all"][p], out["all"][q]))  # hierarchy: whole subassemblies as units (D109)
     assert out["rad"][p] != out["all"][p]  # radial moves each part on its own
+    assert max(abs(a - b) for a, b in zip(out["deep"][p], out["deep"][q])) > 1e-4  # a deeper level separates P from its parent
     assert max(abs(a - b) for a, b in zip(out["rad"][p], out["rad"][q])) > 1e-4
     assert errors == []
     page.close()
@@ -482,5 +484,17 @@ def test_explode_and_timeline_compose(browser, pages_base):
     page.evaluate("window.planeViewer.vp.explode(0)")
     s = page.evaluate("window.planeViewer.vp.state()")
     assert "flap" in s["moved"] and s["offsets"]["flap"] == [0, 0, 0]
+    assert errors == []
+    page.close()
+
+
+def test_timeline_opens_at_input_zero_with_nothing_moved(browser, pages_base):
+    page, errors = _open(browser, pages_base, "four-bar")  # sweep runs -20..20
+    page.wait_for_selector('[data-testid="tl-scrub"]')
+    assert page.inner_text('[data-testid="tl-input"]') == "0"
+    assert page.evaluate("window.planeViewer.vp.state().moved") == []
+    page.evaluate("document.querySelector('[data-testid=tl-scrub]').value = 0; document.querySelector('[data-testid=tl-scrub]').dispatchEvent(new Event('input'))")
+    assert page.inner_text('[data-testid="tl-input"]') == "-20"
+    assert page.evaluate("window.planeViewer.vp.state().moved") != []
     assert errors == []
     page.close()
