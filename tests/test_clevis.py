@@ -33,6 +33,15 @@ def test_clevis_node_hand_bounds():
     assert fol.point_mm == [75, 6, -15.25]
 
 
+def test_clevis_aliases_hand_values():
+    from hangar.visuals import clevis_aliases
+    assert clevis_aliases(with_display(clevises=True)) == [
+        ("clevis-elevator-drive-driver", "rod", "elevator-drive"),
+        ("clevis-elevator-drive-follower", "pin", "elevator-drive")]
+    assert clevis_aliases(with_display()) == []
+    assert clevis_aliases(with_display(clevises=False)) == []
+
+
 def test_off_by_default():
     assert visual_nodes(load_design(FIX)) == []
     assert not [v for v in visual_nodes(with_display()) if v.kind == "clevis"]

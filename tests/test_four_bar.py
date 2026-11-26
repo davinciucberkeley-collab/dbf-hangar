@@ -1,11 +1,12 @@
 import copy
 
 import numpy as np
+import pytest
 from pathlib import Path
 
 from hangar.checks import validate
 from hangar.design import Design, load_design
-from hangar.gates.mechanisms import solve_four_bar, transmission_angle_deg, rod_transform, simulate_mechanism
+from hangar.gates.mechanisms import consistent_four_bar_pose, solve_four_bar, transmission_angle_deg, rod_transform, simulate_mechanism
 from hangar.index import mechanism_sweeps, dumps
 
 FIX = Path(__file__).parent / "fixtures" / "four-bar"
@@ -164,3 +165,61 @@ def test_version_gate():
     assert "four_bar" in (ROOT / "docs/mechanisms.md").read_text(encoding="utf-8")
     th = (ROOT / "standards/gate-thresholds.yaml").read_text(encoding="utf-8")
     assert "four_bar_min_transmission_deg" in th and "four_bar_max_follower_step_deg" in th
+
+
+def test_consistent_pose_hand_values():
+    d = fix()
+    for given, other, want in (({"servo-arm": 10.0}, "stab-elev", -3.8240),
+                               ({"servo-arm": 30.0}, "stab-elev", -10.6048),
+                               ({"stab-elev": 5.0}, "servo-arm", -12.4075)):
+        ang, ov = consistent_four_bar_pose(d, given)
+        assert abs(ang[other] - want) < 5e-3
+        for k, v in given.items():
+            assert ang[k] == v
+        assert set(ov) == {"rod"}
+        tip = ov["rod"] @ [20, 6, -15.25, 1]
+        end = ov["rod"] @ [73, 6, -15.25, 1]
+        assert abs(np.linalg.norm(end[:3] - tip[:3]) - 53) < 1e-6
+
+
+def test_consistent_pose_leaves_other_cases_alone():
+    d = fix()
+    assert consistent_four_bar_pose(d, {}) == ({}, {})
+    assert consistent_four_bar_pose(d, {"stab-elev": 25.0}) == ({"stab-elev": 25.0}, {})
+    both = {"servo-arm": 10.0, "stab-elev": 5.0}
+    assert consistent_four_bar_pose(d, both) == (both, {})
+    data = copy.deepcopy(fix().data)
+    del data["mechanisms"][0]["kinematics"]
+    d2 = Design(data=data, path=FIX / "plane.yaml")
+    assert consistent_four_bar_pose(d2, {"servo-arm": 10.0}) == ({"servo-arm": 10.0}, {})
+
+
+def test_t1_checks_the_posed_rod():
+    rs = rows(fix().data, FIX)
+    skips = [r for r in rs if r[0] == "T1.kinematic_link"]
+    assert len(skips) == 1 and skips[0][2].startswith("range min of stab-elev")
+    assert any(r[0] == "T1.pose" and r[1] == "PASS" and r[2].startswith("sweep stab-elev -10") for r in rs)
+
+
+def test_t1_posed_rod_clash_is_a_fail():
+    data = copy.deepcopy(fix().data)
+    data["components"].append({"id": "blocker", "type": "other", "geometry": {"box": {"size": [6, 4, 1.5]}},
+                               "position": [60, 6, -17.55], "mass_g": 1, "manufacturing": {"method": "foamboard"}})
+    clips = [r for r in rows(data, FIX) if r[0] == "T1.interference" and r[1] == "FAIL" and "rod and blocker" in r[2]]
+    assert {r[2].split(":")[0] for r in clips} == {"range max of servo-arm (30\u00b0)", "sweep stab-elev -10\u00b0",
+                                                     "sweep servo-arm 15\u00b0"}
+
+
+@pytest.mark.slow
+def test_c172_t1_kinematic_link_rows():
+    from hangar.checks import tier1_geometry
+    from hangar.design import load_standards
+    rs = tier1_geometry(load_design(ROOT / "designs" / "c172-rc"), load_standards()).results
+    sk = [r for r in rs if r.check_id == "T1.kinematic_link"]
+    assert len(sk) == 6
+    assert {r.message.split(":")[0] for r in sk} == {
+        "range min of tail-elevator (-25\u00b0)", "range min of tail-rudder (-25\u00b0)", "sweep tail-elevator -10\u00b0",
+        "sweep tail-rudder -10\u00b0", "sweep tail-rudder 5\u00b0", "sweep wing-aileron-r 20\u00b0"}
+    assert len([r for r in rs if r.check_id == "T1.pose" and r.status == "PASS"
+                and r.message.startswith("sweep wing-aileron-r 5\u00b0")]) == 1
+    assert not [r for r in rs if r.status == "FAIL"]
