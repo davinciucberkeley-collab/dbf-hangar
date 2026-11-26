@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-import trimesh
+from ._lazy import trimesh
 
 WIRE_RGBA = (225, 70, 40, 255)
 WIRE_DIAMETER_MM = 1.5
@@ -41,10 +41,9 @@ CLEVIS_PIN_LEN = 5.0
 CLEVIS_RGBA = (170, 172, 180, 255)
 
 
-def _clevis_specs(design) -> list[tuple[str, str, str, object, list]]:
-    """(node name, source component id, mechanism id, mesh, point_mm) per drawable pushrod end (see clevis docs)."""
+def _clevis_ends(design) -> list[tuple[str, str, str, object, object, object]]:
+    """(node name, source component id, mechanism id, end point, direction, pin axis) per drawable pushrod end. No meshes."""
     import numpy as np
-    from .geom.hinge import cylinder_between
     from .geometry import att_label
     atts = {att_label(a): a for a in design.data.get("attachments", []) or [] if isinstance(a, dict)}
 
@@ -74,15 +73,22 @@ def _clevis_specs(design) -> list[tuple[str, str, str, object, list]]:
         if u is None or a_d is None or a_f is None:
             continue
         mid = mech["id"]
-        drv_mesh = trimesh.util.concatenate([
-            cylinder_between(d0, d0 + CLEVIS_BARREL_LEN * u, CLEVIS_BARREL_R, 24),
-            cylinder_between(d0 - CLEVIS_PIN_LEN / 2 * a_d, d0 + CLEVIS_PIN_LEN / 2 * a_d, CLEVIS_PIN_R, 24)])
-        fol_mesh = trimesh.util.concatenate([
-            cylinder_between(f0, f0 - CLEVIS_BARREL_LEN * u, CLEVIS_BARREL_R, 24),
-            cylinder_between(f0 - CLEVIS_PIN_LEN / 2 * a_f, f0 + CLEVIS_PIN_LEN / 2 * a_f, CLEVIS_PIN_R, 24)])
-        out.append((f"clevis-{mid}-driver", d_att["child"], mid, drv_mesh, [float(x) for x in d0]))
-        out.append((f"clevis-{mid}-follower", f_att["child"], mid, fol_mesh, [float(x) for x in f0]))
+        out.append((f"clevis-{mid}-driver", d_att["child"], mid, d0, u, a_d))
+        out.append((f"clevis-{mid}-follower", f_att["child"], mid, f0, -u, a_f))
     return out
+
+
+def _clevis_mesh(p0, along, axis):
+    from .geom.hinge import cylinder_between
+    return trimesh.util.concatenate([
+        cylinder_between(p0, p0 + CLEVIS_BARREL_LEN * along, CLEVIS_BARREL_R, 24),
+        cylinder_between(p0 - CLEVIS_PIN_LEN / 2 * axis, p0 + CLEVIS_PIN_LEN / 2 * axis, CLEVIS_PIN_R, 24)])
+
+
+def _clevis_specs(design) -> list[tuple[str, str, str, object, list]]:
+    """(node name, source component id, mechanism id, mesh, point_mm) per drawable pushrod end (see clevis docs)."""
+    return [(name, src, mid, _clevis_mesh(p, along, ax), [float(x) for x in p])
+            for name, src, mid, p, along, ax in _clevis_ends(design)]
 
 
 def _clevis_nodes(design) -> list[VisualNode]:
@@ -93,7 +99,7 @@ def clevis_aliases(design) -> list[tuple[str, str, str]]:
     """(node name, source component id, mechanism id): the clevis follows the transform of its component."""
     if not _clevises_on(design):
         return []
-    return [(name, src, mid) for name, src, mid, _mesh, _pt in _clevis_specs(design)]
+    return [(name, src, mid) for name, src, mid, *_ in _clevis_ends(design)]
 
 
 def _clevises_on(design) -> bool:
