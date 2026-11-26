@@ -4876,12 +4876,12 @@ items:
     text: "concept-a-param: cut pockets follow the neutral pose only, so wng-007-l/r swept poses, mec-002-l/r range ends and T6 elevon-l/r collide with the generated wing core (10 extra FAIL rows vs concept-a); make cut_files pose-aware (union of swept poses) so the copy matches concept-a's FAIL set [measured: 14 new FAIL rows from neutral-pose pockets; concept-a's 4 cge stress FAILs absent in the copy because fea/ is not copied (net 20 vs 10; 19 at 940 mm)] [U16.2 parked on std/u4.25-pockets (D71): pose-aware pockets remove all 14 swept-pose FAIL rows, but concept-a-param tier-1 validate rises ~35 s -> ~62 s (budget 60.2 s); merge after Dec 2 with a relaxed budget or a faster boolean] [U16.2 parked again (2026-11-24): convex-hull pockets (W24-A) give tier-1 98-111 s and planform -16.4 % FAIL; the swept envelope of the wng-007 balance horns (21.9k mm3 each) cuts the core; v1.1 needs a pocket clipped to the horn's real install path (amodel ctx.seat) or a planform measure decision]"
     source: W23-B3 2026-11-23 (U9.2 Part B)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: designs/concept-a-param/README.md
+    evidence: 7d183bf
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-25'
   - id: T122
     kind: task
     text: "W23-R non-blocking (G1): T0.parameters PASS counts a reference to a non-number parameter as resolved (checks.py:68); mass_model volume ignores cavities; duplicate volume cache in resolve.py vs geometry.py; materials.py computes repo root instead of REPO_ROOT; data['regenerated'] only when non-empty; an unrelated design set is refused while any generated part fails; _aircraft catches every exception (resolve.py:87)"
