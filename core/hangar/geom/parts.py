@@ -199,6 +199,39 @@ def _smooth_stations(st: list, n: int) -> list:
     return out
 
 
+def _ring_at(rings: list, x: float) -> tuple:
+    for r in rings:
+        if r[0] == x:
+            return r
+    for r0, r1 in zip(rings, rings[1:]):
+        if r0[0] < x < r1[0]:
+            t = (x - r0[0]) / (r1[0] - r0[0])
+            return (x,) + tuple(a + (b - a) * t for a, b in zip(r0[1:], r1[1:]))
+    raise kernel.GeometryError("wall: station outside the fuselage")
+
+
+def _inner_rings(rings: list, wall: float) -> list:
+    xa, xb = rings[0][0] + wall, rings[-1][0] - wall
+    cand = [r for r in rings if xa <= r[0] <= xb]
+    for x in (xa, xb):
+        if xa <= xb and not any(r[0] == x for r in cand):
+            cand.append(_ring_at(rings, x))
+    cand.sort(key=lambda r: r[0])
+    ok = [min(r[2], r[3]) >= 2 * wall + 1.0 for r in cand]
+    if not any(ok):
+        raise kernel.GeometryError("wall: too thick, no inner void")
+    best = max((i for i, r in enumerate(cand) if ok[i]), key=lambda i: min(cand[i][2], cand[i][3]))
+    lo = hi = best
+    while lo > 0 and ok[lo - 1]:
+        lo -= 1
+    while hi < len(cand) - 1 and ok[hi + 1]:
+        hi += 1
+    kept = cand[lo:hi + 1]
+    if len(kept) < 2:
+        raise kernel.GeometryError("wall: too thick, no inner void")
+    return kept
+
+
 def _fuse_build(p: dict, base_dir) -> list:
     cy, cz = p["center_y"], p["center_z"]
     shape, ex = p["shape"], p["exponent"]
@@ -207,15 +240,15 @@ def _fuse_build(p: dict, base_dir) -> list:
     if p["smooth_rings"] > 1:
         st = _smooth_stations(st, p["smooth_rings"])
     n, tip = p["cap_rings"], p["tip_frac"]
-    secs = []
+    rings = []  # (x, cz, w, h)
     if p["nose_length"] > 0:
         x0, w0, h0 = caps[0][:3]
         czn = cz + _dz(caps[0])
         for k in range(n):
             s = _cap_scale(p["nose_shape"], k / n, tip)
-            secs.append((x0 - p["nose_length"] * (1 - k / n), _fuse_loop(shape, ex, cy, czn, w0 * s, h0 * s)))
+            rings.append((x0 - p["nose_length"] * (1 - k / n), czn, w0 * s, h0 * s))
     for q in st:
-        secs.append((q[0], _fuse_loop(shape, ex, cy, cz + _dz(q), q[1], q[2])))
+        rings.append((q[0], cz + _dz(q), q[1], q[2]))
     if p["tail_length"] > 0:
         xl, wl, hl = caps[1][:3]
         czt = cz + _dz(caps[1])
@@ -223,8 +256,15 @@ def _fuse_build(p: dict, base_dir) -> list:
         for k in range(1, n + 1):
             s = _cap_scale(p["tail_shape"], 1 - k / n, tip)
             x = xl + p["tail_length"] * k / n
-            secs.append((x, _fuse_loop(shape, ex, cy, czt + (x - xl) * tn, wl * s, hl * s)))
-    return [kernel.loft("x", secs)]
+            rings.append((x, czt + (x - xl) * tn, wl * s, hl * s))
+    secs = [(x, _fuse_loop(shape, ex, cy, c, w, h)) for x, c, w, h in rings]
+    outer = kernel.loft("x", secs)
+    wall = p["wall"]
+    if wall <= 0:
+        return [outer]
+    inner_secs = [(x, _fuse_loop(shape, ex, cy, c, w - 2 * wall, h - 2 * wall))
+                  for x, c, w, h in _inner_rings(rings, wall)]
+    return [kernel.difference(outer, [kernel.loft("x", inner_secs)])]
 
 
 def _fuse_check(p: dict) -> list[str]:
@@ -244,6 +284,8 @@ def _fuse_check(p: dict) -> list[str]:
         errs.append("tail_upsweep_deg: must be < 60")
     if p["exponent"] <= 1:
         errs.append("exponent: must be > 1")
+    if p["wall"] > 0 and not any(min(s[1], s[2]) >= 2 * p["wall"] + 1 for s in st):
+        errs.append("wall: needs a station at least 2 * wall + 1 mm wide and high")
     return errs
 
 
@@ -261,6 +303,7 @@ register(Generator(
      "tip_frac": ParamSpec("number", default=0.02, doc="cap tip section size as a fraction of the end station"),
      "cap_rings": ParamSpec("int", default=8, minimum=2, doc="rings per cap, count"),
      "exponent": ParamSpec("number", default=2.5, doc="superellipse exponent (> 1), ratio"),
+     "wall": ParamSpec("number", default=0.0, minimum=0, doc="hollow shell: wall thickness in mm along the width and height axes, 0 = solid (default); the nose and tail ends stay closed"),
      "smooth_rings": ParamSpec("int", default=1, minimum=1, doc="1 = off (one ring per station, straight lofts); n > 1 = n rings per station interval, width, height and dz interpolated smoothly between stations, count")},
     _fuse_build, check=_fuse_check))
 
