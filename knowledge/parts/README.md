@@ -26,3 +26,10 @@ frames:
   mount_face: {point: [x, y, z], normal: [x, y, z]}    # plane the ears sit against, OUTWARD normal toward the shaft side (axis-aligned)
 frames_source: <text>   # where the numbers come from; "estimate" is allowed, a measured value names the drawing or measurement
 ```
+
+Any part may add `ports` and `ports_source` (both or neither): the places a wire can start or end, used by `from_port` / `to_port` of a `wiring.harnesses[]` entry:
+```
+ports: {signal: {point: [x, y, z], direction: [x, y, z]}}   # part-local mm; direction points out of the case, need not be unit length
+ports_source: <text>   # where the numbers come from; "estimate" is allowed
+```
+Port names are slugs (`^[a-z0-9][a-z0-9_]*$`).

@@ -72,6 +72,11 @@ def parts_json(design) -> dict:
             "visual_only": bool(c.get("visual_only", False)),
             "local_only": g.get("generator") == "library_part" and (g.get("params") or {}).get("part") in local,
         })
+    from .visuals import visual_nodes
+    for v in visual_nodes(design):
+        parts.append({"id": v.name, "type": v.kind, "parent": None, "attachment": None, "depth": 0,
+                      "articulated": False, "position_mm": [float(x) for x in v.point_mm], "position_expr": False,
+                      "has_cavities": False, "visual_only": True, "local_only": False})
     return {"design": str(design.data.get("id", design.base_dir.name)), "root": root, "parts": parts,
             "attachments": [{"label": att_label(a), "parent": a["parent"], "child": a["child"]} for a in atts]}
 

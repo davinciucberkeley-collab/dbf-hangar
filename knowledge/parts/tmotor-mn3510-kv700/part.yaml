@@ -12,3 +12,5 @@ verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
 geometry:
   generator: tube
   params: {axis: x, length: 28.5, outer_d: 41.8}
+ports: {leads: {point: [14.25, 0, 0], direction: [1, 0, 0]}}
+ports_source: "estimate: the three motor leads leave the rear (+x) face centre; the envelope has no shaft, the prop side is taken as -x as in designs/c172-rc"

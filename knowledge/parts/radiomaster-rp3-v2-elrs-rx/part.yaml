@@ -12,3 +12,5 @@ verified: {by: DBF-Combined BOM-A.csv @ a93f14da, date: '2026-11-14', method: br
 geometry:
   generator: mesh_file
   params: {file: mesh.stl}
+ports: {ch1: {point: [36.07, -6.0, 0], direction: [1, 0, 0]}, ch2: {point: [36.07, -3.0, 0], direction: [1, 0, 0]}, ch3: {point: [36.07, 0.0, 0], direction: [1, 0, 0]}, ch4: {point: [36.07, 3.0, 0], direction: [1, 0, 0]}, ch5: {point: [36.07, 6.0, 0], direction: [1, 0, 0]}}
+ports_source: "estimate: five 3 mm-pitch servo pins on the +x end face of the envelope"
