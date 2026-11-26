@@ -87,9 +87,11 @@ def test_nominal_masses(pd, ad):
     assert pc["wng-001"] == pytest.approx(98.86, abs=0.2)
     for cid in GENERATED[1:]:
         assert pc[cid] == pytest.approx(ac[cid], rel=0.01)
-    assert mp["mass_g"] == pytest.approx(ma["mass_g"], abs=0.5)
+    # U16.2: the swept pockets take 1.24 g out of wng-001 (100.1 -> 98.86 g), so the total sits 1.24 g under concept-a
+    assert mp["mass_g"] == pytest.approx(ma["mass_g"] - 1.24, abs=0.5)
     # CG y: the generated core's cut pockets are not mirror-symmetric, so y moves by 0.12 mm (README); x and z stay tight.
-    assert mp["cg_mm"][0] == pytest.approx(ma["cg_mm"][0], abs=0.05)
+    # U16.2: the lens pockets shift x by 0.14 mm (21.20 vs 21.34)
+    assert mp["cg_mm"][0] == pytest.approx(ma["cg_mm"][0], abs=0.2)
     assert mp["cg_mm"][1] == pytest.approx(ma["cg_mm"][1], abs=0.15)
     assert mp["cg_mm"][2] == pytest.approx(ma["cg_mm"][2], abs=0.05)
 
