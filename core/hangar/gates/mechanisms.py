@@ -132,6 +132,39 @@ def link_overrides(design: Design, mech: dict, input_deg: float, follower_deg: f
     return {cid: t for cid in downstream_ids(design, _atts(design)[mech["link"]["driver_end"]])}
 
 
+def consistent_four_bar_pose(design: Design, angles: dict[str, float]) -> tuple[dict[str, float], dict[str, np.ndarray]]:
+    """T1: complete a configuration in which a four_bar mechanism has exactly one of its driver and driven joints off 0
+    by solving the other from the rod length. Returns (angles, rod overrides: component id -> 4x4); a mechanism with no
+    solution within the ranges, or with both or neither joint off 0, is left as given (no override)."""
+    out, ov = dict(angles), {}
+    for mech in design.data.get("mechanisms", []) or []:
+        if mech.get("kinematics") != "four_bar" or not mech.get("link"):
+            continue
+        try:
+            tip0, pin0, drv, fol = _four_bar_geometry(design, mech)
+        except (KeyError, TypeError, IndexError):
+            continue
+        dl, fl = mech["driver"], mech["driven"][0]
+        d, f = out.get(dl, 0.0), out.get(fl, 0.0)
+        if (abs(d) > 1e-12) == (abs(f) > 1e-12):
+            continue
+        d_rng = (float(drv["range_deg"][0]), float(drv["range_deg"][1]))
+        f_rng = (float(fol["range_deg"][0]), float(fol["range_deg"][1]))
+        if abs(f) <= 1e-12:
+            t = solve_four_bar(tip0, pin0, drv, fol, _clamp(d, d_rng), f_rng)
+            if t is None:
+                continue
+            f = t
+        else:
+            t = solve_four_bar(pin0, tip0, fol, drv, f, d_rng)
+            if t is None:
+                continue
+            d = t
+        out[dl], out[fl] = d, f
+        ov.update(link_overrides(design, mech, d, f))
+    return out, ov
+
+
 def _simulate_four_bar(design: Design, mech: dict) -> dict:
     th = load_gate_thresholds()
     min_mu, max_step = th["four_bar_min_transmission_deg"]["value"], th["four_bar_max_follower_step_deg"]["value"]
