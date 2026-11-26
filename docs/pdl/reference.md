@@ -54,6 +54,7 @@ Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, se
 | `wiring` | `wiring` |  |  |
 | `display` | object |  | v1.3, optional. Switches for derived, visual-only geometry in the GLB and Studio (never components: no mass, no checks). |
 | `display.clevises` | boolean |  | v1.3. Draw a clevis (barrel and cross pin) at both ends of the pushrod of every mechanism that has a link. |
+| `display.screw_heads` | boolean |  | v1.3. Draw a screw head at every bolted attachment whose `connection` names a screw size (M2, M3, ...): on the child's surface nearest the attachment location. |
 | `mechanisms` | array of `mechanism` |  | v1.0. Pull-this-moves-that checks between attachments. |
 | `transport` | `transport` |  |  |
 | `assembly` | `assembly` |  |  |

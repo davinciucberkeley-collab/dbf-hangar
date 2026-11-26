@@ -100,8 +100,59 @@ def _clevises_on(design) -> bool:
     return (design.data.get("display") or {}).get("clevises") is True
 
 
+SCREW_HEAD_R_PER_D = 0.9   # drawing rule: head diameter 1.8 d (not ISO 4762)
+SCREW_HEAD_H_PER_D = 1.0   # drawing rule: head height d
+SCREW_RGBA = (120, 120, 128, 255)
+
+
+def _screw_specs(design) -> list[tuple[str, object, list]]:
+    """(attachment id, head mesh, point_mm) per drawable screw head: bolted, a connection whose spec names M<d>."""
+    import re
+    import numpy as np
+    from .geom.hinge import cylinder_between
+    from .geometry import component_parts
+    from .gates.interfaces import load_connection_types
+    types = load_connection_types()
+    comps = {c["id"]: c for c in design.components}
+    out = []
+    for a in design.data.get("attachments", []) or []:
+        if not isinstance(a, dict) or a.get("method") != "bolted" or not a.get("location"):
+            continue
+        t = types.get(a.get("connection"))
+        m = re.search(r"\bM(\d+(?:\.\d+)?)", (t or {}).get("spec") or "")
+        child = comps.get(a.get("child"))
+        if m is None or child is None:
+            continue
+        parts = component_parts(child, design.base_dir)
+        if not parts:
+            continue
+        d = float(m.group(1))
+        mesh = trimesh.util.concatenate(parts)
+        q, _, tri = trimesh.proximity.closest_point(mesh, [a["location"]])  # a location inside the child snaps to the nearest face
+        n = mesh.face_normals[tri[0]]
+        q0 = np.asarray(q[0], dtype=float)
+        head = cylinder_between(q0, q0 + SCREW_HEAD_H_PER_D * d * n, SCREW_HEAD_R_PER_D * d, 24)
+        out.append((a.get("id") or f"{a.get('parent')}->{a.get('child')}", head, [float(x) for x in q0]))
+    return out
+
+
+def _screw_node(design) -> list[VisualNode]:
+    """One visual 'screws' node (all heads concatenated); empty when no head qualifies."""
+    specs = _screw_specs(design)
+    if not specs:
+        return []
+    mesh = trimesh.util.concatenate([h for _id, h, _pt in specs])
+    return [VisualNode("screws", "screw", mesh, SCREW_RGBA, specs[0][2])]
+
+
+def _screws_on(design) -> bool:
+    return (design.data.get("display") or {}).get("screw_heads") is True
+
+
 def visual_nodes(design) -> list[VisualNode]:
     out = _wires(design)
     if _clevises_on(design):
         out += _clevis_nodes(design)
+    if _screws_on(design):
+        out += _screw_node(design)
     return out

@@ -63,6 +63,8 @@ Add `kinematics: four_bar` to a `mechanisms[]` entry (schema_version 1.3; defaul
 
 **Clevises (`display.clevises`, PDL 1.3).** Set `display: {clevises: true}` to draw a clevis at both ends of the pushrod of every mechanism that has a `link`: a grey barrel (3 mm across, 8 mm long) with a 1.2 mm cross pin, on the driver end and on the follower (horn pin) end. The sleeves are visual only: they add no mass, no T1 row and no checks, and the rod's mass allowance already covers them. Mechanisms without a `link`, a driver or driven articulation are skipped. In Studio Physics each sleeve moves with its part: the driver-end sleeve follows the rod, the follower-end sleeve follows the horn pin. Off by default, so existing designs are unchanged.
 
+**Screw heads (`display.screw_heads`, PDL 1.3).** Set `display: {screw_heads: true}` to draw a dark-grey screw head at every `bolted` attachment whose `connection` spec names a screw size (`M<d>`, for example M2 or M3). A head is 1.8 d across and d high (a drawing rule, not ISO 4762), set on the child's surface nearest the attachment `location`; a `location` inside the child snaps to the nearest face. Attachments with no connection, a spec without a size, or an unknown id get no head (the connection check reports unknown ids). All heads form one visual node `screws`: visual only, no mass, no checks, never a component, and it does not move in Physics. Off by default, so existing designs are unchanged.
+
 ## Wheels on axles
 
 Set `landing_gear` `wheels: separate` (PDL 1.3): the gear mesh is then legs, axle stubs and the nose fork only (`main_wheels` must be 1; `axle_d` is the stub diameter, 0 = half the leg diameter).
