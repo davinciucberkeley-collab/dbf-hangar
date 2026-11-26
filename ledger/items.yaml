@@ -4931,12 +4931,12 @@ items:
     text: 'v1.1: plane CLI start-up ~4.4 s warm; hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx (1.48 s); lazy-import trimesh in checks.py, geometry.py and others (5+ modules) behind a measured before/after'
     source: W25-T 2026-11-24 (python -X importtime)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: c4a9dbd
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-26'
   - id: D73
     kind: decision
     text: "U16.2 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match [Tristan P219: U16.2 uses W24-A's convex-hull pocket per moving cut part (as amodel/wing.py), not posed copies]"
