@@ -107,6 +107,8 @@ def test_schema_and_docs(tmp_path):
 
 def test_no_existing_design_uses_it():
     for f in (ROOT / "designs").glob("*/plane.yaml"):
+        if f.parent.name == "c172-rc":  # c172-rc opted in (U16.1 S6 Part B, D112 showcase)
+            continue
         assert "hinge_from" not in f.read_text(encoding="utf-8"), f
 
 
