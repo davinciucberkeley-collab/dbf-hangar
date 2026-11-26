@@ -29,7 +29,7 @@ pytestmark = pytest.mark.slow
 REPO = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).parent / "fixtures"
 EXAMPLE = REPO / "designs" / "example-tailsitter-wing"
-CDN = "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+CDN = "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
 MODES = ["designs", "compare", "physics", "stress", "updates", "ledger"]
 
 

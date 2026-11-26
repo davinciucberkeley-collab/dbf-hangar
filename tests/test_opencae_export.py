@@ -6,6 +6,7 @@ import pytest
 import trimesh
 import yaml
 
+from hangar import opencae_export
 from hangar.design import DESIGNS_DIR, load_design
 from hangar.geometry import is_point_mass
 from hangar.mass import mass_properties
@@ -148,11 +149,16 @@ def test_point_masses_are_listed_not_exported(tmp_path):
     assert "other_hrd_x" not in _spec(d)["mass"]["parts"]
 
 
-def test_pending_standards_and_defaults_are_estimates(tmp_path):
+def test_pending_standards_and_defaults_are_estimates(tmp_path, monkeypatch):
     """D98: a pending-source standards value and a built-in default are `estimate`, never `user`."""
     d = _design(tmp_path)
     s = _spec(d)
-    assert s["propulsion"]["battery"]["usable_fraction"]["status"] == "estimate"     # source pending
+    assert s["propulsion"]["battery"]["usable_fraction"]["status"] == "user"         # U17.1: sourced, so user
+    # the pending path is still pinned: report the same key as pending (value unchanged)
+    real = opencae_export._crit
+    monkeypatch.setattr(opencae_export, "_crit",
+                        lambda f, k: (real(f, k)[0], True) if k == "battery_usable_fraction" else real(f, k))
+    assert _spec(d)["propulsion"]["battery"]["usable_fraction"]["status"] == "estimate"  # source pending
     assert s["environment"]["rho"]["status"] == "estimate"                           # built-in 1.225
     assert s["mission"]["hover_s"]["status"] == "user"                               # sourced standards value
     d.data.setdefault("flight", {})["air_density_kgm3"] = 1.1

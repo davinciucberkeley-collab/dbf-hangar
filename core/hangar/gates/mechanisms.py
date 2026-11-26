@@ -249,7 +249,7 @@ def tier6_mechanisms(ctx) -> TierReport | None:
         res.append(row)
         if row.data.get("link_pairs"):
             res.append(CheckResult(f"T6.link.{m['id']}", WARN, f"mechanism {m['id']}: not checked (pinned by declared link): "
-                                   + ", ".join(f"{a} & {b}" for a, b in row.data["link_pairs"]), CRIT, {"pair": row.data["link_pairs"]}))
+                                   + ", ".join(f"{a} & {b}" for a, b in row.data["link_pairs"]), CRIT, {"link_pairs": row.data["link_pairs"], "parts": sorted({i for p in row.data["link_pairs"] for i in p})}))
         if row.data.get("link_pairs") or not m.get("link"):
             ratio = _ratio_row(design, m, atts, th)
             if ratio:
