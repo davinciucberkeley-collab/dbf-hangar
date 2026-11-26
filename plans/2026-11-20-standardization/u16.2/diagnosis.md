@@ -80,3 +80,30 @@ unchanged. Keep it (drop the unit id from the inline comment, or not; cosmetic).
 builder-plus on std/u16.2-pockets: brief = section 2 above (float64 operands for the pocket difference only; keep the
 test edit; commit; designs-only baseline refresh for concept-a-param; report tier-1 time on an idle machine).
 Decision needed from Tristan: D73 option (a), (b) or (c) before merge.
+
+## 5. Follow-up (second stop): T3.planform_matches_geometry -16.3 % on 9b45412
+Measured on scratch copies of b0eb3c8 (main) and 9b45412 with `geometry.strip_planform` as `_planform_parts` calls it.
+- main 203 021 mm2, no ignored strips; 9b45412 184 455 mm2, `ignored_strips` [5-9] and [31-35], each 76.57 mm.
+  Loss = 84.6 mm x 10 strips x 21.95 mm = 18.57k mm2, the whole drop.
+- The cause is in the geometry, and it is real. At strip 33 the core section on main is one loop x 0..183.75. On
+  9b45412 it is two: x 0..160.42 and x 168.43..183.75, an 8 mm gap through the full thickness. wng-007-l/r is the elevon
+  balance lead (10 x 1.07 x 106 mm, 20 mm ahead of the hinge). Swung through +-21 deg, it sweeps a lens through both
+  skins. That matches the real part: the lead swings in a lens closed by the PETG lens caps wng-008-ll/lu/rl/ru
+  ("clearance to the lead at the +-21 deg stop"), which sit at x 135..179.8 over the same 116 mm of span.
+- The measure misreads it. The 8 mm gap is between two loops of the same owner, so `gap_tol` (3 mm) applies, and the
+  aft group (15 mm foam + 61.5 mm elevon = 76.57 mm) is dropped as "detached material". It is not detached: the aft foam
+  joins the core outside the lens span, and the caps close the opening. The top-view outline is unchanged.
+- Variants (fix copy): the uncut generated core (cut_files emptied) gives 203 021 on both main and fix. Lens caps
+  added as owners also give 203 021. A 20 mm gap_tol gives 203 021, but that changes a threshold, so it is ruled out.
+  All 40 cut_files parts as owners give 219 946 on main as well: the fins and others inflate it, so that is wrong.
+- Not (b): clipping the swept cutters inside the skins would leave the lead hitting foam (the 12 rows come back),
+  and the real build does open the lens. Not (c): the physical wing loses no planform area.
+
+Recommendation: (a). In `checks._planform_parts`, a generated `wing_panel` with `cut_files` is measured from its build
+with `cut_files`/`cut_poses` emptied. cut_files are pockets for parts that sit in them (T1.pocket checks each one), not
+outline changes. The build is cached and takes about 1 s.
+- This feeds both T3.planform_matches_geometry and the tier-3 aero strips (checks.py:1086, 1095), so MAC, x_ac and AR
+  go back to main's values too.
+- Every other design is byte-identical: only concept-a-param has cut_files. Main's number is unchanged (203 021 either way).
+- Test: concept-a-param's measured area equals the uncut-core area, with swept poses on.
+- Brief to builder-plus on the same branch, in core/ (no designs/ change); then rerun `plane baseline check --all`.
