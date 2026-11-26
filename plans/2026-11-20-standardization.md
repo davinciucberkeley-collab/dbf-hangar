@@ -1167,7 +1167,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Spec and briefs** (tactician W34-T9): inventory of check ids and their messages, a proposed row format with 6-8 before/after examples from c172-rc and concept-a, where the plain text lives (one registry next to the gates, not in the viewer), then builder-ready briefs *(9b9611d: u19.2/spec.md with 8 before/after examples; 1225 rows, 50 families, 355 non-PASS, 31% state number and limit; text in core/hangar/gates/describe.yaml, limits read from standards; Studio rows.json sidecar; JSON byte-identical; briefs 1 registry (hard), 2 markdown, 3 rows-json, 4 Studio (hard); default Studio grouping Problem)*
 - [x] **Step 2: Tristan reads the before/after examples** (short; the format is his call) *(Tristan 11-26 (P321): examples look good; Studio default grouping by problem and `plane validate --format md` taken as defaults)*
-- [ ] **Step 3: Build** (W34-B), review, merge *(brief 1 describe registry merged d73769a; briefs 2 markdown, 3 rows-json, 4 Studio next)*
+- [ ] **Step 3: Build** (W34-B), review, merge *(brief 1 describe registry merged d73769a; briefs 2 markdown and 3 rows-json merged aa0a32a; neutral SKIP titles (T171) building; 4 Studio next)*
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 
