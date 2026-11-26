@@ -831,6 +831,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-S2 | `scout` | Haiku | ledger T162: sources for the rated load of CT-SERVO-SPLINE, CT-M3-SHCS-MOTOR, CT-M3-SHCS-NYLOC | `knowledge/sources/` entries via the template + a values table in the report | only sources opened; no invented values |
 | W34-G2 | `design-engineer` | Sonnet | ledger T156: tiltwing-cakir Dutch roll unstable (T3.dynamic_modes, AeroSandbox) | a proposed `plane design set` sequence on a scratch copy, before/after mode table | layout changes only, no threshold change; propose, do not commit to designs/ |
 | W34-T8 | `tactician` | Sonnet | U16.3: survey which U16.1 features fit concept-a and write designs-only briefs for concept-a-test-refactor | `briefs/U16.3-*.md` | builder-ready bar; measured on a scratch copy |
+| W34-A4 | `advisor` | Opus | U16.4: why c172-rc servos look backwards, deflection is about 5 deg and linkages do not move as solid parts | diagnosis report in chat, fix order | read-only; evidence for each cause |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1142,6 +1143,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [ ] **Step 1: Survey and briefs** (tactician W34-T8): what applies to concept-a's layout, measured on a scratch copy; one designs-only brief per feature group, class easy where it is a command list
 - [ ] **Step 2: Copy and build** (W34-B), briefs in order on one branch per brief
 - [ ] **Step 3: Review** (W34-R2/R3); merge; Tristan looks in Studio
+
+### Unit U16.4: c172-rc linkage fixes from Tristan's look (P314) [hard]
+
+**Scope:** three problems Tristan saw in Studio on c172-rc: (1) the servos are backwards: the linkage attaches to the bottom of the servo, not its rotating output; (2) control-surface deflection is only about 5 deg, far below the real aircraft (C172 POH order of magnitude: elevator about +28/-23, aileron +20/-15, rudder +-17 deg); (3) the linkage connections are messy and do not move like solid parts. Diagnose first (advisor), then briefs, then fixes in core (add-linkage, servo frames, viewer posing) and/or the c172 design. Thresholds unchanged.
+
+- [ ] **Step 1: Diagnosis** (advisor W34-A4): root cause of each problem with evidence (renders/screenshots, the numbers), and the fix order
+- [ ] **Step 2: Briefs** (tactician) from the diagnosis
+- [ ] **Step 3: Build** (W34-B), review (W34-R2/R3), merge; Tristan looks in Studio
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 
