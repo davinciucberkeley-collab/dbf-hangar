@@ -95,6 +95,7 @@ def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]
     data = resolve_references(raw)
     errors: dict[str, str] = {}
     _cut_poses(data)
+    _derive_hinges(data, base_dir, errors)   # before the swept poses: hinge_from pockets sweep about the derived axis
     for c in data.get("components") or []:
         g = c.get("geometry") if isinstance(c, dict) else None
         gp = g.get("params") if isinstance(g, dict) and g.get("generator") == "wing_panel" else None
@@ -108,7 +109,6 @@ def resolve_design_data(raw: dict, base_dir: Path) -> tuple[dict, dict[str, str]
                     gp["cut_poses"] = [by_file[f] for f in sorted(by_file)]
             except Exception as e:
                 errors[str(c.get("id"))] = f"cut_sweep: {e}"
-    _derive_hinges(data, base_dir, errors)
     design_materials = data.get("materials") if isinstance(data.get("materials"), dict) else None
     for c in data.get("components") or []:
         mm = c.get("mass_model") if isinstance(c, dict) else None
