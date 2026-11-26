@@ -905,3 +905,35 @@ def test_no_row_without_ids_is_clickable(browser, pages_base):
     assert "has-parts" in page.locator('[data-check-id="T9.d"]').get_attribute("class")
     assert errors == []
     page.close()
+
+
+def test_report_only_skip_is_not_coloured(browser, pages_base):
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const parts = { parts: [{id:'a'},{id:'b'}], attachments: [] };
+      const sc = { tiers: [{ results: [
+        { check_id: 'w1', status: 'WARN', message: 'x', data: { component: 'a', report_only: true, raw_status: 'SKIP' } },
+        { check_id: 'w2', status: 'WARN', message: 'x', data: { component: 'b', report_only: true, raw_status: 'FAIL' } }] }] };
+      return { st: Object.fromEntries([...m.partStatus(sc, parts)].map(([k, v]) => [k, v.status])), checks: m.partChecks(sc, parts, 'a').length };
+    }""")
+    assert out["st"] == {"b": "WARN"} and out["checks"] == 1
+    assert errors == []
+    page.close()
+
+
+def test_empty_click_ends_a_row_focus(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    page.locator('[data-check-id="T9.d"]').click()
+    page.wait_for_timeout(300)
+    assert page.evaluate(f"{VPJ}.state().ghosted") != []
+    box = page.locator("#vp-main canvas").bounding_box()
+    page.mouse.click(box["x"] + 4, box["y"] + box["height"] - 4)
+    page.wait_for_timeout(300)
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == [] and st["ghosted"] == [] and st["focus"] is None
+    assert errors == []
+    page.close()

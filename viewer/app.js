@@ -63,7 +63,7 @@ function onViewportChange(selection) {
 }
 function onPick(id, vp, e) {
   const multi = !!(e && (e.ctrlKey || e.metaKey));
-  if (!id) { if (!multi) setHighlight([]); return; }
+  if (!id) { if (!multi) { if (vps.main?.focusKey) vps.main.clearFocus(); else setHighlight([]); } return; }
   if (multi) { const s = new Set(highlightIds); if (s.has(id)) s.delete(id); else s.add(id); return setHighlight([...s]); }
   setHighlight(highlightIds.size === 1 && highlightIds.has(id) ? [] : [id]);
 }

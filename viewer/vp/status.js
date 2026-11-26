@@ -31,6 +31,7 @@ export function partStatus(scorecard, parts) {
   const map = new Map();
   for (const r of rowsOf(scorecard)) {
     if (r.status !== 'FAIL' && r.status !== 'WARN') continue;
+    if (r.status === 'WARN' && r.data?.raw_status === 'SKIP') continue; // report-only wrapper of a SKIP: not judged, so no colour
     for (const id of rowParts(r, parts)) {
       if (!map.has(id)) map.set(id, { status: r.status, rows: [] });
       const e = map.get(id);
