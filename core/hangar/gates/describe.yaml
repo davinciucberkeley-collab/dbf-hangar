@@ -1,0 +1,295 @@
+# Plain-text templates for scorecard rows, one entry per check family (first two id segments). Templates hold words and placeholders only: limits come from standards/ through the row's criterion, never typed here. A hint may only restate an action the code's own message or a standards note already gives.
+
+# --- T0 schema and identity ---
+T0.schema:
+  title: "Design file does not match the schema"
+  group: design
+T0.version:
+  title: "Design file version is wrong"
+  group: design
+T0.root:
+  title: "Design file has no valid top level"
+  group: design
+T0.parameters:
+  title: "Design parameters are invalid"
+  group: design
+T0.generator:
+  title: "Part generator is invalid"
+  group: part
+T0.mission:
+  title: "Mission section is invalid"
+  group: design
+T0.unique_ids:
+  title: "Two parts share an id"
+  group: design
+T0.attachment_refs:
+  title: "Attachment points at an unknown part"
+  group: part
+T0.component_type:
+  title: "Part type is not known"
+  group: part
+
+# --- T1 geometry ---
+T1.articulation:
+  title: "Moving part is set up wrongly"
+  group: part
+T1.attachment:
+  title: "Attachment is set up wrongly"
+  group: part
+T1.attachment_contact:
+  title: "Attached parts do not touch"
+  group: part
+T1.attachment_location:
+  title: "Attachment is not where the parts are"
+  group: part
+T1.attachment_overlap:
+  title: "Attached parts overlap too much"
+  group: part
+T1.connectivity:
+  title: "Parts are not all connected"
+  group: design
+T1.floating:
+  title: "Part is not attached to anything"
+  group: part
+T1.interfaces:
+  title: "Part interface does not fit"
+  group: part
+T1.interference:
+  title: "Parts overlap"
+  group: part
+T1.kinematic_link:
+  title: "Moving linkage not checked"
+  group: part
+  fold: true
+  fold_noun: "poses"
+  fold_what: "In {count} poses a linkage pair is not checked ({labels})."
+  what:
+    SKIP: "In the pose '{pose}' the pair {unchecked_pairs} touches and the tool cannot tell if that is a clash, because the linkage between them is not modelled."
+  hint: "Describe the linkage as a four_bar mechanism (plane design add-linkage) so it is checked."
+T1.motor_has_prop:
+  title: "Motor has no propeller"
+  group: part
+T1.pocket:
+  title: "Pocket does not hold its part"
+  group: part
+T1.point_mass_location:
+  title: "Point mass is outside its part"
+  group: part
+T1.pose:
+  title: "Moving part clashes in a pose"
+  group: part
+T1.watertight:
+  title: "Part surface has holes"
+  group: part
+
+# --- T2 physics ---
+T2.fea_strength:
+  title: "Printed part is too weak"
+  group: part
+  extract: '^(?P<case_part>\S+) (?P<case>\w+):'
+  what:
+    FAIL: "{label} reaches {max_von_mises_away_mpa:.1f} MPa in the {case} case; the limit is {limit} MPa ({source}). Safety factor {safety_factor_at_ultimate:.2f}; it must be at least 1."
+    SKIP: "There is no usable OpenCAE stress result for {labels}, so the strength of the printed part is not judged."
+  hint:
+    FAIL: "Make the part thicker where the load enters it, or change material, then run `plane fea {design_id} --all`."
+T2.hover_moment:
+  title: "Hover moment check"
+  group: design
+T2.joint_load:
+  title: "Joint strength not checked"
+  group: part
+  fold: true
+  fold_noun: "joints"
+  fold_what: "Each of these {count} joints ({labels}) carries a landing load but has only a placeholder rating, so no pass or fail is given."
+  what:
+    SKIP: "The joint {joint} carries {load_n:.1f} N in the landing case but its rating is a placeholder, so it is not judged."
+  hint: "Give the joint a connection type with a sourced rated_load_n."
+T2.joint_rf:
+  title: "Joint strength cannot be judged"
+  group: part
+  fold: true
+  fold_noun: "joints"
+  fold_what: "{count} joints have no sourced rating, so their reserve factor cannot be computed ({labels})."
+  what:
+    WARN: "The joint {joint} has no rated load, so its reserve factor (rating divided by load, must be at least {limit}) cannot be computed."
+  hint: "Add a sourced rated_load_n for the joint's connection type in standards/connection-types.yaml."
+T2.sim_drop_loads:
+  title: "Joint breaks in the drop test"
+  group: part
+  fold: true
+  fold_noun: "joints"
+  fold_what: "Each of these {count} joints ({labels}) carries a drop-test load but has only a placeholder rating, so no pass or fail is given."
+  extract: 'rating (?P<rating>[\d.]+) N'
+  what:
+    FAIL: "In the simulated drop the joint {joint} carries a peak of {peak_n:.1f} N; it is rated for {rating} N (landing load factor {limit}, {source})."
+    SKIP: "The joint {joint} carries {peak_n:.1f} N in the drop test but its rating is a placeholder, so it is not judged."
+  hint: "Raise the joint rating (more bonded area or a stronger connection) or reduce what hangs on it."
+T2.sim_rest:
+  title: "Aircraft tips over after the drop"
+  group: design
+  what:
+    FAIL: "After the simulated drop the landing axis rests {tilt_deg:.0f} degrees from vertical; the limit is {limit} degrees ({source})."
+T2.sim_stable:
+  title: "Drop simulation is not stable"
+  group: design
+
+# --- T3 aero and performance ---
+T3.control_authority:
+  title: "Hover control is too weak"
+  group: design
+  what:
+    WARN: "Control power about the {axis} axis in hover: {message}."
+T3.cruise_stall_ratio:
+  title: "Cruise speed is close to the stall speed"
+  group: design
+  what:
+    WARN: "The cruise-to-stall speed ratio could not be judged: {message}."
+T3.dynamic_modes:
+  title: "Flight stability modes"
+  group: design
+  what:
+    WARN: "The dynamic stability modes were not computed: {message}."
+  hint: "Run `python -m pip install aerosandbox`."
+T3.endurance:
+  title: "Flight time is too short"
+  group: design
+  what:
+    WARN: "The flight time could not be computed: {message}."
+T3.hover_tw:
+  title: "Hover thrust is too low"
+  group: design
+T3.lateral_cg:
+  title: "Centre of gravity is off to one side"
+  group: design
+T3.mass:
+  title: "Aircraft mass"
+  group: design
+T3.planform_matches_geometry:
+  title: "Declared wing shape differs from the geometry"
+  group: part
+  what:
+    WARN: "The declared planform of {label} differs from its measured geometry: area {area_diff:.1%}, span {span_diff:.1%}; the allowed difference is {limit:.0%} ({source}). The aero numbers use the measured geometry."
+T3.spar_bending:
+  title: "Wing spar is too weak"
+  group: design
+  what:
+    WARN: "The wing spar could not be checked: {message}."
+T3.stall:
+  title: "Stall speed is too high"
+  group: design
+T3.static_margin:
+  title: "Aircraft is too stable (static margin)"
+  group: design
+  what:
+    FAIL: "The static margin is {static_margin:.1%} of the wing chord; the allowed band is {min:.0%} to {max:.0%} ({source}). Outside the band is a FAIL."
+  hint: "Move the centre of gravity or the wing until the margin is inside the band."
+T3.tail_volume:
+  title: "Horizontal tail is large for its wing"
+  group: design
+  what:
+    WARN: "Horizontal tail volume is {value:.3f}; the usual band is {limit:.2f} to 0.60 ({source}), so this is advice, not a rule."
+  hint: "A scale copy of a real aircraft may sit outside the band; otherwise reduce the tail area or arm."
+T3.transition_margin:
+  title: "Transition between hover and cruise is too tight"
+  group: design
+  what:
+    WARN: "The transition margin could not be judged: {message}."
+T3.trim:
+  title: "Elevator cannot trim the aircraft"
+  group: design
+  what:
+    WARN: "The elevator trim could not be checked: {message}."
+T3.wing_area_complete:
+  title: "Wing area is incomplete"
+  group: design
+T3.wing_loading:
+  title: "Wing loading is too high"
+  group: design
+
+# --- T4 to T6 ---
+T4.capabilities:
+  title: "Printer cannot make this part"
+  group: part
+T4.fits_machine:
+  title: "Part does not fit the machine"
+  group: part
+T4.machine:
+  title: "Machine is not known"
+  group: design
+T4.method:
+  title: "Manufacturing method"
+  group: part
+T5.part107_mass:
+  title: "Aircraft is too heavy for FAA Part 107"
+  group: design
+T5.registration:
+  title: "Aircraft registration"
+  group: design
+T6.link:
+  title: "Mechanism link not checked"
+  group: part
+  what:
+    WARN: "A declared link pins this mechanism, so these part pairs are not checked against each other: {link_pairs}."
+T6.mechanism:
+  title: "Mechanism does not move as declared"
+  group: part
+T6.ratio:
+  title: "Mechanism ratio is off"
+  group: part
+T6.servo_undriven:
+  title: "Servo drives nothing"
+  group: part
+T6.undriven:
+  title: "Moving part has no drive"
+  group: part
+
+# --- T7 integration ---
+T7.assembly:
+  title: "Assembly order has a gap"
+  group: part
+  what:
+    WARN: "In the assembly order these parts are added with nothing already assembled to attach them to: {labels}."
+T7.electrical_rating:
+  title: "Electrical rating cannot be checked"
+  group: part
+  what:
+    WARN: "The electrical rating cannot be checked because a value is missing: {message}."
+T7.transport:
+  title: "Packed aircraft does not fit the transport box"
+  group: design
+  what:
+    WARN: "A packed group is too big for the transport box: {message}."
+T7.wiring:
+  title: "Wire runs outside the airframe"
+  group: part
+  fold: true
+  fold_noun: "wires"
+  fold_what: "{count} harness segments leave the part envelopes ({labels})."
+  extract: 'harness (?P<harness>\S+): segment .* by (?P<by>[\d.]+) mm'
+  what:
+    WARN: "Harness {harness} leaves the part envelopes by {by} mm between these parts; the limit is {limit} mm ({source})."
+    FAIL: "Harness {harness} leaves the part envelopes by {by} mm between these parts; the limit is {limit} mm ({source})."
+  hint: "Reroute the wire through the airframe, or add exposed_ok with a reason to the harness."
+
+# --- T8 sourcing, T9 claims ---
+T8.bom:
+  title: "Bill of materials line not verified"
+  group: part
+  fold: true
+  fold_noun: "lines"
+  fold_what: "{count} bill-of-materials lines are not verified ({labels})."
+  extract: '^(?P<line>\S+): not verified'
+  what:
+    WARN: "The bill-of-materials line {line} has not been verified within the allowed {limit} days ({source})."
+    FAIL: "The bill-of-materials line {line} has not been verified within the allowed {limit} days ({source})."
+T8.program:
+  title: "Program budget"
+  group: design
+  what:
+    WARN: "The program budget check is incomplete: {message}."
+T9.claim:
+  title: "Claim does not match the recomputed value"
+  group: design
+T9.claims:
+  title: "Claims"
+  group: design
