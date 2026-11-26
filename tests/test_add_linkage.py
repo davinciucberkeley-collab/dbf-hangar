@@ -19,7 +19,7 @@ def scratch(tmp_path, name="f"):
 
 
 def run(folder, **kw):
-    args = dict(path=str(folder), servo="servo", hinge="stab-elev", station=0, why="x")
+    args = dict(path=str(folder), servo="servo", hinge="stab-elev", station=0, why="x", arm_length=6.0)
     args.update(kw)
     return call("design.add-linkage", **args)
 
@@ -218,3 +218,57 @@ def test_rerun_keeps_extra_keys(tmp_path):
     assert r.data["changed"] is True
     att = next(a for a in _plane(f)["attachments"] if a["id"] == aid)
     assert att["connection"] == "CT-SERVO-SPLINE"
+
+
+def test_default_deflection_hand_values(tmp_path):
+    r = run(scratch(tmp_path), arm_length=None)
+    assert r.ok, r.messages
+    ap = pytest.approx
+    d = r.data
+    assert d["arm_length"] == ap(8.2113, abs=2e-3)
+    assert d["ratio"] == -0.75
+    assert d["tip0"] == ap([21.1109, 8.1358, -11.05], abs=2e-3)
+    assert d["pin0"] == ap([69.7072, 1.5, -11.05], abs=2e-3)
+    assert d["rod_length"] == ap(49.0472, abs=2e-3)
+    assert d["follower_deg"]["minus"] == ap(16.3805, abs=2e-3)
+    assert d["follower_deg"]["plus"] == ap(-13.6187, abs=2e-3)
+    assert d["deflection_deg"] == ap(15.0, abs=0.05)
+    assert d["min_transmission_deg"] == ap(36.61, abs=0.05)
+    assert [x for x in d["rows"] if x[1] == "FAIL"] == []
+    assert "deflection 15" in r.messages[0]
+
+
+def test_deflection_option(tmp_path):
+    r = run(scratch(tmp_path), arm_length=None, deflection=12.0)
+    assert r.ok, r.messages
+    ap = pytest.approx
+    assert r.data["arm_length"] == ap(6.595, abs=2e-3)
+    assert r.data["ratio"] == -0.6
+    assert r.data["follower_deg"]["minus"] == ap(12.7796, abs=2e-3)
+    assert r.data["follower_deg"]["plus"] == ap(-11.0406, abs=2e-3)
+    assert r.data["deflection_deg"] == ap(11.91, abs=0.05)
+
+
+def test_arm_length_wins(tmp_path):
+    r = run(scratch(tmp_path), arm_length=6.0, deflection=30.0)
+    assert r.ok, r.messages
+    assert r.data["arm_length"] == 6.0
+    assert r.data["ratio"] == -0.55
+    assert r.data["tip0"] == pytest.approx([20.5439, 5.9753, -11.05], abs=2e-3)
+    assert r.data["follower_deg"]["minus"] == pytest.approx(11.5128, abs=2e-3)
+
+
+def test_deflection_errors(tmp_path):
+    m = _no_change(scratch(tmp_path), arm_length=None, deflection=0)
+    assert "deflection" in m and "positive" in m
+    m = _no_change(scratch(tmp_path, "g"), arm_length=None, deflection=200)
+    assert "deflection 200" in m and "--arm-length" in m
+
+
+def test_deflection_second_run_is_an_empty_diff(tmp_path):
+    f = scratch(tmp_path)
+    assert run(f, arm_length=None).ok
+    a, b = (f / "plane.yaml").read_bytes(), (f / "CHANGELOG.yaml").read_bytes()
+    r = run(f, arm_length=None)
+    assert r.ok and r.data["changed"] is False
+    assert (f / "plane.yaml").read_bytes() == a and (f / "CHANGELOG.yaml").read_bytes() == b

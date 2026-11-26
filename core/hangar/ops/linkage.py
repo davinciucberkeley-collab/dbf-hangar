@@ -28,6 +28,8 @@ PIN_LEN = 1.2              # pin length, mm
 MIN_SKIN_TO_PIN = 2.5      # skin point to pin hole along the horn, mm
 MAX_SKIN_TO_PIN = 40.0
 DEFAULT_SKIN_TO_PIN = 8.0
+DEFLECTION_TOL_MM = 1e-9     # fixed-point tolerance on the arm length, mm
+DEFLECTION_MAX_ITER = 50
 
 
 def _unit(v) -> np.ndarray:
@@ -96,6 +98,30 @@ def _tip(pin, Op, a_o, arm_length: float, side: float):
     wu = w / W
     phi = float(np.arccos(arm_length / W))
     return Op + arm_length * (np.cos(phi) * wu + side * np.sin(phi) * np.cross(a_o, wu))
+
+
+def _solve_arm(pin0, Op, a_o, side, P, ax, ratio, W) -> float:
+    """Arm length whose small-angle gate ratio L / lever(L) equals `ratio` (fixed point of L = ratio * lever(L)).
+    Raises OpInputError; `.arm` is the offending length when it reached W, None when it did not converge."""
+    def lever(L):
+        tip = _tip(pin0, Op, a_o, L, side)
+        u = _unit(pin0 - tip)
+        return float(abs(u @ np.cross(ax, pin0 - P)))
+
+    def fail(msg, arm):
+        e = OpInputError(msg)
+        e.arm = arm
+        return e
+
+    L = 6.0
+    for _ in range(DEFLECTION_MAX_ITER):
+        Ln = ratio * lever(L)
+        if abs(Ln - L) < DEFLECTION_TOL_MM:
+            return Ln
+        L = Ln
+        if L >= W:
+            raise fail("the arm length reached the horn pin distance", L)
+    raise fail("the arm length did not converge", None)
 
 
 def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length: float, side: float,
@@ -189,13 +215,15 @@ def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length
                            f"{MIN_SKIN_TO_PIN:g} to {MAX_SKIN_TO_PIN:g} mm): move the servo, turn it (rotation_deg) so "
                            f"its shaft points to the horn side, or give --horn-height")
     tip0 = _tip(pin0, Op, a_o, arm_length, side)
-    return dict(Op=Op, a_o=a_o, K=K, n=n, q=q, H=H, s=s, pin0=pin0, tip0=tip0, surface=surf)
+    v = pin0 - Op
+    W = float(np.linalg.norm(v - (v @ a_o) * a_o))
+    return dict(Op=Op, a_o=a_o, K=K, n=n, q=q, H=H, s=s, pin0=pin0, tip0=tip0, surface=surf, P=P, ax=ax, W=W)
 
 
-def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = 6.0,
-                   horn_height: float = None, horn_offset: float = 6.0, arm_side: Literal["+", "-"] = "+",
-                   horn_toward: str = "0,0,-1", input_range: float = 20.0, servo_range: float = 30.0,
-                   why: str) -> OpResult:
+def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = None,
+                   deflection: float = 15.0, horn_height: float = None, horn_offset: float = 6.0,
+                   arm_side: Literal["+", "-"] = "+", horn_toward: str = "0,0,-1", input_range: float = 20.0,
+                   servo_range: float = 30.0, why: str) -> OpResult:
     from ..checks import validate
     from ..gates.mechanisms import link_ratios, simulate_mechanism
     from ..geom.params import expression_errors
@@ -207,12 +235,28 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
     if np.linalg.norm(hd) < 1e-9:
         raise OpInputError("--horn-toward must not be zero")
     hd = _unit(hd)
-    if arm_length <= 0 or (horn_height is not None and horn_height <= 0) or horn_offset < 0:
+    if (arm_length is not None and arm_length <= 0) or (horn_height is not None and horn_height <= 0) or horn_offset < 0:
         raise OpInputError("--arm-length and --horn-height must be positive and --horn-offset not negative")
     prefix = prefix or hinge
     design = load_design(plane)
-    g = _geometry(design, servo, hinge, station, arm_length, 1.0 if arm_side == "+" else -1.0, horn_height,
-                  float(horn_offset), hd)
+    side = 1.0 if arm_side == "+" else -1.0
+    if arm_length is None:
+        if deflection <= 0:
+            raise OpInputError("--deflection must be positive")
+        if input_range <= 0:
+            raise OpInputError("--input-range must be positive")
+        g0 = _geometry(design, servo, hinge, station, 6.0, side, horn_height, float(horn_offset), hd)
+        try:
+            arm_length = _solve_arm(g0["pin0"], g0["Op"], g0["a_o"], side, g0["P"], g0["ax"],
+                                    deflection / input_range, g0["W"])
+        except OpInputError as e:
+            if getattr(e, "arm", None) is None:
+                raise OpInputError(f"deflection {deflection:g} deg: the arm length did not converge; "
+                                   f"give --arm-length")
+            raise OpInputError(f"deflection {deflection:g} deg needs an arm of {e.arm:.2f} mm, longer than the "
+                               f"distance from the servo shaft to the horn pin ({g0['W']:.2f} mm); lower --deflection, "
+                               f"raise --input-range, or give --arm-length")
+    g = _geometry(design, servo, hinge, station, arm_length, side, horn_height, float(horn_offset), hd)
     Op, a_o, K, n, q, H, pin0, tip0 = (g[k] for k in ("Op", "a_o", "K", "n", "q", "H", "pin0", "tip0"))
     skin_to_pin = g["s"]
     rod_length = float(np.linalg.norm(pin0 - tip0))
@@ -294,31 +338,43 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
                 rows.append([x.check_id, x.status, x.message])
     final = load_design(plane)
     fm = next(m for m in final.data["mechanisms"] if m["id"] == mech["id"])
+    follower = deflection_deg = None
     try:
         sim = simulate_mechanism(final, fm)
         mu = [s["transmission_deg"] for s in sim["steps"] if "transmission_deg" in s]
         min_mu = round(min(mu), 3) if mu else None
+        at = {}
+        for s_ in sim["steps"]:
+            for key, want in (("plus", float(input_range)), ("minus", -float(input_range))):
+                if abs(float(s_["input_deg"]) - want) < 1e-9 and raw_hinge_id in (s_.get("followers") or {}):
+                    at[key] = float(s_["followers"][raw_hinge_id])
+        if len(at) == 2:
+            follower = {k: round(at[k], 3) + 0.0 for k in ("plus", "minus")}
+            deflection_deg = round((abs(at["plus"]) + abs(at["minus"])) / 2, 2)
     except RuntimeError:
         min_mu = None
     r4 = lambda v: [round(float(t), 4) + 0.0 for t in v]
     ids_c, ids_a = [c["id"] for c in comps], [a["id"] for a in atts]
     data_out = {"components": ids_c, "attachments": ids_a, "mechanism": mech["id"], "ratio": ratio,
                 "tip0": r4(tip0), "pin0": r4(pin0), "arm_pivot": r4(Op), "horn_root": r4(K), "skin_to_pin": round(skin_to_pin, 4) + 0.0,
-                "rod_length": round(rod_length, 4), "min_transmission_deg": min_mu, "rows": rows, "changed": changed}
+                "rod_length": round(rod_length, 4), "arm_length": round(float(arm_length), 4) if follower else None,
+                "follower_deg": follower, "deflection_deg": deflection_deg, "min_transmission_deg": min_mu,
+                "rows": rows, "changed": changed}
     msgs = [f"{prefix}: ratio {ratio:g}, rod {rod_length:.2f} mm, tip {data_out['tip0']}, pin {data_out['pin0']}"
+            + ("" if deflection_deg is None else f", deflection {deflection_deg:g} deg")
             + ("" if changed else "; unchanged")]
     msgs += [f"{r[0]} {r[1]}: {r[2]}" for r in rows if r[1] != "PASS"]
     return OpResult(True, data_out, msgs, changed_files=[str(plane), str(log)] if changed else [])
 
 
-@op(name="design.add-linkage", summary="Generate a servo linkage: arm, rod, horn and pin components built clear of the servo (arm plane above its highest point), the horn rooted on the surface skin aft of the hinge and the pin beside the horn, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. One logged write; reports the ratio, arm pivot, tip, horn root, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.",
+@op(name="design.add-linkage", summary="Generate a servo linkage: arm, rod, horn and pin components built clear of the servo (arm plane above its highest point), the horn rooted on the surface skin aft of the hinge and the pin beside the horn, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). The arm length is solved from `--deflection` (default 15 deg per side at the input range) unless `--arm-length` is given; reports the achieved deflection. Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. One logged write; reports the ratio, arm pivot, tip, horn root, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.",
     mutates=True, render=lambda r: "\n".join(r.messages))
-def add_linkage_op(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = 6.0,
-                   horn_height: float = None, horn_offset: float = 6.0, arm_side: Literal["+", "-"] = "+",
-                   horn_toward: str = "0,0,-1", input_range: float = 20.0, servo_range: float = 30.0,
-                   why: str) -> OpResult:
+def add_linkage_op(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = None,
+                   deflection: float = 15.0, horn_height: float = None, horn_offset: float = 6.0,
+                   arm_side: Literal["+", "-"] = "+", horn_toward: str = "0,0,-1", input_range: float = 20.0,
+                   servo_range: float = 30.0, why: str) -> OpResult:
     from ..geom import overlay
     with overlay.forced_off():       # the CAD overlay never changes what is written: same plane.yaml on every machine
         return _add_linkage(path, servo=servo, hinge=hinge, station=station, prefix=prefix, arm_length=arm_length,
-                            horn_height=horn_height, horn_offset=horn_offset, arm_side=arm_side, horn_toward=horn_toward,
+                            deflection=deflection, horn_height=horn_height, horn_offset=horn_offset, arm_side=arm_side, horn_toward=horn_toward,
                             input_range=input_range, servo_range=servo_range, why=why)
