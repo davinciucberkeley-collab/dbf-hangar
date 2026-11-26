@@ -5598,3 +5598,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
+  - id: T171
+    kind: task
+    text: 'describe registry: SKIP rows keep failure-style titles (e.g. "Wing spar is too weak" when no spar was found); add per-status titles (title_by status or a skip_title) so SKIP and PASS rows read neutrally (U19.2, review W34-R2 31).'
+    source: reviews/2026-11-25-w34b.md section 31
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
