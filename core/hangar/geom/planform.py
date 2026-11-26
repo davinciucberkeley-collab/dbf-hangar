@@ -63,3 +63,21 @@ def analytic_wing_area(component: dict) -> float | None:
         return 2 * (root * ib + (root + tip) / 2 * (half - ib))
     except Exception:
         return None
+
+
+def generated_fin(component: dict) -> dict | None:
+    """Vertical fin of a generated tail_surfaces component (layouts conventional and t; the fin_* params describe the whole fin
+    whichever part this component is), as a pseudo lifting_surface plus offset and rotation; None when there is none to read."""
+    try:
+        g = component.get("geometry") or {}
+        if g.get("generator") != "tail_surfaces" or component.get("type") != "tail_surface":
+            return None
+        p = fill_defaults(get("tail_surfaces"), g.get("params") or {})
+        if p["layout"] not in ("conventional", "t") or p["part"] not in ("full", "fixed"):
+            return None
+        return {"lifting_surface": {"span": p["fin_height"], "root_chord": p["fin_root_chord"],
+                                    "tip_chord": p["fin_tip_chord"], "sweep_le_deg": p["fin_sweep_le_deg"],
+                                    "mirrored": False, "lifting": False},
+                "offset": [p["fin_x_le"], 0.0, p["fin_z_root"]], "rotation_deg": [90.0, 0.0, 0.0]}
+    except Exception:
+        return None
