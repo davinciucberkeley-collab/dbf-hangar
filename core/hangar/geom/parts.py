@@ -7,10 +7,12 @@ from __future__ import annotations
 
 import math
 
-from hangar.geom import kernel
+from hangar.geom import hinge as _hinge, kernel
 from hangar.geom.registry import Generator, ParamSpec, register
 
 _N = 48
+_HINGE_DEFAULTS = {"hinge_gap": 0.0, "hinge_style": "none", "hinge_throw_deg": 0.0, "hinge_knuckles": 0,
+                   "knuckle_d": 0.0, "knuckle_len": 0.0}
 
 
 def _circle(cx: float, cy: float, r: float) -> list[tuple[float, float]]:
@@ -36,16 +38,55 @@ def _fin_build(p: dict, base_dir) -> list:
     if part == "front":
         outline = [(xl, zr), (xl + f * rc, zr), (xl + dx + f * tc, zr + h), (xl + dx, zr + h)]
     elif part == "rear":
+        if p["hinge_gap"] != 0 or p["hinge_style"] != "none" or p["hinge_knuckles"] != 0:
+            return _fin_rear_hinged(p, dx)
         outline = [(xl + f * rc, zr), (xl + rc, zr), (xl + dx + tc, zr + h), (xl + dx + f * tc, zr + h)]
     else:
         outline = [(xl, zr), (xl + rc, zr), (xl + dx + tc, zr + h), (xl + dx, zr + h)]
     return [kernel.prism(outline, plane="xz", offset=p["plane_y"] - t / 2.0, depth=t)]
 
 
+def _fin_rear_hinged(p: dict, dx: float) -> list:
+    """Rear fin part with a hinge gap, bevel and/or knuckles (U16.1 S6): sections are (x, y) loops at the root and the tip."""
+    h, t, y0 = p["height"], p["thickness"], p["plane_y"]
+    xl, zr, rc, tc, f = p["x_le"], p["z_root"], p["root_chord"], p["tip_chord"], p["hinge_frac"]
+    gap, style, throw = p["hinge_gap"], p["hinge_style"], p["hinge_throw_deg"]
+    k = _hinge.sweep_factor(dx + f * (tc - rc), h)
+    t2 = t / 2.0
+    ridge, front = _hinge.front_offsets(gap, t2, throw, style, k)
+
+    def loop(xh: float, xe: float) -> list[tuple[float, float]]:
+        pts = [(xe, y0 + t2), (xe, y0 - t2), (xh + front, y0 - t2)]
+        if ridge is not None:
+            pts.append((xh + ridge, y0))
+        return pts + [(xh + front, y0 + t2)]
+    secs = [(zr, loop(xl + f * rc, xl + rc)), (zr + h, loop(xl + dx + f * tc, xl + dx + tc))]
+    out = kernel.loft("z", sorted(secs, key=lambda s: s[0]))
+    if p["hinge_knuckles"] > 0:
+        q0 = [xl + f * rc, y0, zr]
+        q1 = [xl + dx + f * tc, y0, zr + h]
+        n = _hinge.aft_normal(q0, q1, (0, 1, 0))
+        out = kernel.union([out, *_hinge.knuckles(q0, q1, n, gap, p["hinge_knuckles"], p["knuckle_d"], p["knuckle_len"])])
+    return [out]
+
+
 def _fin_check(p: dict) -> list[str]:
     errs = ["height: must be nonzero"] if p["height"] == 0 else []
     if not 0 < p["hinge_frac"] < 1:
         errs.append("hinge_frac: must be in (0, 1)")
+    if p["part"] != "rear" and any(p[k] != v for k, v in _HINGE_DEFAULTS.items()):
+        errs.append("hinge_gap: only part rear uses the hinge_* and knuckle_* params")
+    if p["hinge_style"] == "bevel" and p["hinge_throw_deg"] <= 0:
+        errs.append("hinge_throw_deg: must be > 0 for hinge_style bevel")
+    if p["hinge_throw_deg"] >= 60:
+        errs.append("hinge_throw_deg: must be < 60")
+    if p["hinge_knuckles"] > 0 and p["hinge_gap"] <= 0:
+        errs.append("hinge_knuckles: needs hinge_gap > 0")
+    if p["hinge_knuckles"] > 0 and not (p["knuckle_d"] > 0 and p["knuckle_len"] > 0):
+        errs.append("knuckle_d and knuckle_len: must be > 0 when hinge_knuckles > 0")
+    if (p["hinge_knuckles"] > 0 and p["hinge_gap"] > 0
+            and p["knuckle_d"] > 2 * p["hinge_gap"] * math.cos(math.radians(p["hinge_throw_deg"]))):
+        errs.append("knuckle_d: must be <= 2 * hinge_gap * cos(hinge_throw_deg)")
     return errs
 
 
@@ -60,7 +101,13 @@ register(Generator(
      "z_root": ParamSpec("number", default=0.0, doc="root z position, mm"),
      "sweep_le_deg": ParamSpec("number", default=0.0, doc="leading-edge sweep angle, deg"),
      "part": ParamSpec("choice", default="full", choices=("full", "front", "rear"), doc="whole fin, front part or rear part"),
-     "hinge_frac": ParamSpec("number", default=0.7, doc="hinge line as a fraction of the local chord, ratio; the front part ends and the rear part starts there")},
+     "hinge_frac": ParamSpec("number", default=0.7, doc="hinge line as a fraction of the local chord, ratio; the front part ends and the rear part starts there"),
+     "hinge_gap": ParamSpec("number", default=0.0, minimum=0, doc="part rear only: gap between the fixed part and the rear part, mm, measured normal to the hinge line; the front face moves aft by it (0 = flush, default)"),
+     "hinge_style": ParamSpec("choice", default="none", choices=("none", "bevel"), doc="part rear only: none = flat front face; bevel = V ridge on the hinge axis with chamfers back to the fin faces, clearing the fixed part up to hinge_throw_deg"),
+     "hinge_throw_deg": ParamSpec("number", default=0.0, minimum=0, doc="part rear only: the largest deflection the bevel clears, deg; set it at least as large as the articulation range_deg"),
+     "hinge_knuckles": ParamSpec("int", default=0, minimum=0, doc="part rear only: count of round knuckle cylinders along the hinge line, united with the rear part (printed geometry)"),
+     "knuckle_d": ParamSpec("number", default=0.0, minimum=0, doc="part rear only: knuckle diameter, mm; at most 2 * hinge_gap * cos(hinge_throw_deg)"),
+     "knuckle_len": ParamSpec("number", default=0.0, minimum=0, doc="part rear only: knuckle length along the hinge line, mm")},
     _fin_build, check=_fin_check))
 
 

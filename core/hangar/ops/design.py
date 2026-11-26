@@ -174,9 +174,9 @@ def render_op(path: str, *, out: Path, view: Literal["top", "side", "front", "is
     return OpResult(True, {"files": files}, changed_files=list(files))
 
 
-@op(name="design.export", summary="Export a design to glb, stl, json or mjcf.", mutates=True,
+@op(name="design.export", summary="Export a design to glb, stl, json, mjcf or mjcf-kinematic.", mutates=True,
     render=lambda r: "\n".join(r.data["files"]))
-def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out: Path) -> OpResult:
+def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf", "mjcf-kinematic"], out: Path) -> OpResult:
     design = _load(path)
     try:
         if format_ == "stl":
@@ -186,6 +186,9 @@ def export_op(path: str, *, format_: Literal["glb", "stl", "json", "mjcf"], out:
         elif format_ == "mjcf":
             from ..sim import export_mjcf
             written = export_mjcf(design, out)
+        elif format_ == "mjcf-kinematic":
+            from ..sim import export_mjcf_kinematic
+            written = export_mjcf_kinematic(design, out)
         else:
             written = export_json(design, out)
     except Exception as e:  # noqa: BLE001

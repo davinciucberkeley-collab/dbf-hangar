@@ -99,11 +99,11 @@ def mass_cmd(path):
 
 @cli.command("export")
 @click.argument("path")
-@click.option("--format", "fmt", type=click.Choice(["glb", "stl", "json", "mjcf"]), required=True)
+@click.option("--format", "fmt", type=click.Choice(["glb", "stl", "json", "mjcf", "mjcf-kinematic"]), required=True)
 @click.option("--out", "out", type=click.Path(), required=True,
-              help="File path for glb/json/mjcf; directory for stl.")
+              help="File path for glb/json/mjcf/mjcf-kinematic; directory for stl.")
 def export_cmd(path, fmt, out):
-    """Export PATH to glb, stl or json."""
+    """Export PATH to glb, stl, json, mjcf or mjcf-kinematic."""
     result = ops.call("design.export", path=path, format_=fmt, out=out)
     if not result.ok:
         _alias_fail(result)

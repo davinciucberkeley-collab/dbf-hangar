@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { h, fmt, getJSON } from '../lib.js';
 import { loadGLB, disposeModel } from './loader.js';
-import { prepareMesh, applyAppearance, INTERNAL_TYPES } from './materials.js';
+import { prepareMesh, applyAppearance, INTERNAL_TYPES, STATUS_COLOUR, NEUTRAL, MASS_LO, MASS_HI, maxMass } from './materials.js';
 import { pickAt, hitAt, hitsAlong, cycleSelect } from './pick.js';
 import { Transforms, mmToScene, explodeOffsets } from './transforms.js';
 import { Mover } from './move.js';
@@ -13,7 +13,7 @@ const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValu
 
 export class Viewport {
   constructor(el, { onPick, onSelect, onModel, onDiscard } = {}) {
-    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.onModel = onModel; this.onDiscard = onDiscard; this.subs = new Set(); this.keepNext = null; this.parts = null; this.centres = null; this.transforms = null; this.explodeState = null; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
+    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.onModel = onModel; this.onDiscard = onDiscard; this.subs = new Set(); this.keepNext = null; this.parts = null; this.centres = null; this.transforms = null; this.explodeState = null; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.colourMode = 'type'; this.statusMap = new Map(); this.focusSaved = null; this.focusKey = null; this.sectionState = null; this.cycle = null; this.dirty = true;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     this.renderer.localClippingEnabled = true; this.clipPlane = new THREE.Plane();
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -36,7 +36,8 @@ export class Viewport {
     this.overlay = h('div', { class: 'vp-overlay', hidden: true });
     this.msg = h('div', { class: 'vp-msg' });
     this.legend = h('div', { class: 'vp-legend', hidden: true }, h('span', { class: 'dot' }), 'CG');
-    el.append(this.overlay, this.msg, this.legend);
+    this.legend2 = h('div', { class: 'vp-legend2', 'data-testid': 'legend', hidden: true });
+    el.append(this.overlay, this.msg, this.legend, this.legend2);
     let down = null;
     const cv = this.renderer.domElement;
     cv.addEventListener('pointerdown', (e) => (down = [e.clientX, e.clientY]));
@@ -67,7 +68,7 @@ export class Viewport {
     this.msg.textContent = text || ''; this.msg.className = 'vp-msg' + (err ? ' err' : ''); this.msg.hidden = !text;
   }
   clear() {
-    this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.types.clear(); this.cycle = null; this.cg = null; this.mass = null;
+    this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.types.clear(); this.cycle = null; this.cg = null; this.mass = null; this.statusMap = new Map(); this.focusSaved = null; this.focusKey = null;
     this.transforms = null; this.centres = null; this.parts = null; this.explodeState = null;
     this.overlay.hidden = true; this.legend.hidden = true; this.dirty = true;
     this.mover.sync(); this.emit();
@@ -106,7 +107,7 @@ export class Viewport {
     if (!design.glb) return this.message('No GLB for this design', true);
     this.message('Loading…');
     const same = this.mountInfo?.id === design.id; // a reload of the open design keeps the camera and what the person had set
-    if (!same) this.keepNext = null;
+    if (!same) { this.keepNext = null; this.colourMode = 'type'; }
     try {
       const [gltf, mass, parts] = await Promise.all([loadGLB(design.glb), design.mass ? getJSON(design.mass).catch(() => null) : null, design.parts ? getJSON(design.parts).catch(() => null) : null]);
       if (token !== this.token) return;
@@ -136,7 +137,7 @@ export class Viewport {
       this.onModel?.(this);
       const keep = this.keepNext; this.keepNext = null;
       if (keep) this.restore(keep);
-      this.mover.sync(); this.emit();
+      this.updateLegend(); this.mover.sync(); this.emit();
     } catch (e) {
       console.warn(e); this.message('Could not load model: ' + e.message, true);
     }
@@ -199,6 +200,48 @@ export class Viewport {
     for (const id of ids) if (this.ids.has(id)) { if (on) this.ghost.add(id); else this.ghost.delete(id); }
     applyAppearance(this); this.onSelect?.(this.highlighted);
   }
+  // Colour by type | status | mass (U19.1 B6b); the status map comes from the scorecard (designs.js).
+  colourBy(mode) {
+    this.colourMode = ['status', 'mass'].includes(mode) ? mode : 'type';
+    applyAppearance(this); this.updateLegend(); this.onSelect?.(this.highlighted); this.emit();
+  }
+  setStatus(map) {
+    this.statusMap = map instanceof Map ? map : new Map();
+    applyAppearance(this); this.updateLegend(); this.onSelect?.(this.highlighted);
+  }
+  coloured() {
+    const all = [...this.ids];
+    if (this.colourMode === 'status') return all.filter((i) => this.statusMap.has(i));
+    if (this.colourMode === 'mass') return all.filter((i) => this.mass?.get(i)?.mass_g != null);
+    return [];
+  }
+  updateLegend() {
+    const L = this.legend2, m = this.colourMode, hex = (n) => '#' + n.toString(16).padStart(6, '0');
+    L.hidden = m === 'type' || !this.model; L.replaceChildren();
+    if (L.hidden) return;
+    const sw = (c, t) => h('span', { class: 'lg-item' }, h('i', { class: 'lg-sw', style: `background:${hex(c)}` }), t);
+    if (m === 'status') {
+      const n = (s) => this.coloured().filter((i) => this.statusMap.get(i).status === s).length;
+      L.append(sw(STATUS_COLOUR.FAIL, `FAIL ${n('FAIL')}`), sw(STATUS_COLOUR.WARN, `WARN ${n('WARN')}`), sw(NEUTRAL, `no finding ${this.ids.size - this.coloured().length}`), sw(NEUTRAL, `design-level ${this.statusMap.designLevel || 0}`));
+    } else {
+      L.append(h('span', {}, '0 g'), h('i', { class: 'lg-ramp', style: `background:linear-gradient(90deg,${hex(MASS_LO)},${hex(MASS_HI)})` }), h('span', {}, fmt(maxMass(this), 0) + ' g'));
+    }
+  }
+  // Select parts, frame them and ghost the rest; the previous ghost set comes back on clearFocus.
+  focusParts(ids) {
+    ids = [...ids].filter((i) => this.ids.has(i));
+    if (!ids.length) return;
+    if (!this.focusSaved) this.focusSaved = new Set(this.ghost);
+    this.focusKey = ids.join('|');
+    this.ghost = new Set(this.focusSaved);
+    for (const i of this.ids) if (!ids.includes(i)) this.ghost.add(i);
+    this.select(ids); this.fitTo(ids);
+  }
+  clearFocus() {
+    if (!this.focusSaved) return;
+    this.ghost = new Set(this.focusSaved); this.focusSaved = null; this.focusKey = null;
+    this.select([]);
+  }
   xray(on) { this.xrayOn = !!on; applyAppearance(this); this.onSelect?.(this.highlighted); }
   // Section plane across the model box along a BODY axis (x, y, z) or null; one shared plane, uncapped.
   section(axis, value = 0.5, flip = false) {
@@ -249,7 +292,7 @@ export class Viewport {
     const all = [...this.ids], tr = this.transforms, r6 = (n) => Math.round(n * 1e6) / 1e6 || 0;
     const offsets = {};
     if (tr) for (const id of all) offsets[id] = tr.offset(id).map(r6);
-    return { explode: this.explodeState ? { ...this.explodeState } : null, offsets, moved: tr ? all.filter((i) => tr.isMoved(i)) : [], selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null, tool: this.mover.tool, gizmo: this.mover.target(), pending: this.pending().length };
+    return { explode: this.explodeState ? { ...this.explodeState } : null, offsets, moved: tr ? all.filter((i) => tr.isMoved(i)) : [], selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: this.coloured(), colourBy: this.colourMode, status: Object.fromEntries([...this.statusMap].map(([i, e]) => [i, e.status])), focus: this.focusKey, xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null, tool: this.mover.tool, gizmo: this.mover.target(), pending: this.pending().length };
   }
   fitTo(ids) {
     if (!this.model) return;
