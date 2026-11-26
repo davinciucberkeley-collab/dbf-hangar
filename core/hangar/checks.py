@@ -1212,7 +1212,6 @@ def tier3_aero(design: Design, std: dict, mp: dict) -> TierReport:
 SHEET_METHODS = {"laser-cut", "waterjet", "cnc-router"}
 MFG = "manufacturing.yaml"
 MFG_FREE = MFG + "#machine_optional_methods"
-MFG_FREE = MFG + "#machine_optional_methods"
 
 
 def _obb_extents(parts: list[trimesh.Trimesh]) -> list[float]:

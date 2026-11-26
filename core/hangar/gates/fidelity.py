@@ -15,13 +15,6 @@ CRITERION_ALIASES = {   # U17.1 2b: criteria that name a definition, not a stand
 }
 
 
-CRITERION_ALIASES = {   # U17.1 2b: criteria that name a definition, not a standards key, resolve to a pending key
-    "schema/plane.schema.json": "gate-thresholds.yaml#schema_valid",
-    "requirements.mtow_g": "gate-thresholds.yaml#mtow_declared_in_design",
-    "connection-types.yaml": "gate-thresholds.yaml#connection_named_in_library",
-}
-
-
 def resolve_threshold(criterion: str) -> dict | None:
     """`file#key` -> {"file", "key", "value", "rule", "source"} from standards/<file> (a yaml), else None.
     The key is an entry (a dict with `source`) at the top level or one level inside a top-level group, or a machine

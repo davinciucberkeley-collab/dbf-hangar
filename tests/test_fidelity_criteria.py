@@ -57,3 +57,9 @@ def test_tier4_free_method_rows_cite_the_free_methods_key():
     free = [r for r in rows if r.check_id == "T4.method" and r.criterion == "manufacturing.yaml#machine_optional_methods"]
     assert free, "example-tailsitter-wing has 7 free-method rows"
     assert not [r for r in rows if r.check_id == "T4.method" and r.criterion == "manufacturing.yaml"]
+
+
+def test_schema_criterion_is_not_aliased_and_has_no_threshold():   # keeps T0.root's gate.explain threshold None
+    from hangar.gates.fidelity import CRITERION_ALIASES
+    assert "schema/plane.schema.json" not in CRITERION_ALIASES
+    assert resolve_threshold("schema/plane.schema.json") is None
