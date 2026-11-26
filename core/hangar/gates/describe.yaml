@@ -109,9 +109,13 @@ T2.joint_rf:
   group: part
   fold: true
   fold_noun: "joints"
-  fold_what: "{count} joints have no sourced rating, so their reserve factor cannot be computed ({labels})."
+  fold_what: "{count} joints have no sourced rating, so their reserve factor is not judged ({labels})."
   what:
-    WARN: "The joint {joint} has no rated load, so its reserve factor (rating divided by load, must be at least {limit}) cannot be computed."
+    WARN:
+      - when: rf
+        text: "The joint {joint} has a reserve factor of {rf:.2f} (rating divided by load, must be at least {limit}), but its rating is derived, not sourced, so this is reported, not judged."
+        hint: "Replace the derived rating with a sourced rated_load_n."
+      - text: "The joint {joint} has no rated load, so its reserve factor (rating divided by load, must be at least {limit}) cannot be computed."
   hint: "Add a sourced rated_load_n for the joint's connection type in standards/connection-types.yaml."
 T2.sim_drop_loads:
   title: "Joint breaks in the drop test"
@@ -187,7 +191,7 @@ T3.tail_volume:
   title: "Horizontal tail is large for its wing"
   group: design
   what:
-    WARN: "Horizontal tail volume is {value:.3f}; the usual band is {limit:.2f} to 0.60 ({source}), so this is advice, not a rule."
+    WARN: "Horizontal tail volume is {value:.3f}, {band} the provisional usual range, which starts at {limit:.2f} ({source}); this is advice, not a rule."
   hint: "A scale copy of a real aircraft may sit outside the band; otherwise reduce the tail area or arm."
 T3.transition_margin:
   title: "Transition between hover and cruise is too tight"

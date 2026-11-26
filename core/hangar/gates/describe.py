@@ -215,6 +215,10 @@ def _describe(row: CheckResult, design, design_id: str | None) -> RowText:
             values.update({k: v for k, v in m.groupdict().items() if v is not None})
 
     template = (entry.get("what") or {}).get(row.status)
+    variant: dict = {}
+    if isinstance(template, list):   # [{when: <data key>, text, hint?}, ..., {text}]: the first item whose key is in row.data wins
+        variant = next((v for v in template if not v.get("when") or v["when"] in data), {})
+        template = variant.get("text")
     sentence = details
     if template:
         try:
@@ -222,7 +226,7 @@ def _describe(row: CheckResult, design, design_id: str | None) -> RowText:
         except _FORMAT_ERRORS:
             sentence = details
     hint = ""
-    hint_template = _hint_template(entry, row.status)
+    hint_template = variant["hint"] if "hint" in variant else _hint_template(entry, row.status)
     if hint_template:
         try:
             hint = _fmt(hint_template, values)
