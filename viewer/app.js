@@ -8,8 +8,8 @@ import { initApplyBar, bindApplyBar } from './ui/applybar.js';
 
 const DATA = 'data/';
 const MODES = ['designs', 'compare', 'stress', 'updates', 'ledger'];
-const LABELS = { designs: 'Designs', compare: 'Compare', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
-const HINTS = { designs: 'Click a part to highlight it. Drag to orbit, scroll to zoom.', compare: 'Click designs in the list to fill slots A and B alternately.' };
+const LABELS = { designs: 'Model', compare: 'Compare', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
+const HINTS = { designs: 'Click a part, or a row in the list. Drag to orbit, scroll to zoom.', compare: 'Click designs in the list to fill slots A and B alternately.' };
 
 const state = { timelineOpen: false, index: null, selected: null, mode: 'designs', slotA: null, slotB: null, nextSlot: 'a', text: '', vtol: '' };
 const byId = (id) => state.index?.designs.find((d) => d.id === id);
@@ -81,6 +81,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 function renderSidebar() {
+  updatePicker();
   const list = $('design-list'); list.replaceChildren();
   const q = state.text.toLowerCase();
   const all = state.index.designs;
@@ -110,8 +111,20 @@ function renderSidebar() {
 
 function choose(id) {
   if (state.mode === 'compare') { assign(state.nextSlot, id); return; }
+  setPicker(false);
   if (id !== state.selected && !confirmDiscard()) return;
   state.selected = id; syncHash(); renderSidebar(); renderMode();
+}
+// The design picker: the old sidebar is its popover (filters, list, jobs, New/Import stay inside it).
+function setPicker(open) {
+  const pop = $('sidebar'), btn = $('design-picker');
+  pop.hidden = !open; btn.setAttribute('aria-expanded', String(open));
+  if (open) $('filter-text').focus();
+}
+function updatePicker() {
+  const btn = $('design-picker'), d = byId(state.selected);
+  btn.replaceChildren(d ? (d.name || d.id) : 'Pick a design', ' ▾');
+  if (state.index?.designs.some((x) => x.pending)) btn.append(' ', h('span', { class: 'badge pending', 'data-testid': 'picker-pending' }, 'checking...'));
 }
 function assign(slot, id) {
   if (!confirmDiscard()) return;
@@ -185,7 +198,7 @@ async function init() {
   attachedOn = () => att.checked;
   tb.append(tSel, tMove, h('label', { title: 'Parts attached below the moved part move with it' }, att, 'with attached parts'));
   const colourSel = h('select', { 'data-testid': 'colour-by', 'aria-label': 'Colour by', onchange: () => vps.main?.colourBy(colourSel.value) }, ['type', 'status', 'mass'].map((m) => h('option', { value: m }, m)));
-  tb.append(h('label', { class: 'colour-by' }, 'Colour by ', colourSel));
+  $('colour-bar').append(h('label', { class: 'colour-by' }, 'Colour by ', colourSel));
   syncTool = () => {
     const s = vps.main?.state(); if (!s) return;
     colourSel.value = s.colourBy;
@@ -209,6 +222,11 @@ async function init() {
     lvl.replaceChildren(); fillLevels(); eb.hidden = !vp.parts;
   };
   eb.append(h('label', {}, 'Explode ', slider), lvl, strat);
+  $('design-picker').onclick = () => setPicker($('sidebar').hidden);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('sidebar').hidden) { setPicker(false); $('design-picker').focus(); e.stopImmediatePropagation(); } }, true);
+  document.addEventListener('click', (e) => { if (!$('sidebar').hidden && !e.composedPath().some((n) => n.classList?.contains('picker-wrap'))) setPicker(false); });
+  const tabs = document.querySelectorAll('#side-tabs button');
+  tabs.forEach((b) => { b.onclick = () => { const bom = b.dataset.testid === 'tab-bom'; $('scorecard').hidden = bom; $('bom-panel').hidden = !bom; tabs.forEach((x) => x.classList.toggle('active', x === b)); }; });
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };
   $('filter-vtol').onchange = (e) => { state.vtol = e.target.value; renderSidebar(); };
   $('sel-a').onchange = (e) => assign('a', e.target.value); $('sel-b').onchange = (e) => assign('b', e.target.value);

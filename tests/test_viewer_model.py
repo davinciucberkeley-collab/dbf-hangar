@@ -15,6 +15,12 @@ from test_viewer_static import browser, collect, pages_base, studio_base  # noqa
 pytestmark = pytest.mark.slow
 
 
+def pick_design(page, did):
+    page.click('[data-testid="design-picker"]')
+    page.click(f'#design-list .design-item[data-id="{did}"]')
+    page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
+
+
 def _ready(page, mode, timeout=60000):
     page.wait_for_selector(f'#mode-{mode}[data-ready="1"]', timeout=timeout)
 
@@ -46,7 +52,7 @@ def test_design_switches_do_not_leak_geometry(browser, pages_base):
     ids = ["example-tailsitter-wing", "mech-good"]
     vals = {}
     for n in range(1, 13):
-        page.click(f'.design-item[data-id="{ids[(n - 1) % 2]}"]')
+        pick_design(page, ids[(n - 1) % 2])
         _ready(page, "designs")
         if n in (2, 12):
             page.wait_for_function("window.planeViewer.vp.info().geometries > 0")
@@ -596,11 +602,11 @@ def test_discard_prompt_on_design_switch(browser, pages_base):
         msgs.append(d.message)
         d.dismiss() if action[0] == "dismiss" else d.accept()
     page.on("dialog", on_dialog)
-    page.click('.design-item[data-id="mech-good"]')
+    pick_design(page, "mech-good")
     assert page.evaluate("window.planeViewer.selected()") == "example-tailsitter-wing"
     assert len(page.evaluate(f"{VPJ}.pending()")) == 1
     action[0] = "accept"
-    page.click('.design-item[data-id="mech-good"]')
+    pick_design(page, "mech-good")
     _ready(page, "designs")
     assert page.evaluate("window.planeViewer.selected()") == "mech-good"
     assert page.evaluate(f"{VPJ}.pending()") == []
@@ -957,5 +963,121 @@ def test_design_level_rows_do_not_paint_parts(browser, pages_base):
     }""")
     assert out["ids"] == ["b", "c", "d", "e"] and out["dl"] == 2
     assert out["list"] == sorted(DESIGN_LEVEL)
+    assert errors == []
+    page.close()
+
+
+# ---------- U19.1 B7: layout ----------
+def _box(page, sel):
+    return page.evaluate("(s) => { const r = document.querySelector(s).getBoundingClientRect(); return {x: r.x, y: r.y, width: r.width, height: r.height}; }", sel)
+
+
+def _open_sized(browser, pages_base, w, h, hash_="#m=designs&d=mech-good"):
+    page = browser.new_page()
+    errors = collect(page)
+    page.set_viewport_size({"width": w, "height": h})
+    page.goto(pages_base + hash_)
+    _ready(page, "designs")
+    return page, errors
+
+
+def test_picker_opens_filters_and_selects(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1280, 800)
+    assert not page.is_visible("#sidebar")
+    page.click('[data-testid="design-picker"]')
+    assert page.is_visible("#sidebar")
+    assert page.get_attribute('[data-testid="design-picker"]', "aria-expanded") == "true"
+    page.fill("#filter-text", "mech-good")
+    assert page.locator("#design-list .design-item").count() == 1
+    assert page.locator('#design-list .design-item[data-id="mech-good"]').count() == 1
+    page.fill("#filter-text", "")
+    page.click('#design-list .design-item[data-id="example-tailsitter-wing"]')
+    _ready(page, "designs")
+    assert page.evaluate("window.planeViewer.selected()") == "example-tailsitter-wing"
+    assert not page.is_visible("#sidebar")
+    name = page.evaluate("window.planeViewer.designs().find(d => d.id === 'example-tailsitter-wing').name")
+    assert name in page.inner_text('[data-testid="design-picker"]')
+    page.click('[data-testid="design-picker"]')
+    assert page.is_visible("#sidebar")
+    page.keyboard.press("Escape")
+    assert not page.is_visible("#sidebar")
+    assert errors == []
+    page.close()
+
+
+def test_three_panes_side_by_side_on_a_wide_screen(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1400, 900)
+    tree, cv, ins = _box(page, "#parts-tree"), _box(page, "#vp-main canvas"), _box(page, "#side-right")
+    assert tree["x"] + tree["width"] <= cv["x"] + 2
+    assert cv["x"] + cv["width"] <= ins["x"] + 2
+    assert cv["height"] >= 400
+    assert errors == []
+    page.close()
+
+
+def test_stacks_under_1100px(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1000, 900)
+    tree, cv, ins = _box(page, "#parts-tree"), _box(page, "#vp-main canvas"), _box(page, "#side-right")
+    assert ins["y"] >= cv["y"] + cv["height"] - 2
+    assert tree["x"] + tree["width"] > cv["x"]
+    assert errors == []
+    page.close()
+
+
+def test_tabs_switch_scorecard_and_bom(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1400, 900, f"#m=designs&d={TREE}")
+    page.click('[data-testid="tab-bom"]')
+    assert page.is_visible('[data-testid="bom-panel"]')
+    assert not page.is_visible("#scorecard")
+    n = page.evaluate("fetch('data/' + window.planeViewer.designs().find(d => d.id === 'example-tailsitter-wing').parts).then(r => r.json()).then(j => j.parts.length)")
+    assert page.locator('[data-testid="bom-row"]').count() == n
+    masses = page.evaluate("[...document.querySelectorAll('[data-testid=\"bom-row\"]')].map(r => parseFloat(r.children[2].textContent) || 0)")
+    total = page.inner_text('[data-testid="bom-total"]')
+    assert abs(float(total) - sum(masses)) <= 0.1
+    page.click('[data-testid="bom-row"][data-id="battery"]')
+    assert page.evaluate("window.planeViewer.vp.state().selection") == ["battery"]
+    page.click('[data-testid="tab-scorecard"]')
+    assert page.is_visible("#scorecard")
+    assert not page.is_visible('[data-testid="bom-panel"]')
+    assert errors == []
+    page.close()
+
+
+def test_toolbar_groups_are_in_one_bar(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1400, 900)
+    order = ["tool-select", "tool-move", "explode-slider", "btn-xray", "section-axis", "view-iso", "colour-by"]
+    for t in order:
+        assert page.locator(f'#vp-toolbar [data-testid="{t}"]').count() == 1, t
+    ok = page.evaluate("(ids) => { const els = ids.map(t => document.querySelector('[data-testid=\"' + t + '\"]')); return els.every((e, i) => i === 0 || (els[i - 1].compareDocumentPosition(e) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0); }", order)
+    assert ok
+    assert errors == []
+    page.close()
+
+
+def test_toolbar_does_not_overlap_at_1280(browser, pages_base):
+    page, errors = _open_sized(browser, pages_base, 1280, 800)
+    boxes = page.evaluate("[...document.querySelectorAll('#vp-toolbar > .view-bar:not([hidden])')].map(e => { const r = e.getBoundingClientRect(); return [r.x, r.y, r.width, r.height]; })")
+    assert len(boxes) >= 4
+    for i, a in enumerate(boxes):
+        for b in boxes[i + 1:]:
+            apart = a[0] + a[2] <= b[0] + 1 or b[0] + b[2] <= a[0] + 1 or a[1] + a[3] <= b[1] + 1 or b[1] + b[3] <= a[1] + 1
+            assert apart, (a, b)
+    assert errors == []
+    page.close()
+
+
+def test_old_hashes_still_open_the_right_mode(browser, pages_base):
+    cases = [("#m=designs&d=mech-good", "designs"), ("#m=physics&d=mech-good", "designs"),
+             ("#m=compare&a=mech-good&b=example-tailsitter-wing", "compare"), ("#m=stress", "stress"),
+             ("#m=updates", "updates"), ("#m=ledger", "ledger"), ("#m=nonsense", "designs")]
+    page = browser.new_page()
+    errors = collect(page)
+    for hash_, mode in cases:
+        page.goto(pages_base + hash_)
+        page.reload()
+        page.wait_for_selector(f"#mode-{mode}[data-ready]", state="attached", timeout=60000)
+        assert page.evaluate("document.body.dataset.mode") == mode, hash_
+    names = page.locator("#modes button").all_inner_texts()
+    assert "Model" in names and "Designs" not in names and "Physics" not in names
     assert errors == []
     page.close()

@@ -15,31 +15,39 @@
 </head>
 <body>
 <div id="app">
-  <aside id="sidebar">
-    <header class="brand">
-      <h1>Designs</h1>
-      <span id="count" class="muted"></span>
-    </header>
-    <div class="filters">
-      <input id="filter-text" type="search" placeholder="Filter by name, id, tag" aria-label="Filter designs">
-      <select id="filter-vtol" aria-label="Filter by VTOL method"><option value="">All VTOL methods</option></select>
+  <header id="topbar">
+    <h1 class="appname">Plane Studio</h1>
+    <div class="picker-wrap">
+      <button id="design-picker" class="btn" data-testid="design-picker" type="button" aria-haspopup="listbox" aria-expanded="false">Pick a design</button>
+      <aside id="sidebar" class="popover" hidden>
+        <header class="brand">
+          <h1>Designs</h1>
+          <span id="count" class="muted"></span>
+        </header>
+        <div class="filters">
+          <input id="filter-text" type="search" placeholder="Filter by name, id, tag" aria-label="Filter designs">
+          <select id="filter-vtol" aria-label="Filter by VTOL method"><option value="">All VTOL methods</option></select>
+        </div>
+        <ul id="design-list" class="design-list"></ul>
+        <footer class="muted small" id="generated"></footer>
+      </aside>
     </div>
-    <ul id="design-list" class="design-list"></ul>
-    <footer class="muted small" id="generated"></footer>
-  </aside>
+    <nav id="modes" class="seg" role="tablist"></nav>
+    <span id="mode-hint" class="muted small"></span>
+    <button id="theme-toggle" class="btn" data-testid="theme-toggle" type="button" title="Switch light / dark">Theme</button>
+  </header>
 
   <main id="stage">
-    <div class="toolbar">
-      <nav id="modes" class="seg" role="tablist"></nav>
-      <span id="mode-hint" class="muted small"></span>
-      <button id="theme-toggle" class="btn" data-testid="theme-toggle" type="button" title="Switch light / dark">Theme</button>
-    </div>
-
     <section id="mode-designs" class="mode inspect" hidden>
       <aside id="parts-tree" class="panel" data-testid="parts-tree"></aside>
-      <div id="center-col"><div class="vp-wrap"><div id="vp-main" class="viewport"></div><div id="view-bar" class="view-bar"></div><div id="see-inside" class="view-bar see-inside"></div><div id="explode-bar" class="view-bar"></div><div id="tool-bar" class="view-bar"></div><div id="apply-bar" class="view-bar" hidden></div></div>
+      <div id="center-col"><div class="vp-wrap"><div id="vp-main" class="viewport"></div>
+        <div id="vp-toolbar" class="vp-toolbar"><div id="tool-bar" class="view-bar"></div><div id="explode-bar" class="view-bar"></div><div id="see-inside" class="view-bar see-inside"></div><div id="view-bar" class="view-bar"></div><div id="colour-bar" class="view-bar"></div></div>
+        <div id="apply-bar" class="view-bar" hidden></div></div>
         <div id="timeline" class="timeline" data-testid="timeline" hidden></div></div>
-      <div id="side-right"><div id="inspector" class="panel" data-testid="inspector"></div><aside id="scorecard" class="panel"></aside></div>
+      <div id="side-right"><div id="inspector" class="panel" data-testid="inspector"></div>
+        <nav class="seg" role="tablist" id="side-tabs"><button type="button" data-testid="tab-scorecard" class="active">Scorecard</button><button type="button" data-testid="tab-bom">BOM</button></nav>
+        <aside id="scorecard" class="panel"></aside>
+        <div id="bom-panel" class="panel" hidden data-testid="bom-panel"></div></div>
     </section>
 
     <section id="mode-compare" class="mode compare" hidden>
