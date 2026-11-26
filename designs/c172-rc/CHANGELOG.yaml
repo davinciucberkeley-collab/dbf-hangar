@@ -888,3 +888,161 @@
   why: hinge_from generator reverses the aileron-r hinge axis; ratio sign follows
     the axis (U16.1 S6 Part B)
   kind: modify
+- date: '2026-11-26T11:08:47Z'
+  key: components[fuselage].geometry.params.wall
+  old: null
+  new: 3
+  why: 'U16.1 S9c Part B: hollow fuselage, wall 3 mm, so internal parts show (D112)'
+  kind: add
+  regenerated:
+  - fuselage
+- date: '2026-11-26T11:09:03Z'
+  key: attachments[fuselage-wing].location
+  old:
+  - 270
+  - 0
+  - 72
+  new:
+  - 270
+  - 0
+  - 75
+  why: 'U16.1 S9c Part B: hollow fuselage, joint point onto the 3 mm skin'
+  kind: modify
+- date: '2026-11-26T11:09:30Z'
+  key: attachments[fuselage-tail].location
+  old:
+  - 680
+  - 0
+  - 0
+  new:
+  - 680
+  - 11
+  - 0
+  why: 'U16.1 S9c Part B: hollow fuselage, joint point onto the 3 mm skin'
+  kind: modify
+- date: '2026-11-26T11:09:50Z'
+  key: attachments[fuselage-gear].location
+  old:
+  - 266
+  - 42.7
+  - -12
+  new:
+  - 266
+  - 52
+  - -24
+  why: 'U16.1 S9c Part B: hollow fuselage, joint point onto the 3 mm skin'
+  kind: modify
+- date: '2026-11-26T11:10:10Z'
+  key: attachments[fuselage-motor].location
+  old:
+  - 49
+  - 0
+  - 0
+  new:
+  - 36
+  - 0
+  - 0
+  why: 'U16.1 S9c Part B: hollow fuselage, joint point onto the 3 mm skin'
+  kind: modify
+- date: '2026-11-26T11:10:27Z'
+  key: attachments[fuselage-servo-elev].location
+  old:
+  - 590
+  - 9
+  - 2
+  new:
+  - 597
+  - 14.7
+  - 15.4
+  why: 'U16.1 S9c Part B: hollow fuselage, joint point onto the 3 mm skin'
+  kind: modify
+- date: '2026-11-26T11:10:42Z'
+  key: attachments[fuselage-servo-rud].location
+  old:
+  - 590
+  - -9
+  - 2
+  new:
+  - 597
+  - -14.7
+  - 15.4
+  why: 'U16.1 S9c Part B: hollow fuselage, joint point onto the 3 mm skin'
+  kind: modify
+- date: '2026-11-26T11:10:54Z'
+  key: components[battery].position
+  old:
+  - 290
+  - 0
+  - -20
+  new:
+  - 290
+  - 0
+  - -40.5
+  why: 'U16.1 S9c Part B: hollow fuselage, part rests on the inner skin'
+  kind: modify
+  regenerated:
+  - battery
+- date: '2026-11-26T11:11:07Z'
+  key: attachments[fuselage-battery].location
+  old:
+  - 290
+  - 0
+  - -20
+  new:
+  - 337
+  - 17
+  - -58.5
+  why: 'U16.1 S9c Part B: hollow fuselage, part rests on the inner skin'
+  kind: modify
+- date: '2026-11-26T11:11:18Z'
+  key: components[esc].position
+  old:
+  - 135
+  - 0
+  - -35
+  new:
+  - 135
+  - 0
+  - -41.6
+  why: 'U16.1 S9c Part B: hollow fuselage, part rests on the inner skin'
+  kind: modify
+  regenerated:
+  - esc
+- date: '2026-11-26T11:11:25Z'
+  key: attachments[fuselage-esc].location
+  old:
+  - 135
+  - 0
+  - -35
+  new:
+  - 122.5
+  - 0
+  - -44
+  why: 'U16.1 S9c Part B: hollow fuselage, part rests on the inner skin'
+  kind: modify
+- date: '2026-11-26T11:11:36Z'
+  key: components[receiver].position
+  old:
+  - 195
+  - 0
+  - -30
+  new:
+  - 195
+  - 0
+  - -51
+  why: 'U16.1 S9c Part B: hollow fuselage, part rests on the inner skin'
+  kind: modify
+  regenerated:
+  - receiver
+- date: '2026-11-26T11:11:44Z'
+  key: attachments[fuselage-receiver].location
+  old:
+  - 175
+  - 0
+  - -28
+  new:
+  - 160
+  - 0
+  - -53
+  why: 'U16.1 S9c Part B: hollow fuselage, part rests on the inner skin'
+  kind: modify
