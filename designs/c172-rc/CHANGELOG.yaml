@@ -2952,3 +2952,45 @@
     clevises: true
   why: 'U16.1 S9a: clevises at the pushrod ends'
   kind: add
+- date: '2026-11-26T14:34:43Z'
+  key: attachments[wing-aileron-r-servo-arm].connection
+  old: null
+  new: CT-SERVO-SPLINE
+  why: 'U16.1 S9b: connection id so the screw heads can be drawn'
+  kind: add
+- date: '2026-11-26T14:34:54Z'
+  key: attachments[wing-aileron-l-servo-arm].connection
+  old: null
+  new: CT-SERVO-SPLINE
+  why: 'U16.1 S9b: connection id so the screw heads can be drawn'
+  kind: add
+- date: '2026-11-26T14:35:04Z'
+  key: attachments[tail-elevator-servo-arm].connection
+  old: null
+  new: CT-SERVO-SPLINE
+  why: 'U16.1 S9b: connection id so the screw heads can be drawn'
+  kind: add
+- date: '2026-11-26T14:35:15Z'
+  key: attachments[tail-rudder-servo-arm].connection
+  old: null
+  new: CT-SERVO-SPLINE
+  why: 'U16.1 S9b: connection id so the screw heads can be drawn'
+  kind: add
+- date: '2026-11-26T14:35:26Z'
+  key: attachments[fuselage-motor].connection
+  old: null
+  new: CT-M3-SHCS-MOTOR
+  why: 'U16.1 S9b: connection id so the screw heads can be drawn'
+  kind: add
+- date: '2026-11-26T14:35:36Z'
+  key: attachments[fuselage-gear].connection
+  old: null
+  new: CT-M3-SHCS-NYLOC
+  why: 'U16.1 S9b: connection id so the screw heads can be drawn'
+  kind: add
+- date: '2026-11-26T14:35:46Z'
+  key: display.screw_heads
+  old: null
+  new: true
+  why: 'U16.1 S9b: screw heads on bolted joints'
+  kind: add
