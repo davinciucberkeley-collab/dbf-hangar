@@ -1238,3 +1238,130 @@ def test_view_cube_click_sets_the_view(browser, pages_base):
         assert sign * p[axis] > 0.9 * p["len"], (face, p)
     assert errors == []
     page.close()
+
+
+# ---------- U19.2 brief 4: plain-language scorecard rows, grouped by problem, part or tier ----------
+EX = "example-tailsitter-wing"
+
+
+def _open_ex(browser, pages_base, width=1500):
+    page = browser.new_page(viewport={"width": width, "height": 900})
+    errors = collect(page)
+    page.goto(pages_base + f"#m=designs&d={EX}")
+    _ready(page, "designs")
+    page.wait_for_function("window.planeViewer.vp && window.planeViewer.vp.state().all.length > 0")
+    return page, errors
+
+
+def test_rows_show_plain_name_sentence_and_hint(browser, pages_base):
+    page, errors = _open_ex(browser, pages_base)
+    rows = page.locator('[data-testid="check-row"]')
+    assert rows.count() > 0
+    good = page.evaluate("""() => [...document.querySelectorAll('[data-testid="check-row"]')].filter((r) =>
+      (r.querySelector('.title')?.textContent || '') !== '' && r.querySelector('.sentence') && r.getAttribute('title') === r.dataset.checkId).length""")
+    assert good > 0
+    starts = page.evaluate("""() => [...document.querySelectorAll('[data-testid="check-row"]')].filter((r) =>
+      r.textContent.trim().startsWith('report-only until')).length""")
+    assert starts == 0
+    assert errors == []
+    page.close()
+
+
+def test_group_switch_problem_part_tier(browser, pages_base):
+    page, errors = _open_ex(browser, pages_base)
+    assert "active" in page.locator('[data-testid="group-problem"]').get_attribute("class")
+    heads = page.locator('[data-testid="group-title"]').all_inner_texts()
+    assert {"Needs fixing", "Warnings", "Not checked"} & set(heads)
+    n_problem = page.locator('[data-testid="check-row"]').count()
+    page.click('[data-testid="group-part"]')
+    assert "active" in page.locator('[data-testid="group-part"]').get_attribute("class")
+    assert "motor l (motor_l)" in page.locator('[data-testid="group-title"]').all_inner_texts()
+    page.click('[data-testid="group-tier"]')
+    assert page.locator("#scorecard details.tier:not(.group)").count() > 0
+    assert page.locator('[data-testid="check-row"]').count() == n_problem
+    assert errors == []
+    page.close()
+
+
+def test_injected_rows_without_text_still_render(browser, pages_base):
+    page, errors = _open9(browser, pages_base)
+    row = page.locator('[data-check-id="T9.d"]')
+    assert row.count() == 1 and "has-parts" in row.get_attribute("class")
+    row.scroll_into_view_if_needed()
+    row.click()
+    page.wait_for_timeout(400)
+    st = page.evaluate(f"{VPJ}.state()")
+    assert st["selection"] == ["flight_controller"]
+    assert "active" in row.get_attribute("class")
+    assert errors == []
+    page.close()
+
+
+def test_inspector_part_checks_show_plain_text(browser, pages_base):
+    page, errors = _open_ex(browser, pages_base)
+    page.evaluate(f'{VPJ}.select(["motor_l"])')
+    li = page.locator('[data-testid="part-checks"] li[data-for="T7.electrical_rating"]')
+    assert li.count() == 1
+    assert li.locator(".cid").inner_text() == "T7.electrical_rating"
+    title = li.locator(".title").inner_text()
+    assert title and title != "T7.electrical_rating"
+    li.click()
+    assert page.locator('#scorecard [data-check-id="T7.electrical_rating"].active').count() == 1
+    assert errors == []
+    page.close()
+
+
+def test_fold_entry(browser, pages_base):
+    page, errors = _open_ex(browser, pages_base)
+    folds = page.locator('[data-testid="check-fold"]')
+    texts = folds.evaluate_all("(els) => els.map((e) => e.querySelector('summary').textContent)")
+    mine = [i for i, t in enumerate(texts) if "11 joints" in t]
+    assert len(mine) == 2  # joint_load and sim_drop_loads each fold their 11 joints
+    assert folds.nth(mine[0]).locator('[data-testid="check-row"]').count() == 11
+    assert errors == []
+    page.close()
+
+
+def test_old_index_without_rows_renders_as_before(browser, pages_base):
+    def handler(route):
+        resp = route.fetch()
+        body = resp.json()
+        for e in body["designs"]:
+            e["rows"] = None
+        route.fulfill(response=resp, json=body)
+
+    page = browser.new_page(viewport={"width": 1500, "height": 900})
+    errors = collect(page)
+    page.route("**/index.json", handler)
+    page.goto(pages_base + f"#m=designs&d={EX}")
+    _ready(page, "designs")
+    assert not page.locator('[data-testid="group-by"]').is_visible()
+    assert page.locator('[data-testid="check-row"]').count() > 0
+    assert page.locator('[data-testid="check-fold"]').count() == 0
+    assert errors == []
+    page.close()
+
+
+def test_inspector_jump_prefers_the_row_naming_the_part(browser, pages_base):
+    def handler(route):
+        resp = route.fetch()
+        body = resp.json()
+        body["tiers"][0]["results"] += [
+            {"check_id": "T9.same", "status": "WARN", "message": "m " + c, "criterion": "t", "data": {"parts": [c]}}
+            for c in ("battery", "motor_l")]
+        route.fulfill(response=resp, json=body)
+
+    page = browser.new_page(viewport={"width": 1500, "height": 900})
+    errors = collect(page)
+    page.route("**/*.scorecard.json", handler)
+    page.goto(pages_base + f"#m=designs&d={EX}")
+    _ready(page, "designs")
+    page.wait_for_function("window.planeViewer.vp && window.planeViewer.vp.state().all.length > 0")
+    page.evaluate(f'{VPJ}.select(["motor_l"])')
+    page.locator('[data-testid="part-checks"] li[data-for="T9.same"]').click()
+    act = page.locator("#scorecard .result.active")
+    assert act.count() == 1
+    assert act.get_attribute("data-parts") == "motor_l"
+    assert page.locator('#scorecard [data-check-id="T9.same"]').first.get_attribute("data-parts") == "battery"
+    assert errors == []
+    page.close()
