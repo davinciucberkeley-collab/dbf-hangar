@@ -830,6 +830,7 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
 | W34-S2 | `scout` | Haiku | ledger T162: sources for the rated load of CT-SERVO-SPLINE, CT-M3-SHCS-MOTOR, CT-M3-SHCS-NYLOC | `knowledge/sources/` entries via the template + a values table in the report | only sources opened; no invented values |
 | W34-G2 | `design-engineer` | Sonnet | ledger T156: tiltwing-cakir Dutch roll unstable (T3.dynamic_modes, AeroSandbox) | a proposed `plane design set` sequence on a scratch copy, before/after mode table | layout changes only, no threshold change; propose, do not commit to designs/ |
+| W34-T8 | `tactician` | Sonnet | U16.3: survey which U16.1 features fit concept-a and write designs-only briefs for concept-a-test-refactor | `briefs/U16.3-*.md` | builder-ready bar; measured on a scratch copy |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
@@ -1133,6 +1134,14 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1b: Refresh** (builder-plus W34-B2): merge main into std/u4.25-pockets (no force push), tests green, re-time tier-1 on concept-a-param *(refresh stopped: 12 swept-pose rows gone but 2 T1.pocket slivers; W34-A3 diagnosis u16.2/diagnosis.md: float32 operands in manifold3d; fix = float64 operands for the cut_files difference (0 FAIL); tier 1 ~99 s loaded vs ~70 s budget (D73): Tristan decides relax to ~90 s / park for a core speed unit / keep out of v1; fix being built, merge waits)*
 - [x] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71; D73 retry with W24-A convex hulls also missed: tier-1 98-111 s, planform -16.4 % FAIL; parked again, T121)*
 - [x] **Step 3: Review** (W24-R); merge *(merged 7d183bf: concept-a-param 12 swept-pose FAILs + slivers + planform FAIL gone, 14 improvements; tier 1 ~71 s alone (D103); designs-only baseline refresh merged 995c66f (93 -> 79 known))*
+
+### Unit U16.3: concept-a-test-refactor: the U16.1 features on a copy of concept-a (P313)
+
+**Scope:** `plane design copy concept-a concept-a-test-refactor`, then opt the copy in to what U16.1 built for c172-rc: hinge gaps/bevel/knuckles (S6), servos placed (S3), generated linkages via add-linkage (S4, replacing hand-made ones where the op fits), routed harnesses (S8), clevises and screw heads (S9a/S9b), hollow fuselage where a fuselage_loft exists (S9c), wheels on joints if any (S2). concept-a itself is untouched. Designs-only (no core change; a core gap found on the way becomes a ledger item, not part of this unit). Target: no new FAIL versus the copy's own starting baseline; every row change reported.
+
+- [ ] **Step 1: Survey and briefs** (tactician W34-T8): what applies to concept-a's layout, measured on a scratch copy; one designs-only brief per feature group, class easy where it is a command list
+- [ ] **Step 2: Copy and build** (W34-B), briefs in order on one branch per brief
+- [ ] **Step 3: Review** (W34-R2/R3); merge; Tristan looks in Studio
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 

@@ -28,7 +28,8 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W17 Sourced gates (D88) | 1 | 0 |
 | W18 Physics checks (D89) | 4 | 4 |
 | W19 Studio UI and 3D viewer (D92) | 1 | 0 |
-| **all** | 74 | 67 |
+| Other (no wave row) | 1 | 0 |
+| **all** | 75 | 67 |
 
 ### Open ledger items by owner
 
@@ -228,6 +229,12 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U19.1 | Studio UI overhaul and a better 3D viewer (D92; P285) [hard] | 3/4 | in progress | - |
+
+### Unscheduled
+
+| unit | title | done/total | status | review |
+|---|---|---|---|---|
+| U16.3 | concept-a-test-refactor: the U16.1 features on a copy of concept-a (P313) | 0/3 | not started | - |
 
 ## Ledger
 
