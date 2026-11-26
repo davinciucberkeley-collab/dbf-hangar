@@ -2296,3 +2296,547 @@
   - wing-aileron-l-pin
   why: 'S4b: generated linkage ids'
   kind: modify
+- date: '2026-11-26T13:22:12Z'
+  key: attachments[tail-elevator-servo-arm]
+  old:
+    id: tail-elevator-servo-arm
+    parent: servo-elev
+    child: tail-elevator-arm
+    method: bolted
+    location:
+    - 584.5
+    - 9
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 584.5
+      - 9
+      - -10.8
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -10
+      - 10
+  new:
+    id: tail-elevator-servo-arm
+    parent: servo-elev
+    child: tail-elevator-arm
+    method: bolted
+    location:
+    - 584.5
+    - 9
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 584.5
+      - 9
+      - -10.8
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -10
+      - 10
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:22:12Z'
+  key: attachments[tail-elevator-arm-rod]
+  old:
+    id: tail-elevator-arm-rod
+    parent: tail-elevator-arm
+    child: tail-elevator-rod
+    method: hinge
+    location:
+    - 584.9189
+    - 3.0146
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  new:
+    id: tail-elevator-arm-rod
+    parent: tail-elevator-arm
+    child: tail-elevator-rod
+    method: hinge
+    location:
+    - 584.9189
+    - 3.0146
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:22:12Z'
+  key: attachments[tail-elevator-horn-mount]
+  old:
+    id: tail-elevator-horn-mount
+    parent: elevator
+    child: tail-elevator-horn
+    method: glued
+    location:
+    - 734.2327
+    - 15
+    - -3.3357
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: tail-elevator-horn-mount
+    parent: elevator
+    child: tail-elevator-horn
+    method: glued
+    location:
+    - 734.2327
+    - 15
+    - -3.3357
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:22:12Z'
+  key: attachments[tail-elevator-horn-pin]
+  old:
+    id: tail-elevator-horn-pin
+    parent: tail-elevator-horn
+    child: tail-elevator-pin
+    method: bolted
+    location:
+    - 734.7242
+    - 13.5
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: tail-elevator-horn-pin
+    parent: tail-elevator-horn
+    child: tail-elevator-pin
+    method: bolted
+    location:
+    - 734.7242
+    - 13.5
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:01Z'
+  key: attachments[tail-rudder-servo-arm]
+  old:
+    id: tail-rudder-servo-arm
+    parent: servo-rud
+    child: tail-rudder-arm
+    method: bolted
+    location:
+    - 595.5
+    - -9
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 595.5
+      - -9
+      - 14.75
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -10
+      - 10
+  new:
+    id: tail-rudder-servo-arm
+    parent: servo-rud
+    child: tail-rudder-arm
+    method: bolted
+    location:
+    - 595.5
+    - -9
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 595.5
+      - -9
+      - 14.75
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -10
+      - 10
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:01Z'
+  key: attachments[tail-rudder-arm-rod]
+  old:
+    id: tail-rudder-arm-rod
+    parent: tail-rudder-arm
+    child: tail-rudder-rod
+    method: hinge
+    location:
+    - 595.5599
+    - -14.9997
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  new:
+    id: tail-rudder-arm-rod
+    parent: tail-rudder-arm
+    child: tail-rudder-rod
+    method: hinge
+    location:
+    - 595.5599
+    - -14.9997
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:01Z'
+  key: attachments[tail-rudder-horn-mount]
+  old:
+    id: tail-rudder-horn-mount
+    parent: rudder
+    child: tail-rudder-horn
+    method: glued
+    location:
+    - 700.1138
+    - -6
+    - 16.5132
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: tail-rudder-horn-mount
+    parent: rudder
+    child: tail-rudder-horn
+    method: glued
+    location:
+    - 700.1138
+    - -6
+    - 16.5132
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:01Z'
+  key: attachments[tail-rudder-horn-pin]
+  old:
+    id: tail-rudder-horn-pin
+    parent: tail-rudder-horn
+    child: tail-rudder-pin
+    method: bolted
+    location:
+    - 700.8484
+    - -13.9481
+    - 14.92
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: tail-rudder-horn-pin
+    parent: tail-rudder-horn
+    child: tail-rudder-pin
+    method: bolted
+    location:
+    - 700.8484
+    - -13.9481
+    - 14.92
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:54Z'
+  key: attachments[wing-aileron-r-servo-arm]
+  old:
+    id: wing-aileron-r-servo-arm
+    parent: servo-ail-r
+    child: wing-aileron-r-arm
+    method: bolted
+    location:
+    - 270.5
+    - 420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - 420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  new:
+    id: wing-aileron-r-servo-arm
+    parent: servo-ail-r
+    child: wing-aileron-r-arm
+    method: bolted
+    location:
+    - 270.5
+    - 420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - 420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:54Z'
+  key: attachments[wing-aileron-r-arm-rod]
+  old:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 270.5914
+    - 414.0007
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  new:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 270.5914
+    - 414.0007
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:54Z'
+  key: attachments[wing-aileron-r-horn-mount]
+  old:
+    id: wing-aileron-r-horn-mount
+    parent: aileron-r
+    child: wing-aileron-r-horn
+    method: glued
+    location:
+    - 312.6248
+    - 411.1869
+    - 81.511
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: wing-aileron-r-horn-mount
+    parent: aileron-r
+    child: wing-aileron-r-horn
+    method: glued
+    location:
+    - 312.6248
+    - 411.1869
+    - 81.511
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:23:54Z'
+  key: attachments[wing-aileron-r-horn-pin]
+  old:
+    id: wing-aileron-r-horn-pin
+    parent: wing-aileron-r-horn
+    child: wing-aileron-r-pin
+    method: bolted
+    location:
+    - 328.8693
+    - 414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: wing-aileron-r-horn-pin
+    parent: wing-aileron-r-horn
+    child: wing-aileron-r-pin
+    method: bolted
+    location:
+    - 328.8693
+    - 414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:24:43Z'
+  key: attachments[wing-aileron-l-servo-arm]
+  old:
+    id: wing-aileron-l-servo-arm
+    parent: servo-ail-l
+    child: wing-aileron-l-arm
+    method: bolted
+    location:
+    - 270.5
+    - -420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - -420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  new:
+    id: wing-aileron-l-servo-arm
+    parent: servo-ail-l
+    child: wing-aileron-l-arm
+    method: bolted
+    location:
+    - 270.5
+    - -420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - -420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:24:43Z'
+  key: attachments[wing-aileron-l-arm-rod]
+  old:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 271.6327
+    - -425.8921
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  new:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 271.6327
+    - -425.8921
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:24:43Z'
+  key: attachments[wing-aileron-l-horn-mount]
+  old:
+    id: wing-aileron-l-horn-mount
+    parent: aileron-l
+    child: wing-aileron-l-horn
+    method: glued
+    location:
+    - 312.6248
+    - -411.1869
+    - 81.511
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: wing-aileron-l-horn-mount
+    parent: aileron-l
+    child: wing-aileron-l-horn
+    method: glued
+    location:
+    - 312.6248
+    - -411.1869
+    - 81.511
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
+- date: '2026-11-26T13:24:43Z'
+  key: attachments[wing-aileron-l-horn-pin]
+  old:
+    id: wing-aileron-l-horn-pin
+    parent: wing-aileron-l-horn
+    child: wing-aileron-l-pin
+    method: bolted
+    location:
+    - 328.8693
+    - -414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+  new:
+    id: wing-aileron-l-horn-pin
+    parent: wing-aileron-l-horn
+    child: wing-aileron-l-pin
+    method: bolted
+    location:
+    - 328.8693
+    - -414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: S4b
+  kind: modify
