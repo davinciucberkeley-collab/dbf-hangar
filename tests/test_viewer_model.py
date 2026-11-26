@@ -937,3 +937,25 @@ def test_empty_click_ends_a_row_focus(browser, pages_base):
     assert st["selection"] == [] and st["ghosted"] == [] and st["focus"] is None
     assert errors == []
     page.close()
+
+
+def test_design_level_rows_do_not_paint_parts(browser, pages_base):
+    from hangar.baseline import DESIGN_LEVEL
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(pages_base + "#m=designs&d=mech-good")
+    _ready(page, "designs")
+    out = page.evaluate("""async () => {
+      const m = await import('./vp/status.js');
+      const ids = 'abcdefghijkl'.split('');
+      const parts = { parts: ids.map((id) => ({ id })), attachments: [] };
+      const row = (check_id, data) => ({ check_id, status: 'WARN', message: 'x', data });
+      const sc = { tiers: [{ results: [row('T3.mass', { component: 'a' }), row('T7.transport', { parts: ids.slice(0, 6) }),
+        row('T8.bom.x', { component: 'b' }), row('T7.wiring.y', { parts: ['c', 'd', 'e'] })] }] };
+      const st = m.partStatus(sc, parts);
+      return { ids: [...st.keys()], dl: st.designLevel, list: [...m.DESIGN_LEVEL].sort() };
+    }""")
+    assert out["ids"] == ["b", "c", "d", "e"] and out["dl"] == 2
+    assert out["list"] == sorted(DESIGN_LEVEL)
+    assert errors == []
+    page.close()

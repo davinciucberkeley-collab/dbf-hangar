@@ -222,7 +222,7 @@ export class Viewport {
     const sw = (c, t) => h('span', { class: 'lg-item' }, h('i', { class: 'lg-sw', style: `background:${hex(c)}` }), t);
     if (m === 'status') {
       const n = (s) => this.coloured().filter((i) => this.statusMap.get(i).status === s).length;
-      L.append(sw(STATUS_COLOUR.FAIL, `FAIL ${n('FAIL')}`), sw(STATUS_COLOUR.WARN, `WARN ${n('WARN')}`), sw(NEUTRAL, `no finding ${this.ids.size - this.coloured().length}`));
+      L.append(sw(STATUS_COLOUR.FAIL, `FAIL ${n('FAIL')}`), sw(STATUS_COLOUR.WARN, `WARN ${n('WARN')}`), sw(NEUTRAL, `no finding ${this.ids.size - this.coloured().length}`), sw(NEUTRAL, `design-level ${this.statusMap.designLevel || 0}`));
     } else {
       L.append(h('span', {}, '0 g'), h('i', { class: 'lg-ramp', style: `background:linear-gradient(90deg,${hex(MASS_LO)},${hex(MASS_HI)})` }), h('span', {}, fmt(maxMass(this), 0) + ' g'));
     }

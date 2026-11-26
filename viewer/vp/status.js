@@ -24,14 +24,29 @@ export function rowParts(row, parts) {
   return out;
 }
 
+// Mirrors baseline.DESIGN_LEVEL in core/hangar/baseline.py (a test keeps them equal).
+export const DESIGN_LEVEL = new Set([
+  'T3.mass', 'T3.stall', 'T3.static_margin', 'T3.lateral_cg', 'T3.hover_tw', 'T3.planform_matches_geometry',
+  'T2.hover_moment', 'T2.sim_rest', 'T2.sim_stable',
+  'T3.control_authority', 'T3.transition_margin', 'T3.endurance', 'T3.spar_bending', 'T3.tail_volume', 'T3.trim',
+  'T3.dynamic_modes', 'T5.part107_mass', 'T5.registration', 'T0.version',
+]);
+// A design-level row (listed check, or one naming more than a third of the parts) does not paint parts.
+export function isDesignLevel(row, parts) {
+  if (DESIGN_LEVEL.has(row.check_id)) return true;
+  const n = rowParts(row, parts).length, total = (parts?.parts || []).length;
+  return n > 3 && n > total / 3;
+}
+
 const rank = (s) => STATUS_ORDER[s] ?? 9;
 const rowsOf = (scorecard) => (scorecard?.tiers || []).flatMap((t) => t.results || []);
 
 export function partStatus(scorecard, parts) {
-  const map = new Map();
+  const map = new Map(); map.designLevel = 0;
   for (const r of rowsOf(scorecard)) {
     if (r.status !== 'FAIL' && r.status !== 'WARN') continue;
     if (r.status === 'WARN' && r.data?.raw_status === 'SKIP') continue; // report-only wrapper of a SKIP: not judged, so no colour
+    if (isDesignLevel(r, parts)) { map.designLevel = (map.designLevel || 0) + 1; continue; }
     for (const id of rowParts(r, parts)) {
       if (!map.has(id)) map.set(id, { status: r.status, rows: [] });
       const e = map.get(id);
