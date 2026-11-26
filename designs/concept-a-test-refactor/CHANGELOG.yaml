@@ -1,0 +1,6 @@
+- date: '2026-11-26T18:35:25Z'
+  key: name
+  old: Concept A, scaled quad tailsitter flying wing (D-182)
+  new: Concept A test refactor (copy of concept-a for the U16.1 features, U16.3)
+  why: name the copy so it is listed apart from concept-a (U16.3)
+  kind: modify
