@@ -52,6 +52,8 @@ T1.attachment:
 T1.attachment_contact:
   title: "Attached parts do not touch"
   group: part
+  what:
+    FAIL: "The parts of {joint} are {gap_mm:.1f} mm apart; they must touch or overlap within {limit} mm ({source})."
 T1.attachment_location:
   title: "Attachment is not where the parts are"
   group: part
@@ -76,6 +78,8 @@ T1.interference:
     FAIL: "Parts overlap"
     PASS: "Parts do not overlap"
   group: part
+  what:
+    FAIL: "The parts {labels} overlap by {volume_mm3:.1f} mm^3; the limit is {limit} mm^3 ({source})."
 T1.kinematic_link:
   title: "Moving linkage not checked"
   group: part
@@ -123,8 +127,11 @@ T2.fea_strength:
   hint:
     FAIL: "Make the part thicker where the load enters it, or change material, then run `plane fea {design_id} --all`."
 T2.hover_moment:
+  extract: '^not applicable: (?P<reason>.*)$'
   title: "Hover moment check"
   group: design
+  what:
+    SKIP: "This check does not apply to this design: {reason}."
 T2.joint_load:
   title:
     FAIL: "Joint strength not checked"
@@ -179,24 +186,30 @@ T2.sim_stable:
 
 # --- T3 aero and performance ---
 T3.control_authority:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Hover control is too weak"
     SKIP: "Hover control not checked"
     PASS: "Hover control is enough"
   group: design
   what:
+    SKIP: "This check does not apply to this design: {reason}."
     WARN: "Control power about the {axis} axis in hover: {message}."
 T3.cruise_stall_ratio:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Cruise speed is close to the stall speed"
     SKIP: "Cruise-to-stall speed ratio not checked"
   group: design
   what:
+    SKIP: "This check does not apply to this design: {reason}."
     WARN: "The cruise-to-stall speed ratio could not be judged: {message}."
 T3.dynamic_modes:
+  extract: '^not applicable: (?P<reason>.*)$'
   title: "Flight stability modes"
   group: design
   what:
+    SKIP: "This check does not apply to this design: {reason}."
     WARN: "The dynamic stability modes were not computed: {message}."
   hint: "Run `python -m pip install aerosandbox`."
 T3.endurance:
@@ -208,11 +221,14 @@ T3.endurance:
   what:
     WARN: "The flight time could not be computed: {message}."
 T3.hover_tw:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Hover thrust is too low"
     SKIP: "Hover thrust not checked"
     PASS: "Hover thrust is enough"
   group: design
+  what:
+    SKIP: "This check does not apply to this design: {reason}."
 T3.lateral_cg:
   title:
     FAIL: "Centre of gravity is off to one side"
@@ -227,12 +243,14 @@ T3.planform_matches_geometry:
   what:
     WARN: "The declared planform of {label} differs from its measured geometry: area {area_diff:.1%}, span {span_diff:.1%}; the allowed difference is {limit:.0%} ({source}). The aero numbers use the measured geometry."
 T3.spar_bending:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Wing spar is too weak"
     SKIP: "Wing spar strength not checked"
     PASS: "Wing spar is strong enough"
   group: design
   what:
+    SKIP: "This check does not apply to this design: {reason}."
     WARN: "The wing spar could not be checked: {message}."
 T3.stall:
   title:
@@ -255,29 +273,35 @@ T3.static_margin:
     FAIL: "The static margin is {static_margin:.1%} of the wing chord; the allowed band is {min:.0%} to {max:.0%} ({source}). Outside the band is a FAIL."
   hint: "Move the centre of gravity or the wing until the margin is inside the band."
 T3.tail_volume:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Horizontal tail is large for its wing"
     SKIP: "Horizontal tail volume not checked"
     PASS: "Tail volume is within the usual range"
   group: design
   what:
+    SKIP: "This check does not apply to this design: {reason}."
     WARN: "Horizontal tail volume is {value:.3f}, {band} the provisional usual range, which starts at {limit:.2f} ({source}); this is advice, not a rule."
   hint: "A scale copy of a real aircraft may sit outside the band; otherwise reduce the tail area or arm."
 T3.transition_margin:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Transition between hover and cruise is too tight"
     SKIP: "Transition margin not checked"
     PASS: "Transition between hover and cruise is adequate"
   group: design
   what:
+    SKIP: "This check does not apply to this design: {reason}."
     WARN: "The transition margin could not be judged: {message}."
 T3.trim:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Elevator cannot trim the aircraft"
     SKIP: "Elevator trim not checked"
     PASS: "Elevator can trim the aircraft"
   group: design
   what:
+    SKIP: "This check does not apply to this design: {reason}."
     WARN: "The elevator trim could not be checked: {message}."
 T3.wing_area_complete:
   title:
@@ -285,11 +309,14 @@ T3.wing_area_complete:
     PASS: "Wing area is complete"
   group: design
 T3.wing_loading:
+  extract: '^not applicable: (?P<reason>.*)$'
   title:
     FAIL: "Wing loading is too high"
     SKIP: "Wing loading not checked"
     PASS: "Wing loading is within the limit"
   group: design
+  what:
+    SKIP: "This check does not apply to this design: {reason}."
 
 # --- T4 to T6 ---
 T4.capabilities:
@@ -396,6 +423,14 @@ T8.program:
   group: design
   what:
     WARN: "The program budget check is incomplete: {message}."
+T8.budget:
+  title: "Budget"
+  group: problem
+  extract: '^BOM total \$(?P<total>[\d.]+) (?:within|exceeds) (?:program )?budget \$(?P<budget>[\d.]+)(?:; no unit cost for: (?P<missing>.+))?$'
+  what:
+    FAIL: "The bill of materials totals ${total}, which is over the budget of ${budget}."
+    WARN: "The bill of materials totals ${total}, within the budget of ${budget}, but the total is incomplete: no unit cost for {missing}."
+
 T9.claim:
   title:
     FAIL: "Claim does not match the recomputed value"

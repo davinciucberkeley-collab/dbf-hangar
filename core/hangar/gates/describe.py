@@ -249,7 +249,9 @@ def _describe(row: CheckResult, design, design_id: str | None) -> RowText:
             hint = ""
 
     tail = family.split(".", 1)[1].replace("_", " ") if "." in family else family
-    title = _title(entry, row.status, tail[:1].upper() + tail[1:])
+    # a report-only row keeps the status it would have had (raw_status: FAIL or SKIP) for its title; it is shown as WARN
+    title_status = str(data["raw_status"]) if report_only and data.get("raw_status") else row.status
+    title = _title(entry, title_status, tail[:1].upper() + tail[1:])
     by = entry.get("title_by")
     if by and data.get(by["key"]) in by["values"]:
         title = by["values"][data[by["key"]]]
