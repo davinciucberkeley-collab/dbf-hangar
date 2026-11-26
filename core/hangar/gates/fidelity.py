@@ -1,6 +1,8 @@
 """Fidelity line: how many blocking checks rest on a sourced threshold."""
 from __future__ import annotations
 
+import datetime
+
 import yaml
 
 from ..design import REPO_ROOT, Design, TierReport
@@ -40,9 +42,33 @@ def resolve_threshold(criterion: str) -> dict | None:
         m = next((m for m in data.get("machines", []) if isinstance(m, dict) and m.get("id") == key and "source" in m), None)
         if m is None:
             return None
-        return {"file": fname, "key": key, "value": m.get("build_volume_mm"), "rule": m.get("notes"), "source": m["source"]}
+        return {"file": fname, "key": key, "value": m.get("build_volume_mm"), "rule": m.get("notes"), "source": m["source"],
+                "owner": m.get("owner"), "date": (str(m["date"]) if m.get("date") is not None else None)}
     return {"file": fname, "key": key, "value": entry.get("value"), "rule": entry.get("rule"),
-            "source": entry["source"]}
+            "source": entry["source"], "owner": entry.get("owner"),
+            "date": (str(entry["date"]) if entry.get("date") is not None else None)}
+
+
+_NO_OWNER = ("", "tbd", "unknown", "pending")
+
+
+def is_sourced(th: dict | None) -> bool:
+    """A resolved threshold counts as sourced unless its source is `pending` or `internal convention`; a source that starts
+    with `team constraint` also needs a named owner and an ISO date (D91 b)."""
+    if not th:
+        return False
+    text = str(th["source"]).strip().lower()
+    if text in _UNSOURCED:
+        return False
+    if text.startswith("team constraint"):
+        owner = th.get("owner")
+        if not isinstance(owner, str) or owner.strip().lower() in _NO_OWNER:
+            return False
+        try:
+            datetime.date.fromisoformat(str(th.get("date")))
+        except ValueError:
+            return False
+    return True
 
 
 def compute_fidelity(design: Design, tiers: list[TierReport]) -> dict:
@@ -60,7 +86,7 @@ def compute_fidelity(design: Design, tiers: list[TierReport]) -> dict:
             blocking += 1
             if r.criterion not in cache:
                 th = resolve_threshold(r.criterion)
-                cache[r.criterion] = bool(th) and str(th["source"]).strip().lower() not in _UNSOURCED
+                cache[r.criterion] = is_sourced(th)
             sourced += cache[r.criterion]
     measured = sum(1 for c in design.components if (c.get("provenance") or {}).get("mass_source") == "measured")
     return {"sourced_blocking": sourced, "blocking": blocking, "measured_mass_parts": measured}

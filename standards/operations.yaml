@@ -5,22 +5,32 @@ hover_ctrl_factor:
   value: 1.5
   rule: "T3.control_authority: the control moment at the sagged-pack thrust limit must be at least this multiple of the hover wind moment on every axis."
   source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (requirements.hover_ctrl_factor)'
+  owner: Tristan
+  date: "2026-11-25"
 transition_thrust_fraction_max:
   value: 0.8
   rule: "T3.transition_margin: hover thrust on the busiest lift motor may be at most this fraction of its sagged-pack maximum, which leaves reserve to transition."
   source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (ASM-B1-CTRL-RESERVE, B1 extract rows 9-11)'
+  owner: Tristan
+  date: "2026-11-25"
 mission_hover_min:
   value: 2
   rule: "T3.endurance: minutes of hover the energy budget must cover (model input)."
   source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (A2 extract row 53)'
+  owner: Tristan
+  date: "2026-11-25"
 mission_cruise_min:
   value: 5
   rule: "T3.endurance: minutes of cruise the energy budget must cover (model input)."
   source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (A2 extract row 53)'
+  owner: Tristan
+  date: "2026-11-25"
 energy_reserve_fraction:
   value: 0.2
   rule: "T3.endurance: the usable battery energy must exceed the mission energy by at least this fraction."
   source: 'team constraint, DBF-Combined redesign/params/params.json @ a93f14d (A2 extract row 53)'
+  owner: Tristan
+  date: "2026-11-25"
 electrical_rating_min_ratio:
   value: 1.0
   rule: "T7.electrical_rating: a pack, connector or wire rating divided by the peak current must be at least this."
