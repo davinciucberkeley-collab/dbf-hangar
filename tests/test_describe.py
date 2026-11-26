@@ -149,3 +149,15 @@ def test_describe_card_keeps_shape():
     out = describe_card(card, None)
     assert [len(t) for t in out] == [3, 2]
     assert [x.check_id for t in out for x in t] == [f"T9.zzz.{i}" for i in range(1, 6)]
+
+
+def test_source_cut_never_leaves_open_paren():
+    t = describe_row(_row(_case("fea")), _design())
+    assert t.source.count("(") == t.source.count(")")
+    assert describe._cut_words("aaaa bbbb (cccc dddd) eeee", 14).count("(") == 0
+
+
+def test_stored_tie_rounds_up_like_the_raw_message():
+    row = CheckResult("T2.joint_load", "SKIP", "fuselage-wing: carries 1.0 N; rating is a placeholder, not checked",
+                      "design-standards.yaml#landing_load_factor", {"load_n": 0.95, "joint": "fuselage-wing"})
+    assert "carries 1.0 N" in describe_row(row, _design()).sentence

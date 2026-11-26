@@ -64,7 +64,7 @@ T1.kinematic_link:
   fold_noun: "poses"
   fold_what: "In {count} poses a linkage pair is not checked ({labels})."
   what:
-    SKIP: "In the pose '{pose}' the pair {unchecked_pairs} touches and the tool cannot tell if that is a clash, because the linkage between them is not modelled."
+    SKIP: "In the pose '{pose}' the bounding boxes of these pairs overlap: {unchecked_pairs}. The tool cannot tell if that is a real clash, because the linkage between them is not modelled."
   hint: "Describe the linkage as a four_bar mechanism (plane design add-linkage) so it is checked."
 T1.motor_has_prop:
   title: "Motor has no propeller"
@@ -182,7 +182,12 @@ T3.stall:
   title: "Stall speed is too high"
   group: design
 T3.static_margin:
-  title: "Aircraft is too stable (static margin)"
+  title: "Static margin outside the band"
+  title_by:
+    key: band
+    values:
+      above: "Aircraft is too stable (static margin)"
+      below: "Aircraft is not stable enough (static margin)"
   group: design
   what:
     FAIL: "The static margin is {static_margin:.1%} of the wing chord; the allowed band is {min:.0%} to {max:.0%} ({source}). Outside the band is a FAIL."

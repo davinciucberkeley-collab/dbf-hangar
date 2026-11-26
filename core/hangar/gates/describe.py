@@ -4,6 +4,7 @@ Texts are computed at render time and never stored in CheckResult, so the scorec
 """
 from __future__ import annotations
 
+import math
 import re
 from dataclasses import dataclass
 from pathlib import Path
@@ -98,7 +99,10 @@ def _cut_words(s: str, n: int) -> str:
     cut = s[:n]
     if s[n] != " " and " " in cut:
         cut = cut[:cut.rfind(" ")]
-    return cut.rstrip(" ,;:")
+    cut = cut.rstrip(" ,;:")
+    while cut.count("(") > cut.count(")"):   # never leave an unclosed "("
+        cut = cut[:cut.rfind("(")].rstrip(" ,;:")
+    return cut
 
 
 def _source_text(lim: dict) -> str:
@@ -170,6 +174,8 @@ def row_parts(design, row: CheckResult) -> list[PartRef]:
 
 
 def _text(v: Any) -> Any:
+    if isinstance(v, float) and v:
+        return v + math.copysign(1e-9, v)   # a stored tie (0.95) rounds half away from zero, like the raw messages ("1.0"), not down
     if isinstance(v, (list, tuple)):
         return ", ".join(" & ".join(map(str, i)) if isinstance(i, (list, tuple)) else str(i) for i in v)
     return v
@@ -235,6 +241,9 @@ def _describe(row: CheckResult, design, design_id: str | None) -> RowText:
 
     tail = family.split(".", 1)[1].replace("_", " ") if "." in family else family
     title = entry.get("title") or (tail[:1].upper() + tail[1:])
+    by = entry.get("title_by")
+    if by and data.get(by["key"]) in by["values"]:
+        title = by["values"][data[by["key"]]]
     joint = data.get("joint")
     subject = joint if isinstance(joint, str) else (parts[0].label if parts else row.check_id.split(".")[-1])
     return RowText(
