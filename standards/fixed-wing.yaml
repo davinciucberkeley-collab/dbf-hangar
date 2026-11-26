@@ -20,3 +20,5 @@ cruise_to_stall_ratio_min:
   value: 1.3
   rule: "T3.cruise_stall_ratio: requirements.cruise_speed_mps divided by the T3.stall stall speed must be at least this"
   source: "team constraint, DBF-Combined params-A req.cruise_ratio 1.3 (as quoted in designs/concept-a/plane.yaml requirements)"
+  owner: Tristan
+  date: "2026-11-25"
