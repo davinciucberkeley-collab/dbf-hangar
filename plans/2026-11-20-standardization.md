@@ -828,6 +828,8 @@ W4 wave rules (W3 lessons T41–T43):
 | W34-G | `design-engineer` | Sonnet | U16.1 S1 Part B on c172-rc: fix the elevator rod / fuselage clash with the plane CLI only (designs-only), then opt all four linkages into four_bar | branch std/u16.1-s1b-showcase, designs/c172-rc only | 0 FAIL at tier all with four_bar on all four; baseline check exit 0 |
 | W34-T7 | `tactician` | Sonnet | U15.3 step 4 (lazy mass_g) and ledger T153 (trim/tail-volume read generated tails) | `briefs/U15.3-4-lazy-mass.md`, `briefs/U18.4-4-generated-tails.md` | builder-ready bar |
 | W34-Au | `auditor` | Haiku | hourly while W34 runs | report in chat | 15 lines, fixes named |
+| W34-S2 | `scout` | Haiku | ledger T162: sources for the rated load of CT-SERVO-SPLINE, CT-M3-SHCS-MOTOR, CT-M3-SHCS-NYLOC | `knowledge/sources/` entries via the template + a values table in the report | only sources opened; no invented values |
+| W34-G2 | `design-engineer` | Sonnet | ledger T156: tiltwing-cakir Dutch roll unstable (T3.dynamic_modes, AeroSandbox) | a proposed `plane design set` sequence on a scratch copy, before/after mode table | layout changes only, no threshold change; propose, do not commit to designs/ |
 
 **Permissions for W4 (A and B):** read the whole repo; write `plans/2026-11-20-standardization/briefs/`, worktrees `C:/Users/trist/wt/<unit>`, `reviews/`; commands `git worktree|branch|commit|push` on `std/*`, `git push origin main` (conductor, after ACCEPT), `python -m pytest`, `plane *`, `npx playwright` (Studio fixes), `gh run list|view`. No PRs (D30). Same allow-list as W3 (`.claude/settings.local.json`); nothing new.
 
