@@ -49,3 +49,14 @@ four_bar_max_follower_step_deg:
   rule: "T6.mechanism with kinematics: four_bar FAILs (branch flip) when the solved follower angle changes by more than this between two consecutive 1 degree input steps."
   source: pending
   note: "Provisional; no published source opened (U16.1 S1)."
+
+mtow_declared_in_design:
+  value: "the design's own requirements.mtow_g"
+  rule: "T3.mass: the rolled-up mass must not exceed the design's declared requirements.mtow_g. Rows citing requirements.mtow_g resolve here (fidelity.CRITERION_ALIASES)."
+  source: pending
+  note: "U17.1 2b: a per-design declared requirement, sourced in each design's own comment, not a shared threshold; left pending (D91, conductor decision)."
+connection_named_in_library:
+  value: true
+  rule: "T1.interfaces.connection_known: every named connection exists in standards/connection-types.yaml. Rows citing connection-types.yaml (bare) resolve here (fidelity.CRITERION_ALIASES)."
+  source: pending
+  note: "U17.1 2b: library membership is a definition; left pending (D91, conductor decision)."

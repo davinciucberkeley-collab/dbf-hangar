@@ -15,7 +15,7 @@ import re
 from pathlib import Path
 
 import numpy as np
-import trimesh
+from .._lazy import trimesh
 
 from hangar.geom import airfoil, kernel
 from hangar.geom.kernel import GeometryError

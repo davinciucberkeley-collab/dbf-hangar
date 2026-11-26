@@ -5378,3 +5378,25 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-25'
+  - id: T151
+    kind: task
+    text: "Process miss (audit W34-Au 2): conductor merged U19.1 B6 (594c831) and B1 (b7e3ade) with red CI on their heads (c172-rc baseline after the key rename, plus LFS checkout timeouts), and B1's merge message said CI green. Rule from now: merge only when the head's own run is green AND it includes current main (merge main into the branch and re-run when main moved since the branch's CI); an LFS-only failure is re-run, never waived."
+    source: reviews/2026-11-25-w34b.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
+  - id: T152
+    kind: task
+    text: 'Builders: never run python reading stdin (python dash, python -I dash). A stray stdin process later re-ran an old edit script and re-added duplicate definitions on std/u17.1-2b-criteria (W34-R3 4b). Write scripts to files; before committing, confirm no background task of yours is still running. Add this rule to the builder role file and the shared environment briefs.'
+    source: reviews/2026-11-25-w34c.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'

@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 
 import numpy as np
-import trimesh
+from ._lazy import trimesh
 
 from .design import Design
 

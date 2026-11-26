@@ -2,7 +2,7 @@
 
 # plane command reference
 
-65 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+67 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -585,6 +585,35 @@ List every dimension and option of the morphological chart.
 ```
 plane morph list
 ```
+
+## opencae
+
+### `plane opencae run`
+
+Run a design through the OpenCAE CLI (mass, propulsion, structure, cfd, flight) and store the results (SKIP with the fix command when OpenCAE or a solver is missing).
+
+```
+plane opencae run <path> [--analyses <str>] [--force]
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `--analyses`: str, optional
+- `--force`: bool, optional
+
+### `plane opencae setup`
+
+Save the OpenCAE CLI location once (opencae.local.json keys cli_python and cli_root).
+
+```
+plane opencae setup [--cli-python <str>] [--cli-root <str>]
+```
+
+Writes files.
+
+- `--cli-python`: str, optional
+- `--cli-root`: str, optional
 
 ## ops
 

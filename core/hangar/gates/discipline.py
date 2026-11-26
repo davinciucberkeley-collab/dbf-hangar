@@ -4,7 +4,6 @@ from __future__ import annotations
 import math
 
 import numpy as np
-from scipy.optimize import linprog
 
 from ..design import FAIL, PASS, SKIP, CheckResult
 from . import discipline_check
@@ -109,6 +108,7 @@ def _rho(design) -> float:
 def _axis_moment(c, a, dt_lo, dt_hi) -> float:
     """T37 (D58): the largest moment about one axis both ways that the motors give with the net upward thrust held (sum a_i dT_i = 0,
     dT_i in [dt_lo_i, dt_hi_i]); returns min(M(+), M(-)), or 0.0 when the solver finds no feasible allocation."""
+    from scipy.optimize import linprog
     best = []
     for sign in (1.0, -1.0):
         res = linprog(-sign * np.asarray(c, dtype=float), A_eq=[list(a)], b_eq=[0.0], bounds=list(zip(dt_lo, dt_hi)), method="highs")

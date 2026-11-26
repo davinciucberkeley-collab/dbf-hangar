@@ -10,7 +10,7 @@ import json
 import re
 from pathlib import Path
 
-import trimesh
+from ._lazy import trimesh
 import yaml
 
 from .design import Design
