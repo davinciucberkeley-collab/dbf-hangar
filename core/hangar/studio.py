@@ -263,7 +263,7 @@ class Studio:
                 return _zip(t / "stl"), f"{did}-stl.zip", "application/zip"
             if fmt == "report":
                 from .checks import validate
-                md = validate(design).to_markdown()
+                md = validate(design).to_markdown(design)
                 return md.encode(), f"{did}-scorecard.md", "text/markdown; charset=utf-8"
         raise ValueError(f"unknown format {fmt!r}")
 
