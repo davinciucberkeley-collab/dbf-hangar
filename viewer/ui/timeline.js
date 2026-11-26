@@ -6,10 +6,10 @@ import { h, fmt, getJSON } from '../lib.js';
 const T = new THREE.Matrix4().set(1e-3, 0, 0, 0, 0, 0, 1e-3, 0, 0, -1e-3, 0, 0, 0, 0, 0, 1); // body mm (z-up) -> scene m (y-up)
 const TI = T.clone().invert();
 const M = new THREE.Matrix4(); // scratch: nothing is allocated per frame
-let live = null; // { stop, clear } of the rendered timeline
+let live = null; // { stop, clear, unsub } of the rendered timeline
 
 export async function renderTimeline(ctx, d) {
-  live?.stop(); live?.clear(); live = null;
+  live?.stop(); live?.clear(); live?.unsub?.(); live = null;
   const box = ctx.el.querySelector('#timeline');
   box.replaceChildren(); box.classList.remove('open'); box.hidden = true;
   if (!d?.mechanisms || !d.glb) return;
@@ -65,8 +65,18 @@ export async function renderTimeline(ctx, d) {
   box.append(h('label', {}, 'Mechanism ', sel), play, scrub,
     h('label', {}, 'speed ', speed), h('label', {}, loop, ' loop'),
     h('div', { class: 'kv' }, h('span', {}, h('b', {}, 'input (deg) '), input), h('span', {}, h('b', {}, 'driver '), drv)), fol);
+  const blocked = h('span', { 'data-testid': 'tl-blocked', class: 'muted', hidden: true }, 'Apply or revert moves to play');
+  box.append(blocked);
+  // pending moves are about rest pivots, so the mechanism sweep is off until they are applied or reverted
+  const gate = () => {
+    const on = vp.pending().length > 0;
+    if (on) stop();
+    for (const el of [play, scrub, sel]) el.disabled = on;
+    box.classList.toggle('blocked', on); blocked.hidden = !on;
+  };
+  const unsub = vp.subscribe(gate);
   box.hidden = false;
-  live = { stop, clear };
-  load();
+  live = { stop, clear, unsub };
+  load(); gate();
   if (ctx.state.timelineOpen) { box.classList.add('open'); box.scrollIntoView?.({ block: 'nearest' }); }
 }

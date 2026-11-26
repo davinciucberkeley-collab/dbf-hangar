@@ -6,13 +6,14 @@ import { loadGLB, disposeModel } from './loader.js';
 import { prepareMesh, applyAppearance, INTERNAL_TYPES } from './materials.js';
 import { pickAt, hitAt, hitsAlong, cycleSelect } from './pick.js';
 import { Transforms, mmToScene, explodeOffsets } from './transforms.js';
+import { Mover } from './move.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
 
 export class Viewport {
-  constructor(el, { onPick, onSelect, onModel } = {}) {
-    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.onModel = onModel; this.parts = null; this.centres = null; this.transforms = null; this.explodeState = null; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
+  constructor(el, { onPick, onSelect, onModel, onDiscard } = {}) {
+    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.onModel = onModel; this.onDiscard = onDiscard; this.subs = new Set(); this.keepNext = null; this.parts = null; this.centres = null; this.transforms = null; this.explodeState = null; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.types = new Map(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
     this.renderer.localClippingEnabled = true; this.clipPlane = new THREE.Plane();
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
@@ -30,6 +31,7 @@ export class Viewport {
     this.controls.enableDamping = true; this.controls.dampingFactor = 0.12;
     this.controls.addEventListener('change', () => (this.dirty = true));
     this.root = new THREE.Group(); this.scene.add(this.root);
+    this.mover = new Mover(this);
     this.ray = new THREE.Raycaster();
     this.overlay = h('div', { class: 'vp-overlay', hidden: true });
     this.msg = h('div', { class: 'vp-msg' });
@@ -39,7 +41,7 @@ export class Viewport {
     const cv = this.renderer.domElement;
     cv.addEventListener('pointerdown', (e) => (down = [e.clientX, e.clientY]));
     cv.addEventListener('pointerup', (e) => {
-      if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4) return;
+      if (!down || Math.hypot(e.clientX - down[0], e.clientY - down[1]) > 4 || this.mover.busy()) return;
       this.pickEvent(e);
     });
     cv.addEventListener('dblclick', (e) => { this.model?.updateMatrixWorld(true); const id = hitAt(this, e); if (id) { this.select([id]); this.fitTo([id]); } });
@@ -49,7 +51,7 @@ export class Viewport {
   applyTheme() {
     this.scene.background = new THREE.Color(cssVar('--vp-bg') || '#e9ecf1');
     const ec = this.edgeColor();
-    this.root.traverse((o) => { if (o.userData.isEdge) o.material.color.set(ec); });
+    this.root.traverse((o) => { if (o.userData.isEdge && !o.userData.orange) o.material.color.set(ec); });
     this.dirty = true;
   }
   edgeColor() { return cssVar('--edge') || '#27303f';
@@ -68,7 +70,33 @@ export class Viewport {
     this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.types.clear(); this.cycle = null; this.cg = null; this.mass = null;
     this.transforms = null; this.centres = null; this.parts = null; this.explodeState = null;
     this.overlay.hidden = true; this.legend.hidden = true; this.dirty = true;
+    this.mover.sync(); this.emit();
   }
+  subscribe(fn) { this.subs.add(fn); return () => this.subs.delete(fn); } // called on pending moves, tool and explode changes
+  emit() { for (const fn of [...this.subs]) fn(this); }
+  // what a reload of the same design keeps: selection, hidden and ghost sets, pending moves
+  snapshot() {
+    const tr = this.transforms;
+    return { selection: [...this.highlighted], hidden: [...this.hidden], ghost: [...this.ghost], ids: [...this.ids].sort().join(), edits: tr ? [...tr.edits].map(([id, v]) => [id, v.clone()]) : [] };
+  }
+  restore(k) {
+    this.setHidden(k.hidden, true); this.ghost = new Set(k.ghost.filter((i) => this.ids.has(i)));
+    if (k.edits.length) {
+      if (k.ids === [...this.ids].sort().join()) for (const [id, v] of k.edits) this.transforms.setEdit(id, v);
+      else this.onDiscard?.('Unsaved moves were discarded because the design changed on disk.');
+    }
+    applyAppearance(this);
+    if (k.selection.length) this.select(k.selection);
+  }
+  move(id, dMm) { return this.moveBy(id, dMm, { attached: this.mover.attached }); }
+  moveBy(id, dMm, opts) { return this.mover.moveBy(id, dMm, opts); }
+  pending() { return this.mover.pending(); }
+  revertMoves() { this.mover.revert(); }
+  clearMovesAfterSave() { this.mover.clearAfterSave(); } // drops the edits without redrawing: the reload that follows replaces the model
+  setTool(t) { return this.mover.setTool(t); }
+  setAttached(on) { this.mover.attached = !!on; }
+  lockAxis(a) { this.mover.lockAxis(a); }
+  axisLocked() { return !!this.mover.axis; }
   async show(design) {
     const token = (this.token = Symbol());
     this.clear();
@@ -77,6 +105,8 @@ export class Viewport {
     if (design.error) return this.message('No model: ' + design.error, true);
     if (!design.glb) return this.message('No GLB for this design', true);
     this.message('Loading…');
+    const same = this.mountInfo?.id === design.id; // a reload of the open design keeps the camera and what the person had set
+    if (!same) this.keepNext = null;
     try {
       const [gltf, mass, parts] = await Promise.all([loadGLB(design.glb), design.mass ? getJSON(design.mass).catch(() => null) : null, design.parts ? getJSON(design.parts).catch(() => null) : null]);
       if (token !== this.token) return;
@@ -100,10 +130,13 @@ export class Viewport {
       this.parts = parts?.parts ? parts : null;
       this.transforms = new Transforms(this);
       if (this.parts) this.explodeState = { t: 0, level: 'all', strategy: 'hierarchy' };
-      this.fit(diag);
+      if (!same) this.fit(diag);
       applyAppearance(this); this.applySection();
       this.message('');
       this.onModel?.(this);
+      const keep = this.keepNext; this.keepNext = null;
+      if (keep) this.restore(keep);
+      this.mover.sync(); this.emit();
     } catch (e) {
       console.warn(e); this.message('Could not load model: ' + e.message, true);
     }
@@ -146,7 +179,7 @@ export class Viewport {
   }
   pickEvent(e) { this.model?.updateMatrixWorld(true); pickAt(this, e); }
   pick(id) { this.onPick?.(id, this, null); } // same call as a plain click on that part
-  highlight(ids) { this.highlighted = new Set([...ids].filter((i) => this.ids.has(i))); applyAppearance(this); }
+  highlight(ids) { this.highlighted = new Set([...ids].filter((i) => this.ids.has(i))); applyAppearance(this); this.mover.sync(); }
   // The single selection setter: the selection is the highlighted set.
   select(ids, { add = false } = {}) {
     this.highlight(add ? [...this.highlighted, ...ids] : ids);
@@ -210,12 +243,13 @@ export class Viewport {
     this.explodeState = { t, level, strategy };
     const D = t === 0 ? null : explodeOffsets(this.parts, this.centres, this.center, t, level, strategy);
     for (const id of this.ids) this.transforms.setExplode(id, D?.get(id) ?? null);
+    this.mover.sync(); this.emit();
   }
   state() {
     const all = [...this.ids], tr = this.transforms, r6 = (n) => Math.round(n * 1e6) / 1e6 || 0;
     const offsets = {};
     if (tr) for (const id of all) offsets[id] = tr.offset(id).map(r6);
-    return { explode: this.explodeState ? { ...this.explodeState } : null, offsets, moved: tr ? all.filter((i) => tr.isMoved(i)) : [], selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null };
+    return { explode: this.explodeState ? { ...this.explodeState } : null, offsets, moved: tr ? all.filter((i) => tr.isMoved(i)) : [], selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null, tool: this.mover.tool, gizmo: this.mover.target(), pending: this.pending().length };
   }
   fitTo(ids) {
     if (!this.model) return;
@@ -263,7 +297,7 @@ export class Viewport {
     return { edgeSegments, geometries: i.memory.geometries, textures: i.memory.textures, calls: i.render.calls, triangles: i.render.triangles, canvases: document.querySelectorAll('canvas').length, design: this.mountInfo?.id ?? null };
   }
   dispose() {
-    this.dead = true; this.cancelAnim(); this.ro.disconnect(); this.token = Symbol();
+    this.dead = true; this.cancelAnim(); this.ro.disconnect(); this.token = Symbol(); this.subs.clear(); this.mover.dispose();
     disposeModel(this.root);
     this.scene.environment?.dispose();
     this.renderer.dispose(); this.renderer.forceContextLoss(); this.renderer.domElement.remove();
