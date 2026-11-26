@@ -20,3 +20,7 @@ def __getattr__(name):
     value = getattr(importlib.import_module(mod, __name__), name)
     globals()[name] = value
     return value
+
+
+def __dir__():
+    return sorted(set(globals()) | set(__all__))

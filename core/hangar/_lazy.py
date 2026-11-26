@@ -4,6 +4,8 @@ from __future__ import annotations
 import importlib
 
 
+# Note: tests that monkeypatch trimesh must patch the real module (import trimesh; monkeypatch.setattr(trimesh, ...)),
+# not this proxy: setattr on the proxy would not reach the real module.
 class LazyModule:
     def __init__(self, name: str):
         self.__dict__["_name"] = name
