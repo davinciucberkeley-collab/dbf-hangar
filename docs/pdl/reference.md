@@ -52,6 +52,8 @@ Canonical design file. Units are fixed: millimetres, grams, newtons, degrees, se
 | `files` | `files` |  |  |
 | `bom` | `bom` |  |  |
 | `wiring` | `wiring` |  |  |
+| `display` | object |  | v1.3, optional. Switches for derived, visual-only geometry in the GLB and Studio (never components: no mass, no checks). |
+| `display.clevises` | boolean |  | v1.3. Draw a clevis (barrel and cross pin) at both ends of the pushrod of every mechanism that has a link. |
 | `mechanisms` | array of `mechanism` |  | v1.0. Pull-this-moves-that checks between attachments. |
 | `transport` | `transport` |  |  |
 | `assembly` | `assembly` |  |  |

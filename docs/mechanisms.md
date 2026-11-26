@@ -61,6 +61,8 @@ Add `kinematics: four_bar` to a `mechanisms[]` entry (schema_version 1.3; defaul
 - The rod is posed on the horn pin at every step: the step collision loop checks rod, horn, pin and surface with nothing exempted, and `T6.link` is a PASS row. Studio Physics shows the rod pinned on the horn.
 - Limits: T1 pose sweeps still pose the rod rigidly (their `T1.kinematic_link` SKIP rows stay); a servo or a hinge parent that itself moves with another articulated joint is refused.
 
+**Clevises (`display.clevises`, PDL 1.3).** Set `display: {clevises: true}` to draw a clevis at both ends of the pushrod of every mechanism that has a `link`: a grey barrel (3 mm across, 8 mm long) with a 1.2 mm cross pin, on the driver end and on the follower (horn pin) end. The sleeves are visual only: they add no mass, no T1 row and no checks, and the rod's mass allowance already covers them. Mechanisms without a `link`, a driver or driven articulation are skipped. In Studio Physics each sleeve moves with its part: the driver-end sleeve follows the rod, the follower-end sleeve follows the horn pin. Off by default, so existing designs are unchanged.
+
 ## Wheels on axles
 
 Set `landing_gear` `wheels: separate` (PDL 1.3): the gear mesh is then legs, axle stubs and the nose fork only (`main_wheels` must be 1; `axle_d` is the stub diameter, 0 = half the leg diameter).
