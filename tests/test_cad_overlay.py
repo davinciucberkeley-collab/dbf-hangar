@@ -96,6 +96,40 @@ def test_multi_body_unmerged_mesh_is_united(tmp_path, monkeypatch):
     assert list(m.extents) == pytest.approx([20, 10, 10], abs=1e-6)
 
 
+def _box_spline(sign):
+    """Box 20 x 10 x 16 plus a 4 mm diameter, 6 mm long cylinder on the +z (sign 1) or -z (sign -1) face; z extent 22."""
+    box = trimesh.creation.box((20, 10, 16))
+    cyl = trimesh.creation.cylinder(radius=2.0, height=6.0, sections=24)
+    cyl.apply_translation((0, 0, sign * 11.0))
+    return trimesh.util.concatenate([box, cyl])
+
+
+def test_overlay_output_end_guard(tmp_path, monkeypatch):
+    real = library.load_part
+
+    def with_out(point):
+        monkeypatch.setattr(library, "load_part", lambda i: {
+            **real(i), "frames": {"output": {"point": point, "axis": [0, 0, 1]}}})
+
+    ov(tmp_path, monkeypatch, mesh=_box_spline(1))
+    with_out([0, 0, 11.0])
+    assert overlay.status(PART)["state"] == "present"
+    with_out([0, 0, 12.5])
+    assert overlay.status(PART)["state"] == "present"
+    with_out([0, 0, -11.0])
+    st = overlay.status(PART)
+    assert st["state"] == "unusable" and "output end" in st["reason"]
+    assert overlay.mesh(PART) is None
+    with_out([5.0, 0, 11.0])  # extreme reached, but the spline centroid is 5 mm off the output point
+    assert overlay.status(PART)["state"] == "unusable"
+    ov(tmp_path, monkeypatch, mesh=_box_spline(-1))  # spline on the far side: the output side is a wide case face
+    with_out([0, 0, 11.0])
+    st = overlay.status(PART)
+    assert st["state"] == "unusable" and "output end" in st["reason"]
+    monkeypatch.setattr(library, "load_part", lambda i: {k: v for k, v in real(i).items() if k != "frames"})
+    assert overlay.status(PART)["state"] == "present"
+
+
 COMP = {"id": "s", "type": "servo", "geometry": {"generator": "library_part", "params": {"part": PART}},
         "position": [0, 0, 0], "mass_g": 9}
 

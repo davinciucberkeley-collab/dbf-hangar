@@ -42,7 +42,8 @@ CLEVIS_RGBA = (170, 172, 180, 255)
 
 
 def _clevis_ends(design) -> list[tuple[str, str, str, object, object, object]]:
-    """(node name, source component id, mechanism id, end point, direction, pin axis) per drawable pushrod end. No meshes."""
+    """(node name, source component id, mechanism id, end point, direction, pin axis) per drawable pushrod end. No meshes.
+    Source component id = the rod: both clevises sit on the rod ends and move with it."""
     import numpy as np
     from .geometry import att_label
     atts = {att_label(a): a for a in design.data.get("attachments", []) or [] if isinstance(a, dict)}
@@ -74,8 +75,29 @@ def _clevis_ends(design) -> list[tuple[str, str, str, object, object, object]]:
             continue
         mid = mech["id"]
         out.append((f"clevis-{mid}-driver", d_att["child"], mid, d0, u, a_d))
-        out.append((f"clevis-{mid}-follower", f_att["child"], mid, f0, -u, a_f))
+        out.append((f"clevis-{mid}-follower", d_att["child"], mid, f0, -u, a_f))
     return out
+
+
+def _follower_pins(design) -> set[str]:
+    """Ids of the surface-side pin components that a follower clevis stands in for."""
+    from .geometry import att_label
+    atts = {att_label(a): a for a in design.data.get("attachments", []) or [] if isinstance(a, dict)}
+    drawn = {name for name, *_ in _clevis_ends(design)}
+    out = set()
+    for mech in design.data.get("mechanisms", []) or []:
+        link = mech.get("link")
+        if not isinstance(link, dict) or f"clevis-{mech.get('id')}-follower" not in drawn:
+            continue
+        f_att = atts.get(link.get("follower_end"))
+        if isinstance(f_att, dict) and f_att.get("child"):
+            out.add(f_att["child"])
+    return out
+
+
+def hidden_visual_components(design) -> set[str]:
+    """Component ids not drawn in the visual scene (the clevis pin is drawn by the follower clevis). Empty when clevises are off."""
+    return _follower_pins(design) if _clevises_on(design) else set()
 
 
 def _clevis_mesh(p0, along, axis):

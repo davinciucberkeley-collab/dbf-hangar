@@ -233,10 +233,10 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
     working, entries = text, []
     stamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
 
-    def patch(old, new, key):
+    def patch(old, new, key, keep_extra=False):
         nonlocal working
         if isinstance(new, dict):
-            if not isinstance(old, dict) or set(old) - set(new):
+            if not isinstance(old, dict) or (set(old) - set(new) and not keep_extra):
                 raise OpInputError(f"{key}: cannot be replaced in place (other keys present); edit the file by hand")
             for k, v in new.items():
                 if k in old:
@@ -264,9 +264,9 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
                 working, _, _ = pdledit.append_element(working, listkey, element)
             entries.append({"date": stamp, "key": key, "old": None, "new": element, "why": why, "kind": "add"})
             return
-        if _norm(old) == _norm(element):
+        if _norm({k: old.get(k) for k in element}) == _norm(element):
             return
-        patch(old, element, key)
+        patch(old, element, key, keep_extra=True)
         entries.append({"date": stamp, "key": key, "old": old, "new": element, "why": why, "kind": "modify"})
 
     for c in comps:
