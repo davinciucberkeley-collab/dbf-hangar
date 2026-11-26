@@ -5526,10 +5526,10 @@ items:
     text: add-linkage option for aileron differential (arm not square at neutral) so c172-rc ailerons can reach up 20 / down 15 (D123).
     source: D123
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: 4711e1c
     decided_in: ''
     updated: '2026-11-26'
   - id: T165
@@ -5594,6 +5594,17 @@ items:
     owner: conductor
     status: open
     due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T171
+    kind: task
+    text: 'describe registry: SKIP rows keep failure-style titles (e.g. "Wing spar is too weak" when no spar was found); add per-status titles (title_by status or a skip_title) so SKIP and PASS rows read neutrally (U19.2, review W34-R2 31).'
+    source: reviews/2026-11-25-w34b.md section 31
+    owner: conductor
+    status: open
+    due: ''
     units: []
     evidence: ''
     decided_in: ''
