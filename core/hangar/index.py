@@ -80,8 +80,10 @@ def mechanism_sweeps(design) -> dict | None:
     """Per-step part transforms for every mechanism (the T6 sweep, 1 degree steps) for the viewer's Physics mode.
     Designs with articulations but no `mechanisms` block get one pseudo-mechanism per articulated joint."""
     mechs = design.data.get("mechanisms") or []
-    arts = articulated_attachments(design)
-    if not mechs and not arts:
+    all_arts = articulated_attachments(design)
+    arts = [a for a in all_arts if a["articulation"].get("type") != "continuous"]
+    spins = [a for a in all_arts if a["articulation"].get("type") == "continuous"]
+    if not mechs and not all_arts:
         return None
     if not mechs:
         mechs = [{"id": "sweep-" + att_label(a), "driver": att_label(a), "driven": [att_label(a)],
@@ -100,6 +102,20 @@ def mechanism_sweeps(design) -> dict | None:
                                          if cid not in skip and not np.allclose(t, np.eye(4))}})
         out.append({"id": mech["id"], "driver": mech["driver"], "driven": list(mech["driven"]),
                     "input_range_deg": list(_input_range(design, mech)), "steps": steps})
+    used = {mech["driver"] for mech in mechs} | {a for mech in mechs for a in mech["driven"]} \
+        | {e["attachment"] for mech in mechs for e in mech.get("expect", [])}
+    for a in spins:
+        label = att_label(a)
+        if label in used:
+            continue
+        steps = []
+        for k in range(361):
+            tf = pose_transforms(design, {label: float(k)})
+            steps.append({"input_deg": float(k), "followers": {},
+                          "transforms": {cid: np.round(t, 6).ravel().tolist() for cid, t in tf.items()
+                                         if cid not in skip and not np.allclose(t, np.eye(4))}})
+        out.append({"id": "spin-" + label, "driver": label, "driven": [label], "input_range_deg": [0, 360],
+                    "steps": steps})
     return {"design": str(design.data.get("id", design.base_dir.name)), "mechanisms": out}
 
 
