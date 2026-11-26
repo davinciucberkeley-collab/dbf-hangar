@@ -231,11 +231,11 @@ def test_migrate_1_1_design_to_1_2(tmp_path):
     (d / "plane.yaml").write_bytes(text.encode("utf-8"))
     r = call("design.migrate", path=str(d), write=True)
     assert r.ok, r.messages
-    assert r.data["from_version"] == "1.1" and r.data["to_version"] == "1.2"
+    assert r.data["from_version"] == "1.1" and r.data["to_version"] == "1.3"
     new = (d / "plane.yaml").read_bytes().decode("utf-8")
     a, b = text.splitlines(keepends=True), new.splitlines(keepends=True)
     diff = [i for i, (x, y) in enumerate(zip(a, b)) if x != y]
-    assert len(a) == len(b) and len(diff) == 1 and b[diff[0]].startswith('schema_version: "1.2"')
+    assert len(a) == len(b) and len(diff) == 1 and b[diff[0]].startswith('schema_version: "1.3"')
 
 
 def _mesh_file_design(tmp_path, with_file=True):

@@ -53,6 +53,14 @@ When a `mechanisms` list already exists, add the mechanism entry with `plane des
 - `T6.undriven.<joint>`: an articulated joint that no mechanism drives.
 - `T6.servo_undriven.<servo>` (for conventional fixed-wing designs, from U13.4-2): a servo that no mechanism uses.
 
+## Four-bar kinematics (PDL 1.3)
+
+Add `kinematics: four_bar` to a `mechanisms[]` entry (schema_version 1.3; default `ratio`, the declared expect ratio x input). It needs a `link`, exactly one driven attachment, the same attachment in `expect`, and an `input_range_deg` containing 0.
+- T6 then solves the follower angle so that the distance from the `link.driver_end` point (arm tip) to the `link.follower_end` point (horn pin) stays the rod length, within the follower's `range_deg`. The `expect` ratio is no longer the angle; T6.ratio still checks it against the geometry.
+- Jam rows (T6.mechanism FAIL, never a silent clamp): no follower angle keeps the rod length; the transmission angle (rod against the horn arm, 90 = ideal, 0 = dead point) is below `four_bar_min_transmission_deg`; the follower jumps more than `four_bar_max_follower_step_deg` for one degree of input (branch flip).
+- The rod is posed on the horn pin at every step: the step collision loop checks rod, horn, pin and surface with nothing exempted, and `T6.link` is a PASS row. Studio Physics shows the rod pinned on the horn.
+- Limits: T1 pose sweeps still pose the rod rigidly (their `T1.kinematic_link` SKIP rows stay); a servo or a hinge parent that itself moves with another articulated joint is refused.
+
 ## Splitting a wing into core and ailerons
 
 A wing split into a core and two ailerons is three components: the wing (`part: core`) and two `part: elevon` pieces (`side: right` and `side: left`), all with the same airfoil, span, chords and `elevon_y`.

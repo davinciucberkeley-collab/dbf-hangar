@@ -2,6 +2,7 @@
 import { TIERS, STATUS_ORDER } from '../lib.js';
 import { renderTree } from '../ui/tree.js';
 import { renderInspector } from '../ui/inspector.js';
+import { renderTimeline } from '../ui/timeline.js';
 
 export default async function render(ctx) {
   const { state, el, byId, vp } = ctx;
@@ -13,6 +14,7 @@ export default async function render(ctx) {
   const mass = usable && d.mass ? await ctx.getJSON(d.mass).catch(() => null) : null;
   renderTree(ctx, d, parts); renderInspector(ctx, d, parts, mass);
   await renderScorecard(ctx, d);
+  await renderTimeline(ctx, d);
   el.dataset.ready = '1';
 }
 

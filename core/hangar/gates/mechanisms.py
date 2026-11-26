@@ -32,9 +32,145 @@ def _input_range(design: Design, mech: dict) -> tuple[float, float]:
     return float(rng[0]), float(rng[1])
 
 
+def _rot_point(art: dict, angle_deg: float, p) -> np.ndarray:
+    from ..geometry import joint_rotation
+    return (joint_rotation(art, angle_deg) @ np.append(np.asarray(p, dtype=float), 1.0))[:3]
+
+
+def solve_four_bar(tip0, pin0, driver_art: dict, follower_art: dict, input_deg: float,
+                   follower_range: tuple[float, float], prev_deg: float = 0.0, scan_deg: float = 0.05) -> float | None:
+    """Follower angle (deg) that keeps |pin - tip| = L = |pin0 - tip0| when the driver turns the tip by input_deg and the
+    follower turns the pin: every sign change of the distance error over the follower range is bisected to a root; the root
+    nearest prev_deg is returned, None when there is none (D96: scan then bisect, simplest robust choice)."""
+    tip0, pin0 = np.asarray(tip0, dtype=float), np.asarray(pin0, dtype=float)
+    length = float(np.linalg.norm(pin0 - tip0))
+    if abs(input_deg) < 1e-12:
+        return 0.0
+    tip = _rot_point(driver_art, input_deg, tip0)
+
+    def g(t: float) -> float:
+        return float(np.linalg.norm(_rot_point(follower_art, t, pin0) - tip)) - length
+
+    lo, hi = float(min(follower_range)), float(max(follower_range))
+    n = max(1, math.ceil((hi - lo) / scan_deg - 1e-9))
+    ts = [lo + k * scan_deg for k in range(n)] + [hi]
+    gs = [g(t) for t in ts]
+    roots = []
+    for k, (t, gt) in enumerate(zip(ts, gs)):
+        if abs(gt) < 1e-9:
+            roots.append(t)
+        if k and gs[k - 1] * gt <= 0 and abs(gt) >= 1e-9 and abs(gs[k - 1]) >= 1e-9:
+            a, b, ga = ts[k - 1], t, gs[k - 1]
+            for _ in range(80):
+                m = (a + b) / 2
+                gm = g(m)
+                if ga * gm <= 0:
+                    b = m
+                else:
+                    a, ga = m, gm
+            roots.append((a + b) / 2)
+    return min(roots, key=lambda r: abs(r - prev_deg)) if roots else None
+
+
+def transmission_angle_deg(rod_vec, follower_art: dict, pin) -> float:
+    """Angle (0..90) between the rod and the horn arm r (pin - follower pivot, minus its part along the follower axis).
+    90 = rod tangent to the horn arc; 0 = dead point."""
+    rod = np.asarray(rod_vec, dtype=float)
+    w = np.asarray(follower_art["axis"], dtype=float)
+    w = w / np.linalg.norm(w)
+    r = np.asarray(pin, dtype=float) - np.asarray(follower_art["pivot"], dtype=float)
+    r = r - (r @ w) * w
+    nr, nd = float(np.linalg.norm(r)), float(np.linalg.norm(rod))
+    if nr < 1e-9 or nd < 1e-12:
+        return 0.0
+    return math.degrees(math.acos(min(1.0, abs(float(rod @ r)) / (nd * nr))))
+
+
+def rod_transform(tip0, pin0, tip, pin) -> np.ndarray:
+    """4x4 rigid transform taking tip0 to tip and turning the rod direction (pin0 - tip0) to (pin - tip) by the minimum rotation."""
+    tip0, pin0, tip, pin = (np.asarray(x, dtype=float) for x in (tip0, pin0, tip, pin))
+    u0 = (pin0 - tip0) / np.linalg.norm(pin0 - tip0)
+    u1 = (pin - tip) / np.linalg.norm(pin - tip)
+    c = np.cross(u0, u1)
+    s = float(np.linalg.norm(c))
+    rot = np.eye(4)
+    if s > 1e-12:
+        k = c / s
+        kx = np.array([[0, -k[2], k[1]], [k[2], 0, -k[0]], [-k[1], k[0], 0]])
+        ang = math.atan2(s, float(u0 @ u1))
+        rot[:3, :3] = np.eye(3) + math.sin(ang) * kx + (1 - math.cos(ang)) * (kx @ kx)
+    to0, to1 = np.eye(4), np.eye(4)
+    to0[:3, 3], to1[:3, 3] = -tip0, tip
+    return to1 @ rot @ to0
+
+
+def _four_bar_geometry(design: Design, mech: dict):
+    atts = _atts(design)
+    link = mech["link"]
+    return (np.array(atts[link["driver_end"]]["location"], dtype=float), np.array(atts[link["follower_end"]]["location"], dtype=float),
+            atts[mech["driver"]]["articulation"], atts[mech["driven"][0]]["articulation"])
+
+
+def link_overrides(design: Design, mech: dict, input_deg: float, follower_deg: float) -> dict[str, np.ndarray]:
+    """Four-bar only: the rod pose (component id -> 4x4) for the rod and everything downstream of link.driver_end."""
+    from ..geometry import downstream_ids
+    if mech.get("kinematics") != "four_bar":
+        return {}
+    tip0, pin0, drv, fol = _four_bar_geometry(design, mech)
+    tip = _rot_point(drv, _clamp(input_deg, drv["range_deg"]), tip0)
+    pin = _rot_point(fol, follower_deg, pin0)
+    t = rod_transform(tip0, pin0, tip, pin)
+    return {cid: t for cid in downstream_ids(design, _atts(design)[mech["link"]["driver_end"]])}
+
+
+def _simulate_four_bar(design: Design, mech: dict) -> dict:
+    th = load_gate_thresholds()
+    min_mu, max_step = th["four_bar_min_transmission_deg"]["value"], th["four_bar_max_follower_step_deg"]["value"]
+    try:
+        tip0, pin0, drv, fol = _four_bar_geometry(design, mech)
+    except (KeyError, TypeError, IndexError) as e:
+        raise RuntimeError(f"mechanism {mech['id']}: could not build model: {e!r}") from e
+    name = mech["driven"][0]
+    lo, hi = _input_range(design, mech)
+    rng = (float(fol["range_deg"][0]), float(fol["range_deg"][1]))
+    inputs = _steps(lo, hi)
+    order = [x for x in sorted(inputs) if x >= 0] + [x for x in sorted(inputs, reverse=True) if x < 0]
+    done: dict[float, dict] = {}
+    jam, neg = None, False
+    prev_in, prev_t = 0.0, 0.0
+    for x in order:
+        if x < 0 and not neg:
+            neg = True
+            prev_in, prev_t = 0.0, 0.0
+        d = _clamp(x, drv["range_deg"])
+        t = solve_four_bar(tip0, pin0, drv, fol, d, rng, prev_t)
+        if t is None:
+            jam = {"input_deg": x, "reason": f"no follower angle within [{rng[0]:g}, {rng[1]:g}] keeps the rod length"}
+            break
+        tip, pin = _rot_point(drv, d, tip0), _rot_point(fol, t, pin0)
+        mu = transmission_angle_deg(pin - tip, fol, pin)
+        if mu < min_mu:
+            jam = {"input_deg": x, "reason": f"transmission angle {mu:.1f} deg is below {min_mu:g} deg"}
+            break
+        per_deg = abs(t - prev_t) / max(1.0, abs(x - prev_in))
+        if abs(t - prev_t) > max_step * max(1.0, abs(x - prev_in)):
+            jam = {"input_deg": x, "reason": f"follower jumps {per_deg:.1f} deg for one degree of input"}
+            break
+        done[x] = {"input_deg": float(x), "followers": {name: t}, "transmission_deg": round(mu, 3)}
+        prev_in, prev_t = x, t
+    steps = [done[x] for x in inputs if x in done]
+    out = {"mechanism": mech["id"], "driver": mech["driver"], "steps": steps}
+    if jam:
+        out["jam"] = jam
+    return out
+
+
 def simulate_mechanism(design: Design, mech: dict) -> dict:
     """Follower angle (deg) at each 1 degree of driver input: clamp(ratio x driver, follower range_deg).
-    A follower sitting at its own limit is the jam."""
+    A follower sitting at its own limit is the jam. With kinematics: four_bar the angle is solved from the rod length
+    instead (see solve_four_bar), and a jam is reported under the key "jam"."""
+    if mech.get("kinematics") == "four_bar":
+        return _simulate_four_bar(design, mech)
     atts = _atts(design)
     try:
         drv = atts[mech["driver"]]["articulation"]
@@ -76,6 +212,7 @@ def _collision(design: Design, mech: dict, sim: dict, limit: float, step_deg: fl
     from ..checks import _overlap_volume
     from ..geometry import downstream_ids, posed_component_parts
     atts = _atts(design)
+    four_bar = mech.get("kinematics") == "four_bar"
     moving = set()
     for lbl in (mech["driver"], *sim["steps"][0]["followers"]):
         moving |= downstream_ids(design, atts[lbl])
@@ -87,7 +224,8 @@ def _collision(design: Design, mech: dict, sim: dict, limit: float, step_deg: fl
     ignored: dict[frozenset, bool] = {}
     for s in _pick_steps(sim, step_deg):
         angles = {mech["driver"]: _clamp(s["input_deg"], atts[mech["driver"]]["articulation"]["range_deg"]), **s["followers"]}
-        posed = posed_component_parts(design, angles)
+        ov = link_overrides(design, mech, s["input_deg"], next(iter(s["followers"].values()))) if four_bar else None
+        posed = posed_component_parts(design, angles, ov) if four_bar else posed_component_parts(design, angles)
         for i, a in enumerate(ids):
             for b in ids[i + 1:]:
                 pair = frozenset((a, b))
@@ -177,6 +315,28 @@ def _ratio_row(design: Design, mech: dict, atts: dict, th: dict) -> CheckResult 
     return CheckResult(cid, PASS, f"mechanism {mid}: ratio matches the link geometry (small angle): " + "; ".join(notes), CRIT, data)
 
 
+def _four_bar_needs(design: Design, mech: dict, atts: dict) -> str | None:
+    """What a four_bar mechanism lacks (text after "four_bar needs "), or None."""
+    from ..geometry import articulated_attachments, att_label, downstream_ids
+    if not mech.get("link"):
+        return "a link"
+    if len(mech["driven"]) != 1:
+        return "exactly one driven attachment"
+    fol = mech["driven"][0]
+    if fol not in {e["attachment"] for e in mech.get("expect", [])}:
+        return "the driven attachment in expect"
+    lo, hi = _input_range(design, mech)
+    if not lo <= 0 <= hi:
+        return "input_range_deg containing 0"
+    parents = {atts[mech["driver"]]["parent"], atts[fol]["parent"]}
+    for a in articulated_attachments(design):
+        if att_label(a) in (mech["driver"], fol):
+            continue
+        if parents & downstream_ids(design, a):
+            return f"the servo and the hinge's fixed side not to move with another articulated joint ({att_label(a)})"
+    return None
+
+
 def _mechanism_row(design: Design, mech: dict, th: dict, limit: float) -> CheckResult:
     atts = _atts(design)
     mid, drv = mech["id"], mech["driver"]
@@ -186,6 +346,11 @@ def _mechanism_row(design: Design, mech: dict, th: dict, limit: float) -> CheckR
         if x not in atts or (x in (drv, *expect) and not atts[x].get("articulation")):
             return CheckResult(f"T6.mechanism.{mid}", FAIL,
                                f"mechanism {mid}: attachment {x} is missing or not articulated", CRIT, data)
+    four_bar = mech.get("kinematics") == "four_bar"
+    if four_bar:
+        need = _four_bar_needs(design, mech, atts)
+        if need:
+            return CheckResult(f"T6.mechanism.{mid}", FAIL, f"mechanism {mid}: four_bar needs {need}", CRIT, data)
     data["link_pairs"], err = _link(design, mech, atts)
     if err:
         return CheckResult(f"T6.mechanism.{mid}", FAIL, err, CRIT, data)
@@ -193,8 +358,12 @@ def _mechanism_row(design: Design, mech: dict, th: dict, limit: float) -> CheckR
         sim = simulate_mechanism(design, mech)
     except RuntimeError as e:
         return CheckResult(f"T6.mechanism.{mid}", FAIL, str(e), CRIT, data)
+    if "jam" in sim:
+        j = sim["jam"]
+        return CheckResult(f"T6.mechanism.{mid}", FAIL,
+                           f"mechanism {mid}: four_bar jam at input {j['input_deg']:.0f} deg: {j['reason']}", CRIT, data)
     tol, floor = th["mechanism_ratio_tol"]["value"], th["mechanism_abs_tol_deg"]["value"]
-    for s in sim["steps"]:
+    for s in ([] if four_bar else sim["steps"]):
         for att, ang in s["followers"].items():
             exp = expect[att] * s["input_deg"]
             allowed = max(tol * abs(exp), floor)
@@ -204,11 +373,17 @@ def _mechanism_row(design: Design, mech: dict, th: dict, limit: float) -> CheckR
                                    f"(expected {exp:.1f} deg, tolerance {allowed:.1f} deg); first stalls at input "
                                    f"{s['input_deg']:.0f} deg", CRIT, data)
     msg = _collision(design, mech, sim, limit, th["mechanism_contact_step_deg"]["value"],
-                     {frozenset(p) for p in data["link_pairs"]})
+                     set() if four_bar else {frozenset(p) for p in data["link_pairs"]})
     if msg:
         return CheckResult(f"T6.mechanism.{mid}", FAIL, msg, CRIT, data)
     lo, hi = sim["steps"][0]["input_deg"], sim["steps"][-1]["input_deg"]
     step = th["mechanism_contact_step_deg"]["value"]
+    if four_bar:
+        worst = min(sim["steps"], key=lambda s: s["transmission_deg"])
+        return CheckResult(f"T6.mechanism.{mid}", PASS,
+                           f"mechanism {mid}: four_bar, no jam over {lo:.0f} to {hi:.0f} deg; follower angle solved from the "
+                           f"rod length; minimum transmission angle {worst['transmission_deg']:.1f} deg at input "
+                           f"{worst['input_deg']:.0f} deg; no collision at every {step:g} deg", CRIT, data)
     msg = (f"mechanism {mid}: no jam over {lo:.0f} to {hi:.0f} deg; follower angle(s) are the declared ratio x input; "
            f"no collision at every {step:g} deg")
     unchecked = [a for a in mech["driven"] if a not in expect]
@@ -247,7 +422,12 @@ def tier6_mechanisms(ctx) -> TierReport | None:
     for m in mechs:
         row = _mechanism_row(design, m, th, limit)
         res.append(row)
-        if row.data.get("link_pairs"):
+        if row.data.get("link_pairs") and m.get("kinematics") == "four_bar":
+            if row.status == PASS:
+                pairs = ", ".join(f"{a} & {b}" for a, b in row.data["link_pairs"])
+                res.append(CheckResult(f"T6.link.{m['id']}", PASS, f"mechanism {m['id']}: four_bar link checked with the rod "
+                                       f"posed on the horn pin: " + pairs, CRIT, {"link_pairs": row.data["link_pairs"], "parts": sorted({i for p in row.data["link_pairs"] for i in p})}))
+        elif row.data.get("link_pairs"):
             res.append(CheckResult(f"T6.link.{m['id']}", WARN, f"mechanism {m['id']}: not checked (pinned by declared link): "
                                    + ", ".join(f"{a} & {b}" for a, b in row.data["link_pairs"]), CRIT, {"link_pairs": row.data["link_pairs"], "parts": sorted({i for p in row.data["link_pairs"] for i in p})}))
         if row.data.get("link_pairs") or not m.get("link"):

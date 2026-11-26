@@ -226,25 +226,29 @@ def joint_rotation(articulation: dict, angle_deg: float) -> np.ndarray:
     return trimesh.transformations.rotation_matrix(math.radians(angle_deg), axis / np.linalg.norm(axis), pivot)
 
 
-def pose_transforms(design: Design, angles: dict[str, float] | None) -> dict[str, np.ndarray]:
+def pose_transforms(design: Design, angles: dict[str, float] | None,
+                    overrides: dict[str, np.ndarray] | None = None) -> dict[str, np.ndarray]:
     """Component id -> 4x4 transform for the configuration `angles` (joint label -> degrees; missing = 0).
-    Nested joints compose with the joint nearest the root applied last."""
+    Nested joints compose with the joint nearest the root applied last. `overrides` (component id -> 4x4)
+    replace the composed transform of those components (the four-bar rod, U16.1 S1)."""
     out = {c["id"]: np.eye(4) for c in design.components}
-    if not angles:
-        return out
-    joints = [a for a in articulated_attachments(design) if abs(angles.get(att_label(a), 0.0)) > 1e-12]
-    joints.sort(key=lambda a: _depth(design, a["parent"]), reverse=True)  # innermost (deepest) first
-    for a in joints:
-        r = joint_rotation(a["articulation"], angles[att_label(a)])
-        for cid in downstream_ids(design, a):
-            if cid in out:
-                out[cid] = r @ out[cid]
+    if angles:
+        joints = [a for a in articulated_attachments(design) if abs(angles.get(att_label(a), 0.0)) > 1e-12]
+        joints.sort(key=lambda a: _depth(design, a["parent"]), reverse=True)  # innermost (deepest) first
+        for a in joints:
+            r = joint_rotation(a["articulation"], angles[att_label(a)])
+            for cid in downstream_ids(design, a):
+                if cid in out:
+                    out[cid] = r @ out[cid]
+    for cid, t in (overrides or {}).items():
+        out[cid] = t
     return out
 
 
-def posed_component_parts(design: Design, angles: dict[str, float] | None = None) -> dict[str, list[trimesh.Trimesh]]:
+def posed_component_parts(design: Design, angles: dict[str, float] | None = None,
+                          overrides: dict[str, np.ndarray] | None = None) -> dict[str, list[trimesh.Trimesh]]:
     """Watertight parts of every component with the articulated joints at `angles` (None = 0 deg, as written)."""
-    tf = pose_transforms(design, angles)
+    tf = pose_transforms(design, angles, overrides)
     out = {}
     for c in design.components:
         parts = component_parts(c, design.base_dir)
