@@ -5499,3 +5499,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
+  - id: T162
+    kind: task
+    text: 'Before 2026-12-08: source rated_load_n for connection types CT-SERVO-SPLINE, CT-M3-SHCS-MOTOR, CT-M3-SHCS-NYLOC (c172-rc S9b Part B gave six T2.joint_rf WARN rows, report-only until 12-08); else they become findings.'
+    source: reviews/2026-11-25-w34c.md section 23
+    owner: conductor
+    status: open
+    due: '2026-12-08'
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
