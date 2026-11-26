@@ -5422,3 +5422,14 @@ items:
     evidence: ''
     decided_in: ledger/items.yaml
     updated: '2026-11-25'
+  - id: T155
+    kind: task
+    text: 'Later (D105 option 2): add AeroSandbox to CI (pyproject extra and validate.yml install) so T3.dynamic_modes and AeroSandbox-based checks run on every PR; measure CI install time first and decide once the local numbers on c172-rc and concept-a look trustworthy.'
+    source: plans/2026-11-20-standardization.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
