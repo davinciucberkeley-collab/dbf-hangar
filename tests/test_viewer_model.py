@@ -453,8 +453,9 @@ def test_explode_levels_keep_subassemblies_together(browser, pages_base):
     p, q = out["p"], out["q"]
     print("P", p, "Q", q)
     assert all(abs(a - b) <= 1e-6 for a, b in zip(out["l1"][p], out["l1"][q]))
-    assert max(abs(a - b) for a, b in zip(out["all"][p], out["all"][q])) > 1e-4
-    assert out["rad"][p] != out["all"][p]
+    assert all(abs(a - b) <= 1e-6 for a, b in zip(out["all"][p], out["all"][q]))  # hierarchy: whole subassemblies as units (D109)
+    assert out["rad"][p] != out["all"][p]  # radial moves each part on its own
+    assert max(abs(a - b) for a, b in zip(out["rad"][p], out["rad"][q])) > 1e-4
     assert errors == []
     page.close()
 

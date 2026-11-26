@@ -51,20 +51,23 @@ export class Transforms {
 }
 
 // Explode offsets (scene m) per part id. parts = parts.json; centres = Map id -> world Vector3 of drawn parts.
+// hierarchy (D109): a whole subassembly moves as one unit: every part takes t * (C(anc) - C(root)) of its ancestor
+//   at depth min(level, own depth); level 'all' uses the top-level child of the root (depth 1).
+// radial: every part (down to the level) moves t * (C(p) - C(root)) on its own; deeper parts follow their parent.
 export function explodeOffsets(parts, centres, fallback, t, level = 'all', strategy = 'hierarchy') {
   const list = [...parts.parts].sort((a, b) => a.depth - b.depth);
   const byId = new Map(list.map((p) => [p.id, p]));
-  const L = level === 'all' ? Math.max(0, ...list.map((p) => p.depth)) : +level;
   const rootC = centres.get(parts.root) ?? fallback;
   const C = (p) => { for (let q = p, n = 0; q && n < 256; q = byId.get(q.parent), n++) { const c = centres.get(q.id); if (c) return c; } return rootC; };
   const k = t * EXPLODE_FACTOR, D = new Map(), zero = new THREE.Vector3();
+  const up = (p, depth) => { let q = p, n = 0; while (q && q.depth > depth && n++ < 256) q = byId.get(q.parent) ?? q; return q; };
+  const L = level === 'all' ? 1 : +level, Lr = level === 'all' ? Math.max(0, ...list.map((p) => p.depth)) : L;
   for (const p of list) {
-    const parent = p.id === parts.root ? null : byId.get(p.parent);
-    const dp = (parent && D.get(parent.id)) || zero;
+    const parent = byId.get(p.parent);
     let d;
     if (p.id === parts.root) d = zero;
-    else if (strategy === 'radial') d = p.depth <= L ? C(p).clone().sub(rootC).multiplyScalar(k) : dp;
-    else d = p.depth <= L ? C(p).clone().sub(parent ? C(parent) : rootC).multiplyScalar(k).add(dp) : dp;
+    else if (strategy === 'radial') d = p.depth <= Lr ? C(p).clone().sub(rootC).multiplyScalar(k) : (parent && D.get(parent.id)) || zero;
+    else d = C(up(p, L)).clone().sub(rootC).multiplyScalar(k);
     D.set(p.id, d);
   }
   return D;
