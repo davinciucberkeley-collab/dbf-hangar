@@ -5433,3 +5433,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-25'
+  - id: T156
+    kind: task
+    text: 'tiltwing-cakir: Dutch roll is unstable (omega 0.27 rad/s, damping -0.01) per T3.dynamic_modes with AeroSandbox (W34-R2 review section 12); a design-engineer task to check the vertical tail and dihedral.'
+    source: reviews/2026-11-25-w34b.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'

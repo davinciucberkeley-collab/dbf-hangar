@@ -374,6 +374,7 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D105 | Install AeroSandbox? | yes locally in .venv now (installed 2026-11-25 via uv) so dynamic modes and the AeroSandbox code path run on Tristan's PC; adding it to CI (pyproject extra + validate.yml) is planned for later (ledger task) | Tristan | 11-25 | decided (Tristan P298, 2026-11-25) |
 | D106 | What does Studio x-ray ghost? (B3 review: type-based ghosting misses concept-a's shell typed structure/other) | invert it: x-ray ghosts every part except internal types (battery, esc, servo, receiver, flight_controller, motor, harness/wire, sensor), so internals show on any design without re-typing; CG marker gets a colour distinct from the selection | Tristan | 11-25 | decided (default, conductor 2026-11-25; Tristan P286 intent) |
 | D107 | Team-constraint owners, and the parked std/u4.25-pockets branch | all 19 team constraints: owner Tristan, date 2026-11-25 (confirmed); delete remote std/u4.25-pockets after U16.2 merges | Tristan | 11-25 | decided (Tristan P299, 2026-11-25) |
+| D108 | U18.4-3: builder sourced three dynamic-mode limits from MIL-F-8785C (via NASA CR-1796) instead of stopping | approved: short-period zeta 0.30, Dutch roll zeta 0.08, spiral time-to-double 20 s (Level 1, Category B, cruise); phugoid stays pending; T3.dynamic_modes stays non-blocking until the spec text itself is opened | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
