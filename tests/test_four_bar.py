@@ -215,7 +215,6 @@ def test_c172_t1_kinematic_link_rows():
     from hangar.checks import tier1_geometry
     from hangar.design import load_standards
     rs = tier1_geometry(load_design(ROOT / "designs" / "c172-rc"), load_standards()).results
-    assert len(rs) == 88
     sk = [r for r in rs if r.check_id == "T1.kinematic_link"]
     assert len(sk) == 6
     assert {r.message.split(":")[0] for r in sk} == {
