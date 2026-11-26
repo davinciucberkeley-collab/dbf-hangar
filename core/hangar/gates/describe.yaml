@@ -1,8 +1,11 @@
 # Plain-text templates for scorecard rows, one entry per check family (first two id segments). Templates hold words and placeholders only: limits come from standards/ through the row's criterion, never typed here. A hint may only restate an action the code's own message or a standards note already gives.
+# title is one string for every status, or a mapping {FAIL, SKIP, PASS}: a status the mapping does not name uses its FAIL title. A SKIP title says what was not checked; a PASS title says what was found OK.
 
 # --- T0 schema and identity ---
 T0.schema:
-  title: "Design file does not match the schema"
+  title:
+    FAIL: "Design file does not match the schema"
+    PASS: "Design file matches the schema"
   group: design
 T0.version:
   title: "Design file version is wrong"
@@ -14,10 +17,14 @@ T0.parameters:
   title: "Design parameters are invalid"
   group: design
 T0.generator:
-  title: "Part generator is invalid"
+  title:
+    FAIL: "Part generator is invalid"
+    PASS: "Part generator is valid"
   group: part
 T0.mission:
-  title: "Mission section is invalid"
+  title:
+    FAIL: "Mission section is invalid"
+    PASS: "Mission section is valid"
   group: design
 T0.unique_ids:
   title: "Two parts share an id"
@@ -26,15 +33,21 @@ T0.attachment_refs:
   title: "Attachment points at an unknown part"
   group: part
 T0.component_type:
-  title: "Part type is not known"
+  title:
+    FAIL: "Part type is not known"
+    SKIP: "Part type not checked"
   group: part
 
 # --- T1 geometry ---
 T1.articulation:
-  title: "Moving part is set up wrongly"
+  title:
+    FAIL: "Moving part is set up wrongly"
+    PASS: "Moving part is set up correctly"
   group: part
 T1.attachment:
-  title: "Attachment is set up wrongly"
+  title:
+    FAIL: "Attachment is set up wrongly"
+    PASS: "Attachment is set up correctly"
   group: part
 T1.attachment_contact:
   title: "Attached parts do not touch"
@@ -46,16 +59,22 @@ T1.attachment_overlap:
   title: "Attached parts overlap too much"
   group: part
 T1.connectivity:
-  title: "Parts are not all connected"
+  title:
+    FAIL: "Parts are not all connected"
+    PASS: "Parts are all connected"
   group: design
 T1.floating:
   title: "Part is not attached to anything"
   group: part
 T1.interfaces:
-  title: "Part interface does not fit"
+  title:
+    FAIL: "Part interface does not fit"
+    PASS: "Part interface fits"
   group: part
 T1.interference:
-  title: "Parts overlap"
+  title:
+    FAIL: "Parts overlap"
+    PASS: "Parts do not overlap"
   group: part
 T1.kinematic_link:
   title: "Moving linkage not checked"
@@ -67,24 +86,35 @@ T1.kinematic_link:
     SKIP: "In the pose '{pose}' the bounding boxes of these pairs overlap: {unchecked_pairs}. The tool cannot tell if that is a real clash, because the linkage between them is not modelled."
   hint: "Describe the linkage as a four_bar mechanism (plane design add-linkage) so it is checked."
 T1.motor_has_prop:
-  title: "Motor has no propeller"
+  title:
+    FAIL: "Motor has no propeller"
+    PASS: "Motor has a propeller"
   group: part
 T1.pocket:
   title: "Pocket does not hold its part"
   group: part
 T1.point_mass_location:
-  title: "Point mass is outside its part"
+  title:
+    FAIL: "Point mass is outside its part"
+    PASS: "Point mass is placed correctly"
   group: part
 T1.pose:
-  title: "Moving part clashes in a pose"
+  title:
+    FAIL: "Moving part clashes in a pose"
+    PASS: "Moving part is clear in every pose"
   group: part
 T1.watertight:
-  title: "Part surface has holes"
+  title:
+    FAIL: "Part surface has holes"
+    PASS: "Part surface is closed"
   group: part
 
 # --- T2 physics ---
 T2.fea_strength:
-  title: "Printed part is too weak"
+  title:
+    FAIL: "Printed part is too weak"
+    SKIP: "Printed part strength not checked"
+    PASS: "Printed part is strong enough"
   group: part
   extract: '^(?P<case_part>\S+) (?P<case>\w+):'
   what:
@@ -96,7 +126,9 @@ T2.hover_moment:
   title: "Hover moment check"
   group: design
 T2.joint_load:
-  title: "Joint strength not checked"
+  title:
+    FAIL: "Joint strength not checked"
+    PASS: "Joint strength is adequate"
   group: part
   fold: true
   fold_noun: "joints"
@@ -105,7 +137,9 @@ T2.joint_load:
     SKIP: "The joint {joint} carries {load_n:.1f} N in the landing case but its rating is a placeholder, so it is not judged."
   hint: "Give the joint a connection type with a sourced rated_load_n."
 T2.joint_rf:
-  title: "Joint strength cannot be judged"
+  title:
+    FAIL: "Joint strength cannot be judged"
+    PASS: "Joint strength is adequate"
   group: part
   fold: true
   fold_noun: "joints"
@@ -118,7 +152,10 @@ T2.joint_rf:
       - text: "The joint {joint} has no rated load, so its reserve factor (rating divided by load, must be at least {limit}) cannot be computed."
   hint: "Add a sourced rated_load_n for the joint's connection type in standards/connection-types.yaml."
 T2.sim_drop_loads:
-  title: "Joint breaks in the drop test"
+  title:
+    FAIL: "Joint breaks in the drop test"
+    SKIP: "Joint drop-test load not checked"
+    PASS: "Joint holds in the drop test"
   group: part
   fold: true
   fold_noun: "joints"
@@ -129,7 +166,10 @@ T2.sim_drop_loads:
     SKIP: "The joint {joint} carries {peak_n:.1f} N in the drop test but its rating is a placeholder, so it is not judged."
   hint: "Raise the joint rating (more bonded area or a stronger connection) or reduce what hangs on it."
 T2.sim_rest:
-  title: "Aircraft tips over after the drop"
+  title:
+    FAIL: "Aircraft tips over after the drop"
+    SKIP: "Drop-test rest not checked"
+    PASS: "Aircraft stays upright after the drop"
   group: design
   what:
     FAIL: "After the simulated drop the landing axis rests {tilt_deg:.0f} degrees from vertical; the limit is {limit} degrees ({source})."
@@ -139,12 +179,17 @@ T2.sim_stable:
 
 # --- T3 aero and performance ---
 T3.control_authority:
-  title: "Hover control is too weak"
+  title:
+    FAIL: "Hover control is too weak"
+    SKIP: "Hover control not checked"
+    PASS: "Hover control is enough"
   group: design
   what:
     WARN: "Control power about the {axis} axis in hover: {message}."
 T3.cruise_stall_ratio:
-  title: "Cruise speed is close to the stall speed"
+  title:
+    FAIL: "Cruise speed is close to the stall speed"
+    SKIP: "Cruise-to-stall speed ratio not checked"
   group: design
   what:
     WARN: "The cruise-to-stall speed ratio could not be judged: {message}."
@@ -155,15 +200,23 @@ T3.dynamic_modes:
     WARN: "The dynamic stability modes were not computed: {message}."
   hint: "Run `python -m pip install aerosandbox`."
 T3.endurance:
-  title: "Flight time is too short"
+  title:
+    FAIL: "Flight time is too short"
+    SKIP: "Flight time not checked"
+    PASS: "Flight time is long enough"
   group: design
   what:
     WARN: "The flight time could not be computed: {message}."
 T3.hover_tw:
-  title: "Hover thrust is too low"
+  title:
+    FAIL: "Hover thrust is too low"
+    SKIP: "Hover thrust not checked"
+    PASS: "Hover thrust is enough"
   group: design
 T3.lateral_cg:
-  title: "Centre of gravity is off to one side"
+  title:
+    FAIL: "Centre of gravity is off to one side"
+    PASS: "Centre of gravity is balanced sideways"
   group: design
 T3.mass:
   title: "Aircraft mass"
@@ -174,15 +227,24 @@ T3.planform_matches_geometry:
   what:
     WARN: "The declared planform of {label} differs from its measured geometry: area {area_diff:.1%}, span {span_diff:.1%}; the allowed difference is {limit:.0%} ({source}). The aero numbers use the measured geometry."
 T3.spar_bending:
-  title: "Wing spar is too weak"
+  title:
+    FAIL: "Wing spar is too weak"
+    SKIP: "Wing spar strength not checked"
+    PASS: "Wing spar is strong enough"
   group: design
   what:
     WARN: "The wing spar could not be checked: {message}."
 T3.stall:
-  title: "Stall speed is too high"
+  title:
+    FAIL: "Stall speed is too high"
+    SKIP: "Stall speed not checked"
+    PASS: "Stall speed is acceptable"
   group: design
 T3.static_margin:
-  title: "Static margin outside the band"
+  title:
+    FAIL: "Static margin outside the band"
+    SKIP: "Static margin not checked"
+    PASS: "Static margin inside the band"
   title_by:
     key: band
     values:
@@ -193,34 +255,52 @@ T3.static_margin:
     FAIL: "The static margin is {static_margin:.1%} of the wing chord; the allowed band is {min:.0%} to {max:.0%} ({source}). Outside the band is a FAIL."
   hint: "Move the centre of gravity or the wing until the margin is inside the band."
 T3.tail_volume:
-  title: "Horizontal tail is large for its wing"
+  title:
+    FAIL: "Horizontal tail is large for its wing"
+    SKIP: "Horizontal tail volume not checked"
+    PASS: "Tail volume is within the usual range"
   group: design
   what:
     WARN: "Horizontal tail volume is {value:.3f}, {band} the provisional usual range, which starts at {limit:.2f} ({source}); this is advice, not a rule."
   hint: "A scale copy of a real aircraft may sit outside the band; otherwise reduce the tail area or arm."
 T3.transition_margin:
-  title: "Transition between hover and cruise is too tight"
+  title:
+    FAIL: "Transition between hover and cruise is too tight"
+    SKIP: "Transition margin not checked"
+    PASS: "Transition between hover and cruise is adequate"
   group: design
   what:
     WARN: "The transition margin could not be judged: {message}."
 T3.trim:
-  title: "Elevator cannot trim the aircraft"
+  title:
+    FAIL: "Elevator cannot trim the aircraft"
+    SKIP: "Elevator trim not checked"
+    PASS: "Elevator can trim the aircraft"
   group: design
   what:
     WARN: "The elevator trim could not be checked: {message}."
 T3.wing_area_complete:
-  title: "Wing area is incomplete"
+  title:
+    FAIL: "Wing area is incomplete"
+    PASS: "Wing area is complete"
   group: design
 T3.wing_loading:
-  title: "Wing loading is too high"
+  title:
+    FAIL: "Wing loading is too high"
+    SKIP: "Wing loading not checked"
+    PASS: "Wing loading is within the limit"
   group: design
 
 # --- T4 to T6 ---
 T4.capabilities:
-  title: "Printer cannot make this part"
+  title:
+    FAIL: "Printer cannot make this part"
+    SKIP: "Printer capability not checked"
   group: part
 T4.fits_machine:
-  title: "Part does not fit the machine"
+  title:
+    FAIL: "Part does not fit the machine"
+    SKIP: "Part fit to the machine not checked"
   group: part
 T4.machine:
   title: "Machine is not known"
@@ -229,21 +309,30 @@ T4.method:
   title: "Manufacturing method"
   group: part
 T5.part107_mass:
-  title: "Aircraft is too heavy for FAA Part 107"
+  title:
+    FAIL: "Aircraft is too heavy for FAA Part 107"
+    PASS: "Aircraft is light enough for FAA Part 107"
   group: design
 T5.registration:
   title: "Aircraft registration"
   group: design
 T6.link:
-  title: "Mechanism link not checked"
+  title:
+    FAIL: "Mechanism link not checked"
+    PASS: "Mechanism link is checked"
   group: part
   what:
     WARN: "A declared link pins this mechanism, so these part pairs are not checked against each other: {link_pairs}."
 T6.mechanism:
-  title: "Mechanism does not move as declared"
+  title:
+    FAIL: "Mechanism does not move as declared"
+    PASS: "Mechanism moves as declared"
   group: part
 T6.ratio:
-  title: "Mechanism ratio is off"
+  title:
+    FAIL: "Mechanism ratio is off"
+    SKIP: "Mechanism ratio not checked"
+    PASS: "Mechanism ratio matches the link geometry"
   group: part
 T6.servo_undriven:
   title: "Servo drives nothing"
@@ -254,22 +343,31 @@ T6.undriven:
 
 # --- T7 integration ---
 T7.assembly:
-  title: "Assembly order has a gap"
+  title:
+    FAIL: "Assembly order has a gap"
+    PASS: "Assembly order has no gap"
   group: part
   what:
     WARN: "In the assembly order these parts are added with nothing already assembled to attach them to: {labels}."
 T7.electrical_rating:
-  title: "Electrical rating cannot be checked"
+  title:
+    FAIL: "Electrical rating cannot be checked"
+    PASS: "Electrical rating is enough"
   group: part
   what:
     WARN: "The electrical rating cannot be checked because a value is missing: {message}."
 T7.transport:
-  title: "Packed aircraft does not fit the transport box"
+  title:
+    FAIL: "Packed aircraft does not fit the transport box"
+    SKIP: "Transport box fit not checked"
   group: design
   what:
     WARN: "A packed group is too big for the transport box: {message}."
 T7.wiring:
-  title: "Wire runs outside the airframe"
+  title:
+    FAIL: "Wire runs outside the airframe"
+    SKIP: "Wire route not checked"
+    PASS: "Wire stays inside the airframe"
   group: part
   fold: true
   fold_noun: "wires"
@@ -282,7 +380,9 @@ T7.wiring:
 
 # --- T8 sourcing, T9 claims ---
 T8.bom:
-  title: "Bill of materials line not verified"
+  title:
+    FAIL: "Bill of materials line not verified"
+    PASS: "Bill of materials lines are complete"
   group: part
   fold: true
   fold_noun: "lines"
@@ -297,7 +397,10 @@ T8.program:
   what:
     WARN: "The program budget check is incomplete: {message}."
 T9.claim:
-  title: "Claim does not match the recomputed value"
+  title:
+    FAIL: "Claim does not match the recomputed value"
+    SKIP: "Claim not yet checked"
+    PASS: "Claim matches the recomputed value"
   group: design
 T9.claims:
   title: "Claims"

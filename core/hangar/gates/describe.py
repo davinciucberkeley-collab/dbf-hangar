@@ -192,6 +192,15 @@ def _hint_template(entry: dict, status: str) -> str:
     return h or ""
 
 
+def _title(entry: dict, status: str, default: str) -> str:
+    """`title:` is a string (the same for every status) or a mapping {FAIL, SKIP, PASS, ...}; a status the mapping
+    does not name uses its FAIL title, so a WARN row keeps the title it had."""
+    t = entry.get("title")
+    if isinstance(t, dict):
+        return str(t.get(status) or t.get("FAIL") or default)
+    return t or default
+
+
 def _describe(row: CheckResult, design, design_id: str | None) -> RowText:
     from hangar.gates import REPORT_ONLY_PREFIX   # inside: gates imports checks, which imports design
 
@@ -240,7 +249,7 @@ def _describe(row: CheckResult, design, design_id: str | None) -> RowText:
             hint = ""
 
     tail = family.split(".", 1)[1].replace("_", " ") if "." in family else family
-    title = entry.get("title") or (tail[:1].upper() + tail[1:])
+    title = _title(entry, row.status, tail[:1].upper() + tail[1:])
     by = entry.get("title_by")
     if by and data.get(by["key"]) in by["values"]:
         title = by["values"][data[by["key"]]]
