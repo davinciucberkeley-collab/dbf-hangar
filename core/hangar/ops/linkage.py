@@ -87,7 +87,7 @@ def _elements(prefix, servo_id, hinge_id, surface, Op, a_o, tip0, pin0, K, n, q,
     return comps, atts, mech
 
 
-def _tip(pin, Op, a_o, arm_length: float, side: float):
+def _tip(pin, Op, a_o, arm_length: float, side: float, offset_deg: float = 0.0):
     """Arm tip in the arm plane so that arm and rod are at 90 degrees at neutral; and the plane distance W."""
     v = pin - Op
     w = v - (v @ a_o) * a_o
@@ -97,6 +97,10 @@ def _tip(pin, Op, a_o, arm_length: float, side: float):
                            f"({W:.4f} mm)")
     wu = w / W
     phi = float(np.arccos(arm_length / W))
+    if offset_deg:
+        phi = phi - float(np.radians(offset_deg))
+        if not 0.0 < phi < np.pi:
+            raise OpInputError(f"--arm-offset-deg {offset_deg:g} swings the arm past the horn direction; lower it")
     return Op + arm_length * (np.cos(phi) * wu + side * np.sin(phi) * np.cross(a_o, wu))
 
 
@@ -125,7 +129,7 @@ def _solve_arm(pin0, Op, a_o, side, P, ax, ratio, W) -> float:
 
 
 def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length: float, side: float,
-              horn_height, horn_offset: float, horn_toward: np.ndarray):
+              horn_height, horn_offset: float, horn_toward: np.ndarray, arm_offset_deg: float = 0.0):
     """The linkage points (unrounded) from the resolved design and the servo and surface meshes."""
     from ..geom.library import load_part
     from ..geometry import component_parts
@@ -214,7 +218,7 @@ def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length
         raise OpInputError(f"the servo arm plane is {s:.2f} mm from the horn skin point along the horn (needs "
                            f"{MIN_SKIN_TO_PIN:g} to {MAX_SKIN_TO_PIN:g} mm): move the servo, turn it (rotation_deg) so "
                            f"its shaft points to the horn side, or give --horn-height")
-    tip0 = _tip(pin0, Op, a_o, arm_length, side)
+    tip0 = _tip(pin0, Op, a_o, arm_length, side, arm_offset_deg)
     v = pin0 - Op
     W = float(np.linalg.norm(v - (v @ a_o) * a_o))
     return dict(Op=Op, a_o=a_o, K=K, n=n, q=q, H=H, s=s, pin0=pin0, tip0=tip0, surface=surf, P=P, ax=ax, W=W)
@@ -223,7 +227,7 @@ def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length
 def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = None,
                    deflection: float = 15.0, horn_height: float = None, horn_offset: float = 6.0,
                    arm_side: Literal["+", "-"] = "+", horn_toward: str = "0,0,-1", input_range: float = 20.0,
-                   servo_range: float = 30.0, why: str) -> OpResult:
+                   servo_range: float = 30.0, arm_offset_deg: float = 0.0, why: str) -> OpResult:
     from ..checks import validate
     from ..gates.mechanisms import link_ratios, simulate_mechanism
     from ..geom.params import expression_errors
@@ -237,6 +241,8 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
     hd = _unit(hd)
     if (arm_length is not None and arm_length <= 0) or (horn_height is not None and horn_height <= 0) or horn_offset < 0:
         raise OpInputError("--arm-length and --horn-height must be positive and --horn-offset not negative")
+    if abs(arm_offset_deg) > 60:
+        raise OpInputError("--arm-offset-deg must be between -60 and 60")
     prefix = prefix or hinge
     design = load_design(plane)
     side = 1.0 if arm_side == "+" else -1.0
@@ -256,7 +262,7 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
             raise OpInputError(f"deflection {deflection:g} deg needs an arm of {e.arm:.2f} mm, longer than the "
                                f"distance from the servo shaft to the horn pin ({g0['W']:.2f} mm); lower --deflection, "
                                f"raise --input-range, or give --arm-length")
-    g = _geometry(design, servo, hinge, station, arm_length, side, horn_height, float(horn_offset), hd)
+    g = _geometry(design, servo, hinge, station, arm_length, side, horn_height, float(horn_offset), hd, float(arm_offset_deg))
     Op, a_o, K, n, q, H, pin0, tip0 = (g[k] for k in ("Op", "a_o", "K", "n", "q", "H", "pin0", "tip0"))
     skin_to_pin = g["s"]
     rod_length = float(np.linalg.norm(pin0 - tip0))
@@ -358,23 +364,24 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
     data_out = {"components": ids_c, "attachments": ids_a, "mechanism": mech["id"], "ratio": ratio,
                 "tip0": r4(tip0), "pin0": r4(pin0), "arm_pivot": r4(Op), "horn_root": r4(K), "skin_to_pin": round(skin_to_pin, 4) + 0.0,
                 "rod_length": round(rod_length, 4), "arm_length": round(float(arm_length), 4) if follower else None,
-                "follower_deg": follower, "deflection_deg": deflection_deg, "min_transmission_deg": min_mu,
+                "follower_deg": follower, "arm_offset_deg": round(float(arm_offset_deg), 4) + 0.0, "deflection_deg": deflection_deg, "min_transmission_deg": min_mu,
                 "rows": rows, "changed": changed}
     msgs = [f"{prefix}: ratio {ratio:g}, rod {rod_length:.2f} mm, tip {data_out['tip0']}, pin {data_out['pin0']}"
             + ("" if deflection_deg is None else f", deflection {deflection_deg:g} deg")
+            + ("" if not arm_offset_deg else f", arm offset {arm_offset_deg:g} deg")
             + ("" if changed else "; unchanged")]
     msgs += [f"{r[0]} {r[1]}: {r[2]}" for r in rows if r[1] != "PASS"]
     return OpResult(True, data_out, msgs, changed_files=[str(plane), str(log)] if changed else [])
 
 
-@op(name="design.add-linkage", summary="Generate a servo linkage: arm, rod, horn and pin components built clear of the servo (arm plane above its highest point), the horn rooted on the surface skin aft of the hinge and the pin beside the horn, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). The arm length is solved from `--deflection` (default 15 deg per side at the input range) unless `--arm-length` is given; reports the achieved deflection. Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. One logged write; reports the ratio, arm pivot, tip, horn root, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.",
+@op(name="design.add-linkage", summary="Generate a servo linkage: arm, rod, horn and pin components built clear of the servo (arm plane above its highest point), the horn rooted on the surface skin aft of the hinge and the pin beside the horn, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). The arm length is solved from `--deflection` (default 15 deg per side at the input range) unless `--arm-length` is given; reports the achieved deflection. `--arm-offset-deg A` turns the arm toward the surface by A degrees at neutral for differential throw (default 0 = squared). Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. One logged write; reports the ratio, arm pivot, tip, horn root, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def add_linkage_op(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = None,
                    deflection: float = 15.0, horn_height: float = None, horn_offset: float = 6.0,
                    arm_side: Literal["+", "-"] = "+", horn_toward: str = "0,0,-1", input_range: float = 20.0,
-                   servo_range: float = 30.0, why: str) -> OpResult:
+                   servo_range: float = 30.0, arm_offset_deg: float = 0.0, why: str) -> OpResult:
     from ..geom import overlay
     with overlay.forced_off():       # the CAD overlay never changes what is written: same plane.yaml on every machine
         return _add_linkage(path, servo=servo, hinge=hinge, station=station, prefix=prefix, arm_length=arm_length,
                             deflection=deflection, horn_height=horn_height, horn_offset=horn_offset, arm_side=arm_side, horn_toward=horn_toward,
-                            input_range=input_range, servo_range=servo_range, why=why)
+                            input_range=input_range, servo_range=servo_range, arm_offset_deg=arm_offset_deg, why=why)
