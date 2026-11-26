@@ -982,7 +982,17 @@ PLANFORM_TYPES = ("wing", "tail_surface")  # the only component types that may d
 def _planform_parts(design: Design, c: dict) -> tuple[list[str], dict[str, list[trimesh.Trimesh]]]:
     """(geometry ids, {id: body-frame meshes}) of a planform component: the component plus its articulated children at 0 deg."""
     geo_ids = _articulated_subtree(design, c["id"])
-    return geo_ids, {k: component_parts(design.component(k), design.base_dir) for k in geo_ids}
+    return geo_ids, {k: component_parts(_outline_component(design.component(k)), design.base_dir) for k in geo_ids}
+
+
+def _outline_component(c: dict) -> dict:
+    """A generated wing_panel with cut_files is measured without them: they are pockets for parts that sit in it (T1.pocket
+    checks each), not outline changes; a swept pocket through both skins would read as detached material."""
+    g = c.get("geometry")
+    p = g.get("params") if isinstance(g, dict) and g.get("generator") == "wing_panel" else None
+    if not isinstance(p, dict) or not p.get("cut_files"):
+        return c
+    return {**c, "geometry": {**g, "params": {**p, "cut_files": [], "cut_poses": []}}}
 
 
 SEVERITY = {PASS: 0, WARN: 1, FAIL: 2}

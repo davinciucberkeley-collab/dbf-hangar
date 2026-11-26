@@ -106,8 +106,12 @@ def _clean(mesh: trimesh.Trimesh) -> trimesh.Trimesh:
     return mesh
 
 
-def _manifold(mesh: trimesh.Trimesh):
+def _manifold(mesh: trimesh.Trimesh, f64: bool = False):
+    """f64: float64 operand (Mesh64), so manifold3d's tolerance is ~1e-10 mm instead of ~1e-4 mm (float32)."""
     import manifold3d as m
+    if f64:
+        return m.Manifold(m.Mesh64(vert_properties=np.asarray(mesh.vertices, dtype=np.float64),
+                                   tri_verts=np.asarray(mesh.faces, dtype=np.uint32)))
     return m.Manifold(m.Mesh(vert_properties=np.asarray(mesh.vertices, dtype=np.float32),
                              tri_verts=np.asarray(mesh.faces, dtype=np.uint32)))
 
@@ -164,11 +168,11 @@ def _from_manifold(man, pair_pass: bool = True) -> trimesh.Trimesh:
     return trimesh.Trimesh(vertices=_separate_pinches(v, f, pair_pass), faces=f, process=False)
 
 
-def _boolean(op: str, meshes: list[trimesh.Trimesh], pair_pass: bool = True) -> trimesh.Trimesh:
+def _boolean(op: str, meshes: list[trimesh.Trimesh], pair_pass: bool = True, f64: bool = False) -> trimesh.Trimesh:
     import manifold3d as m
     mans = []
     for x in meshes:
-        mm = _manifold(x)
+        mm = _manifold(x, f64)
         if mm.status() != m.Error.NoError:
             raise GeometryError(f"input is not manifold ({mm.status()})")
         mans.append(mm)

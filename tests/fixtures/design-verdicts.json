@@ -74,12 +74,12 @@
   "accepted": false,
   "tiers": {
    "0": "PASS",
-   "1": "FAIL",
+   "1": "SKIP",
    "2": "FAIL",
    "3": "FAIL",
    "4": "PASS",
    "5": "PASS",
-   "6": "FAIL",
+   "6": "WARN",
    "7": "WARN",
    "8": "WARN",
    "9": "PASS"
