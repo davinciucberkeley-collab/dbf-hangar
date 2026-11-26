@@ -39,7 +39,7 @@ def list_op() -> OpResult:
     rows = []
     for p in list_designs():
         try:
-            d = load_design(p).data
+            d = load_design(p).data_without_mass()
         except Exception as e:  # noqa: BLE001
             rows.append({"id": p.parent.name, "name": f"<error: {e}>", "status": "", "lift": "", "vtol_method": ""})
             continue
@@ -59,7 +59,10 @@ def list_op() -> OpResult:
 def get_op(path: str, *, key: str = "") -> OpResult:
     design = _load(path)
     if key:
-        return OpResult(True, {"path": str(design.path), "key": key, "value": pdledit.get_value(design.data, key)})
+        first = key.replace("[", ".").split(".", 1)[0]
+        needs_mass = first == "components" or "mass_g" in key or "cut_poses" in key
+        data = design.data if needs_mass else design.data_without_mass()
+        return OpResult(True, {"path": str(design.path), "key": key, "value": pdledit.get_value(data, key)})
     return OpResult(True, {"path": str(design.path), "text": Path(design.path).read_text(encoding="utf-8")})
 
 
