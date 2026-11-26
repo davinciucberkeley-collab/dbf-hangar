@@ -5400,3 +5400,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-25'
+  - id: T153
+    kind: task
+    text: 'Follow-up U18.4: T3.trim and T3.tail_volume read only declared lifting_surface tails, so generated tails (tail_surfaces / fin generators, e.g. c172-rc) get a SKIP and the showcase has no trim or tail-volume numbers; read generated tails. Also the trim stall row uses default-CLmax stall speed, which U18.2 found 18 % high on the C172.'
+    source: reviews/2026-11-25-w34b.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-25'
