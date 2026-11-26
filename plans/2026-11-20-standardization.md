@@ -378,6 +378,8 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D109 | Explode: the brief's hierarchy formula telescopes to the radial one (B4 builder) | hierarchy moves whole subassemblies: every part takes the offset of its ancestor at the chosen level, t x 1.5 x (C(anc) - C(root)) (the brief's 1.5 factor kept for both styles), so parts inside a subassembly keep their relative positions; radial moves each part by t x (C(p) - C(root)); with level All, hierarchy uses each part's top-level child of the root | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D110 | U15.3-4 / U18.4-4 brief scope (4011789) | lazy mass makes `design get` mesh-free; `design set` keeps one mesh build (its refuse rule needs failing-part detection) and only skips the two mass_properties runs when nothing regenerated; trim stall keeps default CLmax 1.1 (1.54 is the full-size value, no model-scale source); fins: conventional and T layouts only | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D111 | Overnight staffing (Tristan away) | keep at least 3 builders and 2 reviewers running while free RAM allows; launch more when RAM is idle; hourly audits continue | Tristan | 11-26 | decided (Tristan P306, 2026-11-26) |
+| D112 | S9c hollow fuselage: may the c172-rc showcase opt in (mass/CG change)? | yes (Tristan P307): Part B may apply it once S9c core merges and the scratch report shows no new FAIL | Tristan | 11-26 | decided (Tristan P307, 2026-11-26) |
+| D113 | Studio colour-by-status shows concept-a almost all amber because report-only SKIPs display as WARN | a WARN row whose original status was SKIP (report-only wrapper) colours as "not judged" (grey), not amber; an empty click also ends a row focus | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1163,7 +1165,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -1 tail volume, -2 trim, -3 dynamic modes (all hard) + scout packet A; AeroSandbox opt-in, not in CI (modes SKIP there); merge order U18.3-1, U18.4-1, -2, -3)*
 - [x] **Step 2: Build** (builder-plus W34-B) *(-1 tail volume merged ca908c6 (W34-R ACCEPT; bands pending: Raymer gives class points); -2 trim merged 98b2dd6 (c0-a1, tiltwing PASS; c172-rc WARN: generated tails not read, T153); -3 dynamic modes merged 132c13c (D108 limits; runs with AeroSandbox locally, SKIP in CI; tiltwing Dutch roll unstable -> ledger))*
-- [x] **Step 3: Review** (W34-R); merge
+- [x] **Step 3: Review** (W34-R); merge *(follow-up -4 generated tails merged 9920387: c172-rc Vh 0.63 WARN (band top pending), Vv 0.039 PASS, trim stall +8.2 deg PASS; T153 done)*
 
 ### Unit U19.1: Studio UI overhaul and a better 3D viewer (D92; P285) [hard]
 

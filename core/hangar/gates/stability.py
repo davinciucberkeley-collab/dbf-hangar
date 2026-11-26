@@ -6,9 +6,10 @@ import math  # noqa: F401  (named in the brief; later U18.4 briefs use it)
 import numpy as np
 
 from ..calcs import trim as trimcalc
-from ..checks import G, RHO_DEFAULT
+from ..checks import G, RHO_DEFAULT, _planform_parts
 from ..design import FAIL, PASS, SKIP, WARN, CheckResult
-from ..geometry import lifting_surface_properties, rotation_matrix
+from ..geom.planform import counted_tail_ids, generated_fin, generated_planform
+from ..geometry import lifting_surface_properties, rotation_matrix, strip_planform
 from . import discipline_check
 from .applicability import skip_row
 from .fidelity import resolve_threshold
@@ -28,6 +29,49 @@ def declared_surfaces(design) -> list[dict]:
                     "span_mm": ls["span"], "aspect_ratio": p["aspect_ratio"], "lifting": p["lifting"],
                     "vertical": bool(abs(y[2]) > abs(y[1]))})
     return out
+
+
+def generated_surfaces(design, std: dict) -> list[dict]:
+    """Generated main wing (measured as tier 3 does), counted horizontal tails and their fins, same keys as declared_surfaces."""
+    out = []
+    for c in design.data["components"]:
+        if generated_planform(c) != {"measured": True}:
+            continue
+        p = strip_planform(_planform_parts(design, c)[1], c["id"], n=std["aero"]["planform_strip_count"]["value"],
+                           gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
+                           control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
+        out.append({"id": c["id"], "area_mm2": p["area_mm2"], "mac_mm": p["mac_mm"], "x_ac_mm": p["x_ac_mm"],
+                    "span_mm": p["span_mm"], "aspect_ratio": p["aspect_ratio"], "lifting": True,
+                    "vertical": p["span_axis"] == "z"})
+    counted = counted_tail_ids(design.components)
+    for c in design.data["components"]:
+        if c["id"] not in counted:
+            continue
+        gp = generated_planform(c)
+        if gp and "lifting_surface" in gp:
+            dx, dy, dz = gp["offset"]
+            pseudo = {**c, "geometry": {"lifting_surface": gp["lifting_surface"]},
+                      "position": [c["position"][0] + dx, c["position"][1] + dy, c["position"][2] + dz]}
+            p = lifting_surface_properties(pseudo)
+            out.append({"id": c["id"], "area_mm2": p["area_mm2"], "mac_mm": p["mac_mm"], "x_ac_mm": p["x_ac_mm"],
+                        "span_mm": gp["lifting_surface"]["span"], "aspect_ratio": p["aspect_ratio"],
+                        "lifting": True, "vertical": False})
+        fin = generated_fin(c)
+        if fin is not None:
+            dx, dy, dz = fin["offset"]
+            pseudo = {**c, "geometry": {"lifting_surface": fin["lifting_surface"]},
+                      "position": [c["position"][0] + dx, c["position"][1] + dy, c["position"][2] + dz],
+                      "rotation_deg": fin["rotation_deg"]}
+            p = lifting_surface_properties(pseudo)
+            y = rotation_matrix(pseudo["rotation_deg"]) @ np.array([0.0, 1.0, 0.0])
+            out.append({"id": f"{c['id']}:fin", "area_mm2": p["area_mm2"], "mac_mm": p["mac_mm"],
+                        "x_ac_mm": p["x_ac_mm"], "span_mm": fin["lifting_surface"]["span"],
+                        "aspect_ratio": p["aspect_ratio"], "lifting": False, "vertical": bool(abs(y[2]) > abs(y[1]))})
+    return out
+
+
+def all_surfaces(design, std: dict) -> list[dict]:
+    return declared_surfaces(design) + generated_surfaces(design, std)
 
 
 def main_and_tails(surfaces):
@@ -54,17 +98,17 @@ def tail_volume(ctx, rep) -> list[CheckResult]:
     na = _na(ctx, cid, "tail volume", crit)
     if na:
         return [na]
-    main, h, v = main_and_tails(declared_surfaces(ctx.design))
+    main, h, v = main_and_tails(all_surfaces(ctx.design, ctx.std))
     if main is None:
         return [CheckResult(cid, SKIP, "no main wing found among declared lifting_surface components "
-                            "(generated tail_surfaces and mesh planforms are not read yet)", crit)]
+                            "or generated wing_panel parts (mesh planforms are not read yet)", crit)]
     S, c, b = main["area_mm2"], main["mac_mm"], main["span_mm"]
     out = []
     for name, key, tails, ref in (("Vh", "h", h, S * c), ("Vv", "v", v, S * b)):
         kcrit = f"{ST}#tail_volume_{key}_min"
         if not tails:
             kind = "horizontal" if key == "h" else "vertical"
-            out.append(CheckResult(cid, SKIP, f"no {kind} tail found among declared lifting_surface components",
+            out.append(CheckResult(cid, SKIP, f"no {kind} tail found among declared lifting_surface components or generated tail_surfaces",
                                    kcrit, {"coefficient": name}))
             continue
         x = sum(t["area_mm2"] * (t["x_ac_mm"] - main["x_ac_mm"]) for t in tails) / ref
@@ -90,9 +134,9 @@ def trim(ctx, rep) -> list[CheckResult]:
     it = _na(ctx, cid, "elevator trim", crit)
     if it is not None:
         return [it]
-    main, h, _v = main_and_tails(declared_surfaces(ctx.design))
+    main, h, _v = main_and_tails(all_surfaces(ctx.design, ctx.std))
     if main is None or not h:
-        return [CheckResult(cid, SKIP, "no main wing or no horizontal tail among declared lifting_surface components",
+        return [CheckResult(cid, SKIP, "no main wing or no horizontal tail among declared lifting_surface components or generated parts",
                             crit, {"condition": "all"})]
     t = max(h, key=lambda s: s["area_mm2"])
     s_t = t["area_mm2"] / 1e6
@@ -122,7 +166,8 @@ def trim(ctx, rep) -> list[CheckResult]:
         de = trimcalc.elevator_deflection_deg(cl_t, t["aspect_ratio"], eta, tau)
         limit = -up["value"] if de < 0 else down["value"]
         within = abs(de) <= abs(limit)
-        msg = (f"{cond}: V {v:.1f} m/s, tail lift {l_t:.2f} N ({'down' if l_t < 0 else 'up'}), "
+        speed_note = " (the T3.stall speed)" if cond == "stall" else ""
+        msg = (f"{cond}: V {v:.1f} m/s{speed_note}, tail lift {l_t:.2f} N ({'down' if l_t < 0 else 'up'}), "
                f"elevator {de:+.1f} deg vs default travel {limit:+.0f} deg "
                f"(stick-fixed, tail at zero incidence, cm_ac {cm_ac}, tau {tau})")
         if pending and not within:

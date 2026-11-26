@@ -5405,12 +5405,12 @@ items:
     text: 'Follow-up U18.4: T3.trim and T3.tail_volume read only declared lifting_surface tails, so generated tails (tail_surfaces / fin generators, e.g. c172-rc) get a SKIP and the showcase has no trim or tail-volume numbers; read generated tails. Also the trim stall row uses default-CLmax stall speed, which U18.2 found 18 % high on the C172.'
     source: reviews/2026-11-25-w34b.md
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: '9920387'
     decided_in: ''
-    updated: '2026-11-25'
+    updated: '2026-11-26'
   - id: T154
     kind: task
     text: 'Builders: never run python with stdin (, ); a stray stdin process later re-ran an old edit script and re-added duplicate definitions on std/u17.1-2b-criteria (W34-R3 4b). Write scripts to files; before committing, confirm no background task of yours is still running. Add this line to the builder role file and the shared environment briefs. [duplicate of T152 (created by a delayed shell command after a backtick slip)]'
