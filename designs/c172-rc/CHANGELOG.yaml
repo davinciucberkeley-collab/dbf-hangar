@@ -1046,3 +1046,1253 @@
   - -53
   why: 'U16.1 S9c Part B: hollow fuselage, part rests on the inner skin'
   kind: modify
+- date: '2026-11-26T12:55:23Z'
+  key: components[arm-ail-r]
+  old: '{id: arm-ail-r, type: other, description: "servo arm", geometry: {generator:
+    plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}, position: [276, 423,
+    61.25], mass_model: {material: petg-printed}, material: "PETG (printed)", manufacturing:
+    {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[rod-ail-r]
+  old: '{id: rod-ail-r, type: other, description: "pushrod, 1.5 mm carbon", geometry:
+    {generator: strut, params: {start: [276, 426, 61.25], end: [318, 426, 61.25],
+    diameter: 1.5}}, position: [0, 0, 0], mass_model: {material: cfrp-tube}, material:
+    "CFRP rod", manufacturing: {method: purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[horn-ail-r]
+  old: '{id: horn-ail-r, type: other, description: "control horn", geometry: {generator:
+    plate, params: {plane: xz, size: [4, 22.5], thickness: 1.5}}, position: [320,
+    426, 71.25], mass_model: {material: petg-printed}, material: "PETG (printed)",
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[pin-ail-r]
+  old: '{id: pin-ail-r, type: other, description: "link pin", geometry: {generator:
+    tube, params: {axis: y, length: 1.2, outer_d: 1.5}}, position: [320, 426, 61.25],
+    mass_model: {material: cfrp-tube}, material: "CFRP rod", manufacturing: {method:
+    purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[arm-ail-l]
+  old: '{id: arm-ail-l, type: other, description: "servo arm", geometry: {generator:
+    plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}, position: [276, -423,
+    61.25], mass_model: {material: petg-printed}, material: "PETG (printed)", manufacturing:
+    {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[rod-ail-l]
+  old: '{id: rod-ail-l, type: other, description: "pushrod, 1.5 mm carbon", geometry:
+    {generator: strut, params: {start: [276, -426, 61.25], end: [318, -426, 61.25],
+    diameter: 1.5}}, position: [0, 0, 0], mass_model: {material: cfrp-tube}, material:
+    "CFRP rod", manufacturing: {method: purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[horn-ail-l]
+  old: '{id: horn-ail-l, type: other, description: "control horn", geometry: {generator:
+    plate, params: {plane: xz, size: [4, 22.5], thickness: 1.5}}, position: [320,
+    -426, 71.25], mass_model: {material: petg-printed}, material: "PETG (printed)",
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[pin-ail-l]
+  old: '{id: pin-ail-l, type: other, description: "link pin", geometry: {generator:
+    tube, params: {axis: y, length: 1.2, outer_d: 1.5}}, position: [320, -426, 61.25],
+    mass_model: {material: cfrp-tube}, material: "CFRP rod", manufacturing: {method:
+    purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[arm-elev]
+  old: '{id: arm-elev, type: other, description: "servo arm", geometry: {generator:
+    plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}, position: [590, 12,
+    -10.75], mass_model: {material: petg-printed}, material: "PETG (printed)", manufacturing:
+    {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[rod-elev]
+  old: '{id: rod-elev, type: other, description: "pushrod, 1.5 mm carbon", geometry:
+    {generator: strut, params: {start: [590, 15, -10.75], end: [736, 15, -10.75],
+    diameter: 1.5}}, position: [0, 0, 0], mass_model: {material: cfrp-tube}, material:
+    "CFRP rod", manufacturing: {method: purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[horn-elev]
+  old: '{id: horn-elev, type: other, description: "control horn", geometry: {generator:
+    plate, params: {plane: xz, size: [4, 8.8], thickness: 1.5}}, position: [738, 15,
+    -7.1], mass_model: {material: petg-printed}, material: "PETG (printed)", manufacturing:
+    {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[pin-elev]
+  old: '{id: pin-elev, type: other, description: "link pin", geometry: {generator:
+    tube, params: {axis: y, length: 1.2, outer_d: 1.5}}, position: [738, 15, -10.75],
+    mass_model: {material: cfrp-tube}, material: "CFRP rod", manufacturing: {method:
+    purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[arm-rud]
+  old: '{id: arm-rud, type: other, description: "servo arm", geometry: {generator:
+    plate, params: {plane: xy, size: [4, 14], thickness: 1.5}}, position: [590, -12,
+    14.75], mass_model: {material: petg-printed}, material: "PETG (printed)", manufacturing:
+    {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[rod-rud]
+  old: '{id: rod-rud, type: other, description: "pushrod, 1.5 mm carbon", geometry:
+    {generator: strut, params: {start: [590, -15, 14.75], end: [701.5, -15, 14.75],
+    diameter: 1.5}}, position: [0, 0, 0], mass_model: {material: cfrp-tube}, material:
+    "CFRP rod", manufacturing: {method: purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[horn-rud]
+  old: '{id: horn-rud, type: other, description: "control horn", geometry: {generator:
+    plate, params: {plane: xy, size: [6, 12], thickness: 1.5}}, position: [705.5,
+    -10.5, 15.5], mass_model: {material: petg-printed}, material: "PETG (printed)",
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: components[pin-rud]
+  old: '{id: pin-rud, type: other, description: "link pin", geometry: {generator:
+    tube, params: {axis: z, length: 1.2, outer_d: 1.5}}, position: [705.5, -15, 15.5],
+    mass_model: {material: cfrp-tube}, material: "CFRP rod", manufacturing: {method:
+    purchased}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[servo-arm-ail-r]
+  old: '{id: servo-arm-ail-r, parent: servo-ail-r, child: arm-ail-r, method: bolted,
+    location: [276, 420, 62], embed_ok: true, rated_load_n: 1, rating_basis: placeholder,
+    articulation: {type: revolute, pivot: [276, 420, 61.25], axis: [0, 0, 1], range_deg:
+    [-30, 30]}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[arm-rod-ail-r]
+  old: '{id: arm-rod-ail-r, parent: arm-ail-r, child: rod-ail-r, method: hinge, location:
+    [276, 426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder,
+    kinematic_link: true}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[ail-horn-r]
+  old: '{id: ail-horn-r, parent: aileron-r, child: horn-ail-r, method: glued, location:
+    [320, 426, 82], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[horn-pin-ail-r]
+  old: '{id: horn-pin-ail-r, parent: horn-ail-r, child: pin-ail-r, method: bolted,
+    location: [320, 426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[servo-arm-ail-l]
+  old: '{id: servo-arm-ail-l, parent: servo-ail-l, child: arm-ail-l, method: bolted,
+    location: [276, -420, 62], embed_ok: true, rated_load_n: 1, rating_basis: placeholder,
+    articulation: {type: revolute, pivot: [276, -420, 61.25], axis: [0, 0, 1], range_deg:
+    [-30, 30]}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[arm-rod-ail-l]
+  old: '{id: arm-rod-ail-l, parent: arm-ail-l, child: rod-ail-l, method: hinge, location:
+    [276, -426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder,
+    kinematic_link: true}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[ail-horn-l]
+  old: '{id: ail-horn-l, parent: aileron-l, child: horn-ail-l, method: glued, location:
+    [320, -426, 82], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[horn-pin-ail-l]
+  old: '{id: horn-pin-ail-l, parent: horn-ail-l, child: pin-ail-l, method: bolted,
+    location: [320, -426, 61.25], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[servo-arm-elev]
+  old: '{id: servo-arm-elev, parent: servo-elev, child: arm-elev, method: bolted,
+    location: [590, 9, -10], embed_ok: true, rated_load_n: 1, rating_basis: placeholder,
+    articulation: {type: revolute, pivot: [590, 9, -10.75], axis: [0, 0, 1], range_deg:
+    [-10, 10]}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[arm-rod-elev]
+  old: '{id: arm-rod-elev, parent: arm-elev, child: rod-elev, method: hinge, location:
+    [590, 15, -10.75], embed_ok: true, rated_load_n: 1, rating_basis: placeholder,
+    kinematic_link: true}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[elev-horn]
+  old: '{id: elev-horn, parent: elevator, child: horn-elev, method: glued, location:
+    [738, 15, -3], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[horn-pin-elev]
+  old: '{id: horn-pin-elev, parent: horn-elev, child: pin-elev, method: bolted, location:
+    [738, 15, -10.75], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[servo-arm-rud]
+  old: '{id: servo-arm-rud, parent: servo-rud, child: arm-rud, method: bolted, location:
+    [590, -9, 14], embed_ok: true, rated_load_n: 1, rating_basis: placeholder, articulation:
+    {type: revolute, pivot: [590, -9, 14.75], axis: [0, 0, 1], range_deg: [-10, 10]}}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[arm-rod-rud]
+  old: '{id: arm-rod-rud, parent: arm-rud, child: rod-rud, method: hinge, location:
+    [590, -15, 14.75], embed_ok: true, rated_load_n: 1, rating_basis: placeholder,
+    kinematic_link: true}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[rud-horn]
+  old: '{id: rud-horn, parent: rudder, child: horn-rud, method: glued, location: [705.5,
+    -5.5, 16], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: attachments[horn-pin-rud]
+  old: '{id: horn-pin-rud, parent: horn-rud, child: pin-rud, method: bolted, location:
+    [705.5, -15, 15.5], embed_ok: true, rated_load_n: 1, rating_basis: placeholder}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: mechanisms[aileron-r-drive]
+  old: '{id: aileron-r-drive, driver: servo-arm-ail-r, driven: [wing-aileron-r], input_range_deg:
+    [-20, 20], link: {driver_end: arm-rod-ail-r, follower_end: horn-pin-ail-r}, expect:
+    [{attachment: wing-aileron-r, ratio: 0.25}], kinematics: four_bar}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: mechanisms[aileron-l-drive]
+  old: '{id: aileron-l-drive, driver: servo-arm-ail-l, driven: [wing-aileron-l], input_range_deg:
+    [-20, 20], link: {driver_end: arm-rod-ail-l, follower_end: horn-pin-ail-l}, expect:
+    [{attachment: wing-aileron-l, ratio: -0.25}], kinematics: four_bar}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: mechanisms[elevator-drive]
+  old: '{id: elevator-drive, driver: servo-arm-elev, driven: [tail-elevator], input_range_deg:
+    [-10, 10], link: {driver_end: arm-rod-elev, follower_end: horn-pin-elev}, expect:
+    [{attachment: tail-elevator, ratio: -0.56}], kinematics: four_bar}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:23Z'
+  key: mechanisms[rudder-drive]
+  old: '{id: rudder-drive, driver: servo-arm-rud, driven: [tail-rudder], input_range_deg:
+    [-10, 10], link: {driver_end: arm-rod-rud, follower_end: horn-pin-rud}, expect:
+    [{attachment: tail-rudder, ratio: 0.4}], kinematics: four_bar}'
+  new: null
+  why: 'S4b: replace hand-made linkages by add-linkage (D120)'
+  kind: remove
+- date: '2026-11-26T12:55:47Z'
+  key: components[servo-ail-r].rotation_deg
+  old: null
+  new:
+  - 0
+  - 180
+  - 0
+  why: 'S4b: shaft toward the horn side'
+  kind: add
+  regenerated:
+  - servo-ail-r
+- date: '2026-11-26T12:55:56Z'
+  key: components[servo-ail-l].rotation_deg
+  old: null
+  new:
+  - 0
+  - 180
+  - 0
+  why: 'S4b: shaft toward the horn side'
+  kind: add
+  regenerated:
+  - servo-ail-l
+- date: '2026-11-26T12:56:06Z'
+  key: components[servo-elev].rotation_deg
+  old: null
+  new:
+  - 0
+  - 180
+  - 0
+  why: 'S4b: shaft toward the horn side'
+  kind: add
+  regenerated:
+  - servo-elev
+- date: '2026-11-26T12:56:20Z'
+  key: components[servo-elev].position
+  old:
+  - 590
+  - 9
+  - 2
+  new:
+  - 590
+  - 9
+  - 2.55
+  why: 'S4b: arm plane z -10.8 (elevator pocket centre)'
+  kind: modify
+  regenerated:
+  - servo-elev
+- date: '2026-11-26T12:56:31Z'
+  key: components[servo-rud].position
+  old:
+  - 590
+  - -9
+  - 2
+  new:
+  - 590
+  - -9
+  - 1.4
+  why: 'S4b: arm plane z 14.75 (rudder pocket centre)'
+  kind: modify
+  regenerated:
+  - servo-rud
+- date: '2026-11-26T12:56:48Z'
+  key: components[tail-elevator-arm]
+  old: null
+  new:
+    id: tail-elevator-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 584.5
+        - 9
+        - -10.8
+        end:
+        - 584.9189
+        - 3.0146
+        - -10.8
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: components[tail-elevator-rod]
+  old: null
+  new:
+    id: tail-elevator-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 584.9189
+        - 3.0146
+        - -10.8
+        end:
+        - 732.7291
+        - 13.3604
+        - -10.8
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: components[tail-elevator-horn]
+  old: null
+  new:
+    id: tail-elevator-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 734.167
+        - 15
+        - -2.3378
+        end:
+        - 734.7899
+        - 15
+        - -11.7978
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: components[tail-elevator-pin]
+  old: null
+  new:
+    id: tail-elevator-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 734.7242
+        - 14.1
+        - -10.8
+        end:
+        - 734.7242
+        - 12.9
+        - -10.8
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: attachments[tail-elevator-servo-arm]
+  old: null
+  new:
+    id: tail-elevator-servo-arm
+    parent: servo-elev
+    child: tail-elevator-arm
+    method: bolted
+    location:
+    - 584.5
+    - 9
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 584.5
+      - 9
+      - -10.8
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -10
+      - 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: attachments[tail-elevator-arm-rod]
+  old: null
+  new:
+    id: tail-elevator-arm-rod
+    parent: tail-elevator-arm
+    child: tail-elevator-rod
+    method: hinge
+    location:
+    - 584.9189
+    - 3.0146
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: attachments[tail-elevator-horn-mount]
+  old: null
+  new:
+    id: tail-elevator-horn-mount
+    parent: elevator
+    child: tail-elevator-horn
+    method: glued
+    location:
+    - 734.2327
+    - 15
+    - -3.3357
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: attachments[tail-elevator-horn-pin]
+  old: null
+  new:
+    id: tail-elevator-horn-pin
+    parent: tail-elevator-horn
+    child: tail-elevator-pin
+    method: bolted
+    location:
+    - 734.7242
+    - 13.5
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:56:48Z'
+  key: mechanisms[tail-elevator-drive]
+  old: null
+  new:
+    id: tail-elevator-drive
+    driver: tail-elevator-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elevator
+    input_range_deg:
+    - -10
+    - 10
+    expect:
+    - attachment: tail-elevator
+      ratio: -0.56
+    link:
+      driver_end: tail-elevator-arm-rod
+      follower_end: tail-elevator-horn-pin
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: components[tail-rudder-arm]
+  old: null
+  new:
+    id: tail-rudder-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 595.5
+        - -9
+        - 14.75
+        end:
+        - 595.5599
+        - -14.9997
+        - 14.75
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: components[tail-rudder-rod]
+  old: null
+  new:
+    id: tail-rudder-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 595.5599
+        - -14.9997
+        - 14.75
+        end:
+        - 698.8485
+        - -13.9681
+        - 14.9167
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: components[tail-rudder-horn]
+  old: null
+  new:
+    id: tail-rudder-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 700.0219
+        - -5.0043
+        - 16.5248
+        end:
+        - 700.9403
+        - -14.9614
+        - 16.4082
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: components[tail-rudder-pin]
+  old: null
+  new:
+    id: tail-rudder-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 700.8484
+        - -13.9411
+        - 14.32
+        end:
+        - 700.8484
+        - -13.9551
+        - 15.5199
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: attachments[tail-rudder-servo-arm]
+  old: null
+  new:
+    id: tail-rudder-servo-arm
+    parent: servo-rud
+    child: tail-rudder-arm
+    method: bolted
+    location:
+    - 595.5
+    - -9
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 595.5
+      - -9
+      - 14.75
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -10
+      - 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: attachments[tail-rudder-arm-rod]
+  old: null
+  new:
+    id: tail-rudder-arm-rod
+    parent: tail-rudder-arm
+    child: tail-rudder-rod
+    method: hinge
+    location:
+    - 595.5599
+    - -14.9997
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: attachments[tail-rudder-horn-mount]
+  old: null
+  new:
+    id: tail-rudder-horn-mount
+    parent: rudder
+    child: tail-rudder-horn
+    method: glued
+    location:
+    - 700.1138
+    - -6
+    - 16.5132
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: attachments[tail-rudder-horn-pin]
+  old: null
+  new:
+    id: tail-rudder-horn-pin
+    parent: tail-rudder-horn
+    child: tail-rudder-pin
+    method: bolted
+    location:
+    - 700.8484
+    - -13.9481
+    - 14.92
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:57:34Z'
+  key: mechanisms[tail-rudder-drive]
+  old: null
+  new:
+    id: tail-rudder-drive
+    driver: tail-rudder-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rudder
+    input_range_deg:
+    - -10
+    - 10
+    expect:
+    - attachment: tail-rudder
+      ratio: 0.43
+    link:
+      driver_end: tail-rudder-arm-rod
+      follower_end: tail-rudder-horn-pin
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: components[wing-aileron-r-arm]
+  old: null
+  new:
+    id: wing-aileron-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - 420
+        - 60.65
+        end:
+        - 270.5914
+        - 414.0007
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: components[wing-aileron-r-rod]
+  old: null
+  new:
+    id: wing-aileron-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5914
+        - 414.0007
+        - 60.65
+        end:
+        - 326.8696
+        - 414.858
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: components[wing-aileron-r-horn]
+  old: null
+  new:
+    id: wing-aileron-r-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 312.0153
+        - 411.104
+        - 82.2995
+        end:
+        - 329.4788
+        - 413.4796
+        - 59.7047
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: components[wing-aileron-r-pin]
+  old: null
+  new:
+    id: wing-aileron-r-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 328.8693
+        - 415.4852
+        - 60.7127
+        end:
+        - 328.8693
+        - 414.2918
+        - 60.5873
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: attachments[wing-aileron-r-servo-arm]
+  old: null
+  new:
+    id: wing-aileron-r-servo-arm
+    parent: servo-ail-r
+    child: wing-aileron-r-arm
+    method: bolted
+    location:
+    - 270.5
+    - 420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - 420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: attachments[wing-aileron-r-arm-rod]
+  old: null
+  new:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 270.5914
+    - 414.0007
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: attachments[wing-aileron-r-horn-mount]
+  old: null
+  new:
+    id: wing-aileron-r-horn-mount
+    parent: aileron-r
+    child: wing-aileron-r-horn
+    method: glued
+    location:
+    - 312.6248
+    - 411.1869
+    - 81.511
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: attachments[wing-aileron-r-horn-pin]
+  old: null
+  new:
+    id: wing-aileron-r-horn-pin
+    parent: wing-aileron-r-horn
+    child: wing-aileron-r-pin
+    method: bolted
+    location:
+    - 328.8693
+    - 414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:58:17Z'
+  key: mechanisms[wing-aileron-r-drive]
+  old: null
+  new:
+    id: wing-aileron-r-drive
+    driver: wing-aileron-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-aileron-r
+      ratio: 0.24
+    link:
+      driver_end: wing-aileron-r-arm-rod
+      follower_end: wing-aileron-r-horn-pin
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: components[wing-aileron-l-arm]
+  old: null
+  new:
+    id: wing-aileron-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - -420
+        - 60.65
+        end:
+        - 271.6327
+        - -425.8921
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: components[wing-aileron-l-rod]
+  old: null
+  new:
+    id: wing-aileron-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 271.6327
+        - -425.8921
+        - 60.65
+        end:
+        - 326.9053
+        - -415.2661
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: components[wing-aileron-l-horn]
+  old: null
+  new:
+    id: wing-aileron-l-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 312.0153
+        - -411.104
+        - 82.2995
+        end:
+        - 329.4788
+        - -413.4796
+        - 59.7047
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: components[wing-aileron-l-pin]
+  old: null
+  new:
+    id: wing-aileron-l-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 328.8693
+        - -414.2918
+        - 60.5873
+        end:
+        - 328.8693
+        - -415.4852
+        - 60.7127
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: attachments[wing-aileron-l-servo-arm]
+  old: null
+  new:
+    id: wing-aileron-l-servo-arm
+    parent: servo-ail-l
+    child: wing-aileron-l-arm
+    method: bolted
+    location:
+    - 270.5
+    - -420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - -420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: attachments[wing-aileron-l-arm-rod]
+  old: null
+  new:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 271.6327
+    - -425.8921
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: attachments[wing-aileron-l-horn-mount]
+  old: null
+  new:
+    id: wing-aileron-l-horn-mount
+    parent: aileron-l
+    child: wing-aileron-l-horn
+    method: glued
+    location:
+    - 312.6248
+    - -411.1869
+    - 81.511
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: attachments[wing-aileron-l-horn-pin]
+  old: null
+  new:
+    id: wing-aileron-l-horn-pin
+    parent: wing-aileron-l-horn
+    child: wing-aileron-l-pin
+    method: bolted
+    location:
+    - 328.8693
+    - -414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+  why: S4b
+  kind: add
+- date: '2026-11-26T12:59:09Z'
+  key: mechanisms[wing-aileron-l-drive]
+  old: null
+  new:
+    id: wing-aileron-l-drive
+    driver: wing-aileron-l-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-l
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-aileron-l
+      ratio: 0.25
+    link:
+      driver_end: wing-aileron-l-arm-rod
+      follower_end: wing-aileron-l-horn-pin
+  why: S4b
+  kind: add
+- date: '2026-11-26T13:00:03Z'
+  key: bom.items[b-pushrods].component_ids
+  old:
+  - rod-ail-r
+  - rod-ail-l
+  - rod-elev
+  - rod-rud
+  new:
+  - tail-elevator-rod
+  - tail-rudder-rod
+  - wing-aileron-r-rod
+  - wing-aileron-l-rod
+  why: 'S4b: generated linkage ids'
+  kind: modify
+- date: '2026-11-26T13:00:09Z'
+  key: bom.items[b-arms-horns].component_ids
+  old:
+  - arm-ail-r
+  - arm-ail-l
+  - arm-elev
+  - arm-rud
+  - horn-ail-r
+  - horn-ail-l
+  - horn-elev
+  - horn-rud
+  new:
+  - tail-elevator-arm
+  - tail-elevator-horn
+  - tail-rudder-arm
+  - tail-rudder-horn
+  - wing-aileron-r-arm
+  - wing-aileron-r-horn
+  - wing-aileron-l-arm
+  - wing-aileron-l-horn
+  why: 'S4b: generated linkage ids'
+  kind: modify
+- date: '2026-11-26T13:00:15Z'
+  key: bom.items[b-pins].component_ids
+  old:
+  - pin-ail-r
+  - pin-ail-l
+  - pin-elev
+  - pin-rud
+  new:
+  - tail-elevator-pin
+  - tail-rudder-pin
+  - wing-aileron-r-pin
+  - wing-aileron-l-pin
+  why: 'S4b: generated linkage ids'
+  kind: modify
