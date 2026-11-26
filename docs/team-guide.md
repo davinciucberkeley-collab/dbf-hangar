@@ -232,8 +232,9 @@ A control surface only counts for tier 6 when a `mechanisms[]` entry joins its s
   (`--shaft X,Y,Z` for another axis), and cuts a box bay (servo plus `bay_clearance_mm`) into the host; one logged edit, safe to repeat.
   The result lists the output shaft frame, the removed volume and `body_inside_fraction`. Frames are estimates until measured (D96).
 - Linkage in one step: `plane design add-linkage <design> --servo <servo> --hinge <hinge-attachment> --station <mm> --why "..."` writes arm, rod,
-  horn, pin, their attachments and the `four_bar` mechanism (ratio from the gate) from the servo frame and the resolved hinge; safe to repeat
-  after a wing or servo change. Options and the T1 rows it reports: `docs/mechanisms.md`, "Generate the linkage".
+  horn, pin, their attachments and the `four_bar` mechanism (ratio from the gate), built clear of the servo (arm plane above its highest point), the
+  horn rooted on the surface skin aft of the hinge and the pin beside the horn; safe to repeat after a wing or servo change. Options, the `arm plane`
+  error and the rows it reports: `docs/mechanisms.md`, "Generate the linkage".
 
 ## 5. Task: gate work
 
