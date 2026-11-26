@@ -498,3 +498,269 @@ def test_timeline_opens_at_input_zero_with_nothing_moved(browser, pages_base):
     assert page.evaluate("window.planeViewer.vp.state().moved") != []
     assert errors == []
     page.close()
+
+
+# ---------- U19.1 B5: move parts with a gizmo, review, Apply through design.set ----------
+VPJ = "window.planeViewer.vp"
+BATTERY = {"id": "battery", "from_mm": [140, 0, -27.5], "to_mm": [150, 0, -27.5], "delta_mm": [10, 0, 0]}
+
+
+def test_move_hook_and_pending_units(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    assert page.evaluate(f'{VPJ}.move("battery", [10, 0, 0])') is True
+    assert page.evaluate(f"{VPJ}.pending()") == [BATTERY]
+    assert page.evaluate(f'{VPJ}.move("battery", [0, 5, 2.5])') is True
+    assert page.evaluate(f"{VPJ}.pending()[0].delta_mm") == [10, 5, 2.5]
+    assert "battery" in page.evaluate(f"{VPJ}.state().moved")
+    assert page.get_attribute('li.part-row[data-id="battery"]', "data-moved") == "1"
+    assert page.inner_text('[data-testid="apply-count"]').startswith("1 part moved")
+    assert errors == []
+    page.close()
+
+
+def test_move_with_attached_parts_toggle(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    assert page.evaluate(f'{VPJ}.move("wing", [0, 0, 5])') is True
+    pend = page.evaluate(f"{VPJ}.pending()")
+    assert sorted(p["id"] for p in pend) == sorted(["wing", "mount_l", "mount_r", "motor_l", "motor_r", "prop_l", "prop_r", "fin_l", "fin_r"])
+    assert all(p["delta_mm"] == [0, 0, 5] for p in pend)
+    page.click('[data-testid="btn-revert"]')
+    assert page.evaluate(f"{VPJ}.pending()") == []
+    assert page.evaluate(f"{VPJ}.state().moved") == []
+    page.uncheck('[data-testid="move-with-attached"]')
+    assert page.evaluate(f'{VPJ}.move("wing", [0, 0, 5])') is True
+    assert [p["id"] for p in page.evaluate(f"{VPJ}.pending()")] == ["wing"]
+    assert errors == []
+    page.close()
+
+
+def test_move_is_refused_while_exploded_and_for_unknown(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.evaluate(f"{VPJ}.explode(0.5)")
+    assert page.evaluate(f'{VPJ}.move("battery", [1, 0, 0])') is False
+    assert page.evaluate(f"{VPJ}.pending()") == []
+    assert page.is_disabled('[data-testid="tool-move"]')
+    page.evaluate(f"{VPJ}.explode(0)")
+    assert page.is_enabled('[data-testid="tool-move"]')
+    assert page.evaluate(f'{VPJ}.move("nope", [1, 0, 0])') is False
+    assert errors == []
+    page.close()
+
+
+def test_tool_move_shows_gizmo_on_selection(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.click('[data-testid="tool-move"]')
+    page.evaluate(f'{VPJ}.select(["battery"])')
+    s = page.evaluate(f"{VPJ}.state()")
+    assert s["tool"] == "move" and s["gizmo"] == "battery"
+    page.wait_for_function(f"{VPJ}.mover.tc && {VPJ}.mover.tc.object !== undefined")
+    page.evaluate(f"{VPJ}.select([])")
+    assert page.evaluate(f"{VPJ}.state().gizmo") is None
+    page.click('[data-testid="tool-select"]')
+    assert page.evaluate(f"{VPJ}.state().tool") == "select"
+    assert errors == []
+    page.close()
+
+
+def test_nudge_inputs_set_the_delta(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.evaluate(f'{VPJ}.select(["battery"])')
+    page.evaluate(f'{VPJ}.move("battery", [10, 0, 0])')
+    page.fill('[data-testid="nudge-x"]', "12.5")
+    page.press('[data-testid="nudge-x"]', "Tab")
+    assert page.evaluate(f"{VPJ}.pending()[0].delta_mm") == [12.5, 0, 0]
+    assert page.is_visible('[data-testid="tag-moved"]')
+    assert errors == []
+    page.close()
+
+
+def test_timeline_blocked_while_moves_are_pending(browser, pages_base):
+    page, errors = _open(browser, pages_base, "mech-good")
+    assert page.is_enabled('[data-testid="tl-play"]')
+    assert page.evaluate(f'{VPJ}.move("arm", [1, 0, 0])') is True
+    assert page.is_disabled('[data-testid="tl-play"]')
+    assert page.is_visible('[data-testid="tl-blocked"]')
+    page.click('[data-testid="btn-revert"]')
+    assert page.is_enabled('[data-testid="tl-play"]')
+    assert errors == []
+    page.close()
+
+
+def test_discard_prompt_on_design_switch(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.evaluate(f'{VPJ}.move("battery", [10, 0, 0])')
+    msgs = []
+    action = ["dismiss"]
+
+    def on_dialog(d):
+        msgs.append(d.message)
+        d.dismiss() if action[0] == "dismiss" else d.accept()
+    page.on("dialog", on_dialog)
+    page.click('.design-item[data-id="mech-good"]')
+    assert page.evaluate("window.planeViewer.selected()") == "example-tailsitter-wing"
+    assert len(page.evaluate(f"{VPJ}.pending()")) == 1
+    action[0] = "accept"
+    page.click('.design-item[data-id="mech-good"]')
+    _ready(page, "designs")
+    assert page.evaluate("window.planeViewer.selected()") == "mech-good"
+    assert page.evaluate(f"{VPJ}.pending()") == []
+    assert msgs == ["Discard 1 unsaved move?", "Discard 1 unsaved move?"]
+    assert errors == []
+    page.close()
+
+
+def test_pages_build_has_revert_but_no_apply(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.evaluate(f'{VPJ}.move("battery", [10, 0, 0])')
+    assert page.locator('[data-testid="btn-revert"]').count() == 1
+    assert page.locator('[data-testid="btn-review-apply"]').count() == 0
+    assert page.locator("[data-edit]").count() == 0
+    assert errors == []
+    page.close()
+
+
+def _studio_open(browser, studio_base):
+    from hangar import studio
+    ddir = studio.DESIGNS_DIR / "example-tailsitter-wing"
+    page = browser.new_page()
+    errors = collect(page)
+    page.goto(studio_base + "#m=designs&d=example-tailsitter-wing")
+    _ready(page, "designs")
+    page.wait_for_selector('[data-testid="btn-validate"]:not([disabled])', timeout=240000)
+    page.wait_for_function("window.planeViewer.vp && window.planeViewer.vp.state().all.length > 0")
+    return page, errors, ddir
+
+
+def _apply(page, why):
+    page.click('[data-testid="btn-review-apply"]')
+    page.wait_for_selector("dialog.dlg")
+    page.fill('[data-testid="apply-why"]', why)
+    page.click('[data-testid="apply-go"]')
+    page.wait_for_selector("dialog.dlg", state="detached", timeout=30000)
+
+
+def _positions(ddir):
+    import yaml
+    doc = yaml.safe_load((ddir / "plane.yaml").read_text())
+    return {c["id"]: c["position"] for c in doc["components"]}
+
+
+def _changelog(ddir):
+    import yaml
+    f = ddir / "CHANGELOG.yaml"
+    return yaml.safe_load(f.read_text()) if f.exists() else []
+
+
+def test_apply_writes_one_position_and_one_changelog_entry(browser, studio_base):
+    page, errors, ddir = _studio_open(browser, studio_base)
+    plane_bytes, before, log0 = (ddir / "plane.yaml").read_bytes(), _positions(ddir), _changelog(ddir)
+    page.evaluate(f'{VPJ}.select(["battery"])')
+    page.evaluate(f'{VPJ}.move("battery", [10, 0, 0])')
+    cam = page.evaluate(f"{VPJ}.camera.position.toArray()")
+    page.click('[data-testid="btn-review-apply"]')
+    page.wait_for_selector("dialog.dlg")
+    text = page.inner_text("dialog.dlg")
+    assert "components[battery].position" in text
+    assert "[140, 0, -27.5] -> [150, 0, -27.5]" in text
+    cli = page.inner_text('[data-testid="apply-cli"]')
+    assert "plane design set" in cli and '"components[battery].position"' in cli
+    page.click('[data-testid="apply-go"]')
+    assert page.inner_text("dialog.dlg .dlg-err") == "Say why in one line."
+    assert (ddir / "plane.yaml").read_bytes() == plane_bytes
+    page.fill('[data-testid="apply-why"]', "battery 10 mm aft for CG")
+    page.click('[data-testid="apply-go"]')
+    page.wait_for_selector("dialog.dlg", state="detached", timeout=30000)
+    after = _positions(ddir)
+    assert after["battery"] == [150, 0, -27.5]
+    assert {k: v for k, v in after.items() if k != "battery"} == {k: v for k, v in before.items() if k != "battery"}
+    log = _changelog(ddir)
+    assert len(log) == len(log0) + 1
+    assert log[-1]["key"] == "components[battery].position"
+    assert log[-1]["why"] == "battery 10 mm aft for CG"
+    assert log[-1]["kind"] == "modify"
+    from test_viewer_static import _wait_studio_idle
+    _wait_studio_idle(studio_base)
+    page.wait_for_function(f"{VPJ}.state().pending === 0")
+    page.wait_for_function(f"{VPJ}.parts && {VPJ}.parts.parts.find((p) => p.id === 'battery').position_mm[0] === 150", timeout=60000)
+    assert page.evaluate(f"{VPJ}.state().selection") == ["battery"]
+    now = page.evaluate(f"{VPJ}.camera.position.toArray()")
+    assert all(abs(a - b) < 1e-6 for a, b in zip(cam, now)), (cam, now)
+    assert errors == []
+    page.close()
+
+
+def test_apply_two_parts_use_also_one_changelog_each(browser, studio_base):
+    page, errors, ddir = _studio_open(browser, studio_base)
+    before, log0 = _positions(ddir), _changelog(ddir)
+    page.uncheck('[data-testid="move-with-attached"]')
+    assert page.evaluate(f'{VPJ}.move("fin_l", [0, 0, 3])') is True
+    assert page.evaluate(f'{VPJ}.move("fin_r", [0, 0, 3])') is True
+    page.click('[data-testid="btn-review-apply"]')
+    page.wait_for_selector("dialog.dlg")
+    assert "--also" in page.inner_text('[data-testid="apply-cli"]')
+    page.click("dialog.dlg footer .ghost")
+    page.wait_for_selector("dialog.dlg", state="detached")
+    _apply(page, "fins 3 mm up")
+    after = _positions(ddir)
+    for fid in ("fin_l", "fin_r"):
+        assert after[fid] == [before[fid][0], before[fid][1], before[fid][2] + 3]
+    log = _changelog(ddir)
+    assert len(log) == len(log0) + 2
+    assert {e["key"] for e in log[-2:]} == {"components[fin_l].position", "components[fin_r].position"}
+    assert all(e["why"] == "fins 3 mm up" for e in log[-2:])
+    assert errors == []
+    page.close()
+
+
+def test_revert_leaves_the_file_byte_identical(browser, studio_base):
+    page, errors, ddir = _studio_open(browser, studio_base)
+    log_file = ddir / "CHANGELOG.yaml"
+    plane_bytes = (ddir / "plane.yaml").read_bytes()
+    log_bytes = log_file.read_bytes() if log_file.exists() else None
+    page.evaluate(f'{VPJ}.move("battery", [10, 0, 0])')
+    page.click('[data-testid="btn-revert"]')
+    assert page.evaluate(f"{VPJ}.pending()") == []
+    assert (ddir / "plane.yaml").read_bytes() == plane_bytes
+    assert (log_file.read_bytes() if log_file.exists() else None) == log_bytes
+    assert errors == []
+    page.close()
+
+
+_SCREEN = """(d) => { const vp = window.planeViewer.vp, v = vp.mover.proxy.position.clone();
+  v.x += d[0]; v.y += d[1]; v.z += d[2]; v.project(vp.camera);
+  const r = vp.renderer.domElement.getBoundingClientRect();
+  return [r.left + (v.x + 1) / 2 * r.width, r.top + (1 - v.y) / 2 * r.height]; }"""
+
+
+def test_gizmo_drag_moves_the_part_in_whole_millimetres(browser, pages_base):
+    page, errors = _open(browser, pages_base, TREE)
+    page.set_viewport_size({"width": 1500, "height": 900})  # the top bars overlap in the default 1280 px window
+    page.click('[data-testid="view-side"]')
+    page.wait_for_timeout(600)
+    page.click('[data-testid="tool-move"]')
+    page.evaluate(f'{VPJ}.select(["battery"])')
+    page.wait_for_function(f"{VPJ}.mover.tc && {VPJ}.mover.tc.object !== undefined")
+    page.wait_for_timeout(300)
+    origin = page.evaluate(_SCREEN, [0, 0, 0])
+    hit = None
+    for k in range(5, 60, 2):  # hover along the scene X arrow until the gizmo reports it
+        hit = page.evaluate(_SCREEN, [k / 1000, 0, 0])
+        page.mouse.move(*hit)
+        page.wait_for_timeout(30)
+        if page.evaluate(f"{VPJ}.mover.tc.axis") == "X":
+            break
+    assert page.evaluate(f"{VPJ}.mover.tc.axis") == "X"
+    dx, dy = hit[0] - origin[0], hit[1] - origin[1]
+    norm = (dx * dx + dy * dy) ** 0.5
+    page.mouse.down()
+    for s in range(1, 9):
+        page.mouse.move(hit[0] + dx / norm * 8 * s, hit[1] + dy / norm * 8 * s)
+        page.wait_for_timeout(30)
+    page.mouse.up()
+    pend = page.evaluate(f"{VPJ}.pending()")
+    assert len(pend) == 1 and pend[0]["id"] == "battery"
+    d = pend[0]["delta_mm"]
+    assert d[0] != 0 and d[1] == 0 and d[2] == 0 and d[0] == int(d[0])  # one axis, whole millimetres
+    assert page.evaluate(f"{VPJ}.state().selection") == ["battery"]  # the click-through did not deselect
+    assert errors == []
+    page.close()
