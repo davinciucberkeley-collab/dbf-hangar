@@ -12,7 +12,9 @@ machine_optional_methods:
   value: [purchased, hand-cut, foamboard, hotwire-foam, composite-layup]
   rule: "T4.method: a part with one of these methods needs no machine entry (no fixed bed to fit against)."
   source: "team constraint, team statement 2026-11-11 (Jacobs has basically everything you could want)"
-  note: "hot-wire confirmed explicitly; composite-layup inferred from the same statement; confirm with the team. Owner and date: added by U17.1-2b-team-owner."
+  owner: Tristan
+  date: "2026-11-25"
+  note: "hot-wire confirmed explicitly; composite-layup inferred from the same statement; confirm with the team."
 machines:
   - id: jacobs-laser
     source: "Jacobs Institute labs and equipment page, https://jacobsinstitute.berkeley.edu/our-spaces-at-a-glance/labs-and-equipment/ (retrieved 2026-11-11)"
@@ -46,6 +48,8 @@ machines:
     verified: true
   - id: jacobs-fdm
     source: "team constraint, team statement 2026-11-11 (256 mm floor; not from the published page)"
+    owner: Tristan
+    date: "2026-11-25"
     name: "Prusa 3D printers (model not stated)"
     count: unknown
     methods: [3d-print-fdm]
@@ -56,6 +60,8 @@ machines:
     verified: true
   - id: jacobs-fdm-lulzbot
     source: "team constraint, team statement 2026-11-11 (256 mm floor; not from the published page)"
+    owner: Tristan
+    date: "2026-11-25"
     name: "LulzBot TAZ 6 (1.2 mm nozzle)"
     count: unknown
     methods: [3d-print-fdm]
@@ -66,6 +72,8 @@ machines:
     verified: true
   - id: jacobs-fdm-fortus
     source: "team constraint, team statement 2026-11-11 (256 mm floor; not from the published page)"
+    owner: Tristan
+    date: "2026-11-25"
     name: "Stratasys Fortus 380MC"
     count: 1
     methods: [3d-print-fdm]
