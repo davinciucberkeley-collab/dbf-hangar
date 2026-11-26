@@ -77,7 +77,36 @@ def _gear_wheel(p: dict, axle, w: float, d: float):
     return kernel.tube("y", axle, w, d)
 
 
+def _gear_build_separate(p: dict, base_dir) -> list:
+    """Legs, axle stubs and the nose or tail fork only; the wheels are `wheel` components (U16.1 S2)."""
+    wd, ww, ld = p["wheel_d"], p["wheel_w"], p["leg_d"]
+    gz, az = p["ground_z"], p["attach_z"]
+    axle_d = p["axle_d"] or 0.5 * ld
+    axle_z = gz + wd / 2.0
+    off = (az - axle_z) * math.tan(math.radians(p["leg_splay_deg"]))
+    yb = p["track"] / 2.0 - ww / 2.0 - ld / 2.0 - 0.5
+    parts = []
+    for s in (-1, 1):
+        parts.append(_segment((p["main_x"], s * (yb - off), az), (p["main_x"], s * yb, axle_z), ld, 0.0))
+        y_in, y_out = s * yb, s * (p["track"] / 2.0 + ww / 2.0 + 1.0)
+        parts.append(kernel.tube("y", (p["main_x"], (y_in + y_out) / 2.0, axle_z), abs(y_out - y_in), axle_d))
+    fw = p["front_wheel_d"] or wd
+    fld = p["front_leg_d"] or ld
+    fx = p["front_x"]
+    axle_z_f = gz + fw / 2.0
+    crown_z = axle_z_f + fw / 2.0 + 1.0
+    yp = ww / 2.0 + fld / 2.0 + 0.5
+    parts.append(_segment((fx, 0.0, p.get("front_attach_z", az)), (fx, 0.0, crown_z), fld, 0.0))
+    parts.append(kernel.tube("y", (fx, 0.0, crown_z), 2 * yp, fld))
+    for s in (-1, 1):
+        parts.append(_segment((fx, s * yp, crown_z), (fx, s * yp, axle_z_f), fld, 0.0))
+    parts.append(kernel.tube("y", (fx, 0.0, axle_z_f), 2 * yp, axle_d))
+    return [kernel.union(parts)]
+
+
 def _gear_build(p: dict, base_dir) -> list:
+    if p.get("wheels", "merged") == "separate":
+        return _gear_build_separate(p, base_dir)
     wd, ww, ld = p["wheel_d"], p["wheel_w"], p["leg_d"]
     gz, az = p["ground_z"], p["attach_z"]
     parts = []
@@ -122,6 +151,13 @@ def _gear_check(p: dict) -> list[str]:
         errs.append("wheel_pitch: must be > wheel_d when main_wheels > 1")
     if "front_attach_z" in p and not p["front_attach_z"] - p["ground_z"] > fw:
         errs.append("front_attach_z: must exceed ground_z by more than the front wheel diameter")
+    if p.get("wheels", "merged") == "separate" and p["main_wheels"] > 1:
+        errs.append("wheels: separate needs main_wheels 1")
+    if p.get("axle_d"):
+        if not p["axle_d"] < p["wheel_w"]:
+            errs.append("axle_d: must be < wheel_w")
+        if not p["axle_d"] <= p["leg_d"]:
+            errs.append("axle_d: must be <= leg_d")
     return errs
 
 
@@ -145,5 +181,39 @@ register(Generator(
      "wheel_shape": ParamSpec("choice", default="disc", choices=("disc", "tyre"),
                               doc="disc = plain cylinder wheel; tyre = rounded tyre with recessed hub"),
      "front_attach_z": ParamSpec("number", doc="z where the nose or tail leg top meets the airframe, mm; "
-                                 "omitted = attach_z")},
+                                 "omitted = attach_z"),
+     "wheels": ParamSpec("choice", default="merged", choices=("merged", "separate"),
+                         doc="merged = legs, axles and wheels in one mesh (default); separate = legs, axle stubs and "
+                             "the fork only: add one wheel generator component per wheel"),
+     "axle_d": ParamSpec("number", default=0.0, minimum=0,
+                         doc="axle stub diameter, mm; 0 = half the leg diameter; only used with wheels separate")},
     _gear_build, check=_gear_check))
+
+
+# ------------------------------------------------------------------ wheel
+def _wheel_build(p: dict, base_dir) -> list:
+    mesh = _gear_wheel({"wheel_shape": p["shape"]}, (0, 0, 0), p["wheel_w"], p["wheel_d"])
+    if p["bore_d"] > 0:
+        mesh = kernel.difference(mesh, [kernel.tube("y", (0, 0, 0), 2 * p["wheel_w"], p["bore_d"])])
+    return [mesh]
+
+
+def _wheel_check(p: dict) -> list[str]:
+    errs = []
+    if not p["bore_d"] < 0.5 * p["wheel_d"]:
+        errs.append("bore_d: must be < half the wheel diameter")
+    if not p["bore_d"] < p["wheel_w"] * 4:
+        errs.append("bore_d: must be < 4 x wheel_w")
+    return errs
+
+
+register(Generator(
+    "wheel",
+    {"wheel_d": ParamSpec("number", required=True, exclusive_minimum=0, doc="wheel diameter, mm"),
+     "wheel_w": ParamSpec("number", required=True, exclusive_minimum=0, doc="wheel width, mm"),
+     "shape": ParamSpec("choice", default="tyre", choices=("disc", "tyre"),
+                        doc="disc = plain cylinder wheel; tyre = rounded tyre with recessed hub"),
+     "bore_d": ParamSpec("number", default=0.0, minimum=0,
+                         doc="axle bore diameter, mm; 0 = solid; keep it within 4 mm (2 x attach_tolerance_mm) of "
+                             "the axle so the joint point at the axle centre stays on the wheel")},
+    _wheel_build, check=_wheel_check))

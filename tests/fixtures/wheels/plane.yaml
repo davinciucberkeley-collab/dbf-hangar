@@ -1,0 +1,19 @@
+schema_version: "1.3"
+id: wheels
+name: "wheels fixture: tricycle gear with separate wheels on axles"
+status: concept
+description: "box body, landing gear with separate wheels, three wheels on continuous joints"
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: body
+components:
+  - {id: body, type: fuselage, geometry: {box: {size: [200, 80, 40]}}, position: [60, 0, 20], mass_g: 100, manufacturing: {method: foamboard}}
+  - {id: gear, type: landing_gear, geometry: {generator: landing_gear, params: {layout: tricycle, main_x: 100, track: 200, attach_z: 0, ground_z: -100, wheel_d: 60, wheel_w: 20, leg_d: 6, leg_splay_deg: 0, front_x: 20, front_wheel_d: 40, front_attach_z: 0, wheel_shape: disc, wheels: separate, axle_d: 3}}, position: [0, 0, 0], mass_g: 20, manufacturing: {method: 3d-print-fdm}}
+  - {id: wheel-r, type: landing_gear, geometry: {generator: wheel, params: {wheel_d: 60, wheel_w: 20, shape: disc, bore_d: 3.4}}, position: [100, 100, -70], mass_g: 10, manufacturing: {method: 3d-print-fdm}}
+  - {id: wheel-l, type: landing_gear, geometry: {generator: wheel, params: {wheel_d: 60, wheel_w: 20, shape: disc, bore_d: 3.4}}, position: [100, -100, -70], mass_g: 10, manufacturing: {method: 3d-print-fdm}}
+  - {id: wheel-n, type: landing_gear, geometry: {generator: wheel, params: {wheel_d: 40, wheel_w: 20, shape: disc, bore_d: 3.4}}, position: [20, 0, -80], mass_g: 6, manufacturing: {method: 3d-print-fdm}}
+attachments:
+  - {id: body-gear, parent: body, child: gear, method: glued, location: [20, 0, 0], embed_ok: true, rated_load_n: 10}
+  - {id: gear-wheel-r, parent: gear, child: wheel-r, method: hinge, location: [100, 100, -70], rated_load_n: 10, articulation: {type: continuous, pivot: [100, 100, -70], axis: [0, 1, 0]}}
+  - {id: gear-wheel-l, parent: gear, child: wheel-l, method: hinge, location: [100, -100, -70], rated_load_n: 10, articulation: {type: continuous, pivot: [100, -100, -70], axis: [0, 1, 0]}}
+  - {id: gear-wheel-n, parent: gear, child: wheel-n, method: hinge, location: [20, 0, -80], rated_load_n: 10, articulation: {type: continuous, pivot: [20, 0, -80], axis: [0, 1, 0]}}
