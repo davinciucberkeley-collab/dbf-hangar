@@ -1116,7 +1116,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Brief** (tactician W24-T) *(dcd6f1d: builds after U9.2 Part B and U10.2-g1fixes merge)*
 - [x] **Step 1b: Refresh** (builder-plus W34-B2): merge main into std/u4.25-pockets (no force push), tests green, re-time tier-1 on concept-a-param *(refresh stopped: 12 swept-pose rows gone but 2 T1.pocket slivers; W34-A3 diagnosis u16.2/diagnosis.md: float32 operands in manifold3d; fix = float64 operands for the cut_files difference (0 FAIL); tier 1 ~99 s loaded vs ~70 s budget (D73): Tristan decides relax to ~90 s / park for a core speed unit / keep out of v1; fix being built, merge waits)*
 - [x] **Step 2: Build** (builder-plus W24-B) *(parked on std/u4.25-pockets: correct (all 14 swept-pose rows gone) but tier-1 validate 54-63 s vs 60.2 s budget; kept out of the demo, v1.1, D71; D73 retry with W24-A convex hulls also missed: tier-1 98-111 s, planform -16.4 % FAIL; parked again, T121)*
-- [x] **Step 3: Review** (W24-R); merge *(merged 7d183bf: concept-a-param 12 swept-pose FAILs + slivers + planform FAIL gone, 14 improvements; tier 1 ~71 s alone (D103); designs-only baseline refresh next)*
+- [x] **Step 3: Review** (W24-R); merge *(merged 7d183bf: concept-a-param 12 swept-pose FAILs + slivers + planform FAIL gone, 14 improvements; tier 1 ~71 s alone (D103); designs-only baseline refresh merged 995c66f (93 -> 79 known))*
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 
