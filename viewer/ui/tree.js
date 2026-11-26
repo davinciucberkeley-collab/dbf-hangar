@@ -53,8 +53,12 @@ export function renderTree(ctx, d, parts) {
   const unattached = parts.parts.filter((p) => !p.visual_only && !placed.has(p.id) && p.parent == null).map(row);
   const orphans = parts.parts.filter((p) => !p.visual_only && !placed.has(p.id)).map(row); // children of a skipped parent
   if (unattached.length || orphans.length) top.append(group('Unattached', [...unattached, ...orphans]));
-  const wiring = parts.parts.filter((p) => p.visual_only).map(row);
-  if (wiring.length) top.append(group('Wiring', wiring));
+  const visual = parts.parts.filter((p) => p.visual_only);
+  const kindGroup = { clevis: 'Clevises', screw: 'Screws' }; // every other visual-only type (wire, a visual_only component) stays in Wiring
+  for (const name of ['Wiring', 'Clevises', 'Screws']) {
+    const items = visual.filter((p) => (kindGroup[p.type] ?? 'Wiring') === name).map(row);
+    if (items.length) top.append(group(name, items));
+  }
   const filter = h('input', { type: 'search', placeholder: 'Filter parts', 'aria-label': 'Filter parts', 'data-testid': 'tree-filter', oninput: (e) => applyFilter(box, e.target.value.trim().toLowerCase()) });
   const showAll = h('button', { class: 'btn', type: 'button', 'data-testid': 'tree-show-all', onclick: () => vp.showAll() }, 'Show all');
   box.append(h('div', { class: 'tree-head' }, filter, showAll), top);
