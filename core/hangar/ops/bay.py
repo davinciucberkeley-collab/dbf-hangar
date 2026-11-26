@@ -7,12 +7,12 @@ from datetime import datetime, timezone
 from typing import Literal
 
 import numpy as np
-import trimesh
 
 from . import op, OpResult, OpInputError
 from .edit import _plane, _text, _write_with_log
 from .. import pdledit, yamlfast
 from ..design import load_design
+from .._lazy import trimesh
 from ..geometry import component_parts, rotation_matrix
 
 _ANGLES = (0, 90, 180, 270)
@@ -36,8 +36,7 @@ def _vec(raw: str | None, n: int, what: str) -> list[float]:
 
 def _rotation(axis, normal, shaft) -> list[int]:
     """Ranking (D114): fewest non-zero angles, then least angle sum, then largest roll, pitch, yaw.
-    Roll/pitch/yaw in {0,90,180,270} (R = Rz Ry Rx) sending the output axis and the mount normal to `shaft`;
-    fewest non-zero angles (a single-axis turn wins), then least angle sum, then largest roll, pitch, yaw."""
+    Roll/pitch/yaw in {0,90,180,270} (R = Rz Ry Rx) sending the output axis and the mount normal to `shaft`."""
     best = None
     for rpy in itertools.product(_ANGLES, repeat=3):
         r = rotation_matrix(list(rpy))
@@ -50,7 +49,7 @@ def _rotation(axis, normal, shaft) -> list[int]:
     return best[1]
 
 
-def _vertical_hits(meshes: list[trimesh.Trimesh], x: float, y: float) -> list[float]:
+def _vertical_hits(meshes: "list[trimesh.Trimesh]", x: float, y: float) -> list[float]:
     """z of every crossing of the vertical line through (x, y) with the triangles of `meshes`."""
     zs = []
     eps = 1e-9
