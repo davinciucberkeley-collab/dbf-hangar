@@ -23,19 +23,24 @@ export function prepareMesh(o, model, vp) {
   if (comp) { o.userData.compId = comp.name; vp.ids.add(comp.name); }
 }
 
-export function highlight(vp, ids) {
-  vp.highlighted = new Set([...ids].filter((i) => vp.ids.has(i)));
+export const SKIN_TYPES = ['fuselage', 'wing', 'tail_surface'];
+
+// The one appearance function: selection tint, dimming of the rest, ghosting. Precedence: ghost, dim, base.
+export function applyAppearance(vp) {
   const any = vp.highlighted.size > 0;
   vp.model?.traverse((o) => {
     if (!o.isMesh) return;
-    const on = vp.highlighted.has(o.userData.compId);
-    o.material.emissive?.set(on ? 0xffb020 : 0x000000);
-    if (o.material.emissiveIntensity != null) o.material.emissiveIntensity = on ? 0.55 : 1;
-    const base = o.userData.baseOpacity ?? 1;
-    o.material.transparent = o.userData.compType === 'propeller' || (any && !on);
-    o.material.opacity = any && !on ? Math.min(base, 0.28) : base;
-    o.material.needsUpdate = true;
-    for (const e of o.children) if (e.userData.isEdge) e.material.opacity = any && !on ? 0.15 : 0.6;
+    const cid = o.userData.compId, on = vp.highlighted.has(cid), m = o.material;
+    const ghost = vp.isGhosted(cid, o.userData.compType), base = o.userData.baseOpacity ?? 1, prop = o.userData.compType === 'propeller';
+    const wasT = m.transparent, wasD = m.depthWrite;
+    let edge = 0.6;
+    if (ghost) { m.transparent = true; m.opacity = 0.15; m.depthWrite = false; o.renderOrder = 5; o.castShadow = false; edge = 0.12; }
+    else if (any && !on) { m.transparent = true; m.opacity = Math.min(base, 0.28); m.depthWrite = true; o.renderOrder = 0; o.castShadow = !prop; edge = 0.15; }
+    else { m.transparent = prop; m.opacity = base; m.depthWrite = true; o.renderOrder = 0; o.castShadow = !prop; }
+    m.emissive?.set(on ? 0xffb020 : 0x000000);
+    if (m.emissiveIntensity != null) m.emissiveIntensity = on ? 0.55 : 1;
+    if (m.transparent !== wasT || m.depthWrite !== wasD) m.needsUpdate = true;
+    for (const e of o.children) if (e.userData.isEdge) { e.material.opacity = edge; e.renderOrder = ghost ? 5 : 1; }
   });
   vp.updateOverlay(); vp.dirty = true;
 }

@@ -3,8 +3,8 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { h, fmt, getJSON } from '../lib.js';
 import { loadGLB, disposeModel } from './loader.js';
-import { prepareMesh, highlight } from './materials.js';
-import { pickAt, hitAt } from './pick.js';
+import { prepareMesh, applyAppearance, SKIN_TYPES } from './materials.js';
+import { pickAt, hitAt, hitsAlong, cycleSelect } from './pick.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 
 const cssVar = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
@@ -12,8 +12,9 @@ const mmToScene = ([x, y, z]) => new THREE.Vector3(x / 1000, z / 1000, -y / 1000
 
 export class Viewport {
   constructor(el, { onPick, onSelect } = {}) {
-    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.dirty = true;
+    this.el = el; this.onPick = onPick; this.onSelect = onSelect; this.hidden = new Set(); this.ids = new Set(); this.highlighted = new Set(); this.ghost = new Set(); this.xrayOn = false; this.sectionState = null; this.cycle = null; this.dirty = true;
     this.renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+    this.renderer.localClippingEnabled = true; this.clipPlane = new THREE.Plane();
     this.renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     el.append(this.renderer.domElement);
     this.scene = new THREE.Scene();
@@ -64,7 +65,7 @@ export class Viewport {
     this.msg.textContent = text || ''; this.msg.className = 'vp-msg' + (err ? ' err' : ''); this.msg.hidden = !text;
   }
   clear() {
-    this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.cg = null; this.mass = null;
+    this.cancelAnim?.(); disposeModel(this.root); this.ids.clear(); this.highlighted.clear(); this.hidden.clear(); this.ghost.clear(); this.cycle = null; this.cg = null; this.mass = null;
     this.overlay.hidden = true; this.legend.hidden = true; this.dirty = true;
   }
   async show(design) {
@@ -84,6 +85,7 @@ export class Viewport {
       this.root.add(model);
       this.model = model;
       const box = new THREE.Box3().setFromObject(model);
+      this.box0 = box.clone();
       this.size = box.getSize(new THREE.Vector3()); this.center = box.getCenter(new THREE.Vector3());
       const diag = this.size.length() || 1;
       const grid = this.makeGrid(box, diag); this.root.add(grid, this.makeGround(grid.position, diag));
@@ -92,6 +94,7 @@ export class Viewport {
       if (cgmm) this.addCG(mmToScene(cgmm), diag);
       this.mountInfo = design;
       this.fit(diag);
+      applyAppearance(this); this.applySection();
       this.message('');
     } catch (e) {
       console.warn(e); this.message('Could not load model: ' + e.message, true);
@@ -135,10 +138,10 @@ export class Viewport {
   }
   pickEvent(e) { pickAt(this, e); }
   pick(id) { this.onPick?.(id, this, null); } // same call as a plain click on that part
-  highlight(ids) { highlight(this, ids); }
+  highlight(ids) { this.highlighted = new Set([...ids].filter((i) => this.ids.has(i))); applyAppearance(this); }
   // The single selection setter: the selection is the highlighted set.
   select(ids, { add = false } = {}) {
-    highlight(this, add ? [...this.highlighted, ...ids] : ids);
+    this.highlight(add ? [...this.highlighted, ...ids] : ids);
     this.onSelect?.(this.highlighted);
   }
   setHidden(ids, hidden) {
@@ -150,6 +153,41 @@ export class Viewport {
     }
     this.dirty = true; this.onSelect?.(this.highlighted);
   }
+  isGhosted(id, type) { return this.ghost.has(id) || (this.xrayOn && SKIN_TYPES.includes(type ?? this.model?.getObjectByName(id)?.userData?.type)); }
+  setGhost(ids, on) {
+    for (const id of ids) if (this.ids.has(id)) { if (on) this.ghost.add(id); else this.ghost.delete(id); }
+    applyAppearance(this); this.onSelect?.(this.highlighted);
+  }
+  xray(on) { this.xrayOn = !!on; applyAppearance(this); this.onSelect?.(this.highlighted); }
+  // Section plane across the model box along a BODY axis (x, y, z) or null; one shared plane, uncapped.
+  section(axis, value = 0.5, flip = false) {
+    this.sectionState = axis ? { axis, value, flip: !!flip } : null;
+    this.applySection(); this.onSelect?.(this.highlighted);
+  }
+  applySection() {
+    const s = this.sectionState, b = this.box0;
+    if (s && b) {
+      const sz = b.getSize(new THREE.Vector3()), n = new THREE.Vector3(), p = new THREE.Vector3();
+      if (s.axis === 'x') { n.set(1, 0, 0); p.x = b.min.x + s.value * sz.x; }
+      else if (s.axis === 'y') { n.set(0, 0, -1); p.z = b.max.z - s.value * sz.z; }
+      else { n.set(0, 1, 0); p.y = b.min.y + s.value * sz.y; }
+      if (s.flip) n.negate();
+      this.clipPlane.setFromNormalAndCoplanarPoint(n, p);
+    }
+    const planes = s && b ? [this.clipPlane] : null;
+    this.model?.traverse((o) => {
+      if (!o.isMesh && !o.isLineSegments) return;
+      o.material.clippingPlanes = planes; o.material.needsUpdate = true;
+    });
+    this.dirty = true;
+  }
+  hits(origin, dir) {
+    if (!this.model) return [];
+    this.root.updateMatrixWorld(true);
+    return hitsAlong(this, new THREE.Raycaster(origin, dir.clone().normalize()));
+  }
+  pickRay(o, d) { return this.hits(mmToScene(o), mmToScene(d)).map((x) => x.id); }
+  cyclePick(o, d) { return cycleSelect(this, this.hits(mmToScene(o), mmToScene(d)), JSON.stringify([o, d])); }
   isolate(ids) {
     const keep = new Set(ids);
     if (!keep.size) return;
@@ -159,7 +197,7 @@ export class Viewport {
   showAll() { this.setHidden([...this.hidden], false); }
   state() {
     const all = [...this.ids];
-    return { selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: [], coloured: [] };
+    return { selection: [...this.highlighted], hidden: [...this.hidden], all, visible: all.filter((i) => !this.hidden.has(i)), ghosted: all.filter((i) => this.isGhosted(i)), coloured: [], xray: this.xrayOn, section: this.sectionState ? { ...this.sectionState } : null };
   }
   fitTo(ids) {
     if (!this.model) return;
