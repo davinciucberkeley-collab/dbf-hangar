@@ -3,7 +3,7 @@
 # Frame: the source's own (metres; x aft from the wing leading edge, y right, z up in cruise) scaled x1000 to mm;
 # the origin is the wing LE at the centre, not a nose datum. Read README.md for provenance and gaps.
 # Every number cites its source in a comment; anything the source does not give is marked "placeholder - not from source".
-schema_version: "1.0"
+schema_version: "1.3"
 id: concept-a-test-refactor
 name: "Concept A test refactor (copy of concept-a for the U16.1 features, U16.3)"
 authors: ["UC Berkeley DBF capstone team (source repo dbf-combined)", "imported for dbf-hangar by `plane import dbf`"]
@@ -3135,3 +3135,4 @@ mechanisms:
     expect: [{attachment: E-WNG-11, ratio: 1.33}]
     link: {driver_end: E-MEC-08, follower_end: E-MEC-PIN-L4}
 mission: {name: "VTOL demonstrator", profile: vtol-demonstrator, source: knowledge/concepts/judging-mission-and-learning.md}
+display: {clevises: true, screw_heads: true}
