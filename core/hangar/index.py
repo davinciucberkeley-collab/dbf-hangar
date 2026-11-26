@@ -19,6 +19,7 @@ from .export import export_glb
 from .gates.mechanisms import _atts, _clamp, _input_range, link_overrides, simulate_mechanism
 from .geometry import articulated_attachments, att_label, is_point_mass, pose_transforms
 from .mass import mass_properties
+from .visuals import clevis_aliases
 
 
 def _jsonable(o):
@@ -96,15 +97,19 @@ def mechanism_sweeps(design) -> dict | None:
     atts = _atts(design)
     skip = {c["id"] for c in design.components if is_point_mass(c)}
     out = []
+    aliases = clevis_aliases(design)
     for mech in mechs:
         steps = []
         for st in simulate_mechanism(design, mech)["steps"]:
             drv = _clamp(st["input_deg"], atts[mech["driver"]]["articulation"]["range_deg"])
             ov = link_overrides(design, mech, st["input_deg"], next(iter(st["followers"].values()))) if mech.get("kinematics") == "four_bar" else None
             tf = pose_transforms(design, {mech["driver"]: drv, **st["followers"]}, ov)
-            steps.append({"input_deg": st["input_deg"], "followers": st["followers"],
-                          "transforms": {cid: np.round(t, 12 if ov else 6).ravel().tolist() for cid, t in tf.items()
-                                         if cid not in skip and not np.allclose(t, np.eye(4))}})
+            transforms = {cid: np.round(t, 12 if ov else 6).ravel().tolist() for cid, t in tf.items()
+                          if cid not in skip and not np.allclose(t, np.eye(4))}
+            for name, src, mid in aliases:  # clevises ride with the component at each end of the pushrod
+                if mid == mech["id"] and src in transforms:
+                    transforms[name] = transforms[src]
+            steps.append({"input_deg": st["input_deg"], "followers": st["followers"], "transforms": transforms})
         out.append({"id": mech["id"], "driver": mech["driver"], "driven": list(mech["driven"]),
                     "input_range_deg": list(_input_range(design, mech)), "steps": steps})
     used = {mech["driver"] for mech in mechs} | {a for mech in mechs for a in mech["driven"]} \

@@ -282,6 +282,21 @@
     "wiring": {
       "$ref": "#/$defs/wiring"
     },
+    "display": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "v1.3, optional. Switches for derived, visual-only geometry in the GLB and Studio (never components: no mass, no checks).",
+      "properties": {
+        "clevises": {
+          "type": "boolean",
+          "description": "v1.3. Draw a clevis (barrel and cross pin) at both ends of the pushrod of every mechanism that has a link."
+        },
+        "screw_heads": {
+          "type": "boolean",
+          "description": "v1.3. Draw a screw head at every bolted attachment whose `connection` names a screw size (M2, M3, ...): on the child's surface nearest the attachment location."
+        }
+      }
+    },
     "mechanisms": {
       "description": "v1.0. Pull-this-moves-that checks between attachments.",
       "type": "array",
