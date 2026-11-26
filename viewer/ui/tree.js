@@ -19,13 +19,15 @@ export function renderTree(ctx, d, parts) {
   const row = (p) => {
     placed.add(p.id);
     const kids = (byParent.get(p.id) || []).filter((k) => !placed.has(k.id));
-    const li = h('li', { class: 'part-row' + (mesh.has(p.id) ? '' : ' no-mesh'), 'data-id': p.id, 'data-type': p.type ?? '', 'aria-selected': 'false', 'data-hidden': '0' });
+    const li = h('li', { class: 'part-row' + (mesh.has(p.id) ? '' : ' no-mesh'), 'data-id': p.id, 'data-type': p.type ?? '', 'aria-selected': 'false', 'data-hidden': '0', 'data-ghost': '0' });
     const ul = h('ul', {});
     const caret = kids.length
       ? h('button', { class: 'caret', type: 'button', 'aria-label': 'Expand or collapse', onclick: (e) => { e.stopPropagation(); ul.hidden = !ul.hidden; caret.textContent = ul.hidden ? '▸' : '▾'; } })
       : h('span', { class: 'caret-gap' });
     const eye = h('button', { class: 'eye', type: 'button', 'data-testid': 'eye-' + p.id, title: 'Hide or show', disabled: mesh.has(p.id) ? null : true,
       onclick: (e) => { e.stopPropagation(); vp.setHidden([p.id], !vp.hidden.has(p.id)); } }, '◉');
+    const ghost = h('button', { class: 'ghost', type: 'button', 'data-testid': 'ghost-' + p.id, title: 'Ghost or solid', disabled: mesh.has(p.id) ? null : true,
+      onclick: (e) => { e.stopPropagation(); vp.setGhost([p.id], !vp.state().ghosted.includes(p.id)); } }, '\u25cc');
     const main = h('div', { class: 'row-main', tabindex: 0,
       onclick: (e) => {
         const sel = vp.state().selection;
@@ -33,7 +35,7 @@ export function renderTree(ctx, d, parts) {
         else ctx.setHighlight([p.id]);
       },
       ondblclick: () => { ctx.setHighlight([p.id]); vp.fitTo([p.id]); } },
-    caret, eye, h('span', { class: 'pid' }, p.id), h('span', { class: 'ptype muted small' }, p.type ?? ''));
+    caret, eye, ghost, h('span', { class: 'pid' }, p.id), h('span', { class: 'ptype muted small' }, p.type ?? ''));
     li.append(main);
     if (kids.length) {
       ul.append(...kids.map(row));
@@ -71,12 +73,13 @@ function applyFilter(box, q) {
 export function syncTree() {
   const { vp, root } = cur;
   if (!vp || !root?.isConnected) return;
-  const st = vp.state(), sel = new Set(st.selection), hid = new Set(st.hidden);
+  const st = vp.state(), sel = new Set(st.selection), hid = new Set(st.hidden), gh = new Set(st.ghosted);
   let first = null;
   for (const li of root.querySelectorAll('li.part-row')) {
     const on = sel.has(li.dataset.id);
     li.setAttribute('aria-selected', on ? 'true' : 'false');
     li.dataset.hidden = hid.has(li.dataset.id) ? '1' : '0';
+    li.dataset.ghost = gh.has(li.dataset.id) ? '1' : '0';
     if (on && !first) first = li;
   }
   if (first) {

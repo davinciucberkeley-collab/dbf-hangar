@@ -260,3 +260,129 @@ def test_fit_to_selection_moves_closer(browser, pages_base):
     assert before > _cam(page)["len"]
     assert errors == []
     page.close()
+
+
+# ---------- U19.1 B3: see inside (x-ray, ghost, pick-through, Alt-click cycle, section plane) ----------
+SIDE_O, SIDE_D = [140, -800, -27.5], [0, 1, 0]
+TOP_O, TOP_D = [140, 0, 800], [0, 0, -1]
+VP = "window.planeViewer.vp"
+
+
+def _ray(page, o, d):
+    return page.evaluate(f"([o, d]) => {VP}.pickRay(o, d)", [o, d])
+
+
+def _canvas_png(page):
+    page.wait_for_timeout(300)
+    return page.locator("#vp-main canvas").screenshot()
+
+
+def test_xray_picks_through_the_skin(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    ids = _ray(page, SIDE_O, SIDE_D)
+    assert "center_body" in ids and "battery" in ids and ids.index("center_body") < ids.index("battery"), ids
+    page.click('[data-testid="btn-xray"]')
+    ids2 = _ray(page, SIDE_O, SIDE_D)
+    assert "center_body" not in ids2 and ids2[0] == "battery", ids2
+    st = page.evaluate(f"{VP}.state()")
+    assert st["xray"] is True
+    assert "center_body" in st["ghosted"] and "wing" in st["ghosted"] and "battery" not in st["ghosted"]
+    assert errors == []
+    page.close()
+
+
+def test_xray_changes_the_picture(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    before = _canvas_png(page)
+    again = _canvas_png(page)
+    assert before == again  # an unchanged view is stable
+    page.click('[data-testid="btn-xray"]')
+    after = _canvas_png(page)
+    assert before != after
+    assert errors == []
+    page.close()
+
+
+def test_ghost_key_and_tree_button(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    page.evaluate(f'{VP}.select(["wing"])')
+    page.keyboard.press("g")
+    assert "wing" in page.evaluate(f"{VP}.state().ghosted")
+    page.wait_for_selector('#parts-tree li.part-row[data-id="wing"][data-ghost="1"]')
+    page.keyboard.press("g")
+    assert "wing" not in page.evaluate(f"{VP}.state().ghosted")
+    page.wait_for_selector('#parts-tree li.part-row[data-id="wing"][data-ghost="0"]')
+    page.click('[data-testid="ghost-fin_l"]')
+    assert "fin_l" in page.evaluate(f"{VP}.state().ghosted")
+    assert errors == []
+    page.close()
+
+
+def test_alt_click_cycles_front_to_back(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    ids = _ray(page, SIDE_O, SIDE_D)
+    assert len(ids) == 2, ids
+    cyc = [page.evaluate(f"([o, d]) => {VP}.cyclePick(o, d)", [SIDE_O, SIDE_D]) for _ in range(3)]
+    assert cyc == [ids[0], ids[1], ids[0]]
+    assert page.evaluate(f"{VP}.state().selection") == [cyc[2]]
+    assert errors == []
+    page.close()
+
+
+def test_section_clips_and_unclips(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    page.click('[data-testid="btn-xray"]')
+    assert _ray(page, TOP_O, TOP_D)[0] == "battery"
+    page.evaluate(f'{VP}.section("x", 0.95, false)')
+    clipped = _canvas_png(page)
+    assert "battery" not in _ray(page, TOP_O, TOP_D)
+    assert page.evaluate(f"{VP}.state().section") == {"axis": "x", "value": 0.95, "flip": False}
+    page.evaluate(f'{VP}.section("x", 0.95, true)')
+    assert "battery" in _ray(page, TOP_O, TOP_D)
+    page.evaluate(f"{VP}.section(null)")
+    assert page.evaluate(f"{VP}.state().section") is None
+    assert "battery" in _ray(page, TOP_O, TOP_D)
+    assert _canvas_png(page) != clipped
+    assert errors == []
+    page.close()
+
+
+def test_section_controls_drive_the_hook(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    page.select_option('[data-testid="section-axis"]', "y")
+    page.fill('[data-testid="section-slider"]', "700")
+    page.check('[data-testid="section-flip"]')
+    assert page.evaluate(f"{VP}.state().section") == {"axis": "y", "value": 0.7, "flip": True}
+    page.select_option('[data-testid="section-axis"]', "off")
+    assert page.evaluate(f"{VP}.state().section") is None
+    assert errors == []
+    page.close()
+
+
+def test_xray_ghosts_everything_but_internal_types(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    page.click('[data-testid="btn-xray"]')
+    g = page.evaluate(f"{VP}.state().ghosted")
+    for gone in ("mount_l", "center_body", "wing", "prop_l", "fin_l"):
+        assert gone in g, (gone, g)
+    for solid in ("battery", "flight_controller", "motor_l"):
+        assert solid not in g, (solid, g)
+    assert errors == []
+    page.close()
+
+
+def test_section_y_and_z_cut_geometrically(browser, pages_base):
+    page, errors = _open_tree(browser, pages_base)
+    page.click('[data-testid="btn-xray"]')
+    hit = lambda: "battery" in _ray(page, TOP_O, TOP_D)  # noqa: E731
+    for axis in ("y", "z"):
+        page.evaluate(f'{VP}.section("{axis}", 0, false)')
+        assert hit(), axis          # plane at the box min keeps everything
+        page.evaluate(f'{VP}.section("{axis}", 1, false)')
+        assert not hit(), axis      # plane at the box max keeps nothing
+        page.evaluate(f'{VP}.section("{axis}", 1, true)')
+        assert hit(), axis          # flipped keeps the other side
+        page.evaluate(f'{VP}.section("{axis}", 0, true)')
+        assert not hit(), axis
+    assert errors == []
+    page.close()

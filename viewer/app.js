@@ -62,6 +62,7 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'h') v.setHidden([...highlightIds], true);
   else if (e.key === 'i') { if (highlightIds.size) v.isolate([...highlightIds]); }
   else if (e.key === 'H') v.showAll();
+  else if (e.key === 'g') { const ids = [...highlightIds], gh = new Set(v.state().ghosted); if (ids.length) v.setGhost(ids, !ids.every((i) => gh.has(i))); }
 });
 
 function renderSidebar() {
@@ -149,6 +150,13 @@ async function init() {
   $('modes').append(...MODES.map((m) => h('button', { 'data-mode': m, role: 'tab', onclick: () => setMode(m) }, LABELS[m])));
   $('view-bar').append(...[['iso', 'Iso'], ['front', 'Front'], ['top', 'Top'], ['side', 'Side']].map(([n, t]) => h('button', { type: 'button', 'data-testid': 'view-' + n, onclick: () => vps.main?.view(n) }, t)),
     h('button', { type: 'button', 'data-testid': 'view-fit', onclick: () => vps.main?.fitTo(highlightIds.size ? [...highlightIds] : [...(vps.main.ids || [])]) }, 'Fit'));
+  const si = $('see-inside'), q = (t) => si.querySelector(`[data-testid="${t}"]`);
+  const sec = () => { const ax = q('section-axis').value; q('section-slider').disabled = ax === 'off'; vps.main?.section(ax === 'off' ? null : ax, q('section-slider').value / 1000, q('section-flip').checked); };
+  const xb = h('button', { type: 'button', 'data-testid': 'btn-xray', 'aria-pressed': 'false', onclick: () => { const on = xb.getAttribute('aria-pressed') !== 'true'; xb.setAttribute('aria-pressed', String(on)); vps.main?.xray(on); } }, 'X-ray');
+  si.append(xb,
+    h('select', { 'data-testid': 'section-axis', 'aria-label': 'Section axis', onchange: sec }, ['off', 'x', 'y', 'z'].map((a) => h('option', { value: a }, a))),
+    h('input', { type: 'range', min: '0', max: '1000', value: '500', disabled: true, 'data-testid': 'section-slider', 'aria-label': 'Section position', oninput: sec }),
+    h('label', {}, h('input', { type: 'checkbox', 'data-testid': 'section-flip', onchange: sec }), ' flip'));
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };
   $('filter-vtol').onchange = (e) => { state.vtol = e.target.value; renderSidebar(); };
   $('sel-a').onchange = (e) => assign('a', e.target.value); $('sel-b').onchange = (e) => assign('b', e.target.value);
