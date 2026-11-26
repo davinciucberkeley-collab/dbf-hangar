@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import shutil
 from pathlib import Path
@@ -88,7 +89,10 @@ def test_joint_thrust_case_skipped(tmp_example, tmp_path):
             assert abs(a - b) < 1e-9
 
 
-def test_numeric_designs_bit_identical(tmp_example):
+def test_numeric_designs_bit_identical(tmp_example, monkeypatch):
+    real = importlib.util.find_spec  # hide AeroSandbox so the hash is the CI value on every machine
+    monkeypatch.setattr(importlib.util, "find_spec",
+                        lambda name, *a, **k: None if name == "aerosandbox" else real(name, *a, **k))
     blob = json.dumps(sorted(rows(tmp_example)))
     assert hashlib.sha256(blob.encode()).hexdigest() == MAIN_ROWS_SHA
 
