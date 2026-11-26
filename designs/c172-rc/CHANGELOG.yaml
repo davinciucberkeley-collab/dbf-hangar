@@ -653,3 +653,238 @@
   why: wheels are now separate components; list them under the gear BOM item (W34-R3
     reopen)
   kind: modify
+- date: '2026-11-26T10:34:17Z'
+  key: components[aileron-r].geometry.params.hinge_throw_deg
+  old: null
+  new: 25
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-r
+- date: '2026-11-26T10:34:30Z'
+  key: components[aileron-r].geometry.params.hinge_gap
+  old: null
+  new: 1.0
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-r
+- date: '2026-11-26T10:34:44Z'
+  key: components[aileron-r].geometry.params.hinge_style
+  old: null
+  new: bevel
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-r
+- date: '2026-11-26T10:35:23Z'
+  key: components[aileron-r].geometry.params.knuckle_d
+  old: null
+  new: 1.6
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-r
+- date: '2026-11-26T10:35:51Z'
+  key: components[aileron-r].geometry.params.knuckle_len
+  old: null
+  new: 8
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-r
+- date: '2026-11-26T10:36:16Z'
+  key: components[aileron-l].geometry.params.hinge_throw_deg
+  old: null
+  new: 25
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-l
+- date: '2026-11-26T10:36:35Z'
+  key: components[aileron-l].geometry.params.hinge_gap
+  old: null
+  new: 1.0
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-l
+- date: '2026-11-26T10:36:55Z'
+  key: components[aileron-l].geometry.params.hinge_style
+  old: null
+  new: bevel
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-l
+- date: '2026-11-26T10:37:21Z'
+  key: components[aileron-l].geometry.params.knuckle_d
+  old: null
+  new: 1.6
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-l
+- date: '2026-11-26T10:37:41Z'
+  key: components[aileron-l].geometry.params.knuckle_len
+  old: null
+  new: 8
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-l
+- date: '2026-11-26T10:37:57Z'
+  key: components[elevator].geometry.params.hinge_throw_deg
+  old: null
+  new: 25
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - elevator
+- date: '2026-11-26T10:38:10Z'
+  key: components[elevator].geometry.params.hinge_gap
+  old: null
+  new: 1.0
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - elevator
+- date: '2026-11-26T10:38:23Z'
+  key: components[elevator].geometry.params.hinge_style
+  old: null
+  new: bevel
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - elevator
+- date: '2026-11-26T10:38:50Z'
+  key: components[elevator].geometry.params.knuckle_d
+  old: null
+  new: 1.6
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - elevator
+- date: '2026-11-26T10:39:03Z'
+  key: components[elevator].geometry.params.knuckle_len
+  old: null
+  new: 8
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - elevator
+- date: '2026-11-26T10:39:16Z'
+  key: components[rudder].geometry.params.hinge_throw_deg
+  old: null
+  new: 25
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - rudder
+- date: '2026-11-26T10:39:28Z'
+  key: components[rudder].geometry.params.hinge_gap
+  old: null
+  new: 1.0
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - rudder
+- date: '2026-11-26T10:39:40Z'
+  key: components[rudder].geometry.params.hinge_style
+  old: null
+  new: bevel
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - rudder
+- date: '2026-11-26T10:40:03Z'
+  key: components[rudder].geometry.params.knuckle_d
+  old: null
+  new: 1.6
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - rudder
+- date: '2026-11-26T10:40:15Z'
+  key: components[rudder].geometry.params.knuckle_len
+  old: null
+  new: 8
+  why: 'U16.1 S6 Part B: hinge gap 1.0, bevel, knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - rudder
+- date: '2026-11-26T10:42:06Z'
+  key: components[aileron-r].geometry.params.hinge_knuckles
+  old: null
+  new: 3
+  why: 'U16.1 S6 Part B: hinge knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-r
+- date: '2026-11-26T10:42:33Z'
+  key: components[aileron-l].geometry.params.hinge_knuckles
+  old: null
+  new: 3
+  why: 'U16.1 S6 Part B: hinge knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - aileron-l
+- date: '2026-11-26T10:42:53Z'
+  key: components[elevator].geometry.params.hinge_knuckles
+  old: null
+  new: 3
+  why: 'U16.1 S6 Part B: hinge knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - elevator
+- date: '2026-11-26T10:43:09Z'
+  key: components[rudder].geometry.params.hinge_knuckles
+  old: null
+  new: 3
+  why: 'U16.1 S6 Part B: hinge knuckles on c172-rc control surfaces'
+  kind: add
+  regenerated:
+  - rudder
+- date: '2026-11-26T10:43:35Z'
+  key: attachments[wing-aileron-r].hinge_from
+  old: null
+  new: generator
+  why: 'U16.1 S6 Part B: hinge_from and embed_ok on the four hinge attachments'
+  kind: add
+- date: '2026-11-26T10:43:57Z'
+  key: attachments[wing-aileron-l].hinge_from
+  old: null
+  new: generator
+  why: 'U16.1 S6 Part B: hinge_from and embed_ok on the four hinge attachments'
+  kind: add
+- date: '2026-11-26T10:44:22Z'
+  key: attachments[wing-aileron-r].embed_ok
+  old: true
+  new: false
+  why: 'U16.1 S6 Part B: hinge_from and embed_ok on the four hinge attachments'
+  kind: modify
+- date: '2026-11-26T10:44:31Z'
+  key: attachments[wing-aileron-l].embed_ok
+  old: true
+  new: false
+  why: 'U16.1 S6 Part B: hinge_from and embed_ok on the four hinge attachments'
+  kind: modify
+- date: '2026-11-26T10:44:42Z'
+  key: attachments[tail-elevator].embed_ok
+  old: true
+  new: false
+  why: 'U16.1 S6 Part B: hinge_from and embed_ok on the four hinge attachments'
+  kind: modify
+- date: '2026-11-26T10:44:50Z'
+  key: attachments[tail-rudder].embed_ok
+  old: true
+  new: false
+  why: 'U16.1 S6 Part B: hinge_from and embed_ok on the four hinge attachments'
+  kind: modify
+- date: '2026-11-26T10:48:36Z'
+  key: mechanisms[aileron-r-drive].expect[0].ratio
+  old: -0.25
+  new: 0.25
+  why: hinge_from generator reverses the aileron-r hinge axis; ratio sign follows
+    the axis (U16.1 S6 Part B)
+  kind: modify

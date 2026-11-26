@@ -91,17 +91,17 @@ def test_trim_rows_c172_rc(card):
     d = s.data
     assert d["tail"] == "tail-fixed"
     assert d["speed_mps"] == approx(8.05, abs=0.02)
-    assert d["tail_lift_n"] == approx(0.302, abs=0.005)
+    assert d["tail_lift_n"] == approx(0.296, abs=0.005)
     assert d["tail_cl"] == approx(0.2176, abs=0.003)
     assert d["elevator_deg"] == approx(8.15, abs=0.1)
-    assert d["x_cg_mm"] == approx(258.0, abs=0.1)
+    assert d["x_cg_mm"] == approx(257.95, abs=0.1)
     assert d["band"] == "within"
     assert "(the T3.stall speed)" in s.message
 
 
 def test_tier3_rows_unchanged(card):
     assert rows(card, "T3.stall")[0].message == "wing loading 44.6 g/dm^2, stall 8.1 m/s (CLmax 1.1)"
-    assert rows(card, "T3.static_margin")[0].message.startswith("9.4% MAC (NP x=272 mm, CG x=258 mm")
+    assert rows(card, "T3.static_margin")[0].message.startswith("9.5% MAC (NP x=272 mm, CG x=258 mm")
 
 
 def test_tailsitter_still_not_applicable():
