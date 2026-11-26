@@ -273,54 +273,6 @@
       "status": "SKIP"
     },
     {
-      "check_id": "T2.joint_load",
-      "example": "mec-l-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-l-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-arm-rod\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.joint_load",
-      "example": "mec-l-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-l-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-horn-mount\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.joint_load",
-      "example": "mec-l-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-l-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-horn-pin\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.joint_load",
-      "example": "mec-l-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-l-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-servo-arm\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.joint_load",
-      "example": "mec-r-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-r-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-arm-rod\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.joint_load",
-      "example": "mec-r-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-r-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-horn-mount\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.joint_load",
-      "example": "mec-r-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-r-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-horn-pin\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.joint_load",
-      "example": "mec-r-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
-      "key": "T2.joint_load|mec-r-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-servo-arm\"}",
-      "status": "SKIP"
-    },
-    {
       "check_id": "T2.sim_drop_loads",
       "example": "E-ASM-01: carries 1.9 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|E-ASM-01: carries # N; rating is a placeholder, not checked|{\"joint\":\"E-ASM-01\"}",
@@ -526,51 +478,15 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "mec-l-arm-rod: carries 0.1 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-l-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-arm-rod\"}",
-      "status": "SKIP"
+      "example": "mec-l-horn-mount: peak 1.6 N in drop test exceeds rating 0.7 N",
+      "key": "T2.sim_drop_loads|mec-l-horn-mount: peak # N in drop test exceeds rating # N|{\"joint\":\"mec-l-horn-mount\"}",
+      "status": "FAIL"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "mec-l-horn-mount: carries 1.6 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-l-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-horn-mount\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.sim_drop_loads",
-      "example": "mec-l-horn-pin: carries 0.2 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-l-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-horn-pin\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.sim_drop_loads",
-      "example": "mec-l-servo-arm: carries 0.2 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-l-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-l-servo-arm\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.sim_drop_loads",
-      "example": "mec-r-arm-rod: carries 0.3 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-r-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-arm-rod\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.sim_drop_loads",
-      "example": "mec-r-horn-mount: carries 1.2 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-r-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-horn-mount\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.sim_drop_loads",
-      "example": "mec-r-horn-pin: carries 0.2 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-r-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-horn-pin\"}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T2.sim_drop_loads",
-      "example": "mec-r-servo-arm: carries 0.3 N; rating is a placeholder, not checked",
-      "key": "T2.sim_drop_loads|mec-r-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"mec-r-servo-arm\"}",
-      "status": "SKIP"
+      "example": "mec-r-horn-mount: peak 1.2 N in drop test exceeds rating 0.7 N",
+      "key": "T2.sim_drop_loads|mec-r-horn-mount: peak # N in drop test exceeds rating # N|{\"joint\":\"mec-r-horn-mount\"}",
+      "status": "FAIL"
     },
     {
       "check_id": "T2.sim_rest",
