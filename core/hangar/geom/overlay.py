@@ -22,6 +22,8 @@ CONFIG_FILE = REPO_ROOT / "cad-overlay.local.json"
 _MESH_EXT = (".stl", ".obj", ".ply", ".off")
 _STEP_EXT = (".step", ".stp")
 _UNITS = {"mm": 1.0, "m": 1000.0, "in": 25.4}
+OUTPUT_END_TOL_MM = 2.0   # drawing/placement tolerance, not a gate threshold
+SPLINE_SPAN_MM = 5.0      # the output end is a spline, narrower than this; a case face is wider
 _CACHE: dict = {}
 _FORCED = 0
 
@@ -195,7 +197,36 @@ def _evaluate(part_id: str) -> tuple[dict, "trimesh.Trimesh | None"]:
     if any(r > 3.0 or r < 1 / 3 for r in fit):
         return {**st, "reason": "overlay size does not match the committed envelope "
                 f"(fit x y z = {fit[0]:.2f} {fit[1]:.2f} {fit[2]:.2f}); check units and matrix"}, None
+    bad = _output_end_problem(m, part_id, library)
+    if bad is not None:
+        return {**st, "reason": bad[0], "output_end_off_mm": bad[1]}, None
     return {**st, "state": "present"}, m
+
+
+def _output_end_problem(m, part_id: str, library):
+    """(reason, off_mm) when the mesh end along frames.output.axis is not the spline at frames.output.point, else None."""
+    try:
+        out = (library.load_part(part_id).get("frames") or {}).get("output")
+        point = np.array(out["point"], dtype=float)
+        axis = np.array(out["axis"], dtype=float)
+        axis = axis / np.linalg.norm(axis)
+    except Exception:  # noqa: BLE001 - no usable frames.output: no guard
+        return None
+    v = np.asarray(m.vertices, dtype=float)
+    h = v @ axis
+    ext, want = float(h.max()), float(point @ axis)
+    if abs(ext - want) > OUTPUT_END_TOL_MM:
+        off = abs(ext - want)
+        return f"overlay output end is {off:.1f} mm from frames.output along its axis; check the matrix", off
+    tip = v[h >= ext - 1.0]
+    cen = tip.mean(axis=0)
+    lat = lambda x: x - (x @ axis) * axis  # noqa: E731 - component normal to the axis
+    off = float(np.linalg.norm(lat(cen - point)))
+    span = 2.0 * float(np.linalg.norm(np.array([lat(x) for x in tip - cen]), axis=1).max())
+    if off > OUTPUT_END_TOL_MM or span >= SPLINE_SPAN_MM:
+        return (f"overlay output end is not the spline at frames.output (centre {off:.1f} mm off the axis point, "
+                f"end span {span:.1f} mm); check the matrix"), off
+    return None
 
 
 def status(part_id: str) -> dict:

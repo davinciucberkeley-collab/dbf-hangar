@@ -19,8 +19,12 @@ def to_scene(design: Design) -> trimesh.Scene:
     """Scene in metres, z-up body frame converted to glTF y-up, one named node per component."""
     scene = trimesh.Scene()
     flip = np.array([[1, 0, 0, 0], [0, 0, 1, 0], [0, -1, 0, 0], [0, 0, 0, 1]], dtype=float)  # z-up -> y-up
+    from .visuals import hidden_visual_components
+    hidden = hidden_visual_components(design)
     for c in design.components:
         if is_point_mass(c):  # no extent: nothing to draw (its mass still counts in the mass properties)
+            continue
+        if c["id"] in hidden:  # drawn by a visual node instead (the follower clevis carries this pin)
             continue
         mesh = trimesh.util.concatenate(component_parts(c, design.base_dir))
         mesh.apply_scale(0.001)

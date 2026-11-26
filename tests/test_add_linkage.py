@@ -200,3 +200,21 @@ def test_link_ratios_matches_the_gate_row():
     card = validate(design)
     row = next(x for t in card.tiers for x in t.results if x.check_id == "T6.ratio.elevator-drive")
     assert "-0.393" in row.message
+
+
+def test_rerun_keeps_extra_keys(tmp_path):
+    f = scratch(tmp_path)
+    assert run(f).ok
+    aid = next(a["id"] for a in _plane(f)["attachments"] if a["id"].endswith("-servo-arm"))
+    r = call("design.set", path=str(f), key=f"attachments[{aid}].connection", kind="add", value="CT-SERVO-SPLINE", why="x")
+    assert r.ok, r.messages
+    before = (f / "plane.yaml").read_bytes()
+    r = run(f)
+    assert r.ok, r.messages
+    assert r.data["changed"] is False
+    assert (f / "plane.yaml").read_bytes() == before
+    r = run(f, servo_range=25)
+    assert r.ok, r.messages
+    assert r.data["changed"] is True
+    att = next(a for a in _plane(f)["attachments"] if a["id"] == aid)
+    assert att["connection"] == "CT-SERVO-SPLINE"
