@@ -5512,13 +5512,13 @@ items:
     updated: '2026-11-26'
   - id: T163
     kind: task
-    text: Source the EMAX ES08MA II servo travel (deg) for knowledge/parts/emax-es08maii-metal/part.yaml; c172-rc uses +-45 input / +-50 range pending it (D122).
+    text: 'Source the EMAX ES08MA II servo travel (deg) for knowledge/parts/emax-es08maii-metal/part.yaml; c172-rc uses +-45 input / +-50 range pending it (D122). [servodatabase ES08MA 2: rotational range 95 deg (+-47.5); c172 servo range must stay <= 47.5, so U16.4-2 uses input +-45 and servo range 47.5 instead of 50]'
     source: D122
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: bbf80f7
     decided_in: ''
     updated: '2026-11-26'
   - id: T164
