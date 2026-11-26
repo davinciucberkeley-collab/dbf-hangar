@@ -672,6 +672,108 @@ def remove_item(text: str, key: str, item) -> tuple[str, list, list]:
     return _edit_list(text, key, item, False)
 
 
+_RENAME_SKIP = {"id", "name", "description", "notes", "lineage", "authors", "status"}
+
+
+def _walk_strings(node, path: str = "", top: bool = True):
+    """Yield (path, container, key, value) for every string mapping value or list item (keys never; top-level _RENAME_SKIP keys skipped)."""
+    if isinstance(node, dict):
+        for k, v in node.items():
+            if top and k in _RENAME_SKIP:
+                continue
+            p = f"{path}.{k}" if path else str(k)
+            if isinstance(v, str):
+                yield p, node, k, v
+            else:
+                yield from _walk_strings(v, p, False)
+    elif isinstance(node, list):
+        for i, v in enumerate(node):
+            p = f"{path}[{i}]"
+            if isinstance(v, str):
+                yield p, node, i, v
+            else:
+                yield from _walk_strings(v, p, False)
+
+
+def _swap_refs(node, old: str, new: str, top: bool = True):
+    if isinstance(node, dict):
+        return {k: (v if top and k in _RENAME_SKIP else _swap_refs(v, old, new, False)) for k, v in node.items()}
+    if isinstance(node, list):
+        return [_swap_refs(x, old, new, False) for x in node]
+    return new if isinstance(node, str) and node == old else node
+
+
+def rename_id(text: str, old: str, new: str) -> tuple[str, list[str], list[str]]:
+    """Return (patched text, changed paths, not-renamed substring paths): every string value or list item equal to `old` becomes `new`.
+
+    Only the id characters change (quotes stay); mapping keys and the top-level id/name/description/notes/lineage/authors/status
+    are never touched. No reference to `old` but one to `new`: nothing to do (empty paths). Unknown id, collision and a
+    list that would hold `new` twice raise OpInputError.
+    """
+    if old == new:
+        raise OpInputError(f"rename-id: old and new are both {old!r}")
+    if not ID_RE.fullmatch(new):
+        raise OpInputError(f"rename-id: new id {new!r} must match {ID_RE.pattern}")
+    crlf = "\r\n" in text
+    t = text.replace("\r\n", "\n")
+    hand = "rename-id: cannot edit {} without rewriting other text; edit the file by hand"
+    data = yamlfast.safe_load(t)
+    root = yamlio.load(t)
+    hits, near, new_refs = [], [], 0
+    for path, parent, key, v in _walk_strings(root):
+        if v == old:
+            hits.append((path, parent, key))
+        elif old in v:
+            near.append(path)
+        if v == new:
+            new_refs += 1
+    comp_ids = [c.get("id") for c in data.get("components", []) if isinstance(c, dict)]
+    if not hits:
+        if new_refs:
+            return text, [], []
+        raise OpInputError(f"unknown id {old!r}{_suggest(old, comp_ids)}")
+    if old in comp_ids and new in comp_ids:
+        raise OpInputError(f"both {old!r} and {new!r} are components; cannot rename")
+    lists = {}
+    for path, parent, key in hits:
+        if isinstance(parent, list):
+            lists.setdefault(id(parent), (path.rsplit("[", 1)[0], parent))
+    for lpath, lst in lists.values():
+        n_new = sum(1 for x in lst if isinstance(x, str) and x == new)
+        n_old = sum(1 for x in lst if isinstance(x, str) and x == old)
+        if n_new <= 1 and n_new + n_old > 1:
+            raise OpInputError(f"would duplicate {new!r} in {lpath}")
+    lines = t.split("\n")
+    edits, rec = [], set()
+    for path, parent, key in hits:
+        line, col = parent.lc.value(key) if isinstance(parent, dict) else parent.lc.item(key)
+        m = _TOKEN.match(lines[line], col)
+        if not m:
+            raise OpInputError(hand.format(path))
+        tok = m.group(0)
+        quoted = tok[0] in ("\"", "'")
+        start = col + (1 if quoted else 0)
+        inner = tok[1:-1] if quoted else tok
+        if inner != old:
+            raise OpInputError(hand.format(path))
+        edits.append((line, start))
+        rec.add(line)
+    for line, start in sorted(edits, reverse=True):
+        lines[line] = lines[line][:start] + new + lines[line][start + len(old):]
+    out = "\n".join(lines)
+    try:
+        same = yamlfast.safe_load(out) == _swap_refs(data, old, new)
+    except yaml.YAMLError:
+        same = False
+    if not same:
+        raise OpInputError(hand.format(old))
+    for tag, i1, i2, j1, j2 in difflib.SequenceMatcher(None, t.splitlines(), out.splitlines(), autojunk=False).get_opcodes():
+        if tag == "equal" or (tag == "replace" and i2 - i1 == j2 - j1 and all(i in rec for i in range(i1, i2))):
+            continue
+        raise OpInputError(hand.format(old))
+    return (out.replace("\n", "\r\n") if crlf else out), [h[0] for h in hits], near
+
+
 def _errors(data) -> dict:
     if isinstance(data, dict) and "parameters" in data:     # PDL 1.2: a "$name" reference stands for a number
         from .geom.params import resolve_references
