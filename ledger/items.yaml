@@ -5526,10 +5526,10 @@ items:
     text: add-linkage option for aileron differential (arm not square at neutral) so c172-rc ailerons can reach up 20 / down 15 (D123).
     source: D123
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: 4711e1c
     decided_in: ''
     updated: '2026-11-26'
   - id: T165
