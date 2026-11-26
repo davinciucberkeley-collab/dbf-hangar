@@ -39,12 +39,6 @@
       "status": "SKIP"
     },
     {
-      "check_id": "T1.kinematic_link",
-      "example": "sweep wing-aileron-r 5\u00b0: 1 pair(s) not checked \u2014 linkage path not modelled: wing-aileron-r-horn, wing-aileron-r-rod",
-      "key": "T1.kinematic_link|sweep wing-aileron-r #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: wing-aileron-r-horn, wing-aileron-r-rod|{\"parts\":[\"wing-aileron-r-horn\",\"wing-aileron-r-rod\"],\"pose\":\"sweep wing-aileron-r 5\u00b0\",\"unchecked_pairs\":[\"wing-aileron-r-rod & wing-aileron-r-horn\"]}",
-      "status": "SKIP"
-    },
-    {
       "check_id": "T2.fea_strength",
       "example": "4 printed part(s) have no OpenCAE stress check yet (plane fea c172-rc --all)",
       "key": "T2.fea_strength|# printed part(s) have no OpenCAE stress check yet (plane fea c172-rc --all)|{\"parts\":[\"landing-gear\",\"wheel-r\",\"wheel-l\",\"wheel-n\"]}",
