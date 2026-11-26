@@ -187,6 +187,27 @@ def simulate_mechanism(design: Design, mech: dict) -> dict:
     return {"mechanism": mech["id"], "driver": mech["driver"], "steps": steps}
 
 
+def _pick_steps(sim: dict, step_deg: float) -> list[dict]:
+    """The simulated steps T6 poses the design at: both ends and every step_deg multiple of the input."""
+    last = len(sim["steps"]) - 1
+    return [s for k, s in enumerate(sim["steps"]) if k in (0, last)
+            or abs(s["input_deg"] / step_deg - round(s["input_deg"] / step_deg)) < 1e-9]
+
+
+def mechanism_pose_angles(design: Design, step_deg: float) -> list[dict[str, float]]:
+    """Joint angles (label -> deg) of every pose T6 collision-checks, over all mechanisms. A mechanism that cannot be simulated is skipped (T6 reports it)."""
+    atts = _atts(design)
+    out = []
+    for mech in design.data.get("mechanisms", []):
+        try:
+            sim = simulate_mechanism(design, mech)
+        except (RuntimeError, KeyError):
+            continue
+        rng = atts[mech["driver"]]["articulation"]["range_deg"]
+        out.extend({mech["driver"]: _clamp(s["input_deg"], rng), **s["followers"]} for s in _pick_steps(sim, step_deg))
+    return out
+
+
 def _collision(design: Design, mech: dict, sim: dict, limit: float, step_deg: float, linked: set) -> str | None:
     from ..checks import _overlap_volume
     from ..geometry import downstream_ids, posed_component_parts
@@ -201,10 +222,7 @@ def _collision(design: Design, mech: dict, sim: dict, limit: float, step_deg: fl
     lo = sim["steps"][0]["input_deg"]
     rest = posed_component_parts(design, {})
     ignored: dict[frozenset, bool] = {}
-    last = len(sim["steps"]) - 1
-    picks = [s for k, s in enumerate(sim["steps"]) if k in (0, last)
-             or abs(s["input_deg"] / step_deg - round(s["input_deg"] / step_deg)) < 1e-9]
-    for s in picks:
+    for s in _pick_steps(sim, step_deg):
         angles = {mech["driver"]: _clamp(s["input_deg"], atts[mech["driver"]]["articulation"]["range_deg"]), **s["followers"]}
         ov = link_overrides(design, mech, s["input_deg"], next(iter(s["followers"].values()))) if four_bar else None
         posed = posed_component_parts(design, angles, ov) if four_bar else posed_component_parts(design, angles)

@@ -176,6 +176,25 @@ def test_designs_without_a_wing_panel_get_no_pocket_row():
 
 def test_concept_a_param_pockets_unchanged():
     design = load_design(REPO / "designs" / "concept-a-param")
-    assert "cut_poses" not in design.component("wng-001")["geometry"]["params"]
+    assert not any("matrix" in e for e in design.component("wng-001")["geometry"]["params"].get("cut_poses", []))  # swept poses (matrices) are expected, U16.2
     (row,) = _rows(design)
     assert row.status == "PASS"
+
+
+def test_f64_operand_has_float64_tolerance():
+    import trimesh
+    from hangar.importers.dbf_geometry import _manifold
+    box = trimesh.creation.box(extents=(40, 20, 10))
+    assert _manifold(box, f64=True).get_tolerance() < 1e-9 < _manifold(box).get_tolerance()
+
+
+def test_planform_measured_without_pockets():
+    from hangar.checks import _planform_parts
+    from hangar.geometry import strip_planform
+    design = load_design(REPO / "designs" / "concept-a-param")
+    std = load_standards()
+    assert design.component("wng-001")["geometry"]["params"]["cut_poses"]   # swept poses on
+    m = strip_planform(_planform_parts(design, design.component("wng-001"))[1], "wng-001",
+                       n=std["aero"]["planform_strip_count"]["value"], gap_tol=std["geometry"]["strip_gap_tolerance_mm"]["value"],
+                       control_frac=std["aero"]["control_surface_gap_max_fraction"]["value"])
+    assert m["area_mm2"] == pytest.approx(203021, abs=5) and not m.get("ignored_strips")

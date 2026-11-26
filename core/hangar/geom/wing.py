@@ -5,8 +5,8 @@ wing.py (build_wing core loft and spar bore). Lengths mm, angles degrees, compon
 
 Not ported: the `te_min` trailing-edge opening of k09kit.section_loop, the cove, and the explicit pockets and slots of
 amodel/wing.py build_wing; only what `cut_files` removes is cut. The cut_files pockets follow each
-neighbour's position and rotation_deg (cut_poses, derived by hangar.geom.resolve on load); they do not follow
-articulation poses.
+neighbour's position and rotation_deg (cut_poses, derived by hangar.geom.resolve on load) and, with cut_sweep swept,
+the poses the resolver samples (T1 configurations and T6 mechanism steps, see sweeps.py), not every angle.
 """
 from __future__ import annotations
 
@@ -163,16 +163,26 @@ def _build(p: dict, base_dir) -> list:
         lo, hi = core.bounds[0][1], core.bounds[1][1]
         cyl = kernel.tube("y", (p["bore_x"], (lo + hi) / 2.0, p["bore_z"]), (hi - lo) + 2.0, p["bore_d"])
         core = kernel.difference(core, [cyl])
-    poses = {e["file"]: e["matrix"] for e in p["cut_poses"]}
+    poses = {e["file"]: e for e in p["cut_poses"]}
     cuts = []
     for f in p["cut_files"]:
         m = _load_cut(base_dir, f)
-        if f in poses:
-            m.apply_transform(np.vstack([np.array(poses[f], dtype=float).reshape(3, 4), [0, 0, 0, 1]]))
-        cuts.append(m)
+        e = poses.get(f, {})
+        base = np.eye(4)
+        if e.get("matrix") is not None:
+            base[:3] = np.array(e["matrix"], dtype=float).reshape(3, 4)
+        placed = m.copy()
+        placed.apply_transform(base)
+        cuts.append(placed)
+        for row in e.get("matrices", []):
+            t = np.eye(4)
+            t[:3] = np.array(row, dtype=float).reshape(3, 4)
+            moved = m.copy()
+            moved.apply_transform(t)
+            cuts.append(moved)
     hit = [m for m in cuts if np.all(m.bounds[0] < core.bounds[1]) and np.all(m.bounds[1] > core.bounds[0])]
     if hit:
-        core = kernel.difference(core, hit)
+        core = kernel.difference(core, hit, f64=True)   # float64 operands: no float32 film in the pocket walls
     return [core]
 
 
@@ -203,11 +213,16 @@ def _check(p: dict) -> list[str]:
     if not all(isinstance(f, str) for f in p["cut_files"]):
         errs.append("cut_files: must be a list of strings")
     def _bad_pose(e):
-        m = e.get("matrix") if isinstance(e, dict) else None
-        return (not isinstance(e, dict) or e.get("file") not in p["cut_files"] or not isinstance(m, list)
-                or len(m) != 12 or not all(isinstance(x, (int, float)) and not isinstance(x, bool) for x in m))
+        if not isinstance(e, dict) or e.get("file") not in p["cut_files"]:
+            return True
+        def twelve(m):
+            return isinstance(m, list) and len(m) == 12 and all(
+                isinstance(x, (int, float)) and not isinstance(x, bool) for x in m)
+        ms = e.get("matrices")
+        return (("matrix" not in e and ms is None) or ("matrix" in e and not twelve(e["matrix"]))
+                or (ms is not None and not (isinstance(ms, list) and all(twelve(m) for m in ms))))
     if any(_bad_pose(e) for e in p["cut_poses"]):
-        errs.append("cut_poses: each entry needs a 'file' listed in cut_files and a 'matrix' of 12 numbers")
+        errs.append("cut_poses: each entry needs a 'file' listed in cut_files and a 'matrix' and/or 'matrices' of 12 numbers")
     return errs
 
 
@@ -234,7 +249,9 @@ register(Generator(
      "side": ParamSpec("choice", default="both", choices=("both", "right", "left"), doc="half-span to build: both, right or left"),
      "bore_x": ParamSpec("number", doc="bore centre x, mm"), "bore_z": ParamSpec("number", doc="bore centre z, mm"), "bore_d": ParamSpec("number", doc="bore diameter, mm"),
      "cut_files": ParamSpec("list", default=[], doc="design-folder-relative closed-solid meshes subtracted from the core"),
-     "cut_poses": ParamSpec("list", default=[], doc="derived by the resolver from the neighbours' positions; do not write")},
+     "cut_sweep": ParamSpec("choice", default="swept", choices=("none", "swept"),
+                            doc="swept: pockets also follow the poses of cut meshes that move (resolver fills cut_poses)"),
+     "cut_poses": ParamSpec("list", default=[], doc="derived by the resolver from the neighbours' positions and, when cut_sweep is swept, their joint poses; do not write")},
     _build, files=lambda p: ([] if airfoil.is_named(p["airfoil_file"]) else [p["airfoil_file"]]) + list(p["cut_files"]), check=_check))
 
 

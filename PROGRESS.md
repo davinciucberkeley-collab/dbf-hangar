@@ -24,11 +24,11 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W13 Rehearsal gaps and visual fidelity | 8 | 7 |
 | W14 Presentation | 1 | 0 |
 | W15 Authoring gaps and speed (D86) | 3 | 2 |
-| W16 3D generation close to the real aircraft (D85, D87) | 2 | 0 |
+| W16 3D generation close to the real aircraft (D85, D87) | 2 | 1 |
 | W17 Sourced gates (D88) | 1 | 0 |
 | W18 Physics checks (D89) | 4 | 4 |
 | W19 Studio UI and 3D viewer (D92) | 1 | 0 |
-| **all** | 74 | 65 |
+| **all** | 74 | 66 |
 
 ### Open ledger items by owner
 
@@ -37,7 +37,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
-| conductor | 23 | 2026-11-26 |
+| conductor | 22 | 2026-11-26 |
 
 ### Open items for teammates
 
@@ -206,7 +206,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
 | U16.1 | 3D generation close to the real aircraft (I2; D85, D87) [hard] | 2/4 | in progress | - |
-| U16.2 | Pose-aware cut pockets for generated parts (was U10.3; T121; D70; P284) [hard] | 1/4 | in progress | - |
+| U16.2 | Pose-aware cut pockets for generated parts (was U10.3; T121; D70; P284) [hard] | 4/4 | done | - |
 
 ### W17 Sourced gates (D88)
 
@@ -234,7 +234,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 51 | 98 | 4 | 3 | 0 | 156 |
+| task | 50 | 99 | 4 | 3 | 0 | 156 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 
