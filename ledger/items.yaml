@@ -4931,12 +4931,12 @@ items:
     text: 'v1.1: plane CLI start-up ~4.4 s warm; hangar.checks import 1.75 s, mostly trimesh -> scipy/networkx (1.48 s); lazy-import trimesh in checks.py, geometry.py and others (5+ modules) behind a measured before/after'
     source: W25-T 2026-11-24 (python -X importtime)
     owner: conductor
-    status: open
+    status: done
     due: '2026-12-15'
     units: []
-    evidence: ''
+    evidence: c4a9dbd
     decided_in: ''
-    updated: '2026-11-24'
+    updated: '2026-11-26'
   - id: D73
     kind: decision
     text: "U16.2 pose-aware cut pockets merge with a relaxed budget: concept-a-param tier-1 validate up to ~70 s (was 60.2 s), load and cold build budgets unchanged; the demo's live tier-1 step and deck/demo FAIL counts are updated to match [Tristan P219: U16.2 uses W24-A's convex-hull pocket per moving cut part (as amodel/wing.py), not posed copies]"
@@ -5405,12 +5405,12 @@ items:
     text: 'Follow-up U18.4: T3.trim and T3.tail_volume read only declared lifting_surface tails, so generated tails (tail_surfaces / fin generators, e.g. c172-rc) get a SKIP and the showcase has no trim or tail-volume numbers; read generated tails. Also the trim stall row uses default-CLmax stall speed, which U18.2 found 18 % high on the C172.'
     source: reviews/2026-11-25-w34b.md
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: '9920387'
     decided_in: ''
-    updated: '2026-11-25'
+    updated: '2026-11-26'
   - id: T154
     kind: task
     text: 'Builders: never run python with stdin (, ); a stray stdin process later re-ran an old edit script and re-added duplicate definitions on std/u17.1-2b-criteria (W34-R3 4b). Write scripts to files; before committing, confirm no background task of yours is still running. Add this line to the builder role file and the shared environment briefs. [duplicate of T152 (created by a delayed shell command after a backtick slip)]'
@@ -5444,3 +5444,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-25'
+  - id: T157
+    kind: task
+    text: 'Process miss (conductor 2026-11-26): U16.1 S2 Part B merged as 5a777a6 citing run 45785779897 as validate green, but that run was the progress workflow; the validate run 45785779861 on ffab905 had failed (test_generated_tails c172-rc pins: tail_cl 0.2175, stall 44.6 g/dm^2 8.1 m/s). Main red from 9df0cb8 to the pin fix. Rule: CI waiters select runs with --workflow validate and print the workflow name; merge messages cite the validate run only.'
+    source: CI run 45786203448
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'

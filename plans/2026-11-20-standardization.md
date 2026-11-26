@@ -378,6 +378,11 @@ Each has a default the plan uses if nobody answers by the date. **Standing rule 
 | D109 | Explode: the brief's hierarchy formula telescopes to the radial one (B4 builder) | hierarchy moves whole subassemblies: every part takes the offset of its ancestor at the chosen level, t x 1.5 x (C(anc) - C(root)) (the brief's 1.5 factor kept for both styles), so parts inside a subassembly keep their relative positions; radial moves each part by t x (C(p) - C(root)); with level All, hierarchy uses each part's top-level child of the root | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D110 | U15.3-4 / U18.4-4 brief scope (4011789) | lazy mass makes `design get` mesh-free; `design set` keeps one mesh build (its refuse rule needs failing-part detection) and only skips the two mass_properties runs when nothing regenerated; trim stall keeps default CLmax 1.1 (1.54 is the full-size value, no model-scale source); fins: conventional and T layouts only | Tristan | 11-25 | decided (default, conductor 2026-11-25) |
 | D111 | Overnight staffing (Tristan away) | keep at least 3 builders and 2 reviewers running while free RAM allows; launch more when RAM is idle; hourly audits continue | Tristan | 11-26 | decided (Tristan P306, 2026-11-26) |
+| D112 | S9c hollow fuselage: may the c172-rc showcase opt in (mass/CG change)? | yes (Tristan P307): Part B may apply it once S9c core merges and the scratch report shows no new FAIL | Tristan | 11-26 | decided (Tristan P307, 2026-11-26) |
+| D113 | Studio colour-by-status shows concept-a almost all amber because report-only SKIPs display as WARN | a WARN row whose original status was SKIP (report-only wrapper) colours as "not judged" (grey), not amber; an empty click also ends a row focus | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
+| D114 | U16.1 S3 brief defects (builder stop) | correct the brief's arithmetic (bay y 12.1, removed 5082.97 mm3); fixture joint point moved into host material; rotation ranking = fewest non-zero angles, then least sum, then largest roll/pitch/yaw; CLI flag --host (registry derives it); manifold half-space for inside fraction (no shapely); Part B: rudder servo on the upper face, solve the servo-elev / tail-fixed clip | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
+| D115 | Studio status colours: design-level rows (e.g. T7.transport naming 64+ parts) paint the whole aircraft amber | design-level checks (the DESIGN_LEVEL set the baseline already uses, plus any row naming more than a third of the parts) are counted in the legend but do not paint parts; part-specific rows (T8.bom, T7.wiring, T6.link, ...) still do | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
+| D116 | U16.1 S7: the kinematic MJCF fixes the root with the wheels touching the ground plane, so ground friction and hinge damping 1e-5 stop the wheels (18 / -86 / -438 deg after 1 s at 10 rad/s, ~573 expected; W34-R3 15) | reopen S7 in place: in the kinematic export the ground plane sits 1 mm below the lowest wheel point, and continuous (wheel) joints get damping 1e-7 (revolute joints keep 1e-5); a test spins each c172-rc-like fixture wheel at 10 rad/s for 1 s and asserts > 500 deg with 0 contacts; mechanism angles unchanged | Tristan | 11-26 | decided (default, conductor 2026-11-26) |
 
 Ruling 2026-11-20 (Tristan): D1–D9 take the default above; D10 is decided once v1.0 is done.
 
@@ -1100,7 +1105,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 1: Brief** (tactician W34-T, with the importtime profile) *(4efe4c6: hard; trimesh 2.26 s of 2.63 s import; lazy proxy; merge after U15.1)*
 - [x] **Step 2: Build** (builder-plus W34-B)
 - [x] **Step 3: Review** (W34-R); merge *(merged 5b2221b, W34-R3 ACCEPT; --help 8.8 -> 3.5 s; get/set on parametric designs wait for step 4, D102)*
-- [ ] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review *(brief 4011789: get mesh-free, set partial (D110); building)*
+- [x] **Step 4: Lazy mass_g** (U15.3-2, D102): brief, build, review *(brief 4011789: get mesh-free, set partial (D110); merged c4a9dbd, W34-R2 ACCEPT)*
 
 ### Unit U16.1: 3D generation close to the real aircraft (I2; D85, D87) [hard]
 
@@ -1108,7 +1113,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Recon and design note** (recon W34-X, then advisor W34-A): `u16.1/recon.md`, `u16.1/design-note.md` *(build order S0 showcase c172-rc on main, S1 four-bar solve (rod posed server-side), S2 wheels on axles, S3 servos in bays, S4 linkage generator op, S5 = U16.2, S6 hinge gap/bevel, S7 mjcf-kinematic, S8 wires as tubes, S9 visual detail + x-ray; PDL 1.3 three optional fields; all opt-in, export sha256 unchanged on existing designs; D90)*
 - [x] **Step 2: Briefs** (tactician W34-T5) from the design note, S0 and S1 first *(52e43ea: S0 easy; S1-S4 hard, each with a designs-only Part B; S6-S9 outlines; PDL 1.3 opened by S1; chain S0 -> S1 -> S2 -> S3 -> S4; S0 check: c172-rc on main 0 FAIL / 26 WARN, baseline unchanged; D96)* *(S6-S9 re-briefed 11653fa: S6 hinge geometry, S7 mjcf-kinematic (prototype matches S1 hand angles to 4 decimals), S8 wires (after S1, S3, U19.1 B2), S9a clevis, S9b screws, S9c fuselage wall (Part B on Tristan's word); x-ray dropped (B3); D101)*
-- [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order *(S0 c172-rc showcase merged 75c5c2c (PR #12, W34-R ACCEPT); S1 four-bar Part A merged c2230e1 (PDL 1.3; rod end stays on the horn pin; c172-rc ailerons/rudder pass as four_bar, elevator rod hits the fuselage -> design fix before S1 Part B); S2 wheels Part A merged 7557b8f (c172-rc Part B needs fuselage-gear moved to [266, 42.7, -12]); S1 Part B merged e71ba7b (c172-rc real linkages on all four surfaces, pushrod slot); S3 bays building; S2 Part B next)*
+- [ ] **Step 3: Build** (W34-B), one brief at a time in the note's order *(S0 c172-rc showcase merged 75c5c2c (PR #12, W34-R ACCEPT); S1 four-bar Part A merged c2230e1 (PDL 1.3; rod end stays on the horn pin; c172-rc ailerons/rudder pass as four_bar, elevator rod hits the fuselage -> design fix before S1 Part B); S2 wheels Part A merged 7557b8f (c172-rc Part B needs fuselage-gear moved to [266, 42.7, -12]); S1 Part B merged e71ba7b (c172-rc real linkages on all four surfaces, pushrod slot); S2 Part B merged 5a777a6 (c172-rc separate wheels; wheel joint rating placeholder vs ~31 N drop load); S3 bays in review)*
 - [ ] **Step 4: Review** (W34-R); merge; Tristan looks at the result in Studio
 
 ### Unit U16.2: Pose-aware cut pockets for generated parts (was U10.3; T121; D70; P284) [hard]
@@ -1163,7 +1168,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Brief** (tactician W34-T4) *(aec87ed: -1 tail volume, -2 trim, -3 dynamic modes (all hard) + scout packet A; AeroSandbox opt-in, not in CI (modes SKIP there); merge order U18.3-1, U18.4-1, -2, -3)*
 - [x] **Step 2: Build** (builder-plus W34-B) *(-1 tail volume merged ca908c6 (W34-R ACCEPT; bands pending: Raymer gives class points); -2 trim merged 98b2dd6 (c0-a1, tiltwing PASS; c172-rc WARN: generated tails not read, T153); -3 dynamic modes merged 132c13c (D108 limits; runs with AeroSandbox locally, SKIP in CI; tiltwing Dutch roll unstable -> ledger))*
-- [x] **Step 3: Review** (W34-R); merge
+- [x] **Step 3: Review** (W34-R); merge *(follow-up -4 generated tails merged 9920387: c172-rc Vh 0.63 WARN (band top pending), Vv 0.039 PASS, trim stall +8.2 deg PASS; T153 done)*
 
 ### Unit U19.1: Studio UI overhaul and a better 3D viewer (D92; P285) [hard]
 

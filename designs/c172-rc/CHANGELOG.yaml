@@ -418,3 +418,238 @@
     out of the 1.6 mm slit at -10 deg; a builder cuts the tail-cone slot deeper (4
     mm) and out to x 750 where the rod ends; no part moved, no new component'
   kind: modify
+- date: '2026-11-26T08:05:49Z'
+  key: components[landing-gear].geometry.params.wheels
+  old: null
+  new: separate
+  why: 'U16.1 S2 Part B: legs and fork only, wheels become separate parts so each
+    can spin on its axle and be judged for contact (brief U16.1-s2-wheels)'
+  kind: add
+  regenerated:
+  - landing-gear
+- date: '2026-11-26T08:05:49Z'
+  key: components[landing-gear].geometry.params.axle_d
+  old: null
+  new: 2
+  why: 'U16.1 S2 Part B: legs and fork only, wheels become separate parts so each
+    can spin on its axle and be judged for contact (brief U16.1-s2-wheels)'
+  kind: add
+- date: '2026-11-26T08:06:15Z'
+  key: components[wheel-r]
+  old: null
+  new:
+    id: wheel-r
+    type: landing_gear
+    geometry:
+      generator: wheel
+      params:
+        wheel_d: 45
+        wheel_w: 18
+        shape: tyre
+        bore_d: 2.4
+    position:
+    - 266
+    - 109
+    - -117.5
+    mass_model:
+      material: petg-printed
+    manufacturing:
+      method: 3d-print-fdm
+      machine: jacobs-fdm
+  why: separate wheel r on its axle; same wheel_d/wheel_w as the former merged gear
+    params, bore 0.4 mm over the 2 mm axle stub; axle z = ground_z + wheel_d/2
+  kind: add
+  regenerated:
+  - wheel-r
+- date: '2026-11-26T08:06:32Z'
+  key: components[wheel-l]
+  old: null
+  new:
+    id: wheel-l
+    type: landing_gear
+    geometry:
+      generator: wheel
+      params:
+        wheel_d: 45
+        wheel_w: 18
+        shape: tyre
+        bore_d: 2.4
+    position:
+    - 266
+    - -109
+    - -117.5
+    mass_model:
+      material: petg-printed
+    manufacturing:
+      method: 3d-print-fdm
+      machine: jacobs-fdm
+  why: separate wheel l on its axle; same wheel_d/wheel_w as the former merged gear
+    params, bore 0.4 mm over the 2 mm axle stub; axle z = ground_z + wheel_d/2
+  kind: add
+  regenerated:
+  - wheel-l
+- date: '2026-11-26T08:06:50Z'
+  key: components[wheel-n]
+  old: null
+  new:
+    id: wheel-n
+    type: landing_gear
+    geometry:
+      generator: wheel
+      params:
+        wheel_d: 36
+        wheel_w: 18
+        shape: tyre
+        bore_d: 2.4
+    position:
+    - 110
+    - 0
+    - -122
+    mass_model:
+      material: petg-printed
+    manufacturing:
+      method: 3d-print-fdm
+      machine: jacobs-fdm
+  why: separate wheel n on its axle; same wheel_d/wheel_w as the former merged gear
+    params, bore 0.4 mm over the 2 mm axle stub; axle z = ground_z + wheel_d/2
+  kind: add
+  regenerated:
+  - wheel-n
+- date: '2026-11-26T08:07:08Z'
+  key: attachments[gear-wheel-r]
+  old: null
+  new:
+    id: gear-wheel-r
+    parent: landing-gear
+    child: wheel-r
+    method: hinge
+    location:
+    - 266
+    - 109
+    - -117.5
+    rated_load_n: 10
+    rating_basis: placeholder
+    embed_ok: true
+    articulation:
+      type: continuous
+      pivot:
+      - 266
+      - 109
+      - -117.5
+      axis:
+      - 0
+      - 1
+      - 0
+  why: 'wheel r spins on its axle: continuous joint, axis y through the axle centre;
+    rated_load_n 10 is a labelled PLACEHOLDER, no datasheet'
+  kind: add
+- date: '2026-11-26T08:07:27Z'
+  key: attachments[gear-wheel-l]
+  old: null
+  new:
+    id: gear-wheel-l
+    parent: landing-gear
+    child: wheel-l
+    method: hinge
+    location:
+    - 266
+    - -109
+    - -117.5
+    rated_load_n: 10
+    rating_basis: placeholder
+    embed_ok: true
+    articulation:
+      type: continuous
+      pivot:
+      - 266
+      - -109
+      - -117.5
+      axis:
+      - 0
+      - 1
+      - 0
+  why: 'wheel l spins on its axle: continuous joint, axis y through the axle centre;
+    rated_load_n 10 is a labelled PLACEHOLDER, no datasheet'
+  kind: add
+- date: '2026-11-26T08:07:47Z'
+  key: attachments[gear-wheel-n]
+  old: null
+  new:
+    id: gear-wheel-n
+    parent: landing-gear
+    child: wheel-n
+    method: hinge
+    location:
+    - 110
+    - 0
+    - -122
+    rated_load_n: 10
+    rating_basis: placeholder
+    embed_ok: true
+    articulation:
+      type: continuous
+      pivot:
+      - 110
+      - 0
+      - -122
+      axis:
+      - 0
+      - 1
+      - 0
+  why: 'wheel n spins on its axle: continuous joint, axis y through the axle centre;
+    rated_load_n 10 is a labelled PLACEHOLDER, no datasheet'
+  kind: add
+- date: '2026-11-26T08:07:49Z'
+  key: attachments[fuselage-gear].location
+  old:
+  - 266
+  - 54
+  - -12
+  new:
+  - 266
+  - 42.7
+  - -12
+  why: leg splay with separate wheels moves the leg tops inboard (leg top y = 42.7
+    mm instead of 54); joint point must stay on the leg; checked on scratch copy
+  kind: modify
+- date: '2026-11-26T08:37:04Z'
+  key: attachments[gear-wheel-r].embed_ok
+  old: true
+  new: false
+  why: axle in bore is a running clearance fit, not an embed (W34-R3 reopen); false
+    is the schema default, the CLI cannot delete a scalar key
+  kind: modify
+- date: '2026-11-26T08:37:04Z'
+  key: attachments[gear-wheel-l].embed_ok
+  old: true
+  new: false
+  why: axle in bore is a running clearance fit, not an embed (W34-R3 reopen); false
+    is the schema default, the CLI cannot delete a scalar key
+  kind: modify
+- date: '2026-11-26T08:37:04Z'
+  key: attachments[gear-wheel-n].embed_ok
+  old: true
+  new: false
+  why: axle in bore is a running clearance fit, not an embed (W34-R3 reopen); false
+    is the schema default, the CLI cannot delete a scalar key
+  kind: modify
+- date: '2026-11-26T08:37:21Z'
+  key: bom.items[b-gear].component_ids
+  old:
+  - landing-gear
+  new:
+  - landing-gear
+  - wheel-r
+  - wheel-l
+  - wheel-n
+  why: wheels are now separate components; list them under the gear BOM item (W34-R3
+    reopen)
+  kind: modify
+- date: '2026-11-26T08:37:21Z'
+  key: bom.items[b-gear].part_number
+  old: tricycle landing gear with tyre wheels, printed PETG (design-made)
+  new: tricycle landing gear, printed PETG legs and nose fork plus three separate
+    printed PETG tyre wheels on axle stubs (design-made)
+  why: wheels are now separate components; list them under the gear BOM item (W34-R3
+    reopen)
+  kind: modify
