@@ -147,6 +147,146 @@ def export_mjcf(design: Design, out_path) -> Path:
     return out
 
 
+KINEMATIC = {
+    "hinge": {"armature": "1e-06", "damping": "1e-05"},
+    "wheel": {"armature": "1e-06", "damping": "1e-07"},
+    "ground_gap_m": 0.001,
+    "ball": {"armature": "1e-08", "damping": "1e-07"},
+    "position": {"kp": "2", "kv": "0.02"},
+    "connect_solref": "0.005 1",
+}
+_FRICTION = "1 0.005 0.0001"
+
+
+def build_kinematic_mjcf(design: Design) -> str:
+    """Kinematic MJCF (U16.1 S7): hinge/ball joints, servo position actuators, a connect for each pushrod loop.
+    Gravity 0, fixed root; for moving the mechanism, not for the drop test (that is `build_mjcf`)."""
+    from .geometry import att_label
+    comps = {c["id"]: c for c in design.components}
+    atts = [a for a in design.data.get("attachments", []) if a["parent"] in comps and a["child"] in comps]
+    root = design.data["root"]
+
+    # rule 1: breadth-first tree, the first attachment to reach a child is its tree edge
+    reached, order, tree_edge = {root}, [root], {}
+    queue = [root]
+    while queue:
+        cur = queue.pop(0)
+        for a in atts:
+            if a["parent"] == cur and a["child"] not in reached:
+                reached.add(a["child"])
+                tree_edge[a["child"]] = a
+                order.append(a["child"])
+                queue.append(a["child"])
+
+    # rule 2: a body starts at every hinge or ball edge
+    head, joint_of = {root: root}, {}
+    for cid in order[1:]:
+        a = tree_edge[cid]
+        if a.get("articulation"):
+            joint_of[cid] = ("hinge", a)
+            head[cid] = cid
+        elif a.get("kinematic_link"):
+            joint_of[cid] = ("ball", a)
+            head[cid] = cid
+        else:
+            head[cid] = head[a["parent"]]
+    for cid in comps:
+        head.setdefault(cid, root)
+    members: dict[str, list[str]] = {}
+    for cid in list(order) + [c for c in comps if c not in reached]:
+        members.setdefault(head[cid], []).append(cid)
+
+    wheels = {a["child"] for a in atts if (a.get("articulation") or {}).get("type") == "continuous"}
+    parts_of = {cid: component_parts(c, design.base_dir) for cid, c in comps.items()}
+
+    mesh_xml, low = [], math.inf
+    body_xml: dict[str, list[str]] = {}
+    for h, mem in members.items():
+        lines, all_parts, masses, cgs = [], [], [], []
+        for cid in mem:
+            c, parts = comps[cid], parts_of[cid]
+            masses.append(float(c["mass_g"]) / 1000)
+            cgs.append(component_cg(c, parts))
+            for i, p in enumerate(parts):
+                name = f"{cid}_m{i}"
+                mesh_xml.append(f'    <mesh name="{name}" vertex="{_vec((p.convex_hull.vertices / 1000).ravel())}"/>')
+                if cid in wheels:
+                    lines.append(f'      <geom type="mesh" mesh="{name}" contype="2" conaffinity="0" friction="{_FRICTION}"/>')
+                    low = min(low, float(p.vertices[:, 2].min()) / 1000)
+                else:
+                    lines.append(f'      <geom type="mesh" mesh="{name}" contype="0" conaffinity="0"/>')
+            all_parts += parts
+        mass = float(sum(masses))
+        w = np.array(masses) if mass > 0 else np.ones(len(masses))
+        cg = np.average(np.array(cgs), axis=0, weights=w)
+        i3 = _component_inertia(mass, all_parts, cg)
+        fi = [i3[0, 0], i3[1, 1], i3[2, 2], i3[0, 1], i3[0, 2], i3[1, 2]]
+        inertial = f'      <inertial pos="{_vec(cg / 1000)}" mass="{mass:.9g}" fullinertia="{_vec(fi)}"/>'
+        jx = ""
+        if h in joint_of:
+            kind, a = joint_of[h]
+            if kind == "ball":
+                k = KINEMATIC["ball"]
+                jx = (f'      <joint name="{att_label(a)}" type="ball" pos="{_vec(np.array(a["location"]) / 1000)}" '
+                      f'armature="{k["armature"]}" damping="{k["damping"]}"/>\n')
+            else:
+                art = a["articulation"]
+                k = KINEMATIC["wheel"] if art.get("type") == "continuous" else KINEMATIC["hinge"]
+                lim = ('limited="false"' if art.get("type") == "continuous" or not art.get("range_deg")
+                       else f'range="{_vec(art["range_deg"])}" limited="true"')
+                jx = (f'      <joint name="{att_label(a)}" type="hinge" pos="{_vec(np.array(art["pivot"]) / 1000)}" '
+                      f'axis="{_vec(art["axis"])}" {lim} armature="{k["armature"]}" damping="{k["damping"]}"/>\n')
+        body_xml[h] = [jx + inertial] + lines
+
+    def render(h: str, depth: int) -> str:
+        ind = "  " * depth
+        kids = [cid for cid in order if cid in joint_of and head[tree_edge[cid]["parent"]] == h]
+        inner = "\n".join(body_xml[h]) + ("\n" + "\n".join(render(k, depth + 1) for k in kids) if kids else "")
+        return f'{ind}<body name="{h}" pos="0 0 0">\n{inner}\n{ind}</body>'
+
+    ground = ""
+    if wheels and math.isfinite(low):
+        ground = (f'    <geom name="ground" type="plane" size="5 5 0.1" pos="0 0 {low - KINEMATIC["ground_gap_m"]:.9g}" contype="1" '
+                  f'conaffinity="2" friction="{_FRICTION}"/>\n')
+
+    by_id = {att_label(a): a for a in atts}
+    eq_xml, act_xml = [], []
+    for mech in design.data.get("mechanisms", []):
+        drv = by_id.get(mech.get("driver"))
+        if drv and drv.get("articulation"):
+            k, rng = KINEMATIC["position"], mech.get("input_range_deg")
+            cr = f' ctrllimited="true" ctrlrange="{math.radians(rng[0]):.9g} {math.radians(rng[1]):.9g}"' if rng else ""
+            act_xml.append(f'    <position name="{mech["id"]}" joint="{att_label(drv)}" kp="{k["kp"]}" kv="{k["kv"]}"{cr}/>')
+        link = mech.get("link")
+        if link:
+            de, fe = by_id[link["driver_end"]], by_id[link["follower_end"]]
+            b1, b2 = head[de["child"]], head[fe["child"]]
+            if b1 != b2:
+                eq_xml.append(f'    <connect name="{mech["id"]}-link" body1="{b1}" body2="{b2}" '
+                              f'anchor="{_vec(np.array(fe["location"]) / 1000)}" solref="{KINEMATIC["connect_solref"]}"/>')
+
+    out = [f'<mujoco model="{design.id}-kinematic">', '  <compiler angle="degree"/>',
+           f'  <option timestep="{TIMESTEP}" gravity="0 0 0" integrator="implicitfast"/>',
+           "  <asset>", "\n".join(mesh_xml), "  </asset>", "  <worldbody>"]
+    out.append(ground + render(root, 2))
+    out.append("  </worldbody>")
+    if eq_xml:
+        out += ["  <equality>", "\n".join(eq_xml), "  </equality>"]
+    if act_xml:
+        out += ["  <actuator>", "\n".join(act_xml), "  </actuator>"]
+    out += ["</mujoco>", ""]
+    return "\n".join(out)
+
+
+def export_mjcf_kinematic(design: Design, out_path) -> Path:
+    from .geom import overlay
+    out = Path(out_path)
+    overlay.guard_output(out, design)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(build_kinematic_mjcf(design))
+    return out
+
+
 def drop_test(design: Design, height_m: float | None = None, *, std: dict | None = None) -> list[CheckResult]:
     """The MuJoCo drop test. height_m: release height in metres (default: the standards drop height); std: the standards."""
     if std is None:

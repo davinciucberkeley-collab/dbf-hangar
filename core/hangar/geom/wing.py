@@ -17,11 +17,13 @@ from pathlib import Path
 import numpy as np
 from .._lazy import trimesh
 
-from hangar.geom import airfoil, kernel
+from hangar.geom import airfoil, hinge as _hinge_mod, kernel
 from hangar.geom.kernel import GeometryError
 from hangar.geom.registry import Generator, ParamSpec, register
 
 _NUM = re.compile(r"[-+]?\d*\.?\d+(?:[eE][-+]?\d+)?")
+_HINGE_DEFAULTS = {"hinge_gap": 0.0, "hinge_style": "none", "hinge_throw_deg": 0.0, "hinge_knuckles": 0,
+                   "knuckle_d": 0.0, "knuckle_len": 0.0}
 
 
 def read_airfoil(path) -> tuple[np.ndarray, np.ndarray]:
@@ -94,9 +96,39 @@ def _place(unit: np.ndarray, p: dict, y: float) -> list[tuple[float, float]]:
     return list(zip(x2.tolist(), z2.tolist()))
 
 
+def _chord(p: dict, y: float) -> float:
+    half = p["span"] / 2.0
+    ay = abs(y)
+    ib = p.get("inboard_span", 0.0)
+    return p["root_chord"] if ay <= ib else p["root_chord"] + (p["tip_chord"] - p["root_chord"]) * (ay - ib) / (half - ib)
+
+
+def _hinged_unit(upper, lower, p: dict, k: float, a: float):
+    """Elevon section loop as a function of the local chord c: the front face moves aft by the hinge gap (and
+    bevels to a ridge on the hinge axis); the skin stations are remapped from [hinge, 1] to [hinge + front/c, 1]."""
+    h = p["hinge_frac"]
+    cosine = h + (1.0 - h) * (1 - np.cos(np.pi * np.arange(49) / 48)) / 2
+    extra = np.concatenate([upper[:, 0], lower[:, 0]])
+    extra = extra[(extra > h + 1e-9) & (extra < 1.0 - 1e-9)]
+    xs = np.unique(np.round(np.concatenate([cosine, extra]), 12))
+    zm = float(_interp(upper, np.array([h]))[0] + _interp(lower, np.array([h]))[0]) / 2
+
+    def unit(c: float) -> np.ndarray:
+        ridge, front = _hinge_mod.front_offsets(p["hinge_gap"], a * c, p["hinge_throw_deg"], p["hinge_style"], k)
+        xf = h + front / c
+        xs2 = xf + (xs - h) * (1 - xf) / (1 - h)
+        up = list(zip(xs2[::-1], _interp(upper, xs2)[::-1]))
+        lo = list(zip(xs2, _interp(lower, xs2)))
+        if abs(lo[-1][1] - up[0][1]) < 1e-12:             # sharp trailing edge
+            lo = lo[:-1]
+        mid = [] if ridge is None else [(h + ridge / c, zm)]
+        return np.array(up + mid + lo)
+    return unit
+
+
 def _loft(unit, p, ys) -> trimesh.Trimesh:
     ys = sorted(ys)
-    return kernel.loft("y", [(y, _place(unit, p, y)) for y in ys])
+    return kernel.loft("y", [(y, _place(unit(_chord(p, y)) if callable(unit) else unit, p, y)) for y in ys])
 
 
 def _load_cut(base_dir: Path, name: str) -> trimesh.Trimesh:
@@ -134,12 +166,26 @@ def _build(p: dict, base_dir) -> list:
     hinge = p["hinge_frac"]
     ib = p.get("inboard_span", 0.0)
     if part == "elevon":
-        unit = _unit_loop(upper, lower, hinge, 1.0)
         y0, y1 = p["elevon_y"]
+        plain = p["hinge_gap"] == 0 and p["hinge_style"] == "none" and p["hinge_knuckles"] == 0
+        if plain:
+            unit = _unit_loop(upper, lower, hinge, 1.0)
+        else:
+            zm = float(_interp(upper, np.array([hinge]))[0] + _interp(lower, np.array([hinge]))[0]) / 2
+            ends = [_place(np.array([[hinge, zm]]), p, y)[0] for y in (y0, y1)]
+            k = _hinge_mod.sweep_factor(ends[1][0] - ends[0][0], y1 - y0)
+            a = float(_interp(upper, np.array([hinge]))[0] - _interp(lower, np.array([hinge]))[0]) / 2
+            unit = _hinged_unit(upper, lower, p, k, a)
         out = []
         for s in ([1, -1] if p["side"] == "both" else _sides(p)):
             st = [s * y0, s * y1] + ([s * ib] if y0 < ib < y1 else [])
-            out.append(_loft(unit, p, st))
+            el = _loft(unit, p, st)
+            if not plain and p["hinge_knuckles"] > 0:
+                q0, q1 = (np.array([e[0], s * y, e[1]]) for e, y in zip(ends, (y0, y1)))
+                n = _hinge_mod.aft_normal(q0, q1, (0, 0, 1))
+                el = kernel.union([el, *_hinge_mod.knuckles(q0, q1, n, p["hinge_gap"], p["hinge_knuckles"],
+                                                            p["knuckle_d"], p["knuckle_len"])])
+            out.append(el)
         return out
     unit = _unit_loop(upper, lower, 0.0, 1.0 if part == "full" else hinge)
     side = _sides(p)[0]
@@ -223,6 +269,19 @@ def _check(p: dict) -> list[str]:
                 or (ms is not None and not (isinstance(ms, list) and all(twelve(m) for m in ms))))
     if any(_bad_pose(e) for e in p["cut_poses"]):
         errs.append("cut_poses: each entry needs a 'file' listed in cut_files and a 'matrix' and/or 'matrices' of 12 numbers")
+    if p["part"] != "elevon" and any(p[k] != v for k, v in _HINGE_DEFAULTS.items()):
+        errs.append("hinge_gap: only part elevon uses the hinge_* and knuckle_* params")
+    if p["hinge_style"] == "bevel" and p["hinge_throw_deg"] <= 0:
+        errs.append("hinge_throw_deg: must be > 0 for hinge_style bevel")
+    if p["hinge_throw_deg"] >= 60:
+        errs.append("hinge_throw_deg: must be < 60")
+    if p["hinge_knuckles"] > 0 and p["hinge_gap"] <= 0:
+        errs.append("hinge_knuckles: needs hinge_gap > 0")
+    if p["hinge_knuckles"] > 0 and not (p["knuckle_d"] > 0 and p["knuckle_len"] > 0):
+        errs.append("knuckle_d and knuckle_len: must be > 0 when hinge_knuckles > 0")
+    if (p["hinge_knuckles"] > 0 and p["hinge_gap"] > 0
+            and p["knuckle_d"] > 2 * p["hinge_gap"] * math.cos(math.radians(p["hinge_throw_deg"]))):
+        errs.append("knuckle_d: must be <= 2 * hinge_gap * cos(hinge_throw_deg)")
     return errs
 
 
@@ -251,7 +310,13 @@ register(Generator(
      "cut_files": ParamSpec("list", default=[], doc="design-folder-relative closed-solid meshes subtracted from the core"),
      "cut_sweep": ParamSpec("choice", default="swept", choices=("none", "swept"),
                             doc="swept: pockets also follow the poses of cut meshes that move (resolver fills cut_poses)"),
-     "cut_poses": ParamSpec("list", default=[], doc="derived by the resolver from the neighbours' positions and, when cut_sweep is swept, their joint poses; do not write")},
+     "cut_poses": ParamSpec("list", default=[], doc="derived by the resolver from the neighbours' positions and, when cut_sweep is swept, their joint poses; do not write"),
+     "hinge_gap": ParamSpec("number", default=0.0, minimum=0, doc="part elevon only: gap between the fixed part and the elevon, mm, measured normal to the hinge line; the elevon's front face moves aft by it (0 = flush, default)"),
+     "hinge_style": ParamSpec("choice", default="none", choices=("none", "bevel"), doc="part elevon only: none = flat front face; bevel = V ridge on the hinge axis with chamfers back to the skins, so the elevon clears the fixed part up to hinge_throw_deg"),
+     "hinge_throw_deg": ParamSpec("number", default=0.0, minimum=0, doc="part elevon only: the largest deflection the bevel clears, deg; set it at least as large as the articulation range_deg"),
+     "hinge_knuckles": ParamSpec("int", default=0, minimum=0, doc="part elevon only: count of round knuckle cylinders along the hinge line, united with the elevon (printed geometry)"),
+     "knuckle_d": ParamSpec("number", default=0.0, minimum=0, doc="part elevon only: knuckle diameter, mm; at most 2 * hinge_gap * cos(hinge_throw_deg)"),
+     "knuckle_len": ParamSpec("number", default=0.0, minimum=0, doc="part elevon only: knuckle length along the hinge line, mm")},
     _build, files=lambda p: ([] if airfoil.is_named(p["airfoil_file"]) else [p["airfoil_file"]]) + list(p["cut_files"]), check=_check))
 
 

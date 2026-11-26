@@ -7,9 +7,9 @@ import { refreshInspector } from './ui/inspector.js';
 import { initApplyBar, bindApplyBar } from './ui/applybar.js';
 
 const DATA = 'data/';
-const MODES = ['designs', 'compare', 'stress', 'updates', 'ledger'];
-const LABELS = { designs: 'Designs', compare: 'Compare', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
-const HINTS = { designs: 'Click a part to highlight it. Drag to orbit, scroll to zoom.', compare: 'Click designs in the list to fill slots A and B alternately.' };
+const MODES = ['designs', 'compare', 'stress', 'ledger', 'updates'];
+const LABELS = { designs: 'Model', compare: 'Compare', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
+const HINTS = { designs: 'Click a part, or a row in the list. Drag to orbit, scroll to zoom.', compare: 'Click designs in the list to fill slots A and B alternately.' };
 
 const state = { timelineOpen: false, index: null, selected: null, mode: 'designs', slotA: null, slotB: null, nextSlot: 'a', text: '', vtol: '' };
 const byId = (id) => state.index?.designs.find((d) => d.id === id);
@@ -51,11 +51,10 @@ function setHighlight(ids) {
   else if (state.mode === 'compare') [vps.a, vps.b].forEach((v) => v?.highlight(highlightIds));
   markActiveRows();
 }
+// A scorecard row is active while its parts are the focused set (vp.focusParts).
 function markActiveRows() {
-  document.querySelectorAll('.result.has-pair').forEach((r) => {
-    const pair = r.dataset.pair.split('|');
-    r.classList.toggle('active', pair.length === highlightIds.size && pair.every((p) => highlightIds.has(p)));
-  });
+  const f = vps.main?.focusKey ?? null;
+  document.querySelectorAll('.result[data-parts]').forEach((r) => r.classList.toggle('active', f != null && r.dataset.parts === f));
 }
 // The main viewport reports every selection or visibility change here.
 function onViewportChange(selection) {
@@ -64,16 +63,17 @@ function onViewportChange(selection) {
 }
 function onPick(id, vp, e) {
   const multi = !!(e && (e.ctrlKey || e.metaKey));
-  if (!id) { if (!multi) setHighlight([]); return; }
+  if (!id) { if (!multi) { if (vps.main?.focusKey) vps.main.clearFocus(); else setHighlight([]); } return; }
   if (multi) { const s = new Set(highlightIds); if (s.has(id)) s.delete(id); else s.add(id); return setHighlight([...s]); }
   setHighlight(highlightIds.size === 1 && highlightIds.has(id) ? [] : [id]);
 }
 document.addEventListener('keydown', (e) => {
   if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
   const v = state.mode === 'designs' ? vps.main : null;
-  if (e.key === 'Escape') { if (v?.axisLocked()) v.lockAxis(null); else if (highlightIds.size) setHighlight([]); return; }
+  if (e.key === 'Escape') { if (v?.state().tool === 'measure') { if (v.measure.active()) v.clearMeasure(); else v.setTool('select'); } else if (v?.axisLocked()) v.lockAxis(null); else if (v?.focusKey) v.clearFocus(); else if (highlightIds.size) setHighlight([]); return; }
   if (!v) return;
-  if (e.key === 'm') v.setTool(v.state().tool === 'move' ? 'select' : 'move');
+  if (e.key === 'd') v.setTool(v.state().tool === 'measure' ? 'select' : 'measure');
+  else if (e.key === 'm') v.setTool(v.state().tool === 'move' ? 'select' : 'move');
   else if (v.state().tool === 'move' && 'xyz'.includes(e.key) && e.key.length === 1) v.lockAxis(e.key);
   else if (e.key === 'h') v.setHidden([...highlightIds], true);
   else if (e.key === 'i') { if (highlightIds.size) v.isolate([...highlightIds]); }
@@ -82,6 +82,7 @@ document.addEventListener('keydown', (e) => {
 });
 
 function renderSidebar() {
+  updatePicker();
   const list = $('design-list'); list.replaceChildren();
   const q = state.text.toLowerCase();
   const all = state.index.designs;
@@ -111,8 +112,20 @@ function renderSidebar() {
 
 function choose(id) {
   if (state.mode === 'compare') { assign(state.nextSlot, id); return; }
+  setPicker(false);
   if (id !== state.selected && !confirmDiscard()) return;
   state.selected = id; syncHash(); renderSidebar(); renderMode();
+}
+// The design picker: the old sidebar is its popover (filters, list, jobs, New/Import stay inside it).
+function setPicker(open) {
+  const pop = $('sidebar'), btn = $('design-picker');
+  pop.hidden = !open; btn.setAttribute('aria-expanded', String(open));
+  if (open) $('filter-text').focus();
+}
+function updatePicker() {
+  const btn = $('design-picker'), d = byId(state.selected);
+  btn.replaceChildren(d ? (d.name || d.id) : 'Pick a design', ' ▾');
+  if (state.index?.designs.some((x) => x.pending)) btn.append(' ', h('span', { class: 'badge pending', 'data-testid': 'picker-pending' }, 'checking...'));
 }
 function assign(slot, id) {
   if (!confirmDiscard()) return;
@@ -182,12 +195,16 @@ async function init() {
   const tb = $('tool-bar'), pick = (t) => vps.main?.setTool(t);
   const tSel = h('button', { type: 'button', 'data-testid': 'tool-select', 'aria-pressed': 'true', title: 'Select parts (Esc)', onclick: () => pick('select') }, 'Select');
   const tMove = h('button', { type: 'button', 'data-testid': 'tool-move', 'aria-pressed': 'false', title: 'Move parts (m)', onclick: () => pick('move') }, 'Move');
+  const tMeasure = h('button', { type: 'button', 'data-testid': 'tool-measure', 'aria-pressed': 'false', title: 'Measure between two points (d)', onclick: () => pick('measure') }, 'Measure');
   const att = h('input', { type: 'checkbox', checked: true, 'data-testid': 'move-with-attached', onchange: () => vps.main?.setAttached(att.checked) });
   attachedOn = () => att.checked;
-  tb.append(tSel, tMove, h('label', { title: 'Parts attached below the moved part move with it' }, att, 'with attached parts'));
+  tb.append(tSel, tMove, tMeasure, h('label', { title: 'Parts attached below the moved part move with it' }, att, 'with attached parts'));
+  const colourSel = h('select', { 'data-testid': 'colour-by', 'aria-label': 'Colour by', onchange: () => vps.main?.colourBy(colourSel.value) }, ['type', 'status', 'mass'].map((m) => h('option', { value: m }, m)));
+  $('colour-bar').append(h('label', { class: 'colour-by' }, 'Colour by ', colourSel));
   syncTool = () => {
     const s = vps.main?.state(); if (!s) return;
-    tSel.setAttribute('aria-pressed', String(s.tool === 'select')); tMove.setAttribute('aria-pressed', String(s.tool === 'move'));
+    colourSel.value = s.colourBy;
+    tSel.setAttribute('aria-pressed', String(s.tool === 'select')); tMove.setAttribute('aria-pressed', String(s.tool === 'move')); tMeasure.setAttribute('aria-pressed', String(s.tool === 'measure'));
     const off = s.explode?.t > 0; tMove.disabled = off; tMove.title = off ? 'Set explode to 0 to move parts' : 'Move parts (m)';
   };
   const eb = $('explode-bar'), strat = h('select', { 'data-testid': 'explode-strategy', 'aria-label': 'Explode strategy', onchange: () => { fillLevels(); explode(); } }, ['hierarchy', 'radial'].map((s) => h('option', { value: s }, s)));
@@ -207,6 +224,11 @@ async function init() {
     lvl.replaceChildren(); fillLevels(); eb.hidden = !vp.parts;
   };
   eb.append(h('label', {}, 'Explode ', slider), lvl, strat);
+  $('design-picker').onclick = () => setPicker($('sidebar').hidden);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !$('sidebar').hidden) { setPicker(false); $('design-picker').focus(); e.stopImmediatePropagation(); } }, true);
+  document.addEventListener('click', (e) => { if (!$('sidebar').hidden && !e.composedPath().some((n) => n.classList?.contains('picker-wrap'))) setPicker(false); });
+  const tabs = document.querySelectorAll('#side-tabs button');
+  tabs.forEach((b) => { b.onclick = () => { const bom = b.dataset.testid === 'tab-bom'; $('scorecard').hidden = bom; $('bom-panel').hidden = !bom; tabs.forEach((x) => x.classList.toggle('active', x === b)); }; });
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };
   $('filter-vtol').onchange = (e) => { state.vtol = e.target.value; renderSidebar(); };
   $('sel-a').onchange = (e) => assign('a', e.target.value); $('sel-b').onchange = (e) => assign('b', e.target.value);

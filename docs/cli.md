@@ -226,7 +226,7 @@ plane design diff <a> <b>
 
 ### `plane design export`
 
-Export a design to glb, stl, json or mjcf.
+Export a design to glb, stl, json, mjcf or mjcf-kinematic.
 
 ```
 plane design export <path> --format <choice> --out <path>
@@ -235,7 +235,7 @@ plane design export <path> --format <choice> --out <path>
 Writes files.
 
 - `<path>`: str, required
-- `--format`: choice, one of glb, stl, json, mjcf, required
+- `--format`: choice, one of glb, stl, json, mjcf, mjcf-kinematic, required
 - `--out`: path, required
 
 ### `plane design get`
@@ -883,7 +883,7 @@ Commands that are not registry operations (old forms and CLI-only commands):
 
 - `plane baseline`: Known-failure baselines: CI fails only on regressions.
 - `plane build-index`: Export glb, scorecard and mass for every design (or only the --design ones), then write index.json.
-- `plane export`: Export PATH to glb, stl or json.
+- `plane export`: Export PATH to glb, stl, json, mjcf or mjcf-kinematic.
 - `plane import`: Import a design from another project.
 - `plane list`: List every design under designs/.
 - `plane mass`: Print mass properties of PATH as JSON.

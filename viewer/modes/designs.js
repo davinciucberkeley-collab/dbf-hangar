@@ -1,8 +1,10 @@
 // Designs mode: 3D view plus scorecard (tiers, FAIL rows first).
 import { TIERS, STATUS_ORDER } from '../lib.js';
 import { renderTree } from '../ui/tree.js';
-import { renderInspector } from '../ui/inspector.js';
+import { renderInspector, setInspectorScorecard } from '../ui/inspector.js';
+import { rowParts, partStatus } from '../vp/status.js';
 import { renderTimeline } from '../ui/timeline.js';
+import { renderBom } from '../ui/bom.js';
 
 export default async function render(ctx) {
   const { state, el, byId, vp } = ctx;
@@ -13,13 +15,15 @@ export default async function render(ctx) {
   const parts = usable && d.parts ? await ctx.getJSON(d.parts).catch(() => null) : null;
   const mass = usable && d.mass ? await ctx.getJSON(d.mass).catch(() => null) : null;
   renderTree(ctx, d, parts); renderInspector(ctx, d, parts, mass);
-  await renderScorecard(ctx, d);
+  await renderScorecard(ctx, d, parts);
+  renderBom(ctx, d, parts, mass);
   await renderTimeline(ctx, d);
   el.dataset.ready = '1';
 }
 
-async function renderScorecard({ state, el, h, fmt, getJSON, setHighlight }, d) {
+async function renderScorecard({ state, el, h, fmt, getJSON, vp }, d, parts) {
   const box = el.querySelector('#scorecard'); box.replaceChildren();
+  vp.main.setStatus(new Map());
   if (!d) { box.append(h('p', { class: 'muted' }, 'Select a design from the list.')); return; }
   box.append(h('h2', {}, d.name || d.id), h('div', { class: 'sub id' }, `${d.id} · ${d.status}`));
   window.planeViewer?.onScorecard?.(box, d);
@@ -33,15 +37,15 @@ async function renderScorecard({ state, el, h, fmt, getJSON, setHighlight }, d) 
   let sc;
   try { sc = await getJSON(d.scorecard); } catch (e) { box.append(h('div', { class: 'errbox' }, 'Scorecard unavailable: ' + e.message)); return; }
   if (state.selected !== d.id) return; // user moved on
+  vp.main.setStatus(partStatus(sc, parts)); setInspectorScorecard(sc);
   const row = (r) => {
-    // interference rows carry `pair`; T6.link rows carry `link_pairs` (list of pairs) and `parts` (their union)
-    const lp = Array.isArray(r.data?.link_pairs) ? [...new Set(r.data.link_pairs.flat())].sort() : null;
-    const pair = Array.isArray(r.data?.pair) && r.data.pair.length === 2 ? r.data.pair : lp?.length ? lp : null;
-    return h('div', { class: `result ${r.status}` + (pair ? ' has-pair' : ''), 'data-pair': pair ? pair.join('|') : null,
-      tabindex: pair ? 0 : null, role: pair ? 'button' : null,
-      onclick: pair ? () => setHighlight(pair) : null, onkeydown: pair ? (e) => { if (e.key === 'Enter') setHighlight(pair); } : null },
+    const ids = rowParts(r, parts), has = ids.length > 0;
+    const go = () => { const v = vp.main; if (v.focusKey === ids.join('|')) v.clearFocus(); else v.focusParts(ids); };
+    return h('div', { class: `result ${r.status}` + (has ? ' has-parts' : ''), 'data-testid': 'check-row', 'data-check-id': r.check_id, 'data-parts': has ? ids.join('|') : null,
+      tabindex: has ? 0 : null, role: has ? 'button' : null,
+      onclick: has ? go : null, onkeydown: has ? (e) => { if (e.key === 'Enter') go(); } : null },
       h('div', { class: 'top' }, h('span', { class: 'badge ' + r.status }, r.status), h('span', { class: 'cid' }, r.check_id),
-        pair ? h('span', { class: 'pairhint' }, `show ${pair.join(' + ')}`) : null),
+        has ? h('span', { class: 'partshint' }, 'show ' + ids.slice(0, 3).join(' + ') + (ids.length > 3 ? ` + ${ids.length - 3} more` : '')) : null),
       h('div', { class: 'msg' }, r.message), r.criterion ? h('div', { class: 'crit' }, r.criterion) : null);
   };
   for (const t of sc.tiers) {
@@ -52,7 +56,7 @@ async function renderScorecard({ state, el, h, fmt, getJSON, setHighlight }, d) 
         nfail ? h('span', { class: 'muted small' }, `${nfail} failing`) : h('span', { class: 'muted small' }, `${results.length} checks`),
         h('span', { class: 'badge ' + t.status }, t.status)),
       h('div', { class: 'results' }, results.map(row)));
-    if (t.status === 'FAIL' || t.status === 'WARN') det.open = true;
+    if (t.status === 'FAIL' || t.status === 'WARN' || results.some((r) => r.status === 'FAIL' || r.status === 'WARN')) det.open = true;
     box.append(det);
   }
 }
