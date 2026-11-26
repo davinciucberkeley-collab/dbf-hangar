@@ -491,7 +491,8 @@ def _kinematic_link_row(unchecked: list[tuple[str, str]]) -> CheckResult:
 
 
 def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict, atts: list[dict],
-                              cache: _PairCache | None = None, only: set[str] | None = None) -> list[CheckResult]:
+                              cache: _PairCache | None = None, only: set[str] | None = None,
+                              posed_rods: frozenset = frozenset()) -> list[CheckResult]:
     """Attachment contact / overlap / containment, motor-prop pairing and interference for ONE configuration.
     `meshes` holds solid components only (point masses, schema 0.4, are absent); `cache` shares results between
     configurations (see _PairCache)."""
@@ -602,8 +603,9 @@ def _contact_and_clash_checks(design: Design, std: dict, meshes: dict, tf: dict,
 
     # interference between non-attached parts (broad phase first: only boxes that overlap get the exact boolean)
     # kinematic_link children are moved by a linkage the schema does not model: a pair of one such child and a
-    # part moved by this configuration is not checked here, and is reported once as a WARN (never silently dropped)
-    linked = {a["child"] for a in atts if a.get("kinematic_link")}
+    # part moved by this configuration is not checked here, and is reported once as a WARN (never silently dropped);
+    # a child posed by the four-bar solve (posed_rods) is checked like any other part
+    linked = {a["child"] for a in atts if a.get("kinematic_link")} - set(posed_rods)
     moved = {cid for cid in meshes if not np.allclose(tf[cid], np.eye(4))}
     unchecked = []
     clashes = []
@@ -840,9 +842,11 @@ def tier1_geometry(design: Design, std: dict) -> TierReport:
     if articulated_attachments(design):
         res += _articulation_checks(design, std, meshes)
         for name, ang in _configurations(design, std["geometry"]["articulation_sweep_step_deg"]["value"]):
-            pm = {cid: ps for cid, ps in posed_component_parts(design, ang).items() if cid in meshes}
-            tf = pose_transforms(design, ang)
-            sub = _contact_and_clash_checks(design, std, pm, tf, atts, cache)
+            from .gates.mechanisms import consistent_four_bar_pose
+            ang, ov = consistent_four_bar_pose(design, ang)
+            pm = {cid: ps for cid, ps in posed_component_parts(design, ang, ov).items() if cid in meshes}
+            tf = pose_transforms(design, ang, ov)
+            sub = _contact_and_clash_checks(design, std, pm, tf, atts, cache, posed_rods=frozenset(ov))
             static_fails = {(r.check_id, r.message) for r in res if r.status == FAIL}
             # a failure that is already in the static results is not pose-specific: report it once
             fails = [r for r in sub if r.status == FAIL and (r.check_id, r.message) not in static_fails]
