@@ -14,14 +14,17 @@ export function setInspectorScorecard(sc) { cur.scorecard = sc; refreshInspector
 
 function checksList(ctx, sc, parts, id) {
   const rows = partChecks(sc, parts, id);
+  const find = (cid) => [...ctx.el.querySelectorAll('#scorecard [data-check-id]')].find((x) => x.dataset.checkId === cid);
   return h('section', { class: 'part-checks' }, h('h4', {}, `Checks (${rows.length})`),
-    h('ul', { 'data-testid': 'part-checks' }, rows.map((r) => h('li', { class: 'pc', tabindex: 0, 'data-for': r.check_id, onclick: () => {
-      const sel = [...ctx.el.querySelectorAll('#scorecard [data-check-id]')].find((x) => x.dataset.checkId === r.check_id);
+    h('ul', { 'data-testid': 'part-checks' }, rows.map((r) => { const text = r.text; return h('li', { class: 'pc', tabindex: 0, 'data-for': r.check_id, title: r.check_id, onclick: () => {
+      let sel = find(r.check_id);
+      if (!sel) { ctx.el.querySelector('#scorecard [data-testid="group-tier"]')?.click(); sel = find(r.check_id); } // the row is not in this view (a PASS row under Part): show every row
       if (!sel) return;
       ctx.el.querySelectorAll('#scorecard .result.active').forEach((x) => x.classList.remove('active'));
-      const det = sel.closest('details'); if (det) det.open = true;
+      for (let det = sel.closest('details'); det; det = det.parentElement?.closest('details')) det.open = true;
       sel.classList.add('active'); sel.scrollIntoView({ block: 'nearest' });
-    } }, h('span', { class: 'badge ' + r.status }, r.status), ' ', h('span', { class: 'cid' }, r.check_id), ' ', h('span', { class: 'msg small' }, r.message)))));
+    } }, h('span', { class: 'badge ' + r.status }, r.status), ' ', h('span', { class: 'cid' }, r.check_id), ' ',
+    text && !text.fallback ? [h('span', { class: 'title small' }, text.title), ' ', h('span', { class: 'msg small' }, text.sentence)] : h('span', { class: 'msg small' }, r.message)); })));
 }
 
 export function refreshInspector() {
