@@ -5554,3 +5554,14 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
+  - id: T167
+    kind: task
+    text: 'ES3054HV mesh.stl is rotated vs the real servo: the spline sits on the broad 28.4x26.7 face, the real shaft exits the 28.4x13 face; frames follow the mesh (T165), so a measured mesh/frames replace both together.'
+    source: reviews/2026-11-25-w34b.md section 27
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
