@@ -20,6 +20,18 @@ def schema_docs(*, out: Path) -> OpResult:
     return OpResult(ok=True, data={"path": str(p), "bytes": p.stat().st_size}, changed_files=[str(p)])
 
 
+def _design_like_load(new: dict, p: Path) -> Design:
+    """Design(new, p) resolved the way load_design does (PDL 1.2 parameters and generators)."""
+    design = Design(new, p)
+    comps = new.get("components") or []
+    if "parameters" in new or any(isinstance(c, dict) and ("mass_model" in c or "generator" in (c.get("geometry") or {}))
+                                  for c in comps):
+        from ..geom.resolve import resolve_design_data
+        design.raw = new
+        design.data, design.resolve_errors = resolve_design_data(new, design.base_dir)
+    return design
+
+
 @op(name="design.migrate", summary="Migrate a design file to the latest PDL version (dry run unless write is true)",
     mutates=True)
 def design_migrate(path: str, *, write: bool = False) -> OpResult:
@@ -45,7 +57,7 @@ def design_migrate(path: str, *, write: bool = False) -> OpResult:
     info = {"path": str(p), "from_version": old, "to_version": LATEST, "notes": notes, "written": False}
     if already:
         return OpResult(ok=True, data=info, messages=notes)
-    rep = tier0_schema(Design(new, p))
+    rep = tier0_schema(_design_like_load(new, p))
     if rep.status != "PASS":
         return OpResult(ok=False, data=info,
                         messages=[f"{r.check_id}: {r.message}" for r in rep.results if r.status != "PASS"])
