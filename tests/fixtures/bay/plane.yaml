@@ -10,4 +10,4 @@ components:
   - {id: host, type: structure, geometry: {box: {size: [100, 60, 40]}}, position: [0, 0, 20], mass_g: 50, manufacturing: {method: foamboard}}
   - {id: servo, type: servo, geometry: {generator: library_part, params: {part: emax-es08maii-metal}}, position: [0, 0, 20], mass_g: 12, manufacturing: {method: purchased}}
 attachments:
-  - {id: host-servo, parent: host, child: servo, method: glued, location: [0, 0, 10], embed_ok: true, rated_load_n: 10}
+  - {id: host-servo, parent: host, child: servo, method: glued, location: [0, 0, 17.8], embed_ok: true, rated_load_n: 10}

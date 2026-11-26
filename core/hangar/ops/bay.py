@@ -35,7 +35,8 @@ def _vec(raw: str | None, n: int, what: str) -> list[float]:
 
 
 def _rotation(axis, normal, shaft) -> list[int]:
-    """Roll/pitch/yaw in {0,90,180,270} (R = Rz Ry Rx) sending the output axis and the mount normal to `shaft`;
+    """Ranking (D114): fewest non-zero angles, then least angle sum, then largest roll, pitch, yaw.
+    Roll/pitch/yaw in {0,90,180,270} (R = Rz Ry Rx) sending the output axis and the mount normal to `shaft`;
     fewest non-zero angles (a single-axis turn wins), then least angle sum, then largest roll, pitch, yaw."""
     best = None
     for rpy in itertools.product(_ANGLES, repeat=3):

@@ -39,9 +39,9 @@ def test_place_lower_hand_values(tmp_path):
     assert d["rotation_deg"] == [180, 0, 0]
     assert d["output_point"] == pytest.approx([5.5, 0, -6.5], abs=1e-4)
     assert d["output_axis"] == pytest.approx([0, 0, -1], abs=1e-4)
-    assert d["cavity"]["geometry"]["box"]["size"] == pytest.approx([23.6, 11.9, 18.8], abs=1e-4)
+    assert d["cavity"]["geometry"]["box"]["size"] == pytest.approx([23.6, 12.1, 18.8], abs=1e-4)
     assert d["cavity"]["position"] == pytest.approx([0, 0, -11.6], abs=1e-4)
-    assert d["removed_mm3"] == pytest.approx(4998.95, abs=1)
+    assert d["removed_mm3"] == pytest.approx(5082.97, abs=1)
     assert d["body_inside_fraction"] == pytest.approx(1.0, abs=1e-3)
     servo, host = _comp(folder, "servo"), _comp(folder, "host")
     assert servo["position"] == pytest.approx([0, 0, 5.5], abs=1e-4)
