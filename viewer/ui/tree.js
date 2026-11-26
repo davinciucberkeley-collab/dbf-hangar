@@ -19,7 +19,7 @@ export function renderTree(ctx, d, parts) {
   const row = (p) => {
     placed.add(p.id);
     const kids = (byParent.get(p.id) || []).filter((k) => !placed.has(k.id));
-    const li = h('li', { class: 'part-row' + (mesh.has(p.id) ? '' : ' no-mesh'), 'data-id': p.id, 'data-type': p.type ?? '', 'aria-selected': 'false', 'data-hidden': '0', 'data-ghost': '0', 'data-moved': '0' });
+    const li = h('li', { class: 'part-row' + (mesh.has(p.id) ? '' : ' no-mesh'), 'data-id': p.id, 'data-type': p.type ?? '', 'aria-selected': 'false', 'data-hidden': '0', 'data-ghost': '0', 'data-moved': '0', 'data-status': '' });
     const ul = h('ul', {});
     const caret = kids.length
       ? h('button', { class: 'caret', type: 'button', 'aria-label': 'Expand or collapse', onclick: (e) => { e.stopPropagation(); ul.hidden = !ul.hidden; caret.textContent = ul.hidden ? '▸' : '▾'; } })
@@ -35,7 +35,7 @@ export function renderTree(ctx, d, parts) {
         else ctx.setHighlight([p.id]);
       },
       ondblclick: () => { ctx.setHighlight([p.id]); vp.fitTo([p.id]); } },
-    caret, eye, ghost, h('span', { class: 'pid' }, p.id), h('span', { class: 'ptype muted small' }, p.type ?? ''), h('span', { class: 'tag moved-tag' }, 'moved'));
+    caret, eye, ghost, h('span', { class: 'status-dot', 'data-status': '' }), h('span', { class: 'pid' }, p.id), h('span', { class: 'ptype muted small' }, p.type ?? ''), h('span', { class: 'tag moved-tag' }, 'moved'));
     li.append(main);
     if (kids.length) {
       ul.append(...kids.map(row));
@@ -73,7 +73,7 @@ function applyFilter(box, q) {
 export function syncTree() {
   const { vp, root } = cur;
   if (!vp || !root?.isConnected) return;
-  const st = vp.state(), sel = new Set(st.selection), hid = new Set(st.hidden), gh = new Set(st.ghosted), mv = new Set(vp.pending().map((p) => p.id));
+  const st = vp.state(), sel = new Set(st.selection), hid = new Set(st.hidden), gh = new Set(st.ghosted), stat = st.status, mv = new Set(vp.pending().map((p) => p.id));
   let first = null;
   for (const li of root.querySelectorAll('li.part-row')) {
     const on = sel.has(li.dataset.id);
@@ -81,6 +81,9 @@ export function syncTree() {
     li.dataset.hidden = hid.has(li.dataset.id) ? '1' : '0';
     li.dataset.ghost = gh.has(li.dataset.id) ? '1' : '0';
     li.dataset.moved = mv.has(li.dataset.id) ? '1' : '0';
+    const ps = stat[li.dataset.id] ?? '';
+    li.dataset.status = ps;
+    const dot = li.querySelector(':scope > .row-main > .status-dot'); if (dot) dot.dataset.status = ps;
     if (on && !first) first = li;
   }
   if (first) {

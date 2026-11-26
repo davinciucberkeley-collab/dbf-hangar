@@ -110,13 +110,13 @@ details.tier > summary .tname { font-weight: 600; flex: 1; }
 .result.FAIL { border-left-color: var(--fail); background: var(--fail-bg); }
 .result.WARN { border-left-color: var(--warn); }
 .result.PASS { border-left-color: var(--pass); }
-.result.has-pair { cursor: pointer; }
-.result.has-pair:hover, .result.active { outline: 2px solid var(--accent); }
+.result.has-parts { cursor: pointer; }
+.result.has-parts:hover, .result.active { outline: 2px solid var(--accent); }
 .result .top { display: flex; gap: 8px; align-items: center; }
 .result .cid { font: 600 12px var(--mono); }
 .result .msg { margin-top: 2px; }
 .result .crit { font: 11px var(--mono); color: var(--muted); margin-top: 2px; word-break: break-all; }
-.result .pairhint { font-size: 11px; color: var(--accent); margin-left: auto; }
+.result .partshint { font-size: 11px; color: var(--accent); margin-left: auto; }
 .result.FAIL .crit, .result.FAIL .msg { color: var(--text); }
 
 .compare { flex: 1; min-height: 0; overflow-y: auto; }
@@ -261,3 +261,15 @@ a.filelink { margin-right: 8px; color: var(--accent); }
 .nudge { display: flex; gap: 4px; align-items: center; margin-top: 6px; font-size: 12px; }
 div.warn { color: var(--warn); }
 div.warn p { margin: 2px 0; font-size: 12px; }
+
+.vp-legend2 { position: absolute; right: 10px; top: 120px; font-size: 11px; color: var(--muted); display: flex; align-items: center; gap: 10px; background: var(--panel); border: 1px solid var(--border); padding: 3px 8px; border-radius: 6px; }
+.vp-legend2[hidden] { display: none; }
+.vp-legend2 .lg-item { display: inline-flex; align-items: center; gap: 4px; }
+.lg-sw { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+.lg-ramp { width: 80px; height: 8px; border-radius: 3px; display: inline-block; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; background: transparent; }
+.status-dot[data-status="FAIL"] { background: #dc2626; }
+.status-dot[data-status="WARN"] { background: #f59e0b; }
+.part-checks ul { list-style: none; margin: 4px 0 0; padding: 0; display: grid; gap: 4px; }
+.part-checks li { cursor: pointer; font-size: 12px; }
+.view-bar label.colour-by { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; font-size: 11px; }
