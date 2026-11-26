@@ -5435,15 +5435,15 @@ items:
     updated: '2026-11-25'
   - id: T156
     kind: task
-    text: 'tiltwing-cakir: Dutch roll is unstable (omega 0.27 rad/s, damping -0.01) per T3.dynamic_modes with AeroSandbox (W34-R2 review section 12); a design-engineer task to check the vertical tail and dihedral.'
+    text: 'tiltwing-cakir: Dutch roll is unstable (omega 0.27 rad/s, damping -0.01) per T3.dynamic_modes with AeroSandbox (W34-R2 review section 12); a design-engineer task to check the vertical tail and dihedral. [Tristan 2026-11-26: tiltwing is not a concept we will pursue]'
     source: reviews/2026-11-25-w34b.md
     owner: conductor
-    status: open
+    status: dropped
     due: ''
     units: []
     evidence: ''
-    decided_in: ''
-    updated: '2026-11-25'
+    decided_in: P309
+    updated: '2026-11-26'
   - id: T157
     kind: task
     text: 'Process miss (conductor 2026-11-26): U16.1 S2 Part B merged as 5a777a6 citing run 45785779897 as validate green, but that run was the progress workflow; the validate run 45785779861 on ffab905 had failed (test_generated_tails c172-rc pins: tail_cl 0.2175, stall 44.6 g/dm^2 8.1 m/s). Main red from 9df0cb8 to the pin fix. Rule: CI waiters select runs with --workflow validate and print the workflow name; merge messages cite the validate run only.'
