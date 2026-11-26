@@ -11,7 +11,7 @@ import subprocess
 from pathlib import Path
 
 import numpy as np
-import trimesh
+from .._lazy import trimesh
 import yaml
 
 from hangar.design import REPO_ROOT

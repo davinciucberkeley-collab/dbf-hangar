@@ -16,7 +16,7 @@ warnings.filterwarnings('ignore', category=RuntimeWarning, module='trimesh')
 from collections import defaultdict, deque
 
 import numpy as np
-import trimesh
+from ._lazy import trimesh
 from jsonschema import Draft202012Validator
 
 from .design import (Design, CheckResult, TierReport, Scorecard, SCHEMA_PATH, REPO_ROOT,
