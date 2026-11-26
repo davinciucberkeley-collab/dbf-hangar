@@ -30,7 +30,7 @@ REPO = Path(__file__).resolve().parents[1]
 FIXTURES = Path(__file__).parent / "fixtures"
 EXAMPLE = REPO / "designs" / "example-tailsitter-wing"
 CDN = "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
-MODES = ["designs", "compare", "physics", "stress", "updates", "ledger"]
+MODES = ["designs", "compare", "stress", "updates", "ledger"]
 
 
 class _Server(ThreadingHTTPServer):
@@ -156,7 +156,7 @@ def test_pages_build_has_no_edit_controls(browser, pages_base, studio_base):
     page.goto(pages_base)
     page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
     assert page.locator("[data-edit]").count() == 0
-    assert page.locator("#modes button").count() == 6
+    assert page.locator("#modes button").count() == 5
     assert "studio" not in page.evaluate("fetch('data/index.json').then(r => r.json())")
     assert not any("modes/edit.js" in u for u in requests)
     assert page.locator('[data-testid="btn-edit"], [data-testid="btn-validate"], [data-testid="btn-propose"], [data-testid="save"]').count() == 0
@@ -255,19 +255,19 @@ def test_studio_edit_save_validate_propose(browser, studio_base, monkeypatch):
     page.close()
 
 
-def test_physics_mode_plays_mechanism_sweep(browser, pages_base):
+def test_timeline_plays_mechanism_sweep(browser, pages_base):
     page = browser.new_page()
     errors = collect(page)
-    page.goto(f"{pages_base}#m=physics&d=mech-good")
-    page.wait_for_selector('#mode-physics[data-ready="1"]', timeout=60000)
+    page.goto(f"{pages_base}#m=designs&d=mech-good")
+    page.wait_for_selector('#mode-designs[data-ready="1"]', timeout=60000)
     assert page.inner_text('[data-follower="flap_hinge"]') == "0.0"
-    assert page.inner_text('[data-testid="phys-input"]') == "0"
-    before = page.locator("#vp-phys canvas").screenshot()
-    page.click('[data-testid="play"]')
-    page.wait_for_function("document.querySelector('[data-testid=phys-input]').textContent === '20'", timeout=15000)
+    assert page.inner_text('[data-testid="tl-input"]') == "0"
+    before = page.locator("#vp-main canvas").screenshot()
+    page.click('[data-testid="tl-play"]')
+    page.wait_for_function("document.querySelector('[data-testid=tl-input]').textContent === '20'", timeout=15000)
     assert page.inner_text('[data-follower="flap_hinge"]') == "20.0"
-    assert page.input_value('[data-testid="phys-slider"]') == "20"
-    after = page.locator("#vp-phys canvas").screenshot()
+    assert page.input_value('[data-testid="tl-scrub"]') == "20"
+    after = page.locator("#vp-main canvas").screenshot()
     assert before != after
     assert errors == []
     page.close()

@@ -6,29 +6,30 @@ import { syncTree } from './ui/tree.js';
 import { refreshInspector } from './ui/inspector.js';
 
 const DATA = 'data/';
-const MODES = ['designs', 'compare', 'physics', 'stress', 'updates', 'ledger'];
-const LABELS = { designs: 'Designs', compare: 'Compare', physics: 'Physics', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
+const MODES = ['designs', 'compare', 'stress', 'updates', 'ledger'];
+const LABELS = { designs: 'Designs', compare: 'Compare', stress: 'Stress', updates: 'Updates', ledger: 'Ledger' };
 const HINTS = { designs: 'Click a part to highlight it. Drag to orbit, scroll to zoom.', compare: 'Click designs in the list to fill slots A and B alternately.' };
 
-const state = { index: null, selected: null, mode: 'designs', slotA: null, slotB: null, nextSlot: 'a', text: '', vtol: '' };
+const state = { timelineOpen: false, index: null, selected: null, mode: 'designs', slotA: null, slotB: null, nextSlot: 'a', text: '', vtol: '' };
 const byId = (id) => state.index?.designs.find((d) => d.id === id);
 
 // ---------- views ----------
 // Viewports are created lazily, one WebGL context per visible viewport; setMode() releases the unused ones.
 const vps = {};
-const VP_EL = { main: 'vp-main', a: 'vp-a', b: 'vp-b', phys: 'vp-phys' };
-const VP_NEEDED = { designs: ['main'], compare: ['a', 'b'], physics: ['phys'] };
+const VP_EL = { main: 'vp-main', a: 'vp-a', b: 'vp-b' };
+const VP_NEEDED = { designs: ['main'], compare: ['a', 'b'] };
 function getVp(name) {
-  return (vps[name] ||= new Viewport($(VP_EL[name]), name === 'phys' ? {} : name === 'main' ? { onPick, onSelect: onViewportChange } : { onPick }));
+  return (vps[name] ||= new Viewport($(VP_EL[name]), name === 'main' ? { onPick, onSelect: onViewportChange, onModel: (v) => syncExplodeControls(v) } : { onPick }));
 }
 // A mode callback that resumes after the user left its mode must not re-create a viewport: its getters throw StaleMode.
 class StaleMode extends Error {}
 let renderGen = 0;
 const vpAccessFor = (gen) => {
   const get = (n) => { if (gen !== renderGen) throw new StaleMode(); return getVp(n); };
-  return { get main() { return get('main'); }, get a() { return get('a'); }, get b() { return get('b'); }, get phys() { return get('phys'); } };
+  return { get main() { return get('main'); }, get a() { return get('a'); }, get b() { return get('b'); } };
 };
 let highlightIds = new Set();
+let syncExplodeControls = () => {};
 
 // Thin wrapper over the viewport's single selection setter (Designs) or the single-id highlight (Compare).
 function setHighlight(ids) {
@@ -157,6 +158,17 @@ async function init() {
     h('select', { 'data-testid': 'section-axis', 'aria-label': 'Section axis', onchange: sec }, ['off', 'x', 'y', 'z'].map((a) => h('option', { value: a }, a))),
     h('input', { type: 'range', min: '0', max: '1000', value: '500', disabled: true, 'data-testid': 'section-slider', 'aria-label': 'Section position', oninput: sec }),
     h('label', {}, h('input', { type: 'checkbox', 'data-testid': 'section-flip', onchange: sec }), ' flip'));
+  const eb = $('explode-bar'), strat = h('select', { 'data-testid': 'explode-strategy', 'aria-label': 'Explode strategy', onchange: () => explode() }, ['hierarchy', 'radial'].map((s) => h('option', { value: s }, s)));
+  const lvl = h('select', { 'data-testid': 'explode-level', 'aria-label': 'Explode level', onchange: () => explode() }, h('option', { value: 'all' }, 'All'));
+  const slider = h('input', { type: 'range', min: '0', max: '1000', value: '0', 'data-testid': 'explode-slider', 'aria-label': 'Explode', oninput: () => explode() });
+  const explode = () => vps.main?.explode(slider.value / 1000, lvl.value === 'all' ? 'all' : +lvl.value, strat.value);
+  syncExplodeControls = (vp) => { // a new model: controls back to 0 / All / hierarchy, levels from the part tree
+    slider.value = '0'; strat.value = 'hierarchy';
+    const depth = Math.max(0, ...(vp.parts?.parts || []).map((x) => x.depth));
+    lvl.replaceChildren(h('option', { value: 'all' }, 'All'), ...Array.from({ length: depth }, (_, k) => h('option', { value: String(k + 1) }, String(k + 1))));
+    lvl.value = 'all'; eb.hidden = !vp.parts;
+  };
+  eb.append(h('label', {}, 'Explode ', slider), lvl, strat);
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };
   $('filter-vtol').onchange = (e) => { state.vtol = e.target.value; renderSidebar(); };
   $('sel-a').onchange = (e) => assign('a', e.target.value); $('sel-b').onchange = (e) => assign('b', e.target.value);
@@ -179,6 +191,7 @@ async function init() {
   const p = new URLSearchParams(location.hash.slice(1));
   state.selected = byId(p.get('d')) ? p.get('d') : state.index.designs.find((d) => !d.error)?.id ?? state.index.designs[0]?.id ?? null;
   state.slotA = byId(p.get('a'))?.id ?? null; state.slotB = byId(p.get('b'))?.id ?? null;
+  if (p.get('m') === 'physics') { state.timelineOpen = true; p.set('m', 'designs'); } // old Physics links open the model with the timeline
   setMode(MODES.includes(p.get('m')) ? p.get('m') : p.has('a') || p.has('b') ? 'compare' : 'designs');
   if (state.index.studio) import('./modes/edit.js').then((m) => m.default(window.planeViewer)).catch((e) => console.warn('studio UI failed to load', e));
 }
