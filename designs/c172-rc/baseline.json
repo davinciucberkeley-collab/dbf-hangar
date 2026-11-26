@@ -10,6 +10,12 @@
     },
     {
       "check_id": "T1.kinematic_link",
+      "example": "range max of wing-aileron-r (25\u00b0): 1 pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r",
+      "key": "T1.kinematic_link|range max of wing-aileron-r (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r|{\"parts\":[\"horn-ail-r\",\"rod-ail-r\"],\"pose\":\"range max of wing-aileron-r (25\u00b0)\",\"unchecked_pairs\":[\"rod-ail-r & horn-ail-r\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
       "example": "range min of tail-elevator (-25\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: elevator, horn-elev, rod-elev",
       "key": "T1.kinematic_link|range min of tail-elevator (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: elevator, horn-elev, rod-elev|{\"parts\":[\"elevator\",\"horn-elev\",\"rod-elev\"],\"pose\":\"range min of tail-elevator (-25\u00b0)\",\"unchecked_pairs\":[\"rod-elev & elevator\",\"rod-elev & horn-elev\"]}",
       "status": "SKIP"
@@ -18,12 +24,6 @@
       "check_id": "T1.kinematic_link",
       "example": "range min of tail-rudder (-25\u00b0): 1 pair(s) not checked \u2014 linkage path not modelled: horn-rud, rod-rud",
       "key": "T1.kinematic_link|range min of tail-rudder (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: horn-rud, rod-rud|{\"parts\":[\"horn-rud\",\"rod-rud\"],\"pose\":\"range min of tail-rudder (-25\u00b0)\",\"unchecked_pairs\":[\"rod-rud & horn-rud\"]}",
-      "status": "SKIP"
-    },
-    {
-      "check_id": "T1.kinematic_link",
-      "example": "range min of wing-aileron-r (-25\u00b0): 1 pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r",
-      "key": "T1.kinematic_link|range min of wing-aileron-r (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r|{\"parts\":[\"horn-ail-r\",\"rod-ail-r\"],\"pose\":\"range min of wing-aileron-r (-25\u00b0)\",\"unchecked_pairs\":[\"rod-ail-r & horn-ail-r\"]}",
       "status": "SKIP"
     },
     {
@@ -52,8 +52,14 @@
     },
     {
       "check_id": "T1.kinematic_link",
-      "example": "sweep wing-aileron-r -10\u00b0: 1 pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r",
-      "key": "T1.kinematic_link|sweep wing-aileron-r #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r|{\"parts\":[\"horn-ail-r\",\"rod-ail-r\"],\"pose\":\"sweep wing-aileron-r -10\u00b0\",\"unchecked_pairs\":[\"rod-ail-r & horn-ail-r\"]}",
+      "example": "sweep wing-aileron-r 20\u00b0: 1 pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r",
+      "key": "T1.kinematic_link|sweep wing-aileron-r #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r|{\"parts\":[\"horn-ail-r\",\"rod-ail-r\"],\"pose\":\"sweep wing-aileron-r 20\u00b0\",\"unchecked_pairs\":[\"rod-ail-r & horn-ail-r\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "sweep wing-aileron-r 5\u00b0: 1 pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r",
+      "key": "T1.kinematic_link|sweep wing-aileron-r #\u00b0: # pair(s) not checked \u2014 linkage path not modelled: horn-ail-r, rod-ail-r|{\"parts\":[\"horn-ail-r\",\"rod-ail-r\"],\"pose\":\"sweep wing-aileron-r 5\u00b0\",\"unchecked_pairs\":[\"rod-ail-r & horn-ail-r\"]}",
       "status": "SKIP"
     },
     {
@@ -262,13 +268,13 @@
     },
     {
       "check_id": "T2.joint_load",
-      "example": "wing-aileron-l: carries 0.1 N; rating is a placeholder, not checked",
+      "example": "wing-aileron-l: carries 0.0 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|wing-aileron-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-aileron-l\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.joint_load",
-      "example": "wing-aileron-r: carries 0.1 N; rating is a placeholder, not checked",
+      "example": "wing-aileron-r: carries 0.0 N; rating is a placeholder, not checked",
       "key": "T2.joint_load|wing-aileron-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-aileron-r\"}",
       "status": "SKIP"
     },
@@ -334,7 +340,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "elev-horn: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "elev-horn: carries 0.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|elev-horn: carries # N; rating is a placeholder, not checked|{\"joint\":\"elev-horn\"}",
       "status": "SKIP"
     },
@@ -412,7 +418,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "gear-wheel-n: carries 30.9 N; rating is a placeholder, not checked",
+      "example": "gear-wheel-n: carries 30.8 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|gear-wheel-n: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-n\"}",
       "status": "SKIP"
     },
@@ -484,7 +490,7 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "tail-elevator: carries 0.1 N; rating is a placeholder, not checked",
+      "example": "tail-elevator: carries 0.2 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|tail-elevator: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elevator\"}",
       "status": "SKIP"
     },
@@ -496,13 +502,13 @@
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "wing-aileron-l: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "wing-aileron-l: carries 0.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|wing-aileron-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-aileron-l\"}",
       "status": "SKIP"
     },
     {
       "check_id": "T2.sim_drop_loads",
-      "example": "wing-aileron-r: carries 0.2 N; rating is a placeholder, not checked",
+      "example": "wing-aileron-r: carries 0.1 N; rating is a placeholder, not checked",
       "key": "T2.sim_drop_loads|wing-aileron-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-aileron-r\"}",
       "status": "SKIP"
     },
