@@ -12,3 +12,5 @@ verified: {by: W31-S1, date: '2026-11-24', method: webfetch}
 geometry:
   generator: plate
   params: {plane: xy, size: [37.0, 17.0], thickness: 5.0}
+ports: {power_in: {point: [18.5, 0, 0], direction: [1, 0, 0]}, motor_out: {point: [-18.5, 0, 0], direction: [-1, 0, 0]}, signal: {point: [18.5, 5.0, 0], direction: [1, 0, 0]}}
+ports_source: "estimate: battery lead and signal lead on the +x end face, motor leads on the -x end face; the vendor page labels no axes"

@@ -1,6 +1,7 @@
 """Real-parts library (knowledge/parts/<id>/part.yaml) and the `library_part` generator."""
 from __future__ import annotations
 
+import re
 from pathlib import Path
 
 import yaml
@@ -46,6 +47,28 @@ def part_errors(data: dict, folder_name: str) -> list[str]:
     if "geometry" in data and not (isinstance(data["geometry"], dict) and "generator" in data["geometry"]):
         errs.append("geometry.generator is missing")
     errs += _frames_errors(data)
+    errs += _ports_errors(data)
+    return errs
+
+
+def _ports_errors(data: dict) -> list[str]:
+    """U16.1 S8: optional `ports` (name -> point, direction) and `ports_source`, required together with ports."""
+    if "ports" not in data:
+        return []
+    errs = []
+    if not (isinstance(data.get("ports_source"), str) and data["ports_source"].strip()):
+        errs.append("ports_source is required with ports")
+    ports = data["ports"]
+    if not isinstance(ports, dict):
+        return errs + ["ports must be a mapping of port name to point and direction"]
+    for name, p in ports.items():
+        if not (isinstance(name, str) and re.fullmatch(r"[a-z0-9][a-z0-9_]*", name)):
+            errs.append(f"ports: port name {name} is not a slug")
+        p = p if isinstance(p, dict) else {}
+        if not _vec3(p.get("point")):
+            errs.append(f"ports.{name}.point must be 3 numbers")
+        if not (_vec3(p.get("direction")) and any(x != 0 for x in p["direction"])):
+            errs.append(f"ports.{name}.direction must be 3 numbers, not all zero")
     return errs
 
 

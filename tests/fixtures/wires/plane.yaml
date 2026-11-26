@@ -1,0 +1,18 @@
+schema_version: "1.3"
+id: wires
+name: "wires: a receiver and a servo in a box, one routed harness"
+status: concept
+description: "box body, RP3 receiver at the origin, ES08MA servo at y 50, harness w1 routed by two waypoints"
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: body
+components:
+  - {id: body, type: fuselage, geometry: {box: {size: [300, 120, 60]}}, position: [100, 0, 0], mass_g: 50, manufacturing: {method: foamboard}}
+  - {id: rx, type: receiver, geometry: {generator: library_part, params: {part: radiomaster-rp3-v2-elrs-rx}}, position: [0, 0, 0], mass_g: 4.6, manufacturing: {method: purchased}}
+  - {id: servo, type: servo, geometry: {generator: library_part, params: {part: emax-es08maii-metal}}, position: [100, 50, 0], mass_g: 12, manufacturing: {method: purchased}}
+attachments:
+  - {id: body-rx, parent: body, child: rx, method: glued, location: [0, 0, 0], embed_ok: true, rated_load_n: 1}
+  - {id: body-servo, parent: body, child: servo, method: glued, location: [100, 50, 0], embed_ok: true, rated_load_n: 1}
+wiring:
+  harnesses:
+    - {id: w1, from: rx, to: servo, route: [body], from_port: ch1, to_port: signal, waypoints: [[46.07, -6, 0], [46.07, 50, -8]]}

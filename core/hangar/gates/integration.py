@@ -16,6 +16,7 @@ def _wiring(design, clr: float) -> list[CheckResult]:
     from ..checks import _point_distance
     from ..geometry import component_parts
     from ..mass import component_cg
+    from ..geom.wires import is_routed
     comps = {c["id"]: c for c in design.components}
     cache: dict[str, tuple] = {}
 
@@ -33,6 +34,9 @@ def _wiring(design, clr: float) -> list[CheckResult]:
         unknown = [x for x in seq if x not in comps]
         if unknown:
             res.append(CheckResult(cid, FAIL, f"harness {h['id']}: unknown component {unknown[0]}", WIRE_CRIT, data))
+            continue
+        if is_routed(h):
+            res.append(_routed(design, h, seq, comps, info, clr, data))
             continue
         worst = None
         unchecked = 0
@@ -59,6 +63,42 @@ def _wiring(design, clr: float) -> list[CheckResult]:
             res.append(CheckResult(cid, FAIL, f"harness {h['id']}: segment {worst[1]} to {worst[2]} leaves the envelopes by "
                                    f"{worst[0]:.0f} mm (> {clr:g} mm); add exposed_ok with a reason or reroute", WIRE_CRIT, data))
     return res
+
+
+def _routed(design, h, seq, comps, info, clr, data) -> CheckResult:
+    """U16.1 S8: a routed harness is tested along its whole curve against the envelopes of every component on it."""
+    from ..checks import _point_distance
+    from ..geom.wires import WireError, control_points, curve_points
+    cid = f"T7.wiring.{h['id']}"
+    if f"wire-{h['id']}" in comps:
+        return CheckResult(cid, FAIL, f"harness {h['id']}: the node name wire-{h['id']} is also a component id; "
+                           "rename the harness", WIRE_CRIT, data)
+    try:
+        ctrl = control_points(design, h)
+    except WireError as e:
+        return CheckResult(cid, FAIL, f"harness {h['id']}: {e}", WIRE_CRIT, data)
+    parts = [m for x in seq for m in info(x)[0]]
+    if not parts:
+        return CheckResult(cid, SKIP, f"harness {h['id']}: not checked, every segment runs between point masses "
+                           "(no envelope to test)", WIRE_CRIT, data)
+    length = float(np.linalg.norm(np.diff(ctrl, axis=0), axis=1).sum())
+    data = {**data, "length_mm": round(length, 1)}
+    worst = None
+    for q in curve_points(ctrl):
+        dist = _point_distance(parts, q)
+        if dist > clr and (worst is None or dist > worst[0]):
+            worst = (dist, q)
+    n = len(h.get("waypoints", []))
+    if worst is None:
+        return CheckResult(cid, PASS, f"harness {h['id']}: routed wire {length:.0f} mm through {n} waypoint(s); every "
+                           f"sample lies within {clr:g} mm of the envelopes of {', '.join(seq)}", WIRE_CRIT, data)
+    if h.get("exposed_ok"):
+        return CheckResult(cid, PASS, f"harness {h['id']}: exposed segment accepted: {h['exposed_ok']['reason']}",
+                           WIRE_CRIT, data)
+    x, y, z = worst[1]
+    return CheckResult(cid, FAIL, f"harness {h['id']}: the routed wire leaves the envelopes by {worst[0]:.0f} mm "
+                       f"(> {clr:g} mm) at {x:.0f}, {y:.0f}, {z:.0f}; add exposed_ok with a reason or reroute",
+                       WIRE_CRIT, data)
 
 
 def _transport(design) -> list[CheckResult]:

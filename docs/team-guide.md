@@ -229,6 +229,7 @@ A control surface only counts for tier 6 when a `mechanisms[]` entry joins its s
   (its part needs `frames`, see `knowledge/parts/README.md`) so the mount face sits on the host skin at X,Y with the shaft pointing out
   (`--shaft X,Y,Z` for another axis), and cuts a box bay (servo plus `bay_clearance_mm`) into the host; one logged edit, safe to repeat.
   The result lists the output shaft frame, the removed volume and `body_inside_fraction`. Frames are estimates until measured (D96).
+- Wires: a `wiring.harnesses[]` entry with `from_port` / `to_port` (a port name from the library part's `ports`, see `knowledge/parts/README.md`) and/or `waypoints` (design-frame mm points, between the two ends) is drawn in Studio as a thin tube and T7 checks the whole curve against the envelopes of `from`, `route` and `to` (`exposed_ok` still works). Put the first waypoint a few mm out along the port direction, keep every waypoint inside a part listed in `route`, and set the ends on parts that do not move. Wires are visual only: no mass (it stays in the allowances), no STL, no bend-radius check. Set them with `plane design set`.
 
 ## 5. Task: gate work
 

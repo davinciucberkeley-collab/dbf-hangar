@@ -31,6 +31,14 @@ def to_scene(design: Design) -> trimesh.Scene:
         mesh.visual.face_colors = rgb + [alpha]
         scene.add_geometry(mesh, node_name=c["id"], geom_name=c["id"],
                            metadata={"type": c["type"], "mass_g": c["mass_g"]})
+    from .visuals import visual_nodes
+    for v in visual_nodes(design):  # visual only: no mass, no check, no STL
+        mesh = v.mesh.copy()
+        mesh.apply_scale(0.001)
+        mesh.apply_transform(flip)
+        mesh.visual.face_colors = list(v.rgba)
+        scene.add_geometry(mesh, node_name=v.name, geom_name=v.name,
+                           metadata={"type": v.kind, "mass_g": 0, "visual_only": True})
     return scene
 
 
