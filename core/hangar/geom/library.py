@@ -45,6 +45,43 @@ def part_errors(data: dict, folder_name: str) -> list[str]:
                 errs.append(f"verified.{k} is missing")
     if "geometry" in data and not (isinstance(data["geometry"], dict) and "generator" in data["geometry"]):
         errs.append("geometry.generator is missing")
+    errs += _frames_errors(data)
+    return errs
+
+
+def _vec3(v) -> bool:
+    return isinstance(v, (list, tuple)) and len(v) == 3 and all(_num(x) for x in v)
+
+
+def _axis_aligned(v) -> bool:
+    return _vec3(v) and sum(1 for x in v if x != 0) == 1
+
+
+def _frames_errors(data: dict) -> list[str]:
+    """U16.1 S3: optional `frames` (output, mount_face) and `frames_source`, servos only, required together."""
+    errs = []
+    has_f, has_s = "frames" in data, "frames_source" in data
+    if has_f and data.get("category") != "servo":
+        errs.append("frames is allowed only for category: servo")
+    if has_f and not has_s:
+        errs.append("frames needs frames_source (where the numbers come from; \"estimate\" is allowed)")
+    if has_s and not has_f:
+        errs.append("frames_source needs frames")
+    if has_s and not (isinstance(data["frames_source"], str) and data["frames_source"].strip()):
+        errs.append("frames_source must be a non-empty string")
+    if has_f:
+        f = data["frames"]
+        if not isinstance(f, dict):
+            return errs + ["frames must be a mapping with output and mount_face"]
+        for name, direction in (("output", "axis"), ("mount_face", "normal")):
+            fr = f.get(name)
+            if not isinstance(fr, dict):
+                errs.append(f"frames.{name} is missing")
+                continue
+            if not _vec3(fr.get("point")):
+                errs.append(f"frames.{name}.point must be 3 numbers")
+            if not _axis_aligned(fr.get(direction)):
+                errs.append(f"frames.{name}.{direction} must be 3 numbers with exactly one non-zero component")
     return errs
 
 

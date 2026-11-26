@@ -225,6 +225,11 @@ For one design use `plane build-index --design <id> --out <folder>`; designs usi
 
 A control surface only counts for tier 6 when a `mechanisms[]` entry joins its servo, arm, pushrod and horn. The recipe, the numbers T6 checks and the usual failures are in `docs/mechanisms.md`; its worked example is `tests/fixtures/mechanism-recipe/plane.yaml`. In short: servo just ahead of the hinge line; arm and horn from `plate`; pushrod from `strut`; the surface hinge and the servo arm are articulated attachments; the pushrod end at the arm is a `kinematic_link` attachment; the horn end is a small pin part joined to the horn; then one `mechanisms[]` entry with `link: {driver_end, follower_end}`. Add the parts with `plane design add`, read the real lever ratio from the `T6.ratio` message and write it as `expect`. A servo that no mechanism uses shows as `T6.servo_undriven.<id>` (WARN) on conventional fixed-wing designs.
 
+- Servo in a bay: `plane design place <design> <servo> --host <host> --at X,Y --face lower|upper --why "..."` poses a library servo
+  (its part needs `frames`, see `knowledge/parts/README.md`) so the mount face sits on the host skin at X,Y with the shaft pointing out
+  (`--shaft X,Y,Z` for another axis), and cuts a box bay (servo plus `bay_clearance_mm`) into the host; one logged edit, safe to repeat.
+  The result lists the output shaft frame, the removed volume and `body_inside_fraction`. Frames are estimates until measured (D96).
+
 ## 5. Task: gate work
 
 Needs: setup A

@@ -2,7 +2,7 @@
 
 # plane command reference
 
-67 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
+68 operations, generated from `plane ops list`. Every operation also takes `--json` (prints the OpResult as JSON) and is an MCP tool (see [mcp.md](mcp.md)).
 
 ## assembly
 
@@ -270,6 +270,25 @@ Writes files.
 - `<new-id>`: str, required
 - `--template`: str, optional
 - `--blank`: bool, optional
+
+### `plane design place`
+
+Put a library servo in a bay: pose it so its mount face sits on the host skin at X,Y (lower or upper face) with the output shaft along --shaft (default: the outward normal of the face), and cut a box bay (servo size plus --clearance, default gate-thresholds bay_clearance_mm) into the host in one atomic, logged edit; idempotent; the part needs `frames` in its part.yaml. Reports the output shaft frame, the removed volume and the part of the servo body inside the host.
+
+```
+plane design place <path> <component> --host <str> --at <str> --face <choice> [--shaft <str>] [--clearance <float>] --why <str>
+```
+
+Writes files.
+
+- `<path>`: str, required
+- `<component>`: str, required
+- `--host`: str, required
+- `--at`: str, required
+- `--face`: choice, one of lower, upper, required
+- `--shaft`: str, optional
+- `--clearance`: float, optional
+- `--why`: str, required
 
 ### `plane design propose`
 
