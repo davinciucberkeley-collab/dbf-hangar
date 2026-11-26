@@ -24,7 +24,13 @@ def _wiring(design, clr: float) -> list[CheckResult]:
         if cid not in cache:
             c = comps[cid]
             parts = component_parts(c, design.base_dir)
-            cache[cid] = (parts, np.asarray(component_cg(c, parts), dtype=float))
+            cg = np.asarray(component_cg(c, parts), dtype=float)
+            g = c.get("geometry") or {}
+            if g.get("generator") == "fuselage_loft" and (g.get("params") or {}).get("wall", 0) > 0:
+                # D121: a wire is routed through the cavity, so test it against the closed outer volume (wall 0)
+                solid = {**c, "geometry": {**g, "params": {**g["params"], "wall": 0}}}
+                parts = component_parts(solid, design.base_dir)
+            cache[cid] = (parts, cg)
         return cache[cid]
 
     res = []
