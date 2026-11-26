@@ -91,7 +91,7 @@ def test_nominal_masses(pd, ad):
     assert mp["mass_g"] == pytest.approx(ma["mass_g"] - 1.24, abs=0.5)
     # CG y: the generated core's cut pockets are not mirror-symmetric, so y moves by 0.12 mm (README); x and z stay tight.
     # U16.2: the lens pockets shift x by 0.14 mm (21.20 vs 21.34)
-    assert mp["cg_mm"][0] == pytest.approx(ma["cg_mm"][0], abs=0.2)
+    assert mp["cg_mm"][0] == pytest.approx(ma["cg_mm"][0] - 0.14, abs=0.05)
     assert mp["cg_mm"][1] == pytest.approx(ma["cg_mm"][1], abs=0.15)
     assert mp["cg_mm"][2] == pytest.approx(ma["cg_mm"][2], abs=0.05)
 
