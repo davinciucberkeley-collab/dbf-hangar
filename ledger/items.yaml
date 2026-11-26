@@ -5380,7 +5380,7 @@ items:
     updated: '2026-11-25'
   - id: T151
     kind: task
-    text: "Process miss (audit W34-Au 2): conductor merged U19.1 B6 (594c831) and B1 (b7e3ade) with red CI on their heads (c172-rc baseline after the key rename, plus LFS checkout timeouts), and B1's merge message said CI green. Rule from now: merge only when the head's own run is green AND it includes current main (merge main into the branch and re-run when main moved since the branch's CI); an LFS-only failure is re-run, never waived."
+    text: "Process miss (audit W34-Au 2): conductor merged U19.1 B6 (594c831) and B1 (b7e3ade) with red CI on their heads (c172-rc baseline after the key rename, plus LFS checkout timeouts), and B1's merge message said CI green. Rule from now: merge only when the head's own run is green AND it includes current main (merge main into the branch and re-run when main moved since the branch's CI); an LFS-only failure is re-run, never waived. [Audit 3 (11-25 16:53): three merges in one batch (4f05c04, ca908c6, 5b2221b) each had green head CI on main as of its own merge-in, not including its batch siblings; merge messages overstated it. Main CI at bc375ad was green, so no harm. Rule tightened: merge one branch at a time, or if batching, say 'head CI green on main <sha>' and do not merge further until main CI on the batch is green.]"
     source: reviews/2026-11-25-w34b.md
     owner: conductor
     status: open
