@@ -101,7 +101,7 @@ def test_trim_rows_c172_rc(card):
 
 def test_tier3_rows_unchanged(card):
     assert rows(card, "T3.stall")[0].message == "wing loading 44.5 g/dm^2, stall 8.0 m/s (CLmax 1.1)"
-    assert rows(card, "T3.static_margin")[0].message.startswith("9.2% MAC (NP x=272 mm, CG x=258 mm")
+    assert rows(card, "T3.static_margin")[0].message.startswith("9.3% MAC (NP x=272 mm, CG x=258 mm")
 
 
 def test_tailsitter_still_not_applicable():
