@@ -5,6 +5,8 @@ import math  # noqa: F401  (named in the brief; later U18.4 briefs use it)
 
 import numpy as np
 
+from ..calcs import trim as trimcalc
+from ..checks import G, RHO_DEFAULT
 from ..design import FAIL, PASS, SKIP, WARN, CheckResult
 from ..geometry import lifting_surface_properties, rotation_matrix
 from . import discipline_check
@@ -79,4 +81,55 @@ def tail_volume(ctx, rep) -> list[CheckResult]:
             out.append(CheckResult(cid, WARN, msg + f"; provisional: {kcrit} pending", kcrit, data))
         else:
             out.append(CheckResult(cid, FAIL, msg, kcrit, data))
+    return out
+
+
+@discipline_check("T3.trim", 3)
+def trim(ctx, rep) -> list[CheckResult]:
+    cid, crit = "T3.trim", f"{ST}#elevator_travel_up_deg"
+    it = _na(ctx, cid, "elevator trim", crit)
+    if it is not None:
+        return [it]
+    main, h, _v = main_and_tails(declared_surfaces(ctx.design))
+    if main is None or not h:
+        return [CheckResult(cid, SKIP, "no main wing or no horizontal tail among declared lifting_surface components",
+                            crit, {"condition": "all"})]
+    t = max(h, key=lambda s: s["area_mm2"])
+    s_t = t["area_mm2"] / 1e6
+    weight_n = ctx.mp["mass_g"] / 1000 * G
+    x_cg = ctx.mp["cg_mm"][0]
+    rho = ctx.design.data.get("flight", {}).get("air_density_kgm3", RHO_DEFAULT)
+    eta = resolve_threshold("design-standards.yaml#aft_surface_efficiency")["value"]
+    tau_t = resolve_threshold(f"{ST}#elevator_effectiveness_tau")
+    tau = tau_t["value"]
+    cm_t = resolve_threshold(f"{ST}#wing_cm_ac")
+    cm_ac = cm_t["value"]
+    up = resolve_threshold(f"{ST}#elevator_travel_up_deg")
+    down = resolve_threshold(f"{ST}#elevator_travel_down_deg")
+    pending = any(x["source"] == "pending" for x in (tau_t, cm_t, up, down))
+    stall = next((r.data.get("stall_mps") for r in rep.results if r.check_id == "T3.stall"), None)
+    cruise = (ctx.design.data.get("requirements") or {}).get("cruise_speed_mps")
+    out = []
+    for cond, v, why in (("cruise", cruise, "requirements.cruise_speed_mps missing"),
+                         ("stall", stall, "T3.stall not available")):
+        if not v:
+            out.append(CheckResult(cid, SKIP, f"{cond}: {why}", crit, {"condition": cond}))
+            continue
+        q = 0.5 * rho * v ** 2
+        l_t = trimcalc.trim_tail_lift_n(weight_n, 1, x_cg, main["x_ac_mm"], t["x_ac_mm"],
+                                        cm_ac * (q * 1e-6) * main["area_mm2"] * main["mac_mm"])
+        cl_t = trimcalc.tail_lift_coefficient(l_t, q, s_t)
+        de = trimcalc.elevator_deflection_deg(cl_t, t["aspect_ratio"], eta, tau)
+        limit = -up["value"] if de < 0 else down["value"]
+        within = abs(de) <= abs(limit)
+        msg = (f"{cond}: V {v:.1f} m/s, tail lift {l_t:.2f} N ({'down' if l_t < 0 else 'up'}), "
+               f"elevator {de:+.1f} deg vs default travel {limit:+.0f} deg "
+               f"(stick-fixed, tail at zero incidence, cm_ac {cm_ac}, tau {tau})")
+        if pending and not within:
+            msg += "; provisional: stability.yaml#elevator_travel_up_deg pending"
+        data = {"condition": cond, "speed_mps": round(v, 2), "tail_lift_n": round(l_t, 3), "tail_cl": round(cl_t, 4),
+                "elevator_deg": round(de, 2), "x_cg_mm": round(x_cg, 1), "tail": t["id"],
+                "band": "within" if within else "above"}
+        status = PASS if within else (WARN if pending else FAIL)
+        out.append(CheckResult(cid, status, msg, crit, data))
     return out

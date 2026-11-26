@@ -20,3 +20,23 @@ tail_volume_v_max:
   rule: "upper bound of the same band"
   source: pending
   note: "same as tail_volume_v_min: scale-RC band via MIT (unverified); std-tail-volume-coefficients Table 2.4 p. 52 gives only typical points (sailplane 0.02, homebuilt 0.04, GA single 0.04), so it stays pending."
+elevator_effectiveness_tau:
+  value: 0.5
+  rule: "T3.trim: elevator effectiveness tau (change of tail lift coefficient per radian of elevator deflection, as a fraction of the tail lift slope)"
+  source: pending
+  note: "textbook figure depends on elevator chord fraction (about 0.5 for a 30 % chord elevator); Raymer / Roskam / Etkin figure not opened; scout packet A"
+elevator_travel_up_deg:
+  value: 25.0
+  rule: "T3.trim: trailing-edge-up elevator travel assumed when the design gives none"
+  source: pending
+  note: "placeholder; the FAA TCDS 3A12 elevator travel for the Cessna 172 (scout U18.2) is the first anchor"
+elevator_travel_down_deg:
+  value: 20.0
+  rule: "same, trailing-edge-down"
+  source: pending
+  note: "placeholder; the FAA TCDS 3A12 elevator travel for the Cessna 172 (scout U18.2) is the first anchor"
+wing_cm_ac:
+  value: 0.0
+  rule: "T3.trim: wing pitching-moment coefficient about its aerodynamic centre, nose-up positive; 0.0 is the symmetric-section value, a cambered section is negative (needs more tail down-force)"
+  source: pending
+  note: "PDL carries only the airfoil name; NACA 2412 about -0.047 is a remembered figure, not opened"

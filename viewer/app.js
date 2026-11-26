@@ -2,6 +2,8 @@
 // Each mode is modes/<id>.js; modes/edit.js is loaded only when index.json has "studio": true.
 import { h, $, fmt, getJSON, cache, TIERS } from './lib.js';
 import { Viewport } from './vp/scene.js';
+import { syncTree } from './ui/tree.js';
+import { refreshInspector } from './ui/inspector.js';
 
 const DATA = 'data/';
 const MODES = ['designs', 'compare', 'physics', 'stress', 'updates', 'ledger'];
@@ -17,7 +19,7 @@ const vps = {};
 const VP_EL = { main: 'vp-main', a: 'vp-a', b: 'vp-b', phys: 'vp-phys' };
 const VP_NEEDED = { designs: ['main'], compare: ['a', 'b'], physics: ['phys'] };
 function getVp(name) {
-  return (vps[name] ||= new Viewport($(VP_EL[name]), name === 'phys' ? {} : { onPick }));
+  return (vps[name] ||= new Viewport($(VP_EL[name]), name === 'phys' ? {} : name === 'main' ? { onPick, onSelect: onViewportChange } : { onPick }));
 }
 // A mode callback that resumes after the user left its mode must not re-create a viewport: its getters throw StaleMode.
 class StaleMode extends Error {}
@@ -28,18 +30,39 @@ const vpAccessFor = (gen) => {
 };
 let highlightIds = new Set();
 
+// Thin wrapper over the viewport's single selection setter (Designs) or the single-id highlight (Compare).
 function setHighlight(ids) {
   highlightIds = new Set(ids);
-  (state.mode === 'designs' ? [vps.main] : state.mode === 'compare' ? [vps.a, vps.b] : []).forEach((v) => v?.highlight(highlightIds));
+  if (state.mode === 'designs') vps.main?.select([...highlightIds]);
+  else if (state.mode === 'compare') [vps.a, vps.b].forEach((v) => v?.highlight(highlightIds));
+  markActiveRows();
+}
+function markActiveRows() {
   document.querySelectorAll('.result.has-pair').forEach((r) => {
     const pair = r.dataset.pair.split('|');
     r.classList.toggle('active', pair.length === highlightIds.size && pair.every((p) => highlightIds.has(p)));
   });
 }
-function onPick(id) {
-  if (!id) return setHighlight([]);
+// The main viewport reports every selection or visibility change here.
+function onViewportChange(selection) {
+  highlightIds = new Set(selection);
+  markActiveRows(); syncTree(); refreshInspector();
+}
+function onPick(id, vp, e) {
+  const multi = !!(e && (e.ctrlKey || e.metaKey));
+  if (!id) { if (!multi) setHighlight([]); return; }
+  if (multi) { const s = new Set(highlightIds); if (s.has(id)) s.delete(id); else s.add(id); return setHighlight([...s]); }
   setHighlight(highlightIds.size === 1 && highlightIds.has(id) ? [] : [id]);
 }
+document.addEventListener('keydown', (e) => {
+  if (e.target.closest?.('input, textarea, select') || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (e.key === 'Escape') { if (highlightIds.size) setHighlight([]); return; }
+  const v = state.mode === 'designs' ? vps.main : null;
+  if (!v) return;
+  if (e.key === 'h') v.setHidden([...highlightIds], true);
+  else if (e.key === 'i') { if (highlightIds.size) v.isolate([...highlightIds]); }
+  else if (e.key === 'H') v.showAll();
+});
 
 function renderSidebar() {
   const list = $('design-list'); list.replaceChildren();
@@ -124,6 +147,8 @@ async function init() {
     setTimeout(() => Object.values(vps).forEach((v) => v.applyTheme()), 0);
   };
   $('modes').append(...MODES.map((m) => h('button', { 'data-mode': m, role: 'tab', onclick: () => setMode(m) }, LABELS[m])));
+  $('view-bar').append(...[['iso', 'Iso'], ['front', 'Front'], ['top', 'Top'], ['side', 'Side']].map(([n, t]) => h('button', { type: 'button', 'data-testid': 'view-' + n, onclick: () => vps.main?.view(n) }, t)),
+    h('button', { type: 'button', 'data-testid': 'view-fit', onclick: () => vps.main?.fitTo(highlightIds.size ? [...highlightIds] : [...(vps.main.ids || [])]) }, 'Fit'));
   $('filter-text').oninput = (e) => { state.text = e.target.value.trim(); renderSidebar(); };
   $('filter-vtol').onchange = (e) => { state.vtol = e.target.value; renderSidebar(); };
   $('sel-a').onchange = (e) => assign('a', e.target.value); $('sel-b').onchange = (e) => assign('b', e.target.value);
