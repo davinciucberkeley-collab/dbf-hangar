@@ -128,3 +128,46 @@ def test_cli_flag():
     res = CliRunner().invoke(cli_mod.cli, ["design", "propose", "--help"])
     assert res.exit_code == 0, res.output
     assert "--draft" in res.output
+
+
+def test_propose_warns_on_stale_baseline(tmp_path, monkeypatch):
+    d = _make_design(tmp_path)
+    calls: list[list[str]] = []
+    monkeypatch.setattr(edit, "_run", _fake_run_factory(calls, tmp_path))
+    monkeypatch.setattr(edit, "_stale_baseline_note", lambda p: "warning: baseline is stale (x)")
+    r = call("design.propose", path=str(d), title="T")
+    assert r.ok, r.messages
+    assert r.data["warnings"] == ["warning: baseline is stale (x)"]
+    assert r.messages[0] == "https://github.com/o/r/pull/7"
+    assert r.messages[1] == "warning: baseline is stale (x)"
+    assert any("create" in c for c in calls)
+
+
+def test_propose_without_note_has_no_warning(tmp_path, monkeypatch):
+    d = _make_design(tmp_path)
+    calls: list[list[str]] = []
+    monkeypatch.setattr(edit, "_run", _fake_run_factory(calls, tmp_path))
+    monkeypatch.setattr(edit, "_stale_baseline_note", lambda p: None)
+    r = call("design.propose", path=str(d), title="T")
+    assert r.ok, r.messages
+    assert r.data["warnings"] == []
+    assert r.messages == ["https://github.com/o/r/pull/7"]
+
+
+def test_stale_baseline_note_real(tmp_path):
+    import shutil
+    from hangar.baseline import write_baseline
+    from hangar.checks import validate
+    from hangar.design import load_design
+
+    fix = Path(__file__).parent / "fixtures" / "linkage-op"
+    f = tmp_path / "f"
+    shutil.copytree(fix, f)
+    plane = f / "plane.yaml"
+    card = validate(load_design(plane))
+    note = edit._stale_baseline_note(plane)
+    assert (note is None) == bool(card.accepted)
+    if not card.accepted:
+        assert "plane baseline update" in note
+        write_baseline(plane.parent, card)
+        assert edit._stale_baseline_note(plane) is None

@@ -318,7 +318,7 @@ Writes files.
 
 ### `plane design propose`
 
-Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree.
+Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree. Runs a full validation first and warns (does not stop) when the design's baseline.json is stale.
 
 ```
 plane design propose <path> <title> [--draft]

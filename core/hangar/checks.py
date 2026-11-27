@@ -251,6 +251,9 @@ def tier0_schema(design: Design) -> TierReport:
         m = d["mission"]
         res.append(CheckResult("T0.mission", PASS, f"mission: {m['name']} (profile {m['profile']})",
                                "schema/plane.schema.json"))
+    for r in res:
+        if r.check_id == "T0.version" and r.status == FAIL and "schema_version" in r.message and "migrate" not in r.message:
+            r.message += " (run: plane design migrate <path> --write)"
     return TierReport(0, "schema", res)
 
 

@@ -356,8 +356,29 @@ def _branch_slug(title: str, limit: int = 40) -> str:
     return cut.strip("-") or "change"
 
 
-@op(name="design.propose", summary="Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree.",
-    mutates=True, render=lambda r: r.data["pr_url"])
+def _stale_baseline_note(plane: Path) -> str | None:
+    try:
+        from ..baseline import compare, read_baseline, snapshot
+        design = load_design(plane)
+        card = validate(design)
+        snap = snapshot(card)
+        if snap["blocking"]:
+            return None            # schema or tier errors are not a baseline matter
+        cmp = compare(snap, read_baseline(plane.parent))
+    except Exception:
+        return None
+    did = design.id
+    if cmp["missing_baseline"]:
+        why = "the design is not accepted and has no baseline.json"
+    elif cmp["regressions"] or cmp["improvements"]:
+        why = f"{len(cmp['regressions'])} new or worse rows, {len(cmp['improvements'])} improved rows against baseline.json"
+    else:
+        return None
+    return f"warning: baseline is stale ({why}); run `plane baseline update designs/{did}` and commit baseline.json, or CI will fail on regressions"
+
+
+@op(name="design.propose", summary="Commit a design change on a new branch, push it and open a PR against main. With draft=True the PR is opened as a draft. The PR title is the title as given; the commit subject is design(<id>): <title>. The design stays in the working tree. Runs a full validation first and warns (does not stop) when the design's baseline.json is stale.",
+    mutates=True, render=lambda r: "\n".join(r.messages))
 def propose_op(path: str, title: str, *, draft: bool = False) -> OpResult:
     plane = _plane(path)
     ddir = str(plane.parent.resolve())
@@ -370,6 +391,7 @@ def propose_op(path: str, title: str, *, draft: bool = False) -> OpResult:
     root = _run(["git", "-C", ddir, "rev-parse", "--show-toplevel"], ddir).strip()
     if _run(["git", "-C", root, "status", "--porcelain", "--", ddir], root).strip() == "":
         raise OpInputError(f"no uncommitted changes under {ddir}")
+    note = _stale_baseline_note(plane)
     start = _run(["git", "-C", root, "rev-parse", "--abbrev-ref", "HEAD"], root).strip()
     body = f"Design change proposed with `plane design propose`.\n\nDesign: {did}\nBranch: {branch}"
     _run(["git", "-C", root, "switch", "-c", branch], root)
@@ -387,4 +409,5 @@ def propose_op(path: str, title: str, *, draft: bool = False) -> OpResult:
     url = [l for l in out.splitlines() if l.strip()][-1].strip()
     _run(["git", "-C", root, "checkout", branch, "--", ddir], root)
     _run(["git", "-C", root, "reset", "-q", "--", ddir], root)
-    return OpResult(True, {"pr_url": url, "branch": branch}, [url])
+    return OpResult(True, {"pr_url": url, "branch": branch, "warnings": [note] if note else []},
+                    [url] + ([note] if note else []))
