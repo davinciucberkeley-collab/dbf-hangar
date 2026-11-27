@@ -19,7 +19,7 @@ def _make(name: str, params: dict, base_dir) -> list:
     return registry.build_component({"id": "tail", "geometry": {"generator": name, "params": params}}, base_dir)
 
 
-def _build(p: dict, base_dir) -> list:
+def _stab_params(p: dict) -> dict:
     layout = p["layout"]
     stab = {"airfoil_file": p["airfoil_file"], "span": p["stab_span"], "root_chord": p["stab_root_chord"],
             "tip_chord": p["stab_tip_chord"], "sweep_le_deg": p["stab_sweep_le_deg"], "part": "full"}
@@ -42,6 +42,32 @@ def _build(p: dict, base_dir) -> list:
         stab["z_offset"] = p["stab_z"]
     if layout == "v":
         stab.update(dihedral_deg=p["v_dihedral_deg"], side="both")
+    return stab
+
+
+def hinge_line(params: dict, base_dir) -> tuple[list[float], list[float]]:
+    """Two points (component-local frame, mm) of the elevator (right half) or rudder hinge line; same contract as wing.hinge_line."""
+    from hangar.geom.parts import fin_hinge_line
+    from hangar.geom.wing import hinge_line as wing_hinge_line
+    p = registry.fill_defaults(registry.get("tail_surfaces"), params)
+    if p["part"] == "elevator":
+        stab = _stab_params(p)
+        stab["side"] = "right"
+        q0, q1 = wing_hinge_line(stab, base_dir)
+        return [q0[0] + p["stab_x_le"], *q0[1:]], [q1[0] + p["stab_x_le"], *q1[1:]]
+    if p["part"] == "rudder":
+        if p["layout"] in ("v", "h"):
+            raise kernel.GeometryError("hinge_from: rudder needs layout conventional or t")
+        fin = {"thickness": p["fin_thickness"], "root_chord": p["fin_root_chord"], "tip_chord": p["fin_tip_chord"],
+               "height": p["fin_height"], "x_le": p["fin_x_le"], "z_root": p["fin_z_root"],
+               "sweep_le_deg": p["fin_sweep_le_deg"], "plane_y": 0.0, "part": "rear", "hinge_frac": p["hinge_frac"]}
+        return fin_hinge_line(fin, base_dir)
+    raise kernel.GeometryError("hinge_from: tail_surfaces part must be elevator or rudder")
+
+
+def _build(p: dict, base_dir) -> list:
+    layout, part, hf = p["layout"], p["part"], p["hinge_frac"]
+    stab = _stab_params(p)
     meshes = []
     if part != "rudder":
         meshes = _make("wing_panel", stab, base_dir)

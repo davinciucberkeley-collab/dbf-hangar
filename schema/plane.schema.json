@@ -908,7 +908,7 @@
         },
         "hinge_from": {
           "const": "generator",
-          "description": "v1.2, optional. generator = the resolved location, articulation.pivot and articulation.axis come from the child's wing_panel hinge line (part elevon, side left or right) and follow its parameters; the values written here are a placeholder. An aileron, flap or elevon hinge follows a wing change this way."
+          "description": "v1.2, optional. generator = the resolved location, articulation.pivot and articulation.axis come from the child's wing_panel hinge line (part elevon, side left or right) and follow its parameters; the values written here are a placeholder. An aileron, flap or elevon hinge follows a wing change this way. The child may also be a tail_surfaces part elevator (right half; the pivot lies on the elevator even with elevator_fin_gap) or rudder, or a fin part rear; the derived axis points to +y (elevator) or +z (rudder), so a typed range_deg written for a -y axis must be mirrored."
         },
         "rated_load_n": {
           "type": "number",

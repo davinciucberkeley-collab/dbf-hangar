@@ -46,6 +46,18 @@ def _fin_build(p: dict, base_dir) -> list:
     return [kernel.prism(outline, plane="xz", offset=p["plane_y"] - t / 2.0, depth=t)]
 
 
+def fin_hinge_line(params: dict, base_dir=None):
+    """Two points (component-local frame, mm) of the hinge line of a fin part rear; same contract as wing.hinge_line."""
+    from hangar.geom.registry import fill_defaults, get
+    p = fill_defaults(get("fin"), params)
+    if p["part"] != "rear":
+        raise kernel.GeometryError("hinge_from: fin part must be rear")
+    h, f = p["height"], p["hinge_frac"]
+    dx = abs(h) * math.tan(math.radians(p["sweep_le_deg"]))
+    return ([p["x_le"] + f * p["root_chord"], p["plane_y"], p["z_root"]],
+            [p["x_le"] + dx + f * p["tip_chord"], p["plane_y"], p["z_root"] + h])
+
+
 def _fin_rear_hinged(p: dict, dx: float) -> list:
     """Rear fin part with a hinge gap, bevel and/or knuckles (U16.1 S6): sections are (x, y) loops at the root and the tip."""
     h, t, y0 = p["height"], p["thickness"], p["plane_y"]
