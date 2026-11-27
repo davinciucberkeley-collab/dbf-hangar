@@ -21,7 +21,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W10 Freeze fixes and fresh-session findings | 5 | 5 |
 | W11 Parameter propagation and speed (D75, D81) | 2 | 2 |
 | W12 Any-aircraft capabilities (D77-D79, D82, D83) | 5 | 5 |
-| W13 Rehearsal gaps and visual fidelity | 8 | 7 |
+| W13 Rehearsal gaps and visual fidelity | 8 | 8 |
 | W14 Presentation | 1 | 0 |
 | W15 Authoring gaps and speed (D86) | 3 | 3 |
 | W16 3D generation close to the real aircraft (D85, D87) | 2 | 1 |
@@ -29,7 +29,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | W18 Physics checks (D89) | 4 | 4 |
 | W19 Studio UI and 3D viewer (D92) | 1 | 0 |
 | Other (no wave row) | 3 | 0 |
-| **all** | 77 | 67 |
+| **all** | 77 | 68 |
 
 ### Open ledger items by owner
 
@@ -38,7 +38,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | Dillon | 30 | 2026-11-28 |
 | James | 2 | 2026-11-29 |
 | Tristan | 11 | 2026-11-27 |
-| conductor | 23 | 2026-12-08 |
+| conductor | 28 | 2026-12-08 |
 
 ### Open items for teammates
 
@@ -179,7 +179,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 
 | unit | title | done/total | status | review |
 |---|---|---|---|---|
-| U13.1 | Any-aircraft rehearsal (D77, D78) | 5/6 | in progress | - |
+| U13.1 | Any-aircraft rehearsal (D77, D78) | 6/6 | done | - |
 | U13.2 | Design authoring from a blank start (rehearsal 1 gaps; D78) [hard] | 4/4 | done | - |
 | U13.3 | A400M rehearsal gaps (D78) [hard] | 3/3 | done | - |
 | U13.4 | Visual fidelity for any-aircraft models (Tristan P250; advisor W31-A2) [hard] | 3/3 | done | - |
@@ -243,7 +243,7 @@ DBF Hangar keeps the team's aircraft designs in one format (PDL), one tool (`pla
 | kind | open | done | dropped | superseded | decided | total |
 |---|---|---|---|---|---|---|
 | ruling | 2 | 36 | 1 | 1 | 0 | 40 |
-| task | 51 | 113 | 5 | 3 | 0 | 172 |
+| task | 56 | 113 | 5 | 3 | 0 | 177 |
 | idea | 1 | 0 | 1 | 0 | 0 | 2 |
 | decision | 12 | 0 | 0 | 4 | 271 | 287 |
 

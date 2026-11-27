@@ -5620,3 +5620,58 @@ items:
     evidence: ''
     decided_in: ''
     updated: '2026-11-26'
+  - id: T173
+    kind: task
+    text: 'Rehearsal 5 gap: only ES08MA and ES3054HV servos have frames; a 24 mm servo pokes ~4 mm out of a 1:10 wing; add a smaller servo part (e.g. 5 g class) with frames, and let design place work on a hollow tail wall.'
+    source: reviews/2026-11-26-rehearsal5.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T174
+    kind: task
+    text: 'Rehearsal 5 gap: tail_surfaces/fin lack hinge_from: generator, and elevator_fin_gap leaves the elevator centre empty so a hinge pivot there fails T1 (27 mm from elevator); derive tail hinge pivots/axes from the generator.'
+    source: reviews/2026-11-26-rehearsal5.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T175
+    kind: task
+    text: 'Rehearsal 5 gap: add-linkage usability: follower_deg null on jam, undocumented sign rules for --station and --arm-offset-deg, default --servo-range 30 collides with fuselage/fin, 3-5 runs of ~45 s per surface to tune differential; add a target-split option or a dry-run sweep.'
+    source: reviews/2026-11-26-rehearsal5.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T176
+    kind: task
+    text: 'Rehearsal 5 gap: library mesh bounding boxes disagree with where T1 measures joint contact (receiver, battery); hollow fuselage forces every internal joint onto the shell; add a design place-like op for internal parts onto a wall or tray.'
+    source: reviews/2026-11-26-rehearsal5.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
+  - id: T177
+    kind: task
+    text: 'Rehearsal 5 gap: a blank design starts at PDL 1.2 but add-linkage, continuous joints and display need 1.3 with no hint in the error; design apply splits set and add; design propose does not warn that baseline update is needed.'
+    source: reviews/2026-11-26-rehearsal5.md
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'

@@ -1014,7 +1014,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 - [x] **Step 3: Second rehearsal** *(Tue 11-24 21:40: C172 38 min / ~60 calls, 0 FAIL, draft PR #6; A400M 47 min / ~45 calls, 0 FAIL, draft PR #7 (rehearsal 1: 73 min / ~150 calls, blocked C172). Caveat: both raised joint ratings without a source to clear T2 drop loads. Remaining gaps -> U13.6)*
 - [x] **Step 4: Third rehearsal** *(Wed 11-25 ~01:00: A400M 55 min / ~75 calls, renders checked by the agent, 0 FAIL / 28 WARN, static margin fixed by moving the battery (CG x 789 mm, ~7.5 % MAC by hand), no invented ratings or requirements (placeholders listed), draft PR #8; new gap: split-wing ailerons counted as separate lifting surfaces in T3 -> U13.7-8)*
 - [x] **Step 5: Fourth rehearsal** *(Wed 11-25 ~03:30: Cessna 172 from a blank design, ~35 min / ~45 calls, renders checked, 0 FAIL / 26 WARN, static margin 9.2 % MAC, wing area 100 %, draft PR #9 with all 6 CI jobs green; placeholders listed, nothing invented; gaps -> U13.8)*
-- [ ] **Step 6: Fifth rehearsal**: paused by D87 until U16.1 delivers *(Tristan 11-26 (P317): launch it once the U16.4 fixes are merged)*
+- [x] **Step 6: Fifth rehearsal**: paused by D87 until U16.1 delivers *(Tristan 11-26 (P317): launch it once the U16.4 fixes are merged)* *(Thu 11-26 ~20:00: C172 from blank with the U16.1 ops, ~51 min / ~112 calls, 0 FAIL / 19 WARN, 629 g, SM 8.6 %, throws elevator 28/20, rudder 18/15, ailerons 20/14; draft PR #14; gaps T173-T177 (small servo part, tail hinge_from, add-linkage usability, internal-part placement on hollow shell, blank-start PDL 1.3))*
 
 ### Unit U13.2: Design authoring from a blank start (rehearsal 1 gaps; D78) [hard]
 
