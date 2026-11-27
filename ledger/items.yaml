@@ -5581,10 +5581,10 @@ items:
     text: add-linkage must not overwrite an existing non-placeholder rated_load_n / rating_basis / connection on re-run (D125; U16.3-3 review W34-R3 27).
     source: D125
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: d4e979c
     decided_in: ''
     updated: '2026-11-26'
   - id: T170
