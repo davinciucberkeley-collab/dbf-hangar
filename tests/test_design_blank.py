@@ -11,7 +11,7 @@ from hangar.design import load_design
 from hangar.ops import call
 
 BLANK_TEXT = """# Blank design from `plane design new --blank`. Add parts with `plane design add`, change values with `plane design set`.
-schema_version: "1.2"
+schema_version: "1.3"
 id: <id>
 name: "<id>"
 status: concept
