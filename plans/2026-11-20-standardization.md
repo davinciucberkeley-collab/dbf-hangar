@@ -1176,7 +1176,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 **Scope:** the gaps the fifth rehearsal (reviews/2026-11-26-rehearsal5.md, PR #14) hit while building a C172 from blank with the U16.1 ops: a smaller servo part with frames (T173), tail hinge_from from the generator (T174), add-linkage usability (T175: follower on jam, documented signs, a target-split or dry-run sweep, safer default servo range), internal-part placement on a hollow shell (T176), blank start at PDL 1.3 plus clearer errors (T177). Core changes each with tests; thresholds unchanged.
 
-- [ ] **Step 1: Briefs** (tactician W34-T11) for T174, T175, T177 (and T176 if small); sources for T173 (scout W34-S4)
+- [x] **Step 1: Briefs** (tactician W34-T11) for T174, T175, T177 (and T176 if small); sources for T173 (scout W34-S4) *(ffe39a4: -1 tail hinge_from (hard), -2 linkage usability: follower on jam, sign table, --dry-run (hard), -3 blank at 1.3 + migrate hint + propose warning (easy); T176 needs design; T173 sources df196ad, needs a servo pick + measurement)*
 - [ ] **Step 2: Build** (W34-B), review, merge
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
