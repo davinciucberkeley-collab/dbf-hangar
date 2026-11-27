@@ -4459,3 +4459,331 @@
     kinematic_link: true
   why: 'U16.4 D126: aileron differential, larger throw up (left)'
   kind: modify
+- date: '2026-11-27T03:01:55Z'
+  key: components[wing-aileron-r-arm]
+  old:
+    id: wing-aileron-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - 420
+        - 60.65
+        end:
+        - 266.7611
+        - 408.6125
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - 420
+        - 60.65
+        end:
+        - 269.4617
+        - 409.5972
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T03:01:55Z'
+  key: components[wing-aileron-r-rod]
+  old:
+    id: wing-aileron-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 266.7611
+        - 408.6125
+        - 60.65
+        end:
+        - 326.6296
+        - 411.7667
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 269.4617
+        - 409.5972
+        - 60.65
+        end:
+        - 326.6284
+        - 411.7951
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T03:01:55Z'
+  key: attachments[wing-aileron-r-arm-rod]
+  old:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 266.7611
+    - 408.6125
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 269.4617
+    - 409.5972
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T03:01:55Z'
+  key: mechanisms[wing-aileron-r-drive]
+  old:
+    id: wing-aileron-r-drive
+    driver: wing-aileron-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-r
+    input_range_deg:
+    - -45
+    - 45
+    expect:
+    - attachment: wing-aileron-r
+      ratio: 0.45
+    link:
+      driver_end: wing-aileron-r-arm-rod
+      follower_end: wing-aileron-r-horn-pin
+  new:
+    id: wing-aileron-r-drive
+    driver: wing-aileron-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-r
+    input_range_deg:
+    - -45
+    - 45
+    expect:
+    - attachment: wing-aileron-r
+      ratio: 0.42
+    link:
+      driver_end: wing-aileron-r-arm-rod
+      follower_end: wing-aileron-r-horn-pin
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T03:03:06Z'
+  key: components[wing-aileron-l-arm]
+  old:
+    id: wing-aileron-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - -420
+        - 60.65
+        end:
+        - 266.7611
+        - -408.6125
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - -420
+        - 60.65
+        end:
+        - 269.4617
+        - -409.5972
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-27T03:03:06Z'
+  key: components[wing-aileron-l-rod]
+  old:
+    id: wing-aileron-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 266.7611
+        - -408.6125
+        - 60.65
+        end:
+        - 326.6296
+        - -411.7667
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 269.4617
+        - -409.5972
+        - 60.65
+        end:
+        - 326.6284
+        - -411.7951
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-27T03:03:06Z'
+  key: attachments[wing-aileron-l-arm-rod]
+  old:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 266.7611
+    - -408.6125
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 269.4617
+    - -409.5972
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-27T03:03:06Z'
+  key: mechanisms[wing-aileron-l-drive]
+  old:
+    id: wing-aileron-l-drive
+    driver: wing-aileron-l-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-l
+    input_range_deg:
+    - -45
+    - 45
+    expect:
+    - attachment: wing-aileron-l
+      ratio: -0.45
+    link:
+      driver_end: wing-aileron-l-arm-rod
+      follower_end: wing-aileron-l-horn-pin
+  new:
+    id: wing-aileron-l-drive
+    driver: wing-aileron-l-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-l
+    input_range_deg:
+    - -45
+    - 45
+    expect:
+    - attachment: wing-aileron-l
+      ratio: -0.42
+    link:
+      driver_end: wing-aileron-l-arm-rod
+      follower_end: wing-aileron-l-horn-pin
+  why: 'U16.4 D126: aileron arm offset -8, deflection 19.0 for up 20 / down 15 (left)'
+  kind: modify
