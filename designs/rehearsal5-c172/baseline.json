@@ -1,0 +1,474 @@
+{
+  "accepted": false,
+  "design_id": "rehearsal5-c172",
+  "known": [
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of tail-rud (19\u00b0): 1 pair(s) not checked \u2014 linkage path not modelled: rudder, tail-elev-rod",
+      "key": "T1.kinematic_link|range max of tail-rud (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: rudder, tail-elev-rod|{\"parts\":[\"rudder\",\"tail-elev-rod\"],\"pose\":\"range max of tail-rud (19\u00b0)\",\"unchecked_pairs\":[\"tail-elev-rod & rudder\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of tail-rud-servo-arm (21\u00b0): 1 pair(s) not checked \u2014 linkage path not modelled: rudder, tail-elev-rod",
+      "key": "T1.kinematic_link|range max of tail-rud-servo-arm (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: rudder, tail-elev-rod|{\"parts\":[\"rudder\",\"tail-elev-rod\"],\"pose\":\"range max of tail-rud-servo-arm (21\u00b0)\",\"unchecked_pairs\":[\"tail-elev-rod & rudder\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of wing-ail-l (15\u00b0): 1 pair(s) not checked \u2014 linkage path not modelled: aileron-l, wing-ail-l-rod",
+      "key": "T1.kinematic_link|range max of wing-ail-l (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: aileron-l, wing-ail-l-rod|{\"parts\":[\"aileron-l\",\"wing-ail-l-rod\"],\"pose\":\"range max of wing-ail-l (15\u00b0)\",\"unchecked_pairs\":[\"wing-ail-l-rod & aileron-l\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range max of wing-ail-r (15\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: aileron-r, wing-ail-r-horn, wing-ail-r-rod",
+      "key": "T1.kinematic_link|range max of wing-ail-r (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: aileron-r, wing-ail-r-horn, wing-ail-r-rod|{\"parts\":[\"aileron-r\",\"wing-ail-r-horn\",\"wing-ail-r-rod\"],\"pose\":\"range max of wing-ail-r (15\u00b0)\",\"unchecked_pairs\":[\"wing-ail-r-rod & aileron-r\",\"wing-ail-r-rod & wing-ail-r-horn\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T1.kinematic_link",
+      "example": "range min of tail-rud (-19\u00b0): 2 pair(s) not checked \u2014 linkage path not modelled: rudder, tail-rud-horn, tail-rud-rod",
+      "key": "T1.kinematic_link|range min of tail-rud (#\u00b0): # pair(s) not checked \u2014 linkage path not modelled: rudder, tail-rud-horn, tail-rud-rod|{\"parts\":[\"rudder\",\"tail-rud-horn\",\"tail-rud-rod\"],\"pose\":\"range min of tail-rud (-19\u00b0)\",\"unchecked_pairs\":[\"tail-rud-rod & rudder\",\"tail-rud-rod & tail-rud-horn\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.fea_strength",
+      "example": "1 printed part(s) have no OpenCAE stress check yet (plane fea rehearsal5-c172 --all)",
+      "key": "T2.fea_strength|# printed part(s) have no OpenCAE stress check yet (plane fea rehearsal5-c172 --all)|{\"parts\":[\"gear\"]}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-batt: carries 12.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-batt: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-batt\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-esc: carries 1.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-esc: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-esc\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-gear: carries 0.7 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-gear: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-gear\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-motor: carries 4.5 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-motor: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-motor\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-rx: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-rx: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-rx\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-servo-elev: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-servo-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-servo-elev\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-tail: carries 1.3 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-tail: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-tail\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "fus-wing: carries 5.4 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|fus-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-wheel-l: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-wheel-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-wheel-nose: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-wheel-nose: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-nose\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "gear-wheel-r: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|gear-wheel-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-r\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "motor-prop: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|motor-prop: carries # N; rating is a placeholder, not checked|{\"joint\":\"motor-prop\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "stab-servo-rud: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|stab-servo-rud: carries # N; rating is a placeholder, not checked|{\"joint\":\"stab-servo-rud\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-elev-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-elev-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-elev-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-elev-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-elev-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-elev-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-elev-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-elev-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-elev: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-rud-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-rud-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-rud-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-rud-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-rud-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-rud-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-rud-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-rud-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "tail-rud: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|tail-rud: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-l-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-l-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-l-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-l-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-l-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-l-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-l-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-l-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-l: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-r-arm-rod: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-r-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-r-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-r-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-r-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-r-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-r-servo-arm: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-r-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-ail-r: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-ail-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-servo-ail-l: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-servo-ail-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-servo-ail-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.joint_load",
+      "example": "wing-servo-ail-r: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.joint_load|wing-servo-ail-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-servo-ail-r\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-batt: carries 29.8 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-batt: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-batt\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-esc: carries 3.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-esc: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-esc\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-gear: carries 67.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-gear: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-gear\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-motor: carries 15.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-motor: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-motor\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-rx: carries 0.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-rx: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-rx\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-servo-elev: carries 1.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-servo-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-servo-elev\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-tail: carries 4.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-tail: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-tail\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "fus-wing: carries 13.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|fus-wing: carries # N; rating is a placeholder, not checked|{\"joint\":\"fus-wing\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-wheel-l: carries 18.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-wheel-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-wheel-nose: carries 17.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-wheel-nose: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-nose\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "gear-wheel-r: carries 18.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|gear-wheel-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"gear-wheel-r\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "motor-prop: carries 0.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|motor-prop: carries # N; rating is a placeholder, not checked|{\"joint\":\"motor-prop\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "stab-servo-rud: carries 1.9 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|stab-servo-rud: carries # N; rating is a placeholder, not checked|{\"joint\":\"stab-servo-rud\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-elev-arm-rod: carries 0.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-elev-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-elev-horn-mount: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-elev-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-elev-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-elev-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-elev-servo-arm: carries 0.7 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-elev-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-elev: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-elev: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-elev\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-rud-arm-rod: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-rud-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-rud-horn-mount: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-rud-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-rud-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-rud-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-rud-servo-arm: carries 0.3 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-rud-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "tail-rud: carries 0.6 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|tail-rud: carries # N; rating is a placeholder, not checked|{\"joint\":\"tail-rud\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-l-arm-rod: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-l-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-l-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-l-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-l-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-l-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-l-servo-arm: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-l-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-l: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-r-arm-rod: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-r-arm-rod: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-arm-rod\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-r-horn-mount: carries 0.1 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-r-horn-mount: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-horn-mount\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-r-horn-pin: carries 0.0 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-r-horn-pin: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-horn-pin\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-r-servo-arm: carries 0.2 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-r-servo-arm: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r-servo-arm\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-ail-r: carries 0.4 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-ail-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-ail-r\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-servo-ail-l: carries 1.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-servo-ail-l: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-servo-ail-l\"}",
+      "status": "SKIP"
+    },
+    {
+      "check_id": "T2.sim_drop_loads",
+      "example": "wing-servo-ail-r: carries 1.5 N; rating is a placeholder, not checked",
+      "key": "T2.sim_drop_loads|wing-servo-ail-r: carries # N; rating is a placeholder, not checked|{\"joint\":\"wing-servo-ail-r\"}",
+      "status": "SKIP"
+    }
+  ],
+  "schema": 1,
+  "tiers_run": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
+}
