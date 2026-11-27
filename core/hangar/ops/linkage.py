@@ -224,12 +224,34 @@ def _geometry(design: Design, servo: str, hinge: str, station: float, arm_length
     return dict(Op=Op, a_o=a_o, K=K, n=n, q=q, H=H, s=s, pin0=pin0, tip0=tip0, surface=surf, P=P, ax=ax, W=W)
 
 
+def _throws(design_like, mech, hinge_id, input_range):
+    """(follower, follower_input, deflection, min_mu, jam) from the simulated sweep; on a jam the angles reached before it."""
+    from ..gates.mechanisms import simulate_mechanism
+    try:
+        sim = simulate_mechanism(design_like, mech)
+    except RuntimeError:
+        return None, None, None, None, None
+    mu = [s["transmission_deg"] for s in sim["steps"] if "transmission_deg" in s]
+    min_mu = round(min(mu), 3) if mu else None
+    steps = {float(s["input_deg"]): s for s in sim["steps"] if hinge_id in (s.get("followers") or {})}
+    pos = [i for i in steps if i >= 0]
+    neg = [i for i in steps if i <= 0]
+    jam = sim.get("jam") or None
+    if not pos or not neg:
+        return None, None, None, min_mu, jam
+    ip, im = max(pos), min(neg)
+    at = {"plus": float(steps[ip]["followers"][hinge_id]), "minus": float(steps[im]["followers"][hinge_id])}
+    follower = {k: round(at[k], 3) + 0.0 for k in ("plus", "minus")}
+    deflection = None if jam else round((abs(at["plus"]) + abs(at["minus"])) / 2, 2)
+    return follower, {"plus": float(ip), "minus": float(im)}, deflection, min_mu, jam
+
+
 def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = None,
                    deflection: float = 15.0, horn_height: float = None, horn_offset: float = 6.0,
                    arm_side: Literal["+", "-"] = "+", horn_toward: str = "0,0,-1", input_range: float = 20.0,
-                   servo_range: float = 30.0, arm_offset_deg: float = 0.0, why: str) -> OpResult:
+                   servo_range: float = 30.0, arm_offset_deg: float = 0.0, dry_run: bool = False, why: str) -> OpResult:
     from ..checks import validate
-    from ..gates.mechanisms import link_ratios, simulate_mechanism
+    from ..gates.mechanisms import link_ratios
     from ..geom.params import expression_errors
     plane = _plane(path)
     text = _text(plane)
@@ -277,7 +299,28 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
     ratio = round(link_ratios(Design(data=mem, path=design.path), mech)[raw_hinge_id], 2)
     ratio = ratio + 0.0
     mech["expect"][0]["ratio"] = ratio
+    r4 = lambda v: [round(float(t), 4) + 0.0 for t in v]
+    ids_c, ids_a = [c["id"] for c in comps], [a["id"] for a in atts]
 
+    def finish(follower, follower_input, deflection_deg, min_mu, jam, rows, changed, kept_ratings, files):
+        data_out = {"components": ids_c, "attachments": ids_a, "mechanism": mech["id"], "ratio": ratio,
+                    "tip0": r4(tip0), "pin0": r4(pin0), "arm_pivot": r4(Op), "horn_root": r4(K), "skin_to_pin": round(skin_to_pin, 4) + 0.0,
+                    "rod_length": round(rod_length, 4), "arm_length": round(float(arm_length), 4),
+                    "follower_deg": follower, "follower_input_deg": follower_input, "jam": jam,
+                    "arm_offset_deg": round(float(arm_offset_deg), 4) + 0.0, "deflection_deg": deflection_deg, "min_transmission_deg": min_mu,
+                    "rows": rows, "changed": changed, "kept_ratings": kept_ratings, "dry_run": dry_run}
+        first = (f"{prefix}: ratio {ratio:g}, rod {rod_length:.2f} mm, tip {data_out['tip0']}, pin {data_out['pin0']}"
+                 + ("" if deflection_deg is None else f", deflection {deflection_deg:g} deg")
+                 + ("" if not arm_offset_deg else f", arm offset {arm_offset_deg:g} deg")
+                 + ("" if not jam else f", jam at input {float(jam['input_deg']):g} deg (follower_deg is the angle reached before it)"))
+        return data_out, first
+
+    if dry_run:
+        mem2 = copy.deepcopy(mem)
+        mem2["mechanisms"] = [m for m in mem2.get("mechanisms", []) if m.get("id") != mech["id"]] + [copy.deepcopy(mech)]
+        follower, follower_input, deflection_deg, min_mu, jam = _throws(Design(data=mem2, path=design.path), mech, raw_hinge_id, input_range)
+        data_out, first = finish(follower, follower_input, deflection_deg, min_mu, jam, [], False, [], [])
+        return OpResult(True, data_out, ["dry run, nothing written: " + first], changed_files=[])
 
     before = yamlfast.safe_load(text)
     working, entries = text, []
@@ -355,44 +398,21 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
                 rows.append([x.check_id, x.status, x.message])
     final = load_design(plane)
     fm = next(m for m in final.data["mechanisms"] if m["id"] == mech["id"])
-    follower = deflection_deg = None
-    try:
-        sim = simulate_mechanism(final, fm)
-        mu = [s["transmission_deg"] for s in sim["steps"] if "transmission_deg" in s]
-        min_mu = round(min(mu), 3) if mu else None
-        at = {}
-        for s_ in sim["steps"]:
-            for key, want in (("plus", float(input_range)), ("minus", -float(input_range))):
-                if abs(float(s_["input_deg"]) - want) < 1e-9 and raw_hinge_id in (s_.get("followers") or {}):
-                    at[key] = float(s_["followers"][raw_hinge_id])
-        if len(at) == 2:
-            follower = {k: round(at[k], 3) + 0.0 for k in ("plus", "minus")}
-            deflection_deg = round((abs(at["plus"]) + abs(at["minus"])) / 2, 2)
-    except RuntimeError:
-        min_mu = None
-    r4 = lambda v: [round(float(t), 4) + 0.0 for t in v]
-    ids_c, ids_a = [c["id"] for c in comps], [a["id"] for a in atts]
-    data_out = {"components": ids_c, "attachments": ids_a, "mechanism": mech["id"], "ratio": ratio,
-                "tip0": r4(tip0), "pin0": r4(pin0), "arm_pivot": r4(Op), "horn_root": r4(K), "skin_to_pin": round(skin_to_pin, 4) + 0.0,
-                "rod_length": round(rod_length, 4), "arm_length": round(float(arm_length), 4) if follower else None,
-                "follower_deg": follower, "arm_offset_deg": round(float(arm_offset_deg), 4) + 0.0, "deflection_deg": deflection_deg, "min_transmission_deg": min_mu,
-                "rows": rows, "changed": changed, "kept_ratings": kept_ratings}
-    msgs = [f"{prefix}: ratio {ratio:g}, rod {rod_length:.2f} mm, tip {data_out['tip0']}, pin {data_out['pin0']}"
-            + ("" if deflection_deg is None else f", deflection {deflection_deg:g} deg")
-            + ("" if not arm_offset_deg else f", arm offset {arm_offset_deg:g} deg")
-            + ("" if changed else "; unchanged")]
+    follower, follower_input, deflection_deg, min_mu, jam = _throws(final, fm, raw_hinge_id, input_range)
+    data_out, first = finish(follower, follower_input, deflection_deg, min_mu, jam, rows, changed, kept_ratings, None)
+    msgs = [first + ("" if changed else "; unchanged")]
     msgs += [f"{r[0]} {r[1]}: {r[2]}" for r in rows if r[1] != "PASS"]
     return OpResult(True, data_out, msgs, changed_files=[str(plane), str(log)] if changed else [])
 
 
-@op(name="design.add-linkage", summary="Generate a servo linkage: arm, rod, horn and pin components built clear of the servo (arm plane above its highest point), the horn rooted on the surface skin aft of the hinge and the pin beside the horn, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). The arm length is solved from `--deflection` (default 15 deg per side at the input range) unless `--arm-length` is given; reports the achieved deflection. `--arm-offset-deg A` turns the arm toward the surface by A degrees at neutral for differential throw (default 0 = squared). Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. One logged write; reports the ratio, arm pivot, tip, horn root, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.",
+@op(name="design.add-linkage", summary="Generate a servo linkage: arm, rod, horn and pin components built clear of the servo (arm plane above its highest point), the horn rooted on the surface skin aft of the hinge and the pin beside the horn, their four attachments and a four_bar mechanism '<prefix>-drive', from a library servo with part frames and a hinge attachment (read from the resolved design, so a derived hinge is followed). The arm length is solved from `--deflection` (default 15 deg per side at the input range) unless `--arm-length` is given; reports the achieved deflection. `--arm-offset-deg A` turns the arm toward the surface by A degrees at neutral for differential throw (default 0 = squared). Defaults are layout defaults for a 1:10 RC model, not thresholds. Idempotent: an identical re-run writes nothing; changed elements are replaced in place. `--dry-run` computes the geometry, ratio and throws and writes nothing (no CHANGELOG entry, no T0/T1 rows). One logged write; reports the ratio, arm pivot, tip, horn root, pin, rod length and the T0 FAIL, T1 FAIL (naming the new parts) and T6 rows.",
     mutates=True, render=lambda r: "\n".join(r.messages))
 def add_linkage_op(path: str, *, servo: str, hinge: str, station: float, prefix: str = None, arm_length: float = None,
                    deflection: float = 15.0, horn_height: float = None, horn_offset: float = 6.0,
                    arm_side: Literal["+", "-"] = "+", horn_toward: str = "0,0,-1", input_range: float = 20.0,
-                   servo_range: float = 30.0, arm_offset_deg: float = 0.0, why: str) -> OpResult:
+                   servo_range: float = 30.0, arm_offset_deg: float = 0.0, dry_run: bool = False, why: str) -> OpResult:
     from ..geom import overlay
     with overlay.forced_off():       # the CAD overlay never changes what is written: same plane.yaml on every machine
         return _add_linkage(path, servo=servo, hinge=hinge, station=station, prefix=prefix, arm_length=arm_length,
                             deflection=deflection, horn_height=horn_height, horn_offset=horn_offset, arm_side=arm_side, horn_toward=horn_toward,
-                            input_range=input_range, servo_range=servo_range, arm_offset_deg=arm_offset_deg, why=why)
+                            input_range=input_range, servo_range=servo_range, arm_offset_deg=arm_offset_deg, dry_run=dry_run, why=why)
