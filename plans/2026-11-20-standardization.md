@@ -1159,8 +1159,8 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** three problems Tristan saw in Studio on c172-rc: (1) the servos are backwards: the linkage attaches to the bottom of the servo, not its rotating output; (2) control-surface deflection is only about 5 deg, far below the real aircraft (C172 POH order of magnitude: elevator about +28/-23, aileron +20/-15, rudder +-17 deg); (3) the linkage connections are messy and do not move like solid parts. Diagnose first (advisor), then briefs, then fixes in core (add-linkage, servo frames, viewer posing) and/or the c172 design. Thresholds unchanged.
 
 - [x] **Step 1: Diagnosis** (advisor W34-A4): root cause of each problem with evidence (renders/screenshots, the numbers), and the fix order *(1: local servo overlay matrix flips the spline (z), plus core guard; 2: commanded ranges +-10/+-20, not a bug (D122); 3: follower clevis rides the pin/surface instead of the rod, two pins drawn; fix order overlay matrix, core clevis+guard PR, c172 design PR)*
-- [x] **Step 2: Briefs** (tactician) from the diagnosis *(U16.4-0 local overlay matrix applied (not in git); U16.4-1 core merged d73769a; -4 --deflection merged e0f0e24; -3 differential merged 4711e1c; -2 c172 values next)*
-- [ ] **Step 3: Build** (W34-B), review (W34-R2/R3), merge; Tristan looks in Studio
+- [x] **Step 2: Briefs** (tactician) from the diagnosis *(U16.4-0 local overlay matrix applied (not in git); U16.4-1 core merged d73769a; -4 --deflection merged e0f0e24; -3 differential merged 4711e1c; -2 c172 throws merged cb0eb08 (elevator 29/22, rudder 19/16, ailerons 19.8/15.2 vs TCDS 28/23, 17.7, 20/15))*
+- [ ] **Step 3: Build** (W34-B), review (W34-R2/R3), merge; Tristan looks in Studio *(all U16.4 briefs merged by cb0eb08; Tristan to look)*
 
 ### Unit U19.2: Human-readable scorecards (P315)
 
