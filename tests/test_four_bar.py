@@ -218,8 +218,9 @@ def test_c172_t1_kinematic_link_rows():
     sk = [r for r in rs if r.check_id == "T1.kinematic_link"]
     assert len(sk) == 6
     assert {r.message.split(":")[0] for r in sk} == {
-        "range min of tail-elevator (-25\u00b0)", "range min of tail-rudder (-25\u00b0)", "sweep tail-elevator -10\u00b0",
-        "sweep tail-rudder -10\u00b0", "sweep tail-rudder 5\u00b0", "sweep wing-aileron-r 20\u00b0"}
+        "range max of wing-aileron-r (25°)", "range max of wing-aileron-l (25°)",
+        "range min of tail-elevator (-30°)", "range min of tail-rudder (-30°)",
+        "sweep wing-aileron-r 20°", "sweep wing-aileron-l 20°"}
     assert len([r for r in rs if r.check_id == "T1.pose" and r.status == "PASS"
                 and r.message.startswith("sweep wing-aileron-r 5\u00b0")]) == 1
     assert not [r for r in rs if r.status == "FAIL"]
