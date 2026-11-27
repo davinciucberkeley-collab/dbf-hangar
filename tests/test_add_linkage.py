@@ -390,3 +390,90 @@ def test_placeholder_rating_is_still_rewritten_on_rerun(tmp_path):
     assert (a["rated_load_n"], a["rating_basis"]) == (10, "placeholder")
     assert r.data["kept_ratings"] == []
     assert r.data["changed"] is True
+
+
+def _jam_values(r):
+    ap = pytest.approx
+    assert r.ok, r.messages
+    assert r.data["follower_deg"]["plus"] == ap(-19.940, abs=2e-3)
+    assert r.data["follower_deg"]["minus"] == ap(24.732, abs=2e-3)
+    assert r.data["follower_input_deg"] == {"plus": 45.0, "minus": -42.0}
+    assert r.data["jam"]["input_deg"] == -43.0
+    assert r.data["deflection_deg"] is None
+    assert r.data["arm_length"] == 6.0
+    assert r.data["ratio"] == -0.55
+
+
+def _no_jam_values(r):
+    ap = pytest.approx
+    assert r.ok, r.messages
+    assert r.data["follower_deg"]["plus"] == ap(-10.084, abs=2e-3)
+    assert r.data["follower_deg"]["minus"] == ap(11.513, abs=2e-3)
+    assert r.data["follower_input_deg"] == {"plus": 20.0, "minus": -20.0}
+    assert r.data["jam"] is None
+    assert r.data["deflection_deg"] == ap(10.8, abs=0.01)
+    assert r.data["min_transmission_deg"] == ap(39.9, abs=0.1)
+
+
+def test_jam_reports_reached_angles(tmp_path):
+    r = run(scratch(tmp_path), input_range=45.0, servo_range=60.0)
+    _jam_values(r)
+    assert "jam at input -43" in r.messages[0]
+
+
+def test_no_jam_keeps_values_and_adds_keys(tmp_path):
+    r = run(scratch(tmp_path))
+    _no_jam_values(r)
+    assert r.data["dry_run"] is False
+
+
+def test_dry_run_writes_nothing(tmp_path):
+    f = scratch(tmp_path)
+    before = (f / "plane.yaml").read_bytes()
+    r = run(f, dry_run=True)
+    assert r.ok, r.messages
+    assert (f / "plane.yaml").read_bytes() == before
+    assert sorted(p.name for p in f.iterdir()) == ["plane.yaml"]
+    assert r.data["dry_run"] is True and r.data["changed"] is False and r.data["rows"] == []
+    assert r.changed_files == []
+    assert r.messages[0].startswith("dry run, nothing written")
+    _no_jam_values(r)
+    assert r.data["ratio"] == -0.55
+    assert r.data["tip0"] == pytest.approx([20.5439, 5.9753, -11.05], abs=2e-3)
+
+
+def test_dry_run_equals_real_run(tmp_path):
+    a, b = scratch(tmp_path, "a"), scratch(tmp_path, "b")
+    d = run(a, dry_run=True, arm_offset_deg=15.0)
+    r = run(b, arm_offset_deg=15.0)
+    ap = pytest.approx
+    for k in ("ratio", "tip0", "rod_length", "min_transmission_deg"):
+        assert d.data[k] == ap(r.data[k], abs=1e-6)
+    for k in ("plus", "minus"):
+        assert d.data["follower_deg"][k] == ap(r.data["follower_deg"][k], abs=1e-6)
+    assert d.data["follower_deg"]["minus"] == ap(10.4345, abs=2e-3)
+    assert d.data["follower_deg"]["plus"] == ap(-10.1960, abs=2e-3)
+
+
+def test_dry_run_jam(tmp_path):
+    f = scratch(tmp_path)
+    before = (f / "plane.yaml").read_bytes()
+    r = run(f, dry_run=True, input_range=45.0, servo_range=60.0)
+    _jam_values(r)
+    assert (f / "plane.yaml").read_bytes() == before
+
+
+def test_dry_run_errors_unchanged(tmp_path):
+    f = scratch(tmp_path)
+    before = (f / "plane.yaml").read_bytes()
+    r = run(f, dry_run=True, arm_offset_deg=61)
+    assert r.ok is False and r.data["error"] == "input"
+    assert "--arm-offset-deg" in " ".join(r.messages)
+    assert (f / "plane.yaml").read_bytes() == before
+
+
+def test_docs_sign_table():
+    t = (Path(__file__).parent.parent / "docs" / "mechanisms.md").read_text(encoding="utf-8")
+    for s in ("| `--station", "| `--arm-side", "| `--arm-offset-deg", "| `--horn-toward", "--dry-run"):
+        assert s in t, s
+    assert any("--servo-range" in p and "input range plus 1 to 5" in p for p in t.split("\n\n"))
