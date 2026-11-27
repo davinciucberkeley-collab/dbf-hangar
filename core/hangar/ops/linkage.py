@@ -301,6 +301,8 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
         elif old != new:
             working = pdledit.patch_text(working, key, new)
 
+    kept_ratings = []
+
     def put(listkey: str, element: dict):
         nonlocal working
         data = yamlfast.safe_load(working)
@@ -314,6 +316,15 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
                 working, _, _ = pdledit.append_element(working, listkey, element)
             entries.append({"date": stamp, "key": key, "old": None, "new": element, "why": why, "kind": "add"})
             return
+        if listkey == "attachments" and old.get("rating_basis") not in (None, "placeholder"):
+            # a joint rating stated by a source (D125) survives a re-run: the generated element keeps it as written
+            element = dict(element)
+            for k in ("rated_load_n", "rating_basis", "connection"):
+                if k in old:
+                    element[k] = old[k]
+                else:
+                    element.pop(k, None)
+            kept_ratings.append(element["id"])
         if _norm({k: old.get(k) for k in element}) == _norm(element):
             return
         patch(old, element, key, keep_extra=True)
@@ -365,7 +376,7 @@ def _add_linkage(path: str, *, servo: str, hinge: str, station: float, prefix: s
                 "tip0": r4(tip0), "pin0": r4(pin0), "arm_pivot": r4(Op), "horn_root": r4(K), "skin_to_pin": round(skin_to_pin, 4) + 0.0,
                 "rod_length": round(rod_length, 4), "arm_length": round(float(arm_length), 4) if follower else None,
                 "follower_deg": follower, "arm_offset_deg": round(float(arm_offset_deg), 4) + 0.0, "deflection_deg": deflection_deg, "min_transmission_deg": min_mu,
-                "rows": rows, "changed": changed}
+                "rows": rows, "changed": changed, "kept_ratings": kept_ratings}
     msgs = [f"{prefix}: ratio {ratio:g}, rod {rod_length:.2f} mm, tip {data_out['tip0']}, pin {data_out['pin0']}"
             + ("" if deflection_deg is None else f", deflection {deflection_deg:g} deg")
             + ("" if not arm_offset_deg else f", arm offset {arm_offset_deg:g} deg")

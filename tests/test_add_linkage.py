@@ -362,3 +362,31 @@ def test_offset_with_deflection(tmp_path):
     assert r.data["arm_offset_deg"] == 15.0
     assert np.linalg.norm(np.array(r.data["tip0"]) - np.array(r.data["arm_pivot"])) == pytest.approx(8.2113, abs=2e-3)
     assert [row for row in r.data["rows"] if row[1] == "FAIL"] == []
+
+
+def test_sourced_rating_survives_a_rerun(tmp_path):
+    f = scratch(tmp_path)
+    assert run(f).ok
+    for key, value, kind in (("rated_load_n", "73", "modify"), ("rating_basis", "sourced", "modify"),
+                             ("connection", "CT-CLEVIS", "add")):
+        s = call("design.set", path=str(f), key=f"attachments[stab-elev-horn-mount].{key}", value=value, kind=kind,
+                 why="rating")
+        assert s.ok, s.messages
+    r = run(f)
+    assert r.ok, r.messages
+    a = next(x for x in _plane(f)["attachments"] if x["id"] == "stab-elev-horn-mount")
+    assert (a["rated_load_n"], a["rating_basis"], a["connection"]) == (73, "sourced", "CT-CLEVIS")
+    assert r.data["kept_ratings"] == ["stab-elev-horn-mount"]
+
+
+def test_placeholder_rating_is_still_rewritten_on_rerun(tmp_path):
+    f = scratch(tmp_path)
+    assert run(f).ok
+    s = call("design.set", path=str(f), key="attachments[stab-elev-horn-mount].rated_load_n", value="73", why="rating")
+    assert s.ok, s.messages
+    r = run(f)
+    assert r.ok, r.messages
+    a = next(x for x in _plane(f)["attachments"] if x["id"] == "stab-elev-horn-mount")
+    assert (a["rated_load_n"], a["rating_basis"]) == (10, "placeholder")
+    assert r.data["kept_ratings"] == []
+    assert r.data["changed"] is True
