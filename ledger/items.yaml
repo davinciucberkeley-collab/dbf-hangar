@@ -5603,9 +5603,9 @@ items:
     text: 'describe registry: SKIP rows keep failure-style titles (e.g. "Wing spar is too weak" when no spar was found); add per-status titles (title_by status or a skip_title) so SKIP and PASS rows read neutrally (U19.2, review W34-R2 31).'
     source: reviews/2026-11-25-w34b.md section 31
     owner: conductor
-    status: open
+    status: done
     due: ''
     units: []
-    evidence: ''
+    evidence: 6ba5362
     decided_in: ''
     updated: '2026-11-26'

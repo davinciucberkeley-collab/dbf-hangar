@@ -1150,7 +1150,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 **Scope:** `plane design copy concept-a concept-a-test-refactor`, then opt the copy in to what U16.1 built for c172-rc: hinge gaps/bevel/knuckles (S6), servos placed (S3), generated linkages via add-linkage (S4, replacing hand-made ones where the op fits), routed harnesses (S8), clevises and screw heads (S9a/S9b), hollow fuselage where a fuselage_loft exists (S9c), wheels on joints if any (S2). concept-a itself is untouched. Designs-only (no core change; a core gap found on the way becomes a ledger item, not part of this unit). Target: no new FAIL versus the copy's own starting baseline; every row change reported.
 
 - [x] **Step 1: Survey and briefs** (tactician W34-T8): what applies to concept-a's layout, measured on a scratch copy; one designs-only brief per feature group, class easy where it is a command list *(7ede55f: briefs 0 copy, 1 visual detail (migrate 1.3, clevises, screw heads), 2 routes 8 of 14 harnesses; hinges, hollow fuselage, wheels n/a (all concept-a parts are meshes); servos/add-linkage blocked (ES3054HV part has no frames, ledger); 6 harnesses blocked (mesh parts have no ports, ledger))*
-- [x] **Step 2: Copy and build** (W34-B), briefs in order on one branch per brief *(one stacked branch: copy, PDL 1.3 + clevises/screw heads, 8 harnesses routed (8 WARN -> PASS, FAIL 6 unchanged); merged 7eed81e; brief 3 library ES3054HV servos + generated linkages merged 5c7b397 (sourced ratings carried over, D125; 2 honest horn-glue FAILs); stale ids next (T168))*
+- [x] **Step 2: Copy and build** (W34-B), briefs in order on one branch per brief *(one stacked branch: copy, PDL 1.3 + clevises/screw heads, 8 harnesses routed (8 WARN -> PASS, FAIL 6 unchanged); merged 7eed81e; brief 3 library ES3054HV servos + generated linkages merged 5c7b397 (sourced ratings carried over, D125; 2 honest horn-glue FAILs); stale ids renamed with rename-id (T168) merged 6ba5362)*
 - [ ] **Step 3: Review** (W34-R2/R3); merge; Tristan looks in Studio
 
 ### Unit U16.4: c172-rc linkage fixes from Tristan's look (P314) [hard]
@@ -1167,7 +1167,7 @@ Finished units (every box ticked) live in `plans/2026-11-20-standardization/arch
 
 - [x] **Step 1: Spec and briefs** (tactician W34-T9): inventory of check ids and their messages, a proposed row format with 6-8 before/after examples from c172-rc and concept-a, where the plain text lives (one registry next to the gates, not in the viewer), then builder-ready briefs *(9b9611d: u19.2/spec.md with 8 before/after examples; 1225 rows, 50 families, 355 non-PASS, 31% state number and limit; text in core/hangar/gates/describe.yaml, limits read from standards; Studio rows.json sidecar; JSON byte-identical; briefs 1 registry (hard), 2 markdown, 3 rows-json, 4 Studio (hard); default Studio grouping Problem)*
 - [x] **Step 2: Tristan reads the before/after examples** (short; the format is his call) *(Tristan 11-26 (P321): examples look good; Studio default grouping by problem and `plane validate --format md` taken as defaults)*
-- [ ] **Step 3: Build** (W34-B), review, merge *(brief 1 describe registry merged d73769a; briefs 2 markdown and 3 rows-json merged aa0a32a; neutral SKIP titles (T171) building; 4 Studio next)*
+- [ ] **Step 3: Build** (W34-B), review, merge *(brief 1 describe registry merged d73769a; briefs 2 markdown and 3 rows-json merged aa0a32a; neutral SKIP titles (T171) merged 6ba5362; 4 Studio merged 5bec88c; Tristan looks next)*
 
 ### Unit U17.1: Source every gate threshold (D88; T19, T82)
 

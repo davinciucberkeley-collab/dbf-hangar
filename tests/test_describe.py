@@ -161,3 +161,19 @@ def test_stored_tie_rounds_up_like_the_raw_message():
     row = CheckResult("T2.joint_load", "SKIP", "fuselage-wing: carries 1.0 N; rating is a placeholder, not checked",
                       "design-standards.yaml#landing_load_factor", {"load_n": 0.95, "joint": "fuselage-wing"})
     assert "carries 1.0 N" in describe_row(row, _design()).sentence
+
+
+def test_title_mapping_picks_the_row_status_and_string_form_still_works(monkeypatch):
+    # string form: one title for every status (T7.wiring); mapping form: per-status titles (T2.fea_strength)
+    fea = {"title": {"FAIL": "Printed part is too weak", "SKIP": "Printed part strength not checked",
+                     "PASS": "Printed part is strong enough"}, "group": "part"}
+    wiring = {"title": "Wire runs outside the airframe", "group": "part"}
+    reg = dict(load_registry(), **{"T2.fea_strength": fea, "T7.wiring": wiring})
+    monkeypatch.setattr(describe, "_REGISTRY", reg)
+    assert describe_row(CheckResult("T2.fea_strength", "SKIP", "x"), None).title == "Printed part strength not checked"
+    assert describe_row(CheckResult("T2.fea_strength", "PASS", "x"), None).title == "Printed part is strong enough"
+    assert describe_row(CheckResult("T2.fea_strength", "FAIL", "x"), None).title == "Printed part is too weak"
+    # a status the mapping does not name keeps the FAIL title
+    assert describe_row(CheckResult("T2.fea_strength", "WARN", "x"), None).title == "Printed part is too weak"
+    for status in ("FAIL", "WARN", "SKIP", "PASS"):
+        assert describe_row(CheckResult("T7.wiring.h", status, "x"), None).title == "Wire runs outside the airframe"
