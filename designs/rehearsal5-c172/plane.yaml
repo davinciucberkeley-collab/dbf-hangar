@@ -1,0 +1,244 @@
+# Blank design from `plane design new --blank`. Add parts with `plane design add`, change values with `plane design set`.
+schema_version: "1.3"
+id: rehearsal5-c172
+name: "rehearsal5-c172"
+status: concept
+description: "Blank start: one placeholder root component `datum` (a 1 g point mass). Add the real root component, point `root` at it, then remove `datum`."
+lineage: {derived_from: [], inspired_by: []}
+morphology: {lift: fixed-wing, vtol_method: none, tail: conventional, propulsion_count: 1}
+root: fuselage
+components:
+  - id: fuselage
+    type: fuselage
+    geometry: {generator: fuselage_loft, params: {shape: superellipse, exponent: 2.6, stations: [[40, 74, 76, -10], [100, 92, 92, -8], [150, 98, 105, -4.5], [200, 115, 150, -15], [250, 114, 158, -19], [300, 114, 145, -16], [370, 99, 120, -20], [460, 76, 89, -14.5], [560, 54, 66, -11], [650, 33, 45, -6], [720, 15, 23, 1.5], [755, 5, 10, 6]], nose_length: 0, tail_length: 5, nose_shape: ellipsoid, tail_shape: ogive, wall: 3, smooth_rings: 4}}
+    position: [0, 0, 0]
+    mass_model: {material: xps-foam, extra_g: 30}
+    manufacturing: {method: foamboard}
+    cavities: [{geometry: {box: {size: [23.6, 12.1, 18.8]}}, position: [560, 10, 12.5851], description: "bay for servo-elev"}, {geometry: {box: {size: [23.6, 24.6, 7.05]}}, position: [570, -5.5, -39.8961], description: "bay for servo-rud"}]
+  - id: wing
+    type: wing
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: "$span_mm", root_chord: "$root_chord_mm", tip_chord: "$tip_chord_mm", inboard_span: "$inboard_mm", part: core, hinge_frac: 0.72, elevon_y: [270, 500], core_fill: outside, placement: high, fuselage_height: 158, fuselage_center_z: -31, sweep_le_deg: "$sweep_deg", sweep_reference: outboard_le, dihedral_deg: "$dihedral_deg"}}
+    position: [194, 0, 0]
+    mass_model: {material: xps-foam, extra_g: 40}
+    manufacturing: {method: hotwire-foam}
+    cavities: [{geometry: {box: {size: [23.6, 12.1, 18.8]}}, position: [78, 385, 62.6716], description: "bay for servo-ail-r"}, {geometry: {box: {size: [23.6, 12.1, 18.8]}}, position: [78, -385, 62.6716], description: "bay for servo-ail-l"}]
+  - id: aileron-r
+    type: wing
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: "$span_mm", root_chord: "$root_chord_mm", tip_chord: "$tip_chord_mm", inboard_span: "$inboard_mm", part: elevon, side: right, hinge_frac: 0.72, elevon_y: [270, 500], placement: high, fuselage_height: 158, fuselage_center_z: -31, hinge_gap: 0.8, hinge_style: bevel, hinge_throw_deg: 22, sweep_le_deg: "$sweep_deg", sweep_reference: outboard_le, dihedral_deg: "$dihedral_deg"}}
+    position: [194, 0, 0]
+    mass_model: {material: xps-foam, extra_g: 2}
+    manufacturing: {method: hotwire-foam}
+  - id: aileron-l
+    type: wing
+    geometry: {generator: wing_panel, params: {airfoil_file: naca2412, span: "$span_mm", root_chord: "$root_chord_mm", tip_chord: "$tip_chord_mm", inboard_span: "$inboard_mm", part: elevon, side: left, hinge_frac: 0.72, elevon_y: [270, 500], placement: high, fuselage_height: 158, fuselage_center_z: -31, hinge_gap: 0.8, hinge_style: bevel, hinge_throw_deg: 22, sweep_le_deg: "$sweep_deg", sweep_reference: outboard_le, dihedral_deg: "$dihedral_deg"}}
+    position: [194, 0, 0]
+    mass_model: {material: xps-foam, extra_g: 2}
+    manufacturing: {method: hotwire-foam}
+  - id: tail-fixed
+    type: tail_surface
+    geometry: {generator: tail_surfaces, params: {part: fixed, layout: conventional, hinge_frac: 0.6, airfoil_file: naca0009, stab_span: 325, stab_root_chord: 120, stab_tip_chord: 92, stab_x_le: 0, stab_z: 0, fin_thickness: 6, fin_height: 140, fin_root_chord: 150, fin_tip_chord: 86, fin_sweep_le_deg: 28.5, fin_x_le: -40, fin_z_root: 0, stab_sweep_le_deg: 5.9}}
+    position: [640, 0, 16]
+    mass_model: {material: xps-foam, extra_g: 3}
+    manufacturing: {method: hotwire-foam}
+  - id: elevator
+    type: tail_surface
+    geometry: {generator: tail_surfaces, params: {part: elevator, layout: conventional, hinge_frac: 0.6, airfoil_file: naca0009, stab_span: 325, stab_root_chord: 120, stab_tip_chord: 92, stab_x_le: 0, stab_z: 0, fin_thickness: 6, fin_height: 140, fin_root_chord: 150, fin_tip_chord: 86, fin_sweep_le_deg: 28.5, fin_x_le: -40, fin_z_root: 0, hinge_gap: 0.8, hinge_style: bevel, hinge_throw_deg: 30, elevator_fin_gap: 24, stab_sweep_le_deg: 5.9}}
+    position: [640, 0, 16]
+    mass_model: {material: xps-foam, extra_g: 1.5}
+    manufacturing: {method: hotwire-foam}
+  - id: rudder
+    type: tail_surface
+    geometry: {generator: tail_surfaces, params: {part: rudder, layout: conventional, hinge_frac: 0.6, airfoil_file: naca0009, stab_span: 325, stab_root_chord: 120, stab_tip_chord: 92, stab_x_le: 0, stab_z: 0, fin_thickness: 6, fin_height: 140, fin_root_chord: 150, fin_tip_chord: 86, fin_sweep_le_deg: 28.5, fin_x_le: -40, fin_z_root: 0, hinge_gap: 0.8, hinge_style: bevel, hinge_throw_deg: 25, stab_sweep_le_deg: 5.9}}
+    position: [640, 0, 16]
+    mass_model: {material: xps-foam, extra_g: 1.5}
+    manufacturing: {method: hotwire-foam}
+  - id: motor
+    type: motor
+    geometry: {generator: library_part, params: {part: tmotor-mn3510-kv700}}
+    position: [55.75, 0, -8]
+    mass_g: 97
+    manufacturing: {method: purchased}
+    propulsion: {max_thrust_n: pending, axis: [-1, 0, 0], role: cruise, prop_diameter_mm: 191}
+  - id: prop
+    type: propeller
+    geometry: {generator: library_part, params: {part: scale-prop-2b-191}}
+    position: [35, 0, -8]
+    mass_g: 5.7
+    manufacturing: {method: purchased}
+  - id: battery
+    type: battery
+    geometry: {generator: library_part, params: {part: tattu-2300mah-4s-75c}}
+    position: [270, 0, -66]
+    mass_g: 270
+    manufacturing: {method: purchased}
+    rotation_deg: [0, 0, 90]
+    battery: {capacity_mah: 2300, cells_s: 4, max_discharge_c: 75}
+  - id: esc
+    type: esc
+    geometry: {generator: library_part, params: {part: hobbywing-flyfun-30a-mini-v5}}
+    position: [80, 0, -48]
+    mass_g: 23
+    manufacturing: {method: purchased}
+  - id: rx
+    type: receiver
+    geometry: {generator: library_part, params: {part: radiomaster-rp3-v2-elrs-rx}}
+    position: [270, 0, -53.1]
+    mass_g: 4.6
+    manufacturing: {method: purchased}
+  - id: gear
+    type: landing_gear
+    geometry: {generator: landing_gear, params: {layout: tricycle, main_x: 266, track: 218, attach_z: -40, ground_z: -140, wheel_d: 45, wheel_w: 18, leg_d: 4, leg_splay_deg: 30, front_x: 110, front_wheel_d: 36, front_leg_d: 4, front_attach_z: -50, wheels: separate, axle_d: 3}}
+    position: [0, 0, 0]
+    mass_model: {material: petg-printed}
+    manufacturing: {method: 3d-print-fdm, machine: jacobs-fdm}
+  - id: wheel-main-r
+    type: other
+    geometry: {generator: wheel, params: {wheel_d: 45, wheel_w: 18, shape: tyre, bore_d: 3.4}}
+    position: [266, 109, -117.5]
+    mass_model: {material: xps-foam, extra_g: 3}
+    manufacturing: {method: purchased}
+  - id: wheel-main-l
+    type: other
+    geometry: {generator: wheel, params: {wheel_d: 45, wheel_w: 18, shape: tyre, bore_d: 3.4}}
+    position: [266, -109, -117.5]
+    mass_model: {material: xps-foam, extra_g: 3}
+    manufacturing: {method: purchased}
+  - id: wheel-nose
+    type: other
+    geometry: {generator: wheel, params: {wheel_d: 36, wheel_w: 14, shape: tyre, bore_d: 3.4}}
+    position: [110, 0, -122]
+    mass_model: {material: xps-foam, extra_g: 3}
+    manufacturing: {method: purchased}
+  - id: servo-ail-r
+    type: servo
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    position: [272, 385, 59.7716]
+    mass_g: 12
+    manufacturing: {method: purchased}
+    rotation_deg: [180, 0, 0]
+  - id: servo-ail-l
+    type: servo
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    position: [272, -385, 59.7716]
+    mass_g: 12
+    manufacturing: {method: purchased}
+    rotation_deg: [180, 0, 0]
+  - id: servo-elev
+    type: servo
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    position: [560, 10, 15.4851]
+    mass_g: 12
+    manufacturing: {method: purchased}
+  - id: servo-rud
+    type: servo
+    geometry: {generator: library_part, params: {part: emax-es08maii-metal}}
+    position: [634.5, -21.6, 26.6]
+    mass_g: 12
+    manufacturing: {method: purchased}
+    rotation_deg: [270, 0, 0]
+  - id: wing-ail-r-arm
+    type: other
+    geometry: {generator: strut, params: {start: [277.5, 385, 46.4216], end: [275.2483, 372.3625, 46.4216], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: wing-ail-r-rod
+    type: other
+    geometry: {generator: strut, params: {start: [275.2483, 372.3625, 46.4216], end: [313.354, 384.4128, 46.4216], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: purchased}
+  - id: wing-ail-r-horn
+    type: other
+    geometry: {generator: strut, params: {start: [309.0326, 385.7558, 57.483], end: [315.7542, 386.5722, 45.6571], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: wing-ail-r-pin
+    type: other
+    geometry: {generator: strut, params: {start: [315.2609, 385.6144, 46.4629], end: [315.2609, 384.4172, 46.3803], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 0.2
+    manufacturing: {method: purchased}
+  - id: tail-elev-arm
+    type: other
+    geometry: {generator: strut, params: {start: [565.5, 10, 28.8351], end: [559.0834, 20.489, 28.8351], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: tail-elev-rod
+    type: other
+    geometry: {generator: strut, params: {start: [559.0834, 20.489, 28.8351], end: [717.0337, 82.7664, 27.1912], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: purchased}
+  - id: tail-elev-horn
+    type: other
+    geometry: {generator: strut, params: {start: [718.1908, 85, 18.1994], end: [718.9724, 85, 28.1688], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: tail-elev-pin
+    type: other
+    geometry: {generator: strut, params: {start: [718.8942, 82.9, 27.1718], end: [718.8942, 84.1, 27.1718], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 0.2
+    manufacturing: {method: purchased}
+  - id: tail-rud-arm
+    type: other
+    geometry: {generator: strut, params: {start: [640, -8.25, 27], end: [640.8756, -8.25, 33.9819], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: tail-rud-rod
+    type: other
+    geometry: {generator: strut, params: {start: [640.8756, -8.25, 33.9819], end: [698.4866, -8.946, 26.7572], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: purchased}
+  - id: tail-rud-horn
+    type: other
+    geometry: {generator: strut, params: {start: [699.2236, -2.0172, 25.3454], end: [700.649, -9.8798, 24.9622], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: tail-rud-pin
+    type: other
+    geometry: {generator: strut, params: {start: [700.4709, -8.9408, 25.9091], end: [700.4709, -8.9992, 27.1076], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 0.2
+    manufacturing: {method: purchased}
+  - id: wing-ail-l-arm
+    type: other
+    geometry: {generator: strut, params: {start: [277.5, -385, 46.4216], end: [274.2161, -397.4015, 46.4216], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: wing-ail-l-rod
+    type: other
+    geometry: {generator: strut, params: {start: [274.2161, -397.4015, 46.4216], end: [313.4283, -388.4673, 46.4216], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: purchased}
+  - id: wing-ail-l-horn
+    type: other
+    geometry: {generator: strut, params: {start: [309.0326, -385.7558, 57.483], end: [315.8716, -386.5864, 45.4505], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: wing-ail-l-pin
+    type: other
+    geometry: {generator: strut, params: {start: [315.3784, -387.4244, 46.3803], end: [315.3784, -388.6215, 46.4629], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 0.2
+    manufacturing: {method: purchased}
+attachments: [{id: fus-wing, parent: fuselage, child: wing, method: glued, location: [260, 0, 58], rated_load_n: 30, rating_basis: placeholder, embed_ok: true}, {id: fus-tail, parent: fuselage, child: tail-fixed, method: glued, location: [700, 0, 12.5], embed_ok: true, rated_load_n: 15, rating_basis: placeholder}, {id: tail-elev, parent: tail-fixed, child: elevator, method: hinge, location: [712, 120, 16], rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [712, 100, 16], axis: [0, -1, 0], range_deg: [-29, 22]}}, {id: tail-rud, parent: tail-fixed, child: rudder, method: hinge, location: [700.75, 0, 56], rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [700.75, 0, 56], axis: [0.2688, 0, 1], range_deg: [-19, 19]}}, {id: wing-ail-r, parent: wing, child: aileron-r, method: hinge, hinge_from: generator, location: [300, 385, 65], rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [300, 385, 65], axis: [0, -1, 0], range_deg: [-20, 15]}}, {id: wing-ail-l, parent: wing, child: aileron-l, method: hinge, hinge_from: generator, location: [300, -385, 65], rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [300, -385, 65], axis: [0, -1, 0], range_deg: [-20, 15]}}, {id: fus-motor, parent: fuselage, child: motor, method: bolted, location: [42, 0, -8], embed_ok: true, rated_load_n: 30, rating_basis: placeholder, connection: CT-M3-SHCS-MOTOR}, {id: motor-prop, parent: motor, child: prop, method: press-fit, location: [41, 0, -8], embed_ok: false, rated_load_n: 20, rating_basis: placeholder}, {id: fus-batt, parent: fuselage, child: battery, method: tape, location: [315, 0, -84.5], embed_ok: true, rated_load_n: 20, rating_basis: placeholder}, {id: fus-esc, parent: fuselage, child: esc, method: tape, location: [80, 0, -51], embed_ok: true, rated_load_n: 5, rating_basis: placeholder}, {id: fus-rx, parent: battery, child: rx, method: tape, location: [270, 5.5, -54], embed_ok: true, rated_load_n: 5, rating_basis: placeholder}, {id: fus-gear, parent: fuselage, child: gear, method: bolted, location: [266, 54, -40.5], embed_ok: true, rated_load_n: 40, rating_basis: placeholder, connection: CT-M3-SHCS-NYLOC}, {id: gear-wheel-r, parent: gear, child: wheel-main-r, method: hinge, location: [266, 109, -117.5], embed_ok: true, rated_load_n: 20, rating_basis: placeholder, articulation: {type: continuous, axis: [0, 1, 0], pivot: [266, 109, -117.5]}}, {id: gear-wheel-l, parent: gear, child: wheel-main-l, method: hinge, location: [266, -109, -117.5], embed_ok: true, rated_load_n: 20, rating_basis: placeholder, articulation: {type: continuous, axis: [0, 1, 0], pivot: [266, -109, -117.5]}}, {id: gear-wheel-nose, parent: gear, child: wheel-nose, method: hinge, location: [110, 0, -122], embed_ok: true, rated_load_n: 20, rating_basis: placeholder, articulation: {type: continuous, axis: [0, 1, 0], pivot: [110, 0, -122]}}, {id: wing-ail-r-servo-arm, parent: servo-ail-r, child: wing-ail-r-arm, method: bolted, location: [277.5, 385, 46.4216], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [277.5, 385, 46.4216], axis: [0, 0, -1], range_deg: [-21, 21]}}, {id: wing-ail-r-arm-rod, parent: wing-ail-r-arm, child: wing-ail-r-rod, method: hinge, location: [275.2483, 372.3625, 46.4216], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, kinematic_link: true}, {id: wing-ail-r-horn-mount, parent: aileron-r, child: wing-ail-r-horn, method: glued, location: [309.5259, 385.8157, 56.6152], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}, {id: wing-ail-r-horn-pin, parent: wing-ail-r-horn, child: wing-ail-r-pin, method: bolted, location: [315.2609, 385.0158, 46.4216], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}, {id: wing-servo-ail-r, parent: wing, child: servo-ail-r, method: bolted, location: [272, 390.5, 62], embed_ok: true, rated_load_n: 5, rating_basis: placeholder, connection: CT-M2-SCREW-PLASTIC}, {id: wing-servo-ail-l, parent: wing, child: servo-ail-l, method: bolted, location: [272, -390.5, 62], embed_ok: true, rated_load_n: 5, rating_basis: placeholder, connection: CT-M2-SCREW-PLASTIC}, {id: fus-servo-elev, parent: fuselage, child: servo-elev, method: glued, location: [560, 15, 19.5], embed_ok: true, rated_load_n: 5, rating_basis: placeholder}, {id: tail-elev-servo-arm, parent: servo-elev, child: tail-elev-arm, method: bolted, location: [565.5, 10, 28.8351], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [565.5, 10, 28.8351], axis: [0, 0, 1], range_deg: [-25, 25]}}, {id: tail-elev-arm-rod, parent: tail-elev-arm, child: tail-elev-rod, method: hinge, location: [559.0834, 20.489, 28.8351], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, kinematic_link: true}, {id: tail-elev-horn-mount, parent: elevator, child: tail-elev-horn, method: glued, location: [718.269, 85, 19.1963], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}, {id: tail-elev-horn-pin, parent: tail-elev-horn, child: tail-elev-pin, method: bolted, location: [718.8942, 83.5, 27.1718], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}, {id: stab-servo-rud, parent: tail-fixed, child: servo-rud, method: glued, location: [645, -22, 20], embed_ok: true, rated_load_n: 5, rating_basis: placeholder}, {id: tail-rud-servo-arm, parent: servo-rud, child: tail-rud-arm, method: bolted, location: [640, -8.25, 27], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [640, -8.25, 27], axis: [0, 1, 0], range_deg: [-21, 21]}}, {id: tail-rud-arm-rod, parent: tail-rud-arm, child: tail-rud-rod, method: hinge, location: [640.8756, -8.25, 33.9819], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, kinematic_link: true}, {id: tail-rud-horn-mount, parent: rudder, child: tail-rud-horn, method: glued, location: [699.4018, -3, 25.2975], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}, {id: tail-rud-horn-pin, parent: tail-rud-horn, child: tail-rud-pin, method: bolted, location: [700.4709, -8.97, 26.5084], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}, {id: wing-ail-l-servo-arm, parent: servo-ail-l, child: wing-ail-l-arm, method: bolted, location: [277.5, -385, 46.4216], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, articulation: {type: revolute, pivot: [277.5, -385, 46.4216], axis: [0, 0, -1], range_deg: [-21, 21]}}, {id: wing-ail-l-arm-rod, parent: wing-ail-l-arm, child: wing-ail-l-rod, method: hinge, location: [274.2161, -397.4015, 46.4216], embed_ok: true, rated_load_n: 10, rating_basis: placeholder, kinematic_link: true}, {id: wing-ail-l-horn-mount, parent: aileron-l, child: wing-ail-l-horn, method: glued, location: [309.5259, -385.8157, 56.6152], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}, {id: wing-ail-l-horn-pin, parent: wing-ail-l-horn, child: wing-ail-l-pin, method: bolted, location: [315.3784, -388.023, 46.4216], embed_ok: true, rated_load_n: 10, rating_basis: placeholder}]
+parameters: {span_mm: 1100, root_chord_mm: 162, tip_chord_mm: 106, inboard_mm: 251, stab_span_mm: 325, stab_chord_mm: 120, fin_height_mm: 140, sweep_deg: 3.3, dihedral_deg: 1.6}
+mechanisms: [{id: wing-ail-r-drive, driver: wing-ail-r-servo-arm, kinematics: four_bar, driven: [wing-ail-r], input_range_deg: [-20, 20], expect: [{attachment: wing-ail-r, ratio: 0.82}], link: {driver_end: wing-ail-r-arm-rod, follower_end: wing-ail-r-horn-pin}}, {id: tail-elev-drive, driver: tail-elev-servo-arm, kinematics: four_bar, driven: [tail-elev], input_range_deg: [-20, 20], expect: [{attachment: tail-elev, ratio: 1.16}], link: {driver_end: tail-elev-arm-rod, follower_end: tail-elev-horn-pin}}, {id: tail-rud-drive, driver: tail-rud-servo-arm, kinematics: four_bar, driven: [tail-rud], input_range_deg: [-20, 20], expect: [{attachment: tail-rud, ratio: 0.8}], link: {driver_end: tail-rud-arm-rod, follower_end: tail-rud-horn-pin}}, {id: wing-ail-l-drive, driver: wing-ail-l-servo-arm, kinematics: four_bar, driven: [wing-ail-l], input_range_deg: [-20, 20], expect: [{attachment: wing-ail-l, ratio: 0.82}], link: {driver_end: wing-ail-l-arm-rod, follower_end: wing-ail-l-horn-pin}}]
+requirements:
+  cruise_speed_mps: 20.2
+  stall_speed_max_mps: 7.8
+  mtow_g: 1157
+display: {clevises: true, screw_heads: true}
+bom: {items: [{id: motor, library_part: tmotor-mn3510-kv700, component_ids: [motor], qty: 1}, {id: prop, library_part: scale-prop-2b-191, component_ids: [prop], qty: 1}, {id: battery, library_part: tattu-2300mah-4s-75c, component_ids: [battery], qty: 1}, {id: esc, library_part: hobbywing-flyfun-30a-mini-v5, component_ids: [esc], qty: 1}, {id: rx, library_part: radiomaster-rp3-v2-elrs-rx, component_ids: [rx], qty: 1}, {id: servos, library_part: emax-es08maii-metal, component_ids: [servo-ail-r, servo-ail-l, servo-elev, servo-rud], qty: 4}, {id: wheels, component_ids: [wheel-main-r, wheel-main-l, wheel-nose], qty: 3}, {id: pushrods, component_ids: [wing-ail-r-rod, wing-ail-l-rod, tail-elev-rod, tail-rud-rod], qty: 4}, {id: clevis-pins, component_ids: [wing-ail-r-pin, wing-ail-l-pin, tail-elev-pin, tail-rud-pin], qty: 4}]}
+wiring: {harnesses: [{id: w-batt-esc, from: battery, to: esc, from_port: power, to_port: power_in, route: [fuselage], waypoints: [[210, 0, -66], [170, 0, -52], [131, 0, -48], [104, 0, -48]]}, {id: w-esc-motor, from: motor, to: esc, from_port: leads, to_port: motor_out, route: [fuselage], waypoints: [[74, 0, -8], [74, 0, -40], [57, 0, -40], [57, 0, -48]]}, {id: w-rx-elev, from: rx, to: servo-elev, from_port: ch3, to_port: signal, route: [fuselage], waypoints: [[310, 0, -53], [330, 0, -45], [420, 0, -25], [500, 5, -5], [540, 10, 7.5]]}, {id: w-rx-ail-r, from: rx, to: servo-ail-r, from_port: ch1, to_port: signal, route: [fuselage, wing], waypoints: [[310, -6, -53], [318, -4, -20], [318, 0, 50], [310, 150, 56], [290, 300, 60], [266, 380, 64]]}, {id: w-rx-ail-l, from: rx, to: servo-ail-l, from_port: ch2, to_port: signal, route: [fuselage, wing], waypoints: [[310, -3, -53], [318, -4, -20], [318, 0, 50], [310, -150, 56], [290, -300, 60], [266, -380, 64]]}, {id: w-rx-rud, from: rx, to: servo-rud, from_port: ch4, to_port: signal, route: [fuselage, tail-fixed], waypoints: [[310, 3, -53], [330, 0, -45], [420, -3, -25], [500, -5, -5], [600, -8, 12], [612, -12, 16], [623, -20, 22]]}]}

@@ -1,0 +1,6314 @@
+- date: '2026-11-27T03:38:47Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'first pass: fuselage, high wing core with two ailerons'
+  count: 8
+  keys:
+  - parameters
+  - components
+  - components
+  - components
+  - components
+  - root
+  - components[datum]
+  - attachments
+  kinds:
+  - add
+  - append
+  - append
+  - append
+  - append
+  - modify
+  - remove
+  - append
+  file: e1.yaml
+- date: '2026-11-27T03:39:53Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: tail group with elevator and rudder hinges, aileron hinges
+  count: 11
+  keys:
+  - parameters.stab_span_mm
+  - parameters.stab_chord_mm
+  - parameters.fin_height_mm
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  kinds:
+  - add
+  - add
+  - add
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  file: e2.yaml
+- date: '2026-11-27T03:41:12Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: narrow tail cone, elevator halves clear of fin, aileron hinge gaps, joint locations
+    on shell
+  count: 10
+  keys:
+  - components[fuselage].geometry.params.stations
+  - components[elevator].geometry.params.elevator_fin_gap
+  - components[aileron-r].geometry.params.hinge_gap
+  - components[aileron-r].geometry.params.hinge_style
+  - components[aileron-r].geometry.params.hinge_throw_deg
+  - components[aileron-l].geometry.params.hinge_gap
+  - components[aileron-l].geometry.params.hinge_style
+  - components[aileron-l].geometry.params.hinge_throw_deg
+  - attachments[fus-tail].location
+  - attachments[fus-wing].embed_ok
+  kinds:
+  - modify
+  - add
+  - add
+  - add
+  - add
+  - add
+  - add
+  - add
+  - modify
+  - add
+  file: e3.yaml
+- date: '2026-11-27T03:41:23Z'
+  key: attachments[tail-elev].location
+  old:
+  - 725
+  - 0
+  - 18
+  new:
+  - 725
+  - 40
+  - 18
+  why: hinge joint point must touch the elevator half, centre is a gap
+  kind: modify
+- date: '2026-11-27T03:41:29Z'
+  key: attachments[fus-wing].location
+  old:
+  - 260
+  - 0
+  - 67
+  new:
+  - 260
+  - 0
+  - 76
+  why: joint point on the fuselage top shell
+  kind: modify
+- date: '2026-11-27T03:43:36Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'rescale to C172 reference-sheet values (knowledge/reference-aircraft/c172.md):
+    stations, wing, tail, positions'
+  count: 63
+  keys:
+  - components[fuselage].geometry.params.stations
+  - components[fuselage].geometry.params.nose_length
+  - components[fuselage].geometry.params.tail_length
+  - parameters.root_chord_mm
+  - parameters.tip_chord_mm
+  - parameters.inboard_mm
+  - parameters.sweep_deg
+  - parameters.dihedral_deg
+  - components[wing].geometry.params.sweep_le_deg
+  - components[wing].geometry.params.sweep_reference
+  - components[wing].geometry.params.dihedral_deg
+  - components[wing].geometry.params.elevon_y
+  - components[wing].geometry.params.fuselage_height
+  - components[wing].geometry.params.fuselage_center_z
+  - components[aileron-r].geometry.params.sweep_le_deg
+  - components[aileron-r].geometry.params.sweep_reference
+  - components[aileron-r].geometry.params.dihedral_deg
+  - components[aileron-r].geometry.params.elevon_y
+  - components[aileron-r].geometry.params.fuselage_height
+  - components[aileron-r].geometry.params.fuselage_center_z
+  - components[aileron-l].geometry.params.sweep_le_deg
+  - components[aileron-l].geometry.params.sweep_reference
+  - components[aileron-l].geometry.params.dihedral_deg
+  - components[aileron-l].geometry.params.elevon_y
+  - components[aileron-l].geometry.params.fuselage_height
+  - components[aileron-l].geometry.params.fuselage_center_z
+  - components[wing].position
+  - components[aileron-r].position
+  - components[aileron-l].position
+  - components[tail-fixed].geometry.params.stab_span
+  - components[tail-fixed].geometry.params.stab_root_chord
+  - components[tail-fixed].geometry.params.stab_tip_chord
+  - components[tail-fixed].geometry.params.stab_sweep_le_deg
+  - components[tail-fixed].geometry.params.fin_root_chord
+  - components[tail-fixed].geometry.params.fin_tip_chord
+  - components[tail-fixed].geometry.params.fin_height
+  - components[tail-fixed].geometry.params.fin_sweep_le_deg
+  - components[tail-fixed].geometry.params.fin_x_le
+  - components[tail-fixed].position
+  - components[elevator].geometry.params.stab_span
+  - components[elevator].geometry.params.stab_root_chord
+  - components[elevator].geometry.params.stab_tip_chord
+  - components[elevator].geometry.params.stab_sweep_le_deg
+  - components[elevator].geometry.params.fin_root_chord
+  - components[elevator].geometry.params.fin_tip_chord
+  - components[elevator].geometry.params.fin_height
+  - components[elevator].geometry.params.fin_sweep_le_deg
+  - components[elevator].geometry.params.fin_x_le
+  - components[elevator].position
+  - components[rudder].geometry.params.stab_span
+  - components[rudder].geometry.params.stab_root_chord
+  - components[rudder].geometry.params.stab_tip_chord
+  - components[rudder].geometry.params.stab_sweep_le_deg
+  - components[rudder].geometry.params.fin_root_chord
+  - components[rudder].geometry.params.fin_tip_chord
+  - components[rudder].geometry.params.fin_height
+  - components[rudder].geometry.params.fin_sweep_le_deg
+  - components[rudder].geometry.params.fin_x_le
+  - components[rudder].position
+  - components[elevator].geometry.params.elevator_fin_gap
+  - parameters.stab_span_mm
+  - parameters.stab_chord_mm
+  - parameters.fin_height_mm
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - add
+  - add
+  - add
+  - add
+  - add
+  - modify
+  - modify
+  - modify
+  - add
+  - add
+  - add
+  - modify
+  - modify
+  - modify
+  - add
+  - add
+  - add
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - add
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - add
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - add
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e4.yaml
+- date: '2026-11-27T03:44:05Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: hinge and joint positions follow the rescaled geometry
+  count: 11
+  keys:
+  - attachments[fus-wing].location
+  - attachments[fus-tail].location
+  - attachments[tail-elev].location
+  - attachments[tail-elev].articulation.pivot
+  - attachments[tail-rud].location
+  - attachments[tail-rud].articulation.pivot
+  - attachments[tail-rud].articulation.axis
+  - attachments[wing-ail-r].location
+  - attachments[wing-ail-r].articulation.pivot
+  - attachments[wing-ail-l].location
+  - attachments[wing-ail-l].articulation.pivot
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e5.yaml
+- date: '2026-11-27T03:45:17Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: powertrain, avionics and tricycle gear with separate rolling wheels (library
+    parts, reference sheet positions)
+  count: 18
+  keys:
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - components
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  - attachments
+  kinds:
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  - append
+  file: e6.yaml
+- date: '2026-11-27T03:46:47Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: internals sit on the shell floor, prop clear of cowl, gear legs reach the fuselage
+    side, wing roof height per reference sheet
+  count: 15
+  keys:
+  - components[wing].geometry.params.fuselage_center_z
+  - components[aileron-r].geometry.params.fuselage_center_z
+  - components[aileron-l].geometry.params.fuselage_center_z
+  - components[prop].position
+  - attachments[motor-prop].location
+  - attachments[motor-prop].embed_ok
+  - components[battery].position
+  - attachments[fus-batt].location
+  - components[esc].position
+  - attachments[fus-esc].location
+  - components[rx].position
+  - attachments[fus-rx].location
+  - components[gear].geometry.params.leg_splay_deg
+  - components[gear].geometry.params.attach_z
+  - attachments[fus-gear].location
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e7.yaml
+- date: '2026-11-27T03:47:16Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: battery rests on the floor at its aft end, receiver taped on the battery top
+  count: 5
+  keys:
+  - components[battery].position
+  - attachments[fus-batt].location
+  - components[rx].position
+  - attachments[fus-rx].parent
+  - attachments[fus-rx].location
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e8.yaml
+- date: '2026-11-27T03:47:36Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'receiver mesh is thinner than its envelope: lower it onto the battery'
+  count: 2
+  keys:
+  - components[rx].position
+  - attachments[fus-rx].location
+  kinds:
+  - modify
+  - modify
+  file: e9.yaml
+- date: '2026-11-27T03:47:53Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: four 9 g servos from the library (ES08MA metal, 12 g, the only mid-size servo
+    with frames)
+  count: 4
+  keys:
+  - components
+  - components
+  - components
+  - components
+  kinds:
+  - append
+  - append
+  - append
+  - append
+  file: e10.yaml
+- date: '2026-11-27T03:47:59Z'
+  key: components[servo-ail-r].position
+  old:
+  - 0
+  - 0
+  - 0
+  new:
+  - 272
+  - 385
+  - 59.7716
+  why: aileron servo in a wing bay, just ahead of the hinge line
+  kind: modify
+- date: '2026-11-27T03:47:59Z'
+  key: components[servo-ail-r].rotation_deg
+  old: null
+  new:
+  - 180
+  - 0
+  - 0
+  why: aileron servo in a wing bay, just ahead of the hinge line
+  kind: add
+- date: '2026-11-27T03:47:59Z'
+  key: components[wing].cavities
+  old: null
+  new:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 78
+    - 385
+    - 62.6716
+    description: bay for servo-ail-r
+  why: aileron servo in a wing bay, just ahead of the hinge line
+  kind: add
+- date: '2026-11-27T03:48:18Z'
+  key: components[servo-ail-l].position
+  old:
+  - 0
+  - 0
+  - 0
+  new:
+  - 272
+  - -385
+  - 59.7716
+  why: aileron servo in a wing bay, left, just ahead of the hinge line
+  kind: modify
+- date: '2026-11-27T03:48:18Z'
+  key: components[servo-ail-l].rotation_deg
+  old: null
+  new:
+  - 180
+  - 0
+  - 0
+  why: aileron servo in a wing bay, left, just ahead of the hinge line
+  kind: add
+- date: '2026-11-27T03:48:18Z'
+  key: components[wing].cavities
+  old:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 78
+    - 385
+    - 62.6716
+    description: bay for servo-ail-r
+  new:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 78
+    - 385
+    - 62.6716
+    description: bay for servo-ail-r
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 78
+    - -385
+    - 62.6716
+    description: bay for servo-ail-l
+  why: aileron servo in a wing bay, left, just ahead of the hinge line
+  kind: modify
+- date: '2026-11-27T03:48:24Z'
+  key: components[wing-ail-r-arm]
+  old: null
+  new:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 283.5021
+        - 374.2165
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: components[wing-ail-r-rod]
+  old: null
+  new:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 283.5021
+        - 374.2165
+        - 46.4216
+        end:
+        - 313.3674
+        - 384.3719
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: components[wing-ail-r-horn]
+  old: null
+  new:
+    id: wing-ail-r-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 309.0326
+        - 385.7558
+        - 57.483
+        end:
+        - 315.7542
+        - 386.5722
+        - 45.6571
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: components[wing-ail-r-pin]
+  old: null
+  new:
+    id: wing-ail-r-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 315.2609
+        - 385.6144
+        - 46.4629
+        end:
+        - 315.2609
+        - 384.4172
+        - 46.3803
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: attachments[wing-ail-r-servo-arm]
+  old: null
+  new:
+    id: wing-ail-r-servo-arm
+    parent: servo-ail-r
+    child: wing-ail-r-arm
+    method: bolted
+    location:
+    - 277.5
+    - 385
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 277.5
+      - 385
+      - 46.4216
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: attachments[wing-ail-r-arm-rod]
+  old: null
+  new:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 283.5021
+    - 374.2165
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: attachments[wing-ail-r-horn-mount]
+  old: null
+  new:
+    id: wing-ail-r-horn-mount
+    parent: aileron-r
+    child: wing-ail-r-horn
+    method: glued
+    location:
+    - 309.5259
+    - 385.8157
+    - 56.6152
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: attachments[wing-ail-r-horn-pin]
+  old: null
+  new:
+    id: wing-ail-r-horn-pin
+    parent: wing-ail-r-horn
+    child: wing-ail-r-pin
+    method: bolted
+    location:
+    - 315.2609
+    - 385.0158
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:24Z'
+  key: mechanisms[wing-ail-r-drive]
+  old: null
+  new:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.88
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: add
+- date: '2026-11-27T03:48:35Z'
+  key: schema_version
+  old: '1.2'
+  new: '1.3'
+  why: four_bar mechanisms, continuous wheel joints and display switches need PDL
+    1.3
+  kind: modify
+- date: '2026-11-27T03:49:23Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: aileron servos glued in their wing bays
+  count: 2
+  keys:
+  - attachments
+  - attachments
+  kinds:
+  - append
+  - append
+  file: e11.yaml
+- date: '2026-11-27T03:49:55Z'
+  key: attachments[wing-servo-ail-r].location
+  old:
+  - 272
+  - 385
+  - 62
+  new:
+  - 272
+  - 385
+  - 66
+  why: joint point near the wing upper skin where servo ears meet the wing
+  kind: modify
+- date: '2026-11-27T03:51:39Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: joint points moved onto the actual contact
+  count: 7
+  keys:
+  - attachments[tail-elev].location
+  - components[esc].position
+  - attachments[fus-esc].location
+  - components[rx].position
+  - attachments[wing-servo-ail-r].location
+  - attachments[wing-servo-ail-l].location
+  - attachments[fus-gear].location
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e12.yaml
+- date: '2026-11-27T03:52:02Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: receiver rests on the battery's real top surface
+  count: 2
+  keys:
+  - components[rx].position
+  - attachments[fus-rx].location
+  kinds:
+  - modify
+  - modify
+  file: e13.yaml
+- date: '2026-11-27T03:52:08Z'
+  key: components[servo-elev].position
+  old:
+  - 0
+  - 0
+  - 0
+  new:
+  - 600
+  - 0
+  - 13.9162
+  why: elevator servo in the tail cone, shaft up through the top skin, ahead of the
+    hinge
+  kind: modify
+- date: '2026-11-27T03:52:08Z'
+  key: components[fuselage].cavities
+  old: null
+  new:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 600
+    - 0
+    - 11.0162
+    description: bay for servo-elev
+  why: elevator servo in the tail cone, shaft up through the top skin, ahead of the
+    hinge
+  kind: add
+- date: '2026-11-27T03:52:24Z'
+  key: attachments[fus-servo-elev]
+  old: null
+  new:
+    id: fus-servo-elev
+    parent: fuselage
+    child: servo-elev
+    method: glued
+    location:
+    - 600
+    - 0
+    - 20
+    embed_ok: true
+    rated_load_n: 5
+    rating_basis: placeholder
+  why: elevator servo glued to the tail-cone shell
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: components[tail-elev-arm]
+  old: null
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 605.5
+        - 0
+        - 27.2662
+        end:
+        - 612.5411
+        - 7.1032
+        - 27.2662
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: components[tail-elev-rod]
+  old: null
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 612.5411
+        - 7.1032
+        - 27.2662
+        end:
+        - 717.6545
+        - -97.092
+        - 27.2662
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: components[tail-elev-horn]
+  old: null
+  new:
+    id: tail-elev-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.2223
+        - -100
+        - 18.1083
+        end:
+        - 719.1677
+        - -100
+        - 28.2619
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: components[tail-elev-pin]
+  old: null
+  new:
+    id: tail-elev-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 719.0749
+        - -99.1
+        - 27.2662
+        end:
+        - 719.0749
+        - -97.9
+        - 27.2662
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: attachments[tail-elev-servo-arm]
+  old: null
+  new:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 605.5
+    - 0
+    - 27.2662
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 605.5
+      - 0
+      - 27.2662
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: attachments[tail-elev-arm-rod]
+  old: null
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 612.5411
+    - 7.1032
+    - 27.2662
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: attachments[tail-elev-horn-mount]
+  old: null
+  new:
+    id: tail-elev-horn-mount
+    parent: elevator
+    child: tail-elev-horn
+    method: glued
+    location:
+    - 718.315
+    - -100
+    - 19.104
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: attachments[tail-elev-horn-pin]
+  old: null
+  new:
+    id: tail-elev-horn-pin
+    parent: tail-elev-horn
+    child: tail-elev-pin
+    method: bolted
+    location:
+    - 719.0749
+    - -98.5
+    - 27.2662
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:52:28Z'
+  key: mechanisms[tail-elev-drive]
+  old: null
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.25
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: elevator linkage, C172 up 29 / down 22
+  kind: add
+- date: '2026-11-27T03:53:10Z'
+  key: components[servo-elev].position
+  old:
+  - 600
+  - 0
+  - 13.9162
+  new:
+  - 600
+  - 15
+  - 9.507
+  why: elevator servo offset to the right so the rod stays clear of the fin
+  kind: modify
+- date: '2026-11-27T03:53:10Z'
+  key: components[fuselage].cavities
+  old:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 600
+    - 0
+    - 11.0162
+    description: bay for servo-elev
+  new:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 600
+    - 15
+    - 6.607
+    description: bay for servo-elev
+  why: elevator servo offset to the right so the rod stays clear of the fin
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 605.5
+        - 0
+        - 27.2662
+        end:
+        - 612.5411
+        - 7.1032
+        - 27.2662
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 605.5
+        - 15
+        - 22.857
+        end:
+        - 601.475
+        - 21.0766
+        - 22.857
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 612.5411
+        - 7.1032
+        - 27.2662
+        end:
+        - 717.6545
+        - -97.092
+        - 27.2662
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 601.475
+        - 21.0766
+        - 22.857
+        end:
+        - 716.6952
+        - 97.3956
+        - 22.857
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: components[tail-elev-horn]
+  old:
+    id: tail-elev-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.2223
+        - -100
+        - 18.1083
+        end:
+        - 719.1677
+        - -100
+        - 28.2619
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.1174
+        - 100
+        - 18.1154
+        end:
+        - 718.4142
+        - 100
+        - 23.8557
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: components[tail-elev-pin]
+  old:
+    id: tail-elev-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 719.0749
+        - -99.1
+        - 27.2662
+        end:
+        - 719.0749
+        - -97.9
+        - 27.2662
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.3626
+        - 97.9
+        - 22.857
+        end:
+        - 718.3626
+        - 99.1
+        - 22.857
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: attachments[tail-elev-servo-arm]
+  old:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 605.5
+    - 0
+    - 27.2662
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 605.5
+      - 0
+      - 27.2662
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  new:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 605.5
+    - 15
+    - 22.857
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 605.5
+      - 15
+      - 22.857
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 612.5411
+    - 7.1032
+    - 27.2662
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 601.475
+    - 21.0766
+    - 22.857
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: attachments[tail-elev-horn-mount]
+  old:
+    id: tail-elev-horn-mount
+    parent: elevator
+    child: tail-elev-horn
+    method: glued
+    location:
+    - 718.315
+    - -100
+    - 19.104
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: tail-elev-horn-mount
+    parent: elevator
+    child: tail-elev-horn
+    method: glued
+    location:
+    - 718.169
+    - 100
+    - 19.1141
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: attachments[tail-elev-horn-pin]
+  old:
+    id: tail-elev-horn-pin
+    parent: tail-elev-horn
+    child: tail-elev-pin
+    method: bolted
+    location:
+    - 719.0749
+    - -98.5
+    - 27.2662
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: tail-elev-horn-pin
+    parent: tail-elev-horn
+    child: tail-elev-pin
+    method: bolted
+    location:
+    - 718.3626
+    - 98.5
+    - 22.857
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:53:16Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.25
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.27
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: elevator linkage right of the fin, C172 up 29 / down 22
+  kind: modify
+- date: '2026-11-27T03:54:14Z'
+  key: components[servo-elev].position
+  old:
+  - 600
+  - 15
+  - 9.507
+  new:
+  - 600
+  - 20
+  - 2.2992
+  why: elevator servo offset right as far as the tail cone allows
+  kind: modify
+- date: '2026-11-27T03:54:14Z'
+  key: components[fuselage].cavities
+  old:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 600
+    - 15
+    - 6.607
+    description: bay for servo-elev
+  new:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 600
+    - 20
+    - -0.6008
+    description: bay for servo-elev
+  why: elevator servo offset right as far as the tail cone allows
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 605.5
+        - 15
+        - 22.857
+        end:
+        - 601.475
+        - 21.0766
+        - 22.857
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 605.5
+        - 20
+        - 15.6492
+        end:
+        - 599.7827
+        - 33.4914
+        - 15.6492
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 601.475
+        - 21.0766
+        - 22.857
+        end:
+        - 716.6952
+        - 97.3956
+        - 22.857
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 599.7827
+        - 33.4914
+        - 15.6492
+        end:
+        - 715.9584
+        - 82.724
+        - 29.0067
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: components[tail-elev-horn]
+  old:
+    id: tail-elev-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.1174
+        - 100
+        - 18.1154
+        end:
+        - 718.4142
+        - 100
+        - 23.8557
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 717.9653
+        - 85
+        - 18.2186
+        end:
+        - 717.7737
+        - 85
+        - 30.2171
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: components[tail-elev-pin]
+  old:
+    id: tail-elev-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.3626
+        - 97.9
+        - 22.857
+        end:
+        - 718.3626
+        - 99.1
+        - 22.857
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 717.7897
+        - 82.9
+        - 29.2172
+        end:
+        - 717.7897
+        - 84.1
+        - 29.2172
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: attachments[tail-elev-servo-arm]
+  old:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 605.5
+    - 15
+    - 22.857
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 605.5
+      - 15
+      - 22.857
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  new:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 605.5
+    - 20
+    - 15.6492
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 605.5
+      - 20
+      - 15.6492
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 601.475
+    - 21.0766
+    - 22.857
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 599.7827
+    - 33.4914
+    - 15.6492
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: attachments[tail-elev-horn-mount]
+  old:
+    id: tail-elev-horn-mount
+    parent: elevator
+    child: tail-elev-horn
+    method: glued
+    location:
+    - 718.169
+    - 100
+    - 19.1141
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: tail-elev-horn-mount
+    parent: elevator
+    child: tail-elev-horn
+    method: glued
+    location:
+    - 717.9494
+    - 85
+    - 19.2185
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:54:20Z'
+  key: attachments[tail-elev-horn-pin]
+  old:
+    id: tail-elev-horn-pin
+    parent: tail-elev-horn
+    child: tail-elev-pin
+    method: bolted
+    location:
+    - 718.3626
+    - 98.5
+    - 22.857
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: tail-elev-horn-pin
+    parent: tail-elev-horn
+    child: tail-elev-pin
+    method: bolted
+    location:
+    - 717.7897
+    - 83.5
+    - 29.2172
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage with a 10 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:08Z'
+  key: components[servo-elev].position
+  old:
+  - 600
+  - 20
+  - 2.2992
+  new:
+  - 560
+  - 10
+  - 15.4851
+  why: elevator servo ahead of the fin leading edge, offset right
+  kind: modify
+- date: '2026-11-27T03:55:08Z'
+  key: components[fuselage].cavities
+  old:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 600
+    - 20
+    - -0.6008
+    description: bay for servo-elev
+  new:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 560
+    - 10
+    - 12.5851
+    description: bay for servo-elev
+  why: elevator servo ahead of the fin leading edge, offset right
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 605.5
+        - 20
+        - 15.6492
+        end:
+        - 599.7827
+        - 33.4914
+        - 15.6492
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 560.6867
+        - 22.4793
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 599.7827
+        - 33.4914
+        - 15.6492
+        end:
+        - 715.9584
+        - 82.724
+        - 29.0067
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 560.6867
+        - 22.4793
+        - 28.8351
+        end:
+        - 717.0283
+        - 82.7803
+        - 27.1915
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: components[tail-elev-horn]
+  old:
+    id: tail-elev-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 717.9653
+        - 85
+        - 18.2186
+        end:
+        - 717.7737
+        - 85
+        - 30.2171
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.1908
+        - 85
+        - 18.1994
+        end:
+        - 718.9724
+        - 85
+        - 28.1688
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: components[tail-elev-pin]
+  old:
+    id: tail-elev-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 717.7897
+        - 82.9
+        - 29.2172
+        end:
+        - 717.7897
+        - 84.1
+        - 29.2172
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 718.8942
+        - 82.9
+        - 27.1718
+        end:
+        - 718.8942
+        - 84.1
+        - 27.1718
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: attachments[tail-elev-servo-arm]
+  old:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 605.5
+    - 20
+    - 15.6492
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 605.5
+      - 20
+      - 15.6492
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  new:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 565.5
+    - 10
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 565.5
+      - 10
+      - 28.8351
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 599.7827
+    - 33.4914
+    - 15.6492
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 560.6867
+    - 22.4793
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: attachments[tail-elev-horn-mount]
+  old:
+    id: tail-elev-horn-mount
+    parent: elevator
+    child: tail-elev-horn
+    method: glued
+    location:
+    - 717.9494
+    - 85
+    - 19.2185
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: tail-elev-horn-mount
+    parent: elevator
+    child: tail-elev-horn
+    method: glued
+    location:
+    - 718.269
+    - 85
+    - 19.1963
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:13Z'
+  key: attachments[tail-elev-horn-pin]
+  old:
+    id: tail-elev-horn-pin
+    parent: tail-elev-horn
+    child: tail-elev-pin
+    method: bolted
+    location:
+    - 717.7897
+    - 83.5
+    - 29.2172
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: tail-elev-horn-pin
+    parent: tail-elev-horn
+    child: tail-elev-pin
+    method: bolted
+    location:
+    - 718.8942
+    - 83.5
+    - 27.1718
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: elevator linkage, 8 mm horn
+  kind: modify
+- date: '2026-11-27T03:55:52Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 560.6867
+        - 22.4793
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 562.4703
+        - 23.0278
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage differential try 8
+  kind: modify
+- date: '2026-11-27T03:55:52Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 560.6867
+        - 22.4793
+        - 28.8351
+        end:
+        - 717.0283
+        - 82.7803
+        - 27.1915
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 562.4703
+        - 23.0278
+        - 28.8351
+        end:
+        - 717.0289
+        - 82.7789
+        - 27.1917
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage differential try 8
+  kind: modify
+- date: '2026-11-27T03:55:52Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 560.6867
+    - 22.4793
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 562.4703
+    - 23.0278
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage differential try 8
+  kind: modify
+- date: '2026-11-27T03:55:52Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.27
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.26
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: elevator linkage differential try 8
+  kind: modify
+- date: '2026-11-27T03:56:18Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 562.4703
+        - 23.0278
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 558.9968
+        - 21.688
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage differential try -8
+  kind: modify
+- date: '2026-11-27T03:56:18Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 562.4703
+        - 23.0278
+        - 28.8351
+        end:
+        - 717.0289
+        - 82.7789
+        - 27.1917
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 558.9968
+        - 21.688
+        - 28.8351
+        end:
+        - 717.0289
+        - 82.7789
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage differential try -8
+  kind: modify
+- date: '2026-11-27T03:56:18Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 562.4703
+    - 23.0278
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 558.9968
+    - 21.688
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage differential try -8
+  kind: modify
+- date: '2026-11-27T03:56:55Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 558.9968
+        - 21.688
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 561.2464
+        - 20.6733
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage try offset 0
+  kind: modify
+- date: '2026-11-27T03:56:55Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 558.9968
+        - 21.688
+        - 28.8351
+        end:
+        - 717.0289
+        - 82.7789
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 561.2464
+        - 20.6733
+        - 28.8351
+        end:
+        - 717.0364
+        - 82.7596
+        - 27.1914
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage try offset 0
+  kind: modify
+- date: '2026-11-27T03:56:55Z'
+  key: attachments[tail-elev-servo-arm]
+  old:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 565.5
+    - 10
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 565.5
+      - 10
+      - 28.8351
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  new:
+    id: tail-elev-servo-arm
+    parent: servo-elev
+    child: tail-elev-arm
+    method: bolted
+    location:
+    - 565.5
+    - 10
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 565.5
+      - 10
+      - 28.8351
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -25
+      - 25
+  why: elevator linkage try offset 0
+  kind: modify
+- date: '2026-11-27T03:56:55Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 558.9968
+    - 21.688
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 561.2464
+    - 20.6733
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage try offset 0
+  kind: modify
+- date: '2026-11-27T03:56:55Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.26
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.1
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: elevator linkage try offset 0
+  kind: modify
+- date: '2026-11-27T03:57:28Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 561.2464
+        - 20.6733
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 563.1644
+        - 21.2498
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage try offset 10
+  kind: modify
+- date: '2026-11-27T03:57:28Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 561.2464
+        - 20.6733
+        - 28.8351
+        end:
+        - 717.0364
+        - 82.7596
+        - 27.1914
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 563.1644
+        - 21.2498
+        - 28.8351
+        end:
+        - 717.0372
+        - 82.7577
+        - 27.1917
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage try offset 10
+  kind: modify
+- date: '2026-11-27T03:57:28Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 561.2464
+    - 20.6733
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 563.1644
+    - 21.2498
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage try offset 10
+  kind: modify
+- date: '2026-11-27T03:57:28Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.1
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.08
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: elevator linkage try offset 10
+  kind: modify
+- date: '2026-11-27T03:58:00Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 563.1644
+        - 21.2498
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 559.4576
+        - 19.7725
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: elevator linkage try offset -10
+  kind: modify
+- date: '2026-11-27T03:58:00Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 563.1644
+        - 21.2498
+        - 28.8351
+        end:
+        - 717.0372
+        - 82.7577
+        - 27.1917
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 559.4576
+        - 19.7725
+        - 28.8351
+        end:
+        - 717.0372
+        - 82.7577
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: elevator linkage try offset -10
+  kind: modify
+- date: '2026-11-27T03:58:00Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 563.1644
+    - 21.2498
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 559.4576
+    - 19.7725
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: elevator linkage try offset -10
+  kind: modify
+- date: '2026-11-27T03:58:41Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 559.4576
+        - 19.7725
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 558.8369
+        - 20.9701
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:58:41Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 559.4576
+        - 19.7725
+        - 28.8351
+        end:
+        - 717.0372
+        - 82.7577
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 558.8369
+        - 20.9701
+        - 28.8351
+        end:
+        - 717.0314
+        - 82.7723
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:58:41Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 559.4576
+    - 19.7725
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 558.8369
+    - 20.9701
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:58:41Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.08
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.21
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:15Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 558.8369
+        - 20.9701
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 559.0834
+        - 20.489
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:15Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 558.8369
+        - 20.9701
+        - 28.8351
+        end:
+        - 717.0314
+        - 82.7723
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 559.0834
+        - 20.489
+        - 28.8351
+        end:
+        - 717.0337
+        - 82.7664
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:15Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 558.8369
+    - 20.9701
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 559.0834
+    - 20.489
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:15Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.21
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.16
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:47Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 559.0834
+        - 20.489
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 559.2075
+        - 20.2495
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:47Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 559.0834
+        - 20.489
+        - 28.8351
+        end:
+        - 717.0337
+        - 82.7664
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 559.2075
+        - 20.2495
+        - 28.8351
+        end:
+        - 717.0349
+        - 82.7635
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:47Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 559.0834
+    - 20.489
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 559.2075
+    - 20.2495
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T03:59:47Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.16
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.13
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T04:00:25Z'
+  key: components[tail-elev-arm]
+  old:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 559.2075
+        - 20.2495
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elev-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 565.5
+        - 10
+        - 28.8351
+        end:
+        - 559.0834
+        - 20.489
+        - 28.8351
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T04:00:25Z'
+  key: components[tail-elev-rod]
+  old:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 559.2075
+        - 20.2495
+        - 28.8351
+        end:
+        - 717.0349
+        - 82.7635
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elev-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 559.0834
+        - 20.489
+        - 28.8351
+        end:
+        - 717.0337
+        - 82.7664
+        - 27.1912
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T04:00:25Z'
+  key: attachments[tail-elev-arm-rod]
+  old:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 559.2075
+    - 20.2495
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-elev-arm-rod
+    parent: tail-elev-arm
+    child: tail-elev-rod
+    method: hinge
+    location:
+    - 559.0834
+    - 20.489
+    - 28.8351
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T04:00:25Z'
+  key: mechanisms[tail-elev-drive]
+  old:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.13
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  new:
+    id: tail-elev-drive
+    driver: tail-elev-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elev
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-elev
+      ratio: 1.16
+    link:
+      driver_end: tail-elev-arm-rod
+      follower_end: tail-elev-horn-pin
+  why: 'elevator linkage: C172 up 29 / down 22 via arm offset'
+  kind: modify
+- date: '2026-11-27T04:01:00Z'
+  key: components[servo-rud].position
+  old:
+  - 0
+  - 0
+  - 0
+  new:
+  - 570
+  - -5.5
+  - -42.4211
+  why: rudder servo in the tail cone, shaft out the right side
+  kind: modify
+- date: '2026-11-27T04:01:00Z'
+  key: components[servo-rud].rotation_deg
+  old: null
+  new:
+  - 270
+  - 0
+  - 0
+  why: rudder servo in the tail cone, shaft out the right side
+  kind: add
+- date: '2026-11-27T04:01:00Z'
+  key: components[fuselage].cavities
+  old:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 560
+    - 10
+    - 12.5851
+    description: bay for servo-elev
+  new:
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 12.1
+        - 18.8
+    position:
+    - 560
+    - 10
+    - 12.5851
+    description: bay for servo-elev
+  - geometry:
+      box:
+        size:
+        - 23.6
+        - 24.6
+        - 7.05
+    position:
+    - 570
+    - -5.5
+    - -39.8961
+    description: bay for servo-rud
+  why: rudder servo in the tail cone, shaft out the right side
+  kind: modify
+- date: '2026-11-27T04:01:40Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: rudder servo beside the fin on the stab, shaft toward the fin
+  count: 2
+  keys:
+  - components[servo-rud].position
+  - attachments
+  kinds:
+  - modify
+  - append
+  file: e14.yaml
+- date: '2026-11-27T04:01:44Z'
+  key: components[tail-rud-arm]
+  old: null
+  new:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.4516
+        - -8.25
+        - 19.7656
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: components[tail-rud-rod]
+  old: null
+  new:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.4516
+        - -8.25
+        - 19.7656
+        end:
+        - 698.4748
+        - -8.8049
+        - 23.3873
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: components[tail-rud-horn]
+  old: null
+  new:
+    id: tail-rud-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 699.2236
+        - -2.0172
+        - 25.3454
+        end:
+        - 700.649
+        - -9.8798
+        - 24.9622
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: components[tail-rud-pin]
+  old: null
+  new:
+    id: tail-rud-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 700.4709
+        - -8.7948
+        - 22.9126
+        end:
+        - 700.4709
+        - -8.8532
+        - 24.1112
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: attachments[tail-rud-servo-arm]
+  old: null
+  new:
+    id: tail-rud-servo-arm
+    parent: servo-rud
+    child: tail-rud-arm
+    method: bolted
+    location:
+    - 640
+    - -8.25
+    - 27
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 640
+      - -8.25
+      - 27
+      axis:
+      - 0
+      - 1
+      - 0
+      range_deg:
+      - -25
+      - 25
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: attachments[tail-rud-arm-rod]
+  old: null
+  new:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.4516
+    - -8.25
+    - 19.7656
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: attachments[tail-rud-horn-mount]
+  old: null
+  new:
+    id: tail-rud-horn-mount
+    parent: rudder
+    child: tail-rud-horn
+    method: glued
+    location:
+    - 699.4018
+    - -3
+    - 25.2975
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: attachments[tail-rud-horn-pin]
+  old: null
+  new:
+    id: tail-rud-horn-pin
+    parent: tail-rud-horn
+    child: tail-rud-pin
+    method: bolted
+    location:
+    - 700.4709
+    - -8.824
+    - 23.5119
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:01:44Z'
+  key: mechanisms[tail-rud-drive]
+  old: null
+  new:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: -0.87
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  why: rudder linkage, C172 19 / 16
+  kind: add
+- date: '2026-11-27T04:02:31Z'
+  key: components[tail-rud-arm]
+  old:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.4516
+        - -8.25
+        - 19.7656
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 641.0445
+        - -8.25
+        - 34.6366
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:02:31Z'
+  key: components[tail-rud-rod]
+  old:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.4516
+        - -8.25
+        - 19.7656
+        end:
+        - 698.4748
+        - -8.8049
+        - 23.3873
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 641.0445
+        - -8.25
+        - 34.6366
+        end:
+        - 698.4895
+        - -8.946
+        - 26.7794
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:02:31Z'
+  key: components[tail-rud-pin]
+  old:
+    id: tail-rud-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 700.4709
+        - -8.7948
+        - 22.9126
+        end:
+        - 700.4709
+        - -8.8532
+        - 24.1112
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-rud-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 700.4709
+        - -8.9408
+        - 25.9091
+        end:
+        - 700.4709
+        - -8.9992
+        - 27.1076
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:02:31Z'
+  key: attachments[tail-rud-arm-rod]
+  old:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.4516
+    - -8.25
+    - 19.7656
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 641.0445
+    - -8.25
+    - 34.6366
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:02:31Z'
+  key: attachments[tail-rud-horn-pin]
+  old:
+    id: tail-rud-horn-pin
+    parent: tail-rud-horn
+    child: tail-rud-pin
+    method: bolted
+    location:
+    - 700.4709
+    - -8.824
+    - 23.5119
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: tail-rud-horn-pin
+    parent: tail-rud-horn
+    child: tail-rud-pin
+    method: bolted
+    location:
+    - 700.4709
+    - -8.97
+    - 26.5084
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:02:31Z'
+  key: mechanisms[tail-rud-drive]
+  old:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: -0.87
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  new:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.87
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:14Z'
+  key: components[tail-rud-arm]
+  old:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 641.0445
+        - -8.25
+        - 34.6366
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.8756
+        - -8.25
+        - 33.9819
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:14Z'
+  key: components[tail-rud-rod]
+  old:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 641.0445
+        - -8.25
+        - 34.6366
+        end:
+        - 698.4895
+        - -8.946
+        - 26.7794
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.8756
+        - -8.25
+        - 33.9819
+        end:
+        - 698.4866
+        - -8.946
+        - 26.7572
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:14Z'
+  key: attachments[tail-rud-servo-arm]
+  old:
+    id: tail-rud-servo-arm
+    parent: servo-rud
+    child: tail-rud-arm
+    method: bolted
+    location:
+    - 640
+    - -8.25
+    - 27
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 640
+      - -8.25
+      - 27
+      axis:
+      - 0
+      - 1
+      - 0
+      range_deg:
+      - -25
+      - 25
+  new:
+    id: tail-rud-servo-arm
+    parent: servo-rud
+    child: tail-rud-arm
+    method: bolted
+    location:
+    - 640
+    - -8.25
+    - 27
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 640
+      - -8.25
+      - 27
+      axis:
+      - 0
+      - 1
+      - 0
+      range_deg:
+      - -21
+      - 21
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:14Z'
+  key: attachments[tail-rud-arm-rod]
+  old:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 641.0445
+    - -8.25
+    - 34.6366
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.8756
+    - -8.25
+    - 33.9819
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:14Z'
+  key: mechanisms[tail-rud-drive]
+  old:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.87
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  new:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.8
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:57Z'
+  key: components[tail-rud-arm]
+  old:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.8756
+        - -8.25
+        - 33.9819
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.6738
+        - -8.25
+        - 33.1066
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:57Z'
+  key: components[tail-rud-rod]
+  old:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.8756
+        - -8.25
+        - 33.9819
+        end:
+        - 698.4866
+        - -8.946
+        - 26.7572
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.6738
+        - -8.25
+        - 33.1066
+        end:
+        - 698.4831
+        - -8.9461
+        - 26.7277
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:57Z'
+  key: attachments[tail-rud-arm-rod]
+  old:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.8756
+    - -8.25
+    - 33.9819
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.6738
+    - -8.25
+    - 33.1066
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:03:57Z'
+  key: mechanisms[tail-rud-drive]
+  old:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.8
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  new:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.7
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  why: rudder linkage, arm above the stab
+  kind: modify
+- date: '2026-11-27T04:04:46Z'
+  key: components[tail-rud-arm]
+  old:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.6738
+        - -8.25
+        - 33.1066
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.9413
+        - -8.25
+        - 34.244
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:04:46Z'
+  key: components[tail-rud-rod]
+  old:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.6738
+        - -8.25
+        - 33.1066
+        end:
+        - 698.4831
+        - -8.9461
+        - 26.7277
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.9413
+        - -8.25
+        - 34.244
+        end:
+        - 698.4877
+        - -8.946
+        - 26.7661
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:04:46Z'
+  key: attachments[tail-rud-arm-rod]
+  old:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.6738
+    - -8.25
+    - 33.1066
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.9413
+    - -8.25
+    - 34.244
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:04:46Z'
+  key: mechanisms[tail-rud-drive]
+  old:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.7
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  new:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.83
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:05:28Z'
+  key: components[wing-ail-r-arm]
+  old:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 283.5021
+        - 374.2165
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 283.2578
+        - 374.439
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:05:28Z'
+  key: components[wing-ail-r-rod]
+  old:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 283.5021
+        - 374.2165
+        - 46.4216
+        end:
+        - 313.3674
+        - 384.3719
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 283.2578
+        - 374.439
+        - 46.4216
+        end:
+        - 313.362
+        - 384.3882
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:05:28Z'
+  key: attachments[wing-ail-r-servo-arm]
+  old:
+    id: wing-ail-r-servo-arm
+    parent: servo-ail-r
+    child: wing-ail-r-arm
+    method: bolted
+    location:
+    - 277.5
+    - 385
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 277.5
+      - 385
+      - 46.4216
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+  new:
+    id: wing-ail-r-servo-arm
+    parent: servo-ail-r
+    child: wing-ail-r-arm
+    method: bolted
+    location:
+    - 277.5
+    - 385
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 277.5
+      - 385
+      - 46.4216
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -21
+      - 21
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:05:28Z'
+  key: attachments[wing-ail-r-arm-rod]
+  old:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 283.5021
+    - 374.2165
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 283.2578
+    - 374.439
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:05:28Z'
+  key: mechanisms[wing-ail-r-drive]
+  old:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.88
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  new:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.86
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:06:09Z'
+  key: components[wing-ail-r-arm]
+  old:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 283.2578
+        - 374.439
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 279.2985
+        - 373.1066
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:06:09Z'
+  key: components[wing-ail-r-rod]
+  old:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 283.2578
+        - 374.439
+        - 46.4216
+        end:
+        - 313.362
+        - 384.3882
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 279.2985
+        - 373.1066
+        - 46.4216
+        end:
+        - 313.3623
+        - 384.3871
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:06:09Z'
+  key: attachments[wing-ail-r-arm-rod]
+  old:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 283.2578
+    - 374.439
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 279.2985
+    - 373.1066
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:07:07Z'
+  key: components[tail-rud-arm]
+  old:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.9413
+        - -8.25
+        - 34.244
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-rud-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640
+        - -8.25
+        - 27
+        end:
+        - 640.8756
+        - -8.25
+        - 33.9819
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:07:07Z'
+  key: components[tail-rud-rod]
+  old:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.9413
+        - -8.25
+        - 34.244
+        end:
+        - 698.4877
+        - -8.946
+        - 26.7661
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-rud-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 640.8756
+        - -8.25
+        - 33.9819
+        end:
+        - 698.4866
+        - -8.946
+        - 26.7572
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:07:07Z'
+  key: attachments[tail-rud-arm-rod]
+  old:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.9413
+    - -8.25
+    - 34.244
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: tail-rud-arm-rod
+    parent: tail-rud-arm
+    child: tail-rud-rod
+    method: hinge
+    location:
+    - 640.8756
+    - -8.25
+    - 33.9819
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:07:07Z'
+  key: mechanisms[tail-rud-drive]
+  old:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.83
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  new:
+    id: tail-rud-drive
+    driver: tail-rud-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rud
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: tail-rud
+      ratio: 0.8
+    link:
+      driver_end: tail-rud-arm-rod
+      follower_end: tail-rud-horn-pin
+  why: rudder linkage, C172 19 / 16
+  kind: modify
+- date: '2026-11-27T04:07:50Z'
+  key: components[wing-ail-r-arm]
+  old:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 279.2985
+        - 373.1066
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 282.542
+        - 375.1386
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:07:50Z'
+  key: components[wing-ail-r-rod]
+  old:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 279.2985
+        - 373.1066
+        - 46.4216
+        end:
+        - 313.3623
+        - 384.3871
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 282.542
+        - 375.1386
+        - 46.4216
+        end:
+        - 313.3463
+        - 384.4378
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:07:50Z'
+  key: attachments[wing-ail-r-arm-rod]
+  old:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 279.2985
+    - 373.1066
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 282.542
+    - 375.1386
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:07:50Z'
+  key: mechanisms[wing-ail-r-drive]
+  old:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.86
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  new:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.79
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  why: 'aileron linkage right: C172 up 20 / down 15'
+  kind: modify
+- date: '2026-11-27T04:08:46Z'
+  key: components[wing-ail-r-arm]
+  old:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 282.542
+        - 375.1386
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 286.5226
+        - 377.0452
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15, try 30'
+  kind: modify
+- date: '2026-11-27T04:08:46Z'
+  key: components[wing-ail-r-rod]
+  old:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 282.542
+        - 375.1386
+        - 46.4216
+        end:
+        - 313.3463
+        - 384.4378
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 286.5226
+        - 377.0452
+        - 46.4216
+        end:
+        - 313.3337
+        - 384.4813
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15, try 30'
+  kind: modify
+- date: '2026-11-27T04:08:46Z'
+  key: attachments[wing-ail-r-arm-rod]
+  old:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 282.542
+    - 375.1386
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 286.5226
+    - 377.0452
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'aileron linkage right: C172 up 20 / down 15, try 30'
+  kind: modify
+- date: '2026-11-27T04:08:46Z'
+  key: mechanisms[wing-ail-r-drive]
+  old:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.79
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  new:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.72
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  why: 'aileron linkage right: C172 up 20 / down 15, try 30'
+  kind: modify
+- date: '2026-11-27T04:09:27Z'
+  key: components[wing-ail-r-arm]
+  old:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 286.5226
+        - 377.0452
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 275.1223
+        - 373.2088
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15, try -30'
+  kind: modify
+- date: '2026-11-27T04:09:27Z'
+  key: components[wing-ail-r-rod]
+  old:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 286.5226
+        - 377.0452
+        - 46.4216
+        end:
+        - 313.3337
+        - 384.4813
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 275.1223
+        - 373.2088
+        - 46.4216
+        end:
+        - 313.3422
+        - 384.4514
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15, try -30'
+  kind: modify
+- date: '2026-11-27T04:09:27Z'
+  key: attachments[wing-ail-r-arm-rod]
+  old:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 286.5226
+    - 377.0452
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 275.1223
+    - 373.2088
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'aileron linkage right: C172 up 20 / down 15, try -30'
+  kind: modify
+- date: '2026-11-27T04:09:27Z'
+  key: mechanisms[wing-ail-r-drive]
+  old:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.72
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  new:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.77
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  why: 'aileron linkage right: C172 up 20 / down 15, try -30'
+  kind: modify
+- date: '2026-11-27T04:10:21Z'
+  key: components[wing-ail-r-arm]
+  old:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 275.1223
+        - 373.2088
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-ail-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - 385
+        - 46.4216
+        end:
+        - 275.2483
+        - 372.3625
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'aileron linkage right: C172 up 20 / down 15 (arm offset -30)'
+  kind: modify
+- date: '2026-11-27T04:10:21Z'
+  key: components[wing-ail-r-rod]
+  old:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 275.1223
+        - 373.2088
+        - 46.4216
+        end:
+        - 313.3422
+        - 384.4514
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-ail-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 275.2483
+        - 372.3625
+        - 46.4216
+        end:
+        - 313.354
+        - 384.4128
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'aileron linkage right: C172 up 20 / down 15 (arm offset -30)'
+  kind: modify
+- date: '2026-11-27T04:10:21Z'
+  key: attachments[wing-ail-r-arm-rod]
+  old:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 275.1223
+    - 373.2088
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  new:
+    id: wing-ail-r-arm-rod
+    parent: wing-ail-r-arm
+    child: wing-ail-r-rod
+    method: hinge
+    location:
+    - 275.2483
+    - 372.3625
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'aileron linkage right: C172 up 20 / down 15 (arm offset -30)'
+  kind: modify
+- date: '2026-11-27T04:10:21Z'
+  key: mechanisms[wing-ail-r-drive]
+  old:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.77
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  new:
+    id: wing-ail-r-drive
+    driver: wing-ail-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-r
+      ratio: 0.82
+    link:
+      driver_end: wing-ail-r-arm-rod
+      follower_end: wing-ail-r-horn-pin
+  why: 'aileron linkage right: C172 up 20 / down 15 (arm offset -30)'
+  kind: modify
+- date: '2026-11-27T04:11:07Z'
+  key: components[wing-ail-l-arm]
+  old: null
+  new:
+    id: wing-ail-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 277.5
+        - -385
+        - 46.4216
+        end:
+        - 274.2161
+        - -397.4015
+        - 46.4216
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: components[wing-ail-l-rod]
+  old: null
+  new:
+    id: wing-ail-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 274.2161
+        - -397.4015
+        - 46.4216
+        end:
+        - 313.4283
+        - -388.4673
+        - 46.4216
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: components[wing-ail-l-horn]
+  old: null
+  new:
+    id: wing-ail-l-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 309.0326
+        - -385.7558
+        - 57.483
+        end:
+        - 315.8716
+        - -386.5864
+        - 45.4505
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: components[wing-ail-l-pin]
+  old: null
+  new:
+    id: wing-ail-l-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 315.3784
+        - -387.4244
+        - 46.3803
+        end:
+        - 315.3784
+        - -388.6215
+        - 46.4629
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: attachments[wing-ail-l-servo-arm]
+  old: null
+  new:
+    id: wing-ail-l-servo-arm
+    parent: servo-ail-l
+    child: wing-ail-l-arm
+    method: bolted
+    location:
+    - 277.5
+    - -385
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 277.5
+      - -385
+      - 46.4216
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -21
+      - 21
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: attachments[wing-ail-l-arm-rod]
+  old: null
+  new:
+    id: wing-ail-l-arm-rod
+    parent: wing-ail-l-arm
+    child: wing-ail-l-rod
+    method: hinge
+    location:
+    - 274.2161
+    - -397.4015
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: attachments[wing-ail-l-horn-mount]
+  old: null
+  new:
+    id: wing-ail-l-horn-mount
+    parent: aileron-l
+    child: wing-ail-l-horn
+    method: glued
+    location:
+    - 309.5259
+    - -385.8157
+    - 56.6152
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: attachments[wing-ail-l-horn-pin]
+  old: null
+  new:
+    id: wing-ail-l-horn-pin
+    parent: wing-ail-l-horn
+    child: wing-ail-l-pin
+    method: bolted
+    location:
+    - 315.3784
+    - -388.023
+    - 46.4216
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:11:07Z'
+  key: mechanisms[wing-ail-l-drive]
+  old: null
+  new:
+    id: wing-ail-l-drive
+    driver: wing-ail-l-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-ail-l
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-ail-l
+      ratio: 0.82
+    link:
+      driver_end: wing-ail-l-arm-rod
+      follower_end: wing-ail-l-horn-pin
+  why: aileron linkage left
+  kind: add
+- date: '2026-11-27T04:13:29Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: joint points moved onto the actual contact (round 3)
+  count: 5
+  keys:
+  - attachments[tail-elev].location
+  - attachments[fus-rx].location
+  - attachments[fus-gear].location
+  - attachments[fus-servo-elev].location
+  - components[servo-rud].position
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e15.yaml
+- date: '2026-11-27T04:13:38Z'
+  key: attachments[stab-servo-rud].location
+  old:
+  - 640
+  - -22
+  - 21.4
+  new:
+  - 645
+  - -22
+  - 20
+  why: joint point at the servo/stab contact
+  kind: modify
+- date: '2026-11-27T04:14:42Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: requirements from reference-sheet scale rules, BOM from library parts, wiring
+    harnesses with waypoints, display clevises and screw heads
+  count: 13
+  keys:
+  - components[gear].manufacturing.machine
+  - requirements.cruise_speed_mps
+  - requirements.stall_speed_max_mps
+  - requirements.mtow_g
+  - display
+  - attachments[fus-motor].connection
+  - attachments[fus-gear].connection
+  - attachments[wing-servo-ail-r].connection
+  - attachments[wing-servo-ail-l].connection
+  - attachments[wing-servo-ail-r].method
+  - attachments[wing-servo-ail-l].method
+  - bom
+  - wiring
+  kinds:
+  - add
+  - add
+  - add
+  - add
+  - add
+  - add
+  - add
+  - add
+  - add
+  - modify
+  - modify
+  - add
+  - add
+  file: e16.yaml
+- date: '2026-11-27T04:16:35Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: joint points on measured contacts (round 4)
+  count: 4
+  keys:
+  - attachments[tail-elev].articulation.pivot
+  - attachments[fus-rx].location
+  - attachments[fus-gear].location
+  - attachments[fus-servo-elev].location
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e17.yaml
+- date: '2026-11-27T04:16:56Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: re-route wires inside the shell, BOM lines for wheels, pushrods and pins
+  count: 5
+  keys:
+  - wiring.harnesses[w-batt-esc].waypoints
+  - wiring.harnesses[w-rx-rud].waypoints
+  - bom.items
+  - bom.items
+  - bom.items
+  kinds:
+  - modify
+  - modify
+  - append
+  - append
+  - append
+  file: e18.yaml
+- date: '2026-11-27T04:18:10Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: joint points on measured contacts (round 5)
+  count: 3
+  keys:
+  - attachments[fus-rx].location
+  - attachments[fus-gear].location
+  - attachments[fus-servo-elev].location
+  kinds:
+  - modify
+  - modify
+  - modify
+  file: e19.yaml
+- date: '2026-11-27T04:19:42Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: joint points on measured contacts (round 6), gear splay 30 to reach the fuselage
+    side
+  count: 4
+  keys:
+  - attachments[fus-rx].location
+  - attachments[fus-servo-elev].location
+  - components[gear].geometry.params.leg_splay_deg
+  - attachments[fus-gear].location
+  kinds:
+  - modify
+  - modify
+  - modify
+  - modify
+  file: e20.yaml
+- date: '2026-11-27T04:21:09Z'
+  key: attachments[fus-rx].location
+  old:
+  - 300
+  - 0
+  - -57
+  new:
+  - 270
+  - 5.5
+  - -54
+  why: 'probe: joint point near the receiver edge'
+  kind: modify
