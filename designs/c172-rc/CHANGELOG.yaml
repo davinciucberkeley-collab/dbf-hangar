@@ -2994,3 +2994,1468 @@
   new: true
   why: 'U16.1 S9b: screw heads on bolted joints'
   kind: add
+- date: '2026-11-26T22:10:55Z'
+  key: attachments[tail-elevator].articulation.range_deg
+  old:
+  - -25
+  - 25
+  new:
+  - -30
+  - 30
+  why: 'U16.4 D122: hinge range for C172-like throw'
+  kind: modify
+- date: '2026-11-26T22:10:55Z'
+  key: attachments[tail-rudder].articulation.range_deg
+  old:
+  - -25
+  - 25
+  new:
+  - -30
+  - 30
+  why: 'U16.4 D122: hinge range for C172-like throw'
+  kind: modify
+- date: '2026-11-26T22:11:07Z'
+  key: components[aileron-r].geometry.params.hinge_throw_deg
+  old: 25
+  new: 30
+  why: 'U16.4 D122: hinge throw 30'
+  kind: modify
+  regenerated:
+  - aileron-l
+  - aileron-r
+  - elevator
+  - rudder
+- date: '2026-11-26T22:11:07Z'
+  key: components[aileron-l].geometry.params.hinge_throw_deg
+  old: 25
+  new: 30
+  why: 'U16.4 D122: hinge throw 30'
+  kind: modify
+- date: '2026-11-26T22:11:07Z'
+  key: components[elevator].geometry.params.hinge_throw_deg
+  old: 25
+  new: 30
+  why: 'U16.4 D122: hinge throw 30'
+  kind: modify
+- date: '2026-11-26T22:11:07Z'
+  key: components[rudder].geometry.params.hinge_throw_deg
+  old: 25
+  new: 30
+  why: 'U16.4 D122: hinge throw 30'
+  kind: modify
+- date: '2026-11-26T22:11:33Z'
+  key: components[fuselage].cavities[2].geometry.box.size
+  old:
+  - 150
+  - 50
+  - 4
+  new:
+  - 150
+  - 50
+  - 8
+  why: 'U16.4: elevator rod slot deeper for the +-45 deg sweep'
+  kind: modify
+- date: '2026-11-26T22:11:33Z'
+  key: components[fuselage].cavities[4].geometry.box.size
+  old:
+  - 115
+  - 50
+  - 1.6
+  new:
+  - 115
+  - 50
+  - 3.2
+  why: 'U16.4: elevator rod slot deeper for the +-45 deg sweep'
+  kind: modify
+- date: '2026-11-26T22:11:56Z'
+  key: components[tail-elevator-arm]
+  old:
+    id: tail-elevator-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 584.5
+        - 9
+        - -10.8
+        end:
+        - 584.9189
+        - 3.0146
+        - -10.8
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-elevator-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 584.5
+        - 9
+        - -10.8
+        end:
+        - 584.9601
+        - 2.6493
+        - -10.8
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4: elevator toward TCDS up 28 / down 23'
+  kind: modify
+- date: '2026-11-26T22:11:56Z'
+  key: components[tail-elevator-rod]
+  old:
+    id: tail-elevator-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 584.9189
+        - 3.0146
+        - -10.8
+        end:
+        - 732.7291
+        - 13.3604
+        - -10.8
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-elevator-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 584.9601
+        - 2.6493
+        - -10.8
+        end:
+        - 732.7294
+        - 13.3555
+        - -10.8
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4: elevator toward TCDS up 28 / down 23'
+  kind: modify
+- date: '2026-11-26T22:11:56Z'
+  key: attachments[tail-elevator-servo-arm]
+  old:
+    id: tail-elevator-servo-arm
+    parent: servo-elev
+    child: tail-elevator-arm
+    method: bolted
+    location:
+    - 584.5
+    - 9
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 584.5
+      - 9
+      - -10.8
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -10
+      - 10
+    rating_basis: placeholder
+    connection: CT-SERVO-SPLINE
+  new:
+    id: tail-elevator-servo-arm
+    parent: servo-elev
+    child: tail-elevator-arm
+    method: bolted
+    location:
+    - 584.5
+    - 9
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 584.5
+      - 9
+      - -10.8
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -47.5
+      - 47.5
+  why: 'U16.4: elevator toward TCDS up 28 / down 23'
+  kind: modify
+- date: '2026-11-26T22:11:56Z'
+  key: attachments[tail-elevator-arm-rod]
+  old:
+    id: tail-elevator-arm-rod
+    parent: tail-elevator-arm
+    child: tail-elevator-rod
+    method: hinge
+    location:
+    - 584.9189
+    - 3.0146
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: tail-elevator-arm-rod
+    parent: tail-elevator-arm
+    child: tail-elevator-rod
+    method: hinge
+    location:
+    - 584.9601
+    - 2.6493
+    - -10.8
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4: elevator toward TCDS up 28 / down 23'
+  kind: modify
+- date: '2026-11-26T22:11:56Z'
+  key: mechanisms[tail-elevator-drive]
+  old:
+    id: tail-elevator-drive
+    driver: tail-elevator-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elevator
+    input_range_deg:
+    - -10
+    - 10
+    expect:
+    - attachment: tail-elevator
+      ratio: -0.56
+    link:
+      driver_end: tail-elevator-arm-rod
+      follower_end: tail-elevator-horn-pin
+  new:
+    id: tail-elevator-drive
+    driver: tail-elevator-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-elevator
+    input_range_deg:
+    - -45
+    - 45
+    expect:
+    - attachment: tail-elevator
+      ratio: -0.59
+    link:
+      driver_end: tail-elevator-arm-rod
+      follower_end: tail-elevator-horn-pin
+  why: 'U16.4: elevator toward TCDS up 28 / down 23'
+  kind: modify
+- date: '2026-11-26T22:14:11Z'
+  key: components[tail-rudder-arm]
+  old:
+    id: tail-rudder-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 595.5
+        - -9
+        - 14.75
+        end:
+        - 595.5599
+        - -14.9997
+        - 14.75
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: tail-rudder-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 595.5
+        - -9
+        - 14.75
+        end:
+        - 595.5973
+        - -15.5184
+        - 14.75
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4: rudder toward TCDS +-17.7'
+  kind: modify
+- date: '2026-11-26T22:14:11Z'
+  key: components[tail-rudder-rod]
+  old:
+    id: tail-rudder-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 595.5599
+        - -14.9997
+        - 14.75
+        end:
+        - 698.8485
+        - -13.9681
+        - 14.9167
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: tail-rudder-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 595.5973
+        - -15.5184
+        - 14.75
+        end:
+        - 698.8487
+        - -13.9779
+        - 14.9167
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4: rudder toward TCDS +-17.7'
+  kind: modify
+- date: '2026-11-26T22:14:11Z'
+  key: attachments[tail-rudder-servo-arm]
+  old:
+    id: tail-rudder-servo-arm
+    parent: servo-rud
+    child: tail-rudder-arm
+    method: bolted
+    location:
+    - 595.5
+    - -9
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 595.5
+      - -9
+      - 14.75
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -10
+      - 10
+    rating_basis: placeholder
+    connection: CT-SERVO-SPLINE
+  new:
+    id: tail-rudder-servo-arm
+    parent: servo-rud
+    child: tail-rudder-arm
+    method: bolted
+    location:
+    - 595.5
+    - -9
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 595.5
+      - -9
+      - 14.75
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -47.5
+      - 47.5
+  why: 'U16.4: rudder toward TCDS +-17.7'
+  kind: modify
+- date: '2026-11-26T22:14:11Z'
+  key: attachments[tail-rudder-arm-rod]
+  old:
+    id: tail-rudder-arm-rod
+    parent: tail-rudder-arm
+    child: tail-rudder-rod
+    method: hinge
+    location:
+    - 595.5599
+    - -14.9997
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: tail-rudder-arm-rod
+    parent: tail-rudder-arm
+    child: tail-rudder-rod
+    method: hinge
+    location:
+    - 595.5973
+    - -15.5184
+    - 14.75
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4: rudder toward TCDS +-17.7'
+  kind: modify
+- date: '2026-11-26T22:14:11Z'
+  key: mechanisms[tail-rudder-drive]
+  old:
+    id: tail-rudder-drive
+    driver: tail-rudder-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rudder
+    input_range_deg:
+    - -10
+    - 10
+    expect:
+    - attachment: tail-rudder
+      ratio: 0.43
+    link:
+      driver_end: tail-rudder-arm-rod
+      follower_end: tail-rudder-horn-pin
+  new:
+    id: tail-rudder-drive
+    driver: tail-rudder-servo-arm
+    kinematics: four_bar
+    driven:
+    - tail-rudder
+    input_range_deg:
+    - -40
+    - 40
+    expect:
+    - attachment: tail-rudder
+      ratio: 0.47
+    link:
+      driver_end: tail-rudder-arm-rod
+      follower_end: tail-rudder-horn-pin
+  why: 'U16.4: rudder toward TCDS +-17.7'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: components[wing-aileron-r-arm]
+  old:
+    id: wing-aileron-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - 420
+        - 60.65
+        end:
+        - 270.5914
+        - 414.0007
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - 420
+        - 60.65
+        end:
+        - 275.7208
+        - 409.2113
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: components[wing-aileron-r-rod]
+  old:
+    id: wing-aileron-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5914
+        - 414.0007
+        - 60.65
+        end:
+        - 326.8696
+        - 414.858
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 275.7208
+        - 409.2113
+        - 60.65
+        end:
+        - 326.6294
+        - 411.7715
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: components[wing-aileron-r-horn]
+  old:
+    id: wing-aileron-r-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 312.0153
+        - 411.104
+        - 82.2995
+        end:
+        - 329.4788
+        - 413.4796
+        - 59.7047
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-r-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 312.0153
+        - 411.104
+        - 82.2995
+        end:
+        - 329.2363
+        - 413.4466
+        - 60.0184
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: components[wing-aileron-r-pin]
+  old:
+    id: wing-aileron-r-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 328.8693
+        - 415.4852
+        - 60.7127
+        end:
+        - 328.8693
+        - 414.2918
+        - 60.5873
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-r-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 328.6269
+        - 412.4687
+        - 60.7127
+        end:
+        - 328.6269
+        - 411.2753
+        - 60.5873
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: attachments[wing-aileron-r-servo-arm]
+  old:
+    id: wing-aileron-r-servo-arm
+    parent: servo-ail-r
+    child: wing-aileron-r-arm
+    method: bolted
+    location:
+    - 270.5
+    - 420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - 420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+    rating_basis: placeholder
+    connection: CT-SERVO-SPLINE
+  new:
+    id: wing-aileron-r-servo-arm
+    parent: servo-ail-r
+    child: wing-aileron-r-arm
+    method: bolted
+    location:
+    - 270.5
+    - 420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - 420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -47.5
+      - 47.5
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: attachments[wing-aileron-r-arm-rod]
+  old:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 270.5914
+    - 414.0007
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 275.7208
+    - 409.2113
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: attachments[wing-aileron-r-horn-pin]
+  old:
+    id: wing-aileron-r-horn-pin
+    parent: wing-aileron-r-horn
+    child: wing-aileron-r-pin
+    method: bolted
+    location:
+    - 328.8693
+    - 414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-r-horn-pin
+    parent: wing-aileron-r-horn
+    child: wing-aileron-r-pin
+    method: bolted
+    location:
+    - 328.6269
+    - 411.872
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:16:31Z'
+  key: mechanisms[wing-aileron-r-drive]
+  old:
+    id: wing-aileron-r-drive
+    driver: wing-aileron-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-r
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-aileron-r
+      ratio: 0.24
+    link:
+      driver_end: wing-aileron-r-arm-rod
+      follower_end: wing-aileron-r-horn-pin
+  new:
+    id: wing-aileron-r-drive
+    driver: wing-aileron-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-r
+    input_range_deg:
+    - -45
+    - 45
+    expect:
+    - attachment: wing-aileron-r
+      ratio: 0.45
+    link:
+      driver_end: wing-aileron-r-arm-rod
+      follower_end: wing-aileron-r-horn-pin
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: components[wing-aileron-l-arm]
+  old:
+    id: wing-aileron-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - -420
+        - 60.65
+        end:
+        - 271.6327
+        - -425.8921
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - -420
+        - 60.65
+        end:
+        - 275.7208
+        - -409.2113
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: components[wing-aileron-l-rod]
+  old:
+    id: wing-aileron-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 271.6327
+        - -425.8921
+        - 60.65
+        end:
+        - 326.9053
+        - -415.2661
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 275.7208
+        - -409.2113
+        - 60.65
+        end:
+        - 326.6294
+        - -411.7715
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: components[wing-aileron-l-horn]
+  old:
+    id: wing-aileron-l-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 312.0153
+        - -411.104
+        - 82.2995
+        end:
+        - 329.4788
+        - -413.4796
+        - 59.7047
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-l-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 312.0153
+        - -411.104
+        - 82.2995
+        end:
+        - 329.2363
+        - -413.4466
+        - 60.0184
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: components[wing-aileron-l-pin]
+  old:
+    id: wing-aileron-l-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 328.8693
+        - -414.2918
+        - 60.5873
+        end:
+        - 328.8693
+        - -415.4852
+        - 60.7127
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-l-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 328.6269
+        - -411.2753
+        - 60.5873
+        end:
+        - 328.6269
+        - -412.4687
+        - 60.7127
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: attachments[wing-aileron-l-servo-arm]
+  old:
+    id: wing-aileron-l-servo-arm
+    parent: servo-ail-l
+    child: wing-aileron-l-arm
+    method: bolted
+    location:
+    - 270.5
+    - -420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - -420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -30
+      - 30
+    rating_basis: placeholder
+    connection: CT-SERVO-SPLINE
+  new:
+    id: wing-aileron-l-servo-arm
+    parent: servo-ail-l
+    child: wing-aileron-l-arm
+    method: bolted
+    location:
+    - 270.5
+    - -420
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 270.5
+      - -420
+      - 60.65
+      axis:
+      - 0
+      - 0
+      - -1
+      range_deg:
+      - -47.5
+      - 47.5
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: attachments[wing-aileron-l-arm-rod]
+  old:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 271.6327
+    - -425.8921
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 275.7208
+    - -409.2113
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: attachments[wing-aileron-l-horn-pin]
+  old:
+    id: wing-aileron-l-horn-pin
+    parent: wing-aileron-l-horn
+    child: wing-aileron-l-pin
+    method: bolted
+    location:
+    - 328.8693
+    - -414.8885
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-l-horn-pin
+    parent: wing-aileron-l-horn
+    child: wing-aileron-l-pin
+    method: bolted
+    location:
+    - 328.6269
+    - -411.872
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-26T22:20:24Z'
+  key: mechanisms[wing-aileron-l-drive]
+  old:
+    id: wing-aileron-l-drive
+    driver: wing-aileron-l-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-l
+    input_range_deg:
+    - -20
+    - 20
+    expect:
+    - attachment: wing-aileron-l
+      ratio: 0.25
+    link:
+      driver_end: wing-aileron-l-arm-rod
+      follower_end: wing-aileron-l-horn-pin
+  new:
+    id: wing-aileron-l-drive
+    driver: wing-aileron-l-servo-arm
+    kinematics: four_bar
+    driven:
+    - wing-aileron-l
+    input_range_deg:
+    - -45
+    - 45
+    expect:
+    - attachment: wing-aileron-l
+      ratio: -0.45
+    link:
+      driver_end: wing-aileron-l-arm-rod
+      follower_end: wing-aileron-l-horn-pin
+  why: 'U16.4: aileron differential toward TCDS up 20 / down 15 (left)'
+  kind: modify
+- date: '2026-11-27T01:13:40Z'
+  key: components[wing-aileron-r-arm]
+  old:
+    id: wing-aileron-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - 420
+        - 60.65
+        end:
+        - 275.7208
+        - 409.2113
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - 420
+        - 60.65
+        end:
+        - 266.7611
+        - 408.6125
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4 D126: aileron differential, larger throw up'
+  kind: modify
+- date: '2026-11-27T01:13:40Z'
+  key: components[wing-aileron-r-rod]
+  old:
+    id: wing-aileron-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 275.7208
+        - 409.2113
+        - 60.65
+        end:
+        - 326.6294
+        - 411.7715
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 266.7611
+        - 408.6125
+        - 60.65
+        end:
+        - 326.6296
+        - 411.7667
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4 D126: aileron differential, larger throw up'
+  kind: modify
+- date: '2026-11-27T01:13:40Z'
+  key: attachments[wing-aileron-r-arm-rod]
+  old:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 275.7208
+    - 409.2113
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-r-arm-rod
+    parent: wing-aileron-r-arm
+    child: wing-aileron-r-rod
+    method: hinge
+    location:
+    - 266.7611
+    - 408.6125
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4 D126: aileron differential, larger throw up'
+  kind: modify
+- date: '2026-11-27T01:14:59Z'
+  key: components[wing-aileron-l-arm]
+  old:
+    id: wing-aileron-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - -420
+        - 60.65
+        end:
+        - 275.7208
+        - -409.2113
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  new:
+    id: wing-aileron-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 270.5
+        - -420
+        - 60.65
+        end:
+        - 266.7611
+        - -408.6125
+        - 60.65
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.4 D126: aileron differential, larger throw up (left)'
+  kind: modify
+- date: '2026-11-27T01:14:59Z'
+  key: components[wing-aileron-l-rod]
+  old:
+    id: wing-aileron-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 275.7208
+        - -409.2113
+        - 60.65
+        end:
+        - 326.6294
+        - -411.7715
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  new:
+    id: wing-aileron-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 266.7611
+        - -408.6125
+        - 60.65
+        end:
+        - 326.6296
+        - -411.7667
+        - 60.65
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.4 D126: aileron differential, larger throw up (left)'
+  kind: modify
+- date: '2026-11-27T01:14:59Z'
+  key: attachments[wing-aileron-l-arm-rod]
+  old:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 275.7208
+    - -409.2113
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    kinematic_link: true
+    rating_basis: placeholder
+  new:
+    id: wing-aileron-l-arm-rod
+    parent: wing-aileron-l-arm
+    child: wing-aileron-l-rod
+    method: hinge
+    location:
+    - 266.7611
+    - -408.6125
+    - 60.65
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.4 D126: aileron differential, larger throw up (left)'
+  kind: modify
