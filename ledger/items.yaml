@@ -5622,7 +5622,7 @@ items:
     updated: '2026-11-26'
   - id: T173
     kind: task
-    text: 'Rehearsal 5 gap: only ES08MA and ES3054HV servos have frames; a 24 mm servo pokes ~4 mm out of a 1:10 wing; add a smaller servo part (e.g. 5 g class) with frames, and let design place work on a hollow tail wall.'
+    text: 'Rehearsal 5 gap: only ES08MA and ES3054HV servos have frames; a 24 mm servo pokes ~4 mm out of a 1:10 wing; add a smaller servo part (e.g. 5 g class) with frames, and let design place work on a hollow tail wall. [Scout W34-S4 (df196ad): HS-55 is no smaller than the ES08MA (22.8x11.6x24); EMAX ES9051 is 19.8x8.9x23.1 mm, 4.3 g (single low-confidence source); no source gives spline/ear geometry. Next: pick a servo (ES9051 is the thinner candidate) and measure it, or use a vendor STEP.]'
     source: reviews/2026-11-26-rehearsal5.md
     owner: conductor
     status: open
