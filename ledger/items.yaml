@@ -5609,3 +5609,14 @@ items:
     evidence: 6ba5362
     decided_in: ''
     updated: '2026-11-26'
+  - id: T172
+    kind: task
+    text: tests/test_four_bar.py::test_c172_t1_kinematic_link_rows pins the live c172-rc T1.kinematic_link SKIP set, so every c172 opt-in breaks CI (U16.4-2); move it to a frozen fixture copy like T158 or pin only no-FAIL.
+    source: CI run 45922367487
+    owner: conductor
+    status: open
+    due: ''
+    units: []
+    evidence: ''
+    decided_in: ''
+    updated: '2026-11-26'
