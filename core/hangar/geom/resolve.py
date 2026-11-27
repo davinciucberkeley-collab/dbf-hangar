@@ -64,26 +64,28 @@ def _cut_poses(data: dict) -> None:
 def _derive_hinges(data: dict, base_dir, errors: dict) -> None:
     """hinge_from: generator -> location, articulation.pivot and axis from the child wing_panel hinge line (resolved data only)."""
     import numpy as np
-    from hangar.geom.wing import hinge_line
+    from hangar.geom import parts, tails, wing
     from hangar.geometry import _transform
     comps = {str(c.get("id")): c for c in data.get("components") or [] if isinstance(c, dict)}
     for a in data.get("attachments") or []:
         if not isinstance(a, dict) or a.get("hinge_from") != "generator":
             continue
         child = comps.get(str(a.get("child")))
-        generic = "child must be a wing_panel part elevon with side left or right and the attachment needs an articulation"
+        generic = ("child must be a wing_panel part elevon with side left or right, a tail_surfaces part elevator or rudder, "
+                   "or a fin part rear, and the attachment needs an articulation")
         try:
-            if (child is None or not is_generated(child) or child["geometry"]["generator"] != "wing_panel"
+            line = {"wing_panel": wing.hinge_line, "tail_surfaces": tails.hinge_line, "fin": parts.fin_hinge_line}
+            if (child is None or not is_generated(child) or child["geometry"]["generator"] not in line
                     or not isinstance(a.get("articulation"), dict)):
                 raise ValueError(generic)
-            q0, q1 = hinge_line(child["geometry"]["params"], base_dir)
+            q0, q1 = line[child["geometry"]["generator"]](child["geometry"]["params"], base_dir)
             T = _transform(child)
             p0, p1 = (( T @ np.array([*q, 1.0]))[:3] for q in (q0, q1))
         except (GeometryError, KeyError, TypeError, ValueError) as e:
             errors.setdefault(str(a.get("child")), "hinge_from: " + (str(e) or generic))
             continue
         axis = (p1 - p0) / np.linalg.norm(p1 - p0)
-        if axis[1] < 0:
+        if (axis[1] < 0) if abs(axis[1]) > 1e-6 else (axis[2] < 0):
             axis = -axis
         pivot = [round(float(v), 4) for v in (p0 + p1) / 2]
         a["location"] = list(pivot)
