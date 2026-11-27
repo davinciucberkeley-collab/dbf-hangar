@@ -734,7 +734,7 @@ components:
     type: other
     description: "Servo arm screw M2 x 6 pan (L)"
     geometry: {mesh: {file: meshes/hwc-002-l.stl}}
-    position: [0, 0, 0]
+    position: [-10, 0, 10.3]
     mass_g: 0.27
     material: "A2 stainless"
     manufacturing: {method: purchased, part_number: "BOM R05"}
@@ -745,7 +745,7 @@ components:
     type: other
     description: "Servo arm screw M2 x 6 pan (R)"
     geometry: {mesh: {file: meshes/hwc-002-r.stl}}
-    position: [0, 0, 0]
+    position: [-10, 0, 10.3]
     mass_g: 0.27
     material: "A2 stainless"
     manufacturing: {method: purchased, part_number: "BOM R05"}
@@ -763,113 +763,33 @@ components:
 
   # MEC-001-L mechanisms: Servo EMAX ES3054HV (L)
   # src: PARTS[MEC-001-L].mass_g 20.5 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 5 body(ies) + 1 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-001-l
-    type: servo
-    description: "Servo EMAX ES3054HV (L)"
-    geometry: {mesh: {file: meshes/mec-001-l.stl}}
-    position: [0, 0, 0]
-    mass_g: 20.5
-    material: "plastic / metal gear"
-    manufacturing: {method: purchased, part_number: "BOM M01"}
 
   # MEC-001-R mechanisms: Servo EMAX ES3054HV (R)
   # src: PARTS[MEC-001-R].mass_g 20.5 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 5 body(ies) + 1 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-001-r
-    type: servo
-    description: "Servo EMAX ES3054HV (R)"
-    geometry: {mesh: {file: meshes/mec-001-r.stl}}
-    position: [0, 0, 0]
-    mass_g: 20.5
-    material: "plastic / metal gear"
-    manufacturing: {method: purchased, part_number: "BOM M01"}
 
   # MEC-002-L mechanisms: Servo arm (L)
   # src: PARTS[MEC-002-L].mass_g 1.0 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 1 body(ies) + 0 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-002-l
-    type: other
-    description: "Servo arm (L)"
-    geometry: {mesh: {file: meshes/mec-002-l.stl}}
-    position: [0, 0, 0]
-    mass_g: 1
-    material: "nylon"
-    manufacturing: {method: purchased, part_number: "BOM M01"}
 
   # MEC-002-R mechanisms: Servo arm (R)
   # src: PARTS[MEC-002-R].mass_g 1.0 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 1 body(ies) + 0 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-002-r
-    type: other
-    description: "Servo arm (R)"
-    geometry: {mesh: {file: meshes/mec-002-r.stl}}
-    position: [0, 0, 0]
-    mass_g: 1
-    material: "nylon"
-    manufacturing: {method: purchased, part_number: "BOM M01"}
 
   # MEC-003-L mechanisms: Pushrod 1.2 mm with Z-bend and clevis (L)
   # src: PARTS[MEC-003-L].mass_g 0.97 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 5 body(ies) + 1 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-003-l
-    type: other
-    description: "Pushrod 1.2 mm with Z-bend and clevis (L)"
-    geometry: {mesh: {file: meshes/mec-003-l.stl}}
-    position: [0, 0, 0]
-    mass_g: 0.97
-    material: "steel"
-    manufacturing: {method: purchased, part_number: "BOM M02"}
 
   # MEC-003-R mechanisms: Pushrod 1.2 mm with Z-bend and clevis (R)
   # src: PARTS[MEC-003-R].mass_g 0.97 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 5 body(ies) + 1 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-003-r
-    type: other
-    description: "Pushrod 1.2 mm with Z-bend and clevis (R)"
-    geometry: {mesh: {file: meshes/mec-003-r.stl}}
-    position: [0, 0, 0]
-    mass_g: 0.97
-    material: "steel"
-    manufacturing: {method: purchased, part_number: "BOM M02"}
 
   # MEC-004-L mechanisms: Control horn (L)
   # src: PARTS[MEC-004-L].mass_g 1.0 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 2 body(ies) + 0 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-004-l
-    type: other
-    description: "Control horn (L)"
-    geometry: {mesh: {file: meshes/mec-004-l.stl}}
-    position: [0, 0, 0]
-    mass_g: 1
-    material: "nylon"
-    manufacturing: {method: purchased, part_number: "BOM M02"}
 
   # MEC-004-R mechanisms: Control horn (R)
   # src: PARTS[MEC-004-R].mass_g 1.0 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 2 body(ies) + 0 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-004-r
-    type: other
-    description: "Control horn (R)"
-    geometry: {mesh: {file: meshes/mec-004-r.stl}}
-    position: [0, 0, 0]
-    mass_g: 1
-    material: "nylon"
-    manufacturing: {method: purchased, part_number: "BOM M02"}
 
   # MEC-005-L mechanisms: Clevis pin 1.0 x 4.4 mm (L); mass CALC steel, carried inside the 1.0 g rod before D-194
   # src: PARTS[MEC-005-L].mass_g 0.03 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 1 body(ies) + 0 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-005-l
-    type: other
-    description: "Clevis pin 1.0 x 4.4 mm (L); mass CALC steel, carried inside the 1.0 g rod before D-194"
-    geometry: {mesh: {file: meshes/mec-005-l.stl}}
-    position: [0, 0, 0]
-    mass_g: 0.03
-    material: "steel"
-    manufacturing: {method: purchased, part_number: "BOM M02"}
 
   # MEC-005-R mechanisms: Clevis pin 1.0 x 4.4 mm (R); mass CALC steel, carried inside the 1.0 g rod before D-194
   # src: PARTS[MEC-005-R].mass_g 0.03 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 1 body(ies) + 0 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
-  - id: mec-005-r
-    type: other
-    description: "Clevis pin 1.0 x 4.4 mm (R); mass CALC steel, carried inside the 1.0 g rod before D-194"
-    geometry: {mesh: {file: meshes/mec-005-r.stl}}
-    position: [0, 0, 0]
-    mass_g: 0.03
-    material: "steel"
-    manufacturing: {method: purchased, part_number: "BOM M02"}
 
   # PRP-001-LL propulsion: Motor MN2212 V2.0 KV780 (LL)
   # src: PARTS[PRP-001-LL].mass_g 65.0 (redesign/qp/A/cad/amodel, via a_model.PARTS); geometry rebuilt from 15 body(ies) + 4 cut(s) (dbf_geometry), STL in meshes/; manufacturing: make_or_buy 'buy' (PARTS) -> purchased; BOM id from parts-a.csv
@@ -1321,6 +1241,70 @@ components:
     mass_g: 0.5
     material: "PETG (printed)"
     manufacturing: {method: 3d-print-fdm, machine: "jacobs-fdm"}
+  - id: mec-001-r
+    type: servo
+    description: "Servo EMAX ES3054HV (R), library part"
+    geometry: {generator: library_part, params: {part: emax-es3054hv-servo}}
+    position: [141.2, 200, 2.15]
+    mass_g: 20.5
+    material: "plastic / metal gear"
+    manufacturing: {method: purchased, part_number: "BOM M01"}
+  - id: mec-001-l
+    type: servo
+    description: "Servo EMAX ES3054HV (L), library part"
+    geometry: {generator: library_part, params: {part: emax-es3054hv-servo}}
+    position: [141.2, -200, 2.15]
+    mass_g: 20.5
+    material: "plastic / metal gear"
+    manufacturing: {method: purchased, part_number: "BOM M01"}
+  - id: mec-r-arm
+    type: other
+    geometry: {generator: strut, params: {start: [130.5, 200, 11.96], end: [133.4968, 211.6198, 11.96], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: mec-r-rod
+    type: other
+    geometry: {generator: strut, params: {start: [133.4968, 211.6198, 11.96], end: [190.1845, 196.9995, 11.96], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: purchased}
+  - id: mec-r-horn
+    type: other
+    geometry: {generator: strut, params: {start: [189.5118, 195, -1.5105], end: [192.3113, 195, 12.9418], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: mec-r-pin
+    type: other
+    geometry: {generator: strut, params: {start: [192.1211, 195.9, 11.96], end: [192.1211, 197.1, 11.96], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 0.2
+    manufacturing: {method: purchased}
+  - id: mec-l-arm
+    type: other
+    geometry: {generator: strut, params: {start: [130.5, -200, 11.96], end: [131.5762, -188.0484, 11.96], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: mec-l-rod
+    type: other
+    geometry: {generator: strut, params: {start: [131.5762, -188.0484, 11.96], end: [190.1292, -193.3206, 11.96], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: purchased}
+  - id: mec-l-horn
+    type: other
+    geometry: {generator: strut, params: {start: [189.5118, -195, -1.5105], end: [192.3113, -195, 12.9418], diameter: 1.5, chord: 4}}
+    position: [0, 0, 0]
+    mass_g: 1
+    manufacturing: {method: laser-cut, machine: jacobs-laser}
+  - id: mec-l-pin
+    type: other
+    geometry: {generator: strut, params: {start: [192.1211, -194.1, 11.96], end: [192.1211, -192.9, 11.96], diameter: 1.5}}
+    position: [0, 0, 0]
+    mass_g: 0.2
+    manufacturing: {method: purchased}
 
 attachments:
   # E-WNG-01 CT-EPOXY (WNG-001 -> WNG-002): spar bonded in its bore; build rule: bond over |y| <= 0.20 m (FIXES2: 0.15 m gave foam shear 78 kPa, MS +0.11 at the board allowable 103 kPa scale; 0.20 m gives 58 kPa, M
@@ -1656,44 +1640,6 @@ attachments:
   # E-AVN-17 CT-HW-SEATED (AVN-001 -> HWC-003): four M2 thin nuts trapped in hex pockets on the plate underside (seated before the plate goes on the skin)
   # rating [derived] 4 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
   - {id: E-AVN-17, parent: avn-001, child: hwc-003, method: bolted, location: [68.001, 8.787, 12.746], rated_load_n: 3726, rating_basis: derived, connection: CT-HW-SEATED}
-  # E-MEC-01 CT-EPOXY (WNG-001 -> MEC-001-R): servo in its pocket
-  # rating [derived] contact area 2107 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-01, parent: wng-001, child: mec-001-r, method: glued, location: [140.505, 199.75, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
-  # E-MEC-02 CT-SERVO-SPLINE (MEC-001-R -> MEC-002-R): arm on the 23T output spline (V readymaderc 85975; the old 25T was an ES3352 copy)
-  # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area); method note: arm on a spline held by an M2 retaining screw: nearest enum is bolted
-  - {id: E-MEC-02, parent: mec-001-r, child: mec-002-r, method: bolted, location: [140.563, 195.69, 6.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-SERVO-SPLINE, articulation: {type: revolute, pivot: [140.5, 200.0, 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
-  # E-MEC-03 CT-CLEVIS (MEC-002-R -> MEC-003-R): rod Z-bend in the arm tip hole (vertical pin)
-  # rating [doc] redesign/qp/A/structures/qp5_checks.md s1 pushrod buckling, Pcr 73 N at the CAD rod length 52.5 mm (D-194)
-  # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
-  - {id: E-MEC-03, parent: mec-002-r, child: mec-003-r, method: hinge, location: [141.723, 187.987, 8.701], rated_load_n: 73, rating_basis: sourced, connection: CT-CLEVIS, kinematic_link: true}
-  # E-MEC-05 CT-EPOXY (WNG-006-R -> MEC-004-R): horn bonded on the elevon upper skin
-  # rating [derived] contact area 8 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-05, parent: wng-006-r, child: mec-004-r, method: glued, location: [189.659, 188.66, -0.508], rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
-  # E-MEC-PIN-R4 CT-HW-SEATED (MEC-004-R -> MEC-005-R): clevis pin through the horn hole (pressed in along y after the clevis is lowered onto the blade); moves with the horn
-  # rating [derived] 1 x pin shear pi/4 x 1^2 mm2 x 270 MPa (arm_cup_checks.md steel shear allowable, EST)
-  - {id: E-MEC-PIN-R4, parent: mec-004-r, child: mec-005-r, method: bolted, location: [193.12, 188.01, 9.896], rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
-  # E-MEC-HW-R2 CT-HW-SEATED (HWC-002-R -> MEC-002-R): arm retaining screw (hardware of the spline joint)
-  # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
-  - {id: E-MEC-HW-R2, parent: hwc-002-r, child: mec-002-r, method: bolted, location: [139.43, 200.153, 8.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
-  # E-MEC-06 CT-EPOXY (WNG-001 -> MEC-001-L): servo in its pocket
-  # rating [derived] contact area 2107 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-06, parent: wng-001, child: mec-001-l, method: glued, location: [140.505, -200.25, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
-  # E-MEC-07 CT-SERVO-SPLINE (MEC-001-L -> MEC-002-L): arm on the 23T output spline (V readymaderc 85975; the old 25T was an ES3352 copy)
-  # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area); method note: arm on a spline held by an M2 retaining screw: nearest enum is bolted
-  - {id: E-MEC-07, parent: mec-001-l, child: mec-002-l, method: bolted, location: [140.342, -195.814, 6.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-SERVO-SPLINE, articulation: {type: revolute, pivot: [140.5, -200.0, 7.7], axis: [0, 0, 1], range_deg: [-15, 15]}}
-  # E-MEC-08 CT-CLEVIS (MEC-002-L -> MEC-003-L): rod Z-bend in the arm tip hole (vertical pin)
-  # rating [doc] redesign/qp/A/structures/qp5_checks.md s1 pushrod buckling, Pcr 73 N at the CAD rod length 52.5 mm (D-194)
-  # kinematic_link: linkage path not modelled, same as redesign/qp/A/cad/out/REPORT.md 'Not checked against the moved parts'
-  - {id: E-MEC-08, parent: mec-002-l, child: mec-003-l, method: hinge, location: [141.723, -188.013, 8.701], rated_load_n: 73, rating_basis: sourced, connection: CT-CLEVIS, kinematic_link: true}
-  # E-MEC-10 CT-EPOXY (WNG-006-L -> MEC-004-L): horn bonded on the elevon upper skin
-  # rating [derived] contact area 8 mm2 (measured on the meshes) x foam_103.md XPS shear 86 kPa (EST)
-  - {id: E-MEC-10, parent: wng-006-l, child: mec-004-l, method: glued, location: [189.575, -187.935, -0.502], rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
-  # E-MEC-PIN-L4 CT-HW-SEATED (MEC-004-L -> MEC-005-L): clevis pin through the horn hole (pressed in along y after the clevis is lowered onto the blade); moves with the horn
-  # rating [derived] 1 x pin shear pi/4 x 1^2 mm2 x 270 MPa (arm_cup_checks.md steel shear allowable, EST)
-  - {id: E-MEC-PIN-L4, parent: mec-004-l, child: mec-005-l, method: bolted, location: [193.12, -187.99, 9.896], rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
-  # E-MEC-HW-L2 CT-HW-SEATED (HWC-002-L -> MEC-002-L): arm retaining screw (hardware of the spline joint)
-  # rating [derived] 1 x M2 tension 2.07 mm2 (placeholder: ISO 898-1 standard value, not opened) x 450 MPa (arm_cup_checks.md steel tension allowable, EST) (placeholder stress area)
-  - {id: E-MEC-HW-L2, parent: hwc-002-l, child: mec-002-l, method: bolted, location: [139.43, -199.847, 8.7], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
   # E-GER-01 CT-EPOXY (FIN-001-R -> GER-001-UR): shoe cap on the tube end
   # rating [doc] redesign/qp/A/structures/iter2_margins.md 'Foot shoe on the fin tube end (25 mm wrap, 16 mm OD)', 52 N, MS +21.41; rated = 52 N x K 2.1562 x (1 + MS 21.41)
   - {id: E-GER-01, parent: fin-001-r, child: ger-001-ur, method: glued, location: [286.974, 376.198, 174.417], rated_load_n: 2512.7, rating_basis: sourced, connection: CT-EPOXY}
@@ -1763,6 +1709,18 @@ attachments:
   # E-ASM-01 CT-TIE (WNG-001 -> HRD-001): hardware lump
   # rating [placeholder] placeholder - not from source: CT-TIE has no published or tested capacity (no capacity found in qp/A/structures or the EDGES notes, see knowledge/sources/dbf-concept-a-joint-capacities.md); set to the platform's own demand (4.5 x g x subtree mass = 1.15 N, rounded up)
   - {id: E-ASM-01, parent: wng-001, child: hrd-001, method: zip-tie, location: [100, 0, 0], rated_load_n: 1.2, rating_basis: placeholder, connection: CT-TIE}
+  - {id: e-mec-01, parent: wng-001, child: mec-001-r, method: glued, location: [140.505, 199.75, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
+  - {id: e-mec-06, parent: wng-001, child: mec-001-l, method: glued, location: [140.505, -200.25, -6.3], rated_load_n: 181.2, rating_basis: derived, connection: CT-EPOXY}
+  - {id: mec-r-servo-arm, parent: mec-001-r, child: mec-r-arm, method: bolted, location: [130.5, 200, 11.96], embed_ok: true, rated_load_n: 931.5, rating_basis: derived, articulation: {type: revolute, pivot: [130.5, 200, 11.96], axis: [0, 0, 1], range_deg: [-30, 30]}, connection: CT-SERVO-SPLINE}
+  - {id: mec-r-arm-rod, parent: mec-r-arm, child: mec-r-rod, method: hinge, location: [133.4968, 211.6198, 11.96], embed_ok: true, rated_load_n: 73, rating_basis: sourced, kinematic_link: true, connection: CT-CLEVIS}
+  - {id: mec-r-horn-mount, parent: wng-006-r, child: mec-r-horn, method: glued, location: [189.702, 195, -0.5287], embed_ok: true, rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
+  - {id: mec-r-horn-pin, parent: mec-r-horn, child: mec-r-pin, method: bolted, location: [192.1211, 196.5, 11.96], embed_ok: true, rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: mec-l-servo-arm, parent: mec-001-l, child: mec-l-arm, method: bolted, location: [130.5, -200, 11.96], embed_ok: true, rated_load_n: 931.5, rating_basis: derived, articulation: {type: revolute, pivot: [130.5, -200, 11.96], axis: [0, 0, 1], range_deg: [-30, 30]}, connection: CT-SERVO-SPLINE}
+  - {id: mec-l-arm-rod, parent: mec-l-arm, child: mec-l-rod, method: hinge, location: [131.5762, -188.0484, 11.96], embed_ok: true, rated_load_n: 73, rating_basis: sourced, kinematic_link: true, connection: CT-CLEVIS}
+  - {id: mec-l-horn-mount, parent: wng-006-l, child: mec-l-horn, method: glued, location: [189.702, -195, -0.5287], embed_ok: true, rated_load_n: 0.7, rating_basis: derived, connection: CT-EPOXY}
+  - {id: mec-l-horn-pin, parent: mec-l-horn, child: mec-l-pin, method: bolted, location: [192.1211, -193.5, 11.96], embed_ok: true, rated_load_n: 212.1, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: e-mec-hw-r2, parent: mec-r-arm, child: hwc-002-r, method: bolted, location: [130.5, 200, 13], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
+  - {id: e-mec-hw-l2, parent: mec-l-arm, child: hwc-002-l, method: bolted, location: [130.5, -200, 13], rated_load_n: 931.5, rating_basis: derived, connection: CT-HW-SEATED}
 files:
   cad:
   - path: meshes/AVN-001.stl
@@ -2437,8 +2395,8 @@ bom:
     component_ids:
     - mec-001-l
     - mec-001-r
-    - mec-002-l
-    - mec-002-r
+    - mec-l-arm
+    - mec-r-arm
     verified:
       by: DBF-Combined BOM-A.csv @ a93f14da
       date: '2026-11-15'
@@ -2451,12 +2409,12 @@ bom:
     unit_cost_usd: 8.99
     url: https://www.readymaderc.com/products/details/rmrc-10pc-pushrod-linkage-set-control-horn
     component_ids:
-    - mec-003-l
-    - mec-003-r
-    - mec-004-l
-    - mec-004-r
-    - mec-005-l
-    - mec-005-r
+    - mec-l-rod
+    - mec-r-rod
+    - mec-l-horn
+    - mec-r-horn
+    - mec-l-pin
+    - mec-r-pin
     verified:
       by: DBF-Combined BOM-A.csv @ a93f14da
       date: '2026-11-15'
@@ -2709,6 +2667,14 @@ bom:
     supplier: Amazon
     part_number: Silicone rubber cord 0.5 mm 1 m and 8 small silicone O-rings (hinge preload strips 4, damper seals 4, spares)
     unit_cost_usd: 6.0
+  - id: b-mec-rods
+    qty: 2
+    part_number: "pushrod, 1.5 mm carbon rod (generated linkage)"
+    component_ids: [mec-r-rod, mec-l-rod]
+  - id: b-mec-pins
+    qty: 2
+    part_number: "link pin, 1.5 mm carbon rod (generated linkage)"
+    component_ids: [mec-r-pin, mec-l-pin]
 wiring:
   harnesses:
   - id: e-hrn-01
@@ -2840,14 +2806,14 @@ transport:
     - hwc-003
     - mec-001-l
     - mec-001-r
-    - mec-002-l
-    - mec-002-r
-    - mec-003-l
-    - mec-003-r
-    - mec-004-l
-    - mec-004-r
-    - mec-005-l
-    - mec-005-r
+    - mec-l-arm
+    - mec-r-arm
+    - mec-l-rod
+    - mec-r-rod
+    - mec-l-horn
+    - mec-r-horn
+    - mec-l-pin
+    - mec-r-pin
     - prp-001-ll
     - prp-001-lr
     - prp-001-ul
@@ -3058,8 +3024,8 @@ assembly:
     note: 'D1: Servos into their pockets'
   - step: 28
     add:
-    - mec-002-r
-    - mec-002-l
+    - mec-r-arm
+    - mec-l-arm
     note: 'D2: Servo arms on the splines'
   - step: 29
     add:
@@ -3068,21 +3034,21 @@ assembly:
     note: 'D2a: Arm screws M2x6 into the servo output shafts'
   - step: 30
     add:
-    - mec-004-r
-    - mec-004-l
+    - mec-r-horn
+    - mec-l-horn
     note: 'D3: Horns on the elevons'
   - step: 31
     add:
-    - mec-003-r
-    - mec-003-l
+    - mec-r-rod
+    - mec-l-rod
     note: 'D4: Pushrods into arm hole (Z-bend) and over the horn blade (clevis cheeks straddle it; pin follows in D5)'
   - step: 32
     add:
-    - mec-005-r
+    - mec-r-pin
     note: 'D5: Clevis pin R pressed in along y through the cheeks and the horn hole (from outboard)'
   - step: 33
     add:
-    - mec-005-l
+    - mec-l-pin
     note: 'D5b: Clevis pin L pressed in along y (from outboard)'
   - step: 34
     add:
@@ -3137,18 +3103,6 @@ assembly:
     - hrn-001
     note: 'mass proxies (hardware lumps, wiring harness): the source plan has no step for them; added last'
 notes: "CAD source (python, read only): DBF-Combined@a93f14da redesign/qp/A/cad; BOM: redesign/qp/A/BOM-A.csv; imported by plane import dbf"
-mechanisms:
-  - id: elevon-r
-    driver: E-MEC-02
-    driven: [E-WNG-10]
-    input_range_deg: [-15, 15]
-    expect: [{attachment: E-WNG-10, ratio: -1.33}]
-    link: {driver_end: E-MEC-03, follower_end: E-MEC-PIN-R4}
-  - id: elevon-l
-    driver: E-MEC-07
-    driven: [E-WNG-11]
-    input_range_deg: [-15, 15]
-    expect: [{attachment: E-WNG-11, ratio: 1.33}]
-    link: {driver_end: E-MEC-08, follower_end: E-MEC-PIN-L4}
+mechanisms: [{id: mec-r-drive, driver: mec-r-servo-arm, kinematics: four_bar, driven: [E-WNG-10], input_range_deg: [-15, 15], expect: [{attachment: E-WNG-10, ratio: 1.06}], link: {driver_end: mec-r-arm-rod, follower_end: mec-r-horn-pin}}, {id: mec-l-drive, driver: mec-l-servo-arm, kinematics: four_bar, driven: [E-WNG-11], input_range_deg: [-15, 15], expect: [{attachment: E-WNG-11, ratio: 1.03}], link: {driver_end: mec-l-arm-rod, follower_end: mec-l-horn-pin}}]
 mission: {name: "VTOL demonstrator", profile: vtol-demonstrator, source: knowledge/concepts/judging-mission-and-learning.md}
 display: {clevises: true, screw_heads: true}

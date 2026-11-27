@@ -74,3 +74,62 @@ def test_real_single_design_build_is_slow_but_works(tmp_path):
     assert (out / "example-tailsitter-wing.glb").exists()
     index = json.loads((out / "index.json").read_text())
     assert [d["id"] for d in index["designs"]] == ["example-tailsitter-wing"]
+
+
+# U19.2 brief 3: <id>.rows.json next to the scorecard
+
+def _tailsitter():
+    from hangar.design import load_design
+    return load_design(_real_paths()["example-tailsitter-wing"])
+
+
+def test_rows_json_written_and_aligned(tmp_path):
+    import hangar.index as index_mod
+    design = _tailsitter()
+    entry = index_mod.design_entry(design, tmp_path)
+    fid = "example-tailsitter-wing"
+    assert (tmp_path / f"{fid}.rows.json").exists()
+    assert entry["rows"] == f"{fid}.rows.json"
+    rows = json.loads((tmp_path / f"{fid}.rows.json").read_text())
+    card = json.loads((tmp_path / f"{fid}.scorecard.json").read_text())
+    assert len(rows["tiers"]) == len(card["tiers"])
+    for rt, ct in zip(rows["tiers"], card["tiers"]):
+        assert len(rt["rows"]) == len(ct["results"])
+        for rr, cr in zip(rt["rows"], ct["results"]):
+            assert rr["check_id"] == cr["check_id"]
+            assert rr["status"] == cr["status"]
+
+
+def test_scorecard_json_unchanged_by_rows(tmp_path):
+    import hangar.index as index_mod
+    from hangar.checks import validate
+    design = _tailsitter()
+    index_mod.design_entry(design, tmp_path)
+    fid = "example-tailsitter-wing"
+    # text mode: Path.write_text translates "\n" to CRLF on Windows, so compare decoded text
+    assert (tmp_path / f"{fid}.scorecard.json").read_text() == index_mod.dumps(validate(design).to_dict()) + "\n"
+
+
+def test_rows_json_failure_does_not_break_index(tmp_path, monkeypatch):
+    import hangar.index as index_mod
+    fid = "example-tailsitter-wing"
+
+    def boom(card, design):
+        raise RuntimeError("text problem")
+    monkeypatch.setattr(index_mod, "rows_json", boom)
+    entry = index_mod.design_entry(_tailsitter(), tmp_path)
+    assert entry["rows"] is None
+    assert not (tmp_path / f"{fid}.rows.json").exists()
+    assert entry["scorecard"] == f"{fid}.scorecard.json"
+
+
+def test_rows_have_text(tmp_path):
+    import hangar.index as index_mod
+    fid = "example-tailsitter-wing"
+    index_mod.design_entry(_tailsitter(), tmp_path)
+    rows = json.loads((tmp_path / f"{fid}.rows.json").read_text())
+    for tier in rows["tiers"]:
+        for row in tier["rows"]:
+            if row["status"] != "PASS":
+                assert row["title"], row["check_id"]
+                assert row["sentence"], row["check_id"]

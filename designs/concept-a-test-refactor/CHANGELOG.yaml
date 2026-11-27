@@ -1274,3 +1274,745 @@
   - cge-003-ll
   why: 'U16.3: route harness e-hrn-05 through the parts it passes (U16.1 S8)'
   kind: add
+- date: '2026-11-26T20:40:18Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'U16.3: elevon servos become library part emax-es3054hv-servo; hand-made linkage
+    parts and attachments removed (U16.1 S3)'
+  count: 28
+  keys:
+  - mechanisms[elevon-r]
+  - mechanisms[elevon-l]
+  - attachments[E-MEC-01]
+  - attachments[E-MEC-02]
+  - attachments[E-MEC-03]
+  - attachments[E-MEC-05]
+  - attachments[E-MEC-PIN-R4]
+  - attachments[E-MEC-HW-R2]
+  - attachments[E-MEC-06]
+  - attachments[E-MEC-07]
+  - attachments[E-MEC-08]
+  - attachments[E-MEC-10]
+  - attachments[E-MEC-PIN-L4]
+  - attachments[E-MEC-HW-L2]
+  - components[mec-001-r]
+  - components[mec-002-r]
+  - components[mec-003-r]
+  - components[mec-004-r]
+  - components[mec-005-r]
+  - components[mec-001-l]
+  - components[mec-002-l]
+  - components[mec-003-l]
+  - components[mec-004-l]
+  - components[mec-005-l]
+  - components
+  - components
+  - attachments
+  - attachments
+  kinds:
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - remove
+  - append
+  - append
+  - append
+  - append
+  file: f1.yaml
+- date: '2026-11-26T20:40:27Z'
+  key: components[mec-r-arm]
+  old: null
+  new:
+    id: mec-r-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 130.5
+        - 200
+        - 11.96
+        end:
+        - 133.4968
+        - 211.6198
+        - 11.96
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: components[mec-r-rod]
+  old: null
+  new:
+    id: mec-r-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 133.4968
+        - 211.6198
+        - 11.96
+        end:
+        - 190.1845
+        - 196.9995
+        - 11.96
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: components[mec-r-horn]
+  old: null
+  new:
+    id: mec-r-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 189.5118
+        - 195
+        - -1.5105
+        end:
+        - 192.3113
+        - 195
+        - 12.9418
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: components[mec-r-pin]
+  old: null
+  new:
+    id: mec-r-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 192.1211
+        - 195.9
+        - 11.96
+        end:
+        - 192.1211
+        - 197.1
+        - 11.96
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: attachments[mec-r-servo-arm]
+  old: null
+  new:
+    id: mec-r-servo-arm
+    parent: mec-001-r
+    child: mec-r-arm
+    method: bolted
+    location:
+    - 130.5
+    - 200
+    - 11.96
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 130.5
+      - 200
+      - 11.96
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: attachments[mec-r-arm-rod]
+  old: null
+  new:
+    id: mec-r-arm-rod
+    parent: mec-r-arm
+    child: mec-r-rod
+    method: hinge
+    location:
+    - 133.4968
+    - 211.6198
+    - 11.96
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: attachments[mec-r-horn-mount]
+  old: null
+  new:
+    id: mec-r-horn-mount
+    parent: wng-006-r
+    child: mec-r-horn
+    method: glued
+    location:
+    - 189.702
+    - 195
+    - -0.5287
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: attachments[mec-r-horn-pin]
+  old: null
+  new:
+    id: mec-r-horn-pin
+    parent: mec-r-horn
+    child: mec-r-pin
+    method: bolted
+    location:
+    - 192.1211
+    - 196.5
+    - 11.96
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:40:27Z'
+  key: mechanisms[mec-r-drive]
+  old: null
+  new:
+    id: mec-r-drive
+    driver: mec-r-servo-arm
+    kinematics: four_bar
+    driven:
+    - E-WNG-10
+    input_range_deg:
+    - -15
+    - 15
+    expect:
+    - attachment: E-WNG-10
+      ratio: 1.06
+    link:
+      driver_end: mec-r-arm-rod
+      follower_end: mec-r-horn-pin
+  why: 'U16.3: generated right elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: components[mec-l-arm]
+  old: null
+  new:
+    id: mec-l-arm
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 130.5
+        - -200
+        - 11.96
+        end:
+        - 131.5762
+        - -188.0484
+        - 11.96
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: components[mec-l-rod]
+  old: null
+  new:
+    id: mec-l-rod
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 131.5762
+        - -188.0484
+        - 11.96
+        end:
+        - 190.1292
+        - -193.3206
+        - 11.96
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: purchased
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: components[mec-l-horn]
+  old: null
+  new:
+    id: mec-l-horn
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 189.5118
+        - -195
+        - -1.5105
+        end:
+        - 192.3113
+        - -195
+        - 12.9418
+        diameter: 1.5
+        chord: 4
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 1
+    manufacturing:
+      method: laser-cut
+      machine: jacobs-laser
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: components[mec-l-pin]
+  old: null
+  new:
+    id: mec-l-pin
+    type: other
+    geometry:
+      generator: strut
+      params:
+        start:
+        - 192.1211
+        - -194.1
+        - 11.96
+        end:
+        - 192.1211
+        - -192.9
+        - 11.96
+        diameter: 1.5
+    position:
+    - 0
+    - 0
+    - 0
+    mass_g: 0.2
+    manufacturing:
+      method: purchased
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: attachments[mec-l-servo-arm]
+  old: null
+  new:
+    id: mec-l-servo-arm
+    parent: mec-001-l
+    child: mec-l-arm
+    method: bolted
+    location:
+    - 130.5
+    - -200
+    - 11.96
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    articulation:
+      type: revolute
+      pivot:
+      - 130.5
+      - -200
+      - 11.96
+      axis:
+      - 0
+      - 0
+      - 1
+      range_deg:
+      - -30
+      - 30
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: attachments[mec-l-arm-rod]
+  old: null
+  new:
+    id: mec-l-arm-rod
+    parent: mec-l-arm
+    child: mec-l-rod
+    method: hinge
+    location:
+    - 131.5762
+    - -188.0484
+    - 11.96
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+    kinematic_link: true
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: attachments[mec-l-horn-mount]
+  old: null
+  new:
+    id: mec-l-horn-mount
+    parent: wng-006-l
+    child: mec-l-horn
+    method: glued
+    location:
+    - 189.702
+    - -195
+    - -0.5287
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: attachments[mec-l-horn-pin]
+  old: null
+  new:
+    id: mec-l-horn-pin
+    parent: mec-l-horn
+    child: mec-l-pin
+    method: bolted
+    location:
+    - 192.1211
+    - -193.5
+    - 11.96
+    embed_ok: true
+    rated_load_n: 10
+    rating_basis: placeholder
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:42:10Z'
+  key: mechanisms[mec-l-drive]
+  old: null
+  new:
+    id: mec-l-drive
+    driver: mec-l-servo-arm
+    kinematics: four_bar
+    driven:
+    - E-WNG-11
+    input_range_deg:
+    - -15
+    - 15
+    expect:
+    - attachment: E-WNG-11
+      ratio: 1.03
+    link:
+      driver_end: mec-l-arm-rod
+      follower_end: mec-l-horn-pin
+  why: 'U16.3: generated left elevon linkage (U16.1 S4)'
+  kind: add
+- date: '2026-11-26T20:45:40Z'
+  kind: batch
+  key: batch
+  old: null
+  new: null
+  why: 'U16.3: retaining screws onto the new arms; BOM lines for the generated pushrods
+    and pins'
+  count: 6
+  keys:
+  - components[hwc-002-r].position
+  - components[hwc-002-l].position
+  - attachments
+  - attachments
+  - bom.items
+  - bom.items
+  kinds:
+  - modify
+  - modify
+  - append
+  - append
+  - append
+  - append
+  file: f2.yaml
+- date: '2026-11-26T21:12:12Z'
+  key: attachments[mec-r-servo-arm].rated_load_n
+  old: 10
+  new: 931.5
+  why: 'D125: carry the sourced rating from E-MEC-02'
+  kind: modify
+- date: '2026-11-26T21:12:18Z'
+  key: attachments[mec-r-servo-arm].rating_basis
+  old: placeholder
+  new: derived
+  why: 'D125: carry the sourced rating from E-MEC-02'
+  kind: modify
+- date: '2026-11-26T21:12:24Z'
+  key: attachments[mec-r-servo-arm].connection
+  old: null
+  new: CT-SERVO-SPLINE
+  why: 'D125: carry the sourced rating from E-MEC-02'
+  kind: add
+- date: '2026-11-26T21:12:36Z'
+  key: attachments[mec-l-servo-arm].rated_load_n
+  old: 10
+  new: 931.5
+  why: 'D125: carry the sourced rating from E-MEC-07'
+  kind: modify
+- date: '2026-11-26T21:12:42Z'
+  key: attachments[mec-l-servo-arm].rating_basis
+  old: placeholder
+  new: derived
+  why: 'D125: carry the sourced rating from E-MEC-07'
+  kind: modify
+- date: '2026-11-26T21:12:47Z'
+  key: attachments[mec-l-servo-arm].connection
+  old: null
+  new: CT-SERVO-SPLINE
+  why: 'D125: carry the sourced rating from E-MEC-07'
+  kind: add
+- date: '2026-11-26T21:12:53Z'
+  key: attachments[mec-r-arm-rod].rated_load_n
+  old: 10
+  new: 73
+  why: 'D125: carry the sourced rating from E-MEC-03'
+  kind: modify
+- date: '2026-11-26T21:13:00Z'
+  key: attachments[mec-r-arm-rod].rating_basis
+  old: placeholder
+  new: sourced
+  why: 'D125: carry the sourced rating from E-MEC-03'
+  kind: modify
+- date: '2026-11-26T21:13:06Z'
+  key: attachments[mec-r-arm-rod].connection
+  old: null
+  new: CT-CLEVIS
+  why: 'D125: carry the sourced rating from E-MEC-03'
+  kind: add
+- date: '2026-11-26T21:13:12Z'
+  key: attachments[mec-l-arm-rod].rated_load_n
+  old: 10
+  new: 73
+  why: 'D125: carry the sourced rating from E-MEC-08'
+  kind: modify
+- date: '2026-11-26T21:13:15Z'
+  key: attachments[mec-l-arm-rod].rating_basis
+  old: placeholder
+  new: sourced
+  why: 'D125: carry the sourced rating from E-MEC-08'
+  kind: modify
+- date: '2026-11-26T21:13:21Z'
+  key: attachments[mec-l-arm-rod].connection
+  old: null
+  new: CT-CLEVIS
+  why: 'D125: carry the sourced rating from E-MEC-08'
+  kind: add
+- date: '2026-11-26T21:13:26Z'
+  key: attachments[mec-r-horn-mount].rated_load_n
+  old: 10
+  new: 0.7
+  why: 'D125: carry the sourced rating from E-MEC-05'
+  kind: modify
+- date: '2026-11-26T21:13:31Z'
+  key: attachments[mec-r-horn-mount].rating_basis
+  old: placeholder
+  new: derived
+  why: 'D125: carry the sourced rating from E-MEC-05'
+  kind: modify
+- date: '2026-11-26T21:13:35Z'
+  key: attachments[mec-r-horn-mount].connection
+  old: null
+  new: CT-EPOXY
+  why: 'D125: carry the sourced rating from E-MEC-05'
+  kind: add
+- date: '2026-11-26T21:13:39Z'
+  key: attachments[mec-l-horn-mount].rated_load_n
+  old: 10
+  new: 0.7
+  why: 'D125: carry the sourced rating from E-MEC-10'
+  kind: modify
+- date: '2026-11-26T21:13:44Z'
+  key: attachments[mec-l-horn-mount].rating_basis
+  old: placeholder
+  new: derived
+  why: 'D125: carry the sourced rating from E-MEC-10'
+  kind: modify
+- date: '2026-11-26T21:13:48Z'
+  key: attachments[mec-l-horn-mount].connection
+  old: null
+  new: CT-EPOXY
+  why: 'D125: carry the sourced rating from E-MEC-10'
+  kind: add
+- date: '2026-11-26T21:13:54Z'
+  key: attachments[mec-r-horn-pin].rated_load_n
+  old: 10
+  new: 212.1
+  why: 'D125: carry the sourced rating from E-MEC-PIN-R4'
+  kind: modify
+- date: '2026-11-26T21:13:59Z'
+  key: attachments[mec-r-horn-pin].rating_basis
+  old: placeholder
+  new: derived
+  why: 'D125: carry the sourced rating from E-MEC-PIN-R4'
+  kind: modify
+- date: '2026-11-26T21:14:05Z'
+  key: attachments[mec-r-horn-pin].connection
+  old: null
+  new: CT-HW-SEATED
+  why: 'D125: carry the sourced rating from E-MEC-PIN-R4'
+  kind: add
+- date: '2026-11-26T21:14:10Z'
+  key: attachments[mec-l-horn-pin].rated_load_n
+  old: 10
+  new: 212.1
+  why: 'D125: carry the sourced rating from E-MEC-PIN-L4'
+  kind: modify
+- date: '2026-11-26T21:14:15Z'
+  key: attachments[mec-l-horn-pin].rating_basis
+  old: placeholder
+  new: derived
+  why: 'D125: carry the sourced rating from E-MEC-PIN-L4'
+  kind: modify
+- date: '2026-11-26T21:14:21Z'
+  key: attachments[mec-l-horn-pin].connection
+  old: null
+  new: CT-HW-SEATED
+  why: 'D125: carry the sourced rating from E-MEC-PIN-L4'
+  kind: add
+- date: '2026-11-26T23:18:55Z'
+  key: rename-id
+  old: mec-002-r
+  new: mec-r-arm
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[17].component_ids[3]
+  - transport.disassembly[0].component_ids[67]
+  - assembly.sequence[27].add[0]
+- date: '2026-11-26T23:18:59Z'
+  key: rename-id
+  old: mec-002-l
+  new: mec-l-arm
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[17].component_ids[2]
+  - transport.disassembly[0].component_ids[66]
+  - assembly.sequence[27].add[1]
+- date: '2026-11-26T23:19:03Z'
+  key: rename-id
+  old: mec-003-r
+  new: mec-r-rod
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[1]
+  - transport.disassembly[0].component_ids[69]
+  - assembly.sequence[30].add[0]
+- date: '2026-11-26T23:19:07Z'
+  key: rename-id
+  old: mec-003-l
+  new: mec-l-rod
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[0]
+  - transport.disassembly[0].component_ids[68]
+  - assembly.sequence[30].add[1]
+- date: '2026-11-26T23:19:11Z'
+  key: rename-id
+  old: mec-004-r
+  new: mec-r-horn
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[3]
+  - transport.disassembly[0].component_ids[71]
+  - assembly.sequence[29].add[0]
+- date: '2026-11-26T23:19:15Z'
+  key: rename-id
+  old: mec-004-l
+  new: mec-l-horn
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[2]
+  - transport.disassembly[0].component_ids[70]
+  - assembly.sequence[29].add[1]
+- date: '2026-11-26T23:19:19Z'
+  key: rename-id
+  old: mec-005-r
+  new: mec-r-pin
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[5]
+  - transport.disassembly[0].component_ids[73]
+  - assembly.sequence[31].add[0]
+- date: '2026-11-26T23:19:23Z'
+  key: rename-id
+  old: mec-005-l
+  new: mec-l-pin
+  why: 'U16.3-4: stale linkage ids after U16.3-3 (T168)'
+  kind: modify
+  paths:
+  - bom.items[18].component_ids[4]
+  - transport.disassembly[0].component_ids[72]
+  - assembly.sequence[32].add[0]

@@ -71,7 +71,7 @@ def get_op(path: str, *, key: str = "") -> OpResult:
 def validate_op(path: str, tier: Literal["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "all"] = "all") -> OpResult:
     design = _load(path)
     card = validate(design, max_tier=9 if tier == "all" else int(tier))
-    data = {**card.to_dict(), "markdown": card.to_markdown()}
+    data = {**card.to_dict(), "markdown": card.to_markdown(design)}
     ok = bool(card.clean and (card.accepted or card.partial))
     messages, skipped, n_a = [], [], []
     for t in card.tiers:

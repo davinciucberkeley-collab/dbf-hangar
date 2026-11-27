@@ -180,6 +180,27 @@ def index_extras(entries: list[dict], root: Path, public: bool = False) -> dict:
             "ledger": ledger, "updates": updates}
 
 
+def rows_json(card, design) -> dict:
+    """Rendered text of every scorecard row (U19.2), in scorecard order, for Studio."""
+    from .gates.describe import describe_card, load_registry   # inside: gates imports checks, which imports this module's deps
+    reg = load_registry()
+    tiers = []
+    for t, texts in zip(card.tiers, describe_card(card, design)):
+        rows = []
+        for r in texts:
+            e = reg.get(r.family) or {}
+            rows.append({
+                "check_id": r.check_id, "status": r.status, "title": r.title, "sentence": r.sentence,
+                "hint": r.hint, "details": r.details,
+                "parts": [{"id": p.id, "label": p.label} for p in r.parts],
+                "group": r.group, "source": r.source, "report_only": r.report_only, "would_be": r.would_be,
+                "not_applicable": r.not_applicable, "fold": bool(e.get("fold", False)),
+                "fold_noun": e.get("fold_noun", "rows"),
+            })
+        tiers.append({"tier": t.tier, "rows": rows})
+    return {"version": 1, "design_id": card.design_id, "tiers": tiers}
+
+
 def design_entry(design, out_dir: Path, file_id: str | None = None) -> dict:
     """Write <file_id>.glb, .scorecard.json and .mass.json into out_dir and return the index entry.
 
@@ -194,6 +215,12 @@ def design_entry(design, out_dir: Path, file_id: str | None = None) -> dict:
     card = validate(design)
     card_dict = card.to_dict()
     (out_dir / f"{fid}.scorecard.json").write_text(dumps(card_dict) + "\n")
+    try:
+        rows_text = dumps(rows_json(card, design)) + "\n"
+    except Exception:  # noqa: BLE001  (a text problem must never break the index)
+        rows_text = None
+    if rows_text is not None:
+        (out_dir / f"{fid}.rows.json").write_text(rows_text)
     mp = mass_properties(design)
     (out_dir / f"{fid}.mass.json").write_text(dumps(mp) + "\n")
     (out_dir / f"{fid}.parts.json").write_text(dumps(parts_json(design)) + "\n")
@@ -217,6 +244,7 @@ def design_entry(design, out_dir: Path, file_id: str | None = None) -> dict:
         "cg_mm": mp["cg_mm"],
         "glb": f"{fid}.glb",
         "scorecard": f"{fid}.scorecard.json",
+        "rows": f"{fid}.rows.json" if rows_text is not None else None,
         "mass": f"{fid}.mass.json",
         "parts": f"{fid}.parts.json",
         "tiers": {str(t["tier"]): t["status"] for t in card_dict["tiers"]},
@@ -242,6 +270,7 @@ def error_entry(did: str, message: str, meta: dict | None = None) -> dict:
         "cg_mm": None,
         "glb": None,
         "scorecard": None,
+        "rows": None,
         "mass": None,
         "parts": None,
         "tiers": {},
